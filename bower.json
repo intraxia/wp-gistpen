@@ -1,0 +1,26 @@
+{
+  "name": "maadhattah/wp-gistpen",
+  "version": "0.1.0",
+  "authors": [
+    "James DiGioia <jamesorodig@gmail.com>"
+  ],
+  "description": "A self-hosted alternative to putting your code snippets on Gist.",
+  "keywords": [
+    "gist",
+    "codepen"
+  ],
+  "license": "GPL-2.0+",
+  "homepage": "http://www.jamesdigioia.com/",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/assets/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "SyntaxHighlighter": "3.0.83"
+  }
+}

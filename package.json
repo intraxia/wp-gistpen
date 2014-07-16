@@ -1,0 +1,16 @@
+{
+  "name": "wp-gistpen",
+  "version": "0.1.0",
+  "description": "A self-hosted alternative to putting your code snippets on Gist.",
+  "main": "gulpfile.js",
+  "devDependencies": {
+    "gulp": "^3.8.6",
+    "gulp-composer": "0.0.1",
+    "gulp-concat": "^2.3.3"
+  },
+  "scripts": {
+    "test": "test.js"
+  },
+  "author": "maadhattah",
+  "license": "GPL-2.0+"
+}
