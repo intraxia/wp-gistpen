@@ -14,7 +14,7 @@
  * public-facing side of the WordPress site.
  *
  * @package WP_Gistpen
- * @author  James DiGioia <email@example.com>
+ * @author  James DiGioia <jamesorodig@gmail.com>
  */
 class WP_Gistpen {
 
@@ -231,7 +231,7 @@ class WP_Gistpen {
 		);
 
 		foreach ($files as $file) {
-			require_once( plugin_dir_path( __DIR__ ) . 'includes/' . $file );
+			require_once( WP_GISTPEN_DIR . 'includes/' . $file );
 		}
 
 	}

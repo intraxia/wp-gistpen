@@ -12,7 +12,7 @@
  * admin-facing side of the WordPress site.
  *
  * @package WP_Gistpen_Admin
- * @author  James DiGioia <email@example.com>
+ * @author  James DiGioia <jamesorodig@gmail.com>
  */
 class WP_Gistpen_Admin {
 
@@ -184,7 +184,7 @@ class WP_Gistpen_Admin {
 	public function initialize_meta_boxes() {
 
 		if ( ! class_exists( 'cmb_Meta_Box' ) )
-			require_once( plugin_dir_path( __DIR__ ) . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
+			require_once( WP_GISTPEN_DIR . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
 
 	}
 
