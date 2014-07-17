@@ -5,6 +5,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var composer = require('gulp-composer');
 var bower = require('gulp-bower');
+var zip = require('gulp-zip');
 var runs  = require('run-sequence');
 
 var paths = {
@@ -42,7 +43,8 @@ gulp.task('dev', function () {
 		.pipe(gulp.dest('admin/assets/js/'));
 	// Install composer dependencies
 	composer({ bin: 'composer' });
-	//bower();
+	// Install bower dependencies
+	bower();
 })
 
 // Watch and regen
@@ -69,7 +71,7 @@ gulp.task('minify', function () {
 		.pipe(uglify('.'))
 		.pipe(gulp.dest(paths.build + 'public/assets/js/'));
 	// Admin Javascript Files
-	gulp.src(paths.adminjs)
+	return gulp.src(paths.adminjs)
 		.pipe(concat('wp-gistpen-admin.min.js'))
 		.pipe(uglify('.'))
 		.pipe(gulp.dest(paths.build + 'admin/assets/js/'));
@@ -79,7 +81,13 @@ gulp.task('install', function() {
 	// Install composer dependencies
 	composer({bin: 'composer', cwd: process.cwd()+'/'+paths.build});
 	// Install bower dependencies
-	bower({cwd: paths.build});
+	return bower({cwd: paths.build});
+});
+
+gulp.task('zip', function() {
+	return gulp.src(paths.build + '**')
+		.pipe(zip('wp-gistpen.zip'))
+		.pipe(gulp.dest('./'));
 });
 
 gulp.task('build', function(done) {
@@ -87,5 +95,7 @@ gulp.task('build', function(done) {
 		'clean',
 		'copy',
 		['minify', 'install'],
+		'zip',
+		'clean',
 		done);
 });
