@@ -283,8 +283,9 @@ class WP_Gistpen {
 	 */
 	public static function single_activate() {
 
-		self::get_instance()->register_language_taxonomy();
-		self::add_languages();
+		$instance = self::get_instance();
+		$instance->register_language_taxonomy();
+		$instance->add_languages();
 		flush_rewrite_rules();
 
 	}
@@ -294,15 +295,21 @@ class WP_Gistpen {
 	 *
 	 * @since    0.1.0
 	 */
-	public static function add_languages() {
+	public function add_languages() {
+
+		if ( get_option( 'wp_gistpen_langs_installed') == true ) {
+			return;
+		}
 
 		foreach (self::$langs as $lang => $slug) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
 			if ( is_wp_error( $result ) ) {
 				deactivate_plugins( $this->get_plugin_slug() );
-				exit( 'Failed to load language taxonomy.' );
+				exit( print_r($result) );
 			}
 		}
+
+		update_option( 'wp_gistpen_langs_installed', true );
 
 	}
 
