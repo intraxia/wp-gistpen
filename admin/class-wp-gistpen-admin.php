@@ -42,9 +42,7 @@ class WP_Gistpen_Admin {
 	 */
 	private function __construct() {
 
-		/**
-		 * Call $plugin_slug from public plugin class.
-		 */
+		// Call $plugin_slug from public plugin class.
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
@@ -58,10 +56,6 @@ class WP_Gistpen_Admin {
 		// Add an action link pointing to the options page.
 		$plugin_basename = plugin_basename( plugin_dir_path( realpath( dirname( __FILE__ ) ) ) . $this->plugin_slug . '.php' );
 		add_filter( 'plugin_action_links_' . $plugin_basename, array( $this, 'add_action_links' ) );
-
-		 // Add metaboxes
-		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
-		add_filter( 'cmb_meta_boxes', array( $this, 'add_metaboxes' ) );
 
 	}
 
@@ -174,54 +168,6 @@ class WP_Gistpen_Admin {
 			$links
 		);
 
-	}
-
-	/**
-	 * Initialize the metabox class.
-	 *
-	 * @since    0.1.0
-	 */
-	public function initialize_meta_boxes() {
-
-		if ( ! class_exists( 'cmb_Meta_Box' ) )
-			require_once( WP_GISTPEN_DIR . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
-
-	}
-
-	/**
-	 * Register the metaboxes
-	 *
-	 * @since    0.1.0
-	 */
-	public function add_metaboxes() {
-
-		// Start with an underscore to hide fields from custom fields list
-		$prefix = '_wpgp_';
-
-		/**
-		 * Sample metabox to demonstrate each field type included
-		 */
-		$meta_boxes['gistpen_description'] = array(
-			'id'         => 'gistpen_description',
-			'title'      => __( 'Gistpen Description', 'wp-gistpen' ),
-			'pages'      => array( 'gistpens' ), // Post type
-			'context'    => 'normal',
-			'priority'   => 'high',
-			'show_names' => false, // Show field names on the left
-			'fields'     => array(
-				array(
-					'desc'       => __( 'Write a short description of this Gistpen.', 'wp-gistpen' ),
-					'id'         => $prefix . 'gistpen_description',
-					'type'       => 'textarea',
-					// 'show_on_cb' => 'cmb_test_text_show_on_cb', // function should return a bool value
-					// 'sanitization_cb' => 'my_custom_sanitization', // custom sanitization callback parameter
-					// 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
-					'on_front'        => false, // Optionally designate a field to wp-admin only
-				),
-			)
-		);
-
-		return $meta_boxes;
 	}
 
 }

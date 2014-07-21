@@ -109,9 +109,6 @@ class WP_Gistpen {
 		// Add the description to the Gistpen content
 		add_filter( 'the_content', array($this, 'gistpen_content_add_description' ) );
 
-		// Disable visual editor
-		add_filter( 'user_can_richedit', array( $this, 'disable_visual_editor' ) );
-
 		// All the init hooks
 		add_action( 'init', array( $this, 'init' ) );
 
@@ -505,21 +502,6 @@ class WP_Gistpen {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Disable the visual editor because
-	 * it messes with the code layout
-	 *
-	 * @return   false|$default     disables only on gistpens
-	 * @since    0.1.0
-	 */
-	public function disable_visual_editor( $default ) {
-		global $post;
-
-		if ( 'gistpens' == get_post_type( $post ) )
-			return false;
-		return $default;
 	}
 
 	/**
