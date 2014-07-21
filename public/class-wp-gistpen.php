@@ -424,6 +424,7 @@ class WP_Gistpen {
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
+			'menu_icon'           => 'dashicons-edit'
 		);
 		register_post_type( 'gistpens', $args );
 	}

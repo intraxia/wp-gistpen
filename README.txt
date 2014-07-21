@@ -2,7 +2,7 @@
 Contributors: JamesDiGioia
 Donate link: http://jamesdigioia.com/
 Tags: gist, code snippets, codepen
-Requires at least: 3.5.1
+Requires at least: 3.8
 Tested up to: 3.9.1
 Stable tag: 0.1.2
 License: GPLv2
@@ -12,7 +12,7 @@ A self-hosted alternative to putting your code snippets on Gist.
 
 == Description ==
 
-You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement
+You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement for your WordPress blog.
 
 == Installation ==
 
@@ -43,7 +43,7 @@ You use WordPress because you want control over your writing. Why give Gist or C
 
 = How does this work? =
 
-WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and
+WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and past in your code. From there, use [gistpen id="##"], where ## is the post id of the Gistpen you just created. (Don't worry, I'm working on streamlining this process :) ).
 
 == Changelog ==
 
