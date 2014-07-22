@@ -369,7 +369,7 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function localize_scripts() {
-		wp_localize_script( $this->plugin_slug . '-plugin-script', 'PLUGIN_DIR', array( plugin_dir_url( __FILE__ ) ) );
+		wp_localize_script( $this->plugin_slug . '-plugin-script', 'PLUGIN_DIR', array( WP_GISTPEN_DIR ) );
 	}
 
 	/**

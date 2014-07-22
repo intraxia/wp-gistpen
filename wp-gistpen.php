@@ -35,6 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  *----------------------------------------------------------------------------*/
 
 define('WP_GISTPEN_DIR', plugin_dir_path( __FILE__ ));
+define('WP_GISTPEN_URL', plugin_dir_url( __FILE__ ));
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
