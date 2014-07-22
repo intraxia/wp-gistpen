@@ -34,12 +34,20 @@ class WP_Gistpen_Editor {
 	 */
 	private function __construct() {
 
-		 // Add metaboxes
+		// Add metaboxes
 		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
 		add_filter( 'cmb_meta_boxes', array( $this, 'add_metaboxes' ) );
 
 		// Disable visual editor
 		add_filter( 'user_can_richedit', array( $this, 'disable_visual_editor' ) );
+
+		// Add TinyMCE Editor Buttons
+		add_filter( 'mce_external_plugins', array( $this, 'add_button' ) );
+		add_filter( 'mce_buttons', array( $this, 'register_button' ) );
+
+		// Add AJAX hook for button click
+		add_action( 'wp_ajax_gistpen_insert', array( $this, 'insert_gistpen_dialog' ) );
+		add_action( 'wp_ajax_nopriv_gistpen_insert', array( $this, 'insert_gistpen_dialog' ) );
 
 	}
 
@@ -122,6 +130,44 @@ class WP_Gistpen_Editor {
 		);
 
 		return $meta_boxes;
+
+	}
+
+	/**
+	 * Add WP-Gistpen's editor button to the editor
+	 *
+	 * @param  array    $plugins    array of current plugins
+	 * @return array                updated array with new button
+	 */
+	public function add_button( $plugins ) {
+
+		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js';
+		return $plugins;
+
+	}
+
+	/**
+	 * Register the script for the button with TinyMCE
+	 *
+	 * @param  array    $buttons   array of current buttons
+	 * @return array               updated array with new button
+	 * @since    0.2.0
+	 */
+	public function register_button( $buttons ) {
+
+		array_push($buttons, 'wp_gistpen');
+		return $buttons;
+
+	}
+
+	/**
+	 * Dialog for adding shortcode
+	 *
+	 * @since 3.1.0
+	 */
+	public function insert_gistpen_dialog() {
+
+		die(require_once WP_GISTPEN_DIR . 'admin/assets/views/insert-gistpen.php');
 	}
 
 }

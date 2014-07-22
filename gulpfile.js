@@ -9,13 +9,16 @@ var zip = require('gulp-zip');
 var runs  = require('run-sequence');
 
 var paths = {
-	pubjs: [
-		'public/assets/vendor/SyntaxHighlighter/scripts/XRegExp.js',
-		'public/assets/vendor/SyntaxHighlighter/scripts/shLegacy.js',
-		'public/assets/vendor/SyntaxHighlighter/scripts/shCore.js',
-		'public/assets/vendor/SyntaxHighlighter/scripts/shAutoloader.js',
-		'public/assets/js/*.js'],
-	adminjs: ['admin/assets/js/wp-gistpen-admin.js'],
+	js: {
+		pub: [
+			'public/assets/vendor/SyntaxHighlighter/scripts/XRegExp.js',
+			'public/assets/vendor/SyntaxHighlighter/scripts/shLegacy.js',
+			'public/assets/vendor/SyntaxHighlighter/scripts/shCore.js',
+			'public/assets/vendor/SyntaxHighlighter/scripts/shAutoloader.js',
+			'public/assets/js/*.js'],
+		admin: ['admin/assets/js/wp-gistpen-admin.js'],
+		editor: ['admin/assets/js/wp-gistpen-editor.js'],
+	},
 	add: ['**/*.php',
 		'**/*.png',
 		'**/*.pot',
@@ -28,29 +31,34 @@ var paths = {
 		'!includes/**',
 		'!public/assets/vendor/**'],
 	build: 'build/'
-}
+};
 
 gulp.task('dev', function () {
 	// Public Javascript Files
-	gulp.src(paths.pubjs)
+	gulp.src(paths.js.pub)
 		// Concatenate the Javascript
 		.pipe(concat('wp-gistpen.min.js'))
 		.pipe(gulp.dest('public/assets/js/'));
 	// Admin Javascript Files
-	gulp.src(paths.adminjs)
+	gulp.src(paths.js.admin)
 		// Concatenate the Javascript
 		.pipe(concat('wp-gistpen-admin.min.js'))
+		.pipe(gulp.dest('admin/assets/js/'));
+	// Editor Javascript Files
+	gulp.src(paths.js.editor)
+		// Concatenate the Javascript
+		.pipe(concat('wp-gistpen-editor.min.js'))
 		.pipe(gulp.dest('admin/assets/js/'));
 	// Install composer dependencies
 	composer({ bin: 'composer' });
 	// Install bower dependencies
 	bower();
-})
+});
 
 // Watch and regen
 gulp.task('watch', ['dev'], function () {
 	gulp.watch('**/*.js', ['dev']);
-})
+});
 
 // Delete the build directory
 gulp.task('clean', function() {
@@ -75,7 +83,7 @@ gulp.task('minify', function () {
 		.pipe(concat('wp-gistpen-admin.min.js'))
 		.pipe(uglify('.'))
 		.pipe(gulp.dest(paths.build + 'admin/assets/js/'));
-})
+});
 
 gulp.task('install', function() {
 	// Install composer dependencies
