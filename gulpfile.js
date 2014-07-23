@@ -7,6 +7,7 @@ var composer = require('gulp-composer');
 var bower = require('gulp-bower');
 var zip = require('gulp-zip');
 var runs  = require('run-sequence');
+var sass = require('gulp-sass');
 
 var paths = {
 	js: {
@@ -18,6 +19,11 @@ var paths = {
 			'public/assets/js/*.js'],
 		admin: ['admin/assets/js/wp-gistpen-admin.js'],
 		editor: ['admin/assets/js/wp-gistpen-editor.js'],
+	},
+	scss: {
+		admin: [
+			'admin/assets/scss/wp-gistpen-admin.scss'
+		]
 	},
 	add: ['**/*.php',
 		'**/*.png',
@@ -49,6 +55,10 @@ gulp.task('dev', function () {
 		// Concatenate the Javascript
 		.pipe(concat('wp-gistpen-editor.min.js'))
 		.pipe(gulp.dest('admin/assets/js/'));
+	// Admin SCSS
+	gulp.src(paths.scss.admin)
+	  .pipe(sass())
+	  .pipe(gulp.dest('admin/assets/css/'));
 	// Install composer dependencies
 	composer({ bin: 'composer' });
 	// Install bower dependencies

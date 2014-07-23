@@ -349,7 +349,7 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/public.css', __FILE__ ), array(), self::VERSION );
+		// wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/wp-gistpen-public.css', __FILE__ ), array(), self::VERSION );
 		wp_enqueue_style( 'syntaxhighlighter-style-core', plugins_url( 'assets/vendor/SyntaxHighlighter/styles/shCore.css', __FILE__ ), array(), self::VERSION );
 		wp_enqueue_style( 'syntaxhighlighter-style-default', plugins_url( 'assets/vendor/SyntaxHighlighter/styles/shCoreDefault.css', __FILE__ ), array(), self::VERSION );
 	}
