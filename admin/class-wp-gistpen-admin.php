@@ -84,14 +84,14 @@ class WP_Gistpen_Admin {
 	 */
 	public function enqueue_admin_styles() {
 
-		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-			return;
-		}
+		// if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
+		// 	return;
+		// }
 
-		$screen = get_current_screen();
-		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', plugins_url( 'assets/css/wp-gistpen-admin.min.css', __FILE__ ), array(), WP_Gistpen::VERSION );
-		}
+		// $screen = get_current_screen();
+		// if ( $this->plugin_screen_hook_suffix == $screen->id ) {
+			wp_enqueue_style( $this->plugin_slug .'-admin-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-admin.css', array(), WP_Gistpen::VERSION );
+		// }
 
 	}
 
