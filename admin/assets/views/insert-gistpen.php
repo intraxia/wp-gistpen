@@ -6,7 +6,7 @@
 			<div class="gistpen-search-wrap">
 				<label>
 					<span class="search-label"><?php _e( 'Search Gistpens', 'wp-gistpen' ); ?></span>
-					<input type="search" id="search-field" class="gistpen-search-field" autocomplete="off" />
+					<input type="search" id="gistpen-search-field" class="search-field" />
 					<span class="spinner"></span>
 				</label>
 			</div>
@@ -20,34 +20,33 @@
 				<div class="query-notice"><em><?php _e( 'No search term specified. Showing recent Gistpens.', 'wp-gistpen' ); ?></em></div>
 				<ul>
 					<?php
-							$args = array(
+						$args = array(
 
-								'post_type'      => 'gistpens',
-								'post_status'    => 'publish',
-								'order'          => 'DESC',
-								'orderby'        => 'date',
-								'posts_per_page' => 5,
+							'post_type'      => 'gistpens',
+							'post_status'    => 'publish',
+							'order'          => 'DESC',
+							'orderby'        => 'date',
+							'posts_per_page' => 5,
 
-							);
+						);
 
-						$recent_gistpen_query = new WP_Query( $args );?>
+						$recent_gistpen_query = new WP_Query( $args );
+					?>
 
-						<?php if ( $recent_gistpen_query->have_posts()) : ?>
-							<?php while ( $recent_gistpen_query->have_posts()) : $recent_gistpen_query->the_post(); ?>
-								<li>
-									<div class="gistpen-title"><?php the_title();  ?></div>
-									<div class="gistpen-checkbox"><input type="radio" name="gistpen_id" value="<?php the_ID(); ?>"></div>
-								</li>
-							<?php endwhile; ?>
-						<?php endif; ?>
+					<?php if ( $recent_gistpen_query->have_posts()) : ?>
+						<?php while ( $recent_gistpen_query->have_posts()) : $recent_gistpen_query->the_post(); ?>
+							<li>
+								<div class="gistpen-title"><?php the_title();  ?></div>
+								<div class="gistpen-checkbox"><input type="radio" name="gistpen_id" value="<?php the_ID(); ?>"></div>
+							</li>
+						<?php endwhile; ?>
+					<?php endif; ?>
+					<li class="create_new_gistpen">
+						<div class="gistpen-title">Create a new Gistpen</div>
+						<div class="gistpen-checkbox"><input type="radio" name="gistpen_id" value="new_gistpen"></div>
+					</li>
 				</ul>
-				<div class="river-waiting">
-					<span class="spinner"></span>
-				</div>
 			</div>
-		</div>
-		<div id="create-new">
-			<p class="howto">Or create a new Gistpen</p>
 		</div>
 	</form>
 </div>

@@ -46,7 +46,9 @@
 					jQuery( '#wp-gistpen-body' ).append( data );
 					jQuery( '#wp-gistpen-body #search-results, .spinner' ).hide();
 					jQuery( 'input[name="gistpen_id"]' ).click( function() {
-						gistpenid = this.value;
+						if( this.value != 'new_gistpen') {
+							gistpenid = this.value;
+						}
 					});
 				});
 

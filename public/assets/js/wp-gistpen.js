@@ -12,8 +12,8 @@
 			for(var i = 0; i < args.length; i++)
 					result.push(args[i].replace('@', PLUGIN_DIR[0]+'assets/vendor/syntaxhighlighter/scripts/'));
 
-			return result
-		};
+			return result;
+		}
 
 		SyntaxHighlighter.autoloader.apply(null, path(
 			'applescript            @shBrushAppleScript.js',
