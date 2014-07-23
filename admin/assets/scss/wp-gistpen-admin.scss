@@ -54,23 +54,29 @@ i.mce-i-icon:before {
 
 .query-results {
 
-	ul li {
-		border: 1px solid black;
+	ul {
+		li {
+			border: 1px solid black;
+			border-top: none;
 
-		&:after {
-			content: "";
-			display: table;
-			clear: both;
+			&:first-child {
+				border-top: 1px solid black;
+			}
+
+			&:after {
+				content: "";
+				display: table;
+				clear: both;
+			}
+
+			div.gistpen-title {
+				float: left;
+			}
+
+			div.gistpen-checkbox {
+				float: right;
+			}
 		}
-
-		div.gistpen-title {
-			float: left;
-		}
-
-		div.gistpen-checkbox {
-			float: right;
-		}
-
 	}
 
 }
