@@ -1,5 +1,5 @@
 ( function() {
-	var gistpenid = '';
+	var gistpenid, title, content, description, language;
 
 	// Register plugin
 	tinymce.create( 'tinymce.plugins.wp_gistpen', {
@@ -15,41 +15,69 @@
 
 			// Called when we click the Insert Gistpen button
 			editor.addCommand( 'wp_gistpen', function() {
+				// Calls the pop-up modal
 				editor.windowManager.open({
+					// Modal settings
 					title: 'Insert Gistpen',
 					width: 450,
-					height: 420,
+					height: 490,
 					inline: 1,
-					id: 'wp-gistpen',
+					id: 'wp-gistpen-insert-dialog',
 					buttons: [{
 						text: 'Insert',
+						id: 'wp-gistpen-button-insert',
 						class: 'insert',
+						// Post? Then insert shortcode on click
 						onclick: function( e ) {
-							editor.insertContent( '[gistpen id="' + gistpenid + '"]' );
-							editor.windowManager.close();
+							// Get the selected gistpen id
+							gistpenid = jQuery( 'input[name="gistpen_id"]:checked' ).val();
+
+							if( gistpenid === 'new_gistpen' ) {
+								// Hide the buttons and replace with spinner
+								jQuery( '#wp-gistpen-button-insert, #wp-gistpen-button-cancel' ).hide();
+								jQuery("#wp-gistpen-insert-dialog .mce-foot .mce-container-body").append( '<div class="posting">Inserting post... <span class="spinner"></span></div>' );
+
+								// Post the data
+								jQuery.post( ajaxurl, {
+									action: 'create_gistpen_ajax',
+
+									gistpen_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+									gistpen_title: jQuery( 'input[name="gistpen_title"]' ).val(),
+									gistpen_content: jQuery( 'textarea[name="gistpen_content"]' ).val(),
+									gistpen_description: jQuery( 'textarea[name="gistpen_description"]' ).val(),
+									gistpen_language: jQuery( 'select[name="gistpen_language"]' ).val(),
+
+								}, function( response ) {
+									gistpenid = response;
+									insertAndClose( editor );
+								});
+							} else {
+								insertAndClose( editor );
+							}
 						},
 					},
 					{
 						text: 'Cancel',
+						id: 'wp-gistpen-button-cancel',
 						onclick: 'close'
 					}],
 				});
 
 				// Show loading image while we wait
-				jQuery( '#wp-gistpen-body' ).append( '<div class="loading">Loading <span class="spinner"></span></div>' );
+				jQuery( '#wp-gistpen-insert-dialog-body' ).append( '<div class="loading">Loading... <span class="spinner"></span></div>' );
 
 				// Get the form template from WordPress
 				jQuery.post( ajaxurl, {
-					action: 'gistpen_insert'
+					action: 'gistpen_insert_dialog'
 				}, function( data ) {
-					jQuery( '#wp-gistpen-body .loading' ).hide();
-					jQuery( '#wp-gistpen-body' ).append( data );
-					jQuery( '#wp-gistpen-body #search-results, .spinner' ).hide();
-					jQuery( 'input[name="gistpen_id"]' ).click( function() {
-						if( this.value != 'new_gistpen') {
-							gistpenid = this.value;
-						}
-					});
+
+					// Hide the loading markers
+					jQuery( '#wp-gistpen-insert-dialog-body .loading' ).hide();
+
+					// Add and prepare the returned form
+					jQuery( '#wp-gistpen-insert-dialog-body' ).append( data );
+					jQuery( '#wp-gistpen-insert-dialog-body #search-results, .spinner' ).hide();
+
 				});
 
 			});
@@ -58,5 +86,10 @@
 	});
 
 	tinymce.PluginManager.add( 'wp_gistpen', tinymce.plugins.wp_gistpen );
+
+	function insertAndClose( editor ) {
+		editor.insertContent( '[gistpen id="' + gistpenid + '"]' );
+		editor.windowManager.close();
+	}
 
 })();

@@ -1,15 +1,15 @@
 <div id="wp-gistpen-insert-wrap">
 	<form id="wp-gistpen-insert" action="" tabindex="-1">
-		<?php wp_nonce_field( 'wp_gistpen', '_ajax_wp_gistpen', false ); ?>
+		<?php wp_nonce_field( 'create_gistpen_ajax', '_ajax_wp_gistpen', false ); ?>
 		<div id="insert-existing">
-			<p class="howto">Insert an existing Gistpen</p>
-			<div class="gistpen-search-wrap">
+			<p>Insert an existing Gistpen</p>
+<!-- 			<div class="gistpen-search-wrap">
 				<label>
-					<span class="search-label"><?php _e( 'Search Gistpens', 'wp-gistpen' ); ?></span>
+					<span class="search-label"><?php // _e( 'Search Gistpens', 'wp-gistpen' ); ?></span>
 					<input type="search" id="gistpen-search-field" class="search-field" />
 					<span class="spinner"></span>
 				</label>
-			</div>
+			</div> -->
 			<div id="search-results" class="query-results">
 				<ul></ul>
 				<div class="river-waiting">
@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<div id="most-recent-results" class="query-results">
-				<div class="query-notice"><em><?php _e( 'No search term specified. Showing recent Gistpens.', 'wp-gistpen' ); ?></em></div>
+				<div class="query-notice"><em><?php _e( 'Recent Gistpens.', 'wp-gistpen' ); ?></em></div>
 				<ul>
 					<?php
 						$args = array(
@@ -37,13 +37,36 @@
 						<?php while ( $recent_gistpen_query->have_posts()) : $recent_gistpen_query->the_post(); ?>
 							<li>
 								<div class="gistpen-title"><?php the_title();  ?></div>
-								<div class="gistpen-checkbox"><input type="radio" name="gistpen_id" value="<?php the_ID(); ?>"></div>
+								<div class="gistpen-radio"><input type="radio" name="gistpen_id" value="<?php the_ID(); ?>"></div>
 							</li>
 						<?php endwhile; ?>
 					<?php endif; ?>
 					<li class="create_new_gistpen">
 						<div class="gistpen-title">Create a new Gistpen</div>
-						<div class="gistpen-checkbox"><input type="radio" name="gistpen_id" value="new_gistpen"></div>
+						<div class="gistpen-radio"><input type="radio" name="gistpen_id" value="new_gistpen" checked="checked"></div>
+						<div class="clearfix"></div>
+						<ul>
+							<li>
+								<label for="gistpen_title">Gistpen Title</label>
+								<input type="text" name="gistpen_title">
+							</li>
+							<li>
+								<label for=gistpen_content"">Gistpen Content</label>
+								<textarea type="text" rows="5" name="gistpen_content"></textarea>
+							</li>
+							<li>
+								<label for="gistpen_description">Gistpen Description</label>
+								<textarea type="text" rows="5" name="gistpen_description"></textarea>
+							</li>
+							<li>
+								<label for="gistpen_language">Gistpen Language</label>
+								<select name="gistpen_language">
+									<?php foreach ( WP_Gistpen::$langs as $language => $slug ):?>
+										<option value="<?php echo $slug; ?>"><?php echo $language; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</div>

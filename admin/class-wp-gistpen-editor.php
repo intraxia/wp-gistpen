@@ -46,17 +46,16 @@ class WP_Gistpen_Editor {
 		add_filter( 'mce_buttons', array( $this, 'register_button' ) );
 
 		// Add AJAX hook for button click
-		add_action( 'wp_ajax_gistpen_insert', array( $this, 'insert_gistpen_dialog' ) );
-		add_action( 'wp_ajax_nopriv_gistpen_insert', array( $this, 'insert_gistpen_dialog' ) );
+		add_action( 'wp_ajax_gistpen_insert_dialog', array( $this, 'insert_gistpen_dialog' ) );
+		add_action( 'wp_ajax_create_gistpen_ajax', array( $this, 'create_gistpen_ajax' ) );
 
 	}
 
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since     0.2.0
-	 *
 	 * @return    object    A single instance of this class.
+	 * @since     0.2.0
 	 */
 	public static function get_instance() {
 
@@ -82,6 +81,7 @@ class WP_Gistpen_Editor {
 		if ( 'gistpens' == get_post_type( $post ) )
 			return false;
 		return $default;
+
 	}
 
 	/**
@@ -163,11 +163,48 @@ class WP_Gistpen_Editor {
 	/**
 	 * Dialog for adding shortcode
 	 *
-	 * @since 3.1.0
+	 * @since 0.2.0
 	 */
 	public function insert_gistpen_dialog() {
 
-		die(require_once WP_GISTPEN_DIR . 'admin/assets/views/insert-gistpen.php');
+		die(include WP_GISTPEN_DIR . 'admin/assets/views/insert-gistpen.php');
+
+	}
+
+	/**
+	 * PHP function to respond to AJAX request
+	 * from form to create new Gistpen
+	 *
+	 * @return string $post_id the id of the created Gistpen
+	 * @since  0.2.0
+	 */
+	public function create_gistpen_ajax() {
+
+		if ( !wp_verify_nonce( $_POST['gistpen_nonce'], 'create_gistpen_ajax' ) ) {
+			die( __( "Nonce check failed.", 'wp-gistpen' ) );
+		}
+
+		$args = array(
+			'post_title'   => $_POST['gistpen_title'],
+			'post_content' => $_POST['gistpen_content'],
+			'post_type'    => 'gistpens',
+			'post_status'  => 'publish',
+			'tax_input'    => array(
+				'language'   => $_POST['gistpen_language'],
+			),
+		);
+		$post_id = wp_insert_post( $args, false );
+
+		if( $post_id === 0 ) {
+			die( "Failed to insert post. ");
+		}
+
+		if( $_POST['gistpen_description'] !== "" ) {
+			update_post_meta( $post_id, '_wpgp_gistpen_description', $_POST['gistpen_description'] );
+		}
+
+		die(print($post_id));
+
 	}
 
 }

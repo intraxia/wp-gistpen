@@ -54,7 +54,7 @@ class WP_Gistpen {
 	 * @var      array
 	 * @since    0.1.0
 	 */
-	protected static $langs = array(
+	public static $langs = array(
 		'AppleScript' => 'applescript',
 		'ActionScript3' => 'as3',
 		'Bash' => 'bash',

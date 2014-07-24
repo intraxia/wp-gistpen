@@ -9,8 +9,8 @@
 i.mce-i-icon:before {
 	content: "\f464";
 }*/
-#wp-gistpen-body {
 
+#wp-gistpen-insert-dialog {
 	span.spinner {
 		background: url(../images/spinner.gif) no-repeat;
 		-webkit-background-size: 20px 20px;
@@ -23,6 +23,21 @@ i.mce-i-icon:before {
 		height: 20px;
 		margin: 2px 5px 0;
 	}
+
+	.loading {
+		text-align: center;
+		margin: 0 160px;
+		width: 130px;
+	}
+
+	.posting {
+		text-align: left;
+		margin: 0 0 0 300px;
+		width: 150px;
+	}
+}
+
+#wp-gistpen-insert-dialog-body {
 
 	#wp-gistpen-insert-wrap {
 		padding: 0 16px;
@@ -73,10 +88,41 @@ i.mce-i-icon:before {
 				float: left;
 			}
 
-			div.gistpen-checkbox {
+			div.gistpen-radio {
 				float: right;
 			}
+
 		}
 	}
+}
 
+.create_new_gistpen {
+
+	ul {
+
+		li {
+			border: none;
+
+			&.create_new_gistpen {
+				padding: 5px;
+			}
+
+			label {
+				content: "";
+				display: table;
+				clear: both;
+			}
+
+			input, textarea {
+				width: 100%;
+			}
+		}
+
+	}
+}
+
+.clearfix {
+	content: "";
+	display: table;
+	clear: both;
 }
