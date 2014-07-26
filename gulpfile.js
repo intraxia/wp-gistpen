@@ -1,31 +1,56 @@
-var gulp = require('gulp');
-var clean = require('gulp-clean');
-var jshint = require('gulp-jshint');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var composer = require('gulp-composer');
-var bower = require('gulp-bower');
-var zip = require('gulp-zip');
-var runs  = require('run-sequence');
-var sass = require('gulp-sass');
+var gulp = require('gulp'),
+	rimraf = require('rimraf'),
+	jshint = require('gulp-jshint'),
+	concat = require('gulp-concat'),
+	uglify = require('gulp-uglify'),
+	composer = require('gulp-composer'),
+	bower = require('gulp-bower'),
+	zip = require('gulp-zip'),
+	sass = require('gulp-sass'),
+	gulpif = require('gulp-if'),
+	runs = require('run-sequence'),
+	merge = require('merge-stream'),
+	print = require('gulp-print'),
+	building = false;
 
 var paths = {
 	js: {
-		pub: [
-			'public/assets/vendor/SyntaxHighlighter/scripts/XRegExp.js',
-			'public/assets/vendor/SyntaxHighlighter/scripts/shLegacy.js',
-			'public/assets/vendor/SyntaxHighlighter/scripts/shCore.js',
-			'public/assets/vendor/SyntaxHighlighter/scripts/shAutoloader.js',
-			'public/assets/js/*.js'],
-		admin: ['admin/assets/js/wp-gistpen-admin.js'],
-		editor: ['admin/assets/js/wp-gistpen-editor.js'],
+		public: {
+			files: [
+				'public/assets/vendor/SyntaxHighlighter/scripts/XRegExp.js',
+				'public/assets/vendor/SyntaxHighlighter/scripts/shLegacy.js',
+				'public/assets/vendor/SyntaxHighlighter/scripts/shCore.js',
+				'public/assets/vendor/SyntaxHighlighter/scripts/shAutoloader.js',
+				'public/assets/js/*.js',
+				'!public/assets/js/wp-gistpen.min.js'],
+			output: {
+				filename: 'wp-gistpen.min.js',
+				dir: 'public/assets/js/'
+			},
+		},
+		admin: {
+			files: ['admin/assets/js/wp-gistpen-admin.js'],
+			output: {
+				filename: 'wp-gistpen-admin.min.js',
+				dir: 'admin/assets/js/'
+			},
+		},
+		editor: {
+			files: ['admin/assets/js/wp-gistpen-editor.js'],
+			output: {
+				filename: 'wp-gistpen-editor.min.js',
+				dir: 'admin/assets/js/'
+			},
+		},
 	},
 	scss: {
-		admin: [
-			'admin/assets/scss/wp-gistpen-admin.scss'
-		]
+		admin: {
+			files: ['admin/assets/scss/wp-gistpen-admin.scss'],
+			output: 'admin/assets/css/'
+		}
 	},
-	add: ['**/*.php',
+	add: [
+		'**/*.php',
 		'**/*.png',
 		'**/*.pot',
 		'.*',
@@ -35,71 +60,25 @@ var paths = {
 		'*.lock',
 		'!node_modules/**',
 		'!includes/**',
-		'!public/assets/vendor/**'],
+		'!public/assets/vendor/**',
+		'!*.sublime-*'],
 	build: 'build/'
 };
 
-gulp.task('dev', function () {
-	// Public Javascript Files
-	gulp.src(paths.js.pub)
-		// Concatenate the Javascript
-		.pipe(concat('wp-gistpen.min.js'))
-		.pipe(gulp.dest('public/assets/js/'));
-	// Admin Javascript Files
-	gulp.src(paths.js.admin)
-		// Concatenate the Javascript
-		.pipe(concat('wp-gistpen-admin.min.js'))
-		.pipe(gulp.dest('admin/assets/js/'));
-	// Editor Javascript Files
-	gulp.src(paths.js.editor)
-		// Concatenate the Javascript
-		.pipe(concat('wp-gistpen-editor.min.js'))
-		.pipe(gulp.dest('admin/assets/js/'));
-	// Admin SCSS
-	gulp.src(paths.scss.admin)
-	  .pipe(sass())
-	  .pipe(gulp.dest('admin/assets/css/'));
-	// Install composer dependencies
-	composer({ bin: 'composer' });
-	// Install bower dependencies
-	bower();
+gulp.task( 'init', [ 'install', 'scripts', 'styles' ]);
+
+gulp.task( 'update',[ 'scripts', 'styles' ] );
+
+gulp.task( 'watch', [ 'update' ], function () {
+	gulp.watch( paths.js.public.files, [ 'update' ] );
 });
 
-// Watch and regen
-gulp.task('watch', ['dev'], function () {
-	gulp.watch('**/*.js', ['dev']);
+gulp.task('build', function() {
+	runs('copy', 'init', 'zip', 'clean');
 });
 
-// Delete the build directory
-gulp.task('clean', function() {
-	return gulp.src(paths.build)
-		.pipe(clean());
-});
-
-// Copy source files
-gulp.task('copy', function() {
-	return gulp.src(paths.add)
-		.pipe(gulp.dest(paths.build));
-});
-
-gulp.task('minify', function () {
-	// Public Javascript Files
-	gulp.src(paths.pubjs)
-		.pipe(concat('wp-gistpen.min.js'))
-		.pipe(uglify('.'))
-		.pipe(gulp.dest(paths.build + 'public/assets/js/'));
-	// Admin Javascript Files
-	return gulp.src(paths.adminjs)
-		.pipe(concat('wp-gistpen-admin.min.js'))
-		.pipe(uglify('.'))
-		.pipe(gulp.dest(paths.build + 'admin/assets/js/'));
-});
-
-gulp.task('install', function() {
-	// Install composer dependencies
-	composer({bin: 'composer', cwd: process.cwd()+'/'+paths.build});
-	// Install bower dependencies
-	return bower({cwd: paths.build});
+gulp.task('clean', function(cb) {
+	rimraf(paths.build, cb);
 });
 
 gulp.task('zip', function() {
@@ -108,12 +87,56 @@ gulp.task('zip', function() {
 		.pipe(gulp.dest('./'));
 });
 
-gulp.task('build', function(done) {
-	runs(
-		'clean',
-		'copy',
-		['minify', 'install'],
-		'zip',
-		'clean',
-		done);
+gulp.task('copy', ['set-build-var'], function() {
+	return gulp.src(paths.add)
+		.pipe(gulp.dest(paths.build));
+});
+
+gulp.task('set-build-var', function(cb) {
+	var err;
+	building = true;
+	cb(err);
+});
+
+gulp.task('install', function() {
+	var composed, bowered;
+
+	if (building) {
+		composed = composer({bin: 'composer', cwd: process.cwd()+'/'+paths.build});
+		bowered = bower({cwd: paths.build});
+	} else {
+		composed = composer({ bin: 'composer' });
+		bowered = bower();
+	}
+
+	return merge(composed, bowered);
+});
+
+gulp.task('scripts', function() {
+	var stream;
+
+	for(var location in paths.js) {
+		stream = gulp.src(paths.js[location].files)
+			.pipe(concat(paths.js[location].output.filename))
+			.pipe(gulpif(building, uglify()))
+			.pipe(gulp.dest(paths.js[location].output.dir))
+			.pipe(gulpif(building, gulp.dest(paths.build + paths.js[location].output.dir)));
+	}
+
+	return stream;
+
+});
+
+gulp.task('styles', function() {
+	var stream;
+
+	for(var location in paths.scss) {
+		stream = gulp.src(paths.scss[location].files)
+			.pipe(sass())
+			.pipe(gulp.dest(paths.scss[location].output))
+			.pipe(gulpif(building, gulp.dest(paths.build + paths.scss[location].output)));
+	}
+
+	return stream;
+
 });

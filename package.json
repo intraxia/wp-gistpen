@@ -7,17 +7,16 @@
     "bower": "^1.3.8",
     "gulp": "^3.8.6",
     "gulp-bower": "0.0.6",
-    "gulp-clean": "^0.3.1",
     "gulp-composer": "0.0.1",
     "gulp-concat": "^2.3.3",
+    "gulp-if": "^1.2.4",
     "gulp-jshint": "^1.7.1",
     "gulp-sass": "^0.7.2",
     "gulp-uglify": "^0.3.1",
     "gulp-zip": "^0.4.0",
+    "merge-stream": "^0.1.5",
+    "rimraf": "^2.2.8",
     "run-sequence": "^0.3.6"
-  },
-  "scripts": {
-    "test": "test.js"
   },
   "author": "maadhattah",
   "license": "GPL-2.0+"
