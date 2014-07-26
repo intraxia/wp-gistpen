@@ -11,6 +11,8 @@ i.mce-i-icon:before {
 }*/
 
 #wp-gistpen-insert-dialog {
+	background: #EEE;
+
 	span.spinner {
 		background: url(../images/spinner.gif) no-repeat;
 		-webkit-background-size: 20px 20px;
@@ -26,18 +28,20 @@ i.mce-i-icon:before {
 
 	.loading {
 		text-align: center;
-		margin: 0 160px;
+		margin: 10px 160px;
 		width: 130px;
 	}
 
 	.posting {
 		text-align: left;
-		margin: 0 0 0 300px;
+		margin: 10px 0 0 300px;
 		width: 150px;
 	}
+
 }
 
 #wp-gistpen-insert-dialog-body {
+	overflow: auto;
 
 	#wp-gistpen-insert-wrap {
 		padding: 0 16px;
@@ -61,37 +65,40 @@ i.mce-i-icon:before {
 				float: left;
 				width: 250px;
 				max-width: 70%;
+				height: auto;
 			}
 		}
 	}
 
 }
 
-.query-results {
+#insert-existing {
 
-	ul {
-		li {
-			border: 1px solid black;
-			border-top: none;
+	.query-notice, p {
+		margin: 5px 0;
+	}
 
-			&:first-child {
-				border-top: 1px solid black;
+	.query-results {
+
+		ul {
+			li {
+
+				&:after {
+					content: "";
+					display: table;
+					clear: both;
+				}
+
+				div.gistpen-title {
+					float: left;
+					margin-left: 15px;
+				}
+
+				div.gistpen-radio {
+					float: left;
+				}
+
 			}
-
-			&:after {
-				content: "";
-				display: table;
-				clear: both;
-			}
-
-			div.gistpen-title {
-				float: left;
-			}
-
-			div.gistpen-radio {
-				float: right;
-			}
-
 		}
 	}
 }
@@ -113,11 +120,17 @@ i.mce-i-icon:before {
 				clear: both;
 			}
 
-			input, textarea {
-				width: 100%;
+			input, textarea, select {
+				width: 95%;
+				margin: 5px 10px;
+				background-color: #FFF !important;
 			}
-		}
 
+			label {
+				margin: 5px;
+			}
+
+		}
 	}
 }
 

@@ -1,24 +1,20 @@
 <div id="wp-gistpen-insert-wrap">
 	<form id="wp-gistpen-insert" action="" tabindex="-1">
-		<?php wp_nonce_field( 'create_gistpen_ajax', '_ajax_wp_gistpen', false ); ?>
 		<div id="insert-existing">
 			<p>Insert an existing Gistpen</p>
-<!-- 			<div class="gistpen-search-wrap">
-				<label>
-					<span class="search-label"><?php // _e( 'Search Gistpens', 'wp-gistpen' ); ?></span>
+			<div class="gistpen-search-wrap">
+				<label class="gistpen-search-label">
+					<span class="search-label"><?php _e( 'Search Gistpens', 'wp-gistpen' ); ?></span>
 					<input type="search" id="gistpen-search-field" class="search-field" />
-					<span class="spinner"></span>
+					<div id="gistpen-search-btn" class="mce-btn">
+						<button role="button">Search</button>
+						<span class="spinner"></span>
+					</div>
 				</label>
-			</div> -->
-			<div id="search-results" class="query-results">
-				<ul></ul>
-				<div class="river-waiting">
-					<span class="spinner"></span>
-				</div>
 			</div>
-			<div id="most-recent-results" class="query-results">
+			<div id="select-gistpen" class="query-results">
 				<div class="query-notice"><em><?php _e( 'Recent Gistpens.', 'wp-gistpen' ); ?></em></div>
-				<ul>
+				<ul class="gistpen-list">
 					<?php
 						$args = array(
 
@@ -32,18 +28,17 @@
 
 						$recent_gistpen_query = new WP_Query( $args );
 					?>
-
 					<?php if ( $recent_gistpen_query->have_posts()) : ?>
 						<?php while ( $recent_gistpen_query->have_posts()) : $recent_gistpen_query->the_post(); ?>
 							<li>
-								<div class="gistpen-title"><?php the_title();  ?></div>
 								<div class="gistpen-radio"><input type="radio" name="gistpen_id" value="<?php the_ID(); ?>"></div>
+								<div class="gistpen-title"><?php the_title();  ?></div>
 							</li>
 						<?php endwhile; ?>
 					<?php endif; ?>
 					<li class="create_new_gistpen">
-						<div class="gistpen-title">Create a new Gistpen</div>
 						<div class="gistpen-radio"><input type="radio" name="gistpen_id" value="new_gistpen" checked="checked"></div>
+						<div class="gistpen-title">Create a new Gistpen</div>
 						<div class="clearfix"></div>
 						<ul>
 							<li>

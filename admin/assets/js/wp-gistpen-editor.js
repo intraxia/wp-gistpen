@@ -1,5 +1,5 @@
 ( function() {
-	var gistpenid, title, content, description, language;
+	var template, gistpenid, title, content, description, language;
 
 	// Register plugin
 	tinymce.create( 'tinymce.plugins.wp_gistpen', {
@@ -35,7 +35,7 @@
 							if( gistpenid === 'new_gistpen' ) {
 								// Hide the buttons and replace with spinner
 								jQuery( '#wp-gistpen-button-insert, #wp-gistpen-button-cancel' ).hide();
-								jQuery("#wp-gistpen-insert-dialog .mce-foot .mce-container-body").append( '<div class="posting">Inserting post... <span class="spinner"></span></div>' );
+								jQuery( '#wp-gistpen-insert-dialog .mce-foot .mce-container-body').append( '<div class="posting">Inserting post... <span class="spinner"></span></div>' );
 
 								// Post the data
 								jQuery.post( ajaxurl, {
@@ -63,24 +63,43 @@
 					}],
 				});
 
-				// Show loading image while we wait
-				jQuery( '#wp-gistpen-insert-dialog-body' ).append( '<div class="loading">Loading... <span class="spinner"></span></div>' );
+				var dialogBody = jQuery( '#wp-gistpen-insert-dialog-body' ).append( '<div class="loading">Loading... <span class="spinner"></span></div>' );
 
 				// Get the form template from WordPress
 				jQuery.post( ajaxurl, {
 					action: 'gistpen_insert_dialog'
-				}, function( data ) {
+				}, function( response ) {
+					template = response;
 
-					// Hide the loading markers
-					jQuery( '#wp-gistpen-insert-dialog-body .loading' ).hide();
+					dialogBody.children( '.loading' ).remove();
+					dialogBody.append( template );
+					jQuery( '.spinner' ).hide();
 
-					// Add and prepare the returned form
-					jQuery( '#wp-gistpen-insert-dialog-body' ).append( data );
-					jQuery( '#wp-gistpen-insert-dialog-body #search-results, .spinner' ).hide();
+					var gistpenSearchButton = jQuery( '#gistpen-search-btn' );
 
+					gistpenSearchButton.click( function( e ) {
+						e.preventDefault();
+
+						jQuery( '#select-gistpen ul.gistpen-list > li' ).not( '.create_new_gistpen' ).hide();
+						gistpenSearchButton.children( 'button' ).hide();
+						jQuery( '.gistpen-search-wrap .spinner' ).show();
+
+						jQuery.post( ajaxurl, {
+							action: 'search_gistpen_ajax',
+
+							gistpen_nonce: jQuery.trim(jQuery( '#_ajax_wp_gistpen' ).val()),
+							gistpen_search_term: jQuery( '#gistpen-search-field' ).val()
+						}, function( response ) {
+							jQuery( '#select-gistpen ul.gistpen-list' ).prepend( response );
+							jQuery( '.gistpen-search-wrap .spinner' ).hide();
+							gistpenSearchButton.children('button').show();
+						});
+
+					});
 				});
 
 			});
+
 		}
 
 	});
