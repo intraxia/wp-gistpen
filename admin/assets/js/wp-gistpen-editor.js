@@ -8,7 +8,8 @@
 
 			// Add the Insert Gistpen button
 			editor.addButton( 'wp_gistpen', {
-				text: 'Insert Gistpen',
+				//text: 'Insert Gistpen',
+				icon: 'icons dashicons-edit',
 				tooltip: 'Insert Gistpen',
 				cmd: 'wp_gistpen'
 			});
