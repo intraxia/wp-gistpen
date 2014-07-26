@@ -12,11 +12,11 @@
  *
  * @wordpress-plugin
  * Plugin Name:       WP-Gistpen
- * Plugin URI:        http://www.jamesdigioia.com/
+ * Plugin URI:        http://www.jamesdigioia.com/wp-gistpen/
  * Description:       A self-hosted alternative to putting your code snippets on Gist.
- * Version:           0.1.2
+ * Version:           0.2.0
  * Author:            James DiGioia
- * Author URI:        http://www.jamesdigioia.com
+ * Author URI:        http://www.jamesdigioia.com/
  * Text Domain:       wp-gistpen
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt

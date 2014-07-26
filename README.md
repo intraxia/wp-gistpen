@@ -1,12 +1,12 @@
 # WP-Gistpen #
-**Contributors:** JamesDiGioia
-**Donate link:** http://jamesdigioia.com/
-**Tags:** gist, code snippets, codepen
-**Requires at least:** 3.8
-**Tested up to:** 3.9.1
-**Stable tag:** 0.1.2
-**License:** GPLv2
-**License URI:** http://www.gnu.org/licenses/gpl-2.0.html
+**Contributors:** JamesDiGioia  
+**Donate link:** http://jamesdigioia.com/  
+**Tags:** gist, code snippets, codepen  
+**Requires at least:** 3.9  
+**Tested up to:** 3.9.1  
+**Stable tag:** 0.2.0  
+**License:** GPLv2  
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
 A self-hosted alternative to putting your code snippets on Gist.
 
@@ -43,7 +43,19 @@ You use WordPress because you want control over your writing. Why give Gist or C
 
 ### How does this work? ###
 
-WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and past in your code. From there, use [gistpen id="##"], where ## is the post id of the Gistpen you just created. (Don't worry, I'm working on streamlining this process :) ).## Screenshots ##
+WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and paste in your code.
+
+You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the pen button. From the pop-up, select one of the recent Gistpens or create a new one by pasting in your code and clicking "Insert".
+
+After inserting the shortcode, your code will appear in your post, highlighted by [Alex Gorbatchev's Syntax Highlighter](http://alexgorbatchev.com/SyntaxHighlighter/).
+
+### What is the future of this plugin? ###
+
+Eventually, I hope to make this plugin interoperable with Gist, allowing you to import your current Gists, fork other people's Gists into your Gistpen, and publishing your Gistpens to Gist.
+
+Additionally, I want to make Gistpens embeddable on other websites the same way you can embed Gists, but both of those larger features are likely a long way off.
+
+## Screenshots ##
 
 ![](assets/screenshot-1.png)
 

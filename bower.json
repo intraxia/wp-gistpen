@@ -1,6 +1,6 @@
 {
   "name": "maadhattah/wp-gistpen",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "authors": [
     "James DiGioia <jamesorodig@gmail.com>"
   ],
@@ -10,7 +10,7 @@
     "codepen"
   ],
   "license": "GPL-2.0+",
-  "homepage": "http://www.jamesdigioia.com/",
+  "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
   "private": true,
   "ignore": [
     "**/.*",

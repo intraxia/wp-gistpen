@@ -5,8 +5,8 @@
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
- * @link      http://jamesdigioia.com
- * @copyright 2014 Your Name or Company Name
+ * @link      http://jamesdigioia.com/wp-gistpen/
+ * @copyright 2014 James DiGioia
  */
 
 // If uninstall not called from WordPress, then exit

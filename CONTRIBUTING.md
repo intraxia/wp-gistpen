@@ -1,5 +1,4 @@
 # Contributing #
-Check out the [Github repository](https://github.com/mAAdhaTTah/WP-Gistpen).
 
 ## Requirements
 1. Composer

@@ -1,5 +1,13 @@
 # Changelog #
 
+## 0.2.0 ##
+* Add "Insert Gistpen" button into visual editor
+	* You can now add the shortcode from the visual editor by clicking the pen
+* Update Gistpen icon
+* Code organization improvements
+* README improvements
+* Build script improvements
+
 ## 0.1.2 ##
 * More bugfixes
 

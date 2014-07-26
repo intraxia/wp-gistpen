@@ -12,7 +12,7 @@
  * editor for the custom post type and
  * the TinyMCE editor.
  *
- * @package WP_Gistpen_editor
+ * @package WP_Gistpen_Editor
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
 class WP_Gistpen_Editor {
