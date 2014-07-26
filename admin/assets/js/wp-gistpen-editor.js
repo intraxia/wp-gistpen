@@ -20,8 +20,9 @@
 				editor.windowManager.open({
 					// Modal settings
 					title: 'Insert Gistpen',
-					width: 450,
-					height: 490,
+					width: jQuery( window ).width() * 0.7,
+					// minus head and foot of dialog box
+					height: (jQuery( window ).height() - 36 - 50) * 0.7,
 					inline: 1,
 					id: 'wp-gistpen-insert-dialog',
 					buttons: [{
