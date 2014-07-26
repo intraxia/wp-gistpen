@@ -46,20 +46,20 @@
 								<input type="text" name="gistpen_title">
 							</li>
 							<li>
-								<label for=gistpen_content"">Gistpen Content</label>
-								<textarea type="text" rows="5" name="gistpen_content"></textarea>
-							</li>
-							<li>
-								<label for="gistpen_description">Gistpen Description</label>
-								<textarea type="text" rows="5" name="gistpen_description"></textarea>
-							</li>
-							<li>
 								<label for="gistpen_language">Gistpen Language</label>
 								<select name="gistpen_language">
 									<?php foreach ( WP_Gistpen::$langs as $language => $slug ):?>
 										<option value="<?php echo $slug; ?>"><?php echo $language; ?></option>
 									<?php endforeach; ?>
 								</select>
+							</li>
+							<li>
+								<label for=gistpen_content"">Gistpen Content</label>
+								<textarea type="text" rows="5" name="gistpen_content"></textarea>
+							</li>
+							<li>
+								<label for="gistpen_description">Gistpen Description</label>
+								<textarea type="text" rows="5" name="gistpen_description"></textarea>
 							</li>
 						</ul>
 					</li>
