@@ -43,4 +43,12 @@ You use WordPress because you want control over your writing. Why give Gist or C
 
 ### How does this work? ###
 
-WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and past in your code. From there, use [gistpen id="##"], where ## is the post id of the Gistpen you just created. (Don't worry, I'm working on streamlining this process :) ).
+WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and past in your code. From there, use [gistpen id="##"], where ## is the post id of the Gistpen you just created. (Don't worry, I'm working on streamlining this process :) ).## Screenshots ##
+
+![](assets/screenshot-1.png)
+
+The Insert Gistpen dialog after you click the pen in the visual editor.
+
+![](assets/screenshot-2.png)
+
+How your code will appear in your post.
