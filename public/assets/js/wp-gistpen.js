@@ -1,16 +1,14 @@
 "use strict";
 
-(function( $ ) {
-	jQuery(function ()
-	{
-		function path()
-		{
+(function( jQuery ) {
+	jQuery(function () {
+		function path() {
 			var args = arguments,
 					result = []
 					;
 
 			for(var i = 0; i < args.length; i++)
-					result.push(args[i].replace('@', PLUGIN_DIR[0]+'assets/vendor/syntaxhighlighter/scripts/'));
+					result.push(args[i].replace('@', PLUGIN_DIR[0]+'public/assets/vendor/SyntaxHighlighter/scripts/'));
 
 			return result;
 		}
@@ -45,4 +43,4 @@
 		SyntaxHighlighter.all();
 
 	});
-})(jQuery);
+})( jQuery );

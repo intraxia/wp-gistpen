@@ -369,7 +369,7 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function localize_scripts() {
-		wp_localize_script( $this->plugin_slug . '-plugin-script', 'PLUGIN_DIR', array( WP_GISTPEN_DIR ) );
+		wp_localize_script( $this->plugin_slug . '-plugin-script', 'PLUGIN_DIR', array( WP_GISTPEN_URL ) );
 	}
 
 	/**
@@ -542,16 +542,19 @@ class WP_Gistpen {
 	 * Wrap content in code tags
 	 * and add gistpen & language classes
 	 *
-	 * @param    object   $post    gistpen post object
-	 * @return   string            the tagged and classed content
+	 * @param    object   $gistpen    gistpen post object
+	 * @return   string               the tagged and classed content
 	 * @since    0.1.0
 	 */
 	public function add_tags_and_classes( $gistpen ) {
 
 		$terms = get_the_terms( $gistpen->ID, 'language' );
-		$lang = array_pop( $terms );
-
-		$content = '<pre class="gistpen brush: '. $lang->slug . '">' . $gistpen->post_content . '</pre>';
+		if( $terms ) {
+			$lang = array_pop( $terms );
+			$content = '<pre class="gistpen brush: '. $lang->slug . '">' . $gistpen->post_content . '</pre>';
+		} else {
+			$content = '<pre class="gistpen">' . $gistpen->post_content . '</pre>';
+		}
 
 		return $content;
 
