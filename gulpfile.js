@@ -98,21 +98,30 @@ gulp.task('set-build-var', function(cb) {
 	cb(err);
 });
 
-gulp.task('install', function() {
+gulp.task('install', ['clean-installs'], function() {
 	var composed, bowered;
 
 	if (building) {
 		composed = composer({bin: 'composer', cwd: process.cwd()+'/'+paths.build});
 		bowered = bower({cwd: paths.build});
-	} else {
-		composed = composer({ bin: 'composer' });
-		bowered = bower();
 	}
+	composed = composer({ bin: 'composer' });
+	bowered = bower();
 
 	return merge(composed, bowered);
 });
 
-gulp.task('scripts', function() {
+gulp.task('clean-installs', ['clean-bower', 'clean-composer']);
+
+gulp.task('clean-bower', function(cb) {
+	rimraf('public/assets/vendor', cb);
+});
+
+gulp.task('clean-composer', function(cb) {
+	rimraf('includes', cb);
+});
+
+gulp.task('scripts', ['install'], function() {
 	var stream;
 
 	for(var location in paths.js) {
@@ -127,7 +136,7 @@ gulp.task('scripts', function() {
 
 });
 
-gulp.task('styles', function() {
+gulp.task('styles', ['install'], function() {
 	var stream;
 
 	for(var location in paths.scss) {
