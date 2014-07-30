@@ -1,7 +1,5 @@
 <?php
 /**
- * Plugin Name.
- *
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
@@ -24,7 +22,7 @@ class WP_Gistpen {
 	 * @var     string
 	 * @since   0.1.0
 	 */
-	const VERSION = '0.2.0';
+	const VERSION = '0.2.3';
 
 	/**
 	 *
@@ -294,7 +292,10 @@ class WP_Gistpen {
 	 */
 	public function add_languages() {
 
-		if ( get_option( 'wp_gistpen_langs_installed') == true ) {
+		// note to self: delete this line in version 0.4.0
+		delete_option( 'wp_gistpen_langs_installed' );
+
+		if ( get_option( 'wp_gistpens_languages_installed') == true ) {
 			return;
 		}
 
@@ -306,7 +307,7 @@ class WP_Gistpen {
 			}
 		}
 
-		update_option( 'wp_gistpen_langs_installed', true );
+		update_option( 'wp_gistpens_languages_installed', true );
 
 	}
 
@@ -316,17 +317,6 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public static function single_deactivate() {
-
-		$terms = get_terms( 'language', array('get' => 'all') );
-
-		if ( !empty( $terms ) && !is_wp_error( $terms ) ){
-			foreach ($terms as $term ) {
-				$result = wp_delete_term( $term->term_id, 'language' );
-				if ( is_wp_error( $result ) ) {
-					// @todo write error message and exit
-				}
-			}
-		}
 
 	}
 
