@@ -46,6 +46,14 @@ class WP_Gistpen_Admin {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
+		// Check if plugin needs to be upgraded
+		$version = get_option( 'wp_gistpen_version' );
+
+		if( $version !== WP_Gistpen::VERSION ) {
+			WP_Gistpen_Updater::update( $version );
+			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
+		}
+
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
