@@ -1,5 +1,9 @@
 ## Changelog ##
 
+### 0.2.2 ###
+
+* I think I got it this time...
+
 ### 0.2.1 ###
 * Fix mis-enqueued scripts
 
