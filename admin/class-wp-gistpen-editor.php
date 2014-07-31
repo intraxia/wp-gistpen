@@ -109,7 +109,7 @@ class WP_Gistpen_Editor {
 		$prefix = '_wpgp_';
 
 		/**
-		 * Sample metabox to demonstrate each field type included
+		 * Register the description box on the Gistpen
 		 */
 		$meta_boxes['gistpen_description'] = array(
 			'id'         => 'gistpen_description',
@@ -128,6 +128,26 @@ class WP_Gistpen_Editor {
 					// 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
 					'on_front'        => false, // Optionally designate a field to wp-admin only
 				),
+			)
+		);
+
+		/**
+		 * Register the language box on the Gistpen
+		 */
+		$meta_boxes['gistpen_language'] = array(
+			'id'         => 'gistpen_language',
+			'title'      => __( 'Gistpen Language', 'wp-gistpen' ),
+			'pages'      => array( 'gistpens' ), // Post type
+			'context'    => 'side',
+			'priority'   => 'high',
+			'show_names' => false, // Show field names on the left
+			'fields'     => array(
+				array(
+					'desc' => 'Select this Gistpen\'s language.',
+					'id'   => $prefix . 'gistpen_language',
+					'taxonomy' => 'language',
+					'type' => 'taxonomy_select'
+				)
 			)
 		);
 

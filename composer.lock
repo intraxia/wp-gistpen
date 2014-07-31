@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "1cd64e90c4d4258cec53c73f9bd44fe8",
+    "hash": "335ec4b9105f4929f657f41a3a803a7c",
     "packages": [
         {
             "name": "composer/installers",
@@ -102,20 +102,6 @@
                 "composer/installers": "v1.0.12"
             },
             "type": "private"
-        },
-        {
-            "name": "wp-plugins/single-value-taxonomy-ui",
-            "version": "0.3",
-            "dist": {
-                "type": "zip",
-                "url": "https://github.com/wp-plugins/single-value-taxonomy-ui/archive/0.3.zip",
-                "reference": null,
-                "shasum": null
-            },
-            "require": {
-                "composer/installers": "v1.0.12"
-            },
-            "type": "public"
         }
     ],
     "packages-dev": [],

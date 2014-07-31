@@ -90,9 +90,6 @@ class WP_Gistpen {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		// Load public libraries
-		$this->load_public_libraries();
-
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
@@ -210,23 +207,6 @@ class WP_Gistpen {
 
 		} else {
 			self::single_deactivate();
-		}
-
-	}
-
-	/**
-	 * Load all the libraries used on the front-end
-	 *
-	 * @since    0.1.0
-	 */
-	public function load_public_libraries() {
-
-		$files = array(
-			'wp-plugins/single-value-taxonomy-ui/single-value.php'
-		);
-
-		foreach ($files as $file) {
-			require_once( WP_GISTPEN_DIR . 'includes/' . $file );
 		}
 
 	}
@@ -450,12 +430,11 @@ class WP_Gistpen {
 			'labels'                     => $labels,
 			'hierarchical'               => false,
 			'public'                     => true,
-			'show_ui'                    => true,
+			'show_ui'                    => false,
 			'show_admin_column'          => true,
 			'show_in_nav_menus'          => true,
 			'show_tagcloud'              => false,
 			'required'                   => true,
-			'single_value'               => true,
 			'capabilities'               => $capabilities
 		);
 
@@ -473,7 +452,7 @@ class WP_Gistpen {
 		if( 'gistpens' == get_post_type() ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
-			remove_filter('get_the_excerpt', 'wp_trim_excerpt');
+			remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
 		}
 	}
 
