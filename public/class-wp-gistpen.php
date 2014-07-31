@@ -467,7 +467,7 @@ class WP_Gistpen {
 		global $post;
 
 		if( $post->post_type == 'gistpens' ) {
-			$content = $this->add_description( $this->add_tags_and_classes( $post ) );
+			$content = $this->add_description( $this->add_tags_and_classes() );
 		}
 
 		return $content;
@@ -515,14 +515,16 @@ class WP_Gistpen {
 	 * @return   string               the tagged and classed content
 	 * @since    0.1.0
 	 */
-	public function add_tags_and_classes( $gistpen ) {
+	public function add_tags_and_classes() {
+		global $post;
 
-		$terms = get_the_terms( $gistpen->ID, 'language' );
+		$terms = get_the_terms( $post->ID, 'language' );
+
 		if( $terms ) {
 			$lang = array_pop( $terms );
-			$content = '<pre class="gistpen brush: '. $lang->slug . '">' . $gistpen->post_content . '</pre>';
+			$content = '<pre class="gistpen brush: '. $lang->slug . '">' . $post->post_content . '</pre>';
 		} else {
-			$content = '<pre class="gistpen">' . $gistpen->post_content . '</pre>';
+			$content = '<pre class="gistpen">' . $post->post_content . '</pre>';
 		}
 
 		return $content;
