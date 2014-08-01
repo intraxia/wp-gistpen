@@ -261,6 +261,7 @@ class WP_Gistpen {
 		$instance = self::get_instance();
 		$instance->register_language_taxonomy();
 		$instance->add_languages();
+		update_option( 'wp_gistpen_version', self::VERSION );
 		flush_rewrite_rules();
 
 	}
