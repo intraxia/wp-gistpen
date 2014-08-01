@@ -8,7 +8,7 @@
  */
 
 /**
- * Plugin class. This class manipulated the
+ * Plugin class. This class manipulates the
  * editor for the custom post type and
  * the TinyMCE editor.
  *
@@ -177,7 +177,7 @@ class WP_Gistpen_Editor {
 	 */
 	public function register_button( $buttons ) {
 
-		array_push($buttons, 'wp_gistpen');
+		array_push( $buttons, 'wp_gistpen' );
 		return $buttons;
 
 	}
