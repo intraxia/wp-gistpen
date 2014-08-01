@@ -17,10 +17,15 @@ var paths = {
 	js: {
 		public: {
 			files: [
-				'public/assets/vendor/SyntaxHighlighter/scripts/XRegExp.js',
-				'public/assets/vendor/SyntaxHighlighter/scripts/shLegacy.js',
-				'public/assets/vendor/SyntaxHighlighter/scripts/shCore.js',
-				'public/assets/vendor/SyntaxHighlighter/scripts/shAutoloader.js',
+				'public/assets/vendor/prism/components/prism-core.js',
+				'public/assets/vendor/prism/components/prism-markup.js',
+				'public/assets/vendor/prism/components/prism-css.js',
+				'public/assets/vendor/prism/components/prism-clike.js',
+				'public/assets/vendor/prism/components/prism-javascript.js',
+				'public/assets/vendor/prism/components/prism-php.js',
+				// 'public/assets/vendor/prism/plugins/file-highlight/prism-file-highlight.js',
+				// 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.js',
+				// 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.js',
 				'public/assets/js/*.js',
 				'!public/assets/js/wp-gistpen.min.js'],
 			output: {
@@ -47,6 +52,10 @@ var paths = {
 		admin: {
 			files: ['admin/assets/scss/wp-gistpen-admin.scss'],
 			output: 'admin/assets/css/'
+		},
+		public: {
+			files: ['public/assets/scss/wp-gistpen-public.scss'],
+			output: 'public/assets/css/'
 		}
 	},
 	add: [
@@ -105,6 +114,7 @@ gulp.task('install', ['clean-installs'], function() {
 		composed = composer({bin: 'composer', cwd: process.cwd()+'/'+paths.build});
 		bowered = bower({cwd: paths.build});
 	}
+
 	composed = composer({ bin: 'composer' });
 	bowered = bower();
 

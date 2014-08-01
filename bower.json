@@ -20,7 +20,7 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "SyntaxHighlighter": "3.0.83"
+  "devDependencies": {
+    "prism": "git@github.com:mAAdhaTTah/prism.git"
   }
 }

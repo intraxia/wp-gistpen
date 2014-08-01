@@ -319,9 +319,9 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function enqueue_styles() {
-		// wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/wp-gistpen-public.css', __FILE__ ), array(), self::VERSION );
-		wp_enqueue_style( 'syntaxhighlighter-style-core', plugins_url( 'assets/vendor/SyntaxHighlighter/styles/shCore.css', __FILE__ ), array(), self::VERSION );
-		wp_enqueue_style( 'syntaxhighlighter-style-default', plugins_url( 'assets/vendor/SyntaxHighlighter/styles/shCoreDefault.css', __FILE__ ), array(), self::VERSION );
+		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', WP_GISTPEN_URL . 'public/assets/css/wp-gistpen-public.css', array(), self::VERSION );
+		wp_enqueue_style( 'prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism-okaidia.css', array(), self::VERSION );
+		wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
 	}
 
 	/**
@@ -511,7 +511,6 @@ class WP_Gistpen {
 	 * Wrap content in code tags
 	 * and add gistpen & language classes
 	 *
-	 * @param    object   $gistpen    gistpen post object
 	 * @return   string               the tagged and classed content
 	 * @since    0.1.0
 	 */
@@ -520,12 +519,17 @@ class WP_Gistpen {
 
 		$terms = get_the_terms( $post->ID, 'language' );
 
+		$content = '<pre class="gistpen line-numbers">';
+
 		if( $terms ) {
 			$lang = array_pop( $terms );
-			$content = '<pre class="gistpen brush: '. $lang->slug . '">' . $post->post_content . '</pre>';
+			$slug = ($lang->slug == 'js' ? 'javascript' : $lang->slug);
+			$content .= '<code class="language-'. $slug . '">' . $post->post_content;
 		} else {
-			$content = '<pre class="gistpen">' . $post->post_content . '</pre>';
+			$content = '<code class="language-none">' . $post->post_content;
 		}
+
+		$content .= '</code></pre>';
 
 		return $content;
 
