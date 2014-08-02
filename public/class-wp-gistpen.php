@@ -8,8 +8,8 @@
  */
 
 /**
- * Plugin class. This class works with the
- * public-facing side of the WordPress site.
+ * This class works with the public-facing
+ * side of the WordPress site.
  *
  * @package WP_Gistpen
  * @author  James DiGioia <jamesorodig@gmail.com>
@@ -96,7 +96,6 @@ class WP_Gistpen {
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'localize_scripts' ) );
 
 		// Remove some filters from the Gistpen content
 		add_action( 'wp', array( $this, 'remove_filters' ) );
@@ -323,7 +322,7 @@ class WP_Gistpen {
 
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', WP_GISTPEN_URL . 'public/assets/css/wp-gistpen-public.css', array(), self::VERSION );
 		wp_enqueue_style( 'prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism-okaidia.css', array(), self::VERSION );
-		wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
+		// wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
 
 	}
 
@@ -333,16 +332,9 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/wp-gistpen.min.js', __FILE__ ), array( 'jquery' ), self::VERSION );
-	}
 
-	/**
-	 * Localize data for script
-	 *
-	 * @since    0.1.0
-	 */
-	public function localize_scripts() {
-		wp_localize_script( $this->plugin_slug . '-plugin-script', 'PLUGIN_DIR', array( WP_GISTPEN_URL ) );
+		wp_enqueue_script( $this->plugin_slug . '-plugin-script', WP_GISTPEN_URL . 'public/assets/js/wp-gistpen.min.js', array(), self::VERSION, true );
+
 	}
 
 	/**
@@ -351,8 +343,10 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function init() {
+
 		$this->register_new_post_type();
 		$this->register_language_taxonomy();
+
 	}
 
 	/**
@@ -451,8 +445,9 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function remove_filters() {
+		global $post;
 
-		if( 'gistpens' == get_post_type() ) {
+		if( 'gistpens' == $post->post_type ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
 			remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
@@ -469,8 +464,9 @@ class WP_Gistpen {
 	public function gistpen_content_add_description( $content ) {
 		global $post;
 
-		if( $post->post_type == 'gistpens' ) {
-			$content = $this->add_description( $this->add_tags_and_classes() );
+		if( 'gistpens' == $post->post_type ) {
+			$content = new WP_Gistpen_Content( $post );
+			return $content->get_post_content();
 		}
 
 		return $content;
@@ -495,71 +491,11 @@ class WP_Gistpen {
 			return '<div class="gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
-		$args = array(
-			//Post & Page Parameters
-			'post__in'     => array( $args['id'] ),
-			//Type & Status Parameters
-			'post_type'   => 'gistpens'
-		);
-		$query = new WP_Query( $args );
+		$gistpen = get_post( $args['id'] );
 
-		$gistpen = array_pop( $query->posts );
-		$content = $this->add_tags_and_classes( $gistpen );
+		$content = new WP_Gistpen_Content( $gistpen );
 
-		return $content;
-
-	}
-
-	/**
-	 * Wrap content in code tags
-	 * and add gistpen & language classes
-	 *
-	 * @return   string               the tagged and classed content
-	 * @since    0.1.0
-	 */
-	public function add_tags_and_classes() {
-		global $post;
-
-		$terms = get_the_terms( $post->ID, 'language' );
-
-		$content = '<pre class="gistpen line-numbers">';
-
-		if( $terms ) {
-			$lang = array_pop( $terms );
-			$slug = ($lang->slug == 'js' ? 'javascript' : $lang->slug);
-			$content .= '<code class="language-'. $slug . '">' . $post->post_content;
-		} else {
-			$content = '<code class="language-none">' . $post->post_content;
-		}
-
-		$content .= '</code></pre>';
-
-		return $content;
-
-	}
-
-	/**
-	 * Add Gistpen description to content
-	 *
-	 * @param  string   $content   post_content
-	 * @return string              the content with description
-	 * @since    0.1.0
-	 */
-	public function add_description( $content ) {
-		global $post;
-
-		// Grab the description text
-		$description_text = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
-
-		// Wrap it
-		$description_html = '<div class="gistpen-description">';
-		$description_html .= $description_text;
-		$description_html .= '</div>';
-
-		// Add it to the content
-		$content .= $description_html;
-
-		return $content;
+		return $content->get_shortcode_content();
 
 	}
 
