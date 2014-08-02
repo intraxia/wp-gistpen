@@ -321,6 +321,7 @@ class WP_Gistpen {
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', WP_GISTPEN_URL . 'public/assets/css/wp-gistpen-public.css', array(), self::VERSION );
 		wp_enqueue_style( 'prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism-okaidia.css', array(), self::VERSION );
 		// wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
+		wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( 'prism-style-theme' ), self::VERSION );
 
 	}
 
