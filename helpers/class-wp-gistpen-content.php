@@ -81,7 +81,7 @@ class WP_Gistpen_Content {
 
 		$terms = get_the_terms( $this->gistpen->ID, 'language' );
 
-		$content = '<pre class="gistpen line-numbers ';
+		$content = '<pre class="gistpen line-numbers">';
 
 		if( $terms ) {
 			$lang = array_pop( $terms );
@@ -91,7 +91,7 @@ class WP_Gistpen_Content {
 			$slug = 'none';
 		}
 
-		$content .= 'language-' . $slug . '"><code>' . $this->content;
+		$content .= '<code class="language-' . $slug . '">' . $this->content;
 		$content .= '</code></pre>';
 
 		$this->content = $content;
