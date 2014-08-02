@@ -53,21 +53,14 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public static $langs = array(
-		'AppleScript' => 'applescript',
-		'ActionScript3' => 'as3',
 		'Bash' => 'bash',
-		'ColdFusion' => 'cf',
-		'CPP' => 'cpp',
-		'CSharp' => 'csharp',
+		'C' => 'c',
+		'Coffeescript' => 'coffeescript',
+		'C#' => 'csharp',
 		'CSS' => 'css',
-		'Delphi' => 'delphi',
-		'Diff' => 'diff',
-		'Erlang' => 'erl',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
-		'JavaFX' => 'jfx',
 		'JScript' => 'js',
-		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
 		'Python' => 'py',
@@ -75,8 +68,14 @@ class WP_Gistpen {
 		'Sass' => 'sass',
 		'Scala' => 'scala',
 		'Sql' => 'sql',
-		'Vb' => 'vb',
-		'Xml' => 'xml',
+		'C' => 'c',
+		'Go' => 'go',
+		'HTTP' => 'http',
+		'ini' => 'ini',
+		'HTML/Markup' => 'markup',
+		'Objective-C' => 'objectivec',
+		'Swift' => 'swift',
+		'Twig' => 'twig'
 	);
 
 	/**
@@ -279,11 +278,10 @@ class WP_Gistpen {
 			return;
 		}
 
-		foreach (self::$langs as $lang => $slug) {
+		foreach( self::$langs as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
-			if ( is_wp_error( $result ) ) {
-				deactivate_plugins( $this->get_plugin_slug() );
-				exit( print_r($result) );
+			if( is_wp_error( $result ) ) {
+				// @todo write error message?
 			}
 		}
 

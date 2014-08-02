@@ -46,13 +46,8 @@ class WP_Gistpen_Admin {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
-		// Check if plugin needs to be upgraded
-		$version = get_option( 'wp_gistpen_version' );
-
-		if( $version !== WP_Gistpen::VERSION ) {
-			WP_Gistpen_Updater::update( $version );
-			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
-		}
+		// Run the updater
+		add_action( 'admin_init', array( $this, 'run_updater' ) );
 
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
@@ -70,9 +65,8 @@ class WP_Gistpen_Admin {
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since     0.1.0
-	 *
 	 * @return    object    A single instance of this class.
+	 * @since     0.1.0
 	 */
 	public static function get_instance() {
 
@@ -82,6 +76,24 @@ class WP_Gistpen_Admin {
 		}
 
 		return self::$instance;
+
+	}
+
+	/**
+	 * Checks if we're behind current version
+	 * and triggers the updater
+	 *
+	 * @since 0.3.0
+	 */
+	public function run_updater() {
+
+		// Check if plugin needs to be upgraded
+		$version = get_option( 'wp_gistpen_version' );
+
+		if( $version !== WP_Gistpen::VERSION ) {
+			WP_Gistpen_Updater::update( $version );
+			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
+		}
 
 	}
 
