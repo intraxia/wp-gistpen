@@ -96,7 +96,7 @@ class WP_Gistpen_Content {
 
 		$terms = get_the_terms( self::$gistpen->ID, 'language' );
 
-		$content = '<pre class="gistpen line-numbers" ';
+		$content = '<pre id="gistpen-' . self::$gistpen->post_name . '" class="gistpen line-numbers" ';
 
 		if( self::$highlight !== null ) {
 			$content .= 'data-line="' . self::$highlight . '"';
