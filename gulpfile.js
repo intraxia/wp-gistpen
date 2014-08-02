@@ -43,9 +43,8 @@ var paths = {
 				'public/assets/vendor/prism/components/prism-swift.js',
 				'public/assets/vendor/prism/components/prism-twig.js',
 				// Prism Plugins
-				// 'public/assets/vendor/prism/plugins/file-highlight/prism-file-highlight.js',
-				// 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.js',
 				'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.js',
+				'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.js',
 				'public/assets/js/*.js',
 				'!public/assets/js/wp-gistpen.min.js'],
 			output: {

@@ -100,7 +100,7 @@ class WP_Gistpen {
 		add_action( 'wp', array( $this, 'remove_filters' ) );
 
 		// Add the description to the Gistpen content
-		add_filter( 'the_content', array($this, 'gistpen_content_add_description' ) );
+		add_filter( 'the_content', array($this, 'post_content' ) );
 
 		// All the init hooks
 		add_action( 'init', array( $this, 'init' ) );
@@ -320,8 +320,8 @@ class WP_Gistpen {
 
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', WP_GISTPEN_URL . 'public/assets/css/wp-gistpen-public.css', array(), self::VERSION );
 		wp_enqueue_style( 'prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism-okaidia.css', array(), self::VERSION );
-		// wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
-		wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( 'prism-style-theme' ), self::VERSION );
+		wp_enqueue_style( 'prism-style-line-numbers', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( 'prism-style-theme' ), self::VERSION );
+		wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
 
 	}
 
@@ -460,12 +460,11 @@ class WP_Gistpen {
 	 * @return string post_content
 	 * @since    0.1.0
 	 */
-	public function gistpen_content_add_description( $content ) {
+	public function post_content( $content ) {
 		global $post;
 
 		if( 'gistpens' == $post->post_type ) {
-			$content = new WP_Gistpen_Content( $post );
-			return $content->get_post_content();
+			return WP_Gistpen_Content::get_post_content( $post );
 		}
 
 		return $content;
@@ -479,22 +478,15 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function add_shortcode( $atts ) {
+
 		$args = shortcode_atts( array(
-			'id' => null),
+			'id' => null,
+			'highlight' => null),
 			$atts,
 			'gistpen'
 		);
 
-		// If the user didn't provide an ID, raise an error
-		if( $args['id'] == null ) {
-			return '<div class="gistpen-error">No Gistpen ID was provided.</div>';
-		}
-
-		$gistpen = get_post( $args['id'] );
-
-		$content = new WP_Gistpen_Content( $gistpen );
-
-		return $content->get_shortcode_content();
+		return WP_Gistpen_Content::get_shortcode_content( $args );
 
 	}
 
