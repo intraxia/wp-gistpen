@@ -202,7 +202,7 @@ class WP_Gistpen_Editor {
 	 */
 	public function insert_gistpen_dialog() {
 
-		die(include WP_GISTPEN_DIR . 'admin/assets/views/insert-gistpen.php');
+		die(include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php');
 
 	}
 
