@@ -46,12 +46,11 @@
 					'name' => __( 'Enable line numbers', $instance->get_plugin_slug() ),
 					'id'   => $prefix . 'gistpen_line_numbers',
 					'type' => 'checkbox',
-					'default' => cmb_get_option( $instance->get_plugin_slug(), $prefix . 'gistpen_line_numbers' )
 				),
 			)
 		), $instance->get_plugin_slug() );
 	?>
 
-	<pre class="gistpen" data-src="<?php echo WP_GISTPEN_URL; ?>public/assets/vendor/prism/components/prism-core.js"></pre>
+	<pre class="gistpen line-numbers" data-src="<?php echo WP_GISTPEN_URL; ?>public/assets/vendor/prism/components/prism-core.js"></pre>
 
 </div>
