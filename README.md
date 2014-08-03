@@ -63,4 +63,8 @@ The Insert Gistpen dialog after you click the pen in the visual editor.
 
 ![](assets/screenshot-2.png)
 
-How your code will appear in your post.
+Default theme - How your code will appear in your post.
+
+![](assets/screenshot-3.png)
+
+Twilight theme with line numbers enabled. Check out all the themes at [PrismJS.com](http://prismjs.com)
