@@ -6,7 +6,6 @@
 3. Bower
 4. Gulp
 
-
 ## Development
 
 1. Fork the repo and `git clone` to your plugins directory.

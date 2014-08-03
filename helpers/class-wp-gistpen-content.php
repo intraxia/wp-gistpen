@@ -126,8 +126,8 @@ class WP_Gistpen_Content {
 	/**
 	 * Add Gistpen description to content
 	 *
-	 * @param  string   $content   post_content
-	 * @return string              the content with description
+	 * @param    string   $content   post_content
+	 * @return   string              the content with description
 	 * @since    0.1.0
 	 */
 	private static function add_description() {
