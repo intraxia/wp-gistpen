@@ -41,13 +41,35 @@ You use WordPress because you want control over your writing. Why give Gist or C
 
 ## Frequently Asked Questions ##
 
-### How does this work? ###
+### How do I create a Gistpen and insert it into the post? ###
 
 WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and paste in your code.
 
 You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the pen button. From the pop-up, select one of the recent Gistpens or create a new one by pasting in your code and clicking "Insert".
 
-After inserting the shortcode, your code will appear in your post, highlighted by [Alex Gorbatchev's Syntax Highlighter](http://alexgorbatchev.com/SyntaxHighlighter/).
+After inserting the shortcode, your code will appear in your post, highlighted by [PrismJS](http://prismjs.com).
+
+### How do I highlight specific lines in my Gistpen? ###
+
+To highlight a specific line, add `highlight="##"`, where ## is a line number or range of numbers you want highlighted, like this ([via PrismJS documentation](http://prismjs.com/plugins/line-highlight/)):
+
+* A single number refers to the line with that number
+* Ranges are denoted by two numbers, separated with a hyphen (-)
+* Multiple line numbers or ranges are separated by commas.
+* Whitespace is allowed anywhere and will be stripped off.
+
+Examples:
+
+* `highlight="5"`: The 5th line
+* `highlight="1-5"`: Lines 1 through 5
+* `highlight="1,4"`: Line 1 and line 4
+* `highlight="1-2,5,9-20"`: Lines 1 through 2, line 5, lines 9 through 20
+
+Offset does not yet work but will be added soon.
+
+### How do I link to a specific line? ###
+
+You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen-slug}.{lines}`. The lines don't need to be highlighted in advance for the link to work, and they will be highlighted when the link is clicked. The `{lines}` should match the same format as above.
 
 ### What is the future of this plugin? ###
 
