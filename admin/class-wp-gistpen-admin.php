@@ -32,7 +32,7 @@ class WP_Gistpen_Admin {
 	 *
 	 * @var      string
 	 */
-	protected $plugin_screen_hook_suffix = null;
+	protected $plugin_screen_hook_suffix = 'wp-gistpen';
 
 	/**
 	 * Initialize the plugin by loading admin scripts & styles and adding a
@@ -46,9 +46,13 @@ class WP_Gistpen_Admin {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
+		// Run the updater
+		add_action( 'admin_init', array( $this, 'init' ) );
+
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'localize_script' ) );
 
 		// Add the options page and menu item.
 		add_action( 'admin_menu', array( $this, 'add_plugin_admin_menu' ) );
@@ -62,9 +66,8 @@ class WP_Gistpen_Admin {
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since     0.1.0
-	 *
 	 * @return    object    A single instance of this class.
+	 * @since     0.1.0
 	 */
 	public static function get_instance() {
 
@@ -78,20 +81,57 @@ class WP_Gistpen_Admin {
 	}
 
 	/**
+	 * Functions run on the init hook
+	 *
+	 * @since     0.3.0
+	 */
+	public function init() {
+
+		$this->run_updater();
+		$this->register_setting();
+	}
+
+	/**
+	 * Checks if we're behind current version
+	 * and triggers the updater
+	 *
+	 * @since 0.3.0
+	 */
+	public function run_updater() {
+
+		// Check if plugin needs to be upgraded
+		$version = get_option( 'wp_gistpen_version' );
+
+		if( $version !== WP_Gistpen::VERSION ) {
+			WP_Gistpen_Updater::update( $version );
+			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
+		}
+
+	}
+
+	/**
+	 * Register the settings (obviously)
+	 *
+	 * @since 0.3.0
+	 */
+	public function register_setting() {
+
+		register_setting( $this->plugin_slug, $this->plugin_slug );
+	}
+
+	/**
 	 * Register and enqueue admin-specific styles.
-	 * @since     0.1.0
+	 *
 	 * @return    null    Return early if no settings page is registered.
+	 * @since     0.1.0
 	 */
 	public function enqueue_admin_styles() {
 
-		// if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
-		// 	return;
-		// }
+		if ( ! isset( $this->plugin_screen_hook_suffix ) ) {
+			return;
+		}
 
-		// $screen = get_current_screen();
-		// if ( $this->plugin_screen_hook_suffix == $screen->id ) {
 			wp_enqueue_style( $this->plugin_slug .'-admin-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-admin.css', array(), WP_Gistpen::VERSION );
-		// }
 
 	}
 
@@ -109,9 +149,21 @@ class WP_Gistpen_Admin {
 
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/admin.min.js', __FILE__ ), array( 'jquery' ), WP_Gistpen::VERSION );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/wp-gistpen-admin.min.js', __FILE__ ), array( 'jquery', $this->plugin_slug . '-plugin-script' ), WP_Gistpen::VERSION, true );
+			$instance = WP_Gistpen::get_instance();
+			$instance->enqueue_styles();
+			$instance->enqueue_scripts();
 		}
 
+	}
+
+	/**
+	 * Localize the admin script
+	 *
+	 * @since    0.3.0
+	 */
+	public function localize_script() {
+		wp_localize_script( $this->plugin_slug .'-admin-script', 'WP_GISTPEN_URL', WP_GISTPEN_URL );
 	}
 
 	/**
@@ -121,27 +173,13 @@ class WP_Gistpen_Admin {
 	 */
 	public function add_plugin_admin_menu() {
 
-		/*
-		 * Add a settings page for this plugin to the Settings menu.
-		 *
-		 * NOTE:  Alternative menu locations are available via WordPress administration menu functions.
-		 *
-		 *        Administration Menus: http://codex.wordpress.org/Administration_Menus
-		 *
-		 * @TODO:
-		 *
-		 * - Change 'Page Title' to the title of your plugin admin page
-		 * - Change 'Menu Text' to the text for menu item for the plugin settings page
-		 * - Change 'manage_options' to the capability you see fit
-		 *   For reference: http://codex.wordpress.org/Roles_and_Capabilities
-		 */
-		// $this->plugin_screen_hook_suffix = add_options_page(
-		// 	__( 'Page Title', $this->plugin_slug ),
-		// 	__( 'Menu Text', $this->plugin_slug ),
-		// 	'manage_options',
-		// 	$this->plugin_slug,
-		// 	array( $this, 'display_plugin_admin_page' )
-		// );
+		$this->plugin_screen_hook_suffix = add_options_page(
+			__( 'WP-Gistpen Settings', $this->plugin_slug ),
+			__( 'Gistpens', $this->plugin_slug ),
+			'edit_posts',
+			$this->plugin_slug,
+			array( $this, 'display_plugin_admin_page' )
+		);
 
 	}
 
@@ -151,7 +189,9 @@ class WP_Gistpen_Admin {
 	 * @since    0.1.0
 	 */
 	public function display_plugin_admin_page() {
-		include_once( 'views/admin.php' );
+
+		include_once( WP_GISTPEN_DIR . 'admin/views/settings-page.php' );
+
 	}
 
 	/**

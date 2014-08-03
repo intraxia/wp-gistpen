@@ -1,6 +1,6 @@
 {
   "name": "maadhattah/wp-gistpen",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "authors": [
     "James DiGioia <jamesorodig@gmail.com>"
   ],
@@ -20,7 +20,7 @@
     "test",
     "tests"
   ],
-  "dependencies": {
-    "SyntaxHighlighter": "3.0.83"
+  "devDependencies": {
+    "prism": "git@github.com:mAAdhaTTah/prism.git"
   }
 }

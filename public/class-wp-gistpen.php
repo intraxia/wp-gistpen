@@ -8,8 +8,8 @@
  */
 
 /**
- * Plugin class. This class works with the
- * public-facing side of the WordPress site.
+ * This class works with the public-facing
+ * side of the WordPress site.
  *
  * @package WP_Gistpen
  * @author  James DiGioia <jamesorodig@gmail.com>
@@ -22,7 +22,7 @@ class WP_Gistpen {
 	 * @var     string
 	 * @since   0.1.0
 	 */
-	const VERSION = '0.2.3';
+	const VERSION = '0.3.0';
 
 	/**
 	 *
@@ -53,21 +53,14 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public static $langs = array(
-		'AppleScript' => 'applescript',
-		'ActionScript3' => 'as3',
 		'Bash' => 'bash',
-		'ColdFusion' => 'cf',
-		'CPP' => 'cpp',
-		'CSharp' => 'csharp',
+		'C' => 'c',
+		'Coffeescript' => 'coffeescript',
+		'C#' => 'csharp',
 		'CSS' => 'css',
-		'Delphi' => 'delphi',
-		'Diff' => 'diff',
-		'Erlang' => 'erl',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
-		'JavaFX' => 'jfx',
 		'JScript' => 'js',
-		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
 		'Python' => 'py',
@@ -75,8 +68,14 @@ class WP_Gistpen {
 		'Sass' => 'sass',
 		'Scala' => 'scala',
 		'Sql' => 'sql',
-		'Vb' => 'vb',
-		'Xml' => 'xml',
+		'C' => 'c',
+		'Go' => 'go',
+		'HTTP' => 'http',
+		'ini' => 'ini',
+		'HTML/Markup' => 'markup',
+		'Objective-C' => 'objectivec',
+		'Swift' => 'swift',
+		'Twig' => 'twig'
 	);
 
 	/**
@@ -90,22 +89,18 @@ class WP_Gistpen {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		// Load public libraries
-		$this->load_public_libraries();
-
 		// Activate plugin when new blog is added
 		add_action( 'wpmu_new_blog', array( $this, 'activate_new_site' ) );
 
 		// Load public-facing style sheet and JavaScript.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'localize_scripts' ) );
 
 		// Remove some filters from the Gistpen content
 		add_action( 'wp', array( $this, 'remove_filters' ) );
 
 		// Add the description to the Gistpen content
-		add_filter( 'the_content', array($this, 'gistpen_content_add_description' ) );
+		add_filter( 'the_content', array($this, 'post_content' ) );
 
 		// All the init hooks
 		add_action( 'init', array( $this, 'init' ) );
@@ -215,23 +210,6 @@ class WP_Gistpen {
 	}
 
 	/**
-	 * Load all the libraries used on the front-end
-	 *
-	 * @since    0.1.0
-	 */
-	public function load_public_libraries() {
-
-		$files = array(
-			'wp-plugins/single-value-taxonomy-ui/single-value.php'
-		);
-
-		foreach ($files as $file) {
-			require_once( WP_GISTPEN_DIR . 'includes/' . $file );
-		}
-
-	}
-
-	/**
 	 * Fired when a new site is activated with a WPMU environment.
 	 *
 	 * @param    int    $blog_id    ID of the new blog.
@@ -281,6 +259,7 @@ class WP_Gistpen {
 		$instance = self::get_instance();
 		$instance->register_language_taxonomy();
 		$instance->add_languages();
+		update_option( 'wp_gistpen_version', self::VERSION );
 		flush_rewrite_rules();
 
 	}
@@ -292,17 +271,17 @@ class WP_Gistpen {
 	 */
 	public function add_languages() {
 
+		// note to self: delete this line in version 0.4.0
 		delete_option( 'wp_gistpen_langs_installed' );
 
 		if ( get_option( 'wp_gistpens_languages_installed') == true ) {
 			return;
 		}
 
-		foreach (self::$langs as $lang => $slug) {
+		foreach( self::$langs as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
-			if ( is_wp_error( $result ) ) {
-				deactivate_plugins( $this->get_plugin_slug() );
-				exit( print_r($result) );
+			if( is_wp_error( $result ) ) {
+				// @todo write error message?
 			}
 		}
 
@@ -338,9 +317,23 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function enqueue_styles() {
-		// wp_enqueue_style( $this->plugin_slug . '-plugin-styles', plugins_url( 'assets/css/wp-gistpen-public.css', __FILE__ ), array(), self::VERSION );
-		wp_enqueue_style( 'syntaxhighlighter-style-core', plugins_url( 'assets/vendor/SyntaxHighlighter/styles/shCore.css', __FILE__ ), array(), self::VERSION );
-		wp_enqueue_style( 'syntaxhighlighter-style-default', plugins_url( 'assets/vendor/SyntaxHighlighter/styles/shCoreDefault.css', __FILE__ ), array(), self::VERSION );
+
+		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', WP_GISTPEN_URL . 'public/assets/css/wp-gistpen-public.css', array(), self::VERSION );
+
+		$theme = cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_highlighter_theme' );
+		if( '' == $theme || 'default' == $theme ) {
+			$theme = '';
+		} else {
+			$theme = '-' . $theme;
+		}
+		wp_enqueue_style( $this->plugin_slug . '-prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism' . $theme . '.css', array(), self::VERSION );
+
+		if ( is_admin() ||  'on' == cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_line_numbers' ) ) {
+			wp_enqueue_style( $this->plugin_slug . '-prism-style-line-numbers', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( $this->plugin_slug . '-prism-style-theme' ), self::VERSION );
+		}
+
+		wp_enqueue_style( $this->plugin_slug . '-prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( $this->plugin_slug . '-prism-style-theme' ), self::VERSION );
+
 	}
 
 	/**
@@ -349,16 +342,9 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( $this->plugin_slug . '-plugin-script', plugins_url( 'assets/js/wp-gistpen.min.js', __FILE__ ), array( 'jquery' ), self::VERSION );
-	}
 
-	/**
-	 * Localize data for script
-	 *
-	 * @since    0.1.0
-	 */
-	public function localize_scripts() {
-		wp_localize_script( $this->plugin_slug . '-plugin-script', 'PLUGIN_DIR', array( WP_GISTPEN_URL ) );
+		wp_enqueue_script( $this->plugin_slug . '-plugin-script', WP_GISTPEN_URL . 'public/assets/js/wp-gistpen.min.js', array(), self::VERSION, true );
+
 	}
 
 	/**
@@ -367,8 +353,23 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function init() {
+
 		$this->register_new_post_type();
 		$this->register_language_taxonomy();
+		$this->initialize_meta_boxes();
+
+	}
+
+	/**
+	 * Initialize the metabox class.
+	 *
+	 * @since    0.2.0
+	 */
+	public function initialize_meta_boxes() {
+
+		if ( ! class_exists( 'cmb_Meta_Box' ) )
+			require_once( WP_GISTPEN_DIR . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
+
 	}
 
 	/**
@@ -449,12 +450,11 @@ class WP_Gistpen {
 			'labels'                     => $labels,
 			'hierarchical'               => false,
 			'public'                     => true,
-			'show_ui'                    => true,
+			'show_ui'                    => false,
 			'show_admin_column'          => true,
 			'show_in_nav_menus'          => true,
 			'show_tagcloud'              => false,
 			'required'                   => true,
-			'single_value'               => true,
 			'capabilities'               => $capabilities
 		);
 
@@ -468,11 +468,12 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function remove_filters() {
+		global $post;
 
-		if( 'gistpens' == get_post_type() ) {
+		if( 'gistpens' == $post->post_type ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
-			remove_filter('get_the_excerpt', 'wp_trim_excerpt');
+			remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
 		}
 	}
 
@@ -483,11 +484,11 @@ class WP_Gistpen {
 	 * @return string post_content
 	 * @since    0.1.0
 	 */
-	public function gistpen_content_add_description( $content ) {
+	public function post_content( $content ) {
 		global $post;
 
-		if( $post->post_type == 'gistpens' ) {
-			$content = $this->add_description( $this->add_tags_and_classes( $post ) );
+		if( 'gistpens' == $post->post_type ) {
+			return WP_Gistpen_Content::get_post_content( $post );
 		}
 
 		return $content;
@@ -501,76 +502,15 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public function add_shortcode( $atts ) {
+
 		$args = shortcode_atts( array(
-			'id' => null),
+			'id' => null,
+			'highlight' => null),
 			$atts,
 			'gistpen'
 		);
 
-		// If the user didn't provide an ID, raise an error
-		if( $args['id'] == null ) {
-			return '<div class="gistpen-error">No Gistpen ID was provided.</div>';
-		}
-
-		$args = array(
-			//Post & Page Parameters
-			'post__in'     => array( $args['id'] ),
-			//Type & Status Parameters
-			'post_type'   => 'gistpens'
-		);
-		$query = new WP_Query( $args );
-
-		$gistpen = array_pop( $query->posts );
-		$content = $this->add_tags_and_classes( $gistpen );
-
-		return $content;
-
-	}
-
-	/**
-	 * Wrap content in code tags
-	 * and add gistpen & language classes
-	 *
-	 * @param    object   $gistpen    gistpen post object
-	 * @return   string               the tagged and classed content
-	 * @since    0.1.0
-	 */
-	public function add_tags_and_classes( $gistpen ) {
-
-		$terms = get_the_terms( $gistpen->ID, 'language' );
-		if( $terms ) {
-			$lang = array_pop( $terms );
-			$content = '<pre class="gistpen brush: '. $lang->slug . '">' . $gistpen->post_content . '</pre>';
-		} else {
-			$content = '<pre class="gistpen">' . $gistpen->post_content . '</pre>';
-		}
-
-		return $content;
-
-	}
-
-	/**
-	 * Add Gistpen description to content
-	 *
-	 * @param  string   $content   post_content
-	 * @return string              the content with description
-	 * @since    0.1.0
-	 */
-	public function add_description( $content ) {
-		global $post;
-
-		// Grab the description text
-		$description_text = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
-
-		// Wrap it
-		$description_html = '<div class="gistpen-description">';
-		$description_html .= $description_text;
-		$description_html .= '</div>';
-
-		// Add it to the content
-		$content .= $description_html;
-
-		return $content;
+		return WP_Gistpen_Content::get_shortcode_content( $args );
 
 	}
 

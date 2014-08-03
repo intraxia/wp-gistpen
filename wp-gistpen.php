@@ -14,7 +14,7 @@
  * Plugin Name:       WP-Gistpen
  * Plugin URI:        http://www.jamesdigioia.com/wp-gistpen/
  * Description:       A self-hosted alternative to putting your code snippets on Gist.
- * Version:           0.2.1
+ * Version:           0.3.0
  * Author:            James DiGioia
  * Author URI:        http://www.jamesdigioia.com/
  * Text Domain:       wp-gistpen
@@ -34,8 +34,18 @@ if ( ! defined( 'WPINC' ) ) {
  * Define Directory Constants
  *----------------------------------------------------------------------------*/
 
+// Directory i.e. /home/user/public_html...
 define('WP_GISTPEN_DIR', plugin_dir_path( __FILE__ ));
+// URL i.e. http://www.yoursite/wp-content/plugins/wp-gistpen/
 define('WP_GISTPEN_URL', plugin_dir_url( __FILE__ ));
+
+/*----------------------------------------------------------------------------*
+ * Load Helper Classes
+ * @todo Write proper autoloader or swap to composer
+ *----------------------------------------------------------------------------*/
+
+require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-updater.php' );
+require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-content.php' );
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality

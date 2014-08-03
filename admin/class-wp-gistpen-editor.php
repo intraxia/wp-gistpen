@@ -8,7 +8,7 @@
  */
 
 /**
- * Plugin class. This class manipulated the
+ * Plugin class. This class manipulates the
  * editor for the custom post type and
  * the TinyMCE editor.
  *
@@ -34,8 +34,11 @@ class WP_Gistpen_Editor {
 	 */
 	private function __construct() {
 
+		// Call $plugin_slug from public plugin class.
+		$plugin = WP_Gistpen::get_instance();
+		$this->plugin_slug = $plugin->get_plugin_slug();
+
 		// Add metaboxes
-		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
 		add_filter( 'cmb_meta_boxes', array( $this, 'add_metaboxes' ) );
 
 		// Disable visual editor
@@ -87,18 +90,6 @@ class WP_Gistpen_Editor {
 	}
 
 	/**
-	 * Initialize the metabox class.
-	 *
-	 * @since    0.2.0
-	 */
-	public function initialize_meta_boxes() {
-
-		if ( ! class_exists( 'cmb_Meta_Box' ) )
-			require_once( WP_GISTPEN_DIR . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
-
-	}
-
-	/**
 	 * Register the metaboxes
 	 *
 	 * @since    0.2.0
@@ -109,7 +100,7 @@ class WP_Gistpen_Editor {
 		$prefix = '_wpgp_';
 
 		/**
-		 * Sample metabox to demonstrate each field type included
+		 * Register the description box on the Gistpen
 		 */
 		$meta_boxes['gistpen_description'] = array(
 			'id'         => 'gistpen_description',
@@ -128,6 +119,26 @@ class WP_Gistpen_Editor {
 					// 'escape_cb'       => 'my_custom_escaping',  // custom escaping callback parameter
 					'on_front'        => false, // Optionally designate a field to wp-admin only
 				),
+			)
+		);
+
+		/**
+		 * Register the language box on the Gistpen
+		 */
+		$meta_boxes['gistpen_language'] = array(
+			'id'         => 'gistpen_language',
+			'title'      => __( 'Gistpen Language', 'wp-gistpen' ),
+			'pages'      => array( 'gistpens' ), // Post type
+			'context'    => 'side',
+			'priority'   => 'high',
+			'show_names' => false, // Show field names on the left
+			'fields'     => array(
+				array(
+					'desc' => 'Select this Gistpen\'s language.',
+					'id'   => $prefix . 'gistpen_language',
+					'taxonomy' => 'language',
+					'type' => 'taxonomy_select'
+				)
 			)
 		);
 
@@ -157,7 +168,7 @@ class WP_Gistpen_Editor {
 	 */
 	public function register_button( $buttons ) {
 
-		array_push($buttons, 'wp_gistpen');
+		array_push( $buttons, 'wp_gistpen' );
 		return $buttons;
 
 	}
@@ -182,7 +193,7 @@ class WP_Gistpen_Editor {
 	 */
 	public function insert_gistpen_dialog() {
 
-		die(include WP_GISTPEN_DIR . 'admin/assets/views/insert-gistpen.php');
+		die(include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php');
 
 	}
 

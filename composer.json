@@ -2,7 +2,7 @@
   "name": "maadhattah/wp-gistpen",
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
   "license": "GPL-2.0+",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "authors": [ {
       "name": "James DiGioia",
       "email": "jamesorodig@gmail.com"
@@ -11,40 +11,25 @@
   "config": {
       "vendor-dir": "includes"
   },
-  "repositories": [ {
+  "repositories": [
+  {
     "type": "package",
     "package": {
       "name": "webdevstudios/custom-metaboxes-and-fields-for-wordpress",
       "type": "private",
       "version": "1.2.0",
       "dist": {
-      "type": "zip",
-      "url": "https://github.com/WebDevStudios/Custom-Metaboxes-and-Fields-for-WordPress/archive/v1.2.0.zip"
-      },
-      "require" : {
-      "composer/installers": "v1.0.12"
-      }
-    }
-  },
-  {
-    "type": "package",
-    "package": {
-      "name": "wp-plugins/single-value-taxonomy-ui",
-      "type": "public",
-      "version": "0.3",
-      "dist": {
         "type": "zip",
-        "url": "https://github.com/wp-plugins/single-value-taxonomy-ui/archive/0.3.zip"
+        "url": "https://github.com/WebDevStudios/Custom-Metaboxes-and-Fields-for-WordPress/archive/v1.2.0.zip"
       },
-      "require" : {
+      "require": {
         "composer/installers": "v1.0.12"
       }
     }
   }],
   "require": {
       "composer/installers": "v1.0.12",
-      "webdevstudios/custom-metaboxes-and-fields-for-wordpress": "1.2.0",
-      "wp-plugins/single-value-taxonomy-ui": "0.3"
+      "webdevstudios/custom-metaboxes-and-fields-for-wordpress": "1.2.0"
   },
   "extra": {
     "installer-paths": {
