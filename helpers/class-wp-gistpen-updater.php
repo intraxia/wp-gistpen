@@ -80,6 +80,7 @@ class WP_Gistpen_Updater {
 					'post_type' => 'gistpens'
 				));
 
+			// Migrate XML to Markup
 			if ( 'xml' == $slug && $query->have_posts() ) {
 
 				while( $query->have_posts() ) {
