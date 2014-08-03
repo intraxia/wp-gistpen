@@ -319,9 +319,20 @@ class WP_Gistpen {
 	public function enqueue_styles() {
 
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', WP_GISTPEN_URL . 'public/assets/css/wp-gistpen-public.css', array(), self::VERSION );
-		wp_enqueue_style( 'prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism-okaidia.css', array(), self::VERSION );
-		wp_enqueue_style( 'prism-style-line-numbers', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( 'prism-style-theme' ), self::VERSION );
-		wp_enqueue_style( 'prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
+
+		$theme = cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_highlighter_theme' );
+		if( '' == $theme || 'default' == $theme ) {
+			$theme = '';
+		} else {
+			$theme = '-' . $theme;
+		}
+		wp_enqueue_style( $this->plugin_slug . '-prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism' . $theme . '.css', array(), self::VERSION );
+
+		if ( is_admin() ||  'on' == cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_line_numbers' ) ) {
+			wp_enqueue_style( $this->plugin_slug . '-prism-style-line-numbers', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( $this->plugin_slug . '-prism-style-theme' ), self::VERSION );
+		}
+
+		wp_enqueue_style( $this->plugin_slug . '-prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( $this->plugin_slug . '-prism-style-theme' ), self::VERSION );
 
 	}
 
@@ -345,6 +356,19 @@ class WP_Gistpen {
 
 		$this->register_new_post_type();
 		$this->register_language_taxonomy();
+		$this->initialize_meta_boxes();
+
+	}
+
+	/**
+	 * Initialize the metabox class.
+	 *
+	 * @since    0.2.0
+	 */
+	public function initialize_meta_boxes() {
+
+		if ( ! class_exists( 'cmb_Meta_Box' ) )
+			require_once( WP_GISTPEN_DIR . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
 
 	}
 

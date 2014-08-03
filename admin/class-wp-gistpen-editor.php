@@ -34,8 +34,11 @@ class WP_Gistpen_Editor {
 	 */
 	private function __construct() {
 
+		// Call $plugin_slug from public plugin class.
+		$plugin = WP_Gistpen::get_instance();
+		$this->plugin_slug = $plugin->get_plugin_slug();
+
 		// Add metaboxes
-		add_action( 'init', array( $this, 'initialize_meta_boxes' ), 9999 );
 		add_filter( 'cmb_meta_boxes', array( $this, 'add_metaboxes' ) );
 
 		// Disable visual editor
@@ -83,18 +86,6 @@ class WP_Gistpen_Editor {
 		if ( 'gistpens' == get_post_type( $post ) )
 			return false;
 		return $default;
-
-	}
-
-	/**
-	 * Initialize the metabox class.
-	 *
-	 * @since    0.2.0
-	 */
-	public function initialize_meta_boxes() {
-
-		if ( ! class_exists( 'cmb_Meta_Box' ) )
-			require_once( WP_GISTPEN_DIR . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
 
 	}
 

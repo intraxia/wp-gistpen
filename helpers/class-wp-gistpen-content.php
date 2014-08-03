@@ -75,6 +75,10 @@ class WP_Gistpen_Content {
 
 		$gistpen = get_post( $args['id'] );
 
+		if ( $gistpen->post_type !== 'gistpens' ) {
+			return '<div class="gistpen-error">The ID supplied is not a Gistpen.</div>';
+		}
+
 		self::$gistpen = $gistpen;
 		self::$content = $gistpen->post_content;
 		self::$highlight = $args['highlight'];
