@@ -1,4 +1,4 @@
-(function () {
+( function () {
 	"use strict";
 
 	jQuery(function () {
@@ -21,9 +21,15 @@
 			jQuery( '#wp-gistpen-prism-style-theme-css' ).attr( 'href', WP_GISTPEN_URL + 'public/assets/vendor/prism/themes/prism' + theme + '.css'  );
 		});
 
-		if (!jQuery( '#_wpgp_gistpen_line_numbers' ).is(':checked')) {
-			jQuery( 'pre.gistpen' ).removeClass('line-numbers');
-		}
+		var checkExist = setInterval( function() {
+			if (jQuery( 'pre.gistpen code' ).length) {
+				if (!jQuery( '#_wpgp_gistpen_line_numbers' ).is(':checked')) {
+					jQuery( 'pre.gistpen' ).removeClass('line-numbers');
+					jQuery( 'span.line-numbers-rows' ).hide();
+				}
+				clearInterval(checkExist);
+			}
+		}, 100 ); // check every 100ms
 
 		jQuery( '#_wpgp_gistpen_line_numbers' ).click( function() {
 			if (jQuery( '#_wpgp_gistpen_line_numbers' ).is( ':checked' ) ) {
