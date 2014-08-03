@@ -6,10 +6,10 @@
  * The User Interface to the end user.
  *
  * @package   WP_Gistpen
- * @author    Your Name <email@example.com>
+ * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://example.com
- * @copyright 2014 Your Name or Company Name
+ * @copyright 2014 James DiGioia
  */
 ?>
 
@@ -40,8 +40,14 @@
 						'twilight' => __( 'Twilight', $instance->get_plugin_slug() ),
 						'coy' => __( 'Coy', $instance->get_plugin_slug() ),
 					),
-					'default' => cmb_get_option( $this->plugin_slug, $prefix . 'gistpen_highlighter_theme' )
-				)
+					'default' => cmb_get_option( $instance->get_plugin_slug(), $prefix . 'gistpen_highlighter_theme' )
+				),
+				array(
+					'name' => __( 'Enable line numbers', $instance->get_plugin_slug() ),
+					'id'   => $prefix . 'gistpen_line_numbers',
+					'type' => 'checkbox',
+					'default' => cmb_get_option( $instance->get_plugin_slug(), $prefix . 'gistpen_line_numbers' )
+				),
 			)
 		), $instance->get_plugin_slug() );
 	?>

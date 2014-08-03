@@ -321,15 +321,18 @@ class WP_Gistpen {
 		wp_enqueue_style( $this->plugin_slug . '-plugin-styles', WP_GISTPEN_URL . 'public/assets/css/wp-gistpen-public.css', array(), self::VERSION );
 
 		$theme = cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_highlighter_theme' );
-		if( $theme == 'default' ) {
+		if( '' == $theme || 'default' == $theme ) {
 			$theme = '';
 		} else {
 			$theme = '-' . $theme;
 		}
 		wp_enqueue_style( $this->plugin_slug . '-prism-style-theme', WP_GISTPEN_URL . 'public/assets/vendor/prism/themes/prism' . $theme . '.css', array(), self::VERSION );
 
-		wp_enqueue_style( $this->plugin_slug . '-prism-style-line-numbers', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( 'prism-style-theme' ), self::VERSION );
-		wp_enqueue_style( $this->plugin_slug . '-prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( 'prism-style-theme' ), self::VERSION );
+		if ( is_admin() ||  'on' == cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_line_numbers' ) ) {
+			wp_enqueue_style( $this->plugin_slug . '-prism-style-line-numbers', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.css', array( $this->plugin_slug . '-prism-style-theme' ), self::VERSION );
+		}
+
+		wp_enqueue_style( $this->plugin_slug . '-prism-style-line-highlight', WP_GISTPEN_URL . 'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.css', array( $this->plugin_slug . '-prism-style-theme' ), self::VERSION );
 
 	}
 
