@@ -80,6 +80,17 @@ class WP_Gistpen_Updater {
 					'post_type' => 'gistpens'
 				));
 
+			if ( 'xml' == $slug && $query->have_posts() ) {
+
+				while( $query->have_posts() ) {
+					$query->the_post();
+					wp_delete_object_term_relationships( get_the_id(), 'language' );
+					wp_set_object_terms( get_the_id(), 'markup', 'language', false );
+				}
+
+				wp_reset_postdata();
+			}
+
 			if( !$query->have_posts() ) {
 				// only delete language if it's got no Gistpens
 				$term = get_term_by( 'slug', $slug, 'language', 'ARRAY_A' );
