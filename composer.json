@@ -2,7 +2,7 @@
   "name": "maadhattah/wp-gistpen",
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
   "license": "GPL-2.0+",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "authors": [ {
       "name": "James DiGioia",
       "email": "jamesorodig@gmail.com"
