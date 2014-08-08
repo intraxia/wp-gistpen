@@ -154,7 +154,7 @@ class WP_Gistpen_Editor {
 	 */
 	public function add_button( $plugins ) {
 
-		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js';
+		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-tinymce-plugin.min.js';
 		return $plugins;
 
 	}

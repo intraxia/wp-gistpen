@@ -61,9 +61,12 @@ var paths = {
 			},
 		},
 		editor: {
-			files: ['admin/assets/js/wp-gistpen-editor.js'],
+			files: ['admin/assets/js/wp-gistpen-tinymce-plugin.js'],
 			output: {
-				filename: 'wp-gistpen-editor.min.js',
+				filename: 'wp-gistpen-tinymce-plugin.min.js',
+				dir: 'admin/assets/js/'
+			},
+		},
 				dir: 'admin/assets/js/'
 			},
 		},
