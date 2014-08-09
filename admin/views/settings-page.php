@@ -2,13 +2,10 @@
 /**
  * Represents the view for the administration dashboard.
  *
- * This includes the header, options, and other information that should provide
- * The User Interface to the end user.
- *
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
- * @link      http://example.com
+ * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 ?>

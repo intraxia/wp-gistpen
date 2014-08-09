@@ -1,3 +1,15 @@
+<?php
+/**
+ * Represents the view for the ACE editor.
+ *
+ * @package   WP_Gistpen
+ * @author    James DiGioia <jamesorodig@gmail.com>
+ * @license   GPL-2.0+
+ * @link      http://jamesdigioia.com/wp-gistpen/
+ * @copyright 2014 James DiGioia
+ */
+?>
+
 <div id="wp-gistpen-insert-wrap">
 	<form id="wp-gistpen-insert" action="" tabindex="-1">
 		<div id="insert-existing">
