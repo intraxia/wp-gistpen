@@ -38,6 +38,9 @@ class WP_Gistpen_Editor {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
+		// Add ACE editor
+		add_action( 'edit_form_after_title', array( $this, 'add_ace_editor' ) );
+
 		// Add metaboxes
 		add_filter( 'cmb_meta_boxes', array( $this, 'add_metaboxes' ) );
 
@@ -49,7 +52,7 @@ class WP_Gistpen_Editor {
 		add_filter( 'mce_buttons', array( $this, 'register_button' ) );
 		add_action( 'before_wp_tiny_mce', array( $this, 'embed_nonce' ) );
 
-		// Add AJAX hook for button click
+		// Add AJAX hook for button clicks
 		add_action( 'wp_ajax_gistpen_insert_dialog', array( $this, 'insert_gistpen_dialog' ) );
 		add_action( 'wp_ajax_create_gistpen_ajax', array( $this, 'create_gistpen_ajax' ) );
 		add_action( 'wp_ajax_search_gistpen_ajax', array( $this, 'search_gistpen_ajax' ) );
@@ -74,19 +77,17 @@ class WP_Gistpen_Editor {
 	}
 
 	/**
-	 * Disable the visual editor because
-	 * it messes with the code layout
+	 * Add the ace editor to the Add Gistpen screen
 	 *
-	 * @return   false|$default     disables only on gistpens
-	 * @since    0.2.0
+	 * @since     0.4.0
 	 */
-	public function disable_visual_editor( $default ) {
-		global $post;
+	public function add_ace_editor() {
 
-		if ( 'gistpens' == get_post_type( $post ) )
-			return false;
-		return $default;
+		$screen = get_current_screen();
 
+		if ('gistpens' == $screen->id ) {
+			include_once WP_GISTPEN_DIR . 'admin/views/ace-editor.php';
+		}
 	}
 
 	/**
@@ -143,6 +144,22 @@ class WP_Gistpen_Editor {
 		);
 
 		return $meta_boxes;
+
+	}
+
+	/**
+	 * Disable the visual editor because
+	 * it messes with the code layout
+	 *
+	 * @return   false|$default     disables only on gistpens
+	 * @since    0.2.0
+	 */
+	public function disable_visual_editor( $default ) {
+		global $post;
+
+		if ( 'gistpens' == get_post_type( $post ) )
+			return false;
+		return $default;
 
 	}
 

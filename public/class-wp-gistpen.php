@@ -397,7 +397,7 @@ class WP_Gistpen {
 			'label'               => __( 'wp-gistpen', 'wp-gistpen' ),
 			'description'         => __( 'Gistpen description', 'wp-gistpen' ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'author', 'comments', 'revisions' ),
+			'supports'            => array( 'title', 'editor', 'author', 'comments', 'revisions' ),
 			'taxonomies'          => array( 'post_tag', 'language' ),
 			'hierarchical'        => false,
 			'public'              => true,
