@@ -15,6 +15,12 @@
 		min-height: 360px;
 		width: 100%;
 	}
+	.ace-active .switch-ace {
+		background: #f5f5f5;
+		color: #555;
+		height: 20px;
+		border-bottom: none;
+	}
 </style>
 
 <script src="<?php echo WP_GISTPEN_URL; ?>public/assets/vendor/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -35,6 +41,8 @@
 			});
 			this.textButton = jQuery('<a id="content-html" class="hide-if-no-js wp-switch-editor switch-html">Text</a>');
 			this.aceButton = jQuery('<a id="content-ace" class="hide-if-no-js wp-switch-editor switch-ace">Ace</a>');
+			this.contentWrapDiv = jQuery('#wp-content-wrap');
+			this.contentDiv = jQuery('#content');
 
 			this.addSwitchButtons();
 			this.loadClickHandlers();
@@ -57,28 +65,40 @@
 		},
 
 		switchToText: function() {
-			jQuery('#' + this.aceEditorId).hide();
-			jQuery('#wp-content-wrap').addClass('html-active').removeClass('ace-active');
-			jQuery('#content').show();
+			this.aceEditorDiv.hide();
+			this.contentWrapDiv.addClass('html-active').removeClass('ace-active');
+			this.contentDiv.show();
 		},
 
 		switchToAce: function() {
-			jQuery('#' + this.aceEditorId).show();
-			jQuery('#wp-content-wrap').removeClass('html-active').addClass('ace-active');
-			jQuery('#content').hide();
+			this.updateAceContent();
+			this.aceEditorDiv.show();
+			this.contentDiv.hide();
+			this.contentWrapDiv.removeClass('html-active').addClass('ace-active');
+			this.aceEditor.focus();
 		},
 
 		activateAceEditor: function() {
 			this.aceEditorDiv.insertAfter('#content');
 
 			// Set up editor on div
-			aceEditor = ace.edit(this.aceEditorId);
-			aceEditor.setTheme('ace/theme/monokai');
-			aceEditor.getSession().setMode('ace/mode/javascript');
-			aceEditor.setValue(jQuery('#content').val());
+			this.aceEditor = ace.edit(this.aceEditorId);
+			this.aceEditor.setTheme('ace/theme/monokai');
+			this.aceEditor.getSession().setMode('ace/mode/javascript');
 
-			this.switchToAce();
 			jQuery('#wp-content-media-buttons, #ed_toolbar').hide();
+			this.aceEditor.getSession().on('change', function(event) {
+				Ace.updateTextContent();
+			});
+			this.switchToAce();
+		},
+
+		updateAceContent: function() {
+			this.aceEditor.getSession().setValue(this.contentDiv.val());
+		},
+
+		updateTextContent: function() {
+			this.contentDiv.val(this.aceEditor.getValue());
 		}
 	};
 </script>
