@@ -21,6 +21,7 @@
     "tests"
   ],
   "devDependencies": {
-    "prism": "git@github.com:mAAdhaTTah/prism.git"
+    "prism": "git@github.com:mAAdhaTTah/prism.git",
+    "ace-builds": "~1.1.5"
   }
 }

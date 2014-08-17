@@ -1,124 +1,112 @@
-( function() {
-	var template, gistpenid, title, content, description, language;
+jQuery(function() { Ace.init(); });
 
-	// Register plugin
-	tinymce.create( 'tinymce.plugins.wp_gistpen', {
+var Ace = {
 
-		init: function( editor, url )  {
+	init: function() {
+		this.aceEditorId = 'ace-editor';
+		this.aceEditorDiv = jQuery('<div id="' + this.aceEditorId + '"></div>').css({
+			left: 0,
+			top: 0,
+			bottom: 0,
+			right: 0,
+			zIndex: 1
+		});
+		this.textButton = jQuery('<a id="content-html" class="hide-if-no-js wp-switch-editor switch-html">Text</a>');
+		this.aceButton = jQuery('<a id="content-ace" class="hide-if-no-js wp-switch-editor switch-ace">Ace</a>');
+		this.contentWrapDiv = jQuery('#wp-content-wrap');
+		this.contentDiv = jQuery('#content');
+		this.themeSelect = jQuery('#_wpgp_ace_theme');
+		this.languageSelect = jQuery('#_wpgp_gistpen_language');
 
-			// Add the Insert Gistpen button
-			editor.addButton( 'wp_gistpen', {
-				//text: 'Insert Gistpen',
-				icon: 'icons dashicons-edit',
-				tooltip: 'Insert Gistpen',
-				cmd: 'wp_gistpen'
-			});
+		this.addSwitchButtons();
+		this.loadClickHandlers();
+		this.activateAceEditor();
+	},
 
-			// Called when we click the Insert Gistpen button
-			editor.addCommand( 'wp_gistpen', function() {
-				// Calls the pop-up modal
-				editor.windowManager.open({
-					// Modal settings
-					title: 'Insert Gistpen',
-					width: jQuery( window ).width() * 0.7,
-					// minus head and foot of dialog box
-					height: (jQuery( window ).height() - 36 - 50) * 0.7,
-					inline: 1,
-					id: 'wp-gistpen-insert-dialog',
-					buttons: [{
-						text: 'Insert',
-						id: 'wp-gistpen-button-insert',
-						class: 'insert',
-						// Post? Then insert shortcode on click
-						onclick: function( e ) {
-							insertShortcode( editor );
-						},
-					},
-					{
-						text: 'Cancel',
-						id: 'wp-gistpen-button-cancel',
-						onclick: 'close'
-					}],
-				});
+	addSwitchButtons: function() {
+		this.textButton.appendTo('#wp-content-editor-tools');
+		this.aceButton.appendTo('#wp-content-editor-tools');
+	},
 
-				appendDialog();
-
-			});
-
+	loadClickHandlers: function() {
+		this.textButton.click(function() {
+			Ace.switchToText();
 		}
+		);
+		this.aceButton.click(function() {
+			Ace.switchToAce();
+		});
+	},
 
-	});
+	switchToText: function() {
+		this.aceEditorDiv.hide();
+		this.contentWrapDiv.addClass('html-active').removeClass('ace-active');
+		this.contentDiv.show();
+	},
 
-	tinymce.PluginManager.add( 'wp_gistpen', tinymce.plugins.wp_gistpen );
+	switchToAce: function() {
+		this.updateAceContent();
+		this.aceEditorDiv.show();
+		this.contentDiv.hide();
+		this.contentWrapDiv.removeClass('html-active').addClass('ace-active');
+		this.aceEditor.focus();
+	},
 
-	function appendDialog() {
-		var dialogBody = jQuery( '#wp-gistpen-insert-dialog-body' ).append( '<div class="loading">Loading... <span class="spinner"></span></div>' );
+	activateAceEditor: function() {
+		this.aceEditorDiv.insertAfter('#content');
 
-		// Get the form template from WordPress
-		jQuery.post( ajaxurl, {
-			action: 'gistpen_insert_dialog'
-		}, function( response ) {
-			template = response;
+		// Set up editor on div
+		this.aceEditor = ace.edit(this.aceEditorId);
+		this.setUpThemeAndMode();
 
-			dialogBody.children( '.loading' ).remove();
-			dialogBody.append( template );
-			jQuery( '.spinner' ).hide();
+		jQuery('#insert-media-button, #ed_toolbar, input[name="submit-cmb"]').hide();
+		this.themeSelect.parents('table.form-table.cmb_metabox').hide();
+		this.themeSelect.appendTo('#wp-content-media-buttons');
+		this.aceEditor.getSession().on('change', function(event) {
+			Ace.updateTextContent();
+		});
+		this.switchToAce();
+	},
 
-			var gistpenSearchButton = jQuery( '#gistpen-search-btn' );
+	setUpThemeAndMode: function() {
+		// Set theme and enabl listener
+		this.aceEditor.setTheme('ace/theme/' + this.themeSelect.val());
+		this.themeSelect.change(function() {
+			Ace.aceEditor.setTheme('ace/theme/' + Ace.themeSelect.val());
+			jQuery.post(ajaxurl, {
+				action: 'gistpen_save_ace_theme',
 
-			gistpenSearchButton.click( function( e ) {
-				e.preventDefault();
+				theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+				theme: Ace.themeSelect.val(),
 
-				jQuery( '#select-gistpen ul.gistpen-list > li' ).not( '.create_new_gistpen' ).hide();
-				gistpenSearchButton.children( 'button' ).hide();
-				jQuery( '.gistpen-search-wrap .spinner' ).show();
-
-				jQuery.post( ajaxurl, {
-					action: 'search_gistpen_ajax',
-
-					gistpen_nonce: jQuery.trim(jQuery( '#_ajax_wp_gistpen' ).val()),
-					gistpen_search_term: jQuery( '#gistpen-search-field' ).val()
-				}, function( response ) {
-					jQuery( '#select-gistpen ul.gistpen-list' ).prepend( response );
-					jQuery( '.gistpen-search-wrap .spinner' ).hide();
-					gistpenSearchButton.children('button').show();
-				});
-
+			}, function(response) {
+				if(response === false) {
+					console.log('Failed to save ACE theme.');
+				}
 			});
 		});
-	}
+		// Set mode and enable listener
+		this.setMode(this.languageSelect.val());
+		this.languageSelect.change(function() {
+			Ace.setMode(Ace.languageSelect.val());
+		});
+	},
 
-	function insertShortcode( editor ) {
-		// Get the selected gistpen id
-		gistpenid = jQuery( 'input[name="gistpen_id"]:checked' ).val();
-
-		if( gistpenid === 'new_gistpen' ) {
-			// Hide the buttons and replace with spinner
-			jQuery( '#wp-gistpen-button-insert, #wp-gistpen-button-cancel' ).hide();
-			jQuery( '#wp-gistpen-insert-dialog .mce-foot .mce-container-body').append( '<div class="posting">Inserting post... <span class="spinner"></span></div>' );
-
-			// Post the data
-			jQuery.post( ajaxurl, {
-				action: 'create_gistpen_ajax',
-
-				gistpen_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-				gistpen_title: jQuery( 'input[name="gistpen_title"]' ).val(),
-				gistpen_content: jQuery( 'textarea[name="gistpen_content"]' ).val(),
-				gistpen_description: jQuery( 'textarea[name="gistpen_description"]' ).val(),
-				gistpen_language: jQuery( 'select[name="gistpen_language"]' ).val(),
-
-			}, function( response ) {
-				gistpenid = response;
-				insertAndClose( editor );
-			});
+	setMode: function(mode) {
+		if('js' === mode) {
+			this.aceEditor.getSession().setMode('ace/mode/javascript');
+		} else if( 'bash' === mode) {
+			this.aceEditor.getSession().setMode('ace/mode/nix');
 		} else {
-			insertAndClose( editor );
+			this.aceEditor.getSession().setMode('ace/mode/' + mode);
 		}
-	}
+	},
 
-	function insertAndClose( editor ) {
-		editor.insertContent( '[gistpen id="' + gistpenid + '"]' );
-		editor.windowManager.close();
-	}
+	updateAceContent: function() {
+		this.aceEditor.getSession().setValue(this.contentDiv.val());
+	},
 
-})();
+	updateTextContent: function() {
+		this.contentDiv.val(this.aceEditor.getValue());
+	}
+};

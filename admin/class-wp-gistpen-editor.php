@@ -26,6 +26,8 @@ class WP_Gistpen_Editor {
 	 */
 	protected static $instance = null;
 
+	protected $themes_meta_box;
+
 	/**
 	 * Initialize the editor enhancements by loading the metaboxes
 	 * and the new TinyMCE button.
@@ -38,6 +40,16 @@ class WP_Gistpen_Editor {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
+		// Add ACE editor
+		add_action( 'edit_form_after_title', array( $this, 'add_theme_selection' ) );
+
+		// Load editor style sheet and JavaScript.
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_editor_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_editor_scripts' ) );
+
+		// Add AJAX hook for theme saving
+		add_action( 'wp_ajax_gistpen_save_ace_theme', array( $this, 'save_ace_theme' ) );
+
 		// Add metaboxes
 		add_filter( 'cmb_meta_boxes', array( $this, 'add_metaboxes' ) );
 
@@ -49,7 +61,7 @@ class WP_Gistpen_Editor {
 		add_filter( 'mce_buttons', array( $this, 'register_button' ) );
 		add_action( 'before_wp_tiny_mce', array( $this, 'embed_nonce' ) );
 
-		// Add AJAX hook for button click
+		// Add AJAX hook for button clicks
 		add_action( 'wp_ajax_gistpen_insert_dialog', array( $this, 'insert_gistpen_dialog' ) );
 		add_action( 'wp_ajax_create_gistpen_ajax', array( $this, 'create_gistpen_ajax' ) );
 		add_action( 'wp_ajax_search_gistpen_ajax', array( $this, 'search_gistpen_ajax' ) );
@@ -74,19 +86,92 @@ class WP_Gistpen_Editor {
 	}
 
 	/**
-	 * Disable the visual editor because
-	 * it messes with the code layout
+	 * Add theme selection field
 	 *
-	 * @return   false|$default     disables only on gistpens
-	 * @since    0.2.0
+	 * @since     0.4.0
 	 */
-	public function disable_visual_editor( $default ) {
-		global $post;
+	public function add_theme_selection() {
+		$prefix = '_wpgp_';
 
-		if ( 'gistpens' == get_post_type( $post ) )
-			return false;
-		return $default;
+		$this->themes_meta_box = array(
+			'name' => __( 'Editor Theme', $this->plugin_slug ),
+			'id'   => $prefix . 'ace_theme',
+			'type' => 'select',
+			'options' => array(
+				'ambiance' => 'Ambiance',
+				'chaos' => 'Chaos',
+				'chrome' => 'Chrome',
+				'clouds' => 'Clouds',
+				'clouds_midnight' => 'Clouds Midnight',
+				'cobalt' => 'Cobalt',
+				'crimson_editor' => 'Crimson Editor',
+				'dawn' => 'Dawn',
+				'dreamweaver' => 'Dreamweaver',
+				'eclipse' => 'Eclipse',
+				'github' => 'Github',
+				'idle_fingers' => 'Idle Fingers',
+				'katzenmilch' => 'Katzenmilch',
+				'kr' => 'KR',
+				'kuroir' => 'Kuroir',
+				'merbivore' => 'Merbivore',
+				'monokai' => 'Monokai',
+				'solarized_dark' => 'Solarized Dark',
+				'solarized_light' => 'Solarized Light',
+				'twilight' => 'Twilight',
+			),
+			'default' => get_option( '_wpgp_ace_theme', 'ambiance' )
+		);
 
+		cmb_metabox_form( array(
+			'id'         => 'ace_theme',
+			'show_names' => true,
+			'fields'     => array(
+				$this->themes_meta_box
+			)
+		), $this->plugin_slug );
+	}
+
+	/**
+	 * Add the ACE editor styles to the Add Gistpen screen
+	 *
+	 * @since     0.4.0
+	 */
+	public function enqueue_editor_styles() {
+
+		$screen = get_current_screen();
+
+		if ('gistpens' == $screen->id ) {
+			wp_enqueue_style( $this->plugin_slug .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
+		}
+	}
+
+	/**
+	 * Add the ACE editor scripts to the Add Gistpen screen
+	 *
+	 * @since     0.4.0
+	 */
+	public function enqueue_editor_scripts() {
+
+		$screen = get_current_screen();
+
+		if ('gistpens' == $screen->id ) {
+			wp_enqueue_script( $this->plugin_slug . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, true );
+			wp_enqueue_script( $this->plugin_slug . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', $this->plugin_slug . '-ace-script' ), WP_Gistpen::VERSION, true );
+		}
+	}
+
+	/**
+	 * AJAX hook to save ACE editor theme
+	 *
+	 * @since     0.4.0
+	 */
+	public function save_ace_theme() {
+		if ( !wp_verify_nonce( $_POST['theme_nonce'], 'create_gistpen_ajax' ) ) {
+			die( __( "Nonce check failed.", 'wp-gistpen' ) );
+		}
+
+		$result = update_option( '_wpgp_ace_theme', $_POST['theme'] );
+		die( $result );
 	}
 
 	/**
@@ -147,20 +232,36 @@ class WP_Gistpen_Editor {
 	}
 
 	/**
-	 * Add WP-Gistpen's editor button to the editor
+	 * Disable the visual editor because
+	 * it messes with the code layout
+	 *
+	 * @return   false|$default     disables only on gistpens
+	 * @since    0.2.0
+	 */
+	public function disable_visual_editor( $default ) {
+		global $post;
+
+		if ( 'gistpens' == get_post_type( $post ) )
+			return false;
+		return $default;
+
+	}
+
+	/**
+	 * Register the script for the button with TinyMCE
 	 *
 	 * @param  array    $plugins    array of current plugins
 	 * @return array                updated array with new button
 	 */
 	public function add_button( $plugins ) {
 
-		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js';
+		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-tinymce-plugin.min.js';
 		return $plugins;
 
 	}
 
 	/**
-	 * Register the script for the button with TinyMCE
+	 * Add WP-Gistpen's editor button to the editor
 	 *
 	 * @param  array    $buttons   array of current buttons
 	 * @return array               updated array with new button

@@ -41,6 +41,7 @@ includes
 node_modules
 admin/includes
 public/assets/vendor
+admin/assets/js/ace
 build
 
 # Generated files

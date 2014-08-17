@@ -60,6 +60,13 @@ var paths = {
 				dir: 'admin/assets/js/'
 			},
 		},
+		tinymce: {
+			files: ['admin/assets/js/wp-gistpen-tinymce-plugin.js'],
+			output: {
+				filename: 'wp-gistpen-tinymce-plugin.min.js',
+				dir: 'admin/assets/js/'
+			},
+		},
 		editor: {
 			files: ['admin/assets/js/wp-gistpen-editor.js'],
 			output: {
@@ -76,9 +83,13 @@ var paths = {
 		public: {
 			files: ['public/assets/scss/wp-gistpen-public.scss'],
 			output: 'public/assets/css/'
+		},
+		editor: {
+			files: ['admin/assets/scss/wp-gistpen-editor.scss'],
+			output: 'admin/assets/css/'
 		}
 	},
-	add: [
+	copy: [
 		'**/*.php',
 		'**/*.png',
 		'**/*.pot',
@@ -117,7 +128,7 @@ gulp.task('zip', function() {
 });
 
 gulp.task('copy', ['set-build-var'], function() {
-	return gulp.src(paths.add)
+	return gulp.src(paths.copy)
 		.pipe(gulp.dest(paths.build));
 });
 
@@ -153,6 +164,7 @@ gulp.task('clean-composer', function(cb) {
 
 gulp.task('scripts', ['install'], function() {
 	var stream;
+	var aceStream;
 
 	for(var location in paths.js) {
 		stream = gulp.src(paths.js[location].files)
@@ -162,7 +174,11 @@ gulp.task('scripts', ['install'], function() {
 			.pipe(gulpif(building, gulp.dest(paths.build + paths.js[location].output.dir)));
 	}
 
-	return stream;
+	aceStream = gulp.src('public/assets/vendor/ace-builds/src-min-noconflict/**')
+	.pipe(gulp.dest('admin/assets/js/ace/'))
+	.pipe(gulpif(building, gulp.dest(paths.build + 'admin/assets/js/ace/')));
+
+	return merge(stream, aceStream);
 
 });
 
