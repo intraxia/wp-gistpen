@@ -26,8 +26,6 @@ class WP_Gistpen_Editor {
 	 */
 	protected static $instance = null;
 
-	protected $themes_meta_box;
-
 	/**
 	 * Initialize the editor enhancements by loading the metaboxes
 	 * and the new TinyMCE button.
@@ -93,42 +91,42 @@ class WP_Gistpen_Editor {
 	public function add_theme_selection() {
 		$prefix = '_wpgp_';
 
-		$this->themes_meta_box = array(
-			'name' => __( 'Editor Theme', $this->plugin_slug ),
-			'id'   => $prefix . 'ace_theme',
-			'type' => 'select',
-			'options' => array(
-				'ambiance' => 'Ambiance',
-				'chaos' => 'Chaos',
-				'chrome' => 'Chrome',
-				'clouds' => 'Clouds',
-				'clouds_midnight' => 'Clouds Midnight',
-				'cobalt' => 'Cobalt',
-				'crimson_editor' => 'Crimson Editor',
-				'dawn' => 'Dawn',
-				'dreamweaver' => 'Dreamweaver',
-				'eclipse' => 'Eclipse',
-				'github' => 'Github',
-				'idle_fingers' => 'Idle Fingers',
-				'katzenmilch' => 'Katzenmilch',
-				'kr' => 'KR',
-				'kuroir' => 'Kuroir',
-				'merbivore' => 'Merbivore',
-				'monokai' => 'Monokai',
-				'solarized_dark' => 'Solarized Dark',
-				'solarized_light' => 'Solarized Light',
-				'twilight' => 'Twilight',
-			),
-			'default' => get_option( '_wpgp_ace_theme', 'ambiance' )
-		);
-
-		cmb_metabox_form( array(
-			'id'         => 'ace_theme',
-			'show_names' => true,
-			'fields'     => array(
-				$this->themes_meta_box
-			)
-		), $this->plugin_slug );
+		if( get_post_type() == 'gistpens') {
+			cmb_metabox_form( array(
+				'id'         => 'ace_theme',
+				'show_names' => false,
+				'fields'     => array(
+					array(
+						'name' => __( 'Editor Theme', $this->plugin_slug ),
+						'id'   => $prefix . 'ace_theme',
+						'type' => 'select',
+						'options' => array(
+							'ambiance' => 'Ambiance',
+							'chaos' => 'Chaos',
+							'chrome' => 'Chrome',
+							'clouds' => 'Clouds',
+							'clouds_midnight' => 'Clouds Midnight',
+							'cobalt' => 'Cobalt',
+							'crimson_editor' => 'Crimson Editor',
+							'dawn' => 'Dawn',
+							'dreamweaver' => 'Dreamweaver',
+							'eclipse' => 'Eclipse',
+							'github' => 'Github',
+							'idle_fingers' => 'Idle Fingers',
+							'katzenmilch' => 'Katzenmilch',
+							'kr' => 'KR',
+							'kuroir' => 'Kuroir',
+							'merbivore' => 'Merbivore',
+							'monokai' => 'Monokai',
+							'solarized_dark' => 'Solarized Dark',
+							'solarized_light' => 'Solarized Light',
+							'twilight' => 'Twilight',
+						),
+						'default' => get_option( '_wpgp_ace_theme', 'ambiance' )
+					)
+				)
+			), $this->plugin_slug );
+		}
 	}
 
 	/**
