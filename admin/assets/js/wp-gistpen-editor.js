@@ -3,6 +3,7 @@ jQuery(function() { Ace.init(); });
 var Ace = {
 
 	init: function() {
+		var self = this;
 		this.aceEditorId = 'ace-editor';
 		this.aceEditorDiv = jQuery('<div id="' + this.aceEditorId + '"></div>').css({
 			left: 0,
@@ -63,7 +64,7 @@ var Ace = {
 		this.themeSelect.parents('table.form-table.cmb_metabox').hide();
 		this.themeSelect.appendTo('#wp-content-media-buttons');
 		this.aceEditor.getSession().on('change', function(event) {
-			Ace.updateTextContent();
+			self.updateTextContent();
 		});
 		this.switchToAce();
 	},
@@ -72,12 +73,12 @@ var Ace = {
 		// Set theme and enabl listener
 		this.aceEditor.setTheme('ace/theme/' + this.themeSelect.val());
 		this.themeSelect.change(function() {
-			Ace.aceEditor.setTheme('ace/theme/' + Ace.themeSelect.val());
+			self.aceEditor.setTheme('ace/theme/' + self.themeSelect.val());
 			jQuery.post(ajaxurl, {
 				action: 'gistpen_save_ace_theme',
 
 				theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-				theme: Ace.themeSelect.val(),
+				theme: self.themeSelect.val(),
 
 			}, function(response) {
 				if(response === false) {
@@ -88,7 +89,7 @@ var Ace = {
 		// Set mode and enable listener
 		this.setMode(this.languageSelect.val());
 		this.languageSelect.change(function() {
-			Ace.setMode(Ace.languageSelect.val());
+			self.setMode(self.languageSelect.val());
 		});
 	},
 
