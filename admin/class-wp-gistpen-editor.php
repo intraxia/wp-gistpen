@@ -217,10 +217,10 @@ class WP_Gistpen_Editor {
 			'show_names' => false, // Show field names on the left
 			'fields'     => array(
 				array(
-					'desc' => 'Select this Gistpen\'s language.',
-					'id'   => $prefix . 'gistpen_language',
+					'desc'     => 'Select this Gistpen\'s language.',
+					'id'       => $prefix . 'gistpen_language',
 					'taxonomy' => 'language',
-					'type' => 'taxonomy_select'
+					'type'     => 'taxonomy_select'
 				)
 			)
 		);
