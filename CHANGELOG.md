@@ -1,7 +1,9 @@
 ## Changelog ##
 
-### 0.3.1 ###
+### 0.4.0 ###
+* Integrate ACE editor into Gistpen
 
+### 0.3.1 ###
 * Forgot to minify JavaScripts
 
 ### 0.3.0 ###
