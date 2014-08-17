@@ -149,7 +149,7 @@ class WP_Gistpen_Admin {
 
 		$screen = get_current_screen();
 		if ( $this->plugin_screen_hook_suffix == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-admin-script', plugins_url( 'assets/js/wp-gistpen-admin.min.js', __FILE__ ), array( 'jquery', $this->plugin_slug . '-plugin-script' ), WP_Gistpen::VERSION, true );
+			wp_enqueue_script( $this->plugin_slug . '-admin-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-admin.min.js', array( 'jquery', $this->plugin_slug . '-plugin-script' ), WP_Gistpen::VERSION, true );
 			$instance = WP_Gistpen::get_instance();
 			$instance->enqueue_styles();
 			$instance->enqueue_scripts();

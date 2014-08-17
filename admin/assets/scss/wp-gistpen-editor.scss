@@ -1,0 +1,11 @@
+// Some styles for the Ace editor
+#ace-editor {
+	min-height: 360px;
+	width: 100%;
+}
+.ace-active .switch-ace {
+	background: #f5f5f5;
+	color: #555;
+	height: 20px;
+	border-bottom: none;
+}
