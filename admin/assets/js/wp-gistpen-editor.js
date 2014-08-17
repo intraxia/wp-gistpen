@@ -97,7 +97,7 @@ var Ace = {
 		if('js' === mode) {
 			this.aceEditor.getSession().setMode('ace/mode/javascript');
 		} else if( 'bash' === mode) {
-			this.aceEditor.getSession().setMode('ace/mode/nix');
+			this.aceEditor.getSession().setMode('ace/mode/sh');
 		} else {
 			this.aceEditor.getSession().setMode('ace/mode/' + mode);
 		}
