@@ -1,9 +1,9 @@
-jQuery(function() { Ace.init(); });
+jQuery(function() { GistpenAce.init(); });
 
-var Ace = {
+var GistpenAce = {
 
 	init: function() {
-		var self = this;
+		window.gistpenAce = this;
 		this.aceEditorId = 'ace-editor';
 		this.aceEditorDiv = jQuery('<div id="' + this.aceEditorId + '"></div>').css({
 			left: 0,
@@ -31,11 +31,10 @@ var Ace = {
 
 	loadClickHandlers: function() {
 		this.textButton.click(function() {
-			Ace.switchToText();
-		}
-		);
+			window.gistpenAce.switchToText();
+		});
 		this.aceButton.click(function() {
-			Ace.switchToAce();
+			window.gistpenAce.switchToAce();
 		});
 	},
 
@@ -64,21 +63,27 @@ var Ace = {
 		this.themeSelect.parents('table.form-table.cmb_metabox').hide();
 		this.themeSelect.appendTo('#wp-content-media-buttons');
 		this.aceEditor.getSession().on('change', function(event) {
-			self.updateTextContent();
+			window.gistpenAce.updateTextContent();
 		});
 		this.switchToAce();
 	},
 
 	setUpThemeAndMode: function() {
-		// Set theme and enabl listener
-		this.aceEditor.setTheme('ace/theme/' + this.themeSelect.val());
+		// Set theme and enable listener
+		jQuery.post(ajaxurl,{
+			action: 'gistpen_get_ace_theme',
+			theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+			}, function(response) {
+				window.gistpenAce.themeSelect.val(response);
+				window.gistpenAce.aceEditor.setTheme('ace/theme/' + response);
+		});
 		this.themeSelect.change(function() {
-			self.aceEditor.setTheme('ace/theme/' + self.themeSelect.val());
+			window.gistpenAce.aceEditor.setTheme('ace/theme/' + window.gistpenAce.themeSelect.val());
 			jQuery.post(ajaxurl, {
 				action: 'gistpen_save_ace_theme',
 
 				theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-				theme: self.themeSelect.val(),
+				theme: window.gistpenAce.themeSelect.val(),
 
 			}, function(response) {
 				if(response === false) {
@@ -89,7 +94,7 @@ var Ace = {
 		// Set mode and enable listener
 		this.setMode(this.languageSelect.val());
 		this.languageSelect.change(function() {
-			self.setMode(self.languageSelect.val());
+			window.gistpenAce.setMode(window.gistpenAce.languageSelect.val());
 		});
 	},
 

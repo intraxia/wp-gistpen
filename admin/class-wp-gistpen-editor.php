@@ -45,8 +45,9 @@ class WP_Gistpen_Editor {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_editor_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_editor_scripts' ) );
 
-		// Add AJAX hook for theme saving
+		// Add AJAX hooks for Ace theme
 		add_action( 'wp_ajax_gistpen_save_ace_theme', array( $this, 'save_ace_theme' ) );
+		add_action( 'wp_ajax_gistpen_get_ace_theme', array( $this, 'get_ace_theme' ) );
 
 		// Add metaboxes
 		add_filter( 'cmb_meta_boxes', array( $this, 'add_metaboxes' ) );
@@ -88,45 +89,30 @@ class WP_Gistpen_Editor {
 	 *
 	 * @since     0.4.0
 	 */
-	public function add_theme_selection() {
-		$prefix = '_wpgp_';
-
-		if( get_post_type() == 'gistpens') {
-			cmb_metabox_form( array(
-				'id'         => 'ace_theme',
-				'show_names' => false,
-				'fields'     => array(
-					array(
-						'name' => __( 'Editor Theme', $this->plugin_slug ),
-						'id'   => $prefix . 'ace_theme',
-						'type' => 'select',
-						'options' => array(
-							'ambiance' => 'Ambiance',
-							'chaos' => 'Chaos',
-							'chrome' => 'Chrome',
-							'clouds' => 'Clouds',
-							'clouds_midnight' => 'Clouds Midnight',
-							'cobalt' => 'Cobalt',
-							'crimson_editor' => 'Crimson Editor',
-							'dawn' => 'Dawn',
-							'dreamweaver' => 'Dreamweaver',
-							'eclipse' => 'Eclipse',
-							'github' => 'Github',
-							'idle_fingers' => 'Idle Fingers',
-							'katzenmilch' => 'Katzenmilch',
-							'kr' => 'KR',
-							'kuroir' => 'Kuroir',
-							'merbivore' => 'Merbivore',
-							'monokai' => 'Monokai',
-							'solarized_dark' => 'Solarized Dark',
-							'solarized_light' => 'Solarized Light',
-							'twilight' => 'Twilight',
-						),
-						'default' => get_option( '_wpgp_ace_theme', 'ambiance' )
-					)
-				)
-			), $this->plugin_slug );
-		}
+	public function add_theme_selection() {?>
+		<select class="cmb_select" name="_wpgp_ace_theme" id="_wpgp_ace_theme">
+			<option value="ambiance">Ambiance</option>
+			<option value="chaos">Chaos</option>
+			<option value="chrome">Chrome</option>
+			<option value="clouds">Clouds</option>
+			<option value="clouds_midnight">Clouds Midnight</option>
+			<option value="cobalt">Cobalt</option>
+			<option value="crimson_editor">Crimson Editor</option>
+			<option value="dawn">Dawn</option>
+			<option value="dreamweaver">Dreamweaver</option>
+			<option value="eclipse">Eclipse</option>
+			<option value="github">Github</option>
+			<option value="idle_fingers">Idle Fingers</option>
+			<option value="katzenmilch">Katzenmilch</option>
+			<option value="kr">KR</option>
+			<option value="kuroir">Kuroir</option>
+			<option value="merbivore">Merbivore</option>
+			<option value="monokai">Monokai</option>
+			<option value="solarized_dark">Solarized Dark</option>
+			<option value="solarized_light">Solarized Light</option>
+			<option value="twilight">Twilight</option>
+		</select>
+<?php
 	}
 
 	/**
@@ -156,6 +142,20 @@ class WP_Gistpen_Editor {
 			wp_enqueue_script( $this->plugin_slug . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, true );
 			wp_enqueue_script( $this->plugin_slug . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', $this->plugin_slug . '-ace-script' ), WP_Gistpen::VERSION, true );
 		}
+	}
+
+	/**
+	 * AJAX hook to get ACE editor theme
+	 *
+	 * @since 0.4.0
+	 */
+	public function get_ace_theme() {
+		if ( !wp_verify_nonce( $_POST['theme_nonce'], 'create_gistpen_ajax' ) ) {
+			die( __( "Nonce check failed.", 'wp-gistpen' ) );
+		}
+
+		$result = get_option( '_wpgp_ace_theme', 'ambiance' );
+		die( $result );
 	}
 
 	/**
