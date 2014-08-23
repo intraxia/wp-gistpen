@@ -354,7 +354,7 @@ class WP_Gistpen {
 	 */
 	public function init() {
 
-		$this->register_new_post_type();
+		$this->register_new_post_types();
 		$this->register_language_taxonomy();
 		$this->initialize_meta_boxes();
 
@@ -377,43 +377,79 @@ class WP_Gistpen {
 	 *
 	 * @since    0.1.0
 	 */
-	public function register_new_post_type() {
+	public function register_new_post_types() {
 		$labels = array(
-			'name'                => _x( 'Gistpens', 'Post Type General Name', 'wp-gistpen' ),
-			'singular_name'       => _x( 'Gistpen', 'Post Type Singular Name', 'wp-gistpen' ),
-			'menu_name'           => __( 'Gistpens', 'wp-gistpen' ),
-			'parent_item_colon'   => __( '', 'wp-gistpen' ),
-			'all_items'           => __( 'All Gistpens', 'wp-gistpen' ),
-			'view_item'           => __( 'View Gistpen', 'wp-gistpen' ),
-			'add_new_item'        => __( 'Add New Gistpen', 'wp-gistpen' ),
-			'add_new'             => __( 'Add New', 'wp-gistpen' ),
-			'edit_item'           => __( 'Edit Gistpen', 'wp-gistpen' ),
-			'update_item'         => __( 'Update Gistpen', 'wp-gistpen' ),
-			'search_items'        => __( 'Search Gistpens', 'wp-gistpen' ),
-			'not_found'           => __( 'Gistpen Not found', 'wp-gistpen' ),
-			'not_found_in_trash'  => __( 'Gistpen Not found in Trash', 'wp-gistpen' ),
+			'name'                => _x( 'Gistpens', 'Post Type General Name', $this->plugin_slug ),
+			'singular_name'       => _x( 'Gistpen', 'Post Type Singular Name', $this->plugin_slug ),
+			'menu_name'           => __( 'Gistpens', $this->plugin_slug ),
+			'parent_item_colon'   => __( '', $this->plugin_slug ),
+			'all_items'           => __( 'All Gistpens', $this->plugin_slug ),
+			'view_item'           => __( 'View Gistpen', $this->plugin_slug ),
+			'add_new_item'        => __( 'Add New Gistpen', $this->plugin_slug ),
+			'add_new'             => __( 'Add New', $this->plugin_slug ),
+			'edit_item'           => __( 'Edit Gistpen', $this->plugin_slug ),
+			'update_item'         => __( 'Update Gistpen', $this->plugin_slug ),
+			'search_items'        => __( 'Search Gistpens', $this->plugin_slug ),
+			'not_found'           => __( 'Gistpen Not found', $this->plugin_slug ),
+			'not_found_in_trash'  => __( 'Gistpen Not found in Trash', $this->plugin_slug ),
 		);
 		$args = array(
-			'label'               => __( 'wp-gistpen', 'wp-gistpen' ),
-			'description'         => __( 'Gistpen description', 'wp-gistpen' ),
+			'label'                => __( 'gistpens', $this->plugin_slug ),
+			'description'          => __( 'Gistpen description', $this->plugin_slug ),
+			'labels'               => $labels,
+			'supports'             => array( 'title', 'author', 'comments' ),
+			'taxonomies'           => array( 'post_tag', 'language' ),
+			'hierarchical'         => false,
+			'public'               => true,
+			'show_ui'              => true,
+			'show_in_menu'         => true,
+			'show_in_nav_menus'    => true,
+			'show_in_admin_bar'    => true,
+			'menu_position'        => 5,
+			'can_export'           => true,
+			'has_archive'          => true,
+			'exclude_from_search'  => false,
+			'publicly_queryable'   => true,
+			'capability_type'      => 'post',
+			'menu_icon'            => 'dashicons-edit'
+		);
+		register_post_type( 'gistpens', $args );
+
+		$labels = array(
+			'name'                => _x( 'Gistfiles', 'Post Type General Name', $this->plugin_slug ),
+			'singular_name'       => _x( 'Gistfile', 'Post Type Singular Name', $this->plugin_slug ),
+			'menu_name'           => __( 'Gistfile', $this->plugin_slug ),
+			'parent_item_colon'   => __( 'Parent Gistfile:', $this->plugin_slug ),
+			'all_items'           => __( 'All Gistfiles', $this->plugin_slug ),
+			'view_item'           => __( 'View Gistfile', $this->plugin_slug ),
+			'add_new_item'        => __( 'Add New Gistfile', $this->plugin_slug ),
+			'add_new'             => __( 'Add New', $this->plugin_slug ),
+			'edit_item'           => __( 'Edit Gistfile', $this->plugin_slug ),
+			'update_item'         => __( 'Update Gistfile', $this->plugin_slug ),
+			'search_items'        => __( 'Search Gistfiles', $this->plugin_slug ),
+			'not_found'           => __( 'Not found', $this->plugin_slug ),
+			'not_found_in_trash'  => __( 'Not found in Trash', $this->plugin_slug ),
+		);
+		$args = array(
+			'label'               => __( 'gistfiles', $this->plugin_slug ),
+			'description'         => __( 'Single Gistfile', $this->plugin_slug ),
 			'labels'              => $labels,
-			'supports'            => array( 'title', 'editor', 'author', 'comments', 'revisions' ),
-			'taxonomies'          => array( 'post_tag', 'language' ),
+			'supports'            => array( 'revisions' ),
+			'taxonomies'          => array( 'language' ),
 			'hierarchical'        => false,
-			'public'              => true,
-			'show_ui'             => true,
-			'show_in_menu'        => true,
-			'show_in_nav_menus'   => true,
-			'show_in_admin_bar'   => true,
+			'public'              => false,
+			'show_ui'             => false,
+			'show_in_menu'        => false,
+			'show_in_nav_menus'   => false,
+			'show_in_admin_bar'   => false,
 			'menu_position'       => 5,
 			'can_export'          => true,
-			'has_archive'         => true,
+			'has_archive'         => false,
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
 			'capability_type'     => 'post',
-			'menu_icon'           => 'dashicons-edit'
 		);
-		register_post_type( 'gistpens', $args );
+		register_post_type( 'gistfile', $args );
 	}
 
 	/**
