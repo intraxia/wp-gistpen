@@ -5,28 +5,18 @@ var GistpenAce = {
 	init: function() {
 		window.gistpenAce = this;
 		this.aceEditorId = 'ace-editor';
-		this.aceEditorDiv = jQuery('<div id="' + this.aceEditorId + '"></div>').css({
-			left: 0,
-			top: 0,
-			bottom: 0,
-			right: 0,
-			zIndex: 1
-		});
-		this.textButton = jQuery('<a id="content-html" class="hide-if-no-js wp-switch-editor switch-html">Text</a>');
-		this.aceButton = jQuery('<a id="content-ace" class="hide-if-no-js wp-switch-editor switch-ace">Ace</a>');
-		this.contentWrapDiv = jQuery('#wp-content-wrap');
-		this.contentDiv = jQuery('#content');
+		this.aceEditorDiv = jQuery('#' + this.aceEditorId);
+		this.textButton = jQuery('#content-html');
+		this.aceButton = jQuery('#content-ace');
+		this.contentWrapDiv = jQuery('#wp-gistfile-content-new-wrap');
+		this.contentDiv = jQuery('#gistfile-content-new');
 		this.themeSelect = jQuery('#_wpgp_ace_theme');
-		this.languageSelect = jQuery('#_wpgp_gistpen_language');
+		this.languageSelect = jQuery('#gistfile-language-new');
 
-		this.addSwitchButtons();
+		jQuery('#titlediv .inside').remove();
+
 		this.loadClickHandlers();
 		this.activateAceEditor();
-	},
-
-	addSwitchButtons: function() {
-		this.textButton.appendTo('#wp-content-editor-tools');
-		this.aceButton.appendTo('#wp-content-editor-tools');
 	},
 
 	loadClickHandlers: function() {
@@ -53,15 +43,10 @@ var GistpenAce = {
 	},
 
 	activateAceEditor: function() {
-		this.aceEditorDiv.insertAfter('#content');
-
 		// Set up editor on div
 		this.aceEditor = ace.edit(this.aceEditorId);
 		this.setUpThemeAndMode();
 
-		jQuery('#insert-media-button, #ed_toolbar, input[name="submit-cmb"]').hide();
-		this.themeSelect.parents('table.form-table.cmb_metabox').hide();
-		this.themeSelect.appendTo('#wp-content-media-buttons');
 		this.aceEditor.getSession().on('change', function(event) {
 			window.gistpenAce.updateTextContent();
 		});
@@ -69,14 +54,7 @@ var GistpenAce = {
 	},
 
 	setUpThemeAndMode: function() {
-		// Set theme and enable listener
-		jQuery.post(ajaxurl,{
-			action: 'gistpen_get_ace_theme',
-			theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-			}, function(response) {
-				window.gistpenAce.themeSelect.val(response);
-				window.gistpenAce.aceEditor.setTheme('ace/theme/' + response);
-		});
+		this.aceEditor.setTheme('ace/theme/' + this.themeSelect.val());
 		this.themeSelect.change(function() {
 			window.gistpenAce.aceEditor.setTheme('ace/theme/' + window.gistpenAce.themeSelect.val());
 			jQuery.post(ajaxurl, {

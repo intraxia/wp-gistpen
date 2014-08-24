@@ -9,3 +9,16 @@
 	height: 20px;
 	border-bottom: none;
 }
+
+#_wpgp_ace_theme, #gistfile-language-new, #gistfile-name-new {
+	float: left;
+}
+
+#normal-sortables .postbox {
+	float: left;
+	margin: 0 10px 20px;
+
+	&:first-child {
+		margin: 0 10px 20px 0;
+	}
+}
