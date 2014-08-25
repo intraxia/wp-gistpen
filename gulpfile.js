@@ -68,7 +68,10 @@ var paths = {
 			},
 		},
 		editor: {
-			files: ['admin/assets/js/wp-gistpen-editor.js'],
+			files: [
+				'admin/assets/js/gistpen-editor.js',
+				'admin/assets/js/gistfile-editor.js'
+			],
 			output: {
 				filename: 'wp-gistpen-editor.min.js',
 				dir: 'admin/assets/js/'
