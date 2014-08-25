@@ -126,7 +126,7 @@ class WP_Gistpen_Post_Editor {
 	 */
 	public function search_gistpen_ajax() {
 		if ( !wp_verify_nonce( $_POST['gistpen_nonce'], 'create_gistpen_ajax' ) ) {
-			die( __( "Nonce check failed.", 'wp-gistpen' ) );
+			die( __( "Nonce check failed.", $this->plugin_slug ) );
 		}
 
 		$args = array(

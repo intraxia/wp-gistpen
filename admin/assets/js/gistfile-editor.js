@@ -1,18 +1,20 @@
-jQuery(function() { GistpenAce.init(); });
+function GistfileEditor(gistfileID) {
+	this.gistfileID = gistfileID;
+	this.aceEditorId = 'ace-editor-'+this.gistfileID;
+	this.aceEditorDiv = jQuery('#' + this.aceEditorId);
+	this.textButton = jQuery('#content-html-'+this.gistfileID);
+	this.aceButton = jQuery('#content-ace-'+this.gistfileID);
+	this.contentWrapDiv = jQuery('#wp-gistfile-content-'+this.gistfileID+'-wrap');
+	this.contentDiv = jQuery('#gistfile-content-'+this.gistfileID);
+	this.languageSelect = jQuery('#gistfile-language-'+this.gistfileID);
+	this.deleteGistfileButton = jQuery('#delete-gistfile-'+this.gistfileID);
 
-var GistpenAce = {
+	this.init();
+}
+
+GistfileEditor.prototype  = {
 
 	init: function() {
-		window.gistpenAce = this;
-		this.aceEditorId = 'ace-editor';
-		this.aceEditorDiv = jQuery('#' + this.aceEditorId);
-		this.textButton = jQuery('#content-html');
-		this.aceButton = jQuery('#content-ace');
-		this.contentWrapDiv = jQuery('#wp-gistfile-content-new-wrap');
-		this.contentDiv = jQuery('#gistfile-content-new');
-		this.themeSelect = jQuery('#_wpgp_ace_theme');
-		this.languageSelect = jQuery('#gistfile-language-new');
-
 		jQuery('#titlediv .inside').remove();
 
 		this.loadClickHandlers();
@@ -20,11 +22,16 @@ var GistpenAce = {
 	},
 
 	loadClickHandlers: function() {
-		this.textButton.click(function() {
-			window.gistpenAce.switchToText();
+		var theeditor = this;
+		this.textButton.click(function(){
+			theeditor.switchToText();
 		});
-		this.aceButton.click(function() {
-			window.gistpenAce.switchToAce();
+		this.aceButton.click(function(){
+			theeditor.switchToAce();
+		});
+		this.deleteGistfileButton.click(function(event) {
+			event.preventDefault();
+			theeditor.deleteEditor();
 		});
 	},
 
@@ -42,26 +49,43 @@ var GistpenAce = {
 		this.aceEditor.focus();
 	},
 
+	deleteEditor: function() {
+		var theeditor = this;
+		this.contentWrapDiv.remove();
+		jQuery.post(ajaxurl,{
+			action: 'delete_gistfile_editor',
+
+			delete_editor_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+			gistfileID: theeditor.gistfileID,
+		}, function(response) {
+			if(response === false) {
+				console.log('Failed to delete Gistfile.');
+			}
+		});
+	},
+
 	activateAceEditor: function() {
+		var theeditor = this;
 		// Set up editor on div
 		this.aceEditor = ace.edit(this.aceEditorId);
 		this.setUpThemeAndMode();
 
 		this.aceEditor.getSession().on('change', function(event) {
-			window.gistpenAce.updateTextContent();
+			theeditor.updateTextContent();
 		});
 		this.switchToAce();
 	},
 
 	setUpThemeAndMode: function() {
-		this.aceEditor.setTheme('ace/theme/' + this.themeSelect.val());
-		this.themeSelect.change(function() {
-			window.gistpenAce.aceEditor.setTheme('ace/theme/' + window.gistpenAce.themeSelect.val());
+		var theeditor = this;
+		this.aceEditor.setTheme('ace/theme/' + GistpenEditor.themeSelect.val());
+		GistpenEditor.themeSelect.change(function() {
+			theeditor.aceEditor.setTheme('ace/theme/' + GistpenEditor.themeSelect.val());
 			jQuery.post(ajaxurl, {
 				action: 'gistpen_save_ace_theme',
 
 				theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-				theme: window.gistpenAce.themeSelect.val(),
+				theme: theeditor.themeSelect.val(),
 
 			}, function(response) {
 				if(response === false) {
@@ -72,7 +96,7 @@ var GistpenAce = {
 		// Set mode and enable listener
 		this.setMode(this.languageSelect.val());
 		this.languageSelect.change(function() {
-			window.gistpenAce.setMode(window.gistpenAce.languageSelect.val());
+			theeditor.setMode(theeditor.languageSelect.val());
 		});
 	},
 

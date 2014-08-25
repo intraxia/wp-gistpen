@@ -59,9 +59,27 @@ class WP_Gistpen_Editor {
 	 * @var strings
 	 * @since 0.4.0
 	 */
+	protected $gistfile_id;
 	protected $gistfile_name = '';
 	protected $gistfile_content = '';
 	protected $gistfile_language = '';
+
+	/**
+	 * Array of all the Gistfiles
+	 * attached to current Gistpen.
+	 *
+	 * @var array
+	 * @since 0.4.0
+	 */
+	protected $gistfile_ids = array();
+
+	/**
+	 * Current Gistpen post_id
+	 *
+	 * @var int
+	 * @since 0.4.0
+	 */
+	protected $gistpen_id;
 
 	/**
 	 * Initialize the editor enhancements by loading the metaboxes
@@ -81,6 +99,9 @@ class WP_Gistpen_Editor {
 		// Hook in repeatable Gistfile editor
 		add_action( 'edit_form_after_title', array( $this, 'render_gistfile_editor' ) );
 
+		// Init all the rendered editors
+		add_action( 'admin_print_footer_scripts', array( $this, 'add_ace_editor_init_inline' ), 99 );
+
 		// Save the Gistfiles and attach to Gistpen
 		add_action( 'save_post', array( $this, 'save_gistpen' ) );
 
@@ -90,7 +111,10 @@ class WP_Gistpen_Editor {
 
 		// Add AJAX hooks for Ace theme
 		add_action( 'wp_ajax_gistpen_save_ace_theme', array( $this, 'save_ace_theme' ) );
-		add_action( 'wp_ajax_gistpen_get_ace_theme', array( $this, 'get_ace_theme' ) );
+
+		// Add AJAX hooks to add and delete Gistfile editors
+		add_action( 'wp_ajax_add_gistfile_editor', array( $this, 'add_gistfile_editor' ) );
+		add_action( 'wp_ajax_delete_gistfile_editor', array( $this, 'delete_gistfile_editor' ) );
 
 		// Rearrange Gistpen layout
 		add_filter( 'screen_layout_columns', array( $this, 'screen_layout_columns' ) );
@@ -147,34 +171,65 @@ class WP_Gistpen_Editor {
 
 
 		if( 'gistpens' == $screen->id ) {
+			$this->gistpen_id = $post->ID;
 
 			wp_nonce_field( 'save_gistfile', 'save_gistfile_nonce' );
+			$this->render_theme_selector();
 
-			$gistfile_ids = get_post_meta( $post->ID, 'gistfile_ids', true );
+			$this->gistfile_ids = get_post_meta( $this->gistpen_id, 'gistfile_ids', true );
 
-			if( !empty( $gistfile_ids ) ) {
+			if( !empty( $this->gistfile_ids ) ) {
 
-				foreach( $gistfile_ids as $gistfile_id ) {
+				foreach( $this->gistfile_ids as $gistfile_id ) {
+					$this->gistfile_id = $gistfile_id;
 
-					$gistfile = get_post( $gistfile_id );
+					$gistfile = get_post( $this->gistfile_id );
 
 					$this->gistfile_name = $gistfile->post_name;
 					$this->gistfile_content = $gistfile->post_content;
 
-					$terms = get_the_terms( $gistfile_id, 'language' );
+					$terms = get_the_terms( $this->gistfile_id, 'language' );
 					$lang = array_pop($terms);
 					$this->gistfile_language = $lang->slug;
 
 					$this->render_editor();
+
 				}
 
 			} else {
+
+				$this->save_gistfile();
 				$this->render_editor();
+
 			}
 
-			// submit_button( __('Add Gistfile', $this->plugin_slug), 'primary', 'add-gistfile', false );
-			echo '<p></p>';
+			$this->render_hidden_field_gistfile_ids();
+
+			echo submit_button( __('Add Gistfile', $this->plugin_slug), 'primary', 'add-gistfile', true );
+
 		}
+	}
+
+	/**
+	 * Render the selection box for the ACE editor theme
+	 *
+	 * @return string   ACE theme selection box
+	 * @since  0.4.0
+	 */
+	public function render_theme_selector() { ?>
+		<div class="_wpgp_ace_theme-wrap">
+			<label for="_wpgp_ace_theme">
+				<?php _e( 'Ace Editor Theme: ', $this->plugin_slug ); ?>
+			</label>
+			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
+			<?php foreach ($this->ace_themes as $slug => $name): ?>
+				<?php $selected = get_option( '_wpgp_ace_theme' ) == $slug ? 'selected' : ''; ?>
+				<option value="<?php echo $slug; ?>" <?php echo $selected; ?> >
+					<?php echo $name; ?>
+				</option>
+			<?php endforeach; ?>
+			</select>
+		</div><?php
 	}
 
 	/**
@@ -184,25 +239,28 @@ class WP_Gistpen_Editor {
 	 * @since  0.4.0
 	 */
 	public function render_editor() {?>
-		<div class="wp-core-ui wp-editor-wrap" id="wp-gistfile-content-new-wrap">
-			<div class="wp-editor-tools hide-if-no-js" id="wp-gistfile-content-new-editor-tools">
+		<div class="wp-core-ui wp-editor-wrap wp-gistfile-content-wrap" id="wp-gistfile-content-<?php echo $this->gistfile_id; ?>-wrap">
+			<div class="wp-editor-tools hide-if-no-js" id="wp-gistfile-content-<?php echo $this->gistfile_id; ?>-editor-tools">
 
-				<div class="wp-media-buttons" id="wp-gistfile-content-new-media-buttons">
+				<div class="wp-media-buttons" id="wp-gistfile-content-<?php echo $this->gistfile_id; ?>-media-buttons">
 					<?php $this->render_filename_input(); ?>
 					<?php $this->render_language_selector(); ?>
-					<?php $this->render_theme_selector(); ?>
+					<?php $this->render_delete_button(); ?>
 				</div>
 
-				<div class="wp-editor-tabs">
-					<a class="hide-if-no-js wp-switch-editor switch-html" id="content-html">Text</a>
-					<a class="hide-if-no-js wp-switch-editor switch-ace" id="content-ace">Ace</a>
+				<div class="wp-editor-tabs" id="wp-editor-tabs-<?php echo $this->gistfile_id; ?>">
+					<a class="hide-if-no-js wp-switch-editor switch-html" id="content-html-<?php echo $this->gistfile_id; ?>">Text</a>
+					<a class="hide-if-no-js wp-switch-editor switch-ace" id="content-ace-<?php echo $this->gistfile_id; ?>">Ace</a>
 				</div>
+
 			</div>
 
-			<div class="wp-editor-container" id="wp-gistfile-content-new-editor-container">
-				<textarea class="wp-editor-area" cols="40" id="gistfile-content-new" name="gistfile-content-new" rows="20"><?php echo $this->gistfile_content; ?></textarea>
-				<div id="ace-editor"></div>
+			<div class="wp-editor-container" id="wp-gistfile-content-<?php echo $this->gistfile_id; ?>-editor-container">
+				<textarea class="wp-editor-area" cols="40" id="gistfile-content-<?php echo $this->gistfile_id; ?>" name="gistfile-content-<?php echo $this->gistfile_id; ?>" rows="20"><?php echo $this->gistfile_content; ?></textarea>
+				<div class="ace-editor" id="ace-editor-<?php echo $this->gistfile_id; ?>"></div>
 			</div>
+
+			<input type="hidden" name="gistfile-id" id="gistfile-id" value="<?php echo $this->gistfile_id; ?>">
 
 		</div><?php
 	}
@@ -214,9 +272,8 @@ class WP_Gistpen_Editor {
 	 * @since  0.4.0
 	 */
 	public function render_filename_input() {?>
-		<label for="gistfile-name-new" style="display: none;">Gistfilename</label>
-		<input type="text" name="gistfile-name-new" size="20" id="gistfile-name-new" value="<?php echo $this->gistfile_name; ?>" placeholder="Gistfilename" autocomplete="off" />
-		<?php
+		<label for="gistfile-name-<?php echo $this->gistfile_id; ?>" style="display: none;">Gistfilename</label>
+		<input type="text" name="gistfile-name-<?php echo $this->gistfile_id; ?>" size="20" class="gistfile-name" id="gistfile-name-<?php echo $this->gistfile_id; ?>" value="<?php echo $this->gistfile_name; ?>" placeholder="Gistfilename (no ext)" autocomplete="off" /><?php
 	}
 
 	/**
@@ -226,33 +283,58 @@ class WP_Gistpen_Editor {
 	 * @since  0.4.0
 	 */
 	public function render_language_selector() {
-		$terms = get_terms( 'language', 'hide_empty=0' );
+		$terms = get_terms( 'language', 'hide_empty=0' ); ?>
 
-		echo '<select name="gistfile-language-new" id="gistfile-language-new">';
-		foreach ($terms as $term) {
-			$selected = $this->gistfile_language == $term->slug ? 'selected' : '';
-			echo '<option value="' . $term->slug .'" ' . $selected . '>' . $term->name . '</option>';
-		}
-		echo '</select>';
+		<select name="gistfile-language-<?php echo $this->gistfile_id; ?>" id="gistfile-language-<?php echo $this->gistfile_id; ?>" class="gistfile-language">
+		<?php foreach ($terms as $term): ?>
+			<?php $selected = $this->gistfile_language == $term->slug ? 'selected' : ''; ?>
+			<option value="<?php echo $term->slug; ?>" <?php echo $selected; ?> >
+				<?php echo $term->name; ?>
+			</option>
+		<?php endforeach; ?>
+		</select><?php
 	}
 
 	/**
-	 * Render the selection box for the ACE editor theme
+	 * Render the delete button for the Gistfile
 	 *
-	 * @return string   ACE theme selection box
-	 * @since  0.4.0
+	 * @return string   Gistfile delete button
+	 * @since 0.4.0
 	 */
-	public function render_theme_selector() {
-			echo '<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">';
-			foreach ($this->ace_themes as $slug => $name) {
-				$selected = get_option( '_wpgp_ace_theme' ) == $slug ? 'selected' : '';
-				echo '<option value="' . $slug . '" ' . $selected . '>' . $name . '</option>';
-			}
-			echo '</select>';
+	public function render_delete_button() {
+		submit_button( __('Delete This Gistfile', $this->plugin_slug), 'delete', 'delete-gistfile-' . $this->gistfile_id, false );
 	}
 
 	/**
-	 * Action hook callback to save all the Gistfiles and
+	 * Renders the hidden field containing all the Gistfile ids
+	 *
+	 * @return string   input[type="hidden"].gistfile_ids
+	 * @since 0.4.0
+	 */
+	public function render_hidden_field_gistfile_ids() {
+		$gistfile_ids_string = implode( ' ', $this->gistfile_ids); ?>
+		<input type="hidden" id="gistfile_ids" name="gistfile_ids" value="<?php echo $gistfile_ids_string; ?>"><?php
+	}
+
+	/**
+	 * Hooks into admin footer to initate ACE editors
+	 *
+	 * @return string   ACE editor init script
+	 * @since 0.4.0
+	 */
+	public function add_ace_editor_init_inline() {?>
+		<script type="text/javascript">
+			jQuery(function() {
+				<?php foreach ($this->gistfile_ids as $gistfile_id) : ?>
+					window['gfe<?php echo $gistfile_id; ?>'] = new GistfileEditor("<?php echo $gistfile_id; ?>");
+				<?php endforeach;?>
+			});
+		</script><?php
+	}
+
+	/**
+	 * save_post action hook callback
+	 * to save all the Gistfiles and
 	 * attach them to the Gistpen
 	 *
 	 * @param  int    $gistpen_id  Gistpen post id
@@ -260,37 +342,81 @@ class WP_Gistpen_Editor {
 	 */
 	public function save_gistpen( $gistpen_id ) {
 
-		if( !isset( $_POST['gistfile-content-new'] ) ||
-		    !isset( $_POST['gistfile-language-new'] ) ) {
-			return;
+		// @todo checks for user caps
+
+		$gistfile_ids = explode( ' ', $_POST['gistfile_ids'] );
+
+		foreach ($gistfile_ids as $gistfile_id) {
+
+			$args = array();
+
+			$args['ID'] = $gistfile_id;
+			$args['post_name'] = $_POST['gistfile-name-' . $gistfile_id];
+			$args['post_title'] = $_POST['gistfile-name-' . $gistfile_id];
+			$args['post_content'] = $_POST['gistfile-content-' . $gistfile_id];
+			$args['tax_input']['language'] = $_POST['gistfile-language-' . $gistfile_id];
+			$args['post_status'] = $_POST['post_status'];
+
+			$this->save_gistfile( $args );
+
 		}
+		$this->gistpen_id = $_POST['post_ID'];
+		$this->attach_gistfile_ids_to_gistpen();
+	}
 
-		// @todo do uniqueness check
-		$postname = $_POST['gistfile-name-new'];
-
+	/**
+	 * Saves the current Gistfile
+	 *
+	 * @param  array  $args  Gistfile post args
+	 * @since  0.4.0
+	 */
+	public function save_gistfile( $args = array() ) {
+		// @todo do uniqueness check on $args['name']
 		$post = array(
-			'post_content' => $_POST['gistfile-content-new'],
-			'post_name' => $postname,
-			'post_title' => $postname,
+			'post_content' => '',
+			'post_name' => 'new-file',
+			'post_title' => 'new-file',
 			'post_type' => 'gistfile',
-			'post_status' => '',
+			'post_status' => 'auto-draft',
 			'post_password' => '',
 			'tax_input' => array(
-				'language' => $_POST['gistfile-language-new']
+				'language' => ''
 			)
 		);
+
+		foreach ($args as $key => $value) {
+			$post[$key] = $value;
+		}
 
 		remove_action( 'save_post', array( $this, 'save_gistpen' ) );
 		$result = wp_insert_post( $post, true );
 		add_action( 'save_post', array( $this, 'save_gistpen' ) );
 
 		if( !is_wp_error( $result ) ) {
-			$gistfile_ids[] = $result;
+
+			$this->gistfile_id = $result;
+			if( $post['post_name'] !== 'new-file') {
+				$this->gistfile_name = $post['post_name'];
+			}
+			$this->gistfile_content = $post['post_content'];
+			$this->gistfile_language = $post['tax_input']['language'];
+
+			$this->gistfile_ids[] = $this->gistfile_id;
+
 		} else {
 			// do something on failure
 		}
 
-		update_post_meta( $gistpen_id, 'gistfile_ids', $gistfile_ids );
+	}
+
+	/**
+	 * Updates the post_meta of the current Gistpen
+	 * to attach all the current Gistfile_ids
+	 *
+	 * @since  0.4.0
+	 */
+	public function attach_gistfile_ids_to_gistpen() {
+		update_post_meta( $this->gistpen_id, 'gistfile_ids', $this->gistfile_ids );
 	}
 
 	/**
@@ -317,8 +443,8 @@ class WP_Gistpen_Editor {
 		$screen = get_current_screen();
 
 		if ('gistpens' == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, true );
-			wp_enqueue_script( $this->plugin_slug . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', $this->plugin_slug . '-ace-script' ), WP_Gistpen::VERSION, true );
+			wp_enqueue_script( $this->plugin_slug . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
+			wp_enqueue_script( $this->plugin_slug . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', $this->plugin_slug . '-ace-script' ), WP_Gistpen::VERSION, false );
 		}
 	}
 
@@ -333,6 +459,41 @@ class WP_Gistpen_Editor {
 		}
 
 		$result = update_option( '_wpgp_ace_theme', $_POST['theme'] );
+		die( $result );
+	}
+
+	/**
+	 * AJAX hook to get a new ACE editor
+	 *
+	 * @since     0.4.0
+	 */
+	public function add_gistfile_editor() {
+		if ( !wp_verify_nonce( $_POST['add_editor_nonce'], 'create_gistpen_ajax' ) ) {
+			die( __( "Nonce check failed.", $this->plugin_slug ) );
+		}
+
+		$this->save_gistfile();
+		ob_start();
+		$this->render_editor();
+		$editor = ob_end_flush();
+
+		die( trim( $editor ) );
+	}
+
+	/**
+	 * AJAX hook to delete an ACE editor
+	 *
+	 * @since     0.4.0
+	 */
+	public function delete_gistfile_editor() {
+		if ( !wp_verify_nonce( $_POST['delete_editor_nonce'], 'create_gistpen_ajax' ) ) {
+			die( __( "Nonce check failed.", $this->plugin_slug ) );
+		}
+
+		$result = wp_delete_post( $_POST['gistfileID'] );
+		if( $result !== false ) {
+			$result = true;
+		}
 		die( $result );
 	}
 
