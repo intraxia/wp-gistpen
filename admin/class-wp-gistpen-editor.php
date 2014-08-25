@@ -110,11 +110,11 @@ class WP_Gistpen_Editor {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_editor_scripts' ) );
 
 		// Add AJAX hooks for Ace theme
-		add_action( 'wp_ajax_gistpen_save_ace_theme', array( $this, 'save_ace_theme' ) );
+		add_action( 'wp_ajax_gistpen_save_ace_theme', array( 'WP_Gistpen_AJAX', 'save_ace_theme' ) );
 
 		// Add AJAX hooks to add and delete Gistfile editors
-		add_action( 'wp_ajax_add_gistfile_editor', array( $this, 'add_gistfile_editor' ) );
-		add_action( 'wp_ajax_delete_gistfile_editor', array( $this, 'delete_gistfile_editor' ) );
+		add_action( 'wp_ajax_add_gistfile_editor', array( 'WP_Gistpen_AJAX', 'add_gistfile_editor' ) );
+		add_action( 'wp_ajax_delete_gistfile_editor', array( 'WP_Gistpen_AJAX', 'delete_gistfile_editor' ) );
 
 		// Rearrange Gistpen layout
 		add_filter( 'screen_layout_columns', array( $this, 'screen_layout_columns' ) );
@@ -446,55 +446,6 @@ class WP_Gistpen_Editor {
 			wp_enqueue_script( $this->plugin_slug . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
 			wp_enqueue_script( $this->plugin_slug . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', $this->plugin_slug . '-ace-script' ), WP_Gistpen::VERSION, false );
 		}
-	}
-
-	/**
-	 * AJAX hook to save ACE editor theme
-	 *
-	 * @since     0.4.0
-	 */
-	public function save_ace_theme() {
-		if ( !wp_verify_nonce( $_POST['theme_nonce'], 'create_gistpen_ajax' ) ) {
-			die( __( "Nonce check failed.", 'wp-gistpen' ) );
-		}
-
-		$result = update_option( '_wpgp_ace_theme', $_POST['theme'] );
-		die( $result );
-	}
-
-	/**
-	 * AJAX hook to get a new ACE editor
-	 *
-	 * @since     0.4.0
-	 */
-	public function add_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['add_editor_nonce'], 'create_gistpen_ajax' ) ) {
-			die( __( "Nonce check failed.", $this->plugin_slug ) );
-		}
-
-		$this->save_gistfile();
-		ob_start();
-		$this->render_editor();
-		$editor = ob_end_flush();
-
-		die( trim( $editor ) );
-	}
-
-	/**
-	 * AJAX hook to delete an ACE editor
-	 *
-	 * @since     0.4.0
-	 */
-	public function delete_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['delete_editor_nonce'], 'create_gistpen_ajax' ) ) {
-			die( __( "Nonce check failed.", $this->plugin_slug ) );
-		}
-
-		$result = wp_delete_post( $_POST['gistfileID'] );
-		if( $result !== false ) {
-			$result = true;
-		}
-		die( $result );
 	}
 
 	/**

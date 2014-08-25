@@ -46,6 +46,7 @@ define('WP_GISTPEN_URL', plugin_dir_url( __FILE__ ));
 
 require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-updater.php' );
 require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-content.php' );
+require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-ajax.php' );
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
