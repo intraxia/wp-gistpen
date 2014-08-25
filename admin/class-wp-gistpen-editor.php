@@ -89,10 +89,6 @@ class WP_Gistpen_Editor {
 	 */
 	private function __construct() {
 
-		// Call $plugin_slug from public plugin class.
-		$plugin = WP_Gistpen::get_instance();
-		$this->plugin_slug = $plugin->get_plugin_slug();
-
 		// Edit the placeholder text in the Gistpen title box
 		add_filter( 'enter_title_here', array( $this, 'change_gistpen_title_box' ) );
 
@@ -153,7 +149,7 @@ class WP_Gistpen_Editor {
 		$screen = get_current_screen();
 
 		if ( 'gistpens' == $screen->post_type ){
-			$title = __( 'Gistpen description...', $this->plugin_slug );
+			$title = __( 'Gistpen description...', WP_Gistpen::get_instance()->get_plugin_slug() );
 		}
 
 		return $title;
@@ -205,7 +201,7 @@ class WP_Gistpen_Editor {
 
 			$this->render_hidden_field_gistfile_ids();
 
-			echo submit_button( __('Add Gistfile', $this->plugin_slug), 'primary', 'add-gistfile', true );
+			echo submit_button( __('Add Gistfile', WP_Gistpen::get_instance()->get_plugin_slug()), 'primary', 'add-gistfile', true );
 
 		}
 	}
@@ -219,7 +215,7 @@ class WP_Gistpen_Editor {
 	public function render_theme_selector() { ?>
 		<div class="_wpgp_ace_theme-wrap">
 			<label for="_wpgp_ace_theme">
-				<?php _e( 'Ace Editor Theme: ', $this->plugin_slug ); ?>
+				<?php _e( 'Ace Editor Theme: ', WP_Gistpen::get_instance()->get_plugin_slug() ); ?>
 			</label>
 			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
 			<?php foreach ($this->ace_themes as $slug => $name): ?>
@@ -302,7 +298,7 @@ class WP_Gistpen_Editor {
 	 * @since 0.4.0
 	 */
 	public function render_delete_button() {
-		submit_button( __('Delete This Gistfile', $this->plugin_slug), 'delete', 'delete-gistfile-' . $this->gistfile_id, false );
+		submit_button( __('Delete This Gistfile', WP_Gistpen::get_instance()->get_plugin_slug()), 'delete', 'delete-gistfile-' . $this->gistfile_id, false );
 	}
 
 	/**
@@ -429,7 +425,7 @@ class WP_Gistpen_Editor {
 		$screen = get_current_screen();
 
 		if ('gistpens' == $screen->id ) {
-			wp_enqueue_style( $this->plugin_slug .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
+			wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
 		}
 	}
 
@@ -443,8 +439,8 @@ class WP_Gistpen_Editor {
 		$screen = get_current_screen();
 
 		if ('gistpens' == $screen->id ) {
-			wp_enqueue_script( $this->plugin_slug . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
-			wp_enqueue_script( $this->plugin_slug . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', $this->plugin_slug . '-ace-script' ), WP_Gistpen::VERSION, false );
+			wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
+			wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script' ), WP_Gistpen::VERSION, false );
 		}
 	}
 

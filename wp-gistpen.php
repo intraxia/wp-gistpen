@@ -40,15 +40,6 @@ define('WP_GISTPEN_DIR', plugin_dir_path( __FILE__ ));
 define('WP_GISTPEN_URL', plugin_dir_url( __FILE__ ));
 
 /*----------------------------------------------------------------------------*
- * Load Helper Classes
- * @todo Write proper autoloader or swap to composer
- *----------------------------------------------------------------------------*/
-
-require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-updater.php' );
-require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-content.php' );
-require_once( WP_GISTPEN_DIR . 'helpers/class-wp-gistpen-ajax.php' );
-
-/*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
 
@@ -81,6 +72,4 @@ if ( is_admin() ) {
 	add_action( 'plugins_loaded', array( 'WP_Gistpen_Admin', 'get_instance' ) );
 	require_once( WP_GISTPEN_DIR . 'admin/class-wp-gistpen-editor.php' );
 	add_action( 'plugins_loaded', array( 'WP_Gistpen_Editor', 'get_instance' ) );
-	require_once( WP_GISTPEN_DIR . 'admin/class-wp-gistpen-post-editor.php' );
-	add_action( 'plugins_loaded', array( 'WP_Gistpen_Post_Editor', 'get_instance' ) );
 }

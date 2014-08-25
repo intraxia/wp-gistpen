@@ -46,9 +46,39 @@ class WP_Gistpen_Admin {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-updater.php' );
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-ajax.php' );
+
 		// Run the updater
 		add_action( 'admin_init', array( $this, 'init' ) );
 
+		/**
+		 * TinyMCE Hooks
+		 */
+		// Add TinyMCE Editor Buttons
+		add_filter( 'mce_external_plugins', function( $plugins ) {
+			$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-tinymce-plugin.min.js';
+			return $plugins;
+		});
+		add_filter( 'mce_buttons', function( $buttons ) {
+			array_push( $buttons, 'wp_gistpen' );
+			return $buttons;
+		});
+
+		/**
+		 * AJAX hooks
+		 */
+		// Embed the nonce
+		add_action( 'before_wp_tiny_mce', array( 'WP_Gistpen_AJAX', 'embed_nonce' ) );
+
+		// AJAX hook for TinyMCE button
+		add_action( 'wp_ajax_gistpen_insert_dialog', array( 'WP_Gistpen_AJAX', 'insert_gistpen_dialog' ) );
+		add_action( 'wp_ajax_create_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'create_gistpen_ajax' ) );
+		add_action( 'wp_ajax_search_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'search_gistpen_ajax' ) );
+
+		/**
+		 * Options page hooks
+		 */
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
