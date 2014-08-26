@@ -70,6 +70,4 @@ add_action( 'plugins_loaded', array( 'WP_Gistpen', 'get_instance' ) );
 if ( is_admin() ) {
 	require_once( WP_GISTPEN_DIR . 'admin/class-wp-gistpen-admin.php' );
 	add_action( 'plugins_loaded', array( 'WP_Gistpen_Admin', 'get_instance' ) );
-	require_once( WP_GISTPEN_DIR . 'admin/class-wp-gistpen-editor.php' );
-	add_action( 'plugins_loaded', array( 'WP_Gistpen_Editor', 'get_instance' ) );
 }

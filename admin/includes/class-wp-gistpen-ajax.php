@@ -142,12 +142,9 @@ class WP_Gistpen_AJAX {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
-		WP_Gistpen_Editor::get_instance()->save_gistfile();
-		ob_start();
-		WP_Gistpen_Editor::get_instance()->render_editor();
-		$editor = ob_end_flush();
+		$id = WP_Gistpen_Metapost::save_gistfile();
 
-		die( trim( $editor ) );
+		die( $id );
 	}
 
 	/**

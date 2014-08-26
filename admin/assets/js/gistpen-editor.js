@@ -7,7 +7,7 @@ var GistpenEditor = {
 	init: function() {
 		this.themeSelect = jQuery('#_wpgp_ace_theme');
 		this.addGistfileButton = jQuery('#add-gistfile');
-		this.gistfile_ids = jQuery('#gistfile_ids');
+		this.file_ids = jQuery('#file_ids');
 
 		this.loadClickHandlers();
 	},
@@ -18,6 +18,19 @@ var GistpenEditor = {
 			event.preventDefault();
 			thiseditor.addEditor();
 		});
+		this.themeSelect.change(function() {
+			jQuery.post(ajaxurl, {
+				action: 'gistpen_save_ace_theme',
+
+				theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+				theme: thiseditor.themeSelect.val(),
+
+			}, function(response) {
+				if(response === false) {
+					console.log('Failed to save ACE theme.');
+				}
+			});
+		});
 	},
 
 	addEditor: function() {
@@ -27,13 +40,8 @@ var GistpenEditor = {
 
 			add_editor_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
 		}, function(response) {
-			var neweditor = jQuery(response);
-			var gistfileID = neweditor.find('#gistfile-id');
-			var gistfileIDVal = gistfileID.val();
-
-			neweditor.insertBefore(thiseditor.addGistfileButton.parent('.submit'));
-			thiseditor.gistfile_ids.val(thiseditor.gistfile_ids.val() + ' ' + gistfileIDVal);
-			window['gfe' + gistfileIDVal] = new GistfileEditor(gistfileIDVal);
+			thiseditor.file_ids.val(thiseditor.file_ids.val() + ' ' + response);
+			window['gfe' + response] = new FileEditor(response);
 		});
 	}
 };
