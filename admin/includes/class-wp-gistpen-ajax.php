@@ -144,7 +144,7 @@ class WP_Gistpen_AJAX {
 
 		$id = WP_Gistpen_Saver::save_gistfile();
 
-		die( $id );
+		die( print $id );
 	}
 
 	/**
