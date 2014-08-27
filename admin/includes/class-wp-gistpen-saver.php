@@ -8,13 +8,13 @@
  */
 
 /**
- * This class manipulates the saving of parent Meta-Gistpen
+ * This class manipulates the saving of parent Gistpen
  * and all child Gistpens.
  *
- * @package WP_Gistpen_Metapost
+ * @package WP_Gistpen_Saver
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_Metapost {
+class WP_Gistpen_Saver {
 
 	public static $post_id;
 
@@ -45,7 +45,7 @@ class WP_Gistpen_Metapost {
 			self::save_gistfile();
 		} else {
 
-			$file_ids = explode( ' ', $_POST['file_ids'] );
+			$file_ids = explode( ' ', trim( $_POST['file_ids'] ) );
 
 			foreach ($file_ids as $file_id) {
 				$args = array();
@@ -87,9 +87,9 @@ class WP_Gistpen_Metapost {
 			$post[$key] = $value;
 		}
 
-		remove_action( 'save_post_gistpens', array( 'WP_Gistpen_Metapost', 'save_gistpen' ) );
+		remove_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 		$result = wp_insert_post( $post, true );
-		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Metapost', 'save_gistpen' ) );
+		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 
 		if( !is_wp_error( $result ) ) {
 			self::$file_ids[] = $result;

@@ -33,7 +33,7 @@ class WP_Gistpen_AJAX {
 	 */
 	public static function insert_gistpen_dialog() {
 
-		die(include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php');
+		die( include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php' );
 
 	}
 
@@ -79,7 +79,7 @@ class WP_Gistpen_AJAX {
 			$output .= '</li>';
 		}
 
-		die($output);
+		die( $output );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class WP_Gistpen_AJAX {
 			update_post_meta( $post_id, '_wpgp_gistpen_description', $_POST['gistpen_description'] );
 		}
 
-		die(print($post_id));
+		die( $post_id );
 
 	}
 
@@ -142,7 +142,7 @@ class WP_Gistpen_AJAX {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
-		$id = WP_Gistpen_Metapost::save_gistfile();
+		$id = WP_Gistpen_Saver::save_gistfile();
 
 		die( $id );
 	}

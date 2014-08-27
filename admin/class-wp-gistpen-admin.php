@@ -46,7 +46,7 @@ class WP_Gistpen_Admin {
 		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-updater.php' );
 		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-ajax.php' );
 		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-editor.php' );
-		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-metapost.php' );
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-saver.php' );
 
 		// Call $plugin_slug from public plugin class.
 		$plugin = WP_Gistpen::get_instance();
@@ -91,7 +91,7 @@ class WP_Gistpen_Admin {
 		 * Gistpen save hook
 		 */
 		// Save the files and attach to Gistpen
-		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Metapost', 'save_gistpen' ) );
+		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 
 		/**
 		 * AJAX hooks
