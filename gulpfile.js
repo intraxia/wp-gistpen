@@ -195,6 +195,10 @@ gulp.task('styles', ['install'], function() {
 			.pipe(gulpif(building, gulp.dest(paths.build + paths.scss[location].output)));
 	}
 
-	return stream;
+	prismStream = gulp.src('public/assets/vendor/prism/**/*.css')
+	.pipe(gulp.dest('public/assets/css/prism/'))
+	.pipe(gulpif(building, gulp.dest(paths.build + 'public/assets/css/prism/')));
+
+	return merge(stream, prismStream);
 
 });
