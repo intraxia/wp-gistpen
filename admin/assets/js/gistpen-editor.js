@@ -29,7 +29,7 @@ var GistpenEditor = {
 				data: {
 					action: 'add_gistfile_editor',
 
-					add_editor_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+					nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
 				},
 				success: function(response) {
 					file.id = response;
@@ -56,7 +56,7 @@ var GistpenEditor = {
 			jQuery.post(ajaxurl, {
 				action: 'gistpen_save_ace_theme',
 
-				theme_nonce: theeditor.getNonce(),
+				nonce: theeditor.getNonce(),
 				theme: theeditor.themeSelect.val(),
 
 			}, function(response) {

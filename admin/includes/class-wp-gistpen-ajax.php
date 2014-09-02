@@ -16,13 +16,21 @@
 class WP_Gistpen_AJAX {
 
 	/**
+	 * Slug for the nonce field
+	 *
+	 * @var string
+	 * @since  0.4.0
+	 */
+	protected $nonce_field = '_ajax_wp_gistpen';
+
+	/**
 	 * Embed the nonce in the head of the editor
 	 *
 	 * @return string    AJAX nonce
 	 * @since  0.2.0
 	 */
 	public static function embed_nonce() {
-		wp_nonce_field( 'create_gistpen_ajax', '_ajax_wp_gistpen', false );
+		wp_nonce_field( self::$nonce_field, self::$nonce_field, false );
 	}
 
 		/**
@@ -44,7 +52,7 @@ class WP_Gistpen_AJAX {
 	 * @since 0.2.0
 	 */
 	public static function search_gistpen_ajax() {
-		if ( !wp_verify_nonce( $_POST['gistpen_nonce'], 'create_gistpen_ajax' ) ) {
+		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
@@ -88,9 +96,9 @@ class WP_Gistpen_AJAX {
 	 * @return string $post_id the id of the created Gistpen
 	 * @since  0.2.0
 	 */
-	public static function create_gistpen_ajax() {
+	public static function _gistpen_ajax() {
 
-		if ( !wp_verify_nonce( $_POST['gistpen_nonce'], 'create_gistpen_ajax' ) ) {
+		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
 			die( __( "Nonce check failed.", 'wp-gistpen' ) );
 		}
 
@@ -123,7 +131,7 @@ class WP_Gistpen_AJAX {
 	 * @since     0.4.0
 	 */
 	public static function save_ace_theme() {
-		if ( !wp_verify_nonce( $_POST['theme_nonce'], 'create_gistpen_ajax' ) ) {
+		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
 			die( __( "Nonce check failed.", 'wp-gistpen' ) );
 		}
 
@@ -138,7 +146,7 @@ class WP_Gistpen_AJAX {
 	 * @since     0.4.0
 	 */
 	public static function add_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['add_editor_nonce'], 'create_gistpen_ajax' ) ) {
+		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
@@ -153,7 +161,7 @@ class WP_Gistpen_AJAX {
 	 * @since     0.4.0
 	 */
 	public static function delete_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['delete_editor_nonce'], 'create_gistpen_ajax' ) ) {
+		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 

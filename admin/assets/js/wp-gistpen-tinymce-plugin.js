@@ -76,7 +76,7 @@
 				jQuery.post( ajaxurl, {
 					action: 'search_gistpen_ajax',
 
-					gistpen_nonce: jQuery.trim(jQuery( '#_ajax_wp_gistpen' ).val()),
+					nonce: jQuery.trim(jQuery( '#_ajax_wp_gistpen' ).val()),
 					gistpen_search_term: jQuery( '#gistpen-search-field' ).val()
 				}, function( response ) {
 					jQuery( '#select-gistpen ul.gistpen-list' ).prepend( response );
@@ -101,7 +101,7 @@
 			jQuery.post( ajaxurl, {
 				action: 'create_gistpen_ajax',
 
-				gistpen_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+				nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
 				gistpen_title: jQuery( 'input[name="gistpen_title"]' ).val(),
 				gistpen_content: jQuery( 'textarea[name="gistpen_content"]' ).val(),
 				gistpen_description: jQuery( 'textarea[name="gistpen_description"]' ).val(),

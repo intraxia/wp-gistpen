@@ -155,7 +155,7 @@ FileEditor.prototype  = {
 		jQuery.post(ajaxurl,{
 			action: 'delete_gistfile_editor',
 
-			delete_editor_nonce: GistpenEditor.getNonce(),
+			nonce: GistpenEditor.getNonce(),
 			fileID: thiseditor.fileID,
 		}, function(response) {
 			if(response === false) {
