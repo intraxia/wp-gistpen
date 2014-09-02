@@ -85,6 +85,9 @@ class WP_Gistpen_Content {
 	 */
 	public static function get_shortcode_content( $args ) {
 
+		// Content needs to be cleared if we're calling multiple shortcodes in one post
+		self::$content = '';
+
 		// If the user didn't provide an ID, raise an error
 		if( $args['id'] == null ) {
 			return '<div class="gistpen-error">No Gistpen ID was provided.</div>';
