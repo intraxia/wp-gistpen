@@ -51,10 +51,10 @@ class WP_Gistpen_Saver {
 				$args = array();
 
 				$args['ID'] = $file_id;
-				$args['post_name'] = $_POST['gistfile-name-' . $file_id];
-				$args['post_title'] = $_POST['gistfile-name-' . $file_id];
-				$args['post_content'] = $_POST['gistfile-content-' . $file_id];
-				$args['tax_input']['language'] = $_POST['gistfile-language-' . $file_id];
+				$args['post_name'] = str_replace(" ", "-", $_POST['wp-gistpenfile-name-' . $file_id]);
+				$args['post_title'] = $_POST['wp-gistpenfile-name-' . $file_id];
+				$args['post_content'] = $_POST['wp-gistpenfile-content-' . $file_id];
+				$args['tax_input']['language'] = $_POST['wp-gistpenfile-language-' . $file_id];
 
 				self::save_gistfile( $args );
 
@@ -72,8 +72,8 @@ class WP_Gistpen_Saver {
 		// @todo do uniqueness check on $args['name']
 		$post = array(
 			'post_content' => '',
-			'post_name' => 'new-file',
-			'post_title' => 'new-file',
+			'post_name' => '',
+			'post_title' => '',
 			'post_type' => 'gistpens',
 			'post_status' => 'inherit',
 			'post_password' => '',

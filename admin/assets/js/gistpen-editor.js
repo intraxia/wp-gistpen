@@ -1,29 +1,63 @@
-jQuery(function() {
-	GistpenEditor.init();
-});
-
 var GistpenEditor = {
 
-	init: function() {
+	init: function(files) {
 		this.themeSelect = jQuery('#_wpgp_ace_theme');
 		this.addGistfileButton = jQuery('#add-gistfile');
-		this.file_ids = jQuery('#file_ids');
+		this.fileIDs = jQuery('#file_ids');
+		this.editorWrap = jQuery('#wp-gistfile-wrap');
+		this.files = files;
+		this.editors = [];
 
+		this.initEditors();
 		this.loadClickHandlers();
 	},
 
+	initEditors: function() {
+		for (var i = this.files.length - 1; i >= 0; i--) {
+			this.addEditor(this.files[i]);
+		}
+	},
+
+	addEditor: function(file) {
+		var theeditor = this;
+		this.editors.push(new FileEditor(file));
+		if(typeof file === 'undefined') {
+			file = {};
+			jQuery.ajax({
+				type: "POST",
+				url: ajaxurl,
+				data: {
+					action: 'add_gistfile_editor',
+
+					add_editor_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+				},
+				success: function(response) {
+					file.id = response;
+					theeditor.editors[theeditor.editors.length - 1].fileID = file.id;
+					theeditor.editors[theeditor.editors.length - 1].addID();
+					theeditor.fileIDs.val(theeditor.fileIDs.val() + ' ' + file.id);
+				}
+			});
+		}
+		if(typeof file.id !== "undefined") {
+			this.fileIDs.val(this.fileIDs.val() + ' ' + file.id);
+		}
+	},
+
 	loadClickHandlers: function() {
-		var thiseditor = this;
+		var theeditor = this;
+
 		this.addGistfileButton.click(function(event) {
 			event.preventDefault();
-			thiseditor.addEditor();
+			theeditor.addEditor();
 		});
+
 		this.themeSelect.change(function() {
 			jQuery.post(ajaxurl, {
 				action: 'gistpen_save_ace_theme',
 
-				theme_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-				theme: thiseditor.themeSelect.val(),
+				theme_nonce: theeditor.getNonce(),
+				theme: theeditor.themeSelect.val(),
 
 			}, function(response) {
 				if(response === false) {
@@ -33,15 +67,8 @@ var GistpenEditor = {
 		});
 	},
 
-	addEditor: function() {
-		var thiseditor = this;
-		jQuery.post(ajaxurl, {
-			action: 'add_gistfile_editor',
-
-			add_editor_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-		}, function(response) {
-			thiseditor.file_ids.val(thiseditor.file_ids.val() + ' ' + response);
-			window['gfe' + response] = new FileEditor(response);
-		});
+	getNonce: function() {
+		return jQuery.trim(jQuery('#_ajax_wp_gistpen').val());
 	}
+
 };

@@ -1,131 +1,102 @@
-function FileEditor(gistfileID, gistfileName, gistfileContent, gistfileLanguage) {
-	this.gistfileID = gistfileID;
-	this.gistfileName = typeof gistfileName !== 'undefined' ? gistfileName : '';
-	this.gistfileContent = typeof gistfileContent !== 'undefined' ? gistfileContent : '';
-	this.gistfileLanguage = typeof gistfileLanguage !== 'undefined' ? gistfileLanguage : null;
-	this.editorWrap = jQuery('#wp-gistfile-editor-wrap');
-	this.editorHTML = '\
-		<div class="wp-core-ui wp-editor-wrap wp-gistfile-content-wrap" id="wp-gistfile-content-'+this.gistfileID+'-wrap">\
-			<div class="wp-editor-tools hide-if-no-js" id="wp-gistfile-content-'+this.gistfileID+'-editor-tools">\
-\
-				<div class="wp-media-buttons" id="wp-gistfile-content-'+this.gistfileID+'-media-buttons">\
-					<label for="gistfile-name-'+this.gistfileID+'" style="display: none;">Gistfilename</label>\
-					<input type="text" name="gistfile-name-'+this.gistfileID+'" size="20" class="gistfile-name" id="gistfile-name-'+this.gistfileID+'" value="'+this.gistfileName+'" placeholder="Filename (no ext)" autocomplete="off" />\
-					<select name="gistfile-language-'+this.gistfileID+'" id="gistfile-language-'+this.gistfileID+'" class="gistfile-language"></select>\
-					<input type="submit" name="delete-gistfile-'+this.gistfileID+'" id="delete-gistfile-'+this.gistfileID+'" class="button delete" value="Delete This Gistfile">\
-				</div>\
-\
-				<div class="wp-editor-tabs" id="wp-editor-tabs-'+this.gistfileID+'">\
-					<a class="hide-if-no-js wp-switch-editor switch-html" id="content-html-'+this.gistfileID+'">Text</a>\
-					<a class="hide-if-no-js wp-switch-editor switch-ace" id="content-ace-'+this.gistfileID+'">Ace</a>\
-				</div>\
-\
-			</div>\
-\
-			<div class="wp-editor-container" id="wp-gistfile-content-'+this.gistfileID+'-editor-container">\
-				<textarea class="wp-editor-area" cols="40" id="gistfile-content-'+this.gistfileID+'" name="gistfile-content-'+this.gistfileID+'" rows="20">'+this.gistfileContent+'</textarea>\
-				<div class="ace-editor" id="ace-editor-'+this.gistfileID+'"></div>\
-			</div>\
-\
-			<input type="hidden" name="gistfile-id" id="gistfile-id" value="'+this.gistfileID+'">\
-\
-		</div>';
-	this.editorFull = jQuery(this.editorHTML);
-	this.aceEditorId = 'ace-editor-'+this.gistfileID;
-	this.aceEditorDiv = this.editorFull.find('#' + this.aceEditorId);
-	this.textButton = this.editorFull.find('#content-html-'+this.gistfileID);
-	this.aceButton = this.editorFull.find('#content-ace-'+this.gistfileID);
-	this.contentWrapDiv = this.editorFull.find('#wp-gistfile-content-'+this.gistfileID+'-wrap');
-	this.contentDiv = this.editorFull.find('#gistfile-content-'+this.gistfileID);
-	this.languageSelect = this.editorFull.find('#gistfile-language-'+this.gistfileID);
-	this.deleteGistfileButton = this.editorFull.find('#delete-gistfile-'+this.gistfileID);
+function FileEditor(file) {
+	this.file = typeof file !== "undefined" ? file : {};
+	this.scaffoldEditor();
+	this.appendEditor();
 
-	this.init();
+	this.fileID = typeof this.file.id !== "undefined" ? this.file.id : '';
+	this.addID();
+
+	this.fileName = typeof this.file.name !== "undefined" ? this.file.name : '';
+	this.addName();
+
+	this.fileContent = typeof this.file.content !== "undefined" ? this.file.content : '';
+	this.addContent();
+
+	this.fileLanguage = typeof this.file.language !== "undefined" ? (this.file.language === "javascript" ? "js" : this.file.language) : 'bash';
+	this.addLanguage();
+
+	this.activateAceEditor();
+	this.loadClickHandlers();
+
 }
 
 FileEditor.prototype  = {
 
-	init: function() {
-
-		jQuery('#titlediv .inside').remove();
-		this.appendEditor();
-		this.loadClickHandlers();
-		this.activateAceEditor();
+	scaffoldEditor: function() {
+		//	HTML looks like this:
+		//	<div class="wp-core-ui wp-editor-wrap wp-gistpenfile-editor-wrap">
+		//		<div class="wp-editor-tools hide-if-no-js">
+		//
+		//			<div class="wp-media-buttons">
+		//				<input type="text" size="20" class="wp-gistpenfile-name" placeholder="Filename (no ext)" autocomplete="off" />
+		//				<select class="wp-gistpenfile-language"></select>
+		//				<input type="submit" class="button delete" value="Delete This Gistfile">
+		//			</div>
+		//
+		//			<div class="wp-editor-tabs wp-gistpenfile-editor-tabs">
+		//				<a class="hide-if-no-js wp-switch-editor switch-html">Text</a>
+		//				<a class="hide-if-no-js wp-switch-editor switch-ace">Ace</a>
+		//			</div>
+		//
+		//		</div>
+		//
+		//		<div class="wp-editor-container wp-gistpenfile-editor-container">
+		//			<textarea class="wp-editor-area wp-gistpenfile-editor-area" cols="40" rows="20"></textarea>
+		//			<div class="ace-editor"></div>
+		//		</div>
+		//
+		//	</div>
+		this.editorHTML = '<div class="wp-core-ui wp-editor-wrap wp-gistpenfile-editor-wrap"><div class="wp-editor-tools hide-if-no-js"><div class="wp-media-buttons"><input type="text" size="20" class="wp-gistpenfile-name" placeholder="Filename (no ext)" autocomplete="off" /><select class="wp-gistpenfile-language"></select><input type="submit" class="button delete" value="Delete This Gistfile"></div><div class="wp-editor-tabs wp-gistpenfile-editor-tabs"><a class="hide-if-no-js wp-switch-editor switch-html">Text</a><a class="hide-if-no-js wp-switch-editor switch-ace">Ace</a></div></div><div class="wp-editor-container wp-gistpenfile-editor-container"><textarea class="wp-editor-area wp-gistpenfile-editor-area" cols="40" rows="20"></textarea><div class="ace-editor"></div></div></div>';
+		this.editorFull = jQuery(this.editorHTML);
+		this.editorWrap = this.editorFull.find('.wp-gistpenfile-editor-wrap');
+		this.editorTools = this.editorFull.find('.wp-editor-tools');
+		this.mediaButtons = this.editorFull.find('wp-media-buttons');
+		this.filenameInput = this.editorFull.find('.wp-gistpenfile-name');
+		this.languageSelect = this.editorFull.find('.wp-gistpenfile-language');
+		this.deleteFileButton = this.editorFull.find('.button.delete');
+		this.editorTabs = this.editorFull.find('.wp-gistpenfile-editor-tabs');
+		this.textButton = this.editorFull.find('.wp-switch-editor.switch-html');
+		this.aceButton = this.editorFull.find('.wp-switch-editor.switch-ace');
+		this.editorContainer = this.editorFull.find('wp-gistpenfile-editor-container');
+		this.editorTextArea = this.editorFull.find('.wp-gistpenfile-editor-area');
+		this.aceEditorDiv = this.editorFull.find('.ace-editor');
 	},
 
 	appendEditor: function() {
-		this.editorFull.appendTo(this.editorWrap);
+		this.editorFull.appendTo(GistpenEditor.editorWrap);
+		this.appendLanguages();
+		// add label: <label for="wp-gistpenfile-name-'+this.fileID+'" style="display: none;">Gistfilename</label>\
 	},
 
-	loadClickHandlers: function() {
-		var theeditor = this;
-		this.textButton.click(function(){
-			theeditor.switchToText();
-		});
-		this.aceButton.click(function(){
-			theeditor.switchToAce();
-		});
-		this.deleteGistfileButton.click(function(event) {
-			event.preventDefault();
-			theeditor.deleteEditor();
-		});
-	},
-
-	switchToText: function() {
-		this.aceEditorDiv.hide();
-		this.contentWrapDiv.addClass('html-active').removeClass('ace-active');
-		this.contentDiv.show();
-	},
-
-	switchToAce: function() {
-		this.updateAceContent();
-		this.aceEditorDiv.show();
-		this.contentDiv.hide();
-		this.contentWrapDiv.removeClass('html-active').addClass('ace-active');
-		this.aceEditor.focus();
-	},
-
-	deleteEditor: function() {
-		var theeditor = this;
-		this.contentWrapDiv.remove();
-		jQuery.post(ajaxurl,{
-			action: 'delete_gistfile_editor',
-
-			delete_editor_nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-			gistfileID: theeditor.gistfileID,
-		}, function(response) {
-			if(response === false) {
-				console.log('Failed to delete Gistfile.');
-			}
+	appendLanguages: function() {
+		var thiseditor = this;
+		jQuery.each(gistpenLanguages, function(index, el) {
+			jQuery('<option></option>').val(index).text(el).appendTo(thiseditor.languageSelect);
 		});
 	},
 
 	activateAceEditor: function() {
-		var theeditor = this;
-		// Set up editor on div
-		this.aceEditor = ace.edit(this.aceEditorId);
-		this.setUpThemeAndMode();
-
-		this.aceEditor.getSession().on('change', function(event) {
-			theeditor.updateTextContent();
+		var thiseditor = this;
+		jQuery.each(this.aceEditorDiv, function(index, el) {
+			thiseditor.aceEditor = el; // Get DOM object from jQuery
 		});
+		this.aceEditor = ace.edit(this.aceEditor); // Needs DOM object
+		this.setTheme();
+		this.setMode();
 		this.switchToAce();
 	},
 
-	setUpThemeAndMode: function() {
-		var theeditor = this;
+	setTheme: function() {
 		this.aceEditor.setTheme('ace/theme/' + GistpenEditor.themeSelect.val());
-		GistpenEditor.themeSelect.change(function(event) {
-			theeditor.aceEditor.setTheme('ace/theme/' + GistpenEditor.themeSelect.val());
-		});
-		// Set mode and enable listener
-		this.setMode(this.languageSelect.val());
-		this.languageSelect.change(function() {
-			theeditor.setMode(theeditor.languageSelect.val());
-		});
 	},
 
-	setMode: function(mode) {
+	setMode: function() {
+		var mode = this.languageSelect.val();
+		// Nothin is set on init, so default to bash
+		if (null === mode) {
+			this.languageSelect.val('bash');
+			mode = 'bash';
+		}
 		if('js' === mode) {
 			this.aceEditor.getSession().setMode('ace/mode/javascript');
 		} else if( 'bash' === mode) {
@@ -135,11 +106,103 @@ FileEditor.prototype  = {
 		}
 	},
 
+	loadClickHandlers: function() {
+		var thiseditor = this;
+
+		this.textButton.click(function(){
+			thiseditor.switchToText();
+		});
+
+		this.aceButton.click(function(){
+			thiseditor.switchToAce();
+		});
+
+		this.aceEditor.getSession().on('change', function(event) {
+			thiseditor.updateTextContent();
+		});
+
+		this.deleteFileButton.click(function(event) {
+			event.preventDefault();
+			thiseditor.deleteEditor();
+		});
+
+		GistpenEditor.themeSelect.change(function(event) {
+			thiseditor.aceEditor.setTheme('ace/theme/' + GistpenEditor.themeSelect.val());
+		});
+
+		this.languageSelect.change(function() {
+			thiseditor.setMode();
+		});
+	},
+
+	switchToText: function() {
+		this.aceEditorDiv.hide();
+		this.editorTextArea.show();
+		this.editorWrap.addClass('html-active').removeClass('ace-active');
+	},
+
+	switchToAce: function() {
+		this.updateAceContent();
+		this.editorTextArea.hide();
+		this.aceEditorDiv.show();
+		this.editorWrap.addClass('ace-active').removeClass('html-active');
+		this.aceEditor.focus();
+	},
+
+	deleteEditor: function() {
+		var thiseditor = this;
+		this.editorFull.remove();
+		jQuery.post(ajaxurl,{
+			action: 'delete_gistfile_editor',
+
+			delete_editor_nonce: GistpenEditor.getNonce(),
+			fileID: thiseditor.fileID,
+		}, function(response) {
+			if(response === false) {
+				console.log('Failed to delete file.');
+			}
+		});
+	},
+
 	updateAceContent: function() {
-		this.aceEditor.getSession().setValue(this.contentDiv.val());
+		this.aceEditor.getSession().setValue(this.editorTextArea.val());
 	},
 
 	updateTextContent: function() {
-		this.contentDiv.val(this.aceEditor.getValue());
+		this.editorTextArea.val(this.aceEditor.getValue());
+	},
+
+	addID: function() {
+		this.filenameInput.attr({
+			id: 'wp-gistpenfile-name-'+this.fileID,
+			name: 'wp-gistpenfile-name-'+this.fileID
+		});
+		this.languageSelect.attr({
+			id: 'wp-gistpenfile-language-'+this.fileID,
+			name: 'wp-gistpenfile-language-'+this.fileID
+		});
+		this.deleteFileButton.attr({
+			id: 'wp-delete-gistpenfile-'+this.fileID,
+			name: 'wp-delete-gistpenfile-'+this.fileID,
+		});
+		this.editorTextArea.attr({
+			id: 'wp-gistpenfile-content-'+this.fileID,
+			name: 'wp-gistpenfile-content-'+this.fileID
+		});
+		this.aceEditorDiv.attr({
+			id: 'ace-editor-'+this.fileID
+		});
+	},
+
+	addName: function() {
+		this.filenameInput.val(this.fileName);
+	},
+
+	addContent: function() {
+		this.editorTextArea.val(this.fileContent);
+	},
+
+	addLanguage: function() {
+		this.languageSelect.val(this.fileLanguage);
 	}
 };

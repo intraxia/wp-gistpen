@@ -157,10 +157,11 @@ class WP_Gistpen_AJAX {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
-		$result = wp_delete_post( $_POST['gistfileID'] );
+		$result = wp_delete_post( $_POST['fileID'] );
 		if( $result !== false ) {
 			$result = true;
 		}
-		die( $result );
+
+		die( print $result );
 	}
 }

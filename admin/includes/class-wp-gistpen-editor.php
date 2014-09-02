@@ -93,8 +93,8 @@ class WP_Gistpen_Editor {
 			self::set_up_gistpen_and_files();
 
 			self::render_theme_selector(); ?>
-			<div id="wp-gistfile-editor-wrap"></div><?php
-			self::render_hidden_field_file_ids();
+			<div id="wp-gistfile-wrap"></div>
+			<input type="hidden" id="file_ids" name="file_ids" value=""><?php
 
 			echo submit_button( __('Add Gistfile', WP_Gistpen::get_instance()->get_plugin_slug()), 'primary', 'add-gistfile', true );
 
@@ -143,27 +143,6 @@ class WP_Gistpen_Editor {
 	}
 
 	/**
-	 * Renders the hidden field containing all the Gistfile ids
-	 *
-	 * @return string   input[type="hidden"].gistfile_ids
-	 * @since 0.4.0
-	 */
-	public static function render_hidden_field_file_ids() {
-		if( ! empty(self::$files) ) {
-			foreach (self::$files as $file ) {
-				$ids[] = $file->ID;
-			}
-		} else {
-			$ids = WP_Gistpen_Saver::$file_ids;
-			foreach ( $ids as $id ) {
-				self::$files[] = get_post( $id );
-			}
-		}
-		$ids_string = implode( ' ', $ids); ?>
-		<input type="hidden" id="file_ids" name="file_ids" value="<?php echo $ids_string; ?>"><?php
-	}
-
-	/**
 	 * Hooks into admin footer to initate ACE editors
 	 *
 	 * @return string   ACE editor init script
@@ -172,12 +151,31 @@ class WP_Gistpen_Editor {
 	public static function add_ace_editor_init_inline() {
 		$screen = get_current_screen();
 
-		if( 'gistpens' == $screen->id ): ?>
+		if( 'gistpens' == $screen->id ):
+
+			if( empty(self::$files) ) {
+				$ids = WP_Gistpen_Saver::$file_ids;
+				foreach ( $ids as $id ) {
+					self::$files[] = get_post( $id );
+				}
+			}
+
+			foreach( self::$files as $file ) {
+				$language = WP_Gistpen_Content::get_the_language( $file->ID );
+
+				$jsFiles[] = array(
+					'id' => $file->ID,
+					'name' => $file->post_name,
+					'language' => $language,
+					'content' => $file->post_content
+				);
+			}
+
+			$jsFiles = json_encode($jsFiles); ?>
 			<script type="text/javascript">
 				jQuery(function() {
-					<?php foreach (self::$files as $file) : ?>
-						window['gfe<?php echo $file->ID; ?>'] = new FileEditor("<?php echo $file->ID; ?>", "<?php echo $file->post_name; ?>", "<?php echo $file->post_content; ?>");
-					<?php endforeach;?>
+					debugger;
+					GistpenEditor.init(<?php echo $jsFiles; ?>);
 				});
 			</script><?php
 		endif;
