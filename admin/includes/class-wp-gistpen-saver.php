@@ -54,6 +54,7 @@ class WP_Gistpen_Saver {
 				$args['post_name'] = str_replace(" ", "-", $_POST['wp-gistpenfile-name-' . $file_id]);
 				$args['post_title'] = $_POST['wp-gistpenfile-name-' . $file_id];
 				$args['post_content'] = $_POST['wp-gistpenfile-content-' . $file_id];
+				$args['post_status'] = $_POST['post_status'];
 				$args['tax_input']['language'] = $_POST['wp-gistpenfile-language-' . $file_id];
 
 				self::save_gistfile( $args );
