@@ -39,7 +39,7 @@ intermediate
 cache
 /includes
 node_modules
-public/assets/vendor
+bower_components
 admin/assets/js/ace
 build
 

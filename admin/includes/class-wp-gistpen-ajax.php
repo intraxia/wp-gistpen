@@ -21,7 +21,7 @@ class WP_Gistpen_AJAX {
 	 * @var string
 	 * @since  0.4.0
 	 */
-	protected $nonce_field = '_ajax_wp_gistpen';
+	protected static $nonce_field = '_ajax_wp_gistpen';
 
 	/**
 	 * Embed the nonce in the head of the editor
