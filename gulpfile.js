@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
 	rimraf = require('rimraf'),
-	jshint = require('gulp-jshint'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
 	composer = require('gulp-composer'),
@@ -46,6 +45,7 @@ var paths = {
 				'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.js',
 				'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.js',
 				'public/assets/vendor/prism/plugins/file-highlight/prism-file-highlight.js',
+				// Other files
 				'public/assets/js/*.js',
 				'!public/assets/js/wp-gistpen.min.js'],
 			output: {
@@ -108,9 +108,15 @@ var paths = {
 	build: 'build/'
 };
 
-gulp.task( 'init', [ 'install', 'scripts', 'styles' ]);
+gulp.task('init', function() {
+	runs(
+		['clean-bower', 'clean-composer'],
+		'install',
+		['scripts', 'styles']
+	);
+});
 
-gulp.task( 'update',[ 'scripts', 'styles' ] );
+gulp.task('update', ['scripts', 'styles']);
 
 gulp.task( 'watch', [ 'update' ], function () {
 	gulp.watch( paths.js.public.files, [ 'update' ] );
@@ -141,7 +147,7 @@ gulp.task('set-build-var', function(cb) {
 	cb(err);
 });
 
-gulp.task('install', ['clean-installs'], function() {
+gulp.task('install', function() {
 	var composed, bowered;
 
 	if (building) {
@@ -155,8 +161,6 @@ gulp.task('install', ['clean-installs'], function() {
 	return merge(composed, bowered);
 });
 
-gulp.task('clean-installs', ['clean-bower', 'clean-composer']);
-
 gulp.task('clean-bower', function(cb) {
 	rimraf('public/assets/vendor', cb);
 });
@@ -165,7 +169,7 @@ gulp.task('clean-composer', function(cb) {
 	rimraf('includes', cb);
 });
 
-gulp.task('scripts', ['install'], function() {
+gulp.task('scripts', function() {
 	var stream;
 	var aceStream;
 
@@ -185,7 +189,7 @@ gulp.task('scripts', ['install'], function() {
 
 });
 
-gulp.task('styles', ['install'], function() {
+gulp.task('styles', function() {
 	var stream;
 
 	for(var location in paths.scss) {
