@@ -33,7 +33,7 @@ class WP_Gistpen_AJAX {
 	 */
 	public static function insert_gistpen_dialog() {
 
-		die(include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php');
+		die( include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php' );
 
 	}
 
@@ -79,7 +79,7 @@ class WP_Gistpen_AJAX {
 			$output .= '</li>';
 		}
 
-		die($output);
+		die( $output );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class WP_Gistpen_AJAX {
 			update_post_meta( $post_id, '_wpgp_gistpen_description', $_POST['gistpen_description'] );
 		}
 
-		die(print($post_id));
+		die( $post_id );
 
 	}
 
@@ -142,12 +142,9 @@ class WP_Gistpen_AJAX {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
-		WP_Gistpen_Editor::get_instance()->save_gistfile();
-		ob_start();
-		WP_Gistpen_Editor::get_instance()->render_editor();
-		$editor = ob_end_flush();
+		$id = WP_Gistpen_Saver::save_gistfile();
 
-		die( trim( $editor ) );
+		die( print $id );
 	}
 
 	/**
@@ -160,10 +157,11 @@ class WP_Gistpen_AJAX {
 			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
-		$result = wp_delete_post( $_POST['gistfileID'] );
+		$result = wp_delete_post( $_POST['fileID'] );
 		if( $result !== false ) {
 			$result = true;
 		}
-		die( $result );
+
+		die( print $result );
 	}
 }

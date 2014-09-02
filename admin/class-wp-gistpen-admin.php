@@ -41,6 +41,12 @@ class WP_Gistpen_Admin {
 	 * @since     0.1.0
 	 */
 	private function __construct() {
+		// Require helper classes
+		// @todo better autoloading?
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-updater.php' );
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-ajax.php' );
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-editor.php' );
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-saver.php' );
 
 		// Call $plugin_slug from public plugin class.
 		$plugin = WP_Gistpen::get_instance();
@@ -49,6 +55,65 @@ class WP_Gistpen_Admin {
 		// Run the updater
 		add_action( 'admin_init', array( $this, 'init' ) );
 
+		/**
+		 * TinyMCE hooks
+		 */
+		// Add TinyMCE Editor Buttons
+		add_filter( 'mce_external_plugins', function( $plugins ) {
+			$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-tinymce-plugin.min.js';
+			return $plugins;
+		});
+		add_filter( 'mce_buttons', function( $buttons ) {
+			array_push( $buttons, 'wp_gistpen' );
+			return $buttons;
+		});
+
+		/**
+		 * Gistpen Editor hooks
+		 */
+		// Edit the placeholder text in the Gistpen title box
+		add_filter( 'enter_title_here', array( 'WP_Gistpen_Editor', 'new_enter_title_here' ));
+		// Hook in repeatable file editor
+		add_action( 'edit_form_after_title', array( 'WP_Gistpen_Editor', 'render_gistfile_editor' ) );
+		// Load Gistpen editor stylesheet and scripts
+		add_action( 'admin_enqueue_scripts', array( 'WP_Gistpen_Editor', 'enqueue_editor_styles' ) );
+		add_action( 'admin_enqueue_scripts', array( 'WP_Gistpen_Editor', 'enqueue_editor_scripts' ) );
+		// Init all the rendered editors
+		add_action( 'admin_print_footer_scripts', array( 'WP_Gistpen_Editor', 'add_ace_editor_init_inline' ), 99 );
+
+		// Rearrange Gistpen layout
+		add_filter( 'screen_layout_columns', array( 'WP_Gistpen_Editor', 'screen_layout_columns' ) );
+		add_action( 'admin_menu', array( 'WP_Gistpen_Editor', 'remove_meta_boxes' ) );
+		add_filter( 'get_user_option_screen_layout_gistpens', array( 'WP_Gistpen_Editor', 'screen_layout_gistpens' ) );
+		add_filter( 'get_user_option_meta-box-order_gistpens', array( 'WP_Gistpen_Editor', 'gistpens_meta_box_order') );
+
+		/**
+		 * Gistpen save hook
+		 */
+		// Save the files and attach to Gistpen
+		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+
+		/**
+		 * AJAX hooks
+		 */
+		// Embed the nonce
+		add_action( 'before_wp_tiny_mce', array( 'WP_Gistpen_AJAX', 'embed_nonce' ) );
+
+		// AJAX hook for TinyMCE button
+		add_action( 'wp_ajax_gistpen_insert_dialog', array( 'WP_Gistpen_AJAX', 'insert_gistpen_dialog' ) );
+		add_action( 'wp_ajax_create_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'create_gistpen_ajax' ) );
+		add_action( 'wp_ajax_search_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'search_gistpen_ajax' ) );
+
+		// AJAX hook to save Ace theme
+		add_action( 'wp_ajax_gistpen_save_ace_theme', array( 'WP_Gistpen_AJAX', 'save_ace_theme' ) );
+
+		// AJAX hooks to add and delete Gistfile editors
+		add_action( 'wp_ajax_add_gistfile_editor', array( 'WP_Gistpen_AJAX', 'add_gistfile_editor' ) );
+		add_action( 'wp_ajax_delete_gistfile_editor', array( 'WP_Gistpen_AJAX', 'delete_gistfile_editor' ) );
+
+		/**
+		 * Options page hooks
+		 */
 		// Load admin style sheet and JavaScript.
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
@@ -115,7 +180,6 @@ class WP_Gistpen_Admin {
 	 * @since 0.3.0
 	 */
 	public function register_setting() {
-
 		register_setting( $this->plugin_slug, $this->plugin_slug );
 	}
 

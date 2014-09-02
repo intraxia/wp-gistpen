@@ -37,9 +37,8 @@ dwsync.xml
 intermediate
 .idea
 cache
-includes
+/includes
 node_modules
-admin/includes
 public/assets/vendor
 admin/assets/js/ace
 build

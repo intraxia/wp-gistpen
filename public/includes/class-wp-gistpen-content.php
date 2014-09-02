@@ -98,8 +98,6 @@ class WP_Gistpen_Content {
 	 */
 	private static function add_code_markup() {
 
-		$terms = get_the_terms( self::$gistpen->ID, 'language' );
-
 		$content = '<pre id="gistpen-' . self::$gistpen->post_name . '" class="gistpen line-numbers" ';
 
 		if( self::$highlight !== null ) {
@@ -108,13 +106,7 @@ class WP_Gistpen_Content {
 
 		$content .= '>';
 
-		if( $terms ) {
-			$lang = array_pop( $terms );
-			$slug = ($lang->slug == 'js' ? 'javascript' : $lang->slug);
-			$slug = ($lang->slug == 'sass' ? 'scss' : $slug);
-		} else {
-			$slug = 'none';
-		}
+		$slug = self::get_the_language( self::$gistpen->ID );
 
 		$content .= '<code class="language-' . $slug . '">' . self::$content;
 		$content .= '</code></pre>';
@@ -143,6 +135,27 @@ class WP_Gistpen_Content {
 		// Add it to the content
 		self::$content .= $description_html;
 
+	}
+
+	/**
+	 * Get the language slug from an ID
+	 *
+	 * @param  int    $gistpen_id    ID of the Gistpen
+	 * @return string             language slug
+	 * @since    0.4.0
+	 */
+	public static function get_the_language( $gistpen_id ) {
+		$terms = get_the_terms( $gistpen_id, 'language' );
+
+		if( $terms ) {
+			$lang = array_pop( $terms );
+			$slug = ($lang->slug == 'js' ? 'javascript' : $lang->slug);
+			$slug = ($lang->slug == 'sass' ? 'scss' : $slug);
+		} else {
+			$slug = 'none';
+		}
+
+		return $slug;
 	}
 
 }
