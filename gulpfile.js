@@ -118,8 +118,18 @@ gulp.task('init', function() {
 
 gulp.task('update', ['scripts', 'styles']);
 
-gulp.task( 'watch', [ 'update' ], function () {
-	gulp.watch( paths.js.public.files, [ 'update' ] );
+gulp.task('watch', ['update'], function () {
+	gulp.watch(
+		[].concat(
+			paths.js.public.files,
+			paths.js.admin.files,
+			paths.js.tinymce.files,
+			paths.js.editor.files,
+			paths.scss.admin.files,
+			paths.scss.public.files,
+			paths.scss.editor.files,
+			paths.copy),
+		['update']);
 });
 
 gulp.task('build', function() {
