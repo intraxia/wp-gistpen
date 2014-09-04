@@ -1,5 +1,5 @@
-// Some styles for the Ace editor
-#ace-editor {
+// Some styles for the Gistpen editor
+.ace-editor {
 	min-height: 360px;
 	width: 100%;
 }
@@ -8,4 +8,29 @@
 	color: #555;
 	height: 20px;
 	border-bottom: none;
+}
+
+.wp-gistfile-content-wrap {
+	margin-bottom: 15px;
+}
+
+._wpgp_ace_theme-wrap {
+	margin: 10px;
+
+	label {
+		font-weight: bold;
+	}
+}
+
+.wp-gistpenfile-language, .wp-gistpenfile-name {
+	float: left;
+}
+
+#normal-sortables .postbox {
+	float: left;
+	margin: 0 10px 20px;
+
+	&:first-child {
+		margin: 0 10px 20px 0;
+	}
 }

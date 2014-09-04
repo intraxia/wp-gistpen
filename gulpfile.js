@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
 	rimraf = require('rimraf'),
-	jshint = require('gulp-jshint'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
 	composer = require('gulp-composer'),
@@ -17,37 +16,38 @@ var paths = {
 	js: {
 		public: {
 			files: [
-				'public/assets/vendor/prism/components/prism-core.js',
-				'public/assets/vendor/prism/components/prism-markup.js',
-				'public/assets/vendor/prism/components/prism-css.js',
-				'public/assets/vendor/prism/components/prism-clike.js',
-				'public/assets/vendor/prism/components/prism-javascript.js',
-				'public/assets/vendor/prism/components/prism-php.js',
-				'public/assets/vendor/prism/components/prism-bash.js',
-				'public/assets/vendor/prism/components/prism-groovy.js',
-				'public/assets/vendor/prism/components/prism-java.js',
-				'public/assets/vendor/prism/components/prism-python.js',
-				'public/assets/vendor/prism/components/prism-ruby.js',
-				'public/assets/vendor/prism/components/prism-scala.js',
-				'public/assets/vendor/prism/components/prism-scss.js',
-				'public/assets/vendor/prism/components/prism-sql.js',
+				'bower_components/prism/components/prism-core.js',
+				'bower_components/prism/components/prism-markup.js',
+				'bower_components/prism/components/prism-css.js',
+				'bower_components/prism/components/prism-clike.js',
+				'bower_components/prism/components/prism-javascript.js',
+				'bower_components/prism/components/prism-php.js',
+				'bower_components/prism/components/prism-bash.js',
+				'bower_components/prism/components/prism-groovy.js',
+				'bower_components/prism/components/prism-java.js',
+				'bower_components/prism/components/prism-python.js',
+				'bower_components/prism/components/prism-ruby.js',
+				'bower_components/prism/components/prism-scala.js',
+				'bower_components/prism/components/prism-scss.js',
+				'bower_components/prism/components/prism-sql.js',
 				// New languages
-				'public/assets/vendor/prism/components/prism-c.js',
-				'public/assets/vendor/prism/components/prism-coffeescript.js',
-				'public/assets/vendor/prism/components/prism-csharp.js',
-				'public/assets/vendor/prism/components/prism-go.js',
-				'public/assets/vendor/prism/components/prism-http.js',
-				'public/assets/vendor/prism/components/prism-ini.js',
-				'public/assets/vendor/prism/components/prism-markup.js',
-				'public/assets/vendor/prism/components/prism-objectivec.js',
-				'public/assets/vendor/prism/components/prism-swift.js',
-				'public/assets/vendor/prism/components/prism-twig.js',
+				'bower_components/prism/components/prism-c.js',
+				'bower_components/prism/components/prism-coffeescript.js',
+				'bower_components/prism/components/prism-csharp.js',
+				'bower_components/prism/components/prism-go.js',
+				'bower_components/prism/components/prism-http.js',
+				'bower_components/prism/components/prism-ini.js',
+				'bower_components/prism/components/prism-markup.js',
+				'bower_components/prism/components/prism-objectivec.js',
+				'bower_components/prism/components/prism-swift.js',
+				'bower_components/prism/components/prism-twig.js',
 				// Prism Plugins
-				'public/assets/vendor/prism/plugins/line-numbers/prism-line-numbers.js',
-				'public/assets/vendor/prism/plugins/line-highlight/prism-line-highlight.js',
-				'public/assets/vendor/prism/plugins/file-highlight/prism-file-highlight.js',
+				'bower_components/prism/plugins/line-numbers/prism-line-numbers.js',
+				'bower_components/prism/plugins/line-highlight/prism-line-highlight.js',
+				'bower_components/prism/plugins/file-highlight/prism-file-highlight.js',
+				// Other files
 				'public/assets/js/*.js',
-				'!public/assets/js/wp-gistpen.min.js'],
+				'!public/assets/js/*.min.js'],
 			output: {
 				filename: 'wp-gistpen.min.js',
 				dir: 'public/assets/js/'
@@ -68,7 +68,10 @@ var paths = {
 			},
 		},
 		editor: {
-			files: ['admin/assets/js/wp-gistpen-editor.js'],
+			files: [
+				'admin/assets/js/gistpen-editor.js',
+				'admin/assets/js/file-editor.js'
+			],
 			output: {
 				filename: 'wp-gistpen-editor.min.js',
 				dir: 'admin/assets/js/'
@@ -100,17 +103,33 @@ var paths = {
 		'*.lock',
 		'!node_modules/**',
 		'!includes/**',
-		'!public/assets/vendor/**',
+		'!bower_components/**',
 		'!*.sublime-*'],
 	build: 'build/'
 };
 
-gulp.task( 'init', [ 'install', 'scripts', 'styles' ]);
+gulp.task('init', function() {
+	runs(
+		['clean-bower', 'clean-composer'],
+		'install',
+		['scripts', 'styles']
+	);
+});
 
-gulp.task( 'update',[ 'scripts', 'styles' ] );
+gulp.task('update', ['scripts', 'styles']);
 
-gulp.task( 'watch', [ 'update' ], function () {
-	gulp.watch( paths.js.public.files, [ 'update' ] );
+gulp.task('watch', ['update'], function () {
+	gulp.watch(
+		[].concat(
+			paths.js.public.files,
+			paths.js.admin.files,
+			paths.js.tinymce.files,
+			paths.js.editor.files,
+			paths.scss.admin.files,
+			paths.scss.public.files,
+			paths.scss.editor.files,
+			paths.copy),
+		['update']);
 });
 
 gulp.task('build', function() {
@@ -138,7 +157,7 @@ gulp.task('set-build-var', function(cb) {
 	cb(err);
 });
 
-gulp.task('install', ['clean-installs'], function() {
+gulp.task('install', function() {
 	var composed, bowered;
 
 	if (building) {
@@ -152,17 +171,15 @@ gulp.task('install', ['clean-installs'], function() {
 	return merge(composed, bowered);
 });
 
-gulp.task('clean-installs', ['clean-bower', 'clean-composer']);
-
 gulp.task('clean-bower', function(cb) {
-	rimraf('public/assets/vendor', cb);
+	rimraf('bower_components', cb);
 });
 
 gulp.task('clean-composer', function(cb) {
 	rimraf('includes', cb);
 });
 
-gulp.task('scripts', ['install'], function() {
+gulp.task('scripts', function() {
 	var stream;
 	var aceStream;
 
@@ -174,7 +191,7 @@ gulp.task('scripts', ['install'], function() {
 			.pipe(gulpif(building, gulp.dest(paths.build + paths.js[location].output.dir)));
 	}
 
-	aceStream = gulp.src('public/assets/vendor/ace-builds/src-min-noconflict/**')
+	aceStream = gulp.src('bower_components/ace-builds/src-min-noconflict/**')
 	.pipe(gulp.dest('admin/assets/js/ace/'))
 	.pipe(gulpif(building, gulp.dest(paths.build + 'admin/assets/js/ace/')));
 
@@ -182,7 +199,7 @@ gulp.task('scripts', ['install'], function() {
 
 });
 
-gulp.task('styles', ['install'], function() {
+gulp.task('styles', function() {
 	var stream;
 
 	for(var location in paths.scss) {
@@ -192,6 +209,10 @@ gulp.task('styles', ['install'], function() {
 			.pipe(gulpif(building, gulp.dest(paths.build + paths.scss[location].output)));
 	}
 
-	return stream;
+	prismStream = gulp.src('bower_components/prism/**/*.css')
+	.pipe(gulp.dest('public/assets/css/prism/'))
+	.pipe(gulpif(building, gulp.dest(paths.build + 'public/assets/css/prism/')));
+
+	return merge(stream, prismStream);
 
 });

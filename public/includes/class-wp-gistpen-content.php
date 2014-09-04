@@ -34,6 +34,14 @@ class WP_Gistpen_Content {
 	private static $content;
 
 	/**
+	 * Array of all the files on this Gistpen
+	 *
+	 * @var array
+	 * @since  0.4.0
+	 */
+	private static $files = array();
+
+	/**
 	 * Line numbers to highlight
 	 *
 	 * @var string
@@ -51,10 +59,19 @@ class WP_Gistpen_Content {
 	public static function get_post_content( $gistpen ) {
 
 		self::$gistpen = $gistpen;
-		self::$content = $gistpen->post_content;
+		self::$files = get_posts( array(
+			'post_type' => 'gistpens',
+			'numberposts' => -1,
+			'post_parent' => self::$gistpen->ID,
+			//'post_status' => 'any'
+		));
 
-		self::add_code_markup();
-		self::add_description();
+		if( !empty(self::$files) ) {
+			foreach( self::$files as $file ) {
+				self::$gistpen = $file;
+				self::add_code_markup();
+			}
+		}
 
 		return self::$content;
 	}
@@ -68,6 +85,9 @@ class WP_Gistpen_Content {
 	 */
 	public static function get_shortcode_content( $args ) {
 
+		// Content needs to be cleared if we're calling multiple shortcodes in one post
+		self::$content = '';
+
 		// If the user didn't provide an ID, raise an error
 		if( $args['id'] == null ) {
 			return '<div class="gistpen-error">No Gistpen ID was provided.</div>';
@@ -76,11 +96,10 @@ class WP_Gistpen_Content {
 		$gistpen = get_post( $args['id'] );
 
 		if ( $gistpen->post_type !== 'gistpens' ) {
-			return '<div class="gistpen-error">The ID supplied is not a Gistpen.</div>';
+			return '<div class="wp-gistpen-error">The ID supplied is not a Gistpen.</div>';
 		}
 
 		self::$gistpen = $gistpen;
-		self::$content = $gistpen->post_content;
 		self::$highlight = $args['highlight'];
 
 		self::add_code_markup();
@@ -97,16 +116,36 @@ class WP_Gistpen_Content {
 	 * @since    0.1.0
 	 */
 	private static function add_code_markup() {
+		$content = '';
 
-		$terms = get_the_terms( self::$gistpen->ID, 'language' );
+		$content .= '<h2 class="wp-gistpenfile-title">' . self::$gistpen->post_name . '</h2>';
 
-		$content = '<pre id="gistpen-' . self::$gistpen->post_name . '" class="gistpen line-numbers" ';
+		$content .= '<pre id="wp-gistpenfile-' . self::$gistpen->post_name . '" class="gistpen line-numbers" ';
 
 		if( self::$highlight !== null ) {
 			$content .= 'data-line="' . self::$highlight . '"';
 		}
 
 		$content .= '>';
+
+		$slug = self::get_the_language( self::$gistpen->ID );
+
+		$content .= '<code class="language-' . $slug . '">' . self::$gistpen->post_content;
+		$content .= '</code></pre>';
+
+		self::$content .= $content;
+
+	}
+
+	/**
+	 * Get the language slug from an ID
+	 *
+	 * @param  int    $gistpen_id    ID of the Gistpen
+	 * @return string             language slug
+	 * @since    0.4.0
+	 */
+	public static function get_the_language( $gistpen_id ) {
+		$terms = get_the_terms( $gistpen_id, 'language' );
 
 		if( $terms ) {
 			$lang = array_pop( $terms );
@@ -116,33 +155,7 @@ class WP_Gistpen_Content {
 			$slug = 'none';
 		}
 
-		$content .= '<code class="language-' . $slug . '">' . self::$content;
-		$content .= '</code></pre>';
-
-		self::$content = $content;
-
-	}
-
-	/**
-	 * Add Gistpen description to content
-	 *
-	 * @param    string   $content   post_content
-	 * @return   string              the content with description
-	 * @since    0.1.0
-	 */
-	private static function add_description() {
-
-		// Grab the description text
-		$description_text = get_post_meta( self::$gistpen->ID, '_wpgp_gistpen_description', true );
-
-		// Wrap it
-		$description_html = '<div class="gistpen-description">';
-		$description_html .= $description_text;
-		$description_html .= '</div>';
-
-		// Add it to the content
-		self::$content .= $description_html;
-
+		return $slug;
 	}
 
 }
