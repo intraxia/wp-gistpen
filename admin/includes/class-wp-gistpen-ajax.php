@@ -106,33 +106,17 @@ class WP_Gistpen_AJAX {
 	 * @return string $post_id the id of the created Gistpen
 	 * @since  0.2.0
 	 */
-	public static function _gistpen_ajax() {
+	public static function create_gistpen() {
+		self::check_security();
 
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", 'wp-gistpen' ) );
-		}
-
-		$args = array(
-			'post_title'   => $_POST['gistpen_title'],
-			'post_content' => $_POST['gistpen_content'],
-			'post_type'    => 'gistpens',
-			'post_status'  => 'publish',
-			'tax_input'    => array(
-				'language'   => $_POST['gistpen_language'],
-			),
-		);
-		$post_id = wp_insert_post( $args, false );
+		$file_ids = WP_Gistpen_Saver::save_gistpen();
+		$post_id = $file_ids[0];
 
 		if( $post_id === 0 ) {
-			die( "Failed to insert post. ");
+			wp_send_json_error(array( 'message' => __( "Failed to save Gistpen.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
 		}
 
-		if( $_POST['gistpen_description'] !== "" ) {
-			update_post_meta( $post_id, '_wpgp_gistpen_description', $_POST['gistpen_description'] );
-		}
-
-		die( $post_id );
-
+		wp_send_json_success(array( 'id' => $post_id ) );
 	}
 
 	/**

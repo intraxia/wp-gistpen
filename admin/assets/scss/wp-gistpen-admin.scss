@@ -118,16 +118,14 @@ i.mce-i-icons:before {
 				content: "";
 				display: table;
 				clear: both;
+				margin: 5px;
 			}
 
 			input, textarea, select {
 				width: 95%;
 				margin: 5px 10px;
+				padding: 5px;
 				background-color: #FFF !important;
-			}
-
-			label {
-				margin: 5px;
 			}
 
 		}

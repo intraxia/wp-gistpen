@@ -95,6 +95,24 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->assertCount( 1, $this->response->data->gistpens );
 	}
 
+	function test_save_gistpen() {
+		$this->set_correct_security();
+		$_POST['wp-gistpenfile-name'] = 'New Gistpen';
+		$_POST['wp-gistfile-description'] = 'New Gistpen Description';
+		$_POST['wp-gistpenfile-content'] = '<?php echo $stuff; ?>';
+		$_POST['post_status'] = 'draft';
+		$_POST['wp-gistpenfile-language'] = 'php';
+		try {
+			$this->_handleAjax( 'create_gistpen' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_standard_response_info();
+		$this->assertObjectHasAttribute( 'id', $this->response->data );
+		$this->assertInternalType( 'integer', $this->response->data->id );
+		$this->assertTrue( $this->response->data->id !== 0 );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}
