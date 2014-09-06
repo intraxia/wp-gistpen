@@ -6,10 +6,17 @@
 class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 	public $user_id;
+	public $response;
 
 	function set_correct_security() {
 		$this->_setRole( 'administrator' );
 		$_POST['nonce'] = wp_create_nonce( WP_Gistpen_AJAX::$nonce_field );
+	}
+
+	function check_standard_response_info() {
+		$this->assertInternalType( 'object', $this->response );
+		$this->assertObjectHasAttribute( 'success', $this->response );
+		$this->assertTrue( $this->response->success );
 	}
 
 	function setUp() {
@@ -52,17 +59,27 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->assertEquals( "User doesn't have proper permisissions.", $response->data->error );
 	}
 
+	function test_returns_gistpen_languages() {
+		$this->set_correct_security();
+		try {
+			$this->_handleAjax( 'get_gistpen_languages' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_standard_response_info();
+		$this->assertObjectHasAttribute( 'languages', $this->response->data );
+		$this->assertInternalType( 'object', $this->response->data->languages );
+	}
+
 	function test_returns_recent_gistpens() {
 		$this->set_correct_security();
 		try {
 			$this->_handleAjax( 'get_recent_gistpens' );
 		} catch ( WPAjaxDieContinueException $e ) {}
-		$response = json_decode($this->_last_response);
+		$this->response = json_decode($this->_last_response);
 
-		$this->assertInternalType( 'object', $response );
-		$this->assertObjectHasAttribute( 'success', $response );
-		$this->assertTrue( $response->success );
-		$this->assertCount( 5, $response->data->gistpens, 'message' );
+		$this->check_standard_response_info();
+		$this->assertCount( 5, $this->response->data->gistpens, 'message' );
 	}
 
 	function tearDown() {

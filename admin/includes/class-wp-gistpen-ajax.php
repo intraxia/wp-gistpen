@@ -52,6 +52,24 @@ class WP_Gistpen_AJAX {
 	}
 
 	/**
+	 * Returns all the currently installed languages
+	 *
+	 * @return string JSON-encoded array of languages
+	 * @since 0.4.0
+	 */
+	public static function get_gistpen_languages() {
+		self::check_security();
+		$terms = get_terms( 'language', 'hide_empty=0' );
+		foreach ($terms as $term) {
+			$languages[$term->slug] = $term->name;
+		}
+
+		$data = array( 'languages' => $languages );
+
+		wp_send_json_success( $data );
+	}
+
+	/**
 	 * Returns 5 most recent Gistpens
 	 *
 	 * @return string JSON-encoded array of post objects

@@ -83,7 +83,7 @@
 		// 							</li>
 		// 							<li>
 		// 								<label for="gistpen_language">Gistpen Language</label>
-		// 								<select name="gistpen_language"><!-- Insert languages here --></select>
+		// 								<select class="gistpen_language" name="gistpen_language"><!-- Insert languages here --></select>
 		// 							</li>
 		// 							<li>
 		// 								<label for="gistpen_content">Gistpen Content</label>
@@ -100,17 +100,24 @@
 		// 		</div>
 		// 	</form>
 		// </div>
-		var dialog = jQuery('<div id="wp-gistpen-insert-wrap"><form id="wp-gistpen-insert" action="" tabindex="-1"><div id="insert-existing"><p>Insert an existing Gistpen</p><div class="gistpen-search-wrap"><label class="gistpen-search-label"><span class="search-label">Search Gistpens</span><input type="search" id="gistpen-search-field" class="search-field" /><div id="wp-gistpen-search-btn" class="mce-btn"><button role="button">Search</button><span class="spinner"></span></div></label></div><div id="select-gistpen" class="query-results"><div class="query-notice"><em>Recent Gistpens</em></div><ul class="gistpen-list"><!-- Add Gistpen list here --><li class="create_new_gistpen"><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="new_gistpen" checked="checked"></div><div class="gistpen-title">Create a new Gistpen</div><div class="clearfix"></div><ul><li><label for="gistpen_title">Gistpen Title</label><input type="text" name="gistpen_title"></li><li><label for="gistpen_language">Gistpen Language</label><select name="gistpen_language"><!-- Insert languages here --></select></li><li><label for="gistpen_content">Gistpen Content</label><textarea type="text" rows="5" name="gistpen_content"></textarea></li><li><label for="gistpen_description">Gistpen Description</label><textarea type="text" rows="5" name="gistpen_description"></textarea></li></ul></li></ul></div></div></form></div>');
+		var dialog = jQuery('<div id="wp-gistpen-insert-wrap"><form id="wp-gistpen-insert" action="" tabindex="-1"><div id="insert-existing"><p>Insert an existing Gistpen</p><div class="gistpen-search-wrap"><label class="gistpen-search-label"><span class="search-label">Search Gistpens</span><input type="search" id="gistpen-search-field" class="search-field" /><div id="wp-gistpen-search-btn" class="mce-btn"><button role="button">Search</button><span class="spinner"></span></div></label></div><div id="select-gistpen" class="query-results"><div class="query-notice"><em>Recent Gistpens</em></div><ul class="gistpen-list"><!-- Add Gistpen list here --><li class="create_new_gistpen"><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="new_gistpen" checked="checked"></div><div class="gistpen-title">Create a new Gistpen</div><div class="clearfix"></div><ul><li><label for="gistpen_title">Gistpen Title</label><input type="text" name="gistpen_title"></li><li><label for="gistpen_language">Gistpen Language</label><select class="gistpen_language" name="gistpen_language"><!-- Insert languages here --></select></li><li><label for="gistpen_content">Gistpen Content</label><textarea type="text" rows="5" name="gistpen_content"></textarea></li><li><label for="gistpen_description">Gistpen Description</label><textarea type="text" rows="5" name="gistpen_description"></textarea></li></ul></li></ul></div></div></form></div>');
 		var gistpenSearchButton = dialog.find('#wp-gistpen-search-btn');
-
-		// Append languages
-		jQuery.each(gistpenLanguages, function(index, el) {
-			jQuery('<option></option>').val(index).text(el).appendTo(thiseditor.languageSelect);
-		});
 
 		dialogBody.append(dialog);
 		jQuery('.spinner').hide();
+		// Append languages
+		jQuery.post(ajaxurl,{
+			action: 'get_gistpen_languages',
 
+			nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+		}, function(response) {
+			debugger;
+			jQuery.each(response.data.languages, function(index, el) {
+				jQuery('<option></option>').val(index).text(el).appendTo('.gistpen_language');
+			});
+		});
+
+		// Append recent Gistpens
 		jQuery.post(ajaxurl,{
 			action: 'get_recent_gistpens',
 

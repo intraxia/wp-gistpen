@@ -67,9 +67,6 @@ class WP_Gistpen_Admin {
 			array_push( $buttons, 'wp_gistpen' );
 			return $buttons;
 		});
-		add_action( 'admin_enqueue_scripts', function(){
-			wp_localize_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', 'gistpenLanguages', $languages );
-		});
 
 		/**
 		 * Gistpen Editor hooks
@@ -104,6 +101,7 @@ class WP_Gistpen_Admin {
 
 		// AJAX hook for TinyMCE button
 		add_action( 'wp_ajax_get_recent_gistpens', array( 'WP_Gistpen_AJAX', 'get_recent_gistpens' ) );
+		add_action( 'wp_ajax_get_gistpen_languages', array( 'WP_Gistpen_AJAX', 'get_gistpen_languages' ) );
 		add_action( 'wp_ajax_create_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'create_gistpen_ajax' ) );
 		add_action( 'wp_ajax_search_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'search_gistpen_ajax' ) );
 
