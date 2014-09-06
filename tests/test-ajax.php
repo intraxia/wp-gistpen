@@ -7,6 +7,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 	public $user_id;
 	public $response;
+	public $posts;
 
 	function set_correct_security() {
 		$this->_setRole( 'administrator' );
@@ -22,7 +23,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 		$this->user_id = $this->factory->user->create();
-		$this->factory->post->create_many( 10, array(
+		$this->posts = $this->factory->post->create_many( 10, array(
 			'post_type' => 'gistpens',
 			'post_author' => $this->user_id,
 			'post_status' => 'publish',
@@ -124,6 +125,32 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 		try {
 			$this->_handleAjax( 'save_ace_theme' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_standard_response_info();
+	}
+
+	function test_add_ace_editor() {
+		$this->set_correct_security();
+
+		try {
+			$this->_handleAjax( 'add_gistfile_editor' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_standard_response_info();
+		$this->assertObjectHasAttribute( 'id', $this->response->data );
+		$this->assertInternalType( 'integer', $this->response->data->id );
+		$this->assertTrue( $this->response->data->id !== 0 );
+	}
+
+	function test_delete_ace_editor() {
+		$this->set_correct_security();
+		$_POST['fileID'] = $this->posts[0];
+
+		try {
+			$this->_handleAjax( 'delete_gistfile_editor' );
 		} catch ( WPAjaxDieContinueException $e ) {}
 		$this->response = json_decode($this->_last_response);
 

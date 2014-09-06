@@ -143,13 +143,15 @@ class WP_Gistpen_AJAX {
 	 * @since     0.4.0
 	 */
 	public static function add_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+		self::check_security();
+
+		$result = WP_Gistpen_Saver::save_gistfile();
+
+		if( is_wp_error( $result ) ) {
+			wp_send_json_error();
 		}
 
-		$id = WP_Gistpen_Saver::save_gistfile();
-
-		die( print $id );
+		wp_send_json_success( array( 'id' => $result ) );
 	}
 
 	/**
@@ -158,15 +160,14 @@ class WP_Gistpen_AJAX {
 	 * @since     0.4.0
 	 */
 	public static function delete_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
-		}
+		self::check_security();
 
 		$result = wp_delete_post( $_POST['fileID'] );
-		if( $result !== false ) {
-			$result = true;
+
+		if( ! $result ) {
+			wp_send_json_error();
 		}
 
-		die( print $result );
+		wp_send_json_success();
 	}
 }

@@ -158,7 +158,7 @@ FileEditor.prototype  = {
 			nonce: GistpenEditor.getNonce(),
 			fileID: thiseditor.fileID,
 		}, function(response) {
-			if(response === false) {
+			if(response.success === false) {
 				console.log('Failed to delete file.');
 			}
 		});

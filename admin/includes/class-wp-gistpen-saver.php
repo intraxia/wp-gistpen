@@ -124,9 +124,8 @@ class WP_Gistpen_Saver {
 
 		if( !is_wp_error( $result ) ) {
 			self::$file_ids[] = $result;
-		} else {
-			// do something on failure
 		}
+
 		return $result;
 	}
 }
