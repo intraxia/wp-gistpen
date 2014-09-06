@@ -70,7 +70,8 @@ var paths = {
 		editor: {
 			files: [
 				'admin/assets/js/gistpen-editor.js',
-				'admin/assets/js/file-editor.js'
+				'admin/assets/js/file-editor.js',
+				'admin/assets/js/tinymce-file-editor.js'
 			],
 			output: {
 				filename: 'wp-gistpen-editor.min.js',

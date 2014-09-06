@@ -20,9 +20,9 @@
 				editor.windowManager.open({
 					// Modal settings
 					title: 'Insert Gistpen',
-					width: jQuery( window ).width() * 0.7,
+					width: jQuery( window ).width() * 0.85,
 					// minus head and foot of dialog box
-					height: (jQuery( window ).height() - 36 - 50) * 0.7,
+					height: (jQuery( window ).height() - 36 - 50) * 0.85,
 					inline: 1,
 					id: 'wp-gistpen-insert-dialog',
 					buttons: [{
@@ -60,8 +60,8 @@
 		// 			<p>Insert an existing Gistpen</p>
 		// 			<div class="gistpen-search-wrap">
 		// 				<label class="gistpen-search-label">
-		// 					<span class="search-label">Search Gistpens</span>
-		// 					<input type="search" id="gistpen-search-field" class="search-field" />
+		// 					<label for="gistpen-search-field" class="search-label" style="display: none;">Search Gistpens</label>
+		// 					<input type="search" id="gistpen-search-field" class="search-field" placeholder="Search Gistpens" />
 		// 					<div id="wp-gistpen-search-btn" class="mce-btn">
 		// 						<button role="button">Search</button>
 		// 						<span class="spinner"></span>
@@ -81,26 +81,7 @@
 		// 								<label for="wp-gistfile-description" style="display: none;">Gistpen description...</label>
 		// 								<input type="text" name="wp-gistfile-description" class="wp-gistfile-description" placeholder="Gistpen description..."></input>
 		// 							</li>
-		// 							<li>
-		// 								<label for="wp-gistpenfile-name" style="display: none;">Filename</label>
-		// 								<input type="text" name="wp-gistpenfile-name" class="wp-gistpenfile-name" placeholder="Filename">
-		// 							</li>
-		// 							<li>
-		// 								<label for="wp-gistpenfile-language" style="display: none;">Language</label>
-		// 								<select class="wp-gistpenfile-language" name="wp-gistpenfile-language">
-		// 									<!-- Insert languages here -->
-		// 								</select>
-		// 							</li>
-		// 							<li>
-		// 								<label for="post_status" style="display: none;">Post Status</label>
-		// 								<select class="post_status" name="post_status">
-		// 									<option value="publish">Published</option>
-		// 									<option value="draft">Draft</option>
-		// 								</select>
-		// 							</li>
-		// 							<li>
-		// 								<label for="wp-gistpenfile-content" style="display: none;">Gistpen Content</label>
-		// 								<textarea type="text" rows="5" name="wp-gistpenfile-content"></textarea>
+		// 							<li id="wp-gistfile-wrap">
 		// 							</li>
 		// 						</ul>
 		// 					</li>
@@ -109,21 +90,13 @@
 		// 		</div>
 		// 	</form>
 		// </div>
-		var dialog = jQuery('<div id="wp-gistpen-insert-wrap"><form id="wp-gistpen-insert" action="" tabindex="-1"><div id="insert-existing"><p>Insert an existing Gistpen</p><div class="gistpen-search-wrap"><label class="gistpen-search-label"><span class="search-label">Search Gistpens</span><input type="search" id="gistpen-search-field" class="search-field" /><div id="wp-gistpen-search-btn" class="mce-btn"><button role="button">Search</button><span class="spinner"></span></div></label></div><div id="select-gistpen" class="query-results"><div class="query-notice"><em>Recent Gistpens</em></div><ul class="gistpen-list"><!-- Add Gistpen list here --><li class="create_new_gistpen"><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="new_gistpen" checked="checked"></div><div class="gistpen-title">Create a new Gistpen:</div><div class="clearfix"></div><ul><li><label for="wp-gistfile-description" style="display: none;">Gistpen description...</label><input type="text" name="wp-gistfile-description" class="wp-gistfile-description" placeholder="Gistpendescription..."></input></li><li><label for="wp-gistpenfile-name" style="display: none;">Filename</label><input type="text" name="wp-gistpenfile-name" class="wp-gistpenfile-name" placeholder="Filename"></li><li><label for="wp-gistpenfile-language" style="display: none;">Language</label><select class="wp-gistpenfile-language" name="wp-gistpenfile-language"><!-- Insert languages here --></select></li><li><label for="post_status" style="display: none;">Post Status</label><select class="post_status" name="post_status"><option value="publish">Published</option><option value="draft">Draft</option></select></li><li><label for="wp-gistpenfile-content" style="display: none;">Gistpen Content</label><textarea type="text" rows="5" name="wp-gistpenfile-content"></textarea></li></ul></li></ul></div></div></form></div>');
+		var dialog = jQuery('<div id="wp-gistpen-insert-wrap"><form id="wp-gistpen-insert" action="" tabindex="-1"><div id="insert-existing"><p>Insert an existing Gistpen</p><div class="gistpen-search-wrap"><label class="gistpen-search-label"><label for="gistpen-search-field" class="search-label" style="display: none;">Search Gistpens</label><input type="search" id="gistpen-search-field" class="search-field" placeholder="Search Gistpens" /><div id="wp-gistpen-search-btn" class="mce-btn"><button role="button">Search</button><span class="spinner"></span></div></label></div><div id="select-gistpen" class="query-results"><div class="query-notice"><em>Recent Gistpens</em></div><ul class="gistpen-list"><!-- Add Gistpen list here --><li class="create_new_gistpen"><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="new_gistpen" checked="checked"></div><div class="gistpen-title">Create a new Gistpen:</div><div class="clearfix"></div><ul><li><label for="wp-gistfile-description" style="display: none;">Gistpen description...</label><input type="text" name="wp-gistfile-description" class="wp-gistfile-description" placeholder="Gistpen description..."></input></li><li id="wp-gistfile-wrap"></li></ul></li></ul></div></div></form></div>');
 		var gistpenSearchButton = dialog.find('#wp-gistpen-search-btn');
 
 		dialogBody.append(dialog);
 		jQuery('.spinner').hide();
-		// Append languages
-		jQuery.post(ajaxurl,{
-			action: 'get_gistpen_languages',
 
-			nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-		}, function(response) {
-			jQuery.each(response.data.languages, function(index, el) {
-				jQuery('<option></option>').val(index).text(el).appendTo('.wp-gistpenfile-language');
-			});
-		});
+		var fileEditor = new TinyMCEFileEditor();
 
 		// Append recent Gistpens
 		getGistpens();

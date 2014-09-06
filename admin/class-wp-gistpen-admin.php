@@ -195,7 +195,7 @@ class WP_Gistpen_Admin {
 			return;
 		}
 
-			wp_enqueue_style( $this->plugin_slug .'-admin-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-admin.css', array(), WP_Gistpen::VERSION );
+		wp_enqueue_style( $this->plugin_slug .'-admin-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-admin.css', array(), WP_Gistpen::VERSION );
 
 	}
 
