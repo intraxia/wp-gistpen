@@ -1,6 +1,6 @@
 <?php
 /**
- * @package   WP_Gistpen_editor
+ * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
