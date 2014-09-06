@@ -77,16 +77,16 @@ class WP_Gistpen_Saver {
 			$file_id = '-' . $file_id;
 		}
 
-		if( !array_key_exists('wp-gistpenfile-name' . $file_id, $_POST) ) {
+		if( array_key_exists('wp-gistpenfile-name' . $file_id, $_POST) ) {
 			$args['post_name'] = str_replace(" ", "-", $_POST['wp-gistpenfile-name' . $file_id]);
-			$args['post_title'] = $_POST['wp-gistpenfile-name-' . $file_id];
+			$args['post_title'] = $_POST['wp-gistpenfile-name' . $file_id];
 		}
 
-		if( !array_key_exists('wp-gistpenfile-content' . $file_id, $_POST) ) {
+		if( array_key_exists('wp-gistpenfile-content' . $file_id, $_POST) ) {
 			$args['post_content'] = $_POST['wp-gistpenfile-content' . $file_id];
 		}
 
-		if( !array_key_exists('wp-gistpenfile-language' . $file_id, $_POST) ) {
+		if( array_key_exists('wp-gistpenfile-language' . $file_id, $_POST) ) {
 			$args['tax_input']['language'] = $_POST['wp-gistpenfile-language' . $file_id];
 		}
 
