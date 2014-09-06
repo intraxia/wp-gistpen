@@ -47,6 +47,7 @@ class WP_Gistpen_Admin {
 		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-ajax.php' );
 		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-editor.php' );
 		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-saver.php' );
+		require_once( WP_GISTPEN_DIR . 'admin/includes/class-wp-gistpen-tinymce.php' );
 
 		// Call $plugin_slug from public plugin class.
 		$plugin = WP_Gistpen::get_instance();
@@ -59,14 +60,8 @@ class WP_Gistpen_Admin {
 		 * TinyMCE hooks
 		 */
 		// Add TinyMCE Editor Buttons
-		add_filter( 'mce_external_plugins', function( $plugins ) {
-			$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-tinymce-plugin.min.js';
-			return $plugins;
-		});
-		add_filter( 'mce_buttons', function( $buttons ) {
-			array_push( $buttons, 'wp_gistpen' );
-			return $buttons;
-		});
+		add_filter( 'mce_external_plugins', array( 'WP_Gistpen_TinyMCE', 'mce_external_plugins' ) );
+		add_filter( 'mce_buttons', array( 'WP_Gistpen_TinyMCE', 'mce_buttons' ) );
 
 		/**
 		 * Gistpen Editor hooks
