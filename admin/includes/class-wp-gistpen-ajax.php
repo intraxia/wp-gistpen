@@ -21,7 +21,7 @@ class WP_Gistpen_AJAX {
 	 * @var string
 	 * @since  0.4.0
 	 */
-	protected static $nonce_field = '_ajax_wp_gistpen';
+	public static $nonce_field = '_ajax_wp_gistpen';
 
 	/**
 	 * Embed the nonce in the head of the editor
@@ -33,16 +33,48 @@ class WP_Gistpen_AJAX {
 		wp_nonce_field( self::$nonce_field, self::$nonce_field, false );
 	}
 
-		/**
-	 * Dialog for adding shortcode
+	/**
+	 * Checks nonce and user permissions for AJAX reqs
 	 *
-	 * @return  string   HTML for shortcode dialog
-	 * @since   0.2.0
+	 * @return Sends error and halts execution if anything doesn't check out
+	 * @since  0.4.0
 	 */
-	public static function insert_gistpen_dialog() {
+	public static function check_security() {
+		// Check the nonce
+		if ( !isset($_POST['nonce']) || !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
+			wp_send_json_error( array( 'error' => __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+		}
 
-		die( include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php' );
+		// Check if user has proper permisissions
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( array( 'error' => __( "User doesn't have proper permisissions.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+		}
+	}
 
+	/**
+	 * Returns 5 most recent Gistpens
+	 *
+	 * @return string JSON-encoded array of post objects
+	 * @since 0.4.0
+	 */
+	public static function get_recent_gistpens() {
+		self::check_security();
+
+		$args = array(
+
+			'post_type'      => 'gistpens',
+			'post_status'    => 'publish',
+			'order'          => 'DESC',
+			'orderby'        => 'date',
+			'posts_per_page' => 5,
+
+		);
+
+		$recent_gistpens = get_posts( $args );
+
+		$data = array( 'gistpens' => $recent_gistpens );
+
+		wp_send_json_success( $data );
 	}
 
 	/**
