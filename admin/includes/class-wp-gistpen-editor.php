@@ -174,7 +174,6 @@ class WP_Gistpen_Editor {
 			$jsFiles = json_encode($jsFiles); ?>
 			<script type="text/javascript">
 				jQuery(function() {
-					debugger;
 					GistpenEditor.init(<?php echo $jsFiles; ?>);
 				});
 			</script><?php
