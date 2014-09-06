@@ -133,7 +133,7 @@ class WP_Gistpen_Editor {
 			</label>
 			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
 			<?php foreach (self::$ace_themes as $slug => $name): ?>
-				<?php $selected = get_option( '_wpgp_ace_theme' ) == $slug ? 'selected' : ''; ?>
+				<?php $selected = get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) == $slug ? 'selected' : ''; ?>
 				<option value="<?php echo $slug; ?>" <?php echo $selected; ?> >
 					<?php echo $name; ?>
 				</option>
@@ -174,7 +174,6 @@ class WP_Gistpen_Editor {
 			$jsFiles = json_encode($jsFiles); ?>
 			<script type="text/javascript">
 				jQuery(function() {
-					debugger;
 					GistpenEditor.init(<?php echo $jsFiles; ?>);
 				});
 			</script><?php
@@ -187,12 +186,7 @@ class WP_Gistpen_Editor {
 	 * @since     0.4.0
 	 */
 	public static function enqueue_editor_styles() {
-
-		$screen = get_current_screen();
-
-		if ('gistpens' == $screen->id ) {
-			wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
-		}
+		wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
 	}
 
 	/**
@@ -201,18 +195,13 @@ class WP_Gistpen_Editor {
 	 * @since     0.4.0
 	 */
 	public static function enqueue_editor_scripts() {
-
-		$screen = get_current_screen();
-
-		if ('gistpens' == $screen->id ) {
-			wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
-			wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script' ), WP_Gistpen::VERSION, false );
-			$terms = get_terms( 'language', 'hide_empty=0' );
-			foreach ($terms as $term) {
-				$languages[$term->slug] = $term->name;
-			}
-			wp_localize_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', 'gistpenLanguages', $languages );
+		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
+		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script' ), WP_Gistpen::VERSION, false );
+		$terms = get_terms( 'language', 'hide_empty=0' );
+		foreach ($terms as $term) {
+			$languages[$term->slug] = $term->name;
 		}
+		wp_localize_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', 'gistpenLanguages', $languages );
 	}
 
 	/**

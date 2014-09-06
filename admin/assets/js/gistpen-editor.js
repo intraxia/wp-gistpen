@@ -32,7 +32,7 @@ var GistpenEditor = {
 					nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
 				},
 				success: function(response) {
-					file.id = response;
+					file.id = response.data.id;
 					theeditor.editors[theeditor.editors.length - 1].fileID = file.id;
 					theeditor.editors[theeditor.editors.length - 1].addID();
 					theeditor.fileIDs.val(theeditor.fileIDs.val() + ' ' + file.id);
@@ -54,13 +54,13 @@ var GistpenEditor = {
 
 		this.themeSelect.change(function() {
 			jQuery.post(ajaxurl, {
-				action: 'gistpen_save_ace_theme',
+				action: 'save_ace_theme',
 
 				nonce: theeditor.getNonce(),
 				theme: theeditor.themeSelect.val(),
 
 			}, function(response) {
-				if(response === false) {
+				if(response.success === false) {
 					console.log('Failed to save ACE theme.');
 				}
 			});

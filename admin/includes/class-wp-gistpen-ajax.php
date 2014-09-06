@@ -21,7 +21,7 @@ class WP_Gistpen_AJAX {
 	 * @var string
 	 * @since  0.4.0
 	 */
-	protected static $nonce_field = '_ajax_wp_gistpen';
+	public static $nonce_field = '_ajax_wp_gistpen';
 
 	/**
 	 * Embed the nonce in the head of the editor
@@ -33,61 +33,71 @@ class WP_Gistpen_AJAX {
 		wp_nonce_field( self::$nonce_field, self::$nonce_field, false );
 	}
 
-		/**
-	 * Dialog for adding shortcode
+	/**
+	 * Checks nonce and user permissions for AJAX reqs
 	 *
-	 * @return  string   HTML for shortcode dialog
-	 * @since   0.2.0
+	 * @return Sends error and halts execution if anything doesn't check out
+	 * @since  0.4.0
 	 */
-	public static function insert_gistpen_dialog() {
+	public static function check_security() {
+		// Check the nonce
+		if ( !isset($_POST['nonce']) || !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
+			wp_send_json_error( array( 'error' => __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+		}
 
-		die( include WP_GISTPEN_DIR . 'admin/views/insert-gistpen.php' );
-
+		// Check if user has proper permisissions
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			wp_send_json_error( array( 'error' => __( "User doesn't have proper permisissions.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+		}
 	}
 
 	/**
-	 * Responds to AJAX request to search Gistpens
+	 * Returns all the currently installed languages
 	 *
-	 * @return  string   HTML for found gistpens
-	 * @since 0.2.0
+	 * @return string JSON-encoded array of languages
+	 * @since 0.4.0
 	 */
-	public static function search_gistpen_ajax() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+	public static function get_gistpen_languages() {
+		self::check_security();
+		$terms = get_terms( 'language', 'hide_empty=0' );
+		foreach ($terms as $term) {
+			$languages[$term->slug] = $term->name;
 		}
 
+		$data = array( 'languages' => $languages );
+
+		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Returns 5 most recent Gistpens
+	 * or Gistpens matching search term
+	 *
+	 * @return string JSON-encoded array of post objects
+	 * @since 0.4.0
+	 */
+	public static function get_gistpens() {
+		self::check_security();
+
 		$args = array(
+
 			'post_type'      => 'gistpens',
 			'post_status'    => 'publish',
 			'order'          => 'DESC',
 			'orderby'        => 'date',
 			'posts_per_page' => 5,
+
 		);
 
-		if( isset( $_POST['gistpen_search_term'] ) ) {
+		if( isset( $_POST['gistpen_search_term'] ) && $_POST['gistpen_search_term'] !== null ) {
 			$args['s'] = $_POST['gistpen_search_term'];
 		}
 
-		$recent_gistpen_query = new WP_Query( $args );
+		$recent_gistpens = get_posts( $args );
 
-		$output = '';
-		if ( $recent_gistpen_query->have_posts() ) {
-			while ( $recent_gistpen_query->have_posts() ) {
-				$recent_gistpen_query->the_post();
+		$data = array( 'gistpens' => $recent_gistpens );
 
-				$output .= '<li>';
-					$output .= '<div class="gistpen-radio"><input type="radio" name="gistpen_id" value="' . get_the_ID() . '"></div>';
-					$output .= '<div class="gistpen-title">' . get_the_title() . '</div>';
-				$output .= '</li>';
-
-			}
-		} else {
-			$output .= '<li>';
-				$output .= 'No Gistpens found.';
-			$output .= '</li>';
-		}
-
-		die( $output );
+		wp_send_json_success( $data );
 	}
 
 	/**
@@ -96,47 +106,34 @@ class WP_Gistpen_AJAX {
 	 * @return string $post_id the id of the created Gistpen
 	 * @since  0.2.0
 	 */
-	public static function _gistpen_ajax() {
+	public static function create_gistpen() {
+		self::check_security();
 
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", 'wp-gistpen' ) );
-		}
-
-		$args = array(
-			'post_title'   => $_POST['gistpen_title'],
-			'post_content' => $_POST['gistpen_content'],
-			'post_type'    => 'gistpens',
-			'post_status'  => 'publish',
-			'tax_input'    => array(
-				'language'   => $_POST['gistpen_language'],
-			),
-		);
-		$post_id = wp_insert_post( $args, false );
+		$file_ids = WP_Gistpen_Saver::save_gistpen();
+		$post_id = $file_ids[0];
 
 		if( $post_id === 0 ) {
-			die( "Failed to insert post. ");
+			wp_send_json_error(array( 'message' => __( "Failed to save Gistpen.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
 		}
 
-		if( $_POST['gistpen_description'] !== "" ) {
-			update_post_meta( $post_id, '_wpgp_gistpen_description', $_POST['gistpen_description'] );
-		}
-
-		die( $post_id );
-
+		wp_send_json_success(array( 'id' => $post_id ) );
 	}
 
 	/**
-	 * AJAX hook to save ACE editor theme
+	 * Saves the ACE editor theme to the user meta
 	 *
 	 * @since     0.4.0
 	 */
 	public static function save_ace_theme() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", 'wp-gistpen' ) );
+		self::check_security();
+
+		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
+
+		if ( ! $result ) {
+			wp_send_json_error();
 		}
 
-		$result = update_option( '_wpgp_ace_theme', $_POST['theme'] );
-		die( $result );
+		wp_send_json_success();
 	}
 
 
@@ -146,13 +143,15 @@ class WP_Gistpen_AJAX {
 	 * @since     0.4.0
 	 */
 	public static function add_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+		self::check_security();
+
+		$result = WP_Gistpen_Saver::save_gistfile();
+
+		if( is_wp_error( $result ) ) {
+			wp_send_json_error();
 		}
 
-		$id = WP_Gistpen_Saver::save_gistfile();
-
-		die( print $id );
+		wp_send_json_success( array( 'id' => $result ) );
 	}
 
 	/**
@@ -161,15 +160,14 @@ class WP_Gistpen_AJAX {
 	 * @since     0.4.0
 	 */
 	public static function delete_gistfile_editor() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
-		}
+		self::check_security();
 
 		$result = wp_delete_post( $_POST['fileID'] );
-		if( $result !== false ) {
-			$result = true;
+
+		if( ! $result ) {
+			wp_send_json_error();
 		}
 
-		die( print $result );
+		wp_send_json_success();
 	}
 }

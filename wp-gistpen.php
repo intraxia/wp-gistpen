@@ -30,14 +30,19 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+// If we're not in a testing env
+if ( ! defined( 'WP_GISTPEN_TESTING' ) ) {
+	define('WP_GISTPEN_TESTING', false);
+}
+
 /*----------------------------------------------------------------------------*
  * Define Directory Constants
  *----------------------------------------------------------------------------*/
 
 // Directory i.e. /home/user/public_html...
-define('WP_GISTPEN_DIR', plugin_dir_path( __FILE__ ));
+define( 'WP_GISTPEN_DIR', plugin_dir_path( __FILE__ ) );
 // URL i.e. http://www.yoursite/wp-content/plugins/wp-gistpen/
-define('WP_GISTPEN_URL', plugin_dir_url( __FILE__ ));
+define( 'WP_GISTPEN_URL', plugin_dir_url( __FILE__ ) );
 
 /*----------------------------------------------------------------------------*
  * Public-Facing Functionality
@@ -67,7 +72,7 @@ add_action( 'plugins_loaded', array( 'WP_Gistpen', 'get_instance' ) );
 /**
  * Load the plugin admin class objects
  */
-if ( is_admin() ) {
+if ( is_admin() || WP_GISTPEN_TESTING ) {
 	require_once( WP_GISTPEN_DIR . 'admin/class-wp-gistpen-admin.php' );
 	add_action( 'plugins_loaded', array( 'WP_Gistpen_Admin', 'get_instance' ) );
 }
