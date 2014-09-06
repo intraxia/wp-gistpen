@@ -133,7 +133,7 @@ class WP_Gistpen_Editor {
 			</label>
 			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
 			<?php foreach (self::$ace_themes as $slug => $name): ?>
-				<?php $selected = get_option( '_wpgp_ace_theme' ) == $slug ? 'selected' : ''; ?>
+				<?php $selected = get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) == $slug ? 'selected' : ''; ?>
 				<option value="<?php echo $slug; ?>" <?php echo $selected; ?> >
 					<?php echo $name; ?>
 				</option>

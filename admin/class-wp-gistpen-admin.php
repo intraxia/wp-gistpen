@@ -105,7 +105,7 @@ class WP_Gistpen_Admin {
 		add_action( 'wp_ajax_create_gistpen', array( 'WP_Gistpen_AJAX', 'create_gistpen' ) );
 
 		// AJAX hook to save Ace theme
-		add_action( 'wp_ajax_gistpen_save_ace_theme', array( 'WP_Gistpen_AJAX', 'save_ace_theme' ) );
+		add_action( 'wp_ajax_save_ace_theme', array( 'WP_Gistpen_AJAX', 'save_ace_theme' ) );
 
 		// AJAX hooks to add and delete Gistfile editors
 		add_action( 'wp_ajax_add_gistfile_editor', array( 'WP_Gistpen_AJAX', 'add_gistfile_editor' ) );

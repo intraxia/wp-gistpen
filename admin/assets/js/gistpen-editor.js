@@ -54,7 +54,7 @@ var GistpenEditor = {
 
 		this.themeSelect.change(function() {
 			jQuery.post(ajaxurl, {
-				action: 'gistpen_save_ace_theme',
+				action: 'save_ace_theme',
 
 				nonce: theeditor.getNonce(),
 				theme: theeditor.themeSelect.val(),

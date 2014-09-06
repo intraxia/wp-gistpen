@@ -113,6 +113,18 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->assertTrue( $this->response->data->id !== 0 );
 	}
 
+	function test_save_ace_theme() {
+		$this->set_correct_security();
+		$_POST['theme'] = 'twilight';
+
+		try {
+			$this->_handleAjax( 'save_ace_theme' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_standard_response_info();
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}

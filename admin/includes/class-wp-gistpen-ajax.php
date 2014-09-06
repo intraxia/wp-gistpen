@@ -120,17 +120,20 @@ class WP_Gistpen_AJAX {
 	}
 
 	/**
-	 * AJAX hook to save ACE editor theme
+	 * Saves the ACE editor theme to the user meta
 	 *
 	 * @since     0.4.0
 	 */
 	public static function save_ace_theme() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", 'wp-gistpen' ) );
+		self::check_security();
+
+		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
+
+		if ( ! $result ) {
+			wp_send_json_error();
 		}
 
-		$result = update_option( '_wpgp_ace_theme', $_POST['theme'] );
-		die( $result );
+		wp_send_json_success();
 	}
 
 
