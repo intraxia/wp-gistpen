@@ -49,6 +49,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		// Self-note: MUST set the role first or nonce check will fail
 		$this->_setRole( 'subscriber' );
 		$_POST['nonce'] = wp_create_nonce( WP_Gistpen_AJAX::$nonce_field );
+
 		try {
 			$this->_handleAjax( 'get_gistpens' );
 		} catch ( WPAjaxDieContinueException $e ) {}
@@ -62,6 +63,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 	function test_returns_gistpen_languages() {
 		$this->set_correct_security();
+
 		try {
 			$this->_handleAjax( 'get_gistpen_languages' );
 		} catch ( WPAjaxDieContinueException $e ) {}
@@ -74,6 +76,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 	function test_returns_recent_gistpens() {
 		$this->set_correct_security();
+
 		try {
 			$this->_handleAjax( 'get_gistpens' );
 		} catch ( WPAjaxDieContinueException $e ) {}
@@ -86,6 +89,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 	function test_returns_gistpens_with_search() {
 		$this->set_correct_security();
 		$_POST['gistpen_search_term'] = 'Post title 9';
+
 		try {
 			$this->_handleAjax( 'get_gistpens' );
 		} catch ( WPAjaxDieContinueException $e ) {}
@@ -102,6 +106,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$_POST['wp-gistpenfile-content'] = '<?php echo $stuff; ?>';
 		$_POST['post_status'] = 'draft';
 		$_POST['wp-gistpenfile-language'] = 'php';
+
 		try {
 			$this->_handleAjax( 'create_gistpen' );
 		} catch ( WPAjaxDieContinueException $e ) {}
