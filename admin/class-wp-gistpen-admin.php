@@ -100,10 +100,9 @@ class WP_Gistpen_Admin {
 		add_action( 'edit_form_after_title', array( 'WP_Gistpen_AJAX', 'embed_nonce' ) );
 
 		// AJAX hook for TinyMCE button
-		add_action( 'wp_ajax_get_recent_gistpens', array( 'WP_Gistpen_AJAX', 'get_recent_gistpens' ) );
+		add_action( 'wp_ajax_get_gistpens', array( 'WP_Gistpen_AJAX', 'get_gistpens' ) );
 		add_action( 'wp_ajax_get_gistpen_languages', array( 'WP_Gistpen_AJAX', 'get_gistpen_languages' ) );
 		add_action( 'wp_ajax_create_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'create_gistpen_ajax' ) );
-		add_action( 'wp_ajax_search_gistpen_ajax', array( 'WP_Gistpen_AJAX', 'search_gistpen_ajax' ) );
 
 		// AJAX hook to save Ace theme
 		add_action( 'wp_ajax_gistpen_save_ace_theme', array( 'WP_Gistpen_AJAX', 'save_ace_theme' ) );

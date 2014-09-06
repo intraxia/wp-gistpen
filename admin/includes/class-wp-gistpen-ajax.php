@@ -71,11 +71,12 @@ class WP_Gistpen_AJAX {
 
 	/**
 	 * Returns 5 most recent Gistpens
+	 * or Gistpens matching search term
 	 *
 	 * @return string JSON-encoded array of post objects
 	 * @since 0.4.0
 	 */
-	public static function get_recent_gistpens() {
+	public static function get_gistpens() {
 		self::check_security();
 
 		$args = array(
@@ -88,56 +89,15 @@ class WP_Gistpen_AJAX {
 
 		);
 
+		if( isset( $_POST['gistpen_search_term'] ) && $_POST['gistpen_search_term'] !== null ) {
+			$args['s'] = $_POST['gistpen_search_term'];
+		}
+
 		$recent_gistpens = get_posts( $args );
 
 		$data = array( 'gistpens' => $recent_gistpens );
 
 		wp_send_json_success( $data );
-	}
-
-	/**
-	 * Responds to AJAX request to search Gistpens
-	 *
-	 * @return  string   HTML for found gistpens
-	 * @since 0.2.0
-	 */
-	public static function search_gistpen_ajax() {
-		if ( !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			die( __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
-		}
-
-		$args = array(
-			'post_type'      => 'gistpens',
-			'post_status'    => 'publish',
-			'order'          => 'DESC',
-			'orderby'        => 'date',
-			'posts_per_page' => 5,
-		);
-
-		if( isset( $_POST['gistpen_search_term'] ) ) {
-			$args['s'] = $_POST['gistpen_search_term'];
-		}
-
-		$recent_gistpen_query = new WP_Query( $args );
-
-		$output = '';
-		if ( $recent_gistpen_query->have_posts() ) {
-			while ( $recent_gistpen_query->have_posts() ) {
-				$recent_gistpen_query->the_post();
-
-				$output .= '<li>';
-					$output .= '<div class="gistpen-radio"><input type="radio" name="gistpen_id" value="' . get_the_ID() . '"></div>';
-					$output .= '<div class="gistpen-title">' . get_the_title() . '</div>';
-				$output .= '</li>';
-
-			}
-		} else {
-			$output .= '<li>';
-				$output .= 'No Gistpens found.';
-			$output .= '</li>';
-		}
-
-		die( $output );
 	}
 
 	/**

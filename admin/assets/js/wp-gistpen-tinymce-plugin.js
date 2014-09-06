@@ -111,43 +111,40 @@
 
 			nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
 		}, function(response) {
-			debugger;
 			jQuery.each(response.data.languages, function(index, el) {
 				jQuery('<option></option>').val(index).text(el).appendTo('.gistpen_language');
 			});
 		});
 
 		// Append recent Gistpens
+		getGistpens();
+
+		gistpenSearchButton.click( function( e ) {
+			e.preventDefault();
+
+			jQuery('#select-gistpen ul.gistpen-list > li').not('.create_new_gistpen').remove();
+			gistpenSearchButton.children('button').hide();
+			jQuery('.gistpen-search-wrap .spinner').show();
+
+			getGistpens();
+
+		});
+	}
+
+	function getGistpens() {
 		jQuery.post(ajaxurl,{
-			action: 'get_recent_gistpens',
+			action: 'get_gistpens',
 
 			nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+			gistpen_search_term: jQuery( '#gistpen-search-field' ).val()
 		}, function(response) {
 			var data = response.data;
 			for (var i = data.gistpens.length - 1; i >= 0; i--) {
 				var gistpen = data.gistpens[i];
 				jQuery('<li><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="'+gistpen.id+'"></div><div class="gistpen-title">'+gistpen.post_name+'</div></li>').prependTo('.gistpen-list');
 			}
-		});
-
-		gistpenSearchButton.click( function( e ) {
-			e.preventDefault();
-
-			jQuery( '#select-gistpen ul.gistpen-list > li' ).not( '.create_new_gistpen' ).hide();
-			gistpenSearchButton.children( 'button' ).hide();
-			jQuery( '.gistpen-search-wrap .spinner' ).show();
-
-			jQuery.post( ajaxurl, {
-				action: 'search_gistpen_ajax',
-
-				nonce: jQuery.trim(jQuery( '#_ajax_wp_gistpen' ).val()),
-				gistpen_search_term: jQuery( '#gistpen-search-field' ).val()
-			}, function( response ) {
-				jQuery( '#select-gistpen ul.gistpen-list' ).prepend( response );
-				jQuery( '.gistpen-search-wrap .spinner' ).hide();
-				gistpenSearchButton.children('button').show();
-			});
-
+			jQuery('.gistpen-search-wrap .spinner').hide();
+			jQuery('#wp-gistpen-search-btn button').show();
 		});
 	}
 
