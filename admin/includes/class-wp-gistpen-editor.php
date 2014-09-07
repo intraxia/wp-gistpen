@@ -72,7 +72,7 @@ class WP_Gistpen_Editor {
 	public static function new_enter_title_here( $title ){
 			$screen = get_current_screen();
 
-			if ( 'gistpens' == $screen->post_type ){
+			if ( 'gistpen' == $screen->post_type ){
 				$title = __( 'Gistpen description...', WP_Gistpen::get_instance()->get_plugin_slug() );
 			}
 
@@ -88,7 +88,7 @@ class WP_Gistpen_Editor {
 
 		$screen = get_current_screen();
 
-		if( 'gistpens' == $screen->id ) {
+		if( 'gistpen' == $screen->id ) {
 
 			self::set_up_gistpen_and_files();
 
@@ -113,7 +113,7 @@ class WP_Gistpen_Editor {
 
 		self::$files = get_posts( array(
 			'posts_per_page'   => -1,
-			'post_type'        => 'gistpens',
+			'post_type'        => 'gistpen',
 			'post_parent'      => self::$gistpen_id,
 			'post_status'      => 'any',
 		) );
@@ -151,7 +151,7 @@ class WP_Gistpen_Editor {
 	public static function add_ace_editor_init_inline() {
 		$screen = get_current_screen();
 
-		if( 'gistpens' == $screen->id ):
+		if( 'gistpen' == $screen->id ):
 
 			if( empty(self::$files) ) {
 				$ids = WP_Gistpen_Saver::$file_ids;
@@ -210,10 +210,10 @@ class WP_Gistpen_Editor {
 	 * @since  0.4.0
 	 */
 	public static function screen_layout_columns( $columns ) {
-		$columns['gistpens'] = 1;
+		$columns['gistpen'] = 1;
 		return $columns;
 	}
-	public static function screen_layout_gistpens() {
+	public static function screen_layout_gistpen() {
 		return 1;
 	}
 
@@ -223,11 +223,11 @@ class WP_Gistpen_Editor {
 	 * @since  0.4.0
 	 */
 	public static function remove_meta_boxes() {
-		remove_meta_box( 'slugdiv', 'gistpens', 'normal' );
-		remove_meta_box( 'formatdiv', 'gistpens', 'normal' );
-		remove_meta_box( 'postcustom', 'gistpens', 'normal' );
-		remove_meta_box( 'postexcerpt', 'gistpens', 'normal' );
-		remove_meta_box( 'authordiv', 'gistpens', 'normal' );
+		remove_meta_box( 'slugdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'formatdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'postcustom', 'gistpen', 'normal' );
+		remove_meta_box( 'postexcerpt', 'gistpen', 'normal' );
+		remove_meta_box( 'authordiv', 'gistpen', 'normal' );
 	}
 
 	/**
@@ -236,7 +236,7 @@ class WP_Gistpen_Editor {
 	 * @return array New order for metaboxes
 	 * @since 0.4.0
 	 */
-	public static function gistpens_meta_box_order(){
+	public static function gistpen_meta_box_order(){
 		return array(
 				'normal'   => join( ",", array(
 					'gistfile_editor',

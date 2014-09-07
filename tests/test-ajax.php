@@ -24,7 +24,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		parent::setUp();
 		$this->user_id = $this->factory->user->create();
 		$this->posts = $this->factory->post->create_many( 10, array(
-			'post_type' => 'gistpens',
+			'post_type' => 'gistpen',
 			'post_author' => $this->user_id,
 			'post_status' => 'publish',
 		), array(

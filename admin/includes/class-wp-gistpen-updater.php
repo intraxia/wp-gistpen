@@ -126,6 +126,7 @@ class WP_Gistpen_Updater {
 	 * @since 0.4.0
 	 */
 	public static function update_to_0_4_0() {
+		register_post_type('gistpens', array());
 		$posts = get_posts( array(
 			'post_type' => 'gistpens',
 			'posts_per_page' => -1,
@@ -153,6 +154,9 @@ class WP_Gistpen_Updater {
 			$post->post_title = $post->post_name;
 			delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
 
+			// Update post type
+			$post->post_type = 'gistpen';
+
 			$result = wp_update_post( $post );
 
 			if ( is_wp_error( $result ) ) {
@@ -168,6 +172,8 @@ class WP_Gistpen_Updater {
 
 			WP_Gistpen_Saver::save_gistpen( $post->ID );
 		}
+
+		flush_rewrite_rules( true );
 	}
 
 }

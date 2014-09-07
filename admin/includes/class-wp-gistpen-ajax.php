@@ -82,7 +82,7 @@ class WP_Gistpen_AJAX {
 
 		$args = array(
 
-			'post_type'      => 'gistpens',
+			'post_type'      => 'gistpen',
 			'post_status'    => 'publish',
 			'order'          => 'DESC',
 			'orderby'        => 'date',

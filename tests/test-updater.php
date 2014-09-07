@@ -57,6 +57,9 @@ class WP_Gistpen_Updater_Test extends WP_UnitTestCase {
 			// The post should have no content
 			$this->assertEmpty( $post->post_content );
 
+			// Post type should now be gistpen
+			$this->assertEquals( 'gistpen', $post->post_type );
+
 			// The post should have no description
 			$this->assertEmpty( get_post_meta( $post->ID, '_wpgp_gistpen_description', true ) );
 
@@ -76,14 +79,26 @@ class WP_Gistpen_Updater_Test extends WP_UnitTestCase {
 			// The child post should have content
 			$this->assertContains( 'Post content', $child->post_content );
 
-			// The child post should have a filename
+			// The child post should have the correct filename
 			$this->assertContains( 'Post-title', $child->post_title );
 			$this->assertContains( 'post-title', $child->post_name );
 
+			// The child should be a gistpen
+			$this->assertEquals( 'gistpen', $child->post_type );
+
 			// The child post should have a language
 			$language = WP_Gistpen_Content::get_the_language( $child->ID );
-			$this->assertNotEquals( 'nonce', $language );
+			$this->assertNotEquals( 'none', $language );
 		}
+
+		$posts = get_posts( array(
+			'post_type' => 'gistpens',
+			'posts_per_page' => -1,
+			'post_status' => 'any'
+		) );
+
+		// There should be no gistpens left behind
+		$this->assertCount( 0, $posts );
 
 	}
 

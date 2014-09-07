@@ -82,14 +82,14 @@ class WP_Gistpen_Admin {
 		// Rearrange Gistpen layout
 		add_filter( 'screen_layout_columns', array( 'WP_Gistpen_Editor', 'screen_layout_columns' ) );
 		add_action( 'admin_menu', array( 'WP_Gistpen_Editor', 'remove_meta_boxes' ) );
-		add_filter( 'get_user_option_screen_layout_gistpens', array( 'WP_Gistpen_Editor', 'screen_layout_gistpens' ) );
-		add_filter( 'get_user_option_meta-box-order_gistpens', array( 'WP_Gistpen_Editor', 'gistpens_meta_box_order') );
+		add_filter( 'get_user_option_screen_layout_gistpen', array( 'WP_Gistpen_Editor', 'screen_layout_gistpen' ) );
+		add_filter( 'get_user_option_meta-box-order_gistpen', array( 'WP_Gistpen_Editor', 'gistpen_meta_box_order') );
 
 		/**
 		 * Gistpen save hook
 		 */
 		// Save the files and attach to Gistpen
-		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+		add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 
 		/**
 		 * AJAX hooks

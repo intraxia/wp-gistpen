@@ -22,7 +22,7 @@ class WP_Gistpen {
 	 * @var     string
 	 * @since   0.1.0
 	 */
-	const VERSION = '0.3.1';
+	const VERSION = '0.4.0';
 
 	/**
 	 *
@@ -99,7 +99,7 @@ class WP_Gistpen {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		// Remove some filters from the Gistpen content
-		add_action( 'wp', array( $this, 'remove_filters' ) );
+		add_action( 'the_content', array( $this, 'remove_filters' ) );
 
 		// Add the description to the Gistpen content
 		add_filter( 'the_content', array($this, 'post_content' ) );
@@ -276,7 +276,7 @@ class WP_Gistpen {
 		// note to self: delete this line in version 0.4.0
 		delete_option( 'wp_gistpen_langs_installed' );
 
-		if ( get_option( 'wp_gistpens_languages_installed') == true ) {
+		if ( true === get_option( 'wp_gistpens_languages_installed') ) {
 			return;
 		}
 
@@ -297,7 +297,7 @@ class WP_Gistpen {
 	 * @since    0.1.0
 	 */
 	public static function single_deactivate() {
-
+		flush_rewrite_rules( true );
 	}
 
 	/**
@@ -330,7 +330,7 @@ class WP_Gistpen {
 		}
 		wp_enqueue_style( $this->plugin_slug . '-prism-style-theme', WP_GISTPEN_URL . 'public/assets/css/prism/themes/prism' . $theme . '.css', array(), self::VERSION );
 
-		if ( is_admin() ||  'on' == cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_line_numbers' ) ) {
+		if ( is_admin() ||  'on' === cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_line_numbers' ) ) {
 			wp_enqueue_style( $this->plugin_slug . '-prism-style-line-numbers', WP_GISTPEN_URL . 'public/assets/css/prism/plugins/line-numbers/prism-line-numbers.css', array( $this->plugin_slug . '-prism-style-theme' ), self::VERSION );
 		}
 
@@ -384,7 +384,7 @@ class WP_Gistpen {
 			'name'                => _x( 'Gistpens', 'Post Type General Name', $this->plugin_slug ),
 			'singular_name'       => _x( 'Gistpen', 'Post Type Singular Name', $this->plugin_slug ),
 			'menu_name'           => __( 'Gistpens', $this->plugin_slug ),
-			'parent_item_colon'   => __( '', $this->plugin_slug ),
+			'parent_item_colon'   => __( 'Parent Gistpen', $this->plugin_slug ),
 			'all_items'           => __( 'All Gistpens', $this->plugin_slug ),
 			'view_item'           => __( 'View Gistpen', $this->plugin_slug ),
 			'add_new_item'        => __( 'Add New Gistpen', $this->plugin_slug ),
@@ -397,11 +397,11 @@ class WP_Gistpen {
 		);
 		$args = array(
 			'label'                => __( 'gistpens', $this->plugin_slug ),
-			'description'          => __( 'Gistpen description', $this->plugin_slug ),
+			'description'          => __( 'A collection of code snippets.', $this->plugin_slug ),
 			'labels'               => $labels,
 			'supports'             => array( 'title', 'author', 'comments' ),
 			'taxonomies'           => array( 'post_tag', 'language' ),
-			'hierarchical'         => false,
+			'hierarchical'         => true,
 			'public'               => true,
 			'show_ui'              => true,
 			'show_in_menu'         => true,
@@ -413,9 +413,13 @@ class WP_Gistpen {
 			'exclude_from_search'  => false,
 			'publicly_queryable'   => true,
 			'capability_type'      => 'post',
-			'menu_icon'            => 'dashicons-edit'
+			'menu_icon'            => 'dashicons-edit',
+			'rewrite'              => array(
+				'slug'               => 'gistpens',
+				'with_front'         => true,
+			)
 		);
-		register_post_type( 'gistpens', $args );
+		register_post_type( 'gistpen', $args );
 	}
 
 	/**
@@ -426,21 +430,21 @@ class WP_Gistpen {
 	public function register_language_taxonomy() {
 
 		$labels = array(
-			'name'                       => _x( 'Languages', 'Taxonomy General Name', 'wp-gistdown' ),
-			'singular_name'              => _x( 'Language', 'Taxonomy Singular Name', 'wp-gistdown' ),
-			'menu_name'                  => __( 'Language', 'wp-gistdown' ),
-			'all_items'                  => __( 'All Languages', 'wp-gistdown' ),
-			'parent_item'                => __( 'Parent Language', 'wp-gistdown' ),
-			'parent_item_colon'          => __( 'Parent Language:', 'wp-gistdown' ),
-			'new_item_name'              => __( 'New Language', 'wp-gistdown' ),
-			'add_new_item'               => __( 'Add New Language', 'wp-gistdown' ),
-			'edit_item'                  => __( 'Edit Language', 'wp-gistdown' ),
-			'update_item'                => __( 'Update Language', 'wp-gistdown' ),
-			'separate_items_with_commas' => __( 'Separate language with commas', 'wp-gistdown' ),
-			'search_items'               => __( 'Search languages', 'wp-gistdown' ),
-			'add_or_remove_items'        => __( 'Add or remove language', 'wp-gistdown' ),
-			'choose_from_most_used'      => __( 'Choose from the most used languages', 'wp-gistdown' ),
-			'not_found'                  => __( 'Not Found', 'wp-gistdown' ),
+			'name'                       => _x( 'Languages', 'Taxonomy General Name', $this->plugin_slug ),
+			'singular_name'              => _x( 'Language', 'Taxonomy Singular Name', $this->plugin_slug ),
+			'menu_name'                  => __( 'Language', $this->plugin_slug ),
+			'all_items'                  => __( 'All Languages', $this->plugin_slug ),
+			'parent_item'                => __( 'Parent Language', $this->plugin_slug ),
+			'parent_item_colon'          => __( 'Parent Language:', $this->plugin_slug ),
+			'new_item_name'              => __( 'New Language', $this->plugin_slug ),
+			'add_new_item'               => __( 'Add New Language', $this->plugin_slug ),
+			'edit_item'                  => __( 'Edit Language', $this->plugin_slug ),
+			'update_item'                => __( 'Update Language', $this->plugin_slug ),
+			'separate_items_with_commas' => __( 'Separate language with commas', $this->plugin_slug ),
+			'search_items'               => __( 'Search languages', $this->plugin_slug ),
+			'add_or_remove_items'        => __( 'Add or remove language', $this->plugin_slug ),
+			'choose_from_most_used'      => __( 'Choose from the most used languages', $this->plugin_slug ),
+			'not_found'                  => __( 'Not Found', $this->plugin_slug ),
 		);
 		$capabilities = array(
 			'manage_terms'               => 'noone',
@@ -469,14 +473,15 @@ class WP_Gistpen {
 	 *
 	 * @since    0.1.0
 	 */
-	public function remove_filters() {
-		global $post;
+	public function remove_filters( $content ) {
 
-		if( 'gistpens' == $post->post_type ) {
+		if( 'gistpen' == get_post_type() ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
 			remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
 		}
+
+		return $content;
 	}
 
 	/**
@@ -489,7 +494,7 @@ class WP_Gistpen {
 	public function post_content( $content ) {
 		global $post;
 
-		if( 'gistpens' == $post->post_type ) {
+		if( 'gistpen' == $post->post_type ) {
 			return WP_Gistpen_Content::get_post_content( $post );
 		}
 
