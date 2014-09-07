@@ -77,7 +77,6 @@ class WP_Gistpen_Content {
 	public static function post_content( $content ) {
 
 		if( 'gistpen' == get_post_type() ) {
-			self::$content = '';
 			return self::get_post_content( get_post() );
 		}
 
@@ -100,7 +99,6 @@ class WP_Gistpen_Content {
 			'gistpen'
 		);
 
-		self::$content = '';
 		return self::get_shortcode_content( $args );
 
 	}
@@ -114,6 +112,9 @@ class WP_Gistpen_Content {
 	 * @since  0.3.0
 	 */
 	public static function get_post_content( $gistpen ) {
+
+		// Content needs to be cleared if we're on the archive page
+		self::$content = '';
 
 		self::$gistpen = $gistpen;
 		self::$files = get_children( array( 'post_parent' => self::$gistpen->ID ) );
@@ -141,7 +142,7 @@ class WP_Gistpen_Content {
 		self::$content = '';
 
 		// If the user didn't provide an ID, raise an error
-		if( $args['id'] == null ) {
+		if( $args['id'] === null ) {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
@@ -154,7 +155,16 @@ class WP_Gistpen_Content {
 		self::$gistpen = $gistpen;
 		self::$highlight = $args['highlight'];
 
-		self::add_code_markup();
+		self::$files = get_children( array( 'post_parent' => self::$gistpen->ID ) );
+
+		if( !empty( self::$files ) ) {
+			foreach( self::$files as $file ) {
+				self::$gistpen = $file;
+				self::add_code_markup();
+			}
+		} else {
+			self::add_code_markup();
+		}
 
 		return self::$content;
 
@@ -217,7 +227,7 @@ class WP_Gistpen_Content {
 	 */
 	public static function get_the_language_extension( $gistpen_id ) {
 		$slug = self::get_the_language ( $gistpen_id );
-		$slug = ($slug == 'javascript' ? 'js' : ( $slug == 'bash' ? 'sh' : ( $slug == 'scss' ? 'sass' : $slug ) ) );
+		$slug = ( $slug == 'javascript' ? 'js' : ( $slug == 'bash' ? 'sh' : ( $slug == 'scss' ? 'sass' : $slug ) ) );
 
 		return $slug;
 	}
