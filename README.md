@@ -10,6 +10,8 @@
 
 A self-hosted alternative to putting your code snippets on Gist.
 
+[![Build Status](https://travis-ci.org/mAAdhaTTah/WP-Gistpen.svg?branch=develop)](https://travis-ci.org/mAAdhaTTah/WP-Gistpen)
+
 ## Description ##
 
 You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement for your WordPress blog.
