@@ -42,6 +42,16 @@ class WP_Gistpen_Updater {
 		'Twig' => 'twig'
 	);
 
+	public static function run() {
+		// Check if plugin needs to be upgraded
+		$version = get_option( 'wp_gistpen_version', '0.0.0' );
+
+		if( $version !== WP_Gistpen::VERSION ) {
+			WP_Gistpen_Updater::update( $version );
+			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
+		}
+	}
+
 	/**
 	 * Checks current version and manages database changes
 	 *
@@ -52,6 +62,10 @@ class WP_Gistpen_Updater {
 
 		if( version_compare( $version, '0.3.0', '<' ) ) {
 			self::update_to_0_3_0();
+		}
+
+		if( version_compare( $version, '0.4.0', '<' ) ) {
+			self::update_to_0_4_0();
 		}
 
 	}
@@ -103,6 +117,63 @@ class WP_Gistpen_Updater {
 
 		}
 
+	}
+
+	/**
+	 * Update the database to version 0.4.0
+	 *
+	 * @return bool true if successful
+	 * @since 0.4.0
+	 */
+	public static function update_to_0_4_0() {
+		register_post_type('gistpens', array());
+		$posts = get_posts( array(
+			'post_type' => 'gistpens',
+			'posts_per_page' => -1,
+			'post_status' => 'any'
+		) );
+
+		foreach ( $posts as $post ) {
+			$terms = get_the_terms( $post->ID, 'language' );
+
+			if( $terms ) {
+				$lang = array_pop( $terms );
+			}
+
+			$_POST['wp-gistpenfile-language'] = $lang->slug;
+
+			wp_set_object_terms( $post->ID, '', 'language' );
+
+			// Get and clear content
+			$_POST['wp-gistpenfile-content'] = $post->post_content;
+			$post->post_content = '';
+
+			// Migrate titles and descriptions
+			$_POST['wp-gistpenfile-name'] = $post->post_title;
+			$post->post_name = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
+			$post->post_title = $post->post_name;
+			delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
+
+			// Update post type
+			$post->post_type = 'gistpen';
+
+			$result = wp_update_post( $post );
+
+			if ( is_wp_error( $result ) ) {
+				// @todo error message?
+			}
+
+			$children = get_children(array( 'post_parent' => $post->ID ) );
+			if( null !== $children ) {
+				foreach ( $children as $key => $child_post) {
+					wp_delete_post( $child_post->ID, 'true' );
+				}
+			}
+
+			WP_Gistpen_Saver::save_gistpen( $post->ID );
+		}
+
+		flush_rewrite_rules( true );
 	}
 
 }

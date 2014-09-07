@@ -60,7 +60,7 @@ class WP_Gistpen_Content {
 
 		self::$gistpen = $gistpen;
 		self::$files = get_posts( array(
-			'post_type' => 'gistpens',
+			'post_type' => 'gistpen',
 			'numberposts' => -1,
 			'post_parent' => self::$gistpen->ID,
 			//'post_status' => 'any'
@@ -90,12 +90,12 @@ class WP_Gistpen_Content {
 
 		// If the user didn't provide an ID, raise an error
 		if( $args['id'] == null ) {
-			return '<div class="gistpen-error">No Gistpen ID was provided.</div>';
+			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
 		$gistpen = get_post( $args['id'] );
 
-		if ( $gistpen->post_type !== 'gistpens' ) {
+		if ( $gistpen->post_type !== 'gistpen' ) {
 			return '<div class="wp-gistpen-error">The ID supplied is not a Gistpen.</div>';
 		}
 

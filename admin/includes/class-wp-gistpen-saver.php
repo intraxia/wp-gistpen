@@ -30,9 +30,9 @@ class WP_Gistpen_Saver {
 	 */
 	public static function save_gistpen( $gistpen_id = '' ) {
 		if ( '' === $gistpen_id ) {
-			remove_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
-			$gistpen_id = wp_insert_post( array( 'post_title' => $_POST['wp-gistfile-description'], 'post_type' => 'gistpens' ) );
-			add_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+			remove_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+			$gistpen_id = wp_insert_post( array( 'post_title' => $_POST['wp-gistfile-description'], 'post_type' => 'gistpen' ) );
+			add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 		}
 
 		self::$post_id = $gistpen_id;
@@ -78,8 +78,8 @@ class WP_Gistpen_Saver {
 		}
 
 		if( array_key_exists('wp-gistpenfile-name' . $file_id, $_POST) ) {
-			$args['post_name'] = str_replace(" ", "-", $_POST['wp-gistpenfile-name' . $file_id]);
-			$args['post_title'] = $_POST['wp-gistpenfile-name' . $file_id];
+			$args['post_title'] = str_replace(" ", "-", $_POST['wp-gistpenfile-name' . $file_id]);
+			$args['post_name'] = $_POST['wp-gistpenfile-name' . $file_id];
 		}
 
 		if( array_key_exists('wp-gistpenfile-content' . $file_id, $_POST) ) {
@@ -105,7 +105,7 @@ class WP_Gistpen_Saver {
 			'post_content' => '',
 			'post_name' => '',
 			'post_title' => '',
-			'post_type' => 'gistpens',
+			'post_type' => 'gistpen',
 			'post_status' => 'inherit',
 			'post_password' => '',
 			'post_parent' => self::$post_id,
@@ -118,9 +118,9 @@ class WP_Gistpen_Saver {
 			$post[$key] = $value;
 		}
 
-		remove_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+		remove_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 		$result = wp_insert_post( $post, true );
-		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+		add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 
 		if( !is_wp_error( $result ) ) {
 			self::$file_ids[] = $result;

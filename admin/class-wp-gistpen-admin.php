@@ -53,8 +53,11 @@ class WP_Gistpen_Admin {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
+		// Register the settings page
+		add_action( 'admin_init', array( $this, 'register_setting' ) );
+
 		// Run the updater
-		add_action( 'admin_init', array( $this, 'init' ) );
+		add_action( 'admin_init', array( 'WP_Gistpen_Updater', 'run' ) );
 
 		/**
 		 * TinyMCE hooks
@@ -79,14 +82,14 @@ class WP_Gistpen_Admin {
 		// Rearrange Gistpen layout
 		add_filter( 'screen_layout_columns', array( 'WP_Gistpen_Editor', 'screen_layout_columns' ) );
 		add_action( 'admin_menu', array( 'WP_Gistpen_Editor', 'remove_meta_boxes' ) );
-		add_filter( 'get_user_option_screen_layout_gistpens', array( 'WP_Gistpen_Editor', 'screen_layout_gistpens' ) );
-		add_filter( 'get_user_option_meta-box-order_gistpens', array( 'WP_Gistpen_Editor', 'gistpens_meta_box_order') );
+		add_filter( 'get_user_option_screen_layout_gistpen', array( 'WP_Gistpen_Editor', 'screen_layout_gistpen' ) );
+		add_filter( 'get_user_option_meta-box-order_gistpen', array( 'WP_Gistpen_Editor', 'gistpen_meta_box_order') );
 
 		/**
 		 * Gistpen save hook
 		 */
 		// Save the files and attach to Gistpen
-		add_action( 'save_post_gistpens', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+		add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 
 		/**
 		 * AJAX hooks
@@ -141,36 +144,7 @@ class WP_Gistpen_Admin {
 	}
 
 	/**
-	 * Functions run on the init hook
-	 *
-	 * @since     0.3.0
-	 */
-	public function init() {
-
-		$this->run_updater();
-		$this->register_setting();
-	}
-
-	/**
-	 * Checks if we're behind current version
-	 * and triggers the updater
-	 *
-	 * @since 0.3.0
-	 */
-	public function run_updater() {
-
-		// Check if plugin needs to be upgraded
-		$version = get_option( 'wp_gistpen_version' );
-
-		if( $version !== WP_Gistpen::VERSION ) {
-			WP_Gistpen_Updater::update( $version );
-			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
-		}
-
-	}
-
-	/**
-	 * Register the settings (obviously)
+	 * Register the settings page (obviously)
 	 *
 	 * @since 0.3.0
 	 */
