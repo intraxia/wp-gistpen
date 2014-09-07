@@ -12,6 +12,8 @@ class WP_Gistpen_Updater_Test extends WP_UnitTestCase {
 	}
 
 	function set_up_0_4_0_test_posts() {
+		register_post_type('gistpens', array());
+
 		$terms = get_terms( 'language', 'hide_empty=0' );
 
 		foreach ($terms as $term) {
