@@ -98,17 +98,19 @@ class WP_Gistpen {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		// Remove some filters from the Gistpen content
-		add_action( 'the_content', array( $this, 'remove_filters' ) );
-
-		// Add the description to the Gistpen content
-		add_filter( 'the_content', array($this, 'post_content' ) );
-
 		// All the init hooks
 		add_action( 'init', array( $this, 'init' ) );
 
+
+		/**
+		 * Front-end Content hooks/filters
+		 */
+		// Remove some filters from the Gistpen content
+		add_action( 'the_content', array( 'WP_Gistpen_Content', 'remove_filters' ) );
+		// Add the description to the Gistpen content
+		add_filter( 'the_content', array('WP_Gistpen_Content', 'post_content' ) );
 		// Add the gistpen shortcode
-		add_shortcode( 'gistpen', array( $this, 'add_shortcode' ) );
+		add_shortcode( 'gistpen', array( 'WP_Gistpen_Content', 'add_shortcode' ) );
 
 	}
 
@@ -465,59 +467,6 @@ class WP_Gistpen {
 		);
 
 		register_taxonomy( 'language', array( 'gistpens' ), $args );
-
-	}
-
-	/**
-	 * Remove extra filters from the Gistpen content
-	 *
-	 * @since    0.1.0
-	 */
-	public function remove_filters( $content ) {
-
-		if( 'gistpen' == get_post_type() ) {
-			remove_filter( 'the_content', 'wpautop' );
-			remove_filter( 'the_content', 'wptexturize' );
-			remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Add the Gistpen content field to the_content
-	 *
-	 * @param string $atts shortcode attributes
-	 * @return string post_content
-	 * @since    0.1.0
-	 */
-	public function post_content( $content ) {
-		global $post;
-
-		if( 'gistpen' == $post->post_type ) {
-			return WP_Gistpen_Content::get_post_content( $post );
-		}
-
-		return $content;
-	}
-
-	/**
-	 * Register the shortcode to embed the Gistpen
-	 *
-	 * @param    array      $atts    attributes passed into the shortcode
-	 * @return   string
-	 * @since    0.1.0
-	 */
-	public function add_shortcode( $atts ) {
-
-		$args = shortcode_atts( array(
-			'id' => null,
-			'highlight' => null),
-			$atts,
-			'gistpen'
-		);
-
-		return WP_Gistpen_Content::get_shortcode_content( $args );
 
 	}
 
