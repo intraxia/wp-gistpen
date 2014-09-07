@@ -126,7 +126,10 @@ class WP_Gistpen_Updater {
 	 * @since 0.4.0
 	 */
 	public static function update_to_0_4_0() {
+		// We removed this post_type, so we need to add it real quick to use it
 		register_post_type('gistpens', array());
+
+		// Get all the Gistpens to work with
 		$posts = get_posts( array(
 			'post_type' => 'gistpens',
 			'posts_per_page' => -1,
@@ -134,40 +137,42 @@ class WP_Gistpen_Updater {
 		) );
 
 		foreach ( $posts as $post ) {
-			$terms = get_the_terms( $post->ID, 'language' );
+			// Migrate title to file's name
+			$_POST['wp-gistpenfile-name'] = $post->post_title;
 
-			if( $terms ) {
-				$lang = array_pop( $terms );
+			// Migrate description to Gistpen title and remove post_meta
+			$post->post_name = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
+			$post->post_title = $post->post_name;
+			$result = delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
+			if ( is_wp_error( $result ) ) {
+				// @todo write error msg?
 			}
-
-			$_POST['wp-gistpenfile-language'] = $lang->slug;
-
-			wp_set_object_terms( $post->ID, '', 'language' );
 
 			// Get and clear content
 			$_POST['wp-gistpenfile-content'] = $post->post_content;
 			$post->post_content = '';
 
-			// Migrate titles and descriptions
-			$_POST['wp-gistpenfile-name'] = $post->post_title;
-			$post->post_name = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
-			$post->post_title = $post->post_name;
-			delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
-
-			// Update post type
+			// Update post type to remove the 's'
 			$post->post_type = 'gistpen';
 
-			$result = wp_update_post( $post );
-
+			// Migrate Gistpen's language and remove
+			// @todo move this into helper function?
+			$terms = get_the_terms( $post->ID, 'language' );
+			if( $terms ) {
+				$lang = array_pop( $terms );
+			}
+			$_POST['wp-gistpenfile-language'] = $lang->slug;
+			$result = wp_set_object_terms( $post->ID, '', 'language' );
 			if ( is_wp_error( $result ) ) {
-				// @todo error message?
+				// @todo write error msg?
 			}
 
-			$children = get_children(array( 'post_parent' => $post->ID ) );
-			if( null !== $children ) {
-				foreach ( $children as $key => $child_post) {
-					wp_delete_post( $child_post->ID, 'true' );
-				}
+			// Update the post in the database
+			remove_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+			$result = wp_update_post( $post );
+			add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+			if ( is_wp_error( $result ) ) {
+				// @todo write error msg?
 			}
 
 			WP_Gistpen_Saver::save_gistpen( $post->ID );

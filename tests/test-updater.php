@@ -45,15 +45,20 @@ class WP_Gistpen_Updater_Test extends WP_UnitTestCase {
 
 			// Give the post the language
 			wp_set_object_terms( $gistpen_id, $lang_id, 'language', false );
+
+			// Create and set up the user
+			$user_id = $this->factory->user->create(array( 'role' => 'administrator' ) );
+			wp_set_current_user( $user_id );
 		}
 	}
 
 	function test_update_to_0_4_0() {
+
 		$this->set_up_0_4_0_test_posts();
 
 		WP_Gistpen_Updater::update_to_0_4_0();
 
-		foreach ($this->gistpens as $gistpen_id) {
+		foreach ( $this->gistpens as $gistpen_id ) {
 			$post = get_post( $gistpen_id );
 
 			// The post should have no content
