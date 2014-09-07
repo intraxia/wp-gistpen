@@ -22,7 +22,7 @@ class WP_Gistpen_Content {
 	 * @var $post object
 	 * @since  0.3.0
 	 */
-	private static $gistpen;
+	public static $gistpen;
 
 	/**
 	 * Content of the Gistpen we're
@@ -31,7 +31,7 @@ class WP_Gistpen_Content {
 	 * @var string post_content
 	 * @since  0.3.0
 	 */
-	private static $content;
+	public static $content;
 
 	/**
 	 * Array of all the files on this Gistpen
@@ -39,7 +39,7 @@ class WP_Gistpen_Content {
 	 * @var array
 	 * @since  0.4.0
 	 */
-	private static $files = array();
+	public static $files = array();
 
 	/**
 	 * Line numbers to highlight
@@ -47,24 +47,77 @@ class WP_Gistpen_Content {
 	 * @var string
 	 * @since 0.3.0
 	 */
-	private static $highlight = null;
+	public static $highlight = null;
+
+	/**
+	 * Remove extra filters from the Gistpen content
+	 *
+	 * @since    0.1.0
+	 */
+	public static function remove_filters( $content ) {
+
+		if( 'gistpen' == get_post_type() ) {
+			remove_filter( 'the_content', 'wpautop' );
+			remove_filter( 'the_content', 'wptexturize' );
+			remove_filter( 'the_content', 'capital_P_dangit' );
+			remove_filter( 'the_content', 'convert_chars' );
+			remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Add the Gistpen content field to the_content
+	 *
+	 * @param string $atts shortcode attributes
+	 * @return string post_content
+	 * @since    0.1.0
+	 */
+	public static function post_content( $content ) {
+
+		if( 'gistpen' == get_post_type() ) {
+			return self::get_post_content( get_post() );
+		}
+
+		return $content;
+	}
+
+	/**
+	 * Register the shortcode to embed the Gistpen
+	 *
+	 * @param    array      $atts    attributes passed into the shortcode
+	 * @return   string
+	 * @since    0.1.0
+	 */
+	public static function add_shortcode( $atts ) {
+
+		$args = shortcode_atts( array(
+			'id' => null,
+			'highlight' => null),
+			$atts,
+			'gistpen'
+		);
+
+		return self::get_shortcode_content( $args );
+
+	}
 
 	/**
 	 * Returns the Gistpen content used
 	 * in the normal loop
 	 *
+	 * @param WP_Post $gistpen Gistpen post object
 	 * @return string     manipulated content
 	 * @since  0.3.0
 	 */
 	public static function get_post_content( $gistpen ) {
 
+		// Content needs to be cleared if we're on the archive page
+		self::$content = '';
+
 		self::$gistpen = $gistpen;
-		self::$files = get_posts( array(
-			'post_type' => 'gistpen',
-			'numberposts' => -1,
-			'post_parent' => self::$gistpen->ID,
-			//'post_status' => 'any'
-		));
+		self::$files = get_children( array( 'post_parent' => self::$gistpen->ID ) );
 
 		if( !empty(self::$files) ) {
 			foreach( self::$files as $file ) {
@@ -89,7 +142,7 @@ class WP_Gistpen_Content {
 		self::$content = '';
 
 		// If the user didn't provide an ID, raise an error
-		if( $args['id'] == null ) {
+		if( $args['id'] === null ) {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
@@ -102,7 +155,16 @@ class WP_Gistpen_Content {
 		self::$gistpen = $gistpen;
 		self::$highlight = $args['highlight'];
 
-		self::add_code_markup();
+		self::$files = get_children( array( 'post_parent' => self::$gistpen->ID ) );
+
+		if( !empty( self::$files ) ) {
+			foreach( self::$files as $file ) {
+				self::$gistpen = $file;
+				self::add_code_markup();
+			}
+		} else {
+			self::add_code_markup();
+		}
 
 		return self::$content;
 
@@ -118,7 +180,7 @@ class WP_Gistpen_Content {
 	private static function add_code_markup() {
 		$content = '';
 
-		$content .= '<h2 class="wp-gistpenfile-title">' . self::$gistpen->post_name . '</h2>';
+		$content .= '<h2 class="wp-gistpenfile-title">' . self::$gistpen->post_name . '.' . self::get_the_language_extension( self::$gistpen->ID ) . '</h2>';
 
 		$content .= '<pre id="wp-gistpenfile-' . self::$gistpen->post_name . '" class="gistpen line-numbers" ';
 
@@ -128,13 +190,12 @@ class WP_Gistpen_Content {
 
 		$content .= '>';
 
-		$slug = self::get_the_language( self::$gistpen->ID );
 
-		$content .= '<code class="language-' . $slug . '">' . self::$gistpen->post_content;
+		$content .= '<code class="language-' . self::get_the_language( self::$gistpen->ID ) . '">' . self::$gistpen->post_content;
 		$content .= '</code></pre>';
 
-		self::$content .= $content;
 
+		self::$content .= $content;
 	}
 
 	/**
@@ -149,11 +210,24 @@ class WP_Gistpen_Content {
 
 		if( $terms ) {
 			$lang = array_pop( $terms );
-			$slug = ($lang->slug == 'js' ? 'javascript' : $lang->slug);
-			$slug = ($lang->slug == 'sass' ? 'scss' : $slug);
+			$slug = ($lang->slug == 'js' ? 'javascript' : ($lang->slug == 'sass' ? 'scss' : $lang->slug));
 		} else {
 			$slug = 'none';
 		}
+
+		return $slug;
+	}
+
+	/**
+	 * Get the file extension for the language
+	 *
+	 * @param  in     $gistpen_id ID of the Gistpen
+	 * @return string             language extension
+	 * @since    0.4.0
+	 */
+	public static function get_the_language_extension( $gistpen_id ) {
+		$slug = self::get_the_language ( $gistpen_id );
+		$slug = ( $slug == 'javascript' ? 'js' : ( $slug == 'bash' ? 'sh' : ( $slug == 'scss' ? 'sass' : $slug ) ) );
 
 		return $slug;
 	}
