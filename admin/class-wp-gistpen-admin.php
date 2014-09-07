@@ -53,8 +53,11 @@ class WP_Gistpen_Admin {
 		$plugin = WP_Gistpen::get_instance();
 		$this->plugin_slug = $plugin->get_plugin_slug();
 
+		// Register the settings page
+		add_action( 'admin_init', array( $this, 'register_setting' ) );
+
 		// Run the updater
-		add_action( 'admin_init', array( $this, 'init' ) );
+		add_action( 'admin_init', array( 'WP_Gistpen_Updater', 'run' ) );
 
 		/**
 		 * TinyMCE hooks
@@ -141,36 +144,7 @@ class WP_Gistpen_Admin {
 	}
 
 	/**
-	 * Functions run on the init hook
-	 *
-	 * @since     0.3.0
-	 */
-	public function init() {
-
-		$this->run_updater();
-		$this->register_setting();
-	}
-
-	/**
-	 * Checks if we're behind current version
-	 * and triggers the updater
-	 *
-	 * @since 0.3.0
-	 */
-	public function run_updater() {
-
-		// Check if plugin needs to be upgraded
-		$version = get_option( 'wp_gistpen_version' );
-
-		if( $version !== WP_Gistpen::VERSION ) {
-			WP_Gistpen_Updater::update( $version );
-			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
-		}
-
-	}
-
-	/**
-	 * Register the settings (obviously)
+	 * Register the settings page (obviously)
 	 *
 	 * @since 0.3.0
 	 */

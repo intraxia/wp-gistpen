@@ -7,7 +7,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 	public $user_id;
 	public $response;
-	public $posts;
+	public $posts = array();
 
 	function set_correct_security() {
 		$this->_setRole( 'administrator' );
@@ -28,9 +28,9 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 			'post_author' => $this->user_id,
 			'post_status' => 'publish',
 		), array(
-			'post_title' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
-			'post_content' => new WP_UnitTest_Generator_Sequence( 'Post content %s' ),
-			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'Post excerpt %s' )
+			'post_title' => new WP_UnitTest_Generator_Sequence( 'AJAX Post title %s' ),
+			'post_content' => new WP_UnitTest_Generator_Sequence( 'AJAX Post content %s' ),
+			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'AJAX Post excerpt %s' )
 		));
 	}
 
@@ -100,7 +100,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->assertCount( 1, $this->response->data->gistpens );
 	}
 
-	function test_save_gistpen() {
+	function test_create_gistpen() {
 		$this->set_correct_security();
 		$_POST['wp-gistpenfile-name'] = 'New Gistpen';
 		$_POST['wp-gistfile-description'] = 'New Gistpen Description';

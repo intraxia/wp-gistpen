@@ -78,8 +78,8 @@ class WP_Gistpen_Saver {
 		}
 
 		if( array_key_exists('wp-gistpenfile-name' . $file_id, $_POST) ) {
-			$args['post_name'] = str_replace(" ", "-", $_POST['wp-gistpenfile-name' . $file_id]);
-			$args['post_title'] = $_POST['wp-gistpenfile-name' . $file_id];
+			$args['post_title'] = str_replace(" ", "-", $_POST['wp-gistpenfile-name' . $file_id]);
+			$args['post_name'] = $_POST['wp-gistpenfile-name' . $file_id];
 		}
 
 		if( array_key_exists('wp-gistpenfile-content' . $file_id, $_POST) ) {
