@@ -168,14 +168,11 @@ class WP_Gistpen_Updater {
 			}
 
 			// Update the post in the database
-			remove_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+			// Updates the child post too via hook
 			$result = wp_update_post( $post );
-			add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 			if ( is_wp_error( $result ) ) {
 				// @todo write error msg?
 			}
-
-			WP_Gistpen_Saver::save_gistpen( $post->ID );
 		}
 
 		flush_rewrite_rules( true );
