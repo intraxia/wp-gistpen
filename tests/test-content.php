@@ -22,14 +22,12 @@ class WP_Gistpen_Content_Test extends WP_UnitTestCase {
 
 		$this->gistpenfiles = $this->factory->post->create_many( 3, array(
 			'post_type' => 'gistpen',
+			'post_parent' => $this->gistpen->ID
 		), array(
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
 			'post_name' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
 			'post_content' => new WP_UnitTest_Generator_Sequence( 'Post content %s' )
 		));
-		foreach ( $this->gistpenfiles as $gistpenfile_id ) {
-			$this->factory->post->update_object( $gistpenfile_id, array( 'post_parent' => $this->gistpen->ID ) );
-		}
 	}
 
 	function test_get_post_content() {
@@ -44,6 +42,8 @@ class WP_Gistpen_Content_Test extends WP_UnitTestCase {
 
 		$sub_str_count = substr_count( $content, '<h2 class="wp-gistpenfile-title">' );
 		$this->assertEquals( 1, $sub_str_count );
+		$sub_str_count = substr_count( $content, 'Post content' );
+		$this->assertEquals( 1, $sub_str_count );
 		$sub_str_count = substr_count( $content, 'data-line=' );
 		$this->assertEquals( 0, $sub_str_count );
 	}
@@ -52,6 +52,8 @@ class WP_Gistpen_Content_Test extends WP_UnitTestCase {
 		$content = WP_Gistpen_Content::get_shortcode_content( array( 'id' => $this->gistpen->ID, 'highlight' => null ) );
 
 		$sub_str_count = substr_count( $content, '<h2 class="wp-gistpenfile-title">' );
+		$this->assertEquals( 3, $sub_str_count );
+		$sub_str_count = substr_count( $content, 'Post content' );
 		$this->assertEquals( 3, $sub_str_count );
 		$sub_str_count = substr_count( $content, 'data-line=' );
 		$this->assertEquals( 0, $sub_str_count );

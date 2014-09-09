@@ -104,7 +104,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->set_correct_security();
 		$_POST['wp-gistpenfile-name'] = 'New Gistpen';
 		$_POST['wp-gistfile-description'] = 'New Gistpen Description';
-		$_POST['wp-gistpenfile-content'] = '<?php echo $stuff; ?>';
+		$_POST['wp-gistpenfile-content'] = 'echo $stuff;';
 		$_POST['post_status'] = 'draft';
 		$_POST['wp-gistpenfile-language'] = 'php';
 
@@ -158,6 +158,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 	}
 
 	function tearDown() {
+		$_POST = array();
 		parent::tearDown();
 	}
 }
