@@ -11,15 +11,7 @@ class WP_Gistpen_Content_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->gistpen = $this->factory->gistpen->create_and_get();
-
-		$this->gistpenfiles = $this->factory->gistpen->create_many( 3, array(
-			'post_parent' => $this->gistpen->ID
-		), array(
-			'post_title' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
-			'post_name' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
-			'post_content' => new WP_UnitTest_Generator_Sequence( 'Post content %s' )
-		) );
+		$this->create_post_and_children();
 	}
 
 	function test_get_post_content() {
