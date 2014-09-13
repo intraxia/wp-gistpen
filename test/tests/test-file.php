@@ -6,18 +6,14 @@
 class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 
 	public $file_obj;
-	public $language;
-	public $gistpen;
 	public $file;
 
 	function setUp() {
 		parent::setUp();
 		$this->file_obj = $this->factory->gistpen->create_and_get( array( 'post_parent' => $this->factory->gistpen->create() ) );
-		$this->language = $this->getMockBuilder( 'WP_Gistpen_Language' )->disableOriginalConstructor()->getMock();
-		$this->gistpen = $this->getMockBuilder( 'WP_Gistpen_Post' )->disableOriginalConstructor()->getMock();
-		$this->file = new WP_Gistpen_File( $this->file_obj, $this->language, $this->gistpen  );
+		$this->file = new WP_Gistpen_File( $this->file_obj, $this->mock_lang, $this->mock_post  );
 
-		$this->language
+		$this->mock_lang
 			->expects( $this->any() )
 			->method( '__get' )
 			->with( $this->anything() );
@@ -28,7 +24,7 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_parent_post_object() {
-		$this->assertEquals( $this->gistpen, $this->file->parent );
+		$this->assertEquals( $this->mock_post, $this->file->parent );
 	}
 
 	function test_get_filename_with_extension() {
