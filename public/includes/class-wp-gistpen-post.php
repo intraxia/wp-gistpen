@@ -84,7 +84,7 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 
 		return $this->post_content;
 	}
-	protected function get_shortcode_content() {
+	public function get_shortcode_content() {
 		if( ! isset( $this->shortcode_content ) && ! empty( $this->files ) ) {
 			foreach ( $this->files as $file ) {
 				$this->shortcode_content .= $file->shortcode_content;

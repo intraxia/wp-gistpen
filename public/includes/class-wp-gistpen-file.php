@@ -64,6 +64,14 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	protected $post_content;
 
 	/**
+	 * Lines to highlight in shortcode
+	 *
+	 * @var string
+	 * @since 0.4.0
+	 */
+	protected $highlight = null;
+
+	/**
 	 * File's content manipulated for shortcode display
 	 *
 	 * @var string
@@ -124,6 +132,9 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 
 			$this->post_content .= '<pre class="gistpen line-numbers" ';
 			// Line highlighting and offset will go here
+			if( $this->highlight !== null ) {
+				$this->post_content .= 'data-line="' . $this->highlight . '"';
+			}
 			$this->post_content .= '>';
 			$this->post_content .= '<code class="language-' . $this->language->prism_slug . '">' . $this->get_code();
 			$this->post_content .= '</code></pre>';
@@ -133,7 +144,9 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 
 		return $this->post_content;
 	}
-	protected function get_shortcode_content() {
+	public function get_shortcode_content( $highlight = null ) {
+		$this->highlight = $highlight;
+
 		if ( ! isset( $this->shortcode_content ) ) {
 			// @todo This is a stub for future functionality
 			$this->shortcode_content = $this->get_post_content();
