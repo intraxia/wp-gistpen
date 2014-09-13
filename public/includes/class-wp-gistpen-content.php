@@ -44,14 +44,15 @@ class WP_Gistpen_Content {
 		global $post;
 
 		if( 'gistpen' == $post->post_type ) {
-			$post = WP_Gistpen::get_instance()->query->get( $post );
+			$gistpen = $post;
+			$gistpen = WP_Gistpen::get_instance()->query->get( $gistpen );
 
-			if( is_wp_error( $post ) ) {
+			if( is_wp_error( $gistpen ) ) {
 				// @todo handle each error
 				return;
 			}
 
-			return $post->post_content;
+			return $gistpen->post_content;
 		}
 
 		return $content;
