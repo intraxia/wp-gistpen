@@ -86,7 +86,9 @@ class WP_Gistpen {
 	 */
 	private function __construct() {
 
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-abstract.php' );
 		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-content.php' );
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-file.php' );
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
