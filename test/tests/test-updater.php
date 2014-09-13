@@ -2,7 +2,7 @@
 /**
  * @group  updater
  */
-class WP_Gistpen_Updater_Test extends WP_UnitTestCase {
+class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 
 	public $posts;
 	public $gistpens;

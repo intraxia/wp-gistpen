@@ -3,7 +3,7 @@
 /**
  * @group content
  */
-class WP_Gistpen_Content_Test extends WP_UnitTestCase {
+class WP_Gistpen_Content_Test extends WP_Gistpen_UnitTestCase {
 
 	public $gistpen;
 	public $gistpenfiles;
@@ -11,23 +11,15 @@ class WP_Gistpen_Content_Test extends WP_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->factory = new WP_UnitTest_Factory();
+		$this->gistpen = $this->factory->gistpen->create_and_get();
 
-		$this->gistpen = $this->factory->post->create_and_get( array(
-			'post_type' => 'gistpen',
-		), array(
-			'post_title' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
-			'post_name' => new WP_UnitTest_Generator_Sequence( 'Post title %s' )
-		));
-
-		$this->gistpenfiles = $this->factory->post->create_many( 3, array(
-			'post_type' => 'gistpen',
+		$this->gistpenfiles = $this->factory->gistpen->create_many( 3, array(
 			'post_parent' => $this->gistpen->ID
 		), array(
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
 			'post_name' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
 			'post_content' => new WP_UnitTest_Generator_Sequence( 'Post content %s' )
-		));
+		) );
 	}
 
 	function test_get_post_content() {
