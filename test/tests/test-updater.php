@@ -76,7 +76,10 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 			// The post title should be "This is a decription of the Gistpen."
 			$this->assertEquals( 'This is a description of the Gistpen.', $post->post_title );
 
-			$children = get_children( array( 'post_parent' => $gistpen_id ) );
+			$children = get_children( array(
+				'post_parent' => $gistpen_id,
+				'post_type' => 'gistpen'
+			) );
 
 			// The post should have one child post
 			$this->assertCount( 1, $children );
@@ -94,8 +97,8 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 			$this->assertEquals( 'gistpen', $child->post_type );
 
 			// The child post should have a language
-			$language = WP_Gistpen_Content::get_the_language( $child->ID );
-			$this->assertNotEquals( 'none', $language );
+			$language = wp_get_object_terms( $child->ID, 'language' );
+			$this->assertCount( 1, $language );
 		}
 
 		$posts = get_posts( array(
