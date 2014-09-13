@@ -21,7 +21,7 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 	 * @var      array
 	 * @since    0.1.0
 	 */
-	public static $supported_languages = array(
+	public static $supported = array(
 		'Bash' => 'bash',
 		'C' => 'c',
 		'Coffeescript' => 'coffeescript',

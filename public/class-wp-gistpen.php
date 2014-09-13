@@ -91,6 +91,7 @@ class WP_Gistpen {
 		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-file.php' );
 		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-language.php' );
 		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-content.php' );
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-query.php' );
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
