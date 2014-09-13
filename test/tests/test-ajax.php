@@ -3,7 +3,7 @@
 /**
  * @group  ajax
  */
-class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
+class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 
 	public $user_id;
 	public $response;
@@ -22,16 +22,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->user_id = $this->factory->user->create();
-		$this->posts = $this->factory->post->create_many( 10, array(
-			'post_type' => 'gistpen',
-			'post_author' => $this->user_id,
-			'post_status' => 'publish',
-		), array(
-			'post_title' => new WP_UnitTest_Generator_Sequence( 'AJAX Post title %s' ),
-			'post_content' => new WP_UnitTest_Generator_Sequence( 'AJAX Post content %s' ),
-			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'AJAX Post excerpt %s' )
-		));
+		$this->create_post_and_children();
 	}
 
 	function test_fails_without_nonce() {
@@ -84,12 +75,12 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->response = json_decode($this->_last_response);
 
 		$this->check_standard_response_info();
-		$this->assertCount( 5, $this->response->data->gistpens );
+		$this->assertCount( 3, $this->response->data->gistpens );
 	}
 
 	function test_returns_gistpens_with_search() {
 		$this->set_correct_security();
-		$_POST['gistpen_search_term'] = 'Post title 9';
+		$_POST['gistpen_search_term'] = 'Post title 2';
 
 		try {
 			$this->_handleAjax( 'get_gistpens' );
@@ -158,7 +149,6 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 	}
 
 	function tearDown() {
-		$_POST = array();
 		parent::tearDown();
 	}
 }

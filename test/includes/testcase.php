@@ -1,6 +1,6 @@
 <?php
 
-class WP_Gistpen_UnitTestCase extends WP_UnitTestCase {
+class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 
 	public $mock_lang;
 	public $mock_post;
