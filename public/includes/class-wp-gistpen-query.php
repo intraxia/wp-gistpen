@@ -16,7 +16,7 @@
 class WP_Gistpen_Query {
 
 	/**
-	 * Retreives the correct WP_Gistpen object
+	 * Retrieves the correct WP_Gistpen object
 	 *
 	 * @param  WP_Post|int $post Accepts a WP_Post object or a post ID
 	 * @return WP_Gistpen_Post|File       WP_Gistpen object
@@ -52,7 +52,7 @@ class WP_Gistpen_Query {
 	}
 
 	/**
-	 * Retreives the WP_Gistpen_File from the WP_Post object
+	 * Retrieves the WP_Gistpen_File from the WP_Post object
 	 *
 	 * @param  WP_Post $post
 	 * @return WP_Gistpen_File
@@ -60,38 +60,68 @@ class WP_Gistpen_Query {
 	 */
 	protected function get_file( $post ) {
 		$language = new WP_Gistpen_Language( $this->get_language( $post ) );
+		if ( is_wp_error( $language ) ) {
+			// @todo error out
+			return null;
+		}
+
 		return new WP_Gistpen_File( $post, $language );
 	}
 
 	/**
-	 * [get_language description]
-	 * @param  [type] $post [description]
-	 * @return [type]       [description]
+	 * Retrieves the WP_Gistpen_Language for a WP_Post object
+	 *
+	 * @param  WP_Post $post
+	 * @return WP_Gistpen_Language|WP_Error       language object or Error
+	 * @since 0.4.0
 	 */
 	protected function get_language( $post ) {
 		$terms = get_the_terms( $post->ID, 'language' );
-
+		print 'Query file: ';
+		var_dump($post->ID);
 		if( $terms ) {
 			$language = array_pop( $terms );
 		} else {
-			$language = new WP_Error( 'no_language', 'The file has no language' );
+			$language = new WP_Error( 'no_language', __( 'The file has no language', WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
 		return $language;
 	}
 
+	/**
+	 * Retrieves the WP_Gistpen_Post for a WP_Post object
+	 *
+	 * @param  WP_Post $post
+	 * @return WP_Gistpen_Language|WP_Error       language object or Error
+	 * @since 0.4.0
+	 */
 	protected function get_gistpen( $post ) {
+		print 'Input ID: ';
+		var_dump($post->ID);
 		$files = $this->get_files( $post );
 
 		return new WP_Gistpen_Post( $post, $files );
 	}
 
+	/**
+	 * Retrieves the all the WP_Gistpen_File's for a WP_Post object
+	 *
+	 * @param  WP_Post $post
+	 * @return array|WP_Error       array of WP_Gistpen_Files or Error
+	 * @since 0.4.0
+	 */
 	protected function get_files( $post ) {
 		$files_obj = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID
 		) );
-		foreach ( $files_obj as $file ) {
+
+		print 'Get_files ID: ';
+		var_dump($post->ID);
+		var_dump($files_obj);
+		exit();
+
+		foreach ( $files_obj as $index => $file ) {
 			$files[] = $this->get_file( $file );
 		}
 
