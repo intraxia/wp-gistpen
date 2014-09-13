@@ -71,14 +71,14 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	 */
 	protected $shortcode_content;
 
-	public function __construct( WP_Post $file, WP_Gistpen_Language $language, WP_Gistpen_Post $gistpen ) {
+	public function __construct( WP_Post $file, WP_Gistpen_Language $language, $gistpen = null ) {
 		// Save file post object
 		$this->file = $file;
 
 		// Save language object
 		$this->language = $language;
 
-		if ( null !== $gistpen ) {
+		if ( null !== $gistpen && $gistpen instanceof WP_Gistpen_Post ) {
 			$this->parent = $gistpen;
 		}
 	}
