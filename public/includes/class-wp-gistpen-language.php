@@ -55,12 +55,7 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 
 	protected $term;
 
-	public function __construct( $language ) {
-
-		if ( ! is_object( $language ) ) {
-			throw new Exception( "Language must be a term object" );
-		}
-
+	public function __construct( stdClass $language ) {
 		$this->term = $language;
 	}
 
