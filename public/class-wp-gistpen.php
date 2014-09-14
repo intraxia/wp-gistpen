@@ -417,7 +417,7 @@ class WP_Gistpen {
 			'label'                => __( 'gistpens', $this->plugin_slug ),
 			'description'          => __( 'A collection of code snippets.', $this->plugin_slug ),
 			'labels'               => $labels,
-			'supports'             => array( 'title', 'author', 'comments' ),
+			'supports'             => array( 'title', 'author', 'revisions', 'comments' ),
 			'taxonomies'           => array( 'post_tag', 'language' ),
 			'hierarchical'         => true,
 			'public'               => true,

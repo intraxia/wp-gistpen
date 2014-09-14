@@ -61,23 +61,18 @@ class WP_Gistpen_AJAX {
 	public static function get_gistpens() {
 		self::check_security();
 
-		$args = array(
+		$search = null;
 
-			'post_type'      => 'gistpen',
-			'post_status'    => 'publish',
-			'order'          => 'DESC',
-			'orderby'        => 'date',
-			'posts_per_page' => 5,
+		if ( isset( $_POST['gistpen_search_term'] ) ) {
+			$search = $_POST['gistpen_search_term'];
+		}
+		$results = WP_Gistpen::get_instance()->query->search( $search );
 
-		);
-
-		if( isset( $_POST['gistpen_search_term'] ) && $_POST['gistpen_search_term'] !== null ) {
-			$args['s'] = $_POST['gistpen_search_term'];
+		if ( is_wp_error( $results ) ) {
+			wp_send_json_error( array( 'error' => $results->get_error_message() ) );
 		}
 
-		$recent_gistpens = get_posts( $args );
-
-		$data = array( 'gistpens' => $recent_gistpens );
+		$data = array( 'gistpens' => $results );
 
 		wp_send_json_success( $data );
 	}
@@ -91,14 +86,29 @@ class WP_Gistpen_AJAX {
 	public static function create_gistpen() {
 		self::check_security();
 
-		$file_ids = WP_Gistpen_Saver::save_gistpen();
-		$post_id = $file_ids[0];
+		$post_data = new WP_Post( new stdClass );
+		$post_data->post_type = 'gistpen';
+		$post_data->post_status = $_POST['post_status'];
 
-		if( $post_id === 0 ) {
-			wp_send_json_error(array( 'message' => __( "Failed to save Gistpen.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+		$result = WP_Gistpen::get_instance()->query->create( $post_data );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_messages() ) );
 		}
 
-		wp_send_json_success(array( 'id' => $post_id ) );
+		$result->description = $_POST['wp-gistfile-description'];
+
+		$result->files[0]->slug = $_POST['wp-gistpenfile-name'];
+		$result->files[0]->code = $_POST['wp-gistpenfile-content'];
+		$result->files[0]->language->slug = $_POST['wp-gistpenfile-language'];
+
+		$result = WP_Gistpen::get_instance()->query->save( $result );
+
+		if( is_wp_error( $result ) ) {
+			wp_send_json_error(array( 'message' => $result->get_error_messages() ) );
+		}
+
+		wp_send_json_success(array( 'id' => $result ) );
 	}
 
 	/**

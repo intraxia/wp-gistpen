@@ -28,14 +28,14 @@ class WP_Gistpen_Query {
 			'order'          => 'DESC',
 			'orderby'        => 'date',
 			'numberposts'    => $number,
-			'post_parent'    => 'any'
+			'post_parent'    => array( 'publish', 'pending', 'draft', 'future', 'private' )
 		);
 
 		if( $search !== null ) {
 			$args['s'] = $search;
 		}
 
-		$result = get_children( $args );
+		$result = get_posts( $args );
 
 		if ( empty( $result ) ) {
 			return new WP_Error('no_results', __("Search returned no results") );
@@ -216,7 +216,8 @@ class WP_Gistpen_Query {
 	public function get_files( $post ) {
 		$files_obj = get_children( array(
 			'post_type' => 'gistpen',
-			'post_parent' => $post->ID
+			'post_parent' => $post->ID,
+			'post_status' => $post->post_status
 		) );
 
 		foreach ( $files_obj as $index => $file ) {
@@ -230,7 +231,7 @@ class WP_Gistpen_Query {
 	 * Save the WP_Gistpen object to the database
 	 *
 	 * @param  WP_Gistpen_Post|File $post WP_Gistpen object
-	 * @return true|WP_Error       true on success, WP_Error on failure
+	 * @return int|WP_Error       post_id on success, WP_Error on failure
 	 */
 	public function save( $post ) {
 		if ( ! $post instanceof WP_Gistpen_Post && ! $post instanceof WP_Gistpen_File ) {
@@ -249,7 +250,7 @@ class WP_Gistpen_Query {
 			return $result;
 		}
 
-		return true;
+		return $result;
 	}
 
 	/**
@@ -265,18 +266,7 @@ class WP_Gistpen_Query {
 			return $result;
 		}
 
-		if ( empty( $post->files ) ) {
-			$file_data = new stdClass;
-			$file_data->post_parent = $post->post->ID;
-			$file_data->post_type = 'gistpen';
-
-			$file = $this->create( new WP_Post( $file_data ), 'bash' );
-			$file->code = "new";
-			$file->slug = "new";
-
-			$post->files[] = $file;
-			$post->update_post();
-		}
+		$post_id = $result;
 
 		foreach ( $post->files as $file ) {
 			$result = $this->save_file( $file );
@@ -286,7 +276,7 @@ class WP_Gistpen_Query {
 			}
 		}
 
-		return true;
+		return $post_id;
 	}
 
 	/**
@@ -302,13 +292,15 @@ class WP_Gistpen_Query {
 			return $result;
 		}
 
+		$post_id = $result;
+
 		$result = wp_set_object_terms( $result, $file->language->slug, 'language', false );
 
 		if( is_wp_error( $result ) ) {
 			return $result;
 		}
 
-		return true;
+		return $post_id;
 
 	}
 }

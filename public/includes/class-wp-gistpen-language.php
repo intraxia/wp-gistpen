@@ -60,11 +60,9 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 	public function __construct( stdClass $language ) {
 		$this->term = $language;
 
-		$this->slug = $this->term->slug;
-	}
-
-	protected function get_term() {
-		return $this->term;
+		if ( isset( $this->term->slug ) ) {
+			$this->slug = $this->term->slug;
+		}
 	}
 
 	/**
@@ -72,6 +70,9 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 	 *
 	 * @since  0.4.0
 	 */
+	protected function get_term() {
+		return $this->term;
+	}
 	protected function get_prism_slug() {
 
 		if ( ! isset( $this->prism_slug ) ) {

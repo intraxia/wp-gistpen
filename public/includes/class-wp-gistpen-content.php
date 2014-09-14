@@ -45,6 +45,7 @@ class WP_Gistpen_Content {
 
 		if( 'gistpen' == $post->post_type ) {
 			$gistpen = $post;
+
 			$gistpen = WP_Gistpen::get_instance()->query->get( $gistpen );
 
 			if( is_wp_error( $gistpen ) ) {

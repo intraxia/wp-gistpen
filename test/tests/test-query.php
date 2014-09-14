@@ -144,7 +144,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$result = $this->query->save( $post );
 
 		// Check result
-		$this->assertTrue( $result );
+		$this->assertInternalType( 'int', $result );
 
 		$post = $this->query->get( $this->gistpen );
 
@@ -167,7 +167,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$result = $this->query->save( $file );
 
 		// Check result
-		$this->assertTrue( $result );
+		$this->assertInternalType( 'int', $result );
 
 		$file = $this->query->get( get_post( $this->files[0] ) );
 
@@ -185,7 +185,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$result = $this->query->save( $post );
 
 		// Check result
-		$this->assertTrue( $result );
+		$this->assertInternalType( 'int', $result );
 
 		$posts = $this->query->search( null, -1 );
 
@@ -208,7 +208,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$result = $this->query->save_post( $post );
 
 		// Check result
-		$this->assertTrue( $result );
+		$this->assertInternalType( 'int', $result );
 
 		$post = $this->query->get( $this->gistpen );
 
@@ -233,7 +233,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$result = $this->query->save_file( $file );
 
 		// Check result
-		$this->assertTrue( $result );
+		$this->assertInternalType( 'int', $result );
 
 		$file = $this->query->get( get_post( $this->files[0] ) );
 
