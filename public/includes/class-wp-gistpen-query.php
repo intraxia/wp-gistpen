@@ -94,33 +94,57 @@ class WP_Gistpen_Query {
 	 * @return WP_Gistpen_File
 	 * @since 0.4.0
 	 */
-	protected function get_file( $post ) {
-		$language = new WP_Gistpen_Language( $this->get_language( $post ) );
-		if ( is_wp_error( $language ) ) {
+	public function get_file( $post ) {
+		$term = $this->get_language_term_by_post( $post );
+
+		if ( is_wp_error( $term ) ) {
 			// @todo error out
-			return null;
+			return $term;
 		}
+
+		$language = new WP_Gistpen_Language( $term );
 
 		return new WP_Gistpen_File( $post, $language );
 	}
 
 	/**
-	 * Retrieves the WP_Gistpen_Language for a WP_Post object
+	 * Retrieves the term stdCLass object for a WP_Post object
 	 *
 	 * @param  WP_Post $post
-	 * @return WP_Gistpen_Language|WP_Error       language object or Error
+	 * @return stdClass|WP_Error       term object or Error
 	 * @since 0.4.0
 	 */
-	protected function get_language( $post ) {
+	public function get_language_term_by_post( $post ) {
 		$terms = get_the_terms( $post->ID, 'language' );
 
 		if( $terms ) {
 			$language = array_pop( $terms );
 		} else {
-			$language = new WP_Error( 'no_language', __( 'The file has no language', WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			$language = new WP_Error( 'no_term_for_post', __( 'The file has no language', WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
 		return $language;
+	}
+
+	/**
+	 * Retrieves the term stdCLass object for a language slug
+	 *
+	 * @param  string $slug
+	 * @return stdClass|WP_Error       term object or Error
+	 * @since 0.4.0
+	 */
+	public function get_language_term_by_slug( $slug ) {
+		$terms = get_terms( 'language', array( 'slug' => $slug, 'hide_empty' => false ) );
+
+		if( is_wp_error( $terms ) ) {
+			return $terms;
+		}
+
+		if( empty( $terms ) ) {
+			return new WP_Error( 'no_term_for_slug', __( "No language term was found with that slug", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+		}
+
+		return array_pop( $terms );
 	}
 
 	/**
@@ -130,7 +154,7 @@ class WP_Gistpen_Query {
 	 * @return WP_Gistpen_Language|WP_Error       language object or Error
 	 * @since 0.4.0
 	 */
-	protected function get_gistpen( $post ) {
+	public function get_gistpen( $post ) {
 		$files = $this->get_files( $post );
 
 		return new WP_Gistpen_Post( $post, $files );
@@ -143,7 +167,7 @@ class WP_Gistpen_Query {
 	 * @return array|WP_Error       array of WP_Gistpen_Files or Error
 	 * @since 0.4.0
 	 */
-	protected function get_files( $post ) {
+	public function get_files( $post ) {
 		$files_obj = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID
