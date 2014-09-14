@@ -77,8 +77,7 @@ class WP_Gistpen_Query {
 	 */
 	protected function get_language( $post ) {
 		$terms = get_the_terms( $post->ID, 'language' );
-		print 'Query file: ';
-		var_dump($post->ID);
+
 		if( $terms ) {
 			$language = array_pop( $terms );
 		} else {
@@ -96,8 +95,6 @@ class WP_Gistpen_Query {
 	 * @since 0.4.0
 	 */
 	protected function get_gistpen( $post ) {
-		print 'Input ID: ';
-		var_dump($post->ID);
 		$files = $this->get_files( $post );
 
 		return new WP_Gistpen_Post( $post, $files );
@@ -115,11 +112,6 @@ class WP_Gistpen_Query {
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID
 		) );
-
-		print 'Get_files ID: ';
-		var_dump($post->ID);
-		var_dump($files_obj);
-		exit();
 
 		foreach ( $files_obj as $index => $file ) {
 			$files[] = $this->get_file( $file );
