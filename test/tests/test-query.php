@@ -14,6 +14,47 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$this->create_post_and_children();
 	}
 
+	function test_only_create_gistpen() {
+		$result = $this->query->create( new WP_Post( new stdClass ) );
+
+		$this->assertInstanceOf( 'WP_Error', $result );
+	}
+
+	function test_create_post() {
+		$post = new stdClass;
+		$post->post_type = 'gistpen';
+		$result = $this->query->create( new WP_Post( $post ) );
+
+		$this->assertInstanceOf( 'WP_Gistpen_Post', $result );
+	}
+
+	function test_needs_language() {
+		$post = new stdClass;
+		$post->post_type = 'gistpen';
+		$post->post_parent = 5;
+		$result = $this->query->create( new WP_Post( $post ) );
+
+		$this->assertInstanceOf( 'WP_Error', $result );
+	}
+
+	function test_needs_real_language() {
+		$post = new stdClass;
+		$post->post_type = 'gistpen';
+		$post->post_parent = 5;
+		$result = $this->query->create( new WP_Post( $post ), 'unreal_lang' );
+
+		$this->assertInstanceOf( 'WP_Error', $result );
+	}
+
+	function test_returns_file() {
+		$post = new stdClass;
+		$post->post_type = 'gistpen';
+		$post->post_parent = 5;
+		$result = $this->query->create( new WP_Post( $post ), 'php' );
+
+		$this->assertInstanceOf( 'WP_Gistpen_File', $result );
+	}
+
 	function test_get_file() {
 		$result = self::callProtectedMethod( 'get_file', 'WP_Gistpen_Query', array( get_post( $this->files[0] ) ) );
 

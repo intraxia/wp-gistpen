@@ -8,7 +8,7 @@
  */
 
 /**
- * This class manipulates the Gistpen post content.
+ * This class saves and gets Gistpens from the database
  *
  * @package WP_Gistpen_Query
  * @author  James DiGioia <jamesorodig@gmail.com>
@@ -16,7 +16,43 @@
 class WP_Gistpen_Query {
 
 	/**
-	 * Retrieves the correct WP_Gistpen object
+	 * Creates a WP_Gistpen object from a WP_Post object
+	 *
+	 * @param  WP_Post $post
+	 * @param  string $language           language slug
+	 * @return WP_Gistpen_Post|File       WP_Gistpen object
+	 */
+	public function create( WP_Post $post, $language = '' ) {
+
+		if ( 'gistpen' !== $post->post_type ) {
+			return new WP_Error( 'not_gistpen', __( "WP_Gistpen_Query::save can only create gistpens", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+		}
+
+		if ( 0 === $post->post_parent ) {
+			return new WP_Gistpen_Post( $post );
+		} else {
+
+			if( '' === $language ) {
+				return new WP_Error( 'no_language_set', __( "Post with a parent needs a language, no language set", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			}
+
+			$term = get_terms( 'language', array( 'slug' => $language ) );
+
+			if ( is_wp_error( $term ) ) {
+				return $term;
+			}
+			if( empty( $term ) ) {
+				return new WP_Error( 'nonexistent_language', __( "Language ${language} does not exist", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			}
+
+			$language = new WP_Gistpen_Language( array_pop( $term ) );
+
+			return new WP_Gistpen_File( $post, $language );
+		}
+	}
+
+	/**
+	 * Retrieves the correct WP_Gistpen object from the database
 	 *
 	 * @param  WP_Post|int $post Accepts a WP_Post object or a post ID
 	 * @return WP_Gistpen_Post|File       WP_Gistpen object
