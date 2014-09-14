@@ -47,6 +47,8 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 		'Twig' => 'twig'
 	);
 
+	protected $slug;
+
 	protected $prism_slug;
 
 	protected $file_ext;
@@ -62,20 +64,28 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 	protected function get_prism_slug() {
 
 		if ( ! isset( $this->prism_slug ) ) {
-			$this->prism_slug = ( $this->term->slug == 'js' ? 'javascript' :
-				( $this->term->slug == 'sass' ? 'scss' :
-				$this->term->slug ) );
+			$this->prism_slug = ( $this->get_slug() == 'js' ? 'javascript' :
+				( $this->get_slug() == 'sass' ? 'scss' :
+				$this->get_slug() ) );
 		}
 
 		return $this->prism_slug;
 	}
 
+	protected function get_slug() {
+		if( ! isset( $this->slug ) ) {
+			$this->slug = $this->term->slug;
+		}
+
+		return $this->slug;
+	}
+
 	protected function get_file_ext() {
 
 		if ( ! isset( $this->prism_slug ) ) {
-			$this->prism_slug = ( $this->term->slug == 'sass' ? 'scss' :
-				( $this->term->slug == 'bash' ? 'sh' :
-				$this->term->slug ) ) ;
+			$this->prism_slug = ( $this->get_slug() == 'sass' ? 'scss' :
+				( $this->get_slug() == 'bash' ? 'sh' :
+				$this->get_slug() ) ) ;
 		}
 
 		return $this->prism_slug;
@@ -84,7 +94,7 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 	protected function get_display_name() {
 
 		if ( ! isset( $this->display_name ) ) {
-			$this->display_name = $this->term->name;;
+			$this->display_name = $this->term->name;
 		}
 
 		return $this->display_name;

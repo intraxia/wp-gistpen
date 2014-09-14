@@ -32,6 +32,14 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	protected $parent;
 
 	/**
+	 * File's slug
+	 *
+	 * @var string
+	 * @since  0.4.0
+	 */
+	protected $slug;
+
+	/**
 	 * File's filename with extension
 	 *
 	 * @var string
@@ -107,10 +115,17 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 
 		return $this->parent;
 	}
+	protected function get_slug() {
+		if( ! isset( $this->slug ) ) {
+			$this->slug = $this->file->post_name;
+		}
+
+		return $this->slug;
+	}
 	protected function get_filename() {
 
 		if ( ! isset( $this->filename ) ) {
-			$this->filename = $this->file->post_name . '.' . $this->language->file_ext;
+			$this->filename = $this->get_slug() . '.' . $this->language->file_ext;
 		}
 
 		return $this->filename;

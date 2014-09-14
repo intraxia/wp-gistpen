@@ -11,6 +11,14 @@ class WP_Gistpen_Language_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 	}
 
+	function test_get_slug() {
+		$term = new stdClass;
+		$term->slug = 'slug';
+		$this->language = new WP_Gistpen_Language( $term );
+
+		$this->assertEquals( 'slug', $this->language->slug );
+	}
+
 	function test_return_prism_slug() {
 		$term = new stdClass;
 		$term->slug = 'slug';

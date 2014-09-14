@@ -27,6 +27,10 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( $this->mock_post, $this->file->parent );
 	}
 
+	function test_get_slug() {
+		$this->assertContains( 'post-title', $this->file->slug );
+	}
+
 	function test_get_filename_with_extension() {
 		$this->assertContains( 'post-title', $this->file->filename );
 		$this->assertContains( '.', $this->file->filename );
