@@ -53,19 +53,6 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( "User doesn't have proper permisissions.", $response->data->error );
 	}
 
-	function test_returns_gistpen_languages() {
-		$this->set_correct_security();
-
-		try {
-			$this->_handleAjax( 'get_gistpen_languages' );
-		} catch ( WPAjaxDieContinueException $e ) {}
-		$this->response = json_decode($this->_last_response);
-
-		$this->check_standard_response_info();
-		$this->assertObjectHasAttribute( 'languages', $this->response->data );
-		$this->assertInternalType( 'object', $this->response->data->languages );
-	}
-
 	function test_returns_recent_gistpens() {
 		$this->set_correct_security();
 
@@ -108,6 +95,7 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertObjectHasAttribute( 'id', $this->response->data );
 		$this->assertInternalType( 'integer', $this->response->data->id );
 		$this->assertTrue( $this->response->data->id !== 0 );
+		$this->assertNotEquals( null, get_post( $this->response->data->id ) );
 	}
 
 	function test_save_ace_theme() {
