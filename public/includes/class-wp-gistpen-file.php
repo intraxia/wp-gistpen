@@ -156,4 +156,14 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 		$this->language->update_post();
 	}
 
+	/**
+	 * Update the post object's parent ID
+	 *
+	 * @param  int   $parent_id   ID of parent Gistpen
+	 * @since 0.4.0
+	 */
+	public function update_parent( $parent_id ) {
+		$this->file->parent_post = $parent_id;
+	}
+
 }

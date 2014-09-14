@@ -2,6 +2,7 @@
 
 /**
  * @group objects
+ * @group query
  */
 class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 
@@ -114,6 +115,108 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$file = $this->query->get( $this->files[0] );
 
 		$this->assertInstanceOf( 'WP_Gistpen_File', $file );
+	}
+
+	function test_fail_to_save_non_gistpen() {
+		$result = $this->query->save( new WP_Post( new stdClass ) );
+
+		$this->assertInstanceOf( 'WP_Error', $result );
+	}
+
+	function test_save_with_post() {
+		$post = $this->query->get( $this->gistpen );
+
+		$post->description = "New description";
+
+		foreach ( $post->files as &$file ) {
+			$file->slug = "New code";
+			$file->code = "if possible do this";
+			$file->language->slug = "twig";
+		}
+
+		$result = $this->query->save( $post );
+
+		// Check result
+		$this->assertTrue( $result );
+
+		$post = $this->query->get( $this->gistpen );
+
+		$this->assertEquals( "New description", $post->description );
+
+		foreach ( $post->files as $file ) {
+			$this->assertContains( 'new-code', $file->slug );
+			$this->assertEquals( 'if possible do this', $file->code );
+			$this->assertEquals( 'twig', $file->language->slug );
+		}
+	}
+
+	function test_save_with_file() {
+		$file = $this->query->get( get_post( $this->files[0] ) );
+
+		$file->slug = "New code";
+		$file->code = "if possible do this";
+		$file->language->slug = "twig";
+
+		$result = $this->query->save( $file );
+
+		// Check result
+		$this->assertTrue( $result );
+
+		$file = $this->query->get( get_post( $this->files[0] ) );
+
+		$this->assertEquals( 'new-code', $file->slug );
+		$this->assertEquals( 'if possible do this', $file->code );
+		$this->assertEquals( 'twig', $file->language->slug );
+	}
+
+	function test_save_post() {
+		$post = $this->query->get( $this->gistpen );
+
+		$post->description = "New description";
+
+		foreach ( $post->files as &$file ) {
+			$file->slug = "New code";
+			$file->code = "if possible do this";
+			$file->language->slug = "twig";
+		}
+
+		$post->update_post();
+
+		$result = $this->query->save_post( $post );
+
+		// Check result
+		$this->assertTrue( $result );
+
+		$post = $this->query->get( $this->gistpen );
+
+		$this->assertEquals( "New description", $post->description );
+
+		foreach ( $post->files as $file ) {
+			$this->assertContains( 'new-code', $file->slug );
+			$this->assertEquals( 'if possible do this', $file->code );
+			$this->assertEquals( 'twig', $file->language->slug );
+		}
+	}
+
+	function test_save_file() {
+		$file = $this->query->get( get_post( $this->files[0] ) );
+
+		$file->slug = "New code";
+		$file->code = "if possible do this";
+		$file->language->slug = "twig";
+
+		$file->update_post();
+
+		$result = $this->query->save_file( $file );
+
+		// Check result
+		$this->assertTrue( $result );
+
+		$file = $this->query->get( get_post( $this->files[0] ) );
+
+		$this->assertContains( 'new-code', $file->slug );
+		$this->assertEquals( 'if possible do this', $file->code );
+		$this->assertEquals( 'twig', $file->language->slug );
 	}
 
 	function tearDown() {

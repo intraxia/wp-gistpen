@@ -180,4 +180,76 @@ class WP_Gistpen_Query {
 		return $files;
 	}
 
+	/**
+	 * Save the WP_Gistpen object to the database
+	 *
+	 * @param  WP_Gistpen_Post|File $post WP_Gistpen object
+	 * @return true|WP_Error       true on success, WP_Error on failure
+	 */
+	public function save( $post ) {
+		if ( ! $post instanceof WP_Gistpen_Post && ! $post instanceof WP_Gistpen_File ) {
+			return new WP_Error( 'wrong_object', __( "Query only save WP_Gistpen_Posts or Files", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+		}
+
+		$post->update_post();
+
+		if ( $post instanceof WP_Gistpen_Post ) {
+			$result = $this->save_post( $post );
+		} elseif ( $post instanceof WP_Gistpen_File ) {
+			$result = $this->save_file( $post );
+		}
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Save the WP_Gistpen_Post to the database
+	 *
+	 * @param  WP_Gistpen_Post $post
+	 * @return true|WP_Error       true on success, WP_Error on failure
+	 */
+	public function save_post( $post ) {
+		$result = wp_insert_post( (array) $post->post, true );
+
+		if( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		foreach ( $post->files as $file ) {
+			$result = $this->save_file( $file );
+
+			if( is_wp_error( $result ) ) {
+				return $result;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Save the WP_Gistpen_File to the database
+	 *
+	 * @param  WP_Gistpen_File $post
+	 * @return true|WP_Error       true on success, WP_Error on failure
+	 */
+	public function save_file( $file ) {
+		$result = wp_insert_post( (array) $file->file, true );
+
+		if( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$result = wp_set_object_terms( $result, $file->language->slug, 'language', false );
+
+		if( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return true;
+
+	}
 }

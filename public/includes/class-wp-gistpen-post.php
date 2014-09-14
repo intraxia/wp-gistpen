@@ -16,7 +16,7 @@
 class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 
 	/**
-	 * Gistpen's post_object
+	 * Gistpen's WP_Post obj
 	 *
 	 * @var WP_Post
 	 * @since 0.4.0
@@ -107,8 +107,9 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 			$this->post->post_title = $this->description;
 		}
 
-		foreach ( $this->files as $file ) {
+		foreach ( $this->files as &$file ) {
 			$file->update_post();
+			$file->update_parent( $this->post->ID );
 		}
 	}
 
