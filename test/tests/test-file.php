@@ -23,10 +23,6 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInstanceOf('WP_Post', $this->file->file);
 	}
 
-	function test_get_parent_post_object() {
-		$this->assertEquals( $this->mock_post, $this->file->parent );
-	}
-
 	function test_get_slug() {
 		$this->assertContains( 'post-title', $this->file->slug );
 	}
