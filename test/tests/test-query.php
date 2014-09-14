@@ -15,6 +15,13 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$this->create_post_and_children();
 	}
 
+	function test_search_returns_all_files() {
+		$results = $this->query->search( null );
+
+		$this->assertInternalType( 'array', $results );
+		$this->assertCount( 4, $results );
+	}
+
 	function test_fail_to_create_non_gistpen() {
 		$result = $this->query->create( new WP_Post( new stdClass ) );
 
@@ -167,6 +174,22 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'new-code', $file->slug );
 		$this->assertEquals( 'if possible do this', $file->code );
 		$this->assertEquals( 'twig', $file->language->slug );
+	}
+
+	function test_save_post_with_no_files() {
+		$post_data = new stdClass;
+		$post_data->post_type = 'gistpen';
+
+		$post = $this->query->create( new WP_Post( $post_data ) );
+
+		$result = $this->query->save( $post );
+
+		// Check result
+		$this->assertTrue( $result );
+
+		$posts = $this->query->search( null, -1 );
+
+		$this->assertCount( 6, $posts );
 	}
 
 	function test_save_post() {

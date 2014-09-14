@@ -16,11 +16,58 @@
 class WP_Gistpen_Query {
 
 	/**
+	 * Search for recent Files
+	 *
+	 * @param  int|null $search Search term, or null for recent 5
+	 * @return array         search results
+	 * @since 0.4.0
+	 */
+	public function search( $search, $number = 5 ) {
+		$args = array(
+			'post_type'      => 'gistpen',
+			'order'          => 'DESC',
+			'orderby'        => 'date',
+			'numberposts'    => $number,
+			'post_parent'    => 'any'
+		);
+
+		if( $search !== null ) {
+			$args['s'] = $search;
+		}
+
+		$result = get_children( $args );
+
+		if ( empty( $result ) ) {
+			return new WP_Error('no_results', __("Search returned no results") );
+		}
+
+		foreach ( $result as $gistpen ) {
+			if ( 0 === $gistpen->post_parent ) {
+				$results[] = $this->create( $gistpen );
+			} else {
+				$term = $this->get_language_term_by_post( $gistpen );
+
+				if ( is_wp_error( $term ) ) {
+					$term = new stdClass;
+					$term->slug = 'bash';
+				}
+
+				$language = $term->slug;
+
+				$results[] = $this->create( $gistpen, $language );
+			}
+		}
+
+		return $results;
+	}
+
+	/**
 	 * Creates a WP_Gistpen object from a WP_Post object
 	 *
 	 * @param  WP_Post $post
 	 * @param  string $language           language slug
 	 * @return WP_Gistpen_Post|File       WP_Gistpen object
+	 * @since 0.4.0
 	 */
 	public function create( WP_Post $post, $language = '' ) {
 
@@ -36,16 +83,15 @@ class WP_Gistpen_Query {
 				return new WP_Error( 'no_language_set', __( "Post with a parent needs a language, no language set", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 			}
 
-			$term = get_terms( 'language', array( 'slug' => $language ) );
+			$term = $this->get_language_term_by_slug( $language );
 
 			if ( is_wp_error( $term ) ) {
 				return $term;
-			}
-			if( empty( $term ) ) {
+			} elseif( empty( $term ) ) {
 				return new WP_Error( 'nonexistent_language', __( "Language ${language} does not exist", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 			}
 
-			$language = new WP_Gistpen_Language( array_pop( $term ) );
+			$language = new WP_Gistpen_Language( $term );
 
 			return new WP_Gistpen_File( $post, $language );
 		}
@@ -217,6 +263,19 @@ class WP_Gistpen_Query {
 
 		if( is_wp_error( $result ) ) {
 			return $result;
+		}
+
+		if ( empty( $post->files ) ) {
+			$file_data = new stdClass;
+			$file_data->post_parent = $post->post->ID;
+			$file_data->post_type = 'gistpen';
+
+			$file = $this->create( new WP_Post( $file_data ), 'bash' );
+			$file->code = "new";
+			$file->slug = "new";
+
+			$post->files[] = $file;
+			$post->update_post();
 		}
 
 		foreach ( $post->files as $file ) {
