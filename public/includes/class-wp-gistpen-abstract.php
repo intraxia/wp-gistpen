@@ -36,4 +36,6 @@ abstract class WP_Gistpen_Abtract  {
 				E_USER_NOTICE);
 		return null;
 	}
+
+	abstract public function update_post();
 }

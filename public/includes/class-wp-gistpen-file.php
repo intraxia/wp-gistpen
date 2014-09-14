@@ -29,7 +29,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	 * @var string
 	 * @since  0.4.0
 	 */
-	protected $slug;
+	public $slug;
 
 	/**
 	 * File's filename with extension
@@ -45,7 +45,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	 * @var WP_Gistpen_Language
 	 * @since 0.4.0
 	 */
-	protected $language;
+	public $language;
 
 	/**
 	 * File's raw code
@@ -53,7 +53,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	 * @var string
 	 * @since 0.4.0
 	 */
-	protected $code;
+	public $code;
 
 	/**
 	 * File's content manipulated for post display
@@ -82,6 +82,9 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	public function __construct( WP_Post $file, WP_Gistpen_Language $language ) {
 		$this->file = $file;
 		$this->language = $language;
+
+		$this->slug = $this->file->post_name;
+		$this->code = $this->file->post_content;
 	}
 
 	/**
@@ -100,28 +103,13 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 
 		return $this->parent;
 	}
-	protected function get_slug() {
-		if( ! isset( $this->slug ) ) {
-			$this->slug = $this->file->post_name;
-		}
-
-		return $this->slug;
-	}
 	protected function get_filename() {
 
 		if ( ! isset( $this->filename ) ) {
-			$this->filename = $this->get_slug() . '.' . $this->language->file_ext;
+			$this->filename = $this->slug . '.' . $this->language->file_ext;
 		}
 
 		return $this->filename;
-	}
-	protected function get_code() {
-
-		if ( ! isset( $this->code ) ) {
-			$this->code = $this->file->post_content;
-		}
-
-		return $this->code;
 	}
 	protected function get_post_content() {
 
@@ -135,8 +123,9 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 			if( $this->highlight !== null ) {
 				$this->post_content .= 'data-line="' . $this->highlight . '"';
 			}
+
 			$this->post_content .= '>';
-			$this->post_content .= '<code class="language-' . $this->language->prism_slug . '">' . $this->get_code();
+			$this->post_content .= '<code class="language-' . $this->language->prism_slug . '">' . $this->code;
 			$this->post_content .= '</code></pre>';
 
 			$this->post_content .= '</div>';
@@ -153,6 +142,18 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 		}
 
 		return $this->shortcode_content;
+	}
+
+	/**
+	 * Updates the post object with object details
+	 *
+	 * @since 0.4.0
+	 */
+	public function update_post() {
+		$this->file->post_name = strtolower( str_replace( " ", "-", $this->slug ) );
+		$this->file->post_content = $this->code;
+
+		$this->language->update_post();
 	}
 
 }

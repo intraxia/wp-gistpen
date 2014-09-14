@@ -2,6 +2,7 @@
 
 /**
  * @group objects
+ * @group file
  */
 class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 
@@ -49,6 +50,20 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 			'tag' => 'div',
 			'id' => 'wp-gistpenfile-' . $this->file_obj->post_name
 		), $this->file->post_content );
+	}
+
+	function test_update_post() {
+		$this->file->slug = 'New slug';
+		$this->file->code = 'echo $code';
+		$this->mock_lang
+			->expects($this->once())
+			->method('update_post')
+			->will($this->returnValue(true));
+
+		$this->file->update_post();
+
+		$this->assertEquals( 'new-slug', $this->file->file->post_name );
+		$this->assertEquals( 'echo $code', $this->file->file->post_content );
 	}
 
 	function tearDown() {

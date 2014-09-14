@@ -47,7 +47,7 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 		'Twig' => 'twig'
 	);
 
-	protected $slug;
+	public $slug;
 
 	protected $prism_slug;
 
@@ -59,45 +59,56 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 
 	public function __construct( stdClass $language ) {
 		$this->term = $language;
+
+		$this->slug = $this->term->slug;
 	}
 
+	protected function get_term() {
+		return $this->term;
+	}
+
+	/**
+	 * Functions to get protected properties
+	 *
+	 * @since  0.4.0
+	 */
 	protected function get_prism_slug() {
 
 		if ( ! isset( $this->prism_slug ) ) {
-			$this->prism_slug = ( $this->get_slug() == 'js' ? 'javascript' :
-				( $this->get_slug() == 'sass' ? 'scss' :
-				$this->get_slug() ) );
+			$this->prism_slug = ( $this->slug == 'js' ? 'javascript' :
+				( $this->slug == 'sass' ? 'scss' :
+				$this->slug ) );
 		}
 
 		return $this->prism_slug;
 	}
-
-	protected function get_slug() {
-		if( ! isset( $this->slug ) ) {
-			$this->slug = $this->term->slug;
-		}
-
-		return $this->slug;
-	}
-
 	protected function get_file_ext() {
 
 		if ( ! isset( $this->prism_slug ) ) {
-			$this->prism_slug = ( $this->get_slug() == 'sass' ? 'scss' :
-				( $this->get_slug() == 'bash' ? 'sh' :
-				$this->get_slug() ) ) ;
+			$this->prism_slug = ( $this->slug == 'sass' ? 'scss' :
+				( $this->slug == 'bash' ? 'sh' :
+				$this->slug ) ) ;
 		}
 
 		return $this->prism_slug;
 	}
-
 	protected function get_display_name() {
-
-		if ( ! isset( $this->display_name ) ) {
-			$this->display_name = $this->term->name;
-		}
+		$this->display_name = array_search( $this->slug, self::$supported );
 
 		return $this->display_name;
+	}
+
+	/**
+	 * Updates the post object with new language slug
+	 *
+	 * @since 0.4.0
+	 */
+	public function update_post() {
+		$result = WP_Gistpen::get_instance()->query->get_language_term_by_slug( $this->slug );
+
+		if( !is_wp_error( $result ) ) {
+			$this->term  = $result;
+		}
 	}
 
 }

@@ -29,7 +29,7 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 	 * @var string
 	 * @since 0.4.0
 	 */
-	protected $description;
+	public $description;
 
 	/**
 	 * Files contained in the Gistpen
@@ -37,7 +37,7 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 	 * @var array
 	 * @since 0.4.0
 	 */
-	protected $files;
+	public $files;
 
 	/**
 	 * Gistpen's content manipulated for post display
@@ -63,14 +63,17 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 		}
 
 		$this->files = $files;
+
+		$this->description = $this->post->post_title;
 	}
 
-	protected function get_description() {
-		if ( ! isset( $this->description ) ) {
-			$this->description = $this->post->post_title;
-		}
-
-		return $this->description;
+	/**
+	 * Functions to get protected properties
+	 *
+	 * @since  0.4.0
+	 */
+	protected function get_post() {
+		return $this->post;
 	}
 	protected function get_files() {
 		return $this->files;
@@ -92,6 +95,21 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 		}
 
 		return $this->shortcode_content;
+	}
+
+	/**
+	 * Updates the post object with object details
+	 *
+	 * @since 0.4.0
+	 */
+	public function update_post() {
+		if ( isset( $this->description ) ) {
+			$this->post->post_title = $this->description;
+		}
+
+		foreach ( $this->files as $file ) {
+			$file->update_post();
+		}
 	}
 
 }

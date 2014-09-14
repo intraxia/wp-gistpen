@@ -2,6 +2,7 @@
 
 /**
  * @group objects
+ * @group language
  */
 class WP_Gistpen_Language_Test extends WP_Gistpen_UnitTestCase {
 
@@ -69,10 +70,23 @@ class WP_Gistpen_Language_Test extends WP_Gistpen_UnitTestCase {
 
 	function test_return_display_name() {
 		$term = new stdClass;
-		$term->name = 'Language name';
+		$term->slug = 'bash';
 		$this->language = new WP_Gistpen_Language( $term );
 
-		$this->assertEquals( 'Language name', $this->language->display_name );
+		$this->assertEquals( 'Bash', $this->language->display_name );
+	}
+
+	function test_update_post() {
+		$term = new stdClass;
+		$term->name = 'PHP';
+		$term->slug = 'php';
+		$this->language = new WP_Gistpen_Language( $term );
+
+		$this->language->slug = 'bash';
+
+		$this->language->update_post();
+
+		$this->assertEquals('Bash', $this->language->term->name );
 	}
 
 	function tearDown() {

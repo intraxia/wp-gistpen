@@ -2,6 +2,7 @@
 
 /**
  * @group objects
+ * @group post
  */
 class WP_Gistpen_Post_Test extends WP_Gistpen_UnitTestCase {
 
@@ -49,6 +50,20 @@ class WP_Gistpen_Post_Test extends WP_Gistpen_UnitTestCase {
 		$this->post = new WP_Gistpen_Post( $this->post_obj, array( new WP_Gistpen_File( $this->factory->gistpen->create_and_get() , $this->mock_lang ) ) );
 
 		$this->assertContains( 'Post content', $this->post->shortcode_content );
+	}
+
+	function test_update_post() {
+		$this->mock_file
+			->expects($this->once())
+			->method('update_post')
+			->will($this->returnValue(true));
+		$this->post = new WP_Gistpen_Post( $this->post_obj, array( $this->mock_file ) );
+
+		$this->post->description = "New description";
+
+		$this->post->update_post();
+
+		$this->assertEquals( "New description", $this->post->post->post_title );
 	}
 
 	function tearDown() {
