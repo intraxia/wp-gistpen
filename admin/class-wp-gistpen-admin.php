@@ -106,8 +106,8 @@ class WP_Gistpen_Admin {
 		add_action( 'wp_ajax_save_ace_theme', array( 'WP_Gistpen_AJAX', 'save_ace_theme' ) );
 
 		// AJAX hooks to add and delete Gistfile editors
-		add_action( 'wp_ajax_add_gistfile_editor', array( 'WP_Gistpen_AJAX', 'add_gistfile_editor' ) );
-		add_action( 'wp_ajax_delete_gistfile_editor', array( 'WP_Gistpen_AJAX', 'delete_gistfile_editor' ) );
+		add_action( 'wp_ajax_get_gistpenfile_id', array( 'WP_Gistpen_AJAX', 'get_gistpenfile_id' ) );
+		add_action( 'wp_ajax_delete_gistpenfile_editor', array( 'WP_Gistpen_AJAX', 'delete_gistpenfile_editor' ) );
 
 		/**
 		 * Options page hooks

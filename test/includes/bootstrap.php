@@ -8,10 +8,14 @@ if ( !$_tests_dir ) $_tests_dir = '/tmp/wordpress-tests-lib';
 require_once $_tests_dir . '/includes/functions.php';
 
 function _manually_load_plugin() {
-	require dirname( __FILE__ ) . '/../wp-gistpen.php';
+	require dirname( __FILE__ ) . '/../../wp-gistpen.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 require $_tests_dir . '/includes/bootstrap.php';
+
+require_once dirname( __FILE__ ) . '/factory.php';
+
+require_once dirname( __FILE__ ) . '/testcase.php';
 
 WP_Gistpen::single_activate();

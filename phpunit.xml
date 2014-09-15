@@ -1,17 +1,16 @@
 <phpunit
-	bootstrap="tests/bootstrap.php"
+	bootstrap="test/includes/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
-	processIsolation="true"
 	stopOnFailure="false"
 	syntaxCheck="false"
 	>
 	<testsuites>
 		<testsuite name="WP-Gistpen Test Suite">
-			<directory prefix="test-" suffix=".php">./tests/</directory>
+			<directory prefix="test-" suffix=".php">./test/</directory>
 		</testsuite>
 	</testsuites>
 </phpunit>

@@ -47,6 +47,14 @@ class WP_Gistpen {
 	protected static $instance = null;
 
 	/**
+	 * WP_Gistpen_Query instance
+	 *
+	 * @var object
+	 * @since 0.4.0
+	 */
+	public $query;
+
+	/**
 	 * Languages currently supported
 	 *
 	 * @var      array
@@ -86,7 +94,15 @@ class WP_Gistpen {
 	 */
 	private function __construct() {
 
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-abstract.php' );
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-post.php' );
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-file.php' );
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-language.php' );
 		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-content.php' );
+		require_once( WP_GISTPEN_DIR . 'public/includes/class-wp-gistpen-query.php' );
+
+		// Load the query object
+		$this->query = new WP_Gistpen_Query;
 
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
@@ -282,7 +298,7 @@ class WP_Gistpen {
 			return;
 		}
 
-		foreach( self::$langs as $lang => $slug ) {
+		foreach( WP_Gistpen_Language::$supported as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
 			if( is_wp_error( $result ) ) {
 				// @todo write error message?
@@ -401,7 +417,7 @@ class WP_Gistpen {
 			'label'                => __( 'gistpens', $this->plugin_slug ),
 			'description'          => __( 'A collection of code snippets.', $this->plugin_slug ),
 			'labels'               => $labels,
-			'supports'             => array( 'title', 'author', 'comments' ),
+			'supports'             => array( 'title', 'author', 'revisions', 'comments' ),
 			'taxonomies'           => array( 'post_tag', 'language' ),
 			'hierarchical'         => true,
 			'public'               => true,

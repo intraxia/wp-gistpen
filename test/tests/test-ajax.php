@@ -3,7 +3,7 @@
 /**
  * @group  ajax
  */
-class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
+class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 
 	public $user_id;
 	public $response;
@@ -22,16 +22,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->user_id = $this->factory->user->create();
-		$this->posts = $this->factory->post->create_many( 10, array(
-			'post_type' => 'gistpen',
-			'post_author' => $this->user_id,
-			'post_status' => 'publish',
-		), array(
-			'post_title' => new WP_UnitTest_Generator_Sequence( 'AJAX Post title %s' ),
-			'post_content' => new WP_UnitTest_Generator_Sequence( 'AJAX Post content %s' ),
-			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'AJAX Post excerpt %s' )
-		));
+		$this->create_post_and_children();
 	}
 
 	function test_fails_without_nonce() {
@@ -62,19 +53,6 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->assertEquals( "User doesn't have proper permisissions.", $response->data->error );
 	}
 
-	function test_returns_gistpen_languages() {
-		$this->set_correct_security();
-
-		try {
-			$this->_handleAjax( 'get_gistpen_languages' );
-		} catch ( WPAjaxDieContinueException $e ) {}
-		$this->response = json_decode($this->_last_response);
-
-		$this->check_standard_response_info();
-		$this->assertObjectHasAttribute( 'languages', $this->response->data );
-		$this->assertInternalType( 'object', $this->response->data->languages );
-	}
-
 	function test_returns_recent_gistpens() {
 		$this->set_correct_security();
 
@@ -84,12 +62,12 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->response = json_decode($this->_last_response);
 
 		$this->check_standard_response_info();
-		$this->assertCount( 5, $this->response->data->gistpens );
+		$this->assertCount( 4, $this->response->data->gistpens );
 	}
 
 	function test_returns_gistpens_with_search() {
 		$this->set_correct_security();
-		$_POST['gistpen_search_term'] = 'Post title 9';
+		$_POST['gistpen_search_term'] = 'Post title 2';
 
 		try {
 			$this->_handleAjax( 'get_gistpens' );
@@ -104,7 +82,7 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->set_correct_security();
 		$_POST['wp-gistpenfile-name'] = 'New Gistpen';
 		$_POST['wp-gistfile-description'] = 'New Gistpen Description';
-		$_POST['wp-gistpenfile-content'] = '<?php echo $stuff; ?>';
+		$_POST['wp-gistpenfile-content'] = 'echo $stuff;';
 		$_POST['post_status'] = 'draft';
 		$_POST['wp-gistpenfile-language'] = 'php';
 
@@ -117,6 +95,8 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->assertObjectHasAttribute( 'id', $this->response->data );
 		$this->assertInternalType( 'integer', $this->response->data->id );
 		$this->assertTrue( $this->response->data->id !== 0 );
+		$this->assertNotEquals( null, get_post( $this->response->data->id ) );
+		$this->assertEquals( 'draft', get_post( $this->response->data->id )->post_status );
 	}
 
 	function test_save_ace_theme() {
@@ -131,11 +111,12 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->check_standard_response_info();
 	}
 
-	function test_add_ace_editor() {
+	function test_get_gistpenfile_id() {
 		$this->set_correct_security();
+		$_POST['parent_id'] = $this->gistpen->ID;
 
 		try {
-			$this->_handleAjax( 'add_gistfile_editor' );
+			$this->_handleAjax( 'get_gistpenfile_id' );
 		} catch ( WPAjaxDieContinueException $e ) {}
 		$this->response = json_decode($this->_last_response);
 
@@ -145,12 +126,12 @@ class WP_Gistpen_AJAX_Test extends WP_Ajax_UnitTestCase {
 		$this->assertTrue( $this->response->data->id !== 0 );
 	}
 
-	function test_delete_ace_editor() {
+	function test_delete_gistpenfile_editor() {
 		$this->set_correct_security();
-		$_POST['fileID'] = $this->posts[0];
+		$_POST['fileID'] = $this->files[0];
 
 		try {
-			$this->_handleAjax( 'delete_gistfile_editor' );
+			$this->_handleAjax( 'delete_gistpenfile_editor' );
 		} catch ( WPAjaxDieContinueException $e ) {}
 		$this->response = json_decode($this->_last_response);
 
