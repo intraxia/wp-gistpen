@@ -76,9 +76,10 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 			// The post title should be "This is a decription of the Gistpen."
 			$this->assertEquals( 'This is a description of the Gistpen.', $post->post_title );
 
-			$children = get_children( array(
+			$children = get_posts( array(
 				'post_parent' => $gistpen_id,
-				'post_type' => 'gistpen'
+				'post_type' => 'gistpen',
+				'post_status' => 'any'
 			) );
 
 			// The post should have one child post
@@ -90,7 +91,7 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 			$this->assertContains( 'Post content', $child->post_content );
 
 			// The child post should have the correct filename
-			$this->assertContains( 'Post-title', $child->post_title );
+			$this->assertEmpty( $child->post_title );
 			$this->assertContains( 'post-title', $child->post_name );
 
 			// The child should be a gistpen

@@ -134,16 +134,33 @@ class WP_Gistpen_AJAX {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function add_gistfile_editor() {
+	public static function get_gistpenfile_id() {
 		self::check_security();
 
-		$result = WP_Gistpen_Saver::save_gistfile();
+		$file = new stdCLass;
+		$file->post_type = 'gistpen';
+		$file = new WP_Post( $file );
+		$file = new WP_Gistpen_File( $file, new WP_Gistpen_Language( new stdCLass ) );
+
+		$result = WP_Gistpen::get_instance()->query->save( $file );
+
+		if( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'messages' => $result->get_error_messages() ) );
+		}
+
+		$post_id = $result;
+
+		$wpgp_post = WP_Gistpen::get_instance()->query->get( $_POST['parent_id'] );
+
+		$wpgp_post->files[] = $file;
+
+		$result = WP_Gistpen::get_instance()->query->save( $wpgp_post );
 
 		if( is_wp_error( $result ) ) {
 			wp_send_json_error();
 		}
 
-		wp_send_json_success( array( 'id' => $result ) );
+		wp_send_json_success( array( 'id' => $post_id ) );
 	}
 
 	/**
@@ -151,7 +168,7 @@ class WP_Gistpen_AJAX {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function delete_gistfile_editor() {
+	public static function delete_gistpenfile_editor() {
 		self::check_security();
 
 		$result = wp_delete_post( $_POST['fileID'] );

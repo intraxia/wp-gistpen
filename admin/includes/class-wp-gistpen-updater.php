@@ -137,23 +137,29 @@ class WP_Gistpen_Updater {
 		) );
 
 		foreach ( $posts as $post ) {
-			// Migrate title to file's name
-			$_POST['wp-gistpenfile-name'] = $post->post_title;
-
-			// Migrate description to Gistpen title and remove post_meta
-			$post->post_name = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
-			$post->post_title = $post->post_name;
-			$result = delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
-			if ( is_wp_error( $result ) ) {
-				// @todo write error msg?
-			}
-
-			// Get and clear content
-			$_POST['wp-gistpenfile-content'] = $post->post_content;
+			// Save and clear content
+			$content = $post->post_content;
 			$post->post_content = '';
 
 			// Update post type to remove the 's'
 			$post->post_type = 'gistpen';
+
+			$wpgp_post = WP_Gistpen::get_instance()->query->create( $post );
+
+			// Migrate title to file's name
+			$wpgp_post->files[0]->slug = $post->post_title;
+
+			// Migrate description to Gistpen title and remove post_meta
+			$wpgp_post->description = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
+			$result = delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
+
+			if ( is_wp_error( $result ) ) {
+				// @todo write error msg?
+				throw new Exception("Error deleting post_meta");
+			}
+
+			// Set content
+			$wpgp_post->files[0]->code = $content;
 
 			// Migrate Gistpen's language and remove
 			// @todo move this into helper function?
@@ -161,18 +167,23 @@ class WP_Gistpen_Updater {
 			if( $terms ) {
 				$lang = array_pop( $terms );
 			}
-			$_POST['wp-gistpenfile-language'] = $lang->slug;
-			$result = wp_set_object_terms( $post->ID, '', 'language' );
+
+			$wpgp_post->files[0]->language->slug = $lang->slug;
+
+			$result = wp_set_object_terms( $post->ID, array(), 'language', false );
+
 			if ( is_wp_error( $result ) ) {
 				// @todo write error msg?
+				throw new Exception("Error deleting post_meta");
 			}
 
-			// Update the post in the database
-			// Updates the child post too via hook
-			$result = wp_update_post( $post );
+			$result = WP_Gistpen::get_instance()->query->save( $wpgp_post );
+
 			if ( is_wp_error( $result ) ) {
 				// @todo write error msg?
+				throw new Exception("Error deleting post_meta");
 			}
+
 		}
 
 		flush_rewrite_rules( true );

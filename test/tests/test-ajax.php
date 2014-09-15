@@ -111,11 +111,12 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->check_standard_response_info();
 	}
 
-	function test_add_ace_editor() {
+	function test_get_gistpenfile_id() {
 		$this->set_correct_security();
+		$_POST['parent_id'] = $this->gistpen->ID;
 
 		try {
-			$this->_handleAjax( 'add_gistfile_editor' );
+			$this->_handleAjax( 'get_gistpenfile_id' );
 		} catch ( WPAjaxDieContinueException $e ) {}
 		$this->response = json_decode($this->_last_response);
 
@@ -125,12 +126,12 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertTrue( $this->response->data->id !== 0 );
 	}
 
-	function test_delete_ace_editor() {
+	function test_delete_gistpenfile_editor() {
 		$this->set_correct_security();
 		$_POST['fileID'] = $this->files[0];
 
 		try {
-			$this->_handleAjax( 'delete_gistfile_editor' );
+			$this->_handleAjax( 'delete_gistpenfile_editor' );
 		} catch ( WPAjaxDieContinueException $e ) {}
 		$this->response = json_decode($this->_last_response);
 

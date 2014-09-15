@@ -163,7 +163,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	 * @since 0.4.0
 	 */
 	public function update_parent( $parent_id ) {
-		$this->file->parent_post = $parent_id;
+		$this->file->post_parent = $parent_id;
 	}
 
 }

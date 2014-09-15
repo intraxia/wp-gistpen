@@ -214,17 +214,17 @@ class WP_Gistpen_Query {
 	 * @since 0.4.0
 	 */
 	public function get_files( $post ) {
-		$files_obj = get_children( array(
+		$files_arr = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID,
 			'post_status' => $post->post_status
 		) );
 
-		foreach ( $files_obj as $index => $file ) {
-			$files[] = $this->get_file( $file );
+		foreach ( $files_arr as $file ) {
+			$files_arr[$file->ID] = $this->get_file( $file );
 		}
 
-		return $files;
+		return $files_arr;
 	}
 
 	/**
@@ -286,6 +286,12 @@ class WP_Gistpen_Query {
 	 * @return true|WP_Error       true on success, WP_Error on failure
 	 */
 	public function save_file( $file ) {
+		$file_arr = (array) $file->file;
+
+		if( null === $file_arr['ID'] ) {
+			unset( $file_arr['ID'] );
+		}
+
 		$result = wp_insert_post( (array) $file->file, true );
 
 		if( is_wp_error( $result ) ) {
