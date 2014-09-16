@@ -39,18 +39,15 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_post_content() {
-		// @todo write better tests
-		// needs to test if valid HTML
-		// make sure it contains code + filename somewhere
-		$this->assertContains( '<div id="wp-gistpenfile-' . $this->file_obj->post_name . '">',  $this->file->post_content );
+		$this->assertValidHtml( $this->file->post_content );
+		$this->assertContains( $this->file->code, $this->file->post_content );
+		$this->assertContains( $this->file->code, $this->file->post_content );
 	}
 
 	function test_get_shortcode_content() {
-		// @todo write better tests
-		// needs to test if valid HTML
-		// make sure it contains code + filename somewhere
-		// add test for highlight
-		$this->assertContains( '<div id="wp-gistpenfile-' . $this->file_obj->post_name . '">',  $this->file->shortcode_content );
+		$this->assertValidHtml( $this->file->shortcode_content );
+		$this->assertContains( $this->file->code, $this->file->shortcode_content );
+		$this->assertContains( $this->file->code, $this->file->shortcode_content );
 	}
 
 	function test_update_post() {
@@ -65,6 +62,61 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'new-slug', $this->file->file->post_name );
 		$this->assertEquals( 'echo $code', $this->file->file->post_content );
+	}
+
+	// @source: http://www.snip2code.com/Snippet/7704/Assert-HTML-validity-with-PHPUnit-
+	public function assertValidHtml($html) {
+		$html = $this->setHtmlInput($html);
+		//exit(var_dump($html));
+		// cURL
+		$curl = curl_init();
+		curl_setopt_array($curl, [
+			// CURLOPT_CONNECTTIMEOUT => 1,
+			CURLOPT_URL => 'http://html5.validator.nu/',
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_POST => true,
+			CURLOPT_POSTFIELDS => [
+				'out' => 'xml',
+				'content' => $html,
+			],
+		]);
+		$response = curl_exec($curl);
+		if (!$response) {
+			$this->markTestIncomplete('Issues checking HTML validity.');
+		}
+		curl_close($curl);
+
+		// fail if errors
+		$xml = new SimpleXMLElement($response);
+		$nonDocumentErrors = $xml->{'non-document-error'};
+		$errors = $xml->error;
+		if (count($nonDocumentErrors) > 0) {
+			// indeterminate
+			$this->markTestIncomplete();
+		} elseif (count($errors) > 0) {
+			// invalid
+			$this->fail("HTML output did not validate.");
+		}
+
+		// valid
+		$this->assertTrue(true);
+	}
+
+	/**
+	 * Ensure that HTML fragments are submitted as complete webpages.
+	 *
+	 * @param string $value The HTML markup, either a fragment or a complete webpage.
+	 * @source https://github.com/kevintweber/phpunit-markup-validators/blob/master/src/kevintweber/PhpunitMarkupValidators/Connector/HTMLConnector.php
+	 */
+	public function setHtmlInput($value) {
+		if (stripos($value, 'html>') === false) {
+				return '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Test</title></head><body>' .
+						$value . '</body></html>';
+		}
+		else {
+				return $value;
+		}
+
 	}
 
 	function tearDown() {
