@@ -39,17 +39,18 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_post_content() {
-		$this->assertTag( array(
-			'tag' => 'div',
-			'id' => 'wp-gistpenfile-' . $this->file_obj->post_name
-		), $this->file->post_content );
+		// @todo write better tests
+		// needs to test if valid HTML
+		// make sure it contains code + filename somewhere
+		$this->assertContains( '<div id="wp-gistpenfile-' . $this->file_obj->post_name . '">',  $this->file->post_content );
 	}
 
 	function test_get_shortcode_content() {
-		$this->assertTag( array(
-			'tag' => 'div',
-			'id' => 'wp-gistpenfile-' . $this->file_obj->post_name
-		), $this->file->post_content );
+		// @todo write better tests
+		// needs to test if valid HTML
+		// make sure it contains code + filename somewhere
+		// add test for highlight
+		$this->assertContains( '<div id="wp-gistpenfile-' . $this->file_obj->post_name . '">',  $this->file->shortcode_content );
 	}
 
 	function test_update_post() {
