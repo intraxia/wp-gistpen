@@ -70,16 +70,16 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 		//exit(var_dump($html));
 		// cURL
 		$curl = curl_init();
-		curl_setopt_array($curl, [
+		curl_setopt_array($curl, array(
 			// CURLOPT_CONNECTTIMEOUT => 1,
 			CURLOPT_URL => 'http://html5.validator.nu/',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_POST => true,
-			CURLOPT_POSTFIELDS => [
+			CURLOPT_POSTFIELDS => array(
 				'out' => 'xml',
 				'content' => $html,
-			],
-		]);
+			),
+		));
 		$response = curl_exec($curl);
 		if (!$response) {
 			$this->markTestIncomplete('Issues checking HTML validity.');
