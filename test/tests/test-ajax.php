@@ -96,7 +96,12 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInternalType( 'integer', $this->response->data->id );
 		$this->assertTrue( $this->response->data->id !== 0 );
 		$this->assertNotEquals( null, get_post( $this->response->data->id ) );
+		$this->assertEquals( 'New Gistpen Description', get_post( $this->response->data->id )->post_title );
 		$this->assertEquals( 'draft', get_post( $this->response->data->id )->post_status );
+		$children = get_children( array( 'post_parent' => $this->response->data->id ) );
+		$this->assertCount( 1, $children );
+		$language = WP_Gistpen::get_instance()->query->get_language_term_by_post( array_pop( $children ) );
+		$this->assertEquals( 'php', $language->slug );
 	}
 
 	function test_save_ace_theme() {

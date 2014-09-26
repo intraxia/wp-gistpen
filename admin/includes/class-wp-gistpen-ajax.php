@@ -108,7 +108,7 @@ class WP_Gistpen_AJAX {
 			wp_send_json_error(array( 'message' => $result->get_error_messages() ) );
 		}
 
-		wp_send_json_success(array( 'id' => $result ) );
+		wp_send_json_success( array( 'id' => $result ) );
 	}
 
 	/**

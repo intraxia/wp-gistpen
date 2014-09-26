@@ -246,10 +246,6 @@ class WP_Gistpen_Query {
 			$result = $this->save_file( $post );
 		}
 
-		if ( is_wp_error( $result ) ) {
-			return $result;
-		}
-
 		return $result;
 	}
 
@@ -269,6 +265,7 @@ class WP_Gistpen_Query {
 		$post_id = $result;
 
 		foreach ( $post->files as $file ) {
+			$file->update_parent( $post_id );
 			$result = $this->save_file( $file );
 
 			if( is_wp_error( $result ) ) {
@@ -292,7 +289,7 @@ class WP_Gistpen_Query {
 			unset( $file_arr['ID'] );
 		}
 
-		$result = wp_insert_post( (array) $file->file, true );
+		$result = wp_insert_post( $file_arr, true );
 
 		if( is_wp_error( $result ) ) {
 			return $result;

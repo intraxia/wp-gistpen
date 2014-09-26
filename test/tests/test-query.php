@@ -242,6 +242,31 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'twig', $file->language->slug );
 	}
 
+	function test_save_new_post() {
+		$post_data = new WP_Post( new stdClass );
+		$post_data->post_type = 'gistpen';
+		$post_data->post_status = 'draft';
+
+		$result = WP_Gistpen::get_instance()->query->create( $post_data );
+
+		$this->assertInstanceOf( 'WP_Gistpen_Post', $result );
+
+		$result->description = "New Description";
+
+		$result->files[0]->slug = 'new-gistpen';
+		$result->files[0]->code = 'echo $stuff';
+		$result->files[0]->language->slug = 'php';
+
+		$result = WP_Gistpen::get_instance()->query->save( $result );
+
+		$this->assertInternalType( 'integer', $result );
+		$this->assertTrue( $result !== 0 );
+		$this->assertNotEquals( null, get_post( $result ) );
+		$this->assertEquals( 'New Description', get_post( $result )->post_title );
+		$this->assertEquals( 'draft', get_post( $result )->post_status );
+		$this->assertCount( 1, get_children( array( 'post_parent' => $result ) ) );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}

@@ -40,6 +40,13 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 	public $files;
 
 	/**
+	 * Post's ID
+	 * @var int
+	 * @since 0.4.0
+	 */
+	public $ID;
+
+	/**
 	 * Gistpen's content manipulated for post display
 	 *
 	 * @var string
@@ -57,6 +64,7 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 
 	public function __construct( WP_Post $post, $files = array() ) {
 		$this->post = $post;
+		$this->ID = $this->post->ID;
 
 		if ( ! is_array( $files ) ) {
 			throw new Exception( "Files must be in an array" );
@@ -76,6 +84,9 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 	 *
 	 * @since  0.4.0
 	 */
+	protected function get_ID() {
+		return $this->ID;
+	}
 	protected function get_post() {
 		return $this->post;
 	}
@@ -125,8 +136,9 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 
 		foreach ( $this->files as &$file ) {
 			$file->update_post();
-			$file->update_parent( $this->post->ID );
 		}
+
+		unset( $file );
 	}
 
 }

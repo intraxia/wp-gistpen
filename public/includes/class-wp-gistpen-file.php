@@ -56,6 +56,13 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	public $code;
 
 	/**
+	 * File's ID
+	 * @var int
+	 * @since 0.4.0
+	 */
+	public $ID;
+
+	/**
 	 * File's content manipulated for post display
 	 *
 	 * @var string
@@ -85,6 +92,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 
 		$this->slug = $this->file->post_name;
 		$this->code = $this->file->post_content;
+		$this->ID = $this->file->ID;
 	}
 
 	/**
@@ -92,6 +100,9 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	 *
 	 * @since  0.4.0
 	 */
+	protected function get_ID() {
+		return $this->ID;
+	}
 	protected function get_file() {
 		return $this->file;
 	}

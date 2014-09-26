@@ -61,9 +61,9 @@ var paths = {
 			},
 		},
 		tinymce: {
-			files: ['admin/assets/js/wp-gistpen-tinymce-plugin.js'],
+			files: ['admin/assets/js/tinymce-plugin.js'],
 			output: {
-				filename: 'wp-gistpen-tinymce-plugin.min.js',
+				filename: 'tinymce-plugin.min.js',
 				dir: 'admin/assets/js/'
 			},
 		},
@@ -71,7 +71,8 @@ var paths = {
 			files: [
 				'admin/assets/js/gistpen-editor.js',
 				'admin/assets/js/file-editor.js',
-				'admin/assets/js/tinymce-file-editor.js'
+				'admin/assets/js/tinymce-file-editor.js',
+				'admin/assets/js/insert-dialog.js'
 			],
 			output: {
 				filename: 'wp-gistpen-editor.min.js',

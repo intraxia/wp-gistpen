@@ -31,5 +31,11 @@ TinyMCEFileEditor.prototype.appendEditor = function() {
 };
 
 TinyMCEFileEditor.prototype.appendPostStatusSelector = function() {
-	jQuery('<label for="post_status" style="display: none;">Post Status</label><select class="post_status" name="post_status"><option value="publish">Published</option><option value="draft">Draft</option></select>').appendTo('.wp-editor-tools');
+	this.post_status = jQuery('<label for="post_status" style="display: none;">Post Status</label><select class="post_status" name="post_status"><option value="publish">Published</option><option value="draft">Draft</option></select>');
+	this.post_status.appendTo(this.editorFull.find('.wp-editor-tools'));
+	this.post_status = jQuery('select.post_status');
+};
+
+TinyMCEFileEditor.prototype.setMode = function() {
+
 };
