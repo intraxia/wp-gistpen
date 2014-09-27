@@ -124,7 +124,9 @@ class WP_Gistpen {
 		// Remove some filters from the Gistpen content
 		add_action( 'the_content', array( 'WP_Gistpen_Content', 'remove_filters' ) );
 		// Add the description to the Gistpen content
-		add_filter( 'the_content', array('WP_Gistpen_Content', 'post_content' ) );
+		add_filter( 'the_content', array( 'WP_Gistpen_Content', 'post_content' ) );
+		// Remove child posts from the archive page
+		add_filter( 'pre_get_posts', array( 'WP_Gistpen_Content', 'pre_get_posts' ) );
 		// Add the gistpen shortcode
 		add_shortcode( 'gistpen', array( 'WP_Gistpen_Content', 'add_shortcode' ) );
 
