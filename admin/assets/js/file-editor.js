@@ -3,16 +3,16 @@ function FileEditor(file) {
 	this.scaffoldEditor();
 	this.appendEditor();
 
-	this.fileID = typeof this.file.id !== "undefined" ? this.file.id : '';
+	this.fileID = typeof this.file.ID !== "undefined" ? this.file.ID : '';
 	this.addID();
 
-	this.fileName = typeof this.file.name !== "undefined" ? this.file.name : '';
+	this.fileName = typeof this.file.slug !== "undefined" ? this.file.slug : '';
 	this.addName();
 
-	this.fileContent = typeof this.file.content !== "undefined" ? this.file.content : '';
+	this.fileContent = typeof this.file.code !== "undefined" ? this.file.code : '';
 	this.addContent();
 
-	this.fileLanguage = typeof this.file.language !== "undefined" ? (this.file.language === "javascript" ? "js" : this.file.language) : 'bash';
+	this.fileLanguage = (typeof this.file.language !== "undefined" && typeof this.file.language.slug !== "undefined") ? (this.file.language.slug === "javascript" ? "js" : this.file.language.slug) : 'bash';
 	this.addLanguage();
 
 	this.activateAceEditor();
@@ -50,14 +50,14 @@ FileEditor.prototype  = {
 		this.editorFull = jQuery(this.editorHTML);
 		this.editorWrap = this.editorFull.find('.wp-gistpenfile-editor-wrap');
 		this.editorTools = this.editorFull.find('.wp-editor-tools');
-		this.mediaButtons = this.editorFull.find('wp-media-buttons');
+		this.mediaButtons = this.editorFull.find('.wp-media-buttons');
 		this.filenameInput = this.editorFull.find('.wp-gistpenfile-name');
 		this.languageSelect = this.editorFull.find('.wp-gistpenfile-language');
 		this.deleteFileButton = this.editorFull.find('.button.delete');
 		this.editorTabs = this.editorFull.find('.wp-gistpenfile-editor-tabs');
 		this.textButton = this.editorFull.find('.wp-switch-editor.switch-html');
 		this.aceButton = this.editorFull.find('.wp-switch-editor.switch-ace');
-		this.editorContainer = this.editorFull.find('wp-gistpenfile-editor-container');
+		this.editorContainer = this.editorFull.find('.wp-gistpenfile-editor-container');
 		this.editorTextArea = this.editorFull.find('.wp-gistpenfile-editor-area');
 		this.aceEditorDiv = this.editorFull.find('.ace-editor');
 	},

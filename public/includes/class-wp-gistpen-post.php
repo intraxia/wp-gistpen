@@ -136,6 +136,7 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 
 		foreach ( $this->files as &$file ) {
 			$file->update_post();
+			$file->update_status( $this->post->post_status );
 		}
 
 		unset( $file );

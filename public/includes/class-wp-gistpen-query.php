@@ -221,10 +221,10 @@ class WP_Gistpen_Query {
 		) );
 
 		foreach ( $files_arr as $file ) {
-			$files_arr[$file->ID] = $this->get_file( $file );
+			$files[$file->ID] = $this->get_file( $file );
 		}
 
-		return $files_arr;
+		return $files;
 	}
 
 	/**

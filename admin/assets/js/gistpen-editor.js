@@ -39,9 +39,8 @@ var GistpenEditor = {
 				}
 			});
 		}
-		if(typeof file.id !== "undefined") {
-			this.fileIDs.val(this.fileIDs.val() + ' ' + file.id);
-		}
+
+		this.fileIDs.val(this.fileIDs.val() + ' ' + file.id);
 	},
 
 	loadClickHandlers: function() {

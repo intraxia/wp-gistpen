@@ -187,9 +187,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		// Check result
 		$this->assertInternalType( 'int', $result );
 
-		$posts = $this->query->search( null, -1 );
-
-		$this->assertCount( 6, $posts );
+		$this->assertCount( 1, get_children( array( 'post_parent' => $result ) ) );
 	}
 
 	function test_save_post() {

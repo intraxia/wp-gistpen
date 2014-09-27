@@ -177,4 +177,14 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 		$this->file->post_parent = $parent_id;
 	}
 
+	/**
+	 * Update the post object's parent status
+	 *
+	 * @param  int   $parent_id   ID of parent Gistpen
+	 * @since 0.4.0
+	 */
+	public function update_status( $post_status ) {
+		$this->file->post_status = $post_status;
+	}
+
 }
