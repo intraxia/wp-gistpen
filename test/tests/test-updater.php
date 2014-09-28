@@ -12,7 +12,15 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function set_up_0_4_0_test_posts() {
-		register_post_type('gistpens', array());
+		register_post_type( 'gistpens', array() );
+		register_taxonomy( 'language', array( 'gistpens' ) );
+
+		foreach( WP_Gistpen_Language::$supported as $lang => $slug ) {
+			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
+			if( is_wp_error( $result ) ) {
+				// @todo write error message?
+			}
+		}
 
 		$terms = get_terms( 'language', 'hide_empty=0' );
 
@@ -72,6 +80,7 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 
 			// The post should have no language
 			$this->assertEmpty( wp_get_object_terms( $post->ID, 'language' ) );
+			$this->assertEmpty( wp_get_object_terms( $post->ID, 'wpgp_language' ) );
 
 			// The post title should be "This is a decription of the Gistpen."
 			$this->assertEquals( 'This is a description of the Gistpen.', $post->post_title );
@@ -98,7 +107,7 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 			$this->assertEquals( 'gistpen', $child->post_type );
 
 			// The child post should have a language
-			$language = wp_get_object_terms( $child->ID, 'language' );
+			$language = wp_get_object_terms( $child->ID, 'wpgp_language' );
 			$this->assertCount( 1, $language );
 		}
 
@@ -111,6 +120,10 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 		// There should be no gistpens left behind
 		$this->assertCount( 0, $posts );
 
+		$terms = get_terms( 'language', 'hide_empty=0' );
+
+		// There should be no language terms left behind
+		$this->assertCount( 0, $terms );
 	}
 
 	function tearDown() {

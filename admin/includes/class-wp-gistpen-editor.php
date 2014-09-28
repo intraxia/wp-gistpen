@@ -147,7 +147,7 @@ class WP_Gistpen_Editor {
 	public static function enqueue_editor_scripts() {
 		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
 		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script' ), WP_Gistpen::VERSION, false );
-		$terms = get_terms( 'language', 'hide_empty=0' );
+		$terms = get_terms( 'wpgp_language', 'hide_empty=0' );
 		foreach ($terms as $term) {
 			$languages[$term->slug] = $term->name;
 		}

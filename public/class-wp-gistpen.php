@@ -301,7 +301,7 @@ class WP_Gistpen {
 		}
 
 		foreach( WP_Gistpen_Language::$supported as $lang => $slug ) {
-			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
+			$result = wp_insert_term( $lang, 'wpgp_language', array( 'slug' => $slug ) );
 			if( is_wp_error( $result ) ) {
 				// @todo write error message?
 			}
@@ -420,7 +420,7 @@ class WP_Gistpen {
 			'description'          => __( 'A collection of code snippets.', $this->plugin_slug ),
 			'labels'               => $labels,
 			'supports'             => array( 'title', 'author', 'comments' ),
-			'taxonomies'           => array( 'post_tag', 'language' ),
+			'taxonomies'           => array( 'post_tag', 'wpgp_language' ),
 			'hierarchical'         => true,
 			'public'               => true,
 			'show_ui'              => true,
@@ -484,7 +484,7 @@ class WP_Gistpen {
 			'capabilities'               => $capabilities
 		);
 
-		register_taxonomy( 'language', array( 'gistpens' ), $args );
+		register_taxonomy( 'wpgp_language', array( 'gistpen' ), $args );
 
 	}
 

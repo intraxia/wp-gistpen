@@ -126,8 +126,18 @@ class WP_Gistpen_Updater {
 	 * @since 0.4.0
 	 */
 	public static function update_to_0_4_0() {
-		// We removed this post_type, so we need to add it real quick to use it
-		register_post_type('gistpens', array());
+		// We removed this post_type and taxonomy, so we need to add it real quick to use it
+		register_post_type( 'gistpens', array() );
+		register_taxonomy( 'language', array( 'gistpens' ) );
+
+		$terms = get_terms( 'language', 'hide_empty=0' );
+
+		foreach ( $terms as $term ) {
+			$result = wp_insert_term( $term->name, 'wpgp_language', array( 'slug' => $term->slug ) );
+			if( is_wp_error( $result ) ) {
+				// @todo write error message?
+			}
+		}
 
 		// Get all the Gistpens to work with
 		$posts = get_posts( array(
@@ -184,6 +194,12 @@ class WP_Gistpen_Updater {
 				throw new Exception("Error deleting post_meta");
 			}
 
+		}
+
+		$terms = get_terms( 'language', 'hide_empty=0' );
+
+		foreach ( $terms as $term ) {
+			wp_delete_term( $term->term_id, 'language' );
 		}
 
 		flush_rewrite_rules( true );

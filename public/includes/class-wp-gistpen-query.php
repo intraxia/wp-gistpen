@@ -160,7 +160,7 @@ class WP_Gistpen_Query {
 	 * @since 0.4.0
 	 */
 	public function get_language_term_by_post( $post ) {
-		$terms = get_the_terms( $post->ID, 'language' );
+		$terms = get_the_terms( $post->ID, 'wpgp_language' );
 
 		if( $terms ) {
 			$language = array_pop( $terms );
@@ -179,7 +179,7 @@ class WP_Gistpen_Query {
 	 * @since 0.4.0
 	 */
 	public function get_language_term_by_slug( $slug ) {
-		$terms = get_terms( 'language', array( 'slug' => $slug, 'hide_empty' => false ) );
+		$terms = get_terms( 'wpgp_language', array( 'slug' => $slug, 'hide_empty' => false ) );
 
 		if( is_wp_error( $terms ) ) {
 			return $terms;
@@ -303,7 +303,7 @@ class WP_Gistpen_Query {
 
 		$post_id = $result;
 
-		$result = wp_set_object_terms( $result, $file->language->slug, 'language', false );
+		$result = wp_set_object_terms( $result, $file->language->slug, 'wpgp_language', false );
 
 		if( is_wp_error( $result ) ) {
 			return $result;
