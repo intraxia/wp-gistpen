@@ -136,7 +136,7 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$_POST['fileID'] = $this->files[0];
 
 		try {
-			$this->_handleAjax( 'delete_gistpenfile_editor' );
+			$this->_handleAjax( 'delete_gistpenfile' );
 		} catch ( WPAjaxDieContinueException $e ) {}
 		$this->response = json_decode($this->_last_response);
 

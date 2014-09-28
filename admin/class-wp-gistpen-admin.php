@@ -107,7 +107,7 @@ class WP_Gistpen_Admin {
 
 		// AJAX hooks to add and delete Gistfile editors
 		add_action( 'wp_ajax_get_gistpenfile_id', array( 'WP_Gistpen_AJAX', 'get_gistpenfile_id' ) );
-		add_action( 'wp_ajax_delete_gistpenfile_editor', array( 'WP_Gistpen_AJAX', 'delete_gistpenfile_editor' ) );
+		add_action( 'wp_ajax_delete_gistpenfile', array( 'WP_Gistpen_AJAX', 'delete_gistpenfile' ) );
 
 		/**
 		 * Options page hooks

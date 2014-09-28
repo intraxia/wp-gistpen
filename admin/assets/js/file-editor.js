@@ -151,15 +151,26 @@ FileEditor.prototype  = {
 
 	deleteEditor: function() {
 		var thiseditor = this;
+
+		// Confirm we really want to delete
+		var r = confirm("Are you sure you want to delete this Gistpen?");
+		if (r === false) {
+			return;
+		}
+
 		this.editorFull.remove();
 		jQuery.post(ajaxurl,{
-			action: 'delete_gistfile_editor',
+			action: 'delete_gistpenfile',
 
 			nonce: GistpenEditor.getNonce(),
 			fileID: thiseditor.fileID,
 		}, function(response) {
 			if(response.success === false) {
 				console.log('Failed to delete file.');
+			} else {
+				var currentFileIDs = GistpenEditor.fileIDs.val();
+				var newFilesIDs = currentFileIDs.replace(" " + thiseditor.fileID, "");
+				GistpenEditor.fileIDs.val(newFilesIDs);
 			}
 		});
 	},

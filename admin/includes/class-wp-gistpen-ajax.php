@@ -164,10 +164,10 @@ class WP_Gistpen_AJAX {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function delete_gistpenfile_editor() {
+	public static function delete_gistpenfile() {
 		self::check_security();
 
-		$result = wp_delete_post( $_POST['fileID'] );
+		$result = wp_delete_post( $_POST['fileID'], true );
 
 		if( ! $result ) {
 			wp_send_json_error();
