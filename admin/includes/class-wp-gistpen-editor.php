@@ -201,4 +201,37 @@ class WP_Gistpen_Editor {
 		);
 	}
 
+	/**
+	 * Adds the file column to the Gistpen edit screen
+	 *
+	 * @param  array $columns Array of the columns
+	 * @return array          Array with new column added
+	 * @since  0.4.0
+	 */
+	public static function manage_posts_columns( $columns ) {
+		return array_merge( $columns, array(
+			'gistpen_files' => __( 'Files', WP_Gistpen::get_instance()->get_plugin_slug() )
+		) );
+	}
+
+	/**
+	 * Render the file column on the Gistpen edit screen
+	 *
+	 * @param  string $column_name the custom column name
+	 * @param  int    $post_id     the ID of the current post
+	 * @since  0.4.0
+	 */
+	public static function manage_posts_custom_column( $column_name, $post_id ) {
+		if ( 'gistpen_files' === $column_name ) {
+			$zip = WP_Gistpen::get_instance()->query->get( $post_id );
+			echo "<ul>";
+			foreach ( $zip->files as $file ) {
+				echo "<li>";
+				echo $file->filename;
+				echo "</li>";
+			}
+			echo "</ul>";
+		}
+	}
+
 }
