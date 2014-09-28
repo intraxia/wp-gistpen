@@ -178,13 +178,24 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	}
 
 	/**
-	 * Update the post object's parent status
+	 * Update the post object's post status
 	 *
 	 * @param  int   $parent_id   ID of parent Gistpen
 	 * @since 0.4.0
 	 */
 	public function update_status( $post_status ) {
 		$this->file->post_status = $post_status;
+	}
+
+	/**
+	 * Update the post object's time
+	 *
+	 * @param  int   $parent_id   ID of parent Gistpen
+	 * @since 0.4.0
+	 */
+	public function update_timestamps( $post_date, $post_date_gmt ) {
+		$this->file->post_date = $post_date;
+		$this->file->post_date_gmt = $post_date_gmt;
 	}
 
 }

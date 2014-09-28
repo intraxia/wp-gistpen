@@ -271,6 +271,7 @@ class WP_Gistpen_Query {
 
 		foreach ( $post->files as $file ) {
 			$file->update_parent( $post_id );
+			$file->update_timestamps( $post->post->post_date, $post->post->post_date_gmt );
 			$result = $this->save_file( $file );
 
 			if( is_wp_error( $result ) ) {
