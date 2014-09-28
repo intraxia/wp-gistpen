@@ -45,13 +45,14 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInstanceOf( 'WP_Error', $result );
 	}
 
-	function test_needs_real_language() {
+	function test_fake_language_default_to_bash() {
 		$post = new stdClass;
 		$post->post_type = 'gistpen';
 		$post->post_parent = 5;
 		$result = $this->query->create( new WP_Post( $post ), 'unreal_lang' );
 
-		$this->assertInstanceOf( 'WP_Error', $result );
+		$this->assertInstanceOf( 'WP_Gistpen_File', $result );
+		$this->assertEquals( 'bash', $result->language->slug );
 	}
 
 	function test_returns_file() {
