@@ -94,7 +94,7 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 		return $this->files;
 	}
 	protected function get_post_content() {
-		if( ! isset( $this->post_content ) && ! empty( $this->files ) ) {
+		if( ! empty( $this->files ) ) {
 			foreach ( $this->files as $file ) {
 				$this->post_content .= $file->post_content;
 			}

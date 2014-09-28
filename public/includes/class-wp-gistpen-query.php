@@ -136,7 +136,7 @@ class WP_Gistpen_Query {
 	 * Retrieves the WP_Gistpen_File from the WP_Post object
 	 *
 	 * @param  WP_Post $post
-	 * @return WP_Gistpen_File
+	 * @return WP_Gistpen_File|WP_Error
 	 * @since 0.4.0
 	 */
 	public function get_file( $post ) {
@@ -165,7 +165,7 @@ class WP_Gistpen_Query {
 		if( $terms ) {
 			$language = array_pop( $terms );
 		} else {
-			$language = new WP_Error( 'no_term_for_post', __( 'The file has no language', WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			$language = new WP_Error( 'no_term_for_post', __( "The file {$post->ID} has no language", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
 		return $language;
@@ -216,8 +216,14 @@ class WP_Gistpen_Query {
 		$files_arr = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID,
-			'post_status' => $post->post_status
+			'post_status' => $post->post_status,
+			'order' => 'ASC',
+			'orderby' => 'date',
 		) );
+
+		if( empty( $files_arr ) ) {
+			return array();
+		}
 
 		foreach ( $files_arr as $file ) {
 			$files[$file->ID] = $this->get_file( $file );

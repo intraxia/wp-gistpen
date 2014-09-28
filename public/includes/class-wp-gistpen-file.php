@@ -136,7 +136,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 			}
 
 			$this->post_content .= '>';
-			$this->post_content .= '<code class="language-' . $this->language->prism_slug . '">' . $this->code;
+			$this->post_content .= '<code class="language-' . $this->language->prism_slug . '">' . htmlentities( $this->code );
 			$this->post_content .= '</code></pre>';
 
 			$this->post_content .= '</div>';
