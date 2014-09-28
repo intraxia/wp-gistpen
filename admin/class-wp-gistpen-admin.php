@@ -85,9 +85,11 @@ class WP_Gistpen_Admin {
 		add_filter( 'get_user_option_screen_layout_gistpen', array( 'WP_Gistpen_Editor', 'screen_layout_gistpen' ) );
 		add_filter( 'get_user_option_meta-box-order_gistpen', array( 'WP_Gistpen_Editor', 'gistpen_meta_box_order') );
 
-		// Add files column to Gistpen edit screen
+		// Add files column to and reorder Gistpen edit screen
 		add_filter( 'manage_gistpen_posts_columns', array( 'WP_Gistpen_Editor', 'manage_posts_columns' ) );
 		add_action( 'manage_gistpen_posts_custom_column', array( 'WP_Gistpen_Editor', 'manage_posts_custom_column' ), 10, 2 );
+		add_filter( 'posts_orderby', array( 'WP_Gistpen_Editor', 'edit_screen_orderby' ), 10, 2 );
+
 
 		/**
 		 * Gistpen save hook

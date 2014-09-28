@@ -234,4 +234,19 @@ class WP_Gistpen_Editor {
 		}
 	}
 
+	/**
+	 * Reorders in reverse chron on the Gistpen edit screen
+	 * @param  string   $orderby  the query's orderby statement
+	 * @param  WP_Query $query    current query obj
+	 * @return string          new orderby statement
+	 * @since  0.4.0
+	 */
+	public static function edit_screen_orderby( $orderby, $query ) {
+		if( is_admin() && $query->query_vars['post_type'] === 'gistpen' ) {
+			$orderby = 'wp_posts.post_date DESC';
+		}
+
+		return $orderby;
+	}
+
 }
