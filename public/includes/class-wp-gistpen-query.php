@@ -85,10 +85,9 @@ class WP_Gistpen_Query {
 
 			$term = $this->get_language_term_by_slug( $language );
 
-			if ( is_wp_error( $term ) ) {
-				return $term;
-			} elseif( empty( $term ) ) {
-				return new WP_Error( 'nonexistent_language', __( "Language ${language} does not exist", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			if ( is_wp_error( $term ) || empty( $term ) ) {
+				$term = new stdCLass;
+				$term->slug = 'bash';
 			}
 
 			$language = new WP_Gistpen_Language( $term );

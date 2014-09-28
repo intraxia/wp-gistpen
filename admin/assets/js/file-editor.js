@@ -28,7 +28,7 @@ FileEditor.prototype  = {
 		//		<div class="wp-editor-tools hide-if-no-js">
 		//
 		//			<div class="wp-media-buttons">
-		//				<input type="text" size="20" class="wp-gistpenfile-name" placeholder="Filename (no ext)" autocomplete="off" />
+		//				<input type="text" size="20" class="wp-gistpenfile-slug" placeholder="Filename (no ext)" autocomplete="off" />
 		//				<select class="wp-gistpenfile-language"></select>
 		//				<input type="submit" class="button delete" value="Delete This Gistfile">
 		//			</div>
@@ -46,12 +46,12 @@ FileEditor.prototype  = {
 		//		</div>
 		//
 		//	</div>
-		this.editorHTML = '<div class="wp-core-ui wp-editor-wrap wp-gistpenfile-editor-wrap"><div class="wp-editor-tools hide-if-no-js"><div class="wp-media-buttons"><input type="text" size="20" class="wp-gistpenfile-name" placeholder="Filename (no ext)" autocomplete="off" /><select class="wp-gistpenfile-language"></select><input type="submit" class="button delete" value="Delete This Gistfile"></div><div class="wp-editor-tabs wp-gistpenfile-editor-tabs"><a class="hide-if-no-js wp-switch-editor switch-html">Text</a><a class="hide-if-no-js wp-switch-editor switch-ace">Ace</a></div></div><div class="wp-editor-container wp-gistpenfile-editor-container"><textarea class="wp-editor-area wp-gistpenfile-editor-area" cols="40" rows="20"></textarea><div class="ace-editor"></div></div></div>';
+		this.editorHTML = '<div class="wp-core-ui wp-editor-wrap wp-gistpenfile-editor-wrap"><div class="wp-editor-tools hide-if-no-js"><div class="wp-media-buttons"><input type="text" size="20" class="wp-gistpenfile-slug" placeholder="Filename (no ext)" autocomplete="off" /><select class="wp-gistpenfile-language"></select><input type="submit" class="button delete" value="Delete This Gistfile"></div><div class="wp-editor-tabs wp-gistpenfile-editor-tabs"><a class="hide-if-no-js wp-switch-editor switch-html">Text</a><a class="hide-if-no-js wp-switch-editor switch-ace">Ace</a></div></div><div class="wp-editor-container wp-gistpenfile-editor-container"><textarea class="wp-editor-area wp-gistpenfile-editor-area" cols="40" rows="20"></textarea><div class="ace-editor"></div></div></div>';
 		this.editorFull = jQuery(this.editorHTML);
 		this.editorWrap = this.editorFull.find('.wp-gistpenfile-editor-wrap');
 		this.editorTools = this.editorFull.find('.wp-editor-tools');
 		this.mediaButtons = this.editorFull.find('.wp-media-buttons');
-		this.filenameInput = this.editorFull.find('.wp-gistpenfile-name');
+		this.filenameInput = this.editorFull.find('.wp-gistpenfile-slug');
 		this.languageSelect = this.editorFull.find('.wp-gistpenfile-language');
 		this.deleteFileButton = this.editorFull.find('.button.delete');
 		this.editorTabs = this.editorFull.find('.wp-gistpenfile-editor-tabs');
@@ -65,7 +65,7 @@ FileEditor.prototype  = {
 	appendEditor: function() {
 		this.editorFull.appendTo(GistpenEditor.editorWrap);
 		this.appendLanguages();
-		// add label: <label for="wp-gistpenfile-name-'+this.fileID+'" style="display: none;">Gistfilename</label>\
+		// add label: <label for="wp-gistpenfile-slug-'+this.fileID+'" style="display: none;">Gistfilename</label>\
 	},
 
 	appendLanguages: function() {
@@ -174,8 +174,8 @@ FileEditor.prototype  = {
 
 	addID: function() {
 		this.filenameInput.attr({
-			id: 'wp-gistpenfile-name-'+this.fileID,
-			name: 'wp-gistpenfile-name-'+this.fileID
+			id: 'wp-gistpenfile-slug-'+this.fileID,
+			name: 'wp-gistpenfile-slug-'+this.fileID
 		});
 		this.languageSelect.attr({
 			id: 'wp-gistpenfile-language-'+this.fileID,
@@ -186,8 +186,8 @@ FileEditor.prototype  = {
 			name: 'wp-delete-gistpenfile-'+this.fileID,
 		});
 		this.editorTextArea.attr({
-			id: 'wp-gistpenfile-content-'+this.fileID,
-			name: 'wp-gistpenfile-content-'+this.fileID
+			id: 'wp-gistpenfile-code-'+this.fileID,
+			name: 'wp-gistpenfile-code-'+this.fileID
 		});
 		this.aceEditorDiv.attr({
 			id: 'ace-editor-'+this.fileID

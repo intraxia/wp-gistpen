@@ -117,16 +117,6 @@ class WP_Gistpen_Editor {
 
 			$zip = WP_Gistpen::get_instance()->query->get( get_the_ID() );
 
-			if( empty( $zip->files ) ) {
-				$result = WP_Gistpen::get_instance()->query->save( $zip );
-
-				if ( is_wp_error( $result ) ) {
-					// @todo error handling
-				}
-
-				$zip = WP_Gistpen::get_instance()->query->get( get_the_ID() );
-			}
-
 			foreach ($zip->files as $index => $file) {
 				$files[] = $file;
 			}
