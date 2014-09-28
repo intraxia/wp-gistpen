@@ -60,6 +60,25 @@ class WP_Gistpen_Content {
 	}
 
 	/**
+	 * Filter the child posts from the main query
+	 *
+	 * @param  WP_Query $query query object
+	 * @since  0.4.0
+	 */
+	public static function pre_get_posts( $query ) {
+		if ( ! $query->is_main_query() )
+			return;
+
+		if ( ! $query->is_post_type_archive( 'gistpen' ) )
+			return;
+
+		// only top level posts
+		$query->set( 'post_parent', 0 );
+
+		return $query;
+	}
+
+	/**
 	 * Register the shortcode to embed the Gistpen
 	 *
 	 * @param    array      $atts    attributes passed into the shortcode

@@ -85,10 +85,9 @@ class WP_Gistpen_Query {
 
 			$term = $this->get_language_term_by_slug( $language );
 
-			if ( is_wp_error( $term ) ) {
-				return $term;
-			} elseif( empty( $term ) ) {
-				return new WP_Error( 'nonexistent_language', __( "Language ${language} does not exist", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			if ( is_wp_error( $term ) || empty( $term ) ) {
+				$term = new stdCLass;
+				$term->slug = 'bash';
 			}
 
 			$language = new WP_Gistpen_Language( $term );
@@ -137,7 +136,7 @@ class WP_Gistpen_Query {
 	 * Retrieves the WP_Gistpen_File from the WP_Post object
 	 *
 	 * @param  WP_Post $post
-	 * @return WP_Gistpen_File
+	 * @return WP_Gistpen_File|WP_Error
 	 * @since 0.4.0
 	 */
 	public function get_file( $post ) {
@@ -166,7 +165,7 @@ class WP_Gistpen_Query {
 		if( $terms ) {
 			$language = array_pop( $terms );
 		} else {
-			$language = new WP_Error( 'no_term_for_post', __( 'The file has no language', WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			$language = new WP_Error( 'no_term_for_post', __( "The file {$post->ID} has no language", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
 		return $language;
@@ -217,14 +216,20 @@ class WP_Gistpen_Query {
 		$files_arr = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID,
-			'post_status' => $post->post_status
+			'post_status' => $post->post_status,
+			'order' => 'ASC',
+			'orderby' => 'date',
 		) );
 
-		foreach ( $files_arr as $file ) {
-			$files_arr[$file->ID] = $this->get_file( $file );
+		if( empty( $files_arr ) ) {
+			return array();
 		}
 
-		return $files_arr;
+		foreach ( $files_arr as $file ) {
+			$files[$file->ID] = $this->get_file( $file );
+		}
+
+		return $files;
 	}
 
 	/**
@@ -246,10 +251,6 @@ class WP_Gistpen_Query {
 			$result = $this->save_file( $post );
 		}
 
-		if ( is_wp_error( $result ) ) {
-			return $result;
-		}
-
 		return $result;
 	}
 
@@ -269,6 +270,7 @@ class WP_Gistpen_Query {
 		$post_id = $result;
 
 		foreach ( $post->files as $file ) {
+			$file->update_parent( $post_id );
 			$result = $this->save_file( $file );
 
 			if( is_wp_error( $result ) ) {
@@ -292,7 +294,7 @@ class WP_Gistpen_Query {
 			unset( $file_arr['ID'] );
 		}
 
-		$result = wp_insert_post( (array) $file->file, true );
+		$result = wp_insert_post( $file_arr, true );
 
 		if( is_wp_error( $result ) ) {
 			return $result;

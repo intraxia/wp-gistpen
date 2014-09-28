@@ -85,6 +85,12 @@ class WP_Gistpen_Admin {
 		add_filter( 'get_user_option_screen_layout_gistpen', array( 'WP_Gistpen_Editor', 'screen_layout_gistpen' ) );
 		add_filter( 'get_user_option_meta-box-order_gistpen', array( 'WP_Gistpen_Editor', 'gistpen_meta_box_order') );
 
+		// Add files column to and reorder Gistpen edit screen
+		add_filter( 'manage_gistpen_posts_columns', array( 'WP_Gistpen_Editor', 'manage_posts_columns' ) );
+		add_action( 'manage_gistpen_posts_custom_column', array( 'WP_Gistpen_Editor', 'manage_posts_custom_column' ), 10, 2 );
+		add_filter( 'posts_orderby', array( 'WP_Gistpen_Editor', 'edit_screen_orderby' ), 10, 2 );
+
+
 		/**
 		 * Gistpen save hook
 		 */
@@ -107,7 +113,7 @@ class WP_Gistpen_Admin {
 
 		// AJAX hooks to add and delete Gistfile editors
 		add_action( 'wp_ajax_get_gistpenfile_id', array( 'WP_Gistpen_AJAX', 'get_gistpenfile_id' ) );
-		add_action( 'wp_ajax_delete_gistpenfile_editor', array( 'WP_Gistpen_AJAX', 'delete_gistpenfile_editor' ) );
+		add_action( 'wp_ajax_delete_gistpenfile', array( 'WP_Gistpen_AJAX', 'delete_gistpenfile' ) );
 
 		/**
 		 * Options page hooks

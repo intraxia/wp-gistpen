@@ -3,16 +3,16 @@ function FileEditor(file) {
 	this.scaffoldEditor();
 	this.appendEditor();
 
-	this.fileID = typeof this.file.id !== "undefined" ? this.file.id : '';
+	this.fileID = typeof this.file.ID !== "undefined" ? this.file.ID : '';
 	this.addID();
 
-	this.fileName = typeof this.file.name !== "undefined" ? this.file.name : '';
+	this.fileName = typeof this.file.slug !== "undefined" ? this.file.slug : '';
 	this.addName();
 
-	this.fileContent = typeof this.file.content !== "undefined" ? this.file.content : '';
+	this.fileContent = typeof this.file.code !== "undefined" ? this.file.code : '';
 	this.addContent();
 
-	this.fileLanguage = typeof this.file.language !== "undefined" ? (this.file.language === "javascript" ? "js" : this.file.language) : 'bash';
+	this.fileLanguage = (typeof this.file.language !== "undefined" && typeof this.file.language.slug !== "undefined") ? (this.file.language.slug === "javascript" ? "js" : this.file.language.slug) : 'bash';
 	this.addLanguage();
 
 	this.activateAceEditor();
@@ -28,7 +28,7 @@ FileEditor.prototype  = {
 		//		<div class="wp-editor-tools hide-if-no-js">
 		//
 		//			<div class="wp-media-buttons">
-		//				<input type="text" size="20" class="wp-gistpenfile-name" placeholder="Filename (no ext)" autocomplete="off" />
+		//				<input type="text" size="20" class="wp-gistpenfile-slug" placeholder="Filename (no ext)" autocomplete="off" />
 		//				<select class="wp-gistpenfile-language"></select>
 		//				<input type="submit" class="button delete" value="Delete This Gistfile">
 		//			</div>
@@ -46,18 +46,18 @@ FileEditor.prototype  = {
 		//		</div>
 		//
 		//	</div>
-		this.editorHTML = '<div class="wp-core-ui wp-editor-wrap wp-gistpenfile-editor-wrap"><div class="wp-editor-tools hide-if-no-js"><div class="wp-media-buttons"><input type="text" size="20" class="wp-gistpenfile-name" placeholder="Filename (no ext)" autocomplete="off" /><select class="wp-gistpenfile-language"></select><input type="submit" class="button delete" value="Delete This Gistfile"></div><div class="wp-editor-tabs wp-gistpenfile-editor-tabs"><a class="hide-if-no-js wp-switch-editor switch-html">Text</a><a class="hide-if-no-js wp-switch-editor switch-ace">Ace</a></div></div><div class="wp-editor-container wp-gistpenfile-editor-container"><textarea class="wp-editor-area wp-gistpenfile-editor-area" cols="40" rows="20"></textarea><div class="ace-editor"></div></div></div>';
+		this.editorHTML = '<div class="wp-core-ui wp-editor-wrap wp-gistpenfile-editor-wrap"><div class="wp-editor-tools hide-if-no-js"><div class="wp-media-buttons"><input type="text" size="20" class="wp-gistpenfile-slug" placeholder="Filename (no ext)" autocomplete="off" /><select class="wp-gistpenfile-language"></select><input type="submit" class="button delete" value="Delete This Gistfile"></div><div class="wp-editor-tabs wp-gistpenfile-editor-tabs"><a class="hide-if-no-js wp-switch-editor switch-html">Text</a><a class="hide-if-no-js wp-switch-editor switch-ace">Ace</a></div></div><div class="wp-editor-container wp-gistpenfile-editor-container"><textarea class="wp-editor-area wp-gistpenfile-editor-area" cols="40" rows="20"></textarea><div class="ace-editor"></div></div></div>';
 		this.editorFull = jQuery(this.editorHTML);
 		this.editorWrap = this.editorFull.find('.wp-gistpenfile-editor-wrap');
 		this.editorTools = this.editorFull.find('.wp-editor-tools');
-		this.mediaButtons = this.editorFull.find('wp-media-buttons');
-		this.filenameInput = this.editorFull.find('.wp-gistpenfile-name');
+		this.mediaButtons = this.editorFull.find('.wp-media-buttons');
+		this.filenameInput = this.editorFull.find('.wp-gistpenfile-slug');
 		this.languageSelect = this.editorFull.find('.wp-gistpenfile-language');
 		this.deleteFileButton = this.editorFull.find('.button.delete');
 		this.editorTabs = this.editorFull.find('.wp-gistpenfile-editor-tabs');
 		this.textButton = this.editorFull.find('.wp-switch-editor.switch-html');
 		this.aceButton = this.editorFull.find('.wp-switch-editor.switch-ace');
-		this.editorContainer = this.editorFull.find('wp-gistpenfile-editor-container');
+		this.editorContainer = this.editorFull.find('.wp-gistpenfile-editor-container');
 		this.editorTextArea = this.editorFull.find('.wp-gistpenfile-editor-area');
 		this.aceEditorDiv = this.editorFull.find('.ace-editor');
 	},
@@ -65,7 +65,7 @@ FileEditor.prototype  = {
 	appendEditor: function() {
 		this.editorFull.appendTo(GistpenEditor.editorWrap);
 		this.appendLanguages();
-		// add label: <label for="wp-gistpenfile-name-'+this.fileID+'" style="display: none;">Gistfilename</label>\
+		// add label: <label for="wp-gistpenfile-slug-'+this.fileID+'" style="display: none;">Gistfilename</label>\
 	},
 
 	appendLanguages: function() {
@@ -151,15 +151,26 @@ FileEditor.prototype  = {
 
 	deleteEditor: function() {
 		var thiseditor = this;
+
+		// Confirm we really want to delete
+		var r = confirm("Are you sure you want to delete this Gistpen?");
+		if (r === false) {
+			return;
+		}
+
 		this.editorFull.remove();
 		jQuery.post(ajaxurl,{
-			action: 'delete_gistfile_editor',
+			action: 'delete_gistpenfile',
 
 			nonce: GistpenEditor.getNonce(),
 			fileID: thiseditor.fileID,
 		}, function(response) {
 			if(response.success === false) {
 				console.log('Failed to delete file.');
+			} else {
+				var currentFileIDs = GistpenEditor.fileIDs.val();
+				var newFilesIDs = currentFileIDs.replace(" " + thiseditor.fileID, "");
+				GistpenEditor.fileIDs.val(newFilesIDs);
 			}
 		});
 	},
@@ -174,8 +185,8 @@ FileEditor.prototype  = {
 
 	addID: function() {
 		this.filenameInput.attr({
-			id: 'wp-gistpenfile-name-'+this.fileID,
-			name: 'wp-gistpenfile-name-'+this.fileID
+			id: 'wp-gistpenfile-slug-'+this.fileID,
+			name: 'wp-gistpenfile-slug-'+this.fileID
 		});
 		this.languageSelect.attr({
 			id: 'wp-gistpenfile-language-'+this.fileID,
@@ -186,8 +197,8 @@ FileEditor.prototype  = {
 			name: 'wp-delete-gistpenfile-'+this.fileID,
 		});
 		this.editorTextArea.attr({
-			id: 'wp-gistpenfile-content-'+this.fileID,
-			name: 'wp-gistpenfile-content-'+this.fileID
+			id: 'wp-gistpenfile-code-'+this.fileID,
+			name: 'wp-gistpenfile-code-'+this.fileID
 		});
 		this.aceEditorDiv.attr({
 			id: 'ace-editor-'+this.fileID

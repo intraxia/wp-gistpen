@@ -108,7 +108,7 @@ class WP_Gistpen_AJAX {
 			wp_send_json_error(array( 'message' => $result->get_error_messages() ) );
 		}
 
-		wp_send_json_success(array( 'id' => $result ) );
+		wp_send_json_success( array( 'id' => $result ) );
 	}
 
 	/**
@@ -137,10 +137,18 @@ class WP_Gistpen_AJAX {
 	public static function get_gistpenfile_id() {
 		self::check_security();
 
+		if( ! array_key_exists('parent_id', $_POST ) ) {
+			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
+		}
+
 		$file = new stdCLass;
 		$file->post_type = 'gistpen';
+		$file->post_parent = $_POST['parent_id'];
+
 		$file = new WP_Post( $file );
-		$file = new WP_Gistpen_File( $file, new WP_Gistpen_Language( new stdCLass ) );
+		$language = new stdCLass;
+		$language->slug = 'bash';
+		$file = new WP_Gistpen_File( $file, new WP_Gistpen_Language( $language ) );
 
 		$result = WP_Gistpen::get_instance()->query->save( $file );
 
@@ -148,19 +156,7 @@ class WP_Gistpen_AJAX {
 			wp_send_json_error( array( 'messages' => $result->get_error_messages() ) );
 		}
 
-		$post_id = $result;
-
-		$wpgp_post = WP_Gistpen::get_instance()->query->get( $_POST['parent_id'] );
-
-		$wpgp_post->files[] = $file;
-
-		$result = WP_Gistpen::get_instance()->query->save( $wpgp_post );
-
-		if( is_wp_error( $result ) ) {
-			wp_send_json_error();
-		}
-
-		wp_send_json_success( array( 'id' => $post_id ) );
+		wp_send_json_success( array( 'id' => $result ) );
 	}
 
 	/**
@@ -168,10 +164,10 @@ class WP_Gistpen_AJAX {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function delete_gistpenfile_editor() {
+	public static function delete_gistpenfile() {
 		self::check_security();
 
-		$result = wp_delete_post( $_POST['fileID'] );
+		$result = wp_delete_post( $_POST['fileID'], true );
 
 		if( ! $result ) {
 			wp_send_json_error();

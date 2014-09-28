@@ -46,23 +46,6 @@ class WP_Gistpen_Editor {
 	);
 
 	/**
-	 * Current Gistpen post_id
-	 *
-	 * @var int
-	 * @since 0.4.0
-	 */
-	public static $gistpen_id;
-
-	/**
-	 * Array of all the files
-	 * attached to current Gistpen.
-	 *
-	 * @var array
-	 * @since 0.4.0
-	 */
-	public static $files;
-
-	/**
 	 * Returns new Gistpen title placeholder text
 	 *
 	 * @param  string   $title   default placeholder text
@@ -90,8 +73,6 @@ class WP_Gistpen_Editor {
 
 		if( 'gistpen' == $screen->id ) {
 
-			self::set_up_gistpen_and_files();
-
 			self::render_theme_selector(); ?>
 			<div id="wp-gistfile-wrap"></div>
 			<input type="hidden" id="file_ids" name="file_ids" value=""><?php
@@ -99,25 +80,6 @@ class WP_Gistpen_Editor {
 			echo submit_button( __('Add Gistfile', WP_Gistpen::get_instance()->get_plugin_slug()), 'primary', 'add-gistfile', true );
 
 		}
-	}
-
-	/**
-	 * Sets up the Gistpen data for rendering the editor
-	 *
-	 * @since     0.4.0
-	 */
-	public static function set_up_gistpen_and_files() {
-		global $post;
-
-		self::$gistpen_id = $post->ID;
-
-		self::$files = get_posts( array(
-			'posts_per_page'   => -1,
-			'post_type'        => 'gistpen',
-			'post_parent'      => self::$gistpen_id,
-			'post_status'      => 'any',
-		) );
-
 	}
 
 	/**
@@ -153,25 +115,13 @@ class WP_Gistpen_Editor {
 
 		if( 'gistpen' == $screen->id ):
 
-			if( empty(self::$files) ) {
-				$ids = WP_Gistpen_Saver::$file_ids;
-				foreach ( $ids as $id ) {
-					self::$files[] = get_post( $id );
-				}
+			$zip = WP_Gistpen::get_instance()->query->get( get_the_ID() );
+
+			foreach ($zip->files as $index => $file) {
+				$files[] = $file;
 			}
 
-			foreach( self::$files as $file ) {
-				$language = WP_Gistpen_Content::get_the_language( $file->ID );
-
-				$jsFiles[] = array(
-					'id' => $file->ID,
-					'name' => $file->post_name,
-					'language' => $language,
-					'content' => $file->post_content
-				);
-			}
-
-			$jsFiles = json_encode($jsFiles); ?>
+			$jsFiles = json_encode( $files ); ?>
 			<script type="text/javascript">
 				jQuery(function() {
 					GistpenEditor.init(<?php echo $jsFiles; ?>);
@@ -249,6 +199,54 @@ class WP_Gistpen_Editor {
 				'side'     => '',
 				'advanced' => '',
 		);
+	}
+
+	/**
+	 * Adds the file column to the Gistpen edit screen
+	 *
+	 * @param  array $columns Array of the columns
+	 * @return array          Array with new column added
+	 * @since  0.4.0
+	 */
+	public static function manage_posts_columns( $columns ) {
+		return array_merge( $columns, array(
+			'gistpen_files' => __( 'Files', WP_Gistpen::get_instance()->get_plugin_slug() )
+		) );
+	}
+
+	/**
+	 * Render the file column on the Gistpen edit screen
+	 *
+	 * @param  string $column_name the custom column name
+	 * @param  int    $post_id     the ID of the current post
+	 * @since  0.4.0
+	 */
+	public static function manage_posts_custom_column( $column_name, $post_id ) {
+		if ( 'gistpen_files' === $column_name ) {
+			$zip = WP_Gistpen::get_instance()->query->get( $post_id );
+			echo "<ul>";
+			foreach ( $zip->files as $file ) {
+				echo "<li>";
+				echo $file->filename;
+				echo "</li>";
+			}
+			echo "</ul>";
+		}
+	}
+
+	/**
+	 * Reorders in reverse chron on the Gistpen edit screen
+	 * @param  string   $orderby  the query's orderby statement
+	 * @param  WP_Query $query    current query obj
+	 * @return string          new orderby statement
+	 * @since  0.4.0
+	 */
+	public static function edit_screen_orderby( $orderby, $query ) {
+		if( is_admin() && $query->query_vars['post_type'] === 'gistpen' ) {
+			$orderby = 'wp_posts.post_date DESC';
+		}
+
+		return $orderby;
 	}
 
 }

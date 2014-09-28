@@ -137,7 +137,7 @@ class WP_Gistpen_Updater {
 		) );
 
 		foreach ( $posts as $post ) {
-			// Save and clear content
+			// Cache and clear content
 			$content = $post->post_content;
 			$post->post_content = '';
 

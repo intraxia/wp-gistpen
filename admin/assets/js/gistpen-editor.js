@@ -13,7 +13,7 @@ var GistpenEditor = {
 	},
 
 	initEditors: function() {
-		for (var i = this.files.length - 1; i >= 0; i--) {
+		for (var i = 0; this.files.length - 1 >= i; i++) {
 			this.addEditor(this.files[i]);
 		}
 	},
@@ -21,26 +21,26 @@ var GistpenEditor = {
 	addEditor: function(file) {
 		var theeditor = this;
 		this.editors.push(new FileEditor(file));
-		if(typeof file === 'undefined') {
+		if(typeof file === 'undefined' || file.ID === null) {
 			file = {};
 			jQuery.ajax({
 				type: "POST",
 				url: ajaxurl,
 				data: {
-					action: 'add_gistfile_editor',
+					action: 'get_gistpenfile_id',
 
-					nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
+					parent_id: jQuery('#post_ID').val(),
+					nonce: theeditor.getNonce(),
 				},
 				success: function(response) {
-					file.id = response.data.id;
-					theeditor.editors[theeditor.editors.length - 1].fileID = file.id;
+					file.ID = response.data.id;
+					theeditor.editors[theeditor.editors.length - 1].fileID = file.ID;
 					theeditor.editors[theeditor.editors.length - 1].addID();
-					theeditor.fileIDs.val(theeditor.fileIDs.val() + ' ' + file.id);
+					theeditor.fileIDs.val(theeditor.fileIDs.val() + ' ' + file.ID);
 				}
 			});
-		}
-		if(typeof file.id !== "undefined") {
-			this.fileIDs.val(this.fileIDs.val() + ' ' + file.id);
+		} else {
+			this.fileIDs.val(this.fileIDs.val() + ' ' + file.ID);
 		}
 	},
 

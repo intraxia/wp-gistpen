@@ -23,7 +23,7 @@ class WP_Gistpen_TinyMCE {
 	 * @since 0.4.0
 	 */
 	public static function mce_external_plugins( $plugins ) {
-		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-tinymce-plugin.min.js';
+		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'admin/assets/js/tinymce-plugin.min.js';
 		return $plugins;
 	}
 

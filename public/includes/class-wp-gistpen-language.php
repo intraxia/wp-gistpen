@@ -74,12 +74,10 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 		return $this->term;
 	}
 	protected function get_prism_slug() {
-
-		if ( ! isset( $this->prism_slug ) ) {
-			$this->prism_slug = ( $this->slug == 'js' ? 'javascript' :
-				( $this->slug == 'sass' ? 'scss' :
-				$this->slug ) );
-		}
+		$this->prism_slug = ( $this->slug == 'js' ? 'javascript' :
+			( $this->slug == 'sass' ? 'scss' :
+			( $this->slug == 'sh' ? 'bash' :
+			$this->slug ) ) );
 
 		return $this->prism_slug;
 	}
