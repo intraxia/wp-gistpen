@@ -18,7 +18,7 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 		foreach( WP_Gistpen_Language::$supported as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
 			if( is_wp_error( $result ) ) {
-				// @todo write error message?
+				throw new Exception("Failed to insert term.");
 			}
 		}
 
@@ -27,7 +27,9 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 		foreach ($terms as $term) {
 			$languages[] = $term->term_id;
 		}
+
 		$num_posts = count( $languages );
+
 		$this->gistpens = $this->factory->post->create_many( $num_posts, array(
 			'post_type' => 'gistpens',
 		), array(
@@ -106,6 +108,10 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 			// The child should be a gistpen
 			$this->assertEquals( 'gistpen', $child->post_type );
 
+			// The child should have the same creation time as parent
+			$this->assertEquals( $post->post_date, $child->post_date );
+			$this->assertEquals( $post->post_date_gmt, $child->post_date_gmt );
+
 			// The child post should have a language
 			$language = wp_get_object_terms( $child->ID, 'wpgp_language' );
 			$this->assertCount( 1, $language );
@@ -124,6 +130,11 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 
 		// There should be no language terms left behind
 		$this->assertCount( 0, $terms );
+
+		$terms = get_terms( 'wpgp_language', 'hide_empty=0' );
+
+		// There should be no language terms left behind
+		$this->assertGreaterThan( 0, $terms );
 	}
 
 	function tearDown() {

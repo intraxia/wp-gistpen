@@ -19,7 +19,7 @@ class WP_Gistpen_Query {
 	 * Search for recent Files
 	 *
 	 * @param  int|null $search Search term, or null for recent 5
-	 * @return array         search results
+	 * @return array|WP_Error         search results, or error if no results
 	 * @since 0.4.0
 	 */
 	public function search( $search, $number = 5 ) {
@@ -38,7 +38,7 @@ class WP_Gistpen_Query {
 		$result = get_posts( $args );
 
 		if ( empty( $result ) ) {
-			return new WP_Error('no_results', __("Search returned no results") );
+			return new WP_Error('no_results', __("Search returned no results.") );
 		}
 
 		foreach ( $result as $gistpen ) {
@@ -236,22 +236,21 @@ class WP_Gistpen_Query {
 	 * Save the WP_Gistpen object to the database
 	 *
 	 * @param  WP_Gistpen_Post|File $post WP_Gistpen object
-	 * @return int|WP_Error       post_id on success, WP_Error on failure
+	 * @return int|WP_Error               post_id on success, WP_Error on failure
 	 */
 	public function save( $post ) {
 		if ( ! $post instanceof WP_Gistpen_Post && ! $post instanceof WP_Gistpen_File ) {
-			return new WP_Error( 'wrong_object', __( "Query only save WP_Gistpen_Posts or Files", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			return new WP_Error( 'wrong_object', __( "Query only saves WP_Gistpen_Posts or Files", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
 		$post->update_post();
 
 		if ( $post instanceof WP_Gistpen_Post ) {
-			$result = $this->save_post( $post );
+			return $this->save_post( $post );
 		} elseif ( $post instanceof WP_Gistpen_File ) {
-			$result = $this->save_file( $post );
+			return $this->save_file( $post );
 		}
 
-		return $result;
 	}
 
 	/**
@@ -271,7 +270,6 @@ class WP_Gistpen_Query {
 
 		foreach ( $post->files as $file ) {
 			$file->update_parent( $post_id );
-			$file->update_timestamps( $post->post->post_date, $post->post->post_date_gmt );
 			$result = $this->save_file( $file );
 
 			if( is_wp_error( $result ) ) {
