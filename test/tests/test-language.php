@@ -89,6 +89,19 @@ class WP_Gistpen_Language_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals('Bash', $this->language->term->name );
 	}
 
+	function test_update_fail_not_language() {
+		$term = new stdClass;
+		$term->name = 'PHP';
+		$term->slug = 'php';
+		$this->language = new WP_Gistpen_Language( $term );
+
+		$this->language->slug = 'asdf';
+
+		$this->language->update_post();
+
+		$this->assertEquals('PHP', $this->language->term->name );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}
