@@ -108,7 +108,7 @@ class WP_Gistpen_Saver {
 		foreach ( $zip->files as $file ) {
 			$result = WP_Gistpen::get_instance()->query->save( $file );
 			if( is_wp_error( $result ) ) {
-				$errors = $result->get_error_code() . ',';
+				self::$errors .= $result->get_error_code() . ',';
 			}
 		}
 		add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
