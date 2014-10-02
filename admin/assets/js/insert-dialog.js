@@ -72,16 +72,21 @@ var InsertGistpenDialog = {
 			nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
 			gistpen_search_term: jQuery('#gistpen-search-field').val()
 		}, function(response) {
-			var data = response.data;
-			for (var i = data.gistpens.length - 1; i >= 0; i--) {
-				var gistpen = data.gistpens[i];
-				if ( typeof gistpen.description !== "undefined" ) {
-					gistpen.post_name = gistpen.description;
-				} else {
-					gistpen.post_name = gistpen.slug;
+			if (response.success === false) {
+				jQuery('<li><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="none"></div><div class="gistpen-title">'+response.data.message+'</div></li>').prependTo('.gistpen-list');
+			} else {
+				var data = response.data;
+				for (var i = data.gistpens.length - 1; i >= 0; i--) {
+					var gistpen = data.gistpens[i];
+					if ( typeof gistpen.description !== "undefined" ) {
+						gistpen.post_name = gistpen.description;
+					} else {
+						gistpen.post_name = gistpen.slug;
+					}
+					jQuery('<li><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="'+gistpen.ID+'"></div><div class="gistpen-title">'+gistpen.post_name+'</div></li>').prependTo('.gistpen-list');
 				}
-				jQuery('<li><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="'+gistpen.ID+'"></div><div class="gistpen-title">'+gistpen.post_name+'</div></li>').prependTo('.gistpen-list');
 			}
+
 			jQuery('.gistpen-search-wrap .spinner').hide();
 			jQuery('#wp-gistpen-search-btn button').show();
 		});
@@ -109,17 +114,17 @@ var InsertGistpenDialog = {
 				"wp-gistpenfile-language": that.fileEditor.languageSelect.val(),
 				"post_status": that.fileEditor.post_status.val(),
 			}, function( response ) {
-				// @todo error checking
-				that.gistpenid = response.data.id;
-				that.insertAndClose( editor );
+				if ( response.success === false ) {
+					editor.insertContent('Failed to save Gistpen. Message: '+response.data.message);
+					editor.windowManager.close();
+				} else {
+					that.gistpenid = response.data.id;
+					that.insertAndClose( editor );
+				}
 			});
 		} else {
-			this.insertAndClose( editor );
+			editor.insertContent( '[gistpen id="' + this.gistpenid + '"]' );
+			editor.windowManager.close();
 		}
-	},
-
-	insertAndClose: function( editor ) {
-		editor.insertContent( '[gistpen id="' + this.gistpenid + '"]' );
-		editor.windowManager.close();
 	}
 };

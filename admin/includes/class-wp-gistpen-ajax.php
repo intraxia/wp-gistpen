@@ -153,7 +153,7 @@ class WP_Gistpen_AJAX {
 		$result = WP_Gistpen::get_instance()->query->save( $file );
 
 		if( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'messages' => $result->get_error_messages() ) );
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
 		wp_send_json_success( array( 'id' => $result ) );
@@ -174,7 +174,7 @@ class WP_Gistpen_AJAX {
 		$result = wp_delete_post( $_POST['fileID'], true );
 
 		if( ! $result ) {
-			wp_send_json_error();
+			wp_send_json_error( array( 'message' => __( 'wp_delete_post failed', WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
 		}
 
 		wp_send_json_success();

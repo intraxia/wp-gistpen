@@ -167,6 +167,7 @@ FileEditor.prototype  = {
 		}, function(response) {
 			if(response.success === false) {
 				console.log('Failed to delete file.');
+				console.log(response.data.message);
 			} else {
 				var currentFileIDs = GistpenEditor.fileIDs.val();
 				var newFilesIDs = currentFileIDs.replace(" " + thiseditor.fileID, "");

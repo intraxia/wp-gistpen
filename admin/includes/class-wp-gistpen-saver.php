@@ -122,7 +122,6 @@ class WP_Gistpen_Saver {
 	 * @return string           Updated GET params
 	 */
 	public static function return_errors( $location ) {
-		self::$errors = 'test';
 		if ( self::$errors !== '' ) {
 			return add_query_arg( 'gistpen-errors', rtrim( self::$errors, "," ), $location );
 		}
