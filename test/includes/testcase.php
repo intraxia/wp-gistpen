@@ -15,6 +15,7 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		$this->mock_lang = $this->getMockBuilder( 'WP_Gistpen_Language' )->disableOriginalConstructor()->getMock();
 		$this->mock_post = $this->getMockBuilder( 'WP_Gistpen_Post' )->disableOriginalConstructor()->getMock();
 		$this->mock_file = $this->getMockBuilder( 'WP_Gistpen_File' )->disableOriginalConstructor()->getMock();
+		$this->mock_query = $this->getMockBuilder( 'WP_Gistpen_Query' )->getMock();
 	}
 
 	function create_post_and_children() {

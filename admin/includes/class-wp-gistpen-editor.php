@@ -45,6 +45,17 @@ class WP_Gistpen_Editor {
 		'twilight' => 'Twilight'
 	);
 
+	public static function add_admin_errors() {
+		if ( array_key_exists( 'gistpen-errors', $_GET) ) { ?>
+			<div class="error">
+				<p><?php
+					_e( 'The post saved with error codes: ', WP_Gistpen::get_instance()->get_plugin_slug() );
+					echo $_GET['gistpen-errors'];
+				?></p>
+			</div><?php
+		}
+	}
+
 	/**
 	 * Returns new Gistpen title placeholder text
 	 *
@@ -145,6 +156,7 @@ class WP_Gistpen_Editor {
 	 * @since     0.4.0
 	 */
 	public static function enqueue_editor_scripts() {
+		$languages = array();
 		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
 		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script' ), WP_Gistpen::VERSION, false );
 		$terms = get_terms( 'wpgp_language', 'hide_empty=0' );

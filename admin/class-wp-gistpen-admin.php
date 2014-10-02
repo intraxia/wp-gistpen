@@ -69,8 +69,10 @@ class WP_Gistpen_Admin {
 		/**
 		 * Gistpen Editor hooks
 		 */
+		// Render the error messages
+		add_action( 'admin_notices', array( 'WP_Gistpen_Editor', 'add_admin_errors' ) );
 		// Edit the placeholder text in the Gistpen title box
-		add_filter( 'enter_title_here', array( 'WP_Gistpen_Editor', 'new_enter_title_here' ));
+		add_filter( 'enter_title_here', array( 'WP_Gistpen_Editor', 'new_enter_title_here' ) );
 		// Hook in repeatable file editor
 		add_action( 'edit_form_after_title', array( 'WP_Gistpen_Editor', 'render_gistfile_editor' ) );
 		// Load Gistpen editor stylesheet and scripts

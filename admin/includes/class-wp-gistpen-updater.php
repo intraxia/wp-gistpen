@@ -81,7 +81,10 @@ class WP_Gistpen_Updater {
 		foreach( self::$added_langs_0_3_0 as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
 			if ( is_wp_error( $result ) ) {
-				// @todo write error message?
+				// Deactivate and quit
+				deactivate_plugins( 'WP-Gistpen');
+				// and provide an error
+				print ( "Failed to successfully insert {$slug}. Error: " . $result->get_error_message() );
 			}
 
 		}
@@ -106,12 +109,15 @@ class WP_Gistpen_Updater {
 				wp_reset_postdata();
 			}
 
-			if( !$query->have_posts() ) {
+			if( ! $query->have_posts() ) {
 				// only delete language if it's got no Gistpens
 				$term = get_term_by( 'slug', $slug, 'language', 'ARRAY_A' );
 				$result = wp_delete_term( $term['term_id'], 'language' );
 				if ( is_wp_error( $result ) ) {
-					// @todo write error message?
+					// Deactivate and quit
+					deactivate_plugins( 'WP-Gistpen');
+					// and provide an error
+					print ( "Failed to successfully delete {$slug}. Error: " . $result->get_error_message() );
 				}
 			}
 
@@ -126,16 +132,34 @@ class WP_Gistpen_Updater {
 	 * @since 0.4.0
 	 */
 	public static function update_to_0_4_0() {
-		// We removed this post_type and taxonomy, so we need to add it real quick to use it
+		// We removed this post_type and taxonomy, so we need to add them to use them
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );
 
 		$terms = get_terms( 'language', 'hide_empty=0' );
-
 		foreach ( $terms as $term ) {
-			$result = wp_insert_term( $term->name, 'wpgp_language', array( 'slug' => $term->slug ) );
+			// We're going to move the current term to a holdover
+			$result = wp_update_term( $term->term_id, 'language', array(
+				'slug' => $term->slug . '-old',
+				'name' => $term->name . '-old'
+			) );
 			if( is_wp_error( $result ) ) {
-				// @todo write error message?
+				// Deactivate and quit
+				deactivate_plugins( __FILE__);
+				// and provide an error
+				print ( "Failed to successfully set holdover for language {$term->slug}. Error: " . $result->get_error_message() );
+			}
+
+			// So we can create new terms with the old slug/name combo
+			$result = wp_insert_term( $term->name, 'wpgp_language', array(
+				'slug' => $term->slug,
+				'name' => $term->name
+			) );
+			if( is_wp_error( $result ) ) {
+				// Deactivate and quit
+				deactivate_plugins( __FILE__);
+				// and provide an error
+				print ( "Failed to successfully insert language {$term->slug}. Error: " . $result->get_error_message() );
 			}
 		}
 
@@ -164,8 +188,10 @@ class WP_Gistpen_Updater {
 			$result = delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
 
 			if ( is_wp_error( $result ) ) {
-				// @todo write error msg?
-				throw new Exception("Error deleting post_meta");
+				// Deactivate and quit
+				deactivate_plugins( 'WP-Gistpen');
+				// and provide an error
+				print ( "Failed to successfully delete description meta from {$post->ID}. Error: " . $result->get_error_message() );
 			}
 
 			// Set content
@@ -178,20 +204,27 @@ class WP_Gistpen_Updater {
 				$lang = array_pop( $terms );
 			}
 
-			$wpgp_post->files[0]->language->slug = $lang->slug;
+			// Don't forget to remove that holdover!
+			$wpgp_post->files[0]->language->slug = str_replace( "-old", "", $lang->slug );
 
 			$result = wp_set_object_terms( $post->ID, array(), 'language', false );
 
 			if ( is_wp_error( $result ) ) {
-				// @todo write error msg?
-				throw new Exception("Error deleting post_meta");
+				// Deactivate and quit
+				deactivate_plugins( __FILE__);
+				// and provide an error
+				print ( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message() );
 			}
+
+			$wpgp_post->files[0]->update_timestamps( $post->post_date, $post->post_date_gmt );
 
 			$result = WP_Gistpen::get_instance()->query->save( $wpgp_post );
 
 			if ( is_wp_error( $result ) ) {
-				// @todo write error msg?
-				throw new Exception("Error deleting post_meta");
+				// Deactivate and quit
+				deactivate_plugins( __FILE__);
+				// and provide an error
+				print ( "Failed to successfully save {$post->ID} in new format. Error: " . $result->get_error_message() );
 			}
 
 		}

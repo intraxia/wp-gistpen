@@ -33,10 +33,15 @@ var GistpenEditor = {
 					nonce: theeditor.getNonce(),
 				},
 				success: function(response) {
-					file.ID = response.data.id;
-					theeditor.editors[theeditor.editors.length - 1].fileID = file.ID;
-					theeditor.editors[theeditor.editors.length - 1].addID();
-					theeditor.fileIDs.val(theeditor.fileIDs.val() + ' ' + file.ID);
+					if(response.success === false) {
+						console.log('Failed to get ID.');
+						console.log(response.data.message);
+					} else {
+						file.ID = response.data.id;
+						theeditor.editors[theeditor.editors.length - 1].fileID = file.ID;
+						theeditor.editors[theeditor.editors.length - 1].addID();
+						theeditor.fileIDs.val(theeditor.fileIDs.val() + ' ' + file.ID);
+					}
 				}
 			});
 		} else {
@@ -62,6 +67,7 @@ var GistpenEditor = {
 			}, function(response) {
 				if(response.success === false) {
 					console.log('Failed to save ACE theme.');
+					console.log(response.data.message);
 				}
 			});
 		});

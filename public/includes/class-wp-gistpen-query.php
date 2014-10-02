@@ -19,7 +19,7 @@ class WP_Gistpen_Query {
 	 * Search for recent Files
 	 *
 	 * @param  int|null $search Search term, or null for recent 5
-	 * @return array         search results
+	 * @return array|WP_Error         search results, or error if no results
 	 * @since 0.4.0
 	 */
 	public function search( $search, $number = 5 ) {
@@ -38,12 +38,17 @@ class WP_Gistpen_Query {
 		$result = get_posts( $args );
 
 		if ( empty( $result ) ) {
-			return new WP_Error('no_results', __("Search returned no results") );
+			return new WP_Error('no_results', __("Search returned no results.") );
 		}
 
 		foreach ( $result as $gistpen ) {
 			if ( 0 === $gistpen->post_parent ) {
-				$results[] = $this->create( $gistpen );
+				$result = $this->create( $gistpen );
+				if ( is_wp_error( $result ) ) {
+					return $result;
+				}
+
+				$results[] = $result;
 			} else {
 				$term = $this->get_language_term_by_post( $gistpen );
 
@@ -52,9 +57,12 @@ class WP_Gistpen_Query {
 					$term->slug = 'bash';
 				}
 
-				$language = $term->slug;
+				$result = $this->create( $gistpen, $term->slug );
+				if ( is_wp_error( $result ) ) {
+					return $result;
+				}
 
-				$results[] = $this->create( $gistpen, $language );
+				$results[] = $result;
 			}
 		}
 
@@ -110,9 +118,8 @@ class WP_Gistpen_Query {
 			if ( is_numeric( $post ) ) {
 				$post = get_post( $post );
 
-				if ( is_wp_error( $post ) ) {
-					$error = $post;
-					return $error;
+				if ( $post === null ) {
+					return new WP_Error( 'get_post_failed', __( "get_post failed for ID {$post}", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 				}
 			} else {
 				return new WP_Error( 'wrong_construct_args', __( "WP_Gistpen_Query::get() needs an ID or object", WP_Gistpen::get_instance()->get_plugin_slug() ) );
@@ -139,17 +146,14 @@ class WP_Gistpen_Query {
 	 * @return WP_Gistpen_File|WP_Error
 	 * @since 0.4.0
 	 */
-	public function get_file( $post ) {
+	protected function get_file( $post ) {
 		$term = $this->get_language_term_by_post( $post );
 
 		if ( is_wp_error( $term ) ) {
-			// @todo error out
 			return $term;
 		}
 
-		$language = new WP_Gistpen_Language( $term );
-
-		return new WP_Gistpen_File( $post, $language );
+		return new WP_Gistpen_File( $post, new WP_Gistpen_Language( $term ) );
 	}
 
 	/**
@@ -179,7 +183,10 @@ class WP_Gistpen_Query {
 	 * @since 0.4.0
 	 */
 	public function get_language_term_by_slug( $slug ) {
-		$terms = get_terms( 'wpgp_language', array( 'slug' => $slug, 'hide_empty' => false ) );
+		$terms = get_terms( 'wpgp_language', array(
+			'slug' => $slug,
+			'hide_empty' => false
+		) );
 
 		if( is_wp_error( $terms ) ) {
 			return $terms;
@@ -199,8 +206,12 @@ class WP_Gistpen_Query {
 	 * @return WP_Gistpen_Language|WP_Error       language object or Error
 	 * @since 0.4.0
 	 */
-	public function get_gistpen( $post ) {
+	protected function get_gistpen( $post ) {
 		$files = $this->get_files( $post );
+
+		if ( is_wp_error( $files ) ) {
+			return $files;
+		}
 
 		return new WP_Gistpen_Post( $post, $files );
 	}
@@ -210,9 +221,9 @@ class WP_Gistpen_Query {
 	 *
 	 * @param  WP_Post $post
 	 * @return array|WP_Error       array of WP_Gistpen_Files or Error
-	 * @since 0.4.0
+	 * @since  0.4.0
 	 */
-	public function get_files( $post ) {
+	protected function get_files( $post ) {
 		$files_arr = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID,
@@ -226,7 +237,12 @@ class WP_Gistpen_Query {
 		}
 
 		foreach ( $files_arr as $file ) {
-			$files[$file->ID] = $this->get_file( $file );
+			$result = $this->get_file( $file );
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+
+			$files[$file->ID] = $result;
 		}
 
 		return $files;
@@ -236,31 +252,32 @@ class WP_Gistpen_Query {
 	 * Save the WP_Gistpen object to the database
 	 *
 	 * @param  WP_Gistpen_Post|File $post WP_Gistpen object
-	 * @return int|WP_Error       post_id on success, WP_Error on failure
+	 * @return int|WP_Error         post_id on success, WP_Error on failure
+	 * @since  0.4.0
 	 */
 	public function save( $post ) {
 		if ( ! $post instanceof WP_Gistpen_Post && ! $post instanceof WP_Gistpen_File ) {
-			return new WP_Error( 'wrong_object', __( "Query only save WP_Gistpen_Posts or Files", WP_Gistpen::get_instance()->get_plugin_slug() ) );
+			return new WP_Error( 'wrong_object', __( "Query only saves WP_Gistpen_Posts or Files", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
 		$post->update_post();
 
 		if ( $post instanceof WP_Gistpen_Post ) {
-			$result = $this->save_post( $post );
+			return $this->save_post( $post );
 		} elseif ( $post instanceof WP_Gistpen_File ) {
-			$result = $this->save_file( $post );
+			return $this->save_file( $post );
 		}
 
-		return $result;
 	}
 
 	/**
 	 * Save the WP_Gistpen_Post to the database
 	 *
 	 * @param  WP_Gistpen_Post $post
-	 * @return true|WP_Error       true on success, WP_Error on failure
+	 * @return int|WP_Error    post_id on success, WP_Error on failure
+	 * @since  0.4.0
 	 */
-	public function save_post( $post ) {
+	protected function save_post( $post ) {
 		$result = wp_insert_post( (array) $post->post, true );
 
 		if( is_wp_error( $result ) ) {
@@ -271,7 +288,6 @@ class WP_Gistpen_Query {
 
 		foreach ( $post->files as $file ) {
 			$file->update_parent( $post_id );
-			$file->update_timestamps( $post->post->post_date, $post->post->post_date_gmt );
 			$result = $this->save_file( $file );
 
 			if( is_wp_error( $result ) ) {
@@ -286,9 +302,10 @@ class WP_Gistpen_Query {
 	 * Save the WP_Gistpen_File to the database
 	 *
 	 * @param  WP_Gistpen_File $post
-	 * @return true|WP_Error       true on success, WP_Error on failure
+	 * @return true|WP_Error   post_id on success, WP_Error on failure
+	 * @since  0.4.0
 	 */
-	public function save_file( $file ) {
+	protected function save_file( $file ) {
 		$file_arr = (array) $file->file;
 
 		if( null === $file_arr['ID'] ) {
@@ -307,6 +324,10 @@ class WP_Gistpen_Query {
 
 		if( is_wp_error( $result ) ) {
 			return $result;
+		}
+
+		if ( is_string( $result ) ) {
+			return new WP_Error( 'wrong_slug', __( "{$file->language->slug} is named incorrectly.", WP_Gistpen::get_instance()->get_plugin_slug() ) );
 		}
 
 		return $post_id;
