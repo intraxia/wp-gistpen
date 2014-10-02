@@ -477,7 +477,7 @@ class WP_Gistpen {
 			'hierarchical'               => false,
 			'public'                     => true,
 			'show_ui'                    => false,
-			'show_admin_column'          => true,
+			'show_admin_column'          => false,
 			'show_in_nav_menus'          => true,
 			'show_tagcloud'              => false,
 			'required'                   => true,

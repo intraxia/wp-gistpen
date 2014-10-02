@@ -17,6 +17,14 @@
 class WP_Gistpen_Saver {
 
 	/**
+	 * Errors codes
+	 *
+	 * @var string
+	 * @since 0.4.0
+	 */
+	static $errors;
+
+	/**
 	 * save_post action hook callback
 	 * to save all the files and
 	 * attach them to the Gistpen
@@ -45,22 +53,17 @@ class WP_Gistpen_Saver {
 			return;
 		}
 
-		$wpgp_post = WP_Gistpen::get_instance()->query->get( $post_id );
+		$zip = WP_Gistpen::get_instance()->query->get( $post_id );
 
-
-		$files = $wpgp_post->files;
-		$files_new = array();
-		foreach ($files as $index => $file) {
-			if ( $file->file->ID !== null ) {
-				$files_new[$file->file->ID] = $file;
-			}
+		if ( is_wp_error( $zip ) ) {
+			// @todo create ourselves a blank zip
+			return;
 		}
-		$wpgp_post->files = $files_new;
 
 		foreach ( $file_ids as $file_id ) {
 
-			if( array_key_exists( $file_id, $wpgp_post->files ) ) {
-				$file = $wpgp_post->files[$file_id];
+			if( array_key_exists( $file_id, $zip->files ) ) {
+				$file = $zip->files[$file_id];
 
 				$file_id_w_dash = '-' . $file_id;
 
@@ -68,41 +71,62 @@ class WP_Gistpen_Saver {
 				$file->code = $_POST['wp-gistpenfile-code' . $file_id_w_dash];
 				$file->language->slug = $_POST['wp-gistpenfile-language' . $file_id_w_dash];
 
-				$wpgp_post->files[$file_id] = $file;
+				$zip->files[$file_id] = $file;
 
 			} else {
+				// create a blank file
 				$file = new stdClass;
 				$file->post_type = 'gistpen';
-				$file->post_status = $_POST['post_status'];
 				$file->post_parent = $post_id;
-				$file->post_password = $_POST['post_password'];
-				$file = new WP_Post( $file );
+				// check if post exists
+				if ( get_post_status( $file_id ) ) {
+					// we'll use it if it does
+					$file->ID = $file_id;
+				}
 
-				$file = new WP_Gistpen_File( $file, new WP_Gistpen_Language( new stdClass ) );
+				$file = new WP_Gistpen_File( new WP_Post( $file ), new WP_Gistpen_Language( new stdClass ) );
 
 				$file_id_w_dash = '-' . $file_id;
 
+				// and fill it with data
 				$file->slug = $_POST['wp-gistpenfile-slug' . $file_id_w_dash];
 				$file->code = $_POST['wp-gistpenfile-code' . $file_id_w_dash];
 				$file->language->slug = $_POST['wp-gistpenfile-language' . $file_id_w_dash];
 
-				$wpgp_post->files[] = $file;
+				$zip->files[] = $file;
 
 			}
 
 			unset($file);
 		}
 
-		$wpgp_post->update_post();
+		$zip->update_post();
 
+		self::$errors = '';
 
 		remove_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
-		foreach ( $wpgp_post->files as $file ) {
-			$result = WP_Gistpen::get_instance()->query->save_file( $file );
+		foreach ( $zip->files as $file ) {
+			$result = WP_Gistpen::get_instance()->query->save( $file );
 			if( is_wp_error( $result ) ) {
-				// @todo error checking
+				$errors = $result->get_error_code() . ',';
 			}
 		}
 		add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
+
+		add_filter('redirect_post_location',array( 'WP_Gistpen_Saver', 'return_errors' ) );
+	}
+
+	/**
+	 * Adds the errors to the url, if any
+	 * @param  string $location Current GET params
+	 * @return string           Updated GET params
+	 */
+	public static function return_errors( $location ) {
+		self::$errors = 'test';
+		if ( self::$errors !== '' ) {
+			return add_query_arg( 'gistpen-errors', rtrim( self::$errors, "," ), $location );
+		}
+
+		return $location;
 	}
 }
