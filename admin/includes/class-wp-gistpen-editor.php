@@ -147,7 +147,9 @@ class WP_Gistpen_Editor {
 	 * @since     0.4.0
 	 */
 	public static function enqueue_editor_styles() {
-		wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
+		if ( get_current_screen()->id === 'gistpen' ) {
+				wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
+			}
 	}
 
 	/**
