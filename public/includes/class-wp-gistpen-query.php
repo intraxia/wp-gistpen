@@ -146,7 +146,7 @@ class WP_Gistpen_Query {
 	 * @return WP_Gistpen_File|WP_Error
 	 * @since 0.4.0
 	 */
-	protected function get_file( $post ) {
+	protected function get_file( WP_Post $post ) {
 		$term = $this->get_language_term_by_post( $post );
 
 		if ( is_wp_error( $term ) ) {
@@ -163,7 +163,7 @@ class WP_Gistpen_Query {
 	 * @return stdClass|WP_Error       term object or Error
 	 * @since 0.4.0
 	 */
-	public function get_language_term_by_post( $post ) {
+	public function get_language_term_by_post( WP_Post $post ) {
 		$terms = get_the_terms( $post->ID, 'wpgp_language' );
 
 		if( $terms ) {
@@ -206,7 +206,7 @@ class WP_Gistpen_Query {
 	 * @return WP_Gistpen_Language|WP_Error       language object or Error
 	 * @since 0.4.0
 	 */
-	protected function get_gistpen( $post ) {
+	protected function get_gistpen( WP_Post $post ) {
 		$files = $this->get_files( $post );
 
 		if ( is_wp_error( $files ) ) {
@@ -223,7 +223,7 @@ class WP_Gistpen_Query {
 	 * @return array|WP_Error       array of WP_Gistpen_Files or Error
 	 * @since  0.4.0
 	 */
-	protected function get_files( $post ) {
+	protected function get_files( WP_Post $post ) {
 		$files_arr = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID,
@@ -277,7 +277,7 @@ class WP_Gistpen_Query {
 	 * @return int|WP_Error    post_id on success, WP_Error on failure
 	 * @since  0.4.0
 	 */
-	protected function save_post( $post ) {
+	protected function save_post( WP_Gistpen_Post $post ) {
 		$result = wp_insert_post( (array) $post->post, true );
 
 		if( is_wp_error( $result ) ) {
@@ -305,7 +305,7 @@ class WP_Gistpen_Query {
 	 * @return true|WP_Error   post_id on success, WP_Error on failure
 	 * @since  0.4.0
 	 */
-	protected function save_file( $file ) {
+	protected function save_file( WP_Gistpen_File $file ) {
 		$file_arr = (array) $file->file;
 
 		if( null === $file_arr['ID'] ) {
