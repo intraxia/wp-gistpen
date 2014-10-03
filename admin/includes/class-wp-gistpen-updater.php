@@ -136,6 +136,13 @@ class WP_Gistpen_Updater {
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );
 
+		// Need to remove these filters first
+		remove_filter( 'the_content', 'wpautop' );
+		remove_filter( 'the_content', 'wptexturize' );
+		remove_filter( 'the_content', 'capital_P_dangit' );
+		remove_filter( 'the_content', 'convert_chars' );
+		remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
+
 		$terms = get_terms( 'language', 'hide_empty=0' );
 		foreach ( $terms as $term ) {
 			// We're going to move the current term to a holdover
