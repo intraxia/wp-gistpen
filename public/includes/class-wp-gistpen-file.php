@@ -127,7 +127,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 		if ( ! isset( $this->post_content ) ) {
 			$this->post_content .= '<div id="wp-gistpenfile-' . $this->file->post_name . '">';
 
-			$this->post_content .= '<h2 class="wp-gistpenfile-title">' . $this->get_filename() . '</h2>';
+			$this->post_content .= '<h3 class="wp-gistpenfile-title">' . $this->get_filename() . '</h2>';
 
 			$this->post_content .= '<pre class="gistpen line-numbers"';
 			// Line highlighting and offset will go here
