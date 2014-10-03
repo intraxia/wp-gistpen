@@ -113,7 +113,9 @@ class WP_Gistpen_Saver {
 		}
 		add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 
-		add_filter('redirect_post_location',array( 'WP_Gistpen_Saver', 'return_errors' ) );
+		if ( self::$errors !== '' ) {
+			add_filter('redirect_post_location',array( 'WP_Gistpen_Saver', 'return_errors' ) );
+		}
 	}
 
 	/**
@@ -122,10 +124,6 @@ class WP_Gistpen_Saver {
 	 * @return string           Updated GET params
 	 */
 	public static function return_errors( $location ) {
-		if ( self::$errors !== '' ) {
-			return add_query_arg( 'gistpen-errors', rtrim( self::$errors, "," ), $location );
-		}
-
-		return $location;
+		return add_query_arg( 'gistpen-errors', rtrim( self::$errors, "," ), $location );
 	}
 }
