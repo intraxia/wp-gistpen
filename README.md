@@ -3,8 +3,8 @@
 **Donate link:** http://jamesdigioia.com/  
 **Tags:** gist, code snippets, codepen  
 **Requires at least:** 3.9  
-**Tested up to:** 3.9.1  
-**Stable tag:** 0.3.1  
+**Tested up to:** 4.0  
+**Stable tag:** 0.4.0  
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
