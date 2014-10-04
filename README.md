@@ -53,7 +53,7 @@ After inserting the shortcode, your code will appear in your post, highlighted b
 
 ### How do I highlight specific lines in my Gistpen? ###
 
-To highlight a specific line, add `highlight="##"`, where ## is a line number or range of numbers you want highlighted, like this ([via PrismJS documentation](http://prismjs.com/plugins/line-highlight/)):
+To highlight a specific line, add `highlight="^^"`, where ^^ is a line number or range of numbers you want highlighted, like this ([via PrismJS documentation](http://prismjs.com/plugins/line-highlight/)):
 
 * A single number refers to the line with that number
 * Ranges are denoted by two numbers, separated with a hyphen (-)
@@ -78,6 +78,8 @@ You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen
 Eventually, I hope to make this plugin interoperable with Gist, allowing you to import your current Gists, fork other people's Gists into your Gistpen, and publishing your Gistpens to Gist.
 
 Additionally, I want to make Gistpens embeddable on other websites the same way you can embed Gists, but both of those larger features are likely a long way off.
+
+Essentially, the idea is to build a fully-featured Gist clone in WordPress
 
 ## Screenshots ##
 
