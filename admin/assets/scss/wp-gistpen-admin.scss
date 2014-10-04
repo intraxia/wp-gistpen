@@ -38,6 +38,12 @@ i.mce-i-icons:before {
 		width: 150px;
 	}
 
+	.search-field {
+		padding: 5px;
+		margin-right: 10px;
+		width: 33%;
+	}
+
 }
 
 #wp-gistpen-insert-dialog-body {
@@ -114,20 +120,15 @@ i.mce-i-icons:before {
 				padding: 5px;
 			}
 
-			label {
-				content: "";
-				display: table;
-				clear: both;
-			}
-
-			input, textarea, select {
-				width: 95%;
-				margin: 5px 10px;
+			textarea, select, input {
+				margin: 0 10px 10px 0;
+				padding: 5px;
 				background-color: #FFF !important;
-			}
 
-			label {
-				margin: 5px;
+				&.wp-gistfile-description {
+					margin-top: 5px;
+					width: 100%;
+				}
 			}
 
 		}

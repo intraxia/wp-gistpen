@@ -1,7 +1,13 @@
 ## Changelog ##
 
-### 0.3.1 ###
+### 0.4.0 ###
+* MAJOR FEATURE: Multiple files can be created in a single Gistpen
+	* First step towards Gist compatibility
+	* The database gets upgraded to account for this, so PLEASE make a backup before you upgrade
+* Integrate ACE editor into Gistpen
+* Bug fixes: properly escaping content display
 
+### 0.3.1 ###
 * Forgot to minify JavaScripts
 
 ### 0.3.0 ###
