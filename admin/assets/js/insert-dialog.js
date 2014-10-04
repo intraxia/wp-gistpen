@@ -108,9 +108,9 @@ var InsertGistpenDialog = {
 
 				nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
 
-				"wp-gistpenfile-name": that.fileEditor.filenameInput.val(),
+				"wp-gistpenfile-slug": that.fileEditor.filenameInput.val(),
 				"wp-gistfile-description": jQuery('input.wp-gistfile-description').val(),
-				"wp-gistpenfile-content": that.fileEditor.editorTextArea.val(),
+				"wp-gistpenfile-code": that.fileEditor.editorTextArea.val(),
 				"wp-gistpenfile-language": that.fileEditor.languageSelect.val(),
 				"post_status": that.fileEditor.post_status.val(),
 			}, function( response ) {
@@ -119,7 +119,8 @@ var InsertGistpenDialog = {
 					editor.windowManager.close();
 				} else {
 					that.gistpenid = response.data.id;
-					that.insertAndClose( editor );
+					editor.insertContent( '[gistpen id="' + that.gistpenid + '"]' );
+					editor.windowManager.close();
 				}
 			});
 		} else {
