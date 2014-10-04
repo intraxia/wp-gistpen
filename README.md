@@ -83,18 +83,22 @@ Essentially, the idea is to build a fully-featured Gist clone in WordPress
 
 ## Screenshots ##
 
-![](assets/screenshot-1.png)
+![](screenshot-1.png)
 
 The Insert Gistpen dialog after you click the pen in the visual editor.
 
-![](assets/screenshot-2.png)
+![](screenshot-2.png)
 
 Default theme - How your code will appear in your post.
 
-![](assets/screenshot-3.png)
+![](screenshot-3.png)
 
 Twilight theme with line numbers enabled. Check out all the themes at [PrismJS.com](http://prismjs.com).
 
-![](assets/screenshot-4.png)
+![](screenshot-4.png)
 
 The current options page.
+
+![](screenshot-5.png)
+
+Gistpen editor screen with Ace editor
