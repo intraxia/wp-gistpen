@@ -21,7 +21,7 @@ var GistpenEditor = {
 	addEditor: function(file) {
 		var theeditor = this;
 		this.editors.push(new FileEditor(file));
-		if(typeof file === 'undefined' || file.ID === null) {
+		if(typeof file === 'undefined'|| typeof file.ID === 'undefined' || file.ID === null) {
 			file = {};
 			jQuery.ajax({
 				type: "POST",
