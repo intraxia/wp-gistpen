@@ -110,11 +110,10 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 	 */
 	public function setHtmlInput($value) {
 		if (stripos($value, 'html>') === false) {
-				return '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Test</title></head><body>' .
-						$value . '</body></html>';
+			return '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Test</title></head><body>' . $value . '</body></html>';
 		}
 		else {
-				return $value;
+			return $value;
 		}
 
 	}

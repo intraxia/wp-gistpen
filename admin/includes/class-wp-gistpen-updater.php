@@ -136,6 +136,13 @@ class WP_Gistpen_Updater {
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );
 
+		// Need to remove these filters first
+		remove_filter( 'the_content', 'wpautop' );
+		remove_filter( 'the_content', 'wptexturize' );
+		remove_filter( 'the_content', 'capital_P_dangit' );
+		remove_filter( 'the_content', 'convert_chars' );
+		remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
+
 		$terms = get_terms( 'language', 'hide_empty=0' );
 		foreach ( $terms as $term ) {
 			// We're going to move the current term to a holdover
@@ -179,6 +186,7 @@ class WP_Gistpen_Updater {
 			$post->post_type = 'gistpen';
 
 			$wpgp_post = WP_Gistpen::get_instance()->query->create( $post );
+			$wpgp_post->files[] = new WP_Gistpen_File( new WP_Post( new stdClass ), new WP_Gistpen_Language( new stdClass  ) );
 
 			// Migrate title to file's name
 			$wpgp_post->files[0]->slug = $post->post_title;

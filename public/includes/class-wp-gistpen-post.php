@@ -72,10 +72,6 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 
 		$this->files = $files;
 
-		if( empty( $this->files ) ) {
-			$this->create_new_blank_file();
-		}
-
 		$this->description = $this->post->post_title;
 	}
 
@@ -110,18 +106,6 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 		}
 
 		return $this->shortcode_content;
-	}
-
-	/**
-	 * Creates a new blank File if none supplied
-	 *
-	 * @since  0.4.0
-	 */
-	public function create_new_blank_file() {
-		$file_data = new stdClass;
-		$file_data->post_type = 'gistpen';
-		$file_data->post_status = $this->post->post_status;
-		$this->files[] = new WP_Gistpen_File( new WP_Post( $file_data ), new WP_Gistpen_Language( new stdClass ) );
 	}
 
 	/**

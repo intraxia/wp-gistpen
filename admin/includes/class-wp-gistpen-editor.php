@@ -128,8 +128,21 @@ class WP_Gistpen_Editor {
 
 			$zip = WP_Gistpen::get_instance()->query->get( get_the_ID() );
 
-			foreach ($zip->files as $index => $file) {
-				$files[] = $file;
+			if ( is_wp_error( $zip ) ) {?>
+				<script>
+					console.log(<?php echo $zip->get_error_message();  ?>);
+				</script>
+				<?php
+				return;
+			}
+
+			if ( empty( $zip->files ) ) {
+				$files = array( new stdClass );
+			} else {
+				foreach ($zip->files as $file) {
+					// unindex the array or we get indexedd JSON
+					$files[] = $file;
+				}
 			}
 
 			$jsFiles = json_encode( $files ); ?>
@@ -147,7 +160,9 @@ class WP_Gistpen_Editor {
 	 * @since     0.4.0
 	 */
 	public static function enqueue_editor_styles() {
-		wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
+		if ( get_current_screen()->id === 'gistpen' ) {
+				wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
+			}
 	}
 
 	/**

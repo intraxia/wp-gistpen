@@ -13,4 +13,4 @@
 3. `gulp init` to set up everything
 4. `gulp update` after you changed your js/sass
 4. Make and commit your changes.
-5. Open a pull request.
+5. Open a pull request against the `develop` branch.

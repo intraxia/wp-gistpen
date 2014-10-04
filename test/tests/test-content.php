@@ -20,14 +20,14 @@ class WP_Gistpen_Content_Test extends WP_Gistpen_UnitTestCase {
 		$post = $this->gistpen;
 		$content = WP_Gistpen_Content::post_content();
 
-		$sub_str_count = substr_count( $content, '<h2 class="wp-gistpenfile-title">' );
+		$sub_str_count = substr_count( $content, '<h3 class="wp-gistpenfile-title">' );
 		$this->assertEquals( 3, $sub_str_count );
 	}
 
 	function test_get_shortcode_content_child() {
 		$content = WP_Gistpen_Content::add_shortcode( array( 'id' => $this->files[0], 'highlight' => null ) );
 
-		$sub_str_count = substr_count( $content, '<h2 class="wp-gistpenfile-title">' );
+		$sub_str_count = substr_count( $content, '<h3 class="wp-gistpenfile-title">' );
 		$this->assertEquals( 1, $sub_str_count );
 		$sub_str_count = substr_count( $content, 'Post content' );
 		$this->assertEquals( 1, $sub_str_count );
@@ -38,7 +38,7 @@ class WP_Gistpen_Content_Test extends WP_Gistpen_UnitTestCase {
 	function test_get_shortcode_content_parent() {
 		$content = WP_Gistpen_Content::add_shortcode( array( 'id' => $this->gistpen->ID, 'highlight' => null ) );
 
-		$sub_str_count = substr_count( $content, '<h2 class="wp-gistpenfile-title">' );
+		$sub_str_count = substr_count( $content, '<h3 class="wp-gistpenfile-title">' );
 		$this->assertEquals( 3, $sub_str_count );
 		$sub_str_count = substr_count( $content, 'Post content' );
 		$this->assertEquals( 3, $sub_str_count );
