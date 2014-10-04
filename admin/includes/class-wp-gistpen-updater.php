@@ -186,6 +186,7 @@ class WP_Gistpen_Updater {
 			$post->post_type = 'gistpen';
 
 			$wpgp_post = WP_Gistpen::get_instance()->query->create( $post );
+			$wpgp_post->files[] = new WP_Gistpen_File( new WP_Post( new stdClass ), new WP_Gistpen_Language( new stdClass  ) );
 
 			// Migrate title to file's name
 			$wpgp_post->files[0]->slug = $post->post_title;

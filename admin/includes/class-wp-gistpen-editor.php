@@ -128,8 +128,21 @@ class WP_Gistpen_Editor {
 
 			$zip = WP_Gistpen::get_instance()->query->get( get_the_ID() );
 
-			foreach ($zip->files as $index => $file) {
-				$files[] = $file;
+			if ( is_wp_error( $zip ) ) {?>
+				<script>
+					console.log(<?php echo $zip->get_error_message();  ?>);
+				</script>
+				<?php
+				return;
+			}
+
+			if ( empty( $zip->files ) ) {
+				$files = array( new stdClass );
+			} else {
+				foreach ($zip->files as $file) {
+					// unindex the array or we get indexedd JSON
+					$files[] = $file;
+				}
 			}
 
 			$jsFiles = json_encode( $files ); ?>

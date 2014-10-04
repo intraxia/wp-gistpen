@@ -173,7 +173,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		// Check result
 		$this->assertInternalType( 'int', $result );
 
-		$this->assertCount( 1, get_children( array( 'post_parent' => $result ) ) );
+		$this->assertCount( 0, get_children( array( 'post_parent' => $result ) ) );
 	}
 
 	function test_succeeded_save_post_with_files() {
@@ -186,8 +186,6 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 			$file->code = "if possible do this";
 			$file->language->slug = "twig";
 		}
-
-		$post->update_post();
 
 		$result = $this->query->save( $post );
 
@@ -213,12 +211,17 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$result = WP_Gistpen::get_instance()->query->create( $post_data );
 
 		$this->assertInstanceOf( 'WP_Gistpen_Post', $result );
+		$this->assertEmpty( $result->files );
 
 		$result->description = "New Description";
 
-		$result->files[0]->slug = 'new-gistpen';
-		$result->files[0]->code = 'echo $stuff';
-		$result->files[0]->language->slug = 'php';
+		$file = new WP_Gistpen_File( new WP_Post( new stdClass ), new WP_Gistpen_Language( new stdClass  ) );
+
+		$file->slug = 'new-gistpen';
+		$file->code = 'echo $stuff';
+		$file->language->slug = 'php';
+
+		$result->files[] = $file;
 
 		$result = WP_Gistpen::get_instance()->query->save( $result );
 
@@ -228,6 +231,25 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'New Description', get_post( $result )->post_title );
 		$this->assertEquals( 'draft', get_post( $result )->post_status );
 		$this->assertCount( 1, get_children( array( 'post_parent' => $result ) ) );
+	}
+
+	function test_succeeded_save_post_with_new_file() {
+		$zip = $this->query->get( $this->gistpen );
+
+		$file = new WP_Gistpen_File( new WP_Post( new stdClass ), new WP_Gistpen_Language( new stdClass  ) );
+
+		$file->slug = 'new-gistpen';
+		$file->code = 'echo $stuff';
+		$file->language->slug = 'php';
+
+		$zip->files[] = $file;
+
+		$result = WP_Gistpen::get_instance()->query->save( $zip );
+
+		$this->assertInternalType( 'integer', $result );
+		$this->assertTrue( $result !== 0 );
+		$this->assertNotEquals( null, get_post( $result ) );
+		$this->assertCount( 4, get_children( array( 'post_parent' => $result ) ) );
 	}
 
 	function tearDown() {

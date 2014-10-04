@@ -97,9 +97,13 @@ class WP_Gistpen_AJAX {
 		}
 
 		$result->description = $_POST['wp-gistfile-description'];
-		$result->files[0]->slug = $_POST['wp-gistpenfile-slug'];
-		$result->files[0]->code = $_POST['wp-gistpenfile-code'];
-		$result->files[0]->language->slug = $_POST['wp-gistpenfile-language'];
+
+		$file = new WP_Gistpen_File( new WP_Post( new stdClass ), new WP_Gistpen_Language( new stdClass  ) );
+		$file->slug = $_POST['wp-gistpenfile-slug'];
+		$file->code = $_POST['wp-gistpenfile-code'];
+		$file->language->slug = $_POST['wp-gistpenfile-language'];
+
+		$result->files[] = $file;
 
 		$result = WP_Gistpen::get_instance()->query->save( $result );
 
