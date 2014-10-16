@@ -9,7 +9,7 @@
     }
   ],
   "config": {
-      "vendor-dir": "includes"
+      "vendor-dir": "lib"
   },
   "repositories": [
   {
@@ -30,11 +30,5 @@
   "require": {
       "composer/installers": "v1.0.12",
       "webdevstudios/custom-metaboxes-and-fields-for-wordpress": "1.2.0"
-  },
-  "extra": {
-    "installer-paths": {
-      "public": ["public/includes/single-value-taxonomy-ui"],
-      "private": ["admin/includes/cmb4wp"]
-    }
   }
 }

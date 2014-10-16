@@ -390,7 +390,7 @@ class WP_Gistpen {
 	public function initialize_meta_boxes() {
 
 		if ( ! class_exists( 'cmb_Meta_Box' ) )
-			require_once( WP_GISTPEN_DIR . 'includes/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
+			require_once( WP_GISTPEN_DIR . 'lib/webdevstudios/custom-metaboxes-and-fields-for-wordpress/init.php' );
 
 	}
 
