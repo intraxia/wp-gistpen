@@ -3,19 +3,18 @@
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
   "license": "GPL-2.0+",
   "version": "0.4.0",
-  "authors": [ {
+  "homepage": "http://jamesdigioia.com/wp-gistpen/",
+  "authors": [
+    {
       "name": "James DiGioia",
       "email": "jamesorodig@gmail.com"
     }
   ],
-  "config": {
-      "vendor-dir": "lib"
-  },
   "repositories": [
   {
     "type": "package",
     "package": {
-      "name": "webdevstudios/custom-metaboxes-and-fields-for-wordpress",
+      "name": "webdevstudios/cmb",
       "type": "private",
       "version": "1.2.0",
       "dist": {
@@ -28,7 +27,19 @@
     }
   }],
   "require": {
+    "php": ">=5.3.0",
       "composer/installers": "v1.0.12",
-      "webdevstudios/custom-metaboxes-and-fields-for-wordpress": "1.2.0"
+      "webdevstudios/cmb": "1.2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.3.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "WP_Gistpen\\": "app/"
+    }
+  },
+  "config": {
+    "vendor-dir": "lib"
   }
 }
