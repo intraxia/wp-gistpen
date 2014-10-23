@@ -63,10 +63,14 @@ class WP_Gistpen {
 
 	static $app;
 
+	static $plugin_name = 'wp-gistpen';
+
+	static $version = '0.5.0';
+
 	public static function init() {
 
 		if ( null == self::$app ) {
-			$app = new WP_Gistpen\App();
+			$app = new WP_Gistpen\App( self::$plugin_name, self::$version );
 			$app->run();
 		}
 

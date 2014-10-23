@@ -72,10 +72,10 @@ class App {
 	 *
 	 * @since    0.5.0
 	 */
-	public function __construct() {
+	public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = 'wp-gistpen';
-		$this->version = '0.5.0';
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
 
 		$this->loader = new Loader();
 		$this->set_locale();
