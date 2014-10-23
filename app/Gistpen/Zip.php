@@ -1,4 +1,5 @@
 <?php
+namespace WP_Gistpen\Gistpen;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -7,13 +8,16 @@
  * @copyright 2014 James DiGioia
  */
 
+use \stdClass;
+use \WP_Post;
+
 /**
  * This class contains the Gistpen data.
  *
  * @package WP_Gistpen_Post
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_Post extends WP_Gistpen_Abtract {
+class Zip extends Base {
 
 	/**
 	 * Gistpen's WP_Post obj
@@ -67,7 +71,7 @@ class WP_Gistpen_Post extends WP_Gistpen_Abtract {
 		$this->ID = $this->post->ID;
 
 		if ( ! is_array( $files ) ) {
-			throw new Exception( "Files must be in an array" );
+			throw new \Exception( "Files must be in an array" );
 		}
 
 		$this->files = $files;

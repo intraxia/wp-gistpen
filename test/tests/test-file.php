@@ -1,5 +1,10 @@
 <?php
 
+use WP_Gistpen\Database\Query;
+use WP_Gistpen\Gistpen\Zip;
+use WP_Gistpen\Gistpen\File;
+use WP_Gistpen\Gistpen\Language;
+
 /**
  * @group objects
  * @group file
@@ -12,7 +17,7 @@ class WP_Gistpen_File_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 		$this->file_obj = $this->factory->gistpen->create_and_get( array( 'post_parent' => $this->factory->gistpen->create() ) );
-		$this->file = new WP_Gistpen_File( $this->file_obj, $this->mock_lang, $this->mock_post  );
+		$this->file = new File( $this->file_obj, $this->mock_lang, $this->mock_post  );
 
 		$this->mock_lang
 			->expects( $this->any() )

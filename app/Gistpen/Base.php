@@ -1,4 +1,6 @@
 <?php
+namespace WP_Gistpen\Gistpen;
+
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -13,10 +15,10 @@
  * @package WP_Gistpen_Post_Abstract
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-abstract class WP_Gistpen_Abtract  {
+abstract class Base  {
 
 	/**
-	 * User a default getter
+	 * Use a default getter
 	 * @param  string $name variable to get
 	 * @return $name|null       Returns the variable if a function exists
 	 */

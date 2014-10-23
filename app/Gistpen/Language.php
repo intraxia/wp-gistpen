@@ -1,4 +1,6 @@
 <?php
+namespace WP_Gistpen\Gistpen;
+
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -7,13 +9,16 @@
  * @copyright 2014 James DiGioia
  */
 
+use \stdClass;
+use WP_Gistpen\Database\Query;
+
 /**
  * This class manipulates the Gistpen post content.
  *
  * @package WP_Gistpen_Language
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_Language extends WP_Gistpen_Abtract {
+class Language extends Base {
 
 	/**
 	 * Languages currently supported
@@ -103,7 +108,7 @@ class WP_Gistpen_Language extends WP_Gistpen_Abtract {
 	 * @since 0.4.0
 	 */
 	public function update_post() {
-		$result = WP_Gistpen::get_instance()->query->get_language_term_by_slug( $this->slug );
+		$result = Query::get_language_term_by_slug( $this->slug );
 
 		if( !is_wp_error( $result ) ) {
 			$this->term  = $result;

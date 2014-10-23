@@ -1,4 +1,6 @@
 <?php
+namespace WP_Gistpen\Gistpen;
+
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -7,13 +9,16 @@
  * @copyright 2014 James DiGioia
  */
 
+use \WP_Post;
+use \WP_Gistpen\Gistpen\Language;
+
 /**
  * This class holds a Gistpen file's information.
  *
  * @package WP_Gistpen_File
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_File extends WP_Gistpen_Abtract {
+class File extends Base {
 
 	/**
 	 * File's post_object
@@ -86,7 +91,7 @@ class WP_Gistpen_File extends WP_Gistpen_Abtract {
 	 */
 	protected $shortcode_content;
 
-	public function __construct( WP_Post $file, WP_Gistpen_Language $language ) {
+	public function __construct( WP_Post $file, Language $language ) {
 		$this->file = $file;
 		$this->language = $language;
 

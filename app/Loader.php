@@ -9,8 +9,8 @@ namespace WP_Gistpen;
  * run function to execute the list of actions and filters.
  *
  * @package    WP_Gistpen
- * @author     Your Name <email@example.com>
- * @link       http://example.com
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 class Loader {
