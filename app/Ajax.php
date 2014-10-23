@@ -1,19 +1,39 @@
 <?php
-/**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
- */
+namespace WP_Gistpen;
+
+use \WP_Post;
+use WP_Gistpen\Database\Query;
+use WP_Gistpen\Gistpen\Zip;
+use WP_Gistpen\Gistpen\File;
+use WP_Gistpen\Gistpen\Language;
 
 /**
  * This class handles all of the AJAX responses
  *
- * @package WP_Gistpen_AJAX
- * @author  James DiGioia <jamesorodig@gmail.com>
+ * @package    Ajax
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.4.0
  */
-class WP_Gistpen_AJAX {
+class Ajax {
+
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
 
 	/**
 	 * Slug for the nonce field
@@ -21,7 +41,22 @@ class WP_Gistpen_AJAX {
 	 * @var string
 	 * @since  0.4.0
 	 */
-	public static $nonce_field = '_ajax_wp_gistpen';
+	private $nonce_field;
+
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since    0.5.0
+	 * @var      string    $plugin_name       The name of this plugin.
+	 * @var      string    $version    The version of this plugin.
+	 */
+	public function __construct( $plugin_name, $version ) {
+
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
+		$this->nonce_field = '_ajax_wp_gistpen';
+
+	}
 
 	/**
 	 * Embed the nonce in the head of the editor
@@ -29,8 +64,8 @@ class WP_Gistpen_AJAX {
 	 * @return string    AJAX nonce
 	 * @since  0.2.0
 	 */
-	public static function embed_nonce() {
-		wp_nonce_field( self::$nonce_field, self::$nonce_field, false );
+	public function embed_nonce() {
+		wp_nonce_field( $this->nonce_field, $this->nonce_field, false );
 	}
 
 	/**
@@ -39,15 +74,15 @@ class WP_Gistpen_AJAX {
 	 * @return Sends error and halts execution if anything doesn't check out
 	 * @since  0.4.0
 	 */
-	public static function check_security() {
+	public function check_security() {
 		// Check the nonce
-		if ( !isset($_POST['nonce']) || !wp_verify_nonce( $_POST['nonce'], self::$nonce_field ) ) {
-			wp_send_json_error( array( 'error' => __( "Nonce check failed.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
+			wp_send_json_error( array( 'error' => __( "Nonce check failed.", $this->plugin_name ) ) );
 		}
 
 		// Check if user has proper permisissions
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_send_json_error( array( 'error' => __( "User doesn't have proper permisissions.", WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+			wp_send_json_error( array( 'error' => __( "User doesn't have proper permisissions.", $this->plugin_name ) ) );
 		}
 	}
 
@@ -58,7 +93,7 @@ class WP_Gistpen_AJAX {
 	 * @return string JSON-encoded array of post objects
 	 * @since 0.4.0
 	 */
-	public static function get_gistpens() {
+	public function get_gistpens() {
 		self::check_security();
 
 		$search = null;
@@ -66,7 +101,7 @@ class WP_Gistpen_AJAX {
 		if ( isset( $_POST['gistpen_search_term'] ) ) {
 			$search = $_POST['gistpen_search_term'];
 		}
-		$results = WP_Gistpen::get_instance()->query->search( $search );
+		$results = Query::search( $search );
 
 		if ( is_wp_error( $results ) ) {
 			wp_send_json_error( array( 'error' => $results->get_error_message() ) );
@@ -83,14 +118,14 @@ class WP_Gistpen_AJAX {
 	 * @return string $post_id the id of the created Gistpen
 	 * @since  0.2.0
 	 */
-	public static function create_gistpen() {
+	public function create_gistpen() {
 		self::check_security();
 
-		$post_data = new WP_Post( new stdClass );
+		$post_data = new WP_Post( new \stdClass );
 		$post_data->post_type = 'gistpen';
 		$post_data->post_status = $_POST['post_status'];
 
-		$result = WP_Gistpen::get_instance()->query->create( $post_data );
+		$result = Query::create( $post_data );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_messages() ) );
@@ -98,14 +133,14 @@ class WP_Gistpen_AJAX {
 
 		$result->description = $_POST['wp-gistfile-description'];
 
-		$file = new WP_Gistpen_File( new WP_Post( new stdClass ), new WP_Gistpen_Language( new stdClass  ) );
+		$file = new File( new WP_Post( new \stdClass ), new Language( new \stdClass  ) );
 		$file->slug = $_POST['wp-gistpenfile-slug'];
 		$file->code = $_POST['wp-gistpenfile-code'];
 		$file->language->slug = $_POST['wp-gistpenfile-language'];
 
 		$result->files[] = $file;
 
-		$result = WP_Gistpen::get_instance()->query->save( $result );
+		$result = Query::save( $result );
 
 		if( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
@@ -119,7 +154,7 @@ class WP_Gistpen_AJAX {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function save_ace_theme() {
+	public function save_ace_theme() {
 		self::check_security();
 
 		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
@@ -137,24 +172,24 @@ class WP_Gistpen_AJAX {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function get_gistpenfile_id() {
+	public function get_gistpenfile_id() {
 		self::check_security();
 
 		if( ! array_key_exists('parent_id', $_POST ) ) {
 			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
 		}
 
-		$file = new stdCLass;
+		$file = new \stdCLass;
 		$file->post_type = 'gistpen';
 		$file->post_parent = $_POST['parent_id'];
 		$file->post_status = 'auto-draft';
 
 		$file = new WP_Post( $file );
-		$language = new stdCLass;
+		$language = new \stdCLass;
 		$language->slug = 'bash';
-		$file = new WP_Gistpen_File( $file, new WP_Gistpen_Language( $language ) );
+		$file = new File( $file, new Language( $language ) );
 
-		$result = WP_Gistpen::get_instance()->query->save( $file );
+		$result = Query::save( $file );
 
 		if( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
@@ -168,7 +203,7 @@ class WP_Gistpen_AJAX {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function delete_gistpenfile() {
+	public function delete_gistpenfile() {
 		self::check_security();
 
 		if( ! array_key_exists('fileID', $_POST ) ) {
@@ -178,7 +213,7 @@ class WP_Gistpen_AJAX {
 		$result = wp_delete_post( $_POST['fileID'], true );
 
 		if( ! $result ) {
-			wp_send_json_error( array( 'message' => __( 'wp_delete_post failed', WP_Gistpen::get_instance()->get_plugin_slug() ) ) );
+			wp_send_json_error( array( 'message' => __( 'wp_delete_post failed', $this->plugin_name ) ) );
 		}
 
 		wp_send_json_success();
