@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen;
+namespace WP_Gistpen\Assets;
 
 /**
  * The public-facing functionality of the plugin.

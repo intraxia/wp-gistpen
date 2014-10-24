@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen;
+namespace WP_Gistpen\Assets;
 
 /**
  * The dashboard-specific functionality of the plugin.
@@ -66,18 +66,6 @@ class Dashboard {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Admin_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Admin_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
 		wp_enqueue_style( $this->plugin_name, WP_GISTPEN_URL . 'assets/css/dashboard' . $this->min . '.css', array(), $this->version, 'all' );
 
 	}
@@ -88,18 +76,6 @@ class Dashboard {
 	 * @since    0.5.0
 	 */
 	public function enqueue_scripts() {
-
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
 
 		wp_enqueue_script( $this->plugin_name, WP_GISTPEN_URL . 'assets/js/dashboard' . $this->min . '.js', array( 'jquery' ), $this->version, false );
 

@@ -1,6 +1,10 @@
 <?php
 namespace WP_Gistpen;
 
+use WP_Gistpen\Assets\Dashboard;
+use WP_Gistpen\Assets\Prism;
+use WP_Gistpen\Assets\Web;
+
 /**
  * The core plugin class.
  *
@@ -45,6 +49,7 @@ class App {
 	public $ajax;
 	public $content;
 	public $dashboard;
+	public $prism;
 	public $web;
 
 	/**
@@ -185,6 +190,22 @@ class App {
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $this->dashboard, 'add_plugin_admin_menu' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the web functionality
+	 * of the plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function define_prism_hooks() {
+
+		$this->prism = new Prism( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
 
 	}
 

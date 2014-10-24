@@ -77,7 +77,7 @@ gulp.task('styles', function() {
 gulp.task('packages', ['prism', 'ace']);
 
 gulp.task('prism', function() {
-	return gulp.src([
+	var scripts = gulp.src([
 		'bower_components/prism/components/prism-core.js',
 		'bower_components/prism/components/prism-markup.js',
 		'bower_components/prism/components/prism-css.js',
@@ -113,6 +113,11 @@ gulp.task('prism', function() {
 		.pipe(uglify())
 		.pipe(extrep('.min.js'))
 		.pipe(gulp.dest('assets/js'));
+
+	var styles = gulp.src('bower_components/prism/**/*.css')
+		.pipe(gulp.dest('assets/css/prism/'));
+
+	return merge(scripts, styles);
 });
 
 gulp.task('ace', function() {
