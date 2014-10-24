@@ -1,6 +1,8 @@
 <?php
 namespace WP_Gistpen\Assets;
 
+use WP_Gistpen\Database\Query;
+
 /**
  * The dashboard-specific functionality of the plugin.
  *
@@ -68,6 +70,10 @@ class Dashboard {
 
 		wp_enqueue_style( $this->plugin_name, WP_GISTPEN_URL . 'assets/css/dashboard' . $this->min . '.css', array(), $this->version, 'all' );
 
+		if ( get_current_screen()->id === 'gistpen' ) {
+				wp_enqueue_style( $this->plugin_name .'-editor-styles', WP_GISTPEN_URL . 'assets/css/editor.css', array(), WP_Gistpen::VERSION );
+			}
+
 	}
 
 	/**
@@ -78,6 +84,11 @@ class Dashboard {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( $this->plugin_name, WP_GISTPEN_URL . 'assets/js/dashboard' . $this->min . '.js', array( 'jquery' ), $this->version, false );
+
+		wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
+		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor.min.js', array( 'jquery', $this->plugin_name . '-ace-script' ), WP_Gistpen::VERSION, false );
+
+		wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Query::get_languages() );
 
 	}
 

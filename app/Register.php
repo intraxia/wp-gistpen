@@ -157,6 +157,15 @@ class Register {
 	}
 
 	/**
+	 * Register the settings page (obviously)
+	 *
+	 * @since 0.3.0
+	 */
+	public function register_setting() {
+		register_setting( $this->plugin_name, $this->plugin_name );
+	}
+
+	/**
 	 * Initialize the metabox class.
 	 *
 	 * @since    0.2.0

@@ -258,6 +258,22 @@ class Query {
 	}
 
 	/**
+	 * Return an array of languages installed
+	 *
+	 * @return array Installed languages
+	 */
+	public static function get_languages() {
+		$languages = array();
+		$terms = get_terms( 'wpgp_language', 'hide_empty=0' );
+
+		foreach ($terms as $term) {
+			$languages[$term->slug] = $term->name;
+		}
+
+		return $languages;
+	}
+
+	/**
 	 * Save the WP_Gistpen object to the database
 	 *
 	 * @param  WP_Gistpen_Post|File $post WP_Gistpen object

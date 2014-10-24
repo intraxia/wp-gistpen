@@ -1,4 +1,5 @@
 <?php
+namespace WP_Gistpen\Page;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -14,7 +15,7 @@
  * @package WP_Gistpen_Editor
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_Editor {
+class Editor {
 
 	/**
 	 * All the Ace themes for select box
@@ -22,7 +23,7 @@ class WP_Gistpen_Editor {
 	 * @var array
 	 * @since    0.4.0
 	 */
-	public static $ace_themes = array(
+	public $ace_themes = array(
 		'ambiance' => 'Ambiance',
 		'chaos' => 'Chaos',
 		'chrome' => 'Chrome',
@@ -45,11 +46,43 @@ class WP_Gistpen_Editor {
 		'twilight' => 'Twilight'
 	);
 
-	public static function add_admin_errors() {
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since    0.5.0
+	 * @var      string    $plugin_name       The name of this plugin.
+	 * @var      string    $version    The version of this plugin.
+	 */
+	public function __construct( $plugin_name, $version ) {
+
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
+
+	}
+
+	public function add_admin_errors() {
 		if ( array_key_exists( 'gistpen-errors', $_GET) ) { ?>
 			<div class="error">
 				<p><?php
-					_e( 'The post saved with error codes: ', WP_Gistpen::get_instance()->get_plugin_slug() );
+					_e( 'The post saved with error codes: ', $this->plugin_name );
 					echo $_GET['gistpen-errors'];
 				?></p>
 			</div><?php
@@ -63,11 +96,11 @@ class WP_Gistpen_Editor {
 	 * @return string            new placeholder text
 	 * @since  0.4.0
 	 */
-	public static function new_enter_title_here( $title ){
+	public function new_enter_title_here( $title ){
 			$screen = get_current_screen();
 
 			if ( 'gistpen' == $screen->post_type ){
-				$title = __( 'Gistpen description...', WP_Gistpen::get_instance()->get_plugin_slug() );
+				$title = __( 'Gistpen description...', $this->plugin_name );
 			}
 
 			return $title;
@@ -78,17 +111,17 @@ class WP_Gistpen_Editor {
 	 *
 	 * @since     0.4.0
 	 */
-	public static function render_gistfile_editor() {
+	public function render_gistfile_editor() {
 
 		$screen = get_current_screen();
 
 		if( 'gistpen' == $screen->id ) {
 
-			self::render_theme_selector(); ?>
+			$this->render_theme_selector(); ?>
 			<div id="wp-gistfile-wrap"></div>
 			<input type="hidden" id="file_ids" name="file_ids" value=""><?php
 
-			echo submit_button( __('Add Gistfile', WP_Gistpen::get_instance()->get_plugin_slug()), 'primary', 'add-gistfile', true );
+			echo submit_button( __('Add Gistfile', $this->plugin_name), 'primary', 'add-gistfile', true );
 
 		}
 	}
@@ -99,13 +132,13 @@ class WP_Gistpen_Editor {
 	 * @return string   ACE theme selection box
 	 * @since  0.4.0
 	 */
-	public static function render_theme_selector() { ?>
+	public function render_theme_selector() { ?>
 		<div class="_wpgp_ace_theme-wrap">
 			<label for="_wpgp_ace_theme">
-				<?php _e( 'Ace Editor Theme: ', WP_Gistpen::get_instance()->get_plugin_slug() ); ?>
+				<?php _e( 'Ace Editor Theme: ', $this->plugin_name ); ?>
 			</label>
 			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
-			<?php foreach (self::$ace_themes as $slug => $name): ?>
+			<?php foreach ($this->$ace_themes as $slug => $name): ?>
 				<?php $selected = get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) == $slug ? 'selected' : ''; ?>
 				<option value="<?php echo $slug; ?>" <?php echo $selected; ?> >
 					<?php echo $name; ?>
@@ -121,12 +154,12 @@ class WP_Gistpen_Editor {
 	 * @return string   ACE editor init script
 	 * @since 0.4.0
 	 */
-	public static function add_ace_editor_init_inline() {
+	public function add_ace_editor_init_inline() {
 		$screen = get_current_screen();
 
 		if( 'gistpen' == $screen->id ):
 
-			$zip = WP_Gistpen::get_instance()->query->get( get_the_ID() );
+			$zip = Query::get( get_the_ID() );
 
 			if ( is_wp_error( $zip ) ) {?>
 				<script>
@@ -140,7 +173,7 @@ class WP_Gistpen_Editor {
 				$files = array( new stdClass );
 			} else {
 				foreach ($zip->files as $file) {
-					// unindex the array or we get indexedd JSON
+					// unindex the array or we get indexed JSON
 					$files[] = $file;
 				}
 			}
@@ -155,42 +188,15 @@ class WP_Gistpen_Editor {
 	}
 
 	/**
-	 * Add the ACE editor styles to the Add Gistpen screen
-	 *
-	 * @since     0.4.0
-	 */
-	public static function enqueue_editor_styles() {
-		if ( get_current_screen()->id === 'gistpen' ) {
-				wp_enqueue_style( WP_Gistpen::get_instance()->get_plugin_slug() .'-editor-styles', WP_GISTPEN_URL . 'admin/assets/css/wp-gistpen-editor.css', array(), WP_Gistpen::VERSION );
-			}
-	}
-
-	/**
-	 * Add the ACE editor scripts to the Add Gistpen screen
-	 *
-	 * @since     0.4.0
-	 */
-	public static function enqueue_editor_scripts() {
-		$languages = array();
-		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script', WP_GISTPEN_URL . 'admin/assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
-		wp_enqueue_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', WP_GISTPEN_URL . 'admin/assets/js/wp-gistpen-editor.min.js', array( 'jquery', WP_Gistpen::get_instance()->get_plugin_slug() . '-ace-script' ), WP_Gistpen::VERSION, false );
-		$terms = get_terms( 'wpgp_language', 'hide_empty=0' );
-		foreach ($terms as $term) {
-			$languages[$term->slug] = $term->name;
-		}
-		wp_localize_script( WP_Gistpen::get_instance()->get_plugin_slug() . '-editor-script', 'gistpenLanguages', $languages );
-	}
-
-	/**
 	 * Force the Gistpen layout to one column
 	 *
 	 * @since  0.4.0
 	 */
-	public static function screen_layout_columns( $columns ) {
+	public function screen_layout_columns( $columns ) {
 		$columns['gistpen'] = 1;
 		return $columns;
 	}
-	public static function screen_layout_gistpen() {
+	public function screen_layout_gistpen() {
 		return 1;
 	}
 
@@ -199,7 +205,7 @@ class WP_Gistpen_Editor {
 	 *
 	 * @since  0.4.0
 	 */
-	public static function remove_meta_boxes() {
+	public function remove_meta_boxes() {
 		remove_meta_box( 'slugdiv', 'gistpen', 'normal' );
 		remove_meta_box( 'formatdiv', 'gistpen', 'normal' );
 		remove_meta_box( 'postcustom', 'gistpen', 'normal' );
@@ -213,7 +219,7 @@ class WP_Gistpen_Editor {
 	 * @return array New order for metaboxes
 	 * @since 0.4.0
 	 */
-	public static function gistpen_meta_box_order(){
+	public function gistpen_meta_box_order(){
 		return array(
 				'normal'   => join( ",", array(
 					'gistfile_editor',
@@ -235,9 +241,9 @@ class WP_Gistpen_Editor {
 	 * @return array          Array with new column added
 	 * @since  0.4.0
 	 */
-	public static function manage_posts_columns( $columns ) {
+	public function manage_posts_columns( $columns ) {
 		return array_merge( $columns, array(
-			'gistpen_files' => __( 'Files', WP_Gistpen::get_instance()->get_plugin_slug() )
+			'gistpen_files' => __( 'Files', $this->plugin_name )
 		) );
 	}
 
@@ -248,9 +254,9 @@ class WP_Gistpen_Editor {
 	 * @param  int    $post_id     the ID of the current post
 	 * @since  0.4.0
 	 */
-	public static function manage_posts_custom_column( $column_name, $post_id ) {
+	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'gistpen_files' === $column_name ) {
-			$zip = WP_Gistpen::get_instance()->query->get( $post_id );
+			$zip = Query::get( $post_id );
 			echo "<ul>";
 			foreach ( $zip->files as $file ) {
 				echo "<li>";
@@ -268,7 +274,7 @@ class WP_Gistpen_Editor {
 	 * @return string          new orderby statement
 	 * @since  0.4.0
 	 */
-	public static function edit_screen_orderby( $orderby, $query ) {
+	public function edit_screen_orderby( $orderby, $query ) {
 		if( is_admin() && $query->query_vars['post_type'] === 'gistpen' ) {
 			$orderby = 'wp_posts.post_date DESC';
 		}
