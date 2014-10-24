@@ -1,4 +1,6 @@
 <?php
+namespace WP_Gistpen;
+
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -7,20 +9,54 @@
  * @copyright 2014 James DiGioia
  */
 
+use WP_Gistpen\Database\Query;
+
 /**
  * This class manipulates the Gistpen post content.
  *
- * @package WP_Gistpen_Content
+ * @package Content
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_Content {
+class Content {
+
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since    0.5.0
+	 * @var      string    $plugin_name       The name of this plugin.
+	 * @var      string    $version    The version of this plugin.
+	 */
+	public function __construct( $plugin_name, $version ) {
+
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
+
+	}
 
 	/**
 	 * Remove extra filters from the Gistpen content
 	 *
 	 * @since    0.1.0
 	 */
-	public static function remove_filters( $content ) {
+	public function remove_filters( $content ) {
 
 		if( 'gistpen' == get_post_type() ) {
 			remove_filter( 'the_content', 'wpautop' );
@@ -40,20 +76,18 @@ class WP_Gistpen_Content {
 	 * @return string post_content
 	 * @since    0.1.0
 	 */
-	public static function post_content( $content = '' ) {
+	public function post_content( $content = '' ) {
 		global $post;
 
 		if( 'gistpen' == $post->post_type ) {
-			$gistpen = $post;
+			$zip = Query::get( $post );
 
-			$gistpen = WP_Gistpen::get_instance()->query->get( $gistpen );
-
-			if( is_wp_error( $gistpen ) ) {
+			if( is_wp_error( $zip ) ) {
 				// @todo handle each error
 				return;
 			}
 
-			return $gistpen->post_content;
+			return $zip->post_content;
 		}
 
 		return $content;
@@ -65,49 +99,19 @@ class WP_Gistpen_Content {
 	 * @param  WP_Query $query query object
 	 * @since  0.4.0
 	 */
-	public static function pre_get_posts( $query ) {
-		if ( ! $query->is_main_query() )
+	public function pre_get_posts( $query ) {
+		if ( ! $query->is_main_query() ) {
 			return;
+		}
 
-		if ( ! $query->is_post_type_archive( 'gistpen' ) )
+		if ( ! $query->is_post_type_archive( 'gistpen' ) ) {
 			return;
+		}
 
 		// only top level posts
 		$query->set( 'post_parent', 0 );
 
 		return $query;
-	}
-
-	/**
-	 * Register the shortcode to embed the Gistpen
-	 *
-	 * @param    array      $atts    attributes passed into the shortcode
-	 * @return   string
-	 * @since    0.1.0
-	 */
-	public static function add_shortcode( $atts ) {
-
-		$args = shortcode_atts( array(
-			'id' => null,
-			'highlight' => null),
-			$atts,
-			'gistpen'
-		);
-
-		// If the user didn't provide an ID, raise an error
-		if( $args['id'] === null ) {
-			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
-		}
-
-		$post = WP_Gistpen::get_instance()->query->get( $args['id'] );
-
-		if( is_wp_error( $post ) ) {
-			// @todo handle each error
-			return;
-		}
-
-		return $post->get_shortcode_content( $args['highlight'] );
-
 	}
 
 }

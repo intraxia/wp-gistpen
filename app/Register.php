@@ -1,6 +1,8 @@
 <?php
 namespace WP_Gistpen;
 
+use WP_Gistpen\Database\Query;
+
 /**
  * Fired during plugin activation.
  *
@@ -143,7 +145,7 @@ class Register {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
-		$post = WP_Gistpen::get_instance()->query->get( $args['id'] );
+		$post = Query::get( $args['id'] );
 
 		if( is_wp_error( $post ) ) {
 			// @todo handle each error

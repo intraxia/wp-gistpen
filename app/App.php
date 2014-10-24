@@ -37,21 +37,14 @@ class App {
 	public $register;
 
 	/**
-	 * The class responsible for the dashboard-specific functionality of the plugin.
+	 * The class responsible for plugin functionality.
 	 *
 	 * @since    0.5.0
 	 * @access   public
-	 * @var      Dashboard    $admin    Controls all the admin functionality for the plugin.
 	 */
+	public $ajax;
+	public $content;
 	public $dashboard;
-
-	/**
-	 * The class responsible for the web-facing functionality of the plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   public
-	 * @var      Web    $public    Controls all the public functionality for the plugin.
-	 */
 	public $web;
 
 	/**
@@ -92,6 +85,7 @@ class App {
 		$this->register_content();
 
 		$this->define_ajax_hooks();
+		$this->define_content_hooks();
 		$this->define_dashboard_hooks();
 		$this->define_web_hooks();
 
@@ -154,6 +148,26 @@ class App {
 		// AJAX hooks to add and delete Gistfile editors
 		$this->loader->add_action( 'wp_ajax_get_gistpenfile_id', $this->ajax, 'get_gistpenfile_id' );
 		$this->loader->add_action( 'wp_ajax_delete_gistpenfile', $this->ajax, 'delete_gistpenfile' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the dashboard functionality
+	 * of the plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function define_content_hooks() {
+
+		$this->content = new Content( $this->get_plugin_name(), $this->get_version() );
+
+		// Remove some filters from the Gistpen content
+		$this->loader->add_action( 'the_content', $this->content, 'remove_filters' );
+		// Add the description to the Gistpen content
+		$this->loader->add_filter( 'the_content', $this->content, 'post_content' );
+		// Remove child posts from the archive page
+		$this->loader->add_filter( 'pre_get_posts', $this->content, 'pre_get_posts' );
 
 	}
 
