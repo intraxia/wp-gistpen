@@ -50,6 +50,7 @@ class App {
 	public $content;
 	public $dashboard;
 	public $prism;
+	public $tinymce;
 	public $web;
 
 	/**
@@ -92,6 +93,7 @@ class App {
 		$this->define_ajax_hooks();
 		$this->define_content_hooks();
 		$this->define_dashboard_hooks();
+		$this->define_tinymce_hooks();
 		$this->define_web_hooks();
 
 	}
@@ -206,6 +208,22 @@ class App {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the TinyMCE functionality
+	 * of the plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function define_tinymce_hooks() {
+
+		$this->tinymce = new TinyMCE( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce, 'mce_external_plugins' );
+		$this->loader->add_filter( 'mce_buttons', $this->tinymce, 'mce_buttons' );
 
 	}
 
