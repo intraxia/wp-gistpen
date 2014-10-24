@@ -28,7 +28,16 @@ class App {
 	protected $loader;
 
 	/**
-	 * The class respsponsible for the dashboard-specific functionality of the plugin.
+	 * The class responsible for the registering the content functionality.
+	 *
+	 * @since    0.5.0
+	 * @access   public
+	 * @var      Web    $public    Registers all the content functionality for the plugin.
+	 */
+	public $register;
+
+	/**
+	 * The class responsible for the dashboard-specific functionality of the plugin.
 	 *
 	 * @since    0.5.0
 	 * @access   public
@@ -37,7 +46,7 @@ class App {
 	public $dashboard;
 
 	/**
-	 * The class respsponsible for the web-facing functionality of the plugin.
+	 * The class responsible for the web-facing functionality of the plugin.
 	 *
 	 * @since    0.5.0
 	 * @access   public
@@ -79,6 +88,9 @@ class App {
 
 		$this->loader = new Loader();
 		$this->set_locale();
+
+		$this->register_content();
+
 		$this->define_ajax_hooks();
 		$this->define_dashboard_hooks();
 		$this->define_web_hooks();
@@ -101,6 +113,21 @@ class App {
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
+	}
+
+	/**
+	 * Register the content aspect of the Gistpen.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function register_content() {
+		$this->register = new Register( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'init', $this->register, 'post_type' );
+		$this->loader->add_action( 'init', $this->register, 'language_tax' );
+		$this->loader->add_action( 'init', $this->register, 'initialize_meta_boxes' );
+		$this->loader->add_shortcode( 'gistpen', $this->register, 'add_shortcode' );
 	}
 
 	/**
