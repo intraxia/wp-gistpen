@@ -53,6 +53,7 @@ class App {
 	public $content;
 	public $dashboard;
 	public $editor;
+	public $migration;
 	public $prism;
 	public $tinymce;
 	public $web;
@@ -98,6 +99,7 @@ class App {
 		$this->define_content_hooks();
 		$this->define_dashboard_hooks();
 		$this->define_editor_hooks();
+		$this->define_migration_hooks();
 		$this->define_tinymce_hooks();
 		$this->define_web_hooks();
 
@@ -230,6 +232,12 @@ class App {
 		$this->loader->add_filter( 'manage_gistpen_posts_columns', $this->editor, 'manage_posts_columns' );
 		$this->loader->add_action( 'manage_gistpen_posts_custom_column', $this->editor, 'manage_posts_custom_column', 10, 2);
 		$this->loader->add_filter( 'posts_orderby', $this->editor, 'edit_screen_orderby', 10, 2);
+	}
+
+	public function define_migration_hooks()
+	{
+		$this->migration = new Migration( $this->get_plugin_name(), $this->get_version() );
+		add_action( 'admin_init', array( 'WP_Gistpen_Updater', 'run' ) );
 	}
 
 	/**

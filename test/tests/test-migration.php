@@ -1,21 +1,27 @@
 <?php
+
+use WP_Gistpen\Gistpen\Language;
+use WP_Gistpen\Database\Migration;
 /**
- * @group  updater
+ * @group  migration
  */
-class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
+class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 
 	public $posts;
 	public $gistpens;
+	public $migration;
 
 	function setUp() {
 		parent::setUp();
+
+		$this->migration = new Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 	}
 
 	function set_up_0_4_0_test_posts() {
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );
 
-		foreach( WP_Gistpen_Language::$supported as $lang => $slug ) {
+		foreach( Language::$supported as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
 			if( is_wp_error( $result ) ) {
 				throw new Exception("Failed to insert term.");
@@ -66,7 +72,7 @@ class WP_Gistpen_Updater_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->set_up_0_4_0_test_posts();
 
-		WP_Gistpen_Updater::update_to_0_4_0();
+		$this->migration->update_to_0_4_0();
 
 		foreach ( $this->gistpens as $gistpen_id ) {
 			$post = get_post( $gistpen_id );

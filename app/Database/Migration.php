@@ -1,4 +1,5 @@
 <?php
+namespace WP_Gistpen\Database;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -7,15 +8,20 @@
  * @copyright 2014 James DiGioia
  */
 
+use WP_Gistpen\Gistpen\File;
+use WP_Gistpen\Gistpen\Language;
+use \WP_Post;
+use \stdClass;
+
 /**
  * This class checks the current version and runs any updates necessary.
  *
- * @package WP_Gistpen_Updater
+ * @package Migration
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_Updater {
+class Migration {
 
-	public static $removed_langs_0_3_0 = array(
+	public $removed_langs_0_3_0 = array(
 		'AppleScript' => 'applescript',
 		'ActionScript3' => 'as3',
 		'ColdFusion' => 'cf',
@@ -29,7 +35,7 @@ class WP_Gistpen_Updater {
 		'Xml' => 'xml',
 	);
 
-	public static $added_langs_0_3_0 = array(
+	public $added_langs_0_3_0 = array(
 		'C' => 'c',
 		'Coffeescript' => 'coffeescript',
 		'C#' => 'csharp',
@@ -42,13 +48,45 @@ class WP_Gistpen_Updater {
 		'Twig' => 'twig'
 	);
 
-	public static function run() {
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since    0.5.0
+	 * @var      string    $plugin_name       The name of this plugin.
+	 * @var      string    $version    The version of this plugin.
+	 */
+	public function __construct( $plugin_name, $version ) {
+
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
+
+	}
+
+	public function run() {
 		// Check if plugin needs to be upgraded
 		$version = get_option( 'wp_gistpen_version', '0.0.0' );
 
-		if( $version !== WP_Gistpen::VERSION ) {
-			WP_Gistpen_Updater::update( $version );
-			update_option( 'wp_gistpen_version', WP_Gistpen::VERSION );
+		if( $version !== $this->version ) {
+			$this->update( $version );
+			update_option( 'wp_gistpen_version', $this->version );
 		}
 	}
 
@@ -58,14 +96,14 @@ class WP_Gistpen_Updater {
 	 * @param  string $version Current version number
 	 * @since  0.3.0
 	 */
-	public static function update( $version ) {
+	public function update( $version ) {
 
 		if( version_compare( $version, '0.3.0', '<' ) ) {
-			self::update_to_0_3_0();
+			$this->update_to_0_3_0();
 		}
 
 		if( version_compare( $version, '0.4.0', '<' ) ) {
-			self::update_to_0_4_0();
+			$this->update_to_0_4_0();
 		}
 
 	}
@@ -76,9 +114,9 @@ class WP_Gistpen_Updater {
 	 * @return bool true if successful
 	 * @since 0.3.0
 	 */
-	public static function update_to_0_3_0() {
+	public function update_to_0_3_0() {
 
-		foreach( self::$added_langs_0_3_0 as $lang => $slug ) {
+		foreach( $this->added_langs_0_3_0 as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
 			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit
@@ -89,7 +127,7 @@ class WP_Gistpen_Updater {
 
 		}
 
-		foreach( self::$removed_langs_0_3_0 as $lang => $slug ) {
+		foreach( $this->removed_langs_0_3_0 as $lang => $slug ) {
 			// check if there are any gistpens in the db for this language
 			$query = new WP_Query(
 				array(
@@ -131,7 +169,7 @@ class WP_Gistpen_Updater {
 	 * @return bool true if successful
 	 * @since 0.4.0
 	 */
-	public static function update_to_0_4_0() {
+	public function update_to_0_4_0() {
 		// We removed this post_type and taxonomy, so we need to add them to use them
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );
@@ -185,8 +223,8 @@ class WP_Gistpen_Updater {
 			// Update post type to remove the 's'
 			$post->post_type = 'gistpen';
 
-			$wpgp_post = WP_Gistpen::get_instance()->query->create( $post );
-			$wpgp_post->files[] = new WP_Gistpen_File( new WP_Post( new stdClass ), new WP_Gistpen_Language( new stdClass  ) );
+			$wpgp_post = Query::create( $post );
+			$wpgp_post->files[] = new File( new WP_Post( new stdClass ), new Language( new stdClass  ) );
 
 			// Migrate title to file's name
 			$wpgp_post->files[0]->slug = $post->post_title;
@@ -226,7 +264,7 @@ class WP_Gistpen_Updater {
 
 			$wpgp_post->files[0]->update_timestamps( $post->post_date, $post->post_date_gmt );
 
-			$result = WP_Gistpen::get_instance()->query->save( $wpgp_post );
+			$result = Query::save( $wpgp_post );
 
 			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit
