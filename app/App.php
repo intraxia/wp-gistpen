@@ -105,6 +105,7 @@ class App {
 		$this->define_dashboard_hooks();
 		$this->define_editor_hooks();
 		$this->define_migration_hooks();
+		$this->define_prism_hooks();
 		$this->define_settings_hooks();
 		$this->define_tinymce_hooks();
 		$this->define_web_hooks();
@@ -206,7 +207,6 @@ class App {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_scripts' );
-		$this->loader->add_action( 'admin_menu', $this->dashboard, 'add_plugin_admin_menu' );
 
 	}
 
@@ -259,16 +259,18 @@ class App {
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->prism, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->prism, 'enqueue_scripts' );
 
 	}
 
 	private function define_settings_hooks() {
-		$this->settings = new Settigns( $this->get_plugin_name(), $this->get_version() );
+		$this->settings = new Settings( $this->get_plugin_name(), $this->get_version() );
 
 		// Add the options page and menu item.
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_plugin_admin_menu' );
 		// Add an action link pointing to the options page.
-		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_name, $this->settings, 'add_action_links' );
+		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings, 'add_action_links' );
 	}
 
 	/**

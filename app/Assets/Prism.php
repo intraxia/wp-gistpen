@@ -53,7 +53,7 @@ class Prism {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		if( ! defined( 'SCRIPT_DEBUG' ) || 'SCRIPT_DEBUG' !== true ) {
+		if( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
 			$this->min = '.min';
 		}
 
@@ -68,14 +68,14 @@ class Prism {
 		if ( $this->is_prism_required() ) {
 			// Add the prism theme css
 			$theme = $this->get_theme();
-			wp_enqueue_style( $this->plugin_slug . '-prism-theme', WP_GISTPEN_URL . 'public/assets/css/prism/themes/prism' . $theme . $this->min . '.css', array(), $this->version );
+			wp_enqueue_style( $this->plugin_name . '-prism-theme', WP_GISTPEN_URL . 'assets/css/prism/themes/prism' . $theme . '.css', array(), $this->version );
 
 			// Add line highlight css
-			wp_enqueue_style( $this->plugin_slug . '-prism-line-highlight', WP_GISTPEN_URL . 'public/assets/css/prism/plugins/line-highlight/prism-line-highlight' . $this->min . '.css', array( $this->plugin_slug . '-prism-style-theme' ), $this->version );
+			wp_enqueue_style( $this->plugin_name . '-prism-line-highlight', WP_GISTPEN_URL . 'assets/css/prism/plugins/line-highlight/prism-line-highlight.css', array( $this->plugin_name . '-prism-theme' ), $this->version );
 
 			// Add line numbers css if needed
-			if ( is_admin() ||  'on' === cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_line_numbers' ) ) {
-				wp_enqueue_style( $this->plugin_slug . '-prism-line-numbers', WP_GISTPEN_URL . 'public/assets/css/prism/plugins/line-numbers/prism-line-numbers' . $this->min . '.css', array( $this->plugin_slug . '-prism-style-theme' ), $this->version );
+			if ( is_admin() ||  'on' === cmb_get_option( $this->plugin_name, '_wpgp_gistpen_line_numbers' ) ) {
+				wp_enqueue_style( $this->plugin_name . '-prism-line-numbers', WP_GISTPEN_URL . 'assets/css/prism/plugins/line-numbers/prism-line-numbers.css', array( $this->plugin_name . '-prism-theme' ), $this->version );
 			}
 		}
 	}
@@ -97,7 +97,7 @@ class Prism {
 	 * @since    0.5.0
 	 */
 	private function get_theme() {
-		$theme = cmb_get_option( $this->plugin_slug, '_wpgp_gistpen_highlighter_theme' );
+		$theme = cmb_get_option( $this->plugin_name, '_wpgp_gistpen_highlighter_theme' );
 
 		if( '' == $theme || 'default' == $theme ) {
 			$theme = '';
@@ -116,7 +116,7 @@ class Prism {
 	public function enqueue_scripts() {
 
 		if ( $this->is_prism_required() ) {
-			wp_enqueue_script( $this->plugin_name, WP_GISTPEN_URL . 'assets/js/prism' . $this->min . '.js', array( 'jquery' ), $this->version, false );
+			wp_enqueue_script( $this->plugin_name . '-prism', WP_GISTPEN_URL . 'assets/js/prism' . $this->min . '.js', array( 'jquery' ), $this->version, true );
 		}
 
 	}
