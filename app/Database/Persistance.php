@@ -1,4 +1,5 @@
 <?php
+namespace WP_Gistpen\Database;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -7,14 +8,19 @@
  * @copyright 2014 James DiGioia
  */
 
+use \stdClass;
+use \WP_Post;
+use WP_Gistpen\Gistpen\File;
+use WP_Gistpen\Gistpen\Language;
+
 /**
  * This class manipulates the saving of parent Gistpen
  * and all child Gistpens.
  *
- * @package WP_Gistpen_Saver
+ * @package Persistance
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class WP_Gistpen_Saver {
+class Persistance {
 
 	/**
 	 * Errors codes
@@ -53,7 +59,7 @@ class WP_Gistpen_Saver {
 			return;
 		}
 
-		$zip = WP_Gistpen::get_instance()->query->get( $post_id );
+		$zip = Query::get( $post_id );
 
 		if ( is_wp_error( $zip ) ) {
 			// @todo create ourselves a blank zip
@@ -84,7 +90,7 @@ class WP_Gistpen_Saver {
 					$file->ID = $file_id;
 				}
 
-				$file = new WP_Gistpen_File( new WP_Post( $file ), new WP_Gistpen_Language( new stdClass ) );
+				$file = new File( new WP_Post( $file ), new Language( new stdClass ) );
 
 				$file_id_w_dash = '-' . $file_id;
 
@@ -106,7 +112,7 @@ class WP_Gistpen_Saver {
 
 		remove_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 		foreach ( $zip->files as $file ) {
-			$result = WP_Gistpen::get_instance()->query->save( $file );
+			$result = Query::save( $file );
 			if( is_wp_error( $result ) ) {
 				self::$errors .= $result->get_error_code() . ',';
 			}

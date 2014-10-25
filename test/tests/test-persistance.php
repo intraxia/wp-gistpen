@@ -1,15 +1,20 @@
 <?php
 
+use WP_Gistpen\Database\Persistance;
+use WP_Gistpen\Database\Query;
+
 /**
- * @group  saver
+ * @group  persistance
  */
-class WP_Gistpen_Saver_Test extends WP_Gistpen_UnitTestCase {
+class WP_Gistpen_Persistance_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
 
 		$this->_setRole( 'administrator' );
 		$this->create_post_and_children();
+
+		$this->persistance = new Persistance( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 	}
 
 	// these stubs could be useful later but aren't necessary now
@@ -42,9 +47,9 @@ class WP_Gistpen_Saver_Test extends WP_Gistpen_UnitTestCase {
 			$_POST['wp-gistpenfile-language' . $file_id] = 'js';
 		}
 
-		WP_Gistpen_Saver::save_gistpen( $this->gistpen->ID );
+		$this->persistance->save_gistpen( $this->gistpen->ID );
 
-		$zip = WP_Gistpen::get_instance()->query->get( $this->gistpen->ID );
+		$zip = Query::get( $this->gistpen->ID );
 
 		$this->assertCount( 3, $zip->files );
 
@@ -79,9 +84,9 @@ class WP_Gistpen_Saver_Test extends WP_Gistpen_UnitTestCase {
 		$_POST['wp-gistpenfile-code' . $file_id] = "New content " . $file_id;
 		$_POST['wp-gistpenfile-language' . $file_id] = 'js';
 
-		WP_Gistpen_Saver::save_gistpen( $this->gistpen->ID );
+		$this->persistance->save_gistpen( $this->gistpen->ID );
 
-		$zip = WP_Gistpen::get_instance()->query->get( $this->gistpen->ID );
+		$zip = Query::get( $this->gistpen->ID );
 
 		$this->assertCount( 4, $zip->files );
 

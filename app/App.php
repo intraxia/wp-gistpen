@@ -7,6 +7,10 @@ use WP_Gistpen\Assets\TinyMCE;
 use WP_Gistpen\Assets\Web;
 
 use WP_Gistpen\Page\Editor;
+use WP_Gistpen\Page\Settings;
+
+use WP_Gistpen\Database\Migration;
+use WP_Gistpen\Database\Persistance;
 
 /**
  * The core plugin class.
@@ -55,6 +59,7 @@ class App {
 	public $editor;
 	public $migration;
 	public $prism;
+	public $settings;
 	public $tinymce;
 	public $web;
 
@@ -100,6 +105,7 @@ class App {
 		$this->define_dashboard_hooks();
 		$this->define_editor_hooks();
 		$this->define_migration_hooks();
+		$this->define_settings_hooks();
 		$this->define_tinymce_hooks();
 		$this->define_web_hooks();
 
@@ -254,6 +260,15 @@ class App {
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
 
+	}
+
+	private function define_settings_hooks() {
+		$this->settings = new Settigns( $this->get_plugin_name(), $this->get_version() );
+
+		// Add the options page and menu item.
+		$this->loader->add_action( 'admin_menu', $this->settings, 'add_plugin_admin_menu' );
+		// Add an action link pointing to the options page.
+		$this->loader->add_filter( 'plugin_action_links_' . $this->plugin_name, $this->settings, 'add_action_links' );
 	}
 
 	/**
