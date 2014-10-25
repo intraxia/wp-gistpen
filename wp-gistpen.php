@@ -72,11 +72,11 @@ class WP_Gistpen {
 	public static function init() {
 
 		if ( null == self::$app ) {
-			$app = new WP_Gistpen\App( self::$plugin_name, self::$version );
-			$app->run();
+			self::$app = new WP_Gistpen\App( self::$plugin_name, self::$version );
+			self::$app->run();
 		}
 
-		return $app;
+		return self::$app;
 	}
 }
 

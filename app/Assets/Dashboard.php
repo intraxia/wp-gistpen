@@ -55,7 +55,7 @@ class Dashboard {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		if( ! defined( 'SCRIPT_DEBUG' ) || 'SCRIPT_DEBUG' !== true ) {
+		if( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
 			$this->min = '.min';
 		}
 
@@ -68,10 +68,10 @@ class Dashboard {
 	 */
 	public function enqueue_styles() {
 
-		wp_enqueue_style( $this->plugin_name, WP_GISTPEN_URL . 'assets/css/dashboard' . $this->min . '.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name .'-dashboard-styles', WP_GISTPEN_URL . 'assets/css/dashboard' . $this->min . '.css', array(), $this->version, 'all' );
 
 		if ( get_current_screen()->id === 'gistpen' ) {
-				wp_enqueue_style( $this->plugin_name .'-editor-styles', WP_GISTPEN_URL . 'assets/css/editor.css', array(), WP_Gistpen::VERSION );
+				wp_enqueue_style( $this->plugin_name .'-editor-styles', WP_GISTPEN_URL . 'assets/css/editor' . $this->min . '.css', array(), $this->version );
 			}
 
 	}
@@ -83,40 +83,13 @@ class Dashboard {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name, WP_GISTPEN_URL . 'assets/js/dashboard' . $this->min . '.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . '-dashboard-script', WP_GISTPEN_URL . 'assets/js/dashboard' . $this->min . '.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script( $this->plugin_name .'-dashboard-script', 'WP_GISTPEN_URL', WP_GISTPEN_URL );
 
-		wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), WP_Gistpen::VERSION, false );
-		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor.min.js', array( 'jquery', $this->plugin_name . '-ace-script' ), WP_Gistpen::VERSION, false );
+		wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, false );
+		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
 
 		wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Query::get_languages() );
-
-	}
-
-	/**
-	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
-	 *
-	 * @since    0.5.0
-	 */
-	public function add_plugin_admin_menu() {
-
-		$this->plugin_screen_hook_suffix = add_options_page(
-			__( 'Plugin Name Settings', $this->plugin_name ),
-			__( 'Plugin Name', $this->plugin_name ),
-			'edit_posts',
-			$this->plugin_name,
-			array( $this, 'display_plugin_admin_page' )
-		);
-
-	}
-
-	/**
-	 * Render the settings page for this plugin.
-	 *
-	 * @since    0.5.0
-	 */
-	public function display_plugin_admin_page() {
-
-		include_once( WP_GISTPEN_DIR . 'partials/settings-page.php' );
 
 	}
 

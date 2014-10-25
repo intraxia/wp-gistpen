@@ -8,6 +8,9 @@ namespace WP_Gistpen\Page;
  * @copyright 2014 James DiGioia
  */
 
+use \stdClass;
+use WP_Gistpen\Database\Query;
+
 /**
  * This class manipulates the
  * editor for the Gistpen edit screen.
@@ -138,7 +141,7 @@ class Editor {
 				<?php _e( 'Ace Editor Theme: ', $this->plugin_name ); ?>
 			</label>
 			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
-			<?php foreach ($this->$ace_themes as $slug => $name): ?>
+			<?php foreach ($this->ace_themes as $slug => $name): ?>
 				<?php $selected = get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) == $slug ? 'selected' : ''; ?>
 				<option value="<?php echo $slug; ?>" <?php echo $selected; ?> >
 					<?php echo $name; ?>

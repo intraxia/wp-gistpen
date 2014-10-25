@@ -243,7 +243,7 @@ class App {
 	public function define_migration_hooks()
 	{
 		$this->migration = new Migration( $this->get_plugin_name(), $this->get_version() );
-		add_action( 'admin_init', array( 'WP_Gistpen_Updater', 'run' ) );
+		$this->loader->add_action( 'admin_init', $this->migration, 'run' );
 	}
 
 	/**

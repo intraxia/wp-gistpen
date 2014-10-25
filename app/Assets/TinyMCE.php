@@ -56,7 +56,7 @@ class TinyMCE {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		if( ! defined( 'SCRIPT_DEBUG' ) || 'SCRIPT_DEBUG' !== true ) {
+		if( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
 			$this->min = '.min';
 		}
 

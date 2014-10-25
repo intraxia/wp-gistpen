@@ -53,7 +53,7 @@ class Web {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		if( ! defined( 'SCRIPT_DEBUG' ) || 'SCRIPT_DEBUG' !== true ) {
+		if( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
 			$this->min = '.min';
 		}
 
@@ -66,19 +66,7 @@ class Web {
 	 */
 	public function enqueue_styles() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Plugin_Name_Public_Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Plugin_Name_Public_Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_style( $this->plugin_name, WP_GISTPEN_URL . 'assets/css/web' . $this->min . '.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name .'-web-styles', WP_GISTPEN_URL . 'assets/css/web' . $this->min . '.css', array(), $this->version, 'all' );
 
 	}
 
@@ -89,19 +77,7 @@ class Web {
 	 */
 	public function enqueue_scripts() {
 
-		/**
-		 * This function is provided for demonstration purposes only.
-		 *
-		 * An instance of this class should be passed to the run() function
-		 * defined in Loader as all of the hooks are defined
-		 * in that particular class.
-		 *
-		 * The Loader will then create the relationship
-		 * between the defined hooks and the functions defined in this
-		 * class.
-		 */
-
-		wp_enqueue_script( $this->plugin_name, WP_GISTPEN_URL . 'assets/js/web' . $this->min . '.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name .'-web-scripts', WP_GISTPEN_URL . 'assets/js/web' . $this->min . '.js', array( 'jquery' ), $this->version, false );
 
 	}
 
