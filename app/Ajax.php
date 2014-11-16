@@ -94,7 +94,7 @@ class Ajax {
 	 * @since 0.4.0
 	 */
 	public function get_gistpens() {
-		self::check_security();
+		$this->check_security();
 
 		$search = null;
 
@@ -119,7 +119,7 @@ class Ajax {
 	 * @since  0.2.0
 	 */
 	public function create_gistpen() {
-		self::check_security();
+		$this->check_security();
 
 		$post_data = new WP_Post( new \stdClass );
 		$post_data->post_type = 'gistpen';
@@ -155,7 +155,7 @@ class Ajax {
 	 * @since     0.4.0
 	 */
 	public function save_ace_theme() {
-		self::check_security();
+		$this->check_security();
 
 		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
 
@@ -173,7 +173,7 @@ class Ajax {
 	 * @since     0.4.0
 	 */
 	public function get_gistpenfile_id() {
-		self::check_security();
+		$this->check_security();
 
 		if( ! array_key_exists('parent_id', $_POST ) ) {
 			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
@@ -204,7 +204,7 @@ class Ajax {
 	 * @since     0.4.0
 	 */
 	public function delete_gistpenfile() {
-		self::check_security();
+		$this->check_security();
 
 		if( ! array_key_exists('fileID', $_POST ) ) {
 			wp_send_json_error( array( 'messages' => array( 'File ID not sent.' ) ) );
