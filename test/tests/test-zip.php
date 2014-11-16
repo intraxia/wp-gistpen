@@ -1,15 +1,15 @@
 <?php
 
 use WP_Gistpen\Database\Query;
-use WP_Gistpen\Gistpen\Zip;
-use WP_Gistpen\Gistpen\File;
-use WP_Gistpen\Gistpen\Language;
+use WP_Gistpen\Model\Zip;
+use WP_Gistpen\Model\File;
+use WP_Gistpen\Model\Language;
 
 /**
  * @group objects
  * @group post
  */
-class WP_Gistpen_Post_Test extends WP_Gistpen_UnitTestCase {
+class WP_Gistpen_Zip_Test extends WP_Gistpen_UnitTestCase {
 
 	public $zip_post;
 	public $zip;
@@ -24,7 +24,7 @@ class WP_Gistpen_Post_Test extends WP_Gistpen_UnitTestCase {
 	function test_doesnt_need_files() {
 		$this->zip = new Zip( $this->zip_post );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\Zip', $this->zip );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $this->zip );
 	}
 
 	function test_fail_if_files_not_array() {

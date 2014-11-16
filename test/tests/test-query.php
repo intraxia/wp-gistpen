@@ -1,9 +1,9 @@
 <?php
 
 use WP_Gistpen\Database\Query;
-use WP_Gistpen\Gistpen\Zip;
-use WP_Gistpen\Gistpen\File;
-use WP_Gistpen\Gistpen\Language;
+use WP_Gistpen\Model\Zip;
+use WP_Gistpen\Model\File;
+use WP_Gistpen\Model\Language;
 
 /**
  * @group objects
@@ -37,7 +37,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$post->post_type = 'gistpen';
 		$result = Query::create( new WP_Post( $post ) );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\Zip', $result );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $result );
 	}
 
 	function test_failed_no_language() {
@@ -55,7 +55,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$post->post_parent = 5;
 		$result = Query::create( new WP_Post( $post ), 'unreal_lang' );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\File', $result );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\File', $result );
 		$this->assertEquals( 'bash', $result->language->slug );
 	}
 
@@ -65,7 +65,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 		$post->post_parent = 5;
 		$result = Query::create( new WP_Post( $post ), 'php' );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\File', $result );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\File', $result );
 	}
 
 	function test_get_language_term_by_post() {
@@ -86,25 +86,25 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 	function test_succeeded_get_post_w_obj() {
 		$post = Query::get( $this->gistpen );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\Zip', $post );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $post );
 	}
 
 	function test_succeeded_get_post_w_id() {
 		$post = Query::get( $this->gistpen->ID );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\Zip', $post );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $post );
 	}
 
 	function test_succeeded_get_file_w_obj() {
 		$file = Query::get( get_post( $this->files[0] ) );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\File', $file );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\File', $file );
 	}
 
 	function test_succeeded_get_file_w_id() {
 		$file = Query::get( $this->files[0] );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\File', $file );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\File', $file );
 	}
 
 	function test_failed_get_not_gistpen() {
@@ -214,7 +214,7 @@ class WP_Gistpen_Query_Test extends WP_Gistpen_UnitTestCase {
 
 		$result = Query::create( $post_data );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Gistpen\Zip', $result );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $result );
 		$this->assertEmpty( $result->files );
 
 		$result->description = "New Description";

@@ -1,7 +1,7 @@
 <?php
 namespace WP_Gistpen;
 
-use WP_Gistpen\Gistpen\Language;
+use WP_Gistpen\Model\Language;
 
 /**
  * Fired during plugin activation.

@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Gistpen;
+namespace WP_Gistpen\Model;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>

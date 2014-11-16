@@ -12,9 +12,9 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		parent::setUp();
 		$this->factory = new WP_Gistpen_UnitTest_Factory;
 
-		$this->mock_lang = $this->getMockBuilder( 'WP_Gistpen\Gistpen\Language' )->disableOriginalConstructor()->getMock();
-		$this->mock_post = $this->getMockBuilder( 'WP_Gistpen\Gistpen\Post' )->disableOriginalConstructor()->getMock();
-		$this->mock_file = $this->getMockBuilder( 'WP_Gistpen\Gistpen\File' )->disableOriginalConstructor()->getMock();
+		$this->mock_lang = $this->getMockBuilder( 'WP_Gistpen\Model\Language' )->disableOriginalConstructor()->getMock();
+		$this->mock_post = $this->getMockBuilder( 'WP_Gistpen\Model\Post' )->disableOriginalConstructor()->getMock();
+		$this->mock_file = $this->getMockBuilder( 'WP_Gistpen\Model\File' )->disableOriginalConstructor()->getMock();
 	}
 
 	function create_post_and_children() {

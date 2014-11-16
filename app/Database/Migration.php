@@ -8,9 +8,10 @@ namespace WP_Gistpen\Database;
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Gistpen\File;
-use WP_Gistpen\Gistpen\Language;
+use WP_Gistpen\Model\File;
+use WP_Gistpen\Model\Language;
 use \WP_Post;
+use \WP_Query;
 use \stdClass;
 
 /**

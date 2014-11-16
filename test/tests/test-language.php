@@ -1,9 +1,9 @@
 <?php
 
 use WP_Gistpen\Database\Query;
-use WP_Gistpen\Gistpen\Zip;
-use WP_Gistpen\Gistpen\File;
-use WP_Gistpen\Gistpen\Language;
+use WP_Gistpen\Model\Zip;
+use WP_Gistpen\Model\File;
+use WP_Gistpen\Model\Language;
 
 /**
  * @group objects

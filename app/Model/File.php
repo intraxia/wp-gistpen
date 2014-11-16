@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Gistpen;
+namespace WP_Gistpen\Model;
 
 /**
  * @package   WP_Gistpen
@@ -10,7 +10,7 @@ namespace WP_Gistpen\Gistpen;
  */
 
 use \WP_Post;
-use \WP_Gistpen\Gistpen\Language;
+use \WP_Gistpen\Model\Language;
 
 /**
  * This class holds a Gistpen file's information.

@@ -12,9 +12,9 @@ namespace WP_Gistpen\Database;
 use \stdClass;
 use \WP_Post;
 use \WP_Error;
-use WP_Gistpen\Gistpen\Language;
-use WP_Gistpen\Gistpen\File;
-use WP_Gistpen\Gistpen\Zip;
+use WP_Gistpen\Model\Language;
+use WP_Gistpen\Model\File;
+use WP_Gistpen\Model\Zip;
 
 /**
  * This class saves and gets Gistpens from the database
