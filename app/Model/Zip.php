@@ -8,24 +8,13 @@ namespace WP_Gistpen\Model;
  * @copyright 2014 James DiGioia
  */
 
-use \stdClass;
-use \WP_Post;
-
 /**
  * This class contains the Gistpen data.
  *
  * @package WP_Gistpen_Post
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Zip extends Base {
-
-	/**
-	 * Gistpen's WP_Post obj
-	 *
-	 * @var WP_Post
-	 * @since 0.4.0
-	 */
-	protected $post;
+class Zip {
 
 	/**
 	 * Gistpen's description
@@ -33,7 +22,7 @@ class Zip extends Base {
 	 * @var string
 	 * @since 0.4.0
 	 */
-	public $description;
+	public $description = '';
 
 	/**
 	 * Files contained in the Gistpen
@@ -50,84 +39,94 @@ class Zip extends Base {
 	 */
 	public $ID;
 
-	/**
-	 * Gistpen's content manipulated for post display
-	 *
-	 * @var string
-	 * @since 0.4.0
-	 */
-	protected $post_content;
+	public function __construct( $plugin_name, $version ) {
 
-	/**
-	 * Gistpen's content manipulated for shortcode display
-	 *
-	 * @var string
-	 * @since 0.4.0
-	 */
-	protected $shortcode_content;
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
+		$this->files = array();
 
-	public function __construct( WP_Post $post, $files = array() ) {
-		$this->post = $post;
-		$this->ID = $this->post->ID;
-
-		if ( ! is_array( $files ) ) {
-			throw new \Exception( "Files must be in an array" );
-		}
-
-		$this->files = $files;
-
-		$this->description = $this->post->post_title;
 	}
 
-	/**
-	 * Functions to get protected properties
-	 *
-	 * @since  0.4.0
-	 */
-	protected function get_ID() {
-		return $this->ID;
+	public function get_description() {
+		return $this->description;
 	}
-	protected function get_post() {
-		return $this->post;
+
+	public function set_description( $description ) {
+		$this->description = $description;
 	}
-	protected function get_files() {
+
+	public function get_files() {
 		return $this->files;
 	}
-	protected function get_post_content() {
-		if( ! empty( $this->files ) ) {
-			foreach ( $this->files as $file ) {
-				$this->post_content .= $file->post_content;
-			}
+
+	public function add_file( $file ) {
+		if ( ! $file instanceof File ) {
+			throw new Exception("File objects only added to files");
 		}
 
-		return $this->post_content;
-	}
-	public function get_shortcode_content() {
-		if( ! isset( $this->shortcode_content ) && ! empty( $this->files ) ) {
-			foreach ( $this->files as $file ) {
-				$this->shortcode_content .= $file->shortcode_content;
-			}
-		}
-
-		return $this->shortcode_content;
+		$this->files[] = $file;
 	}
 
 	/**
-	 * Updates the post object with object details
+	 * Get the file's DB ID
 	 *
-	 * @since 0.4.0
+	 * @since  0.4.0
+	 * @return int File's db ID
 	 */
-	public function update_post() {
-		if ( isset( $this->description ) ) {
-			$this->post->post_title = $this->description;
-		}
-
-		foreach ( $this->files as &$file ) {
-			$file->update_post();
-			$file->update_status( $this->post->post_status );
-		}
-
-		unset( $file );
+	public function get_ID() {
+		return $this->ID;
 	}
+
+	/**
+	 * Set the file's DB ID as integer
+	 *
+	 * @since  0.5.0
+	 * @param  int $ID DB id
+	 */
+	public function set_ID( $ID ) {
+		$this->ID = (int) $ID;
+	}
+
+	public function get_post_content() {
+		$post_content = '';
+
+		if( ! empty( $this->files ) ) {
+			foreach ( $this->files as $file ) {
+				$post_content .= $file->get_post_content();
+			}
+		}
+
+		return $post_content;
+	}
+
+	public function get_shortcode_content() {
+		$shortcode_content = '';
+
+		if( ! empty( $this->files ) ) {
+			foreach ( $this->files as $file ) {
+				$shortcode_content .= $file->get_shortcode_content();
+			}
+		}
+
+		return $shortcode_content;
+	}
+
+	// /**
+	//  * Updates the post object with object details
+	//  *
+	//  * @since 0.4.0
+	//  */
+	// public function update_post() {
+	// 	if ( isset( $this->description ) ) {
+	// 		$this->post->post_title = $this->description;
+	// 	}
+
+	// 	foreach ( $this->files as &$file ) {
+	// 		$file->update_post();
+	// 		$file->update_status( $this->post->post_status );
+	// 	}
+
+	// 	unset( $file );
+	// }
 
 }

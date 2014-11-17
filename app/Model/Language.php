@@ -9,16 +9,13 @@ namespace WP_Gistpen\Model;
  * @copyright 2014 James DiGioia
  */
 
-use \stdClass;
-use WP_Gistpen\Database\Query;
-
 /**
- * This class manipulates the Gistpen post content.
+ * This class represents the language.
  *
  * @package WP_Gistpen_Language
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Language extends Base {
+class Language {
 
 	/**
 	 * Languages currently supported
@@ -52,67 +49,118 @@ class Language extends Base {
 		'Twig' => 'twig'
 	);
 
-	public $slug;
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
 
-	protected $prism_slug;
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
 
-	protected $file_ext;
+	/**
+	 * The language slug.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $slug;
 
-	protected $display_name;
+	public function __construct( $plugin_name, $version, $slug = '' ) {
 
-	protected $term;
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
 
-	public function __construct( stdClass $language ) {
-		$this->term = $language;
+		$this->validate_slug( $slug );
 
-		if ( isset( $this->term->slug ) ) {
-			$this->slug = $this->term->slug;
+		$this->slug = $slug;
+
+	}
+
+	/**
+	 * Gets the language slug.
+	 *
+	 * @since  0.4.0
+	 * @return string The language slug
+	 */
+	public function get_slug() {
+		return $this->slug;
+	}
+
+
+	/**
+	 * Validates & sets the language slug
+	 *
+	 * @since 0.5.0
+	 * @param string $slug language slug
+	 */
+	public function set_slug( $slug ) {
+		$this->validate_slug( $slug );
+
+		$this->slug = $slug;
+	}
+
+	/**
+	 * Validates the language slug
+	 *
+	 * @param string $slug  Language slug to validate
+	 * @throws Exception If invalid slug
+	 */
+	public function validate_slug( $slug ) {
+		if ( ! array_search( $slug, self::$supported ) ) {
+			throw new \Exception( __( "Invalid language slug", $this->plugin_name ), 1);
 		}
 	}
 
 	/**
-	 * Functions to get protected properties
+	 * Gets the Prism language slug based on the language slug.
 	 *
 	 * @since  0.4.0
+	 * @return string The language slug used by Prism for highlighting
 	 */
-	protected function get_term() {
-		return $this->term;
-	}
-	protected function get_prism_slug() {
-		$this->prism_slug = ( $this->slug == 'js' ? 'javascript' :
+	public function get_prism_slug() {
+		$prism_slug = ( $this->slug == 'js' ? 'javascript' :
 			( $this->slug == 'sass' ? 'scss' :
 			( $this->slug == 'sh' ? 'bash' :
 			$this->slug ) ) );
 
-		return $this->prism_slug;
-	}
-	protected function get_file_ext() {
-
-		if ( ! isset( $this->prism_slug ) ) {
-			$this->prism_slug = ( $this->slug == 'sass' ? 'scss' :
-				( $this->slug == 'bash' ? 'sh' :
-				$this->slug ) ) ;
-		}
-
-		return $this->prism_slug;
-	}
-	protected function get_display_name() {
-		$this->display_name = array_search( $this->slug, self::$supported );
-
-		return $this->display_name;
+		return $prism_slug;
 	}
 
 	/**
-	 * Updates the post object with new language slug
+	 * Gets the file extension slug based on the language slug.
 	 *
-	 * @since 0.4.0
+	 * @since  0.4.0
+	 * @return string The file extension slug
 	 */
-	public function update_post() {
-		$result = Query::get_language_term_by_slug( $this->slug );
+	public function get_file_ext() {
+		$file_ext = ( $this->slug == 'sass' ? 'scss' :
+			( $this->slug == 'bash' ? 'sh' :
+			( $this->slug == 'ruby' ? 'rb' :
+			$this->slug ) ) );
 
-		if( !is_wp_error( $result ) ) {
-			$this->term  = $result;
-		}
+		return $file_ext;
 	}
 
+	/**
+	 * Gets the display name based on the language slug.
+	 *
+	 * @since  0.4.0
+	 * @return string The display name
+	 */
+	public function get_display_name() {
+		$display_name = array_search( $this->slug, self::$supported );
+
+		return $display_name;
+	}
 }
