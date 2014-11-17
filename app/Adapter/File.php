@@ -1,9 +1,5 @@
 <?php
-namespace WP_Gistpen\Facade;
-
-use WP_Gistpen\Factory\File as FileFactory;
-use WP_Gistpen\Factory\Language as LanguageFactory;
-use WP_Gistpen\Factory\Zip as ZipFactory;
+namespace WP_Gistpen\Adapter;
 
 /**
  * This is the class description.
@@ -11,9 +7,9 @@ use WP_Gistpen\Factory\Zip as ZipFactory;
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
- * @since      0.5.0
+ * @since      [current version]
  */
-class Factory {
+class File {
 
 	/**
 	 * The ID of this plugin.
@@ -45,24 +41,5 @@ class Factory {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		$this->file = new FileFactory( $plugin_name, $version );
-		$this->language = new LanguageFactory( $plugin_name, $version );
-		$this->zip = new ZipFactory( $plugin_name, $version );
-
-	}
-
-	/**
-	 * Return the Factory object for the specified model.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $model       The model type to prepare to build.
-	 */
-	public function build( $model ) {
-
-		if ( ! property_exists( $this, $model ) ) {
-			throw new \Exception( "Can't build model {$model}" );
-		}
-
-		return $this->$model;
 	}
 }

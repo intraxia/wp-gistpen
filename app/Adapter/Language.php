@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Factory;
+namespace WP_Gistpen\Adapter;
 
 /**
  * This is the class description.
@@ -9,7 +9,7 @@ namespace WP_Gistpen\Factory;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      [current version]
  */
-class Zip {
+class Language {
 
 	/**
 	 * The ID of this plugin.

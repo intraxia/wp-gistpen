@@ -1,5 +1,9 @@
 <?php
-namespace WP_Gistpen\Factory;
+namespace WP_Gistpen\Facade;
+
+use WP_Gistpen\Adapter\File as FileAdapter;
+use WP_Gistpen\Adapter\Language as LanguageAdapter;
+use WP_Gistpen\Adapter\Zip as ZipAdapter;
 
 /**
  * This is the class description.
@@ -7,9 +11,9 @@ namespace WP_Gistpen\Factory;
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
- * @since      [current version]
+ * @since      0.5.0
  */
-class File {
+class Adapter {
 
 	/**
 	 * The ID of this plugin.
@@ -41,5 +45,24 @@ class File {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->file = new FileAdapter( $plugin_name, $version );
+		$this->language = new LanguageAdapter( $plugin_name, $version );
+		$this->zip = new ZipAdapter( $plugin_name, $version );
+
+	}
+
+	/**
+	 * Return the Adapter object for the specified model.
+	 *
+	 * @since    0.5.0
+	 * @var      string    $model       The model type to prepare to build.
+	 */
+	public function build( $model ) {
+
+		if ( ! property_exists( $this, $model ) ) {
+			throw new \Exception( "Can't build model {$model}" );
+		}
+
+		return $this->$model;
 	}
 }
