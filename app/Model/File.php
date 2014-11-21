@@ -9,8 +9,6 @@ namespace WP_Gistpen\Model;
  * @copyright 2014 James DiGioia
  */
 
-use \WP_Post;
-
 /**
  * This class holds a Gistpen file's information.
  *
@@ -25,7 +23,7 @@ class File {
 	 * @var string
 	 * @since  0.4.0
 	 */
-	private $slug;
+	protected $slug = '';
 
 	/**
 	 * File's raw code
@@ -33,14 +31,14 @@ class File {
 	 * @var string
 	 * @since 0.4.0
 	 */
-	private $code;
+	protected $code = '';
 
 	/**
 	 * File's ID
 	 * @var int
 	 * @since 0.4.0
 	 */
-	protected $ID;
+	protected $ID = null;
 
 	/**
 	 * File's language object
@@ -48,7 +46,7 @@ class File {
 	 * @var WP_Gistpen\Model\Language
 	 * @since 0.4.0
 	 */
-	private $language;
+	protected $language;
 
 	/**
 	 * Lines to highlight in shortcode
@@ -144,7 +142,7 @@ class File {
 	public function set_language( $language ) {
 
 		if ( ! $language instanceof Language ) {
-			throw new \Exception( __( "Must be Language object", $this->plugin_name ), 1);
+			throw new \Exception( __( 'set_language requires a Model\Language object', $this->plugin_name ), 1);
 		}
 
 		$this->language = $language;
@@ -200,57 +198,5 @@ class File {
 
 		return $this->get_post_content();
 	}
-
-	/**
-	 * Updates the post object with object details
-	 *
-	 * @since 0.4.0
-	 */
-	// public function update_post() {
-	// 	$this->file->post_name = strtolower( str_replace( " ", "-", $this->slug ) );
-	// 	$this->file->post_content = $this->code;
-
-	// 	$this->language->update_post();
-	// }
-
-	// /**
-	//  * Update the post object's parent ID
-	//  *
-	//  * @param  int   $parent_id   ID of parent Gistpen
-	//  * @since 0.4.0
-	//  */
-	// public function set_parent_id( $parent_id ) {
-	// 	$this->parent_id = $parent_id;
-	// }
-
-	// /**
-	//  * Update the post object's post status
-	//  *
-	//  * @param  int   $parent_id   ID of parent Gistpen
-	//  * @since 0.4.0
-	//  */
-	// public function set_post_status( $post_status ) {
-	// 	$this->file->post_status = $post_status;
-	// }
-
-	// /**
-	//  * Update the post object's time
-	//  *
-	//  * @param  int   $parent_id   ID of parent Gistpen
-	//  * @since 0.4.0
-	//  */
-	// public function set_post_date( $post_date ) {
-	// 	$this->post_date = $post_date;
-	// }
-
-	// /**
-	//  * Update the post object's time
-	//  *
-	//  * @param  int   $parent_id   ID of parent Gistpen
-	//  * @since 0.4.0
-	//  */
-	// public function set_post_date_gmt( $post_date_gmt ) {
-	// 	$this->post_date_gmt = $post_date_gmt;
-	// }
 
 }

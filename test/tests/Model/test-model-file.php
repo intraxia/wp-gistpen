@@ -33,6 +33,7 @@ class WP_Gistpen_Model_File_Test extends WP_Gistpen_UnitTestCase {
 	function test_get_set_ID() {
 		$this->file->set_ID( '123' );
 
+		$this->assertInternalType( 'integer', $this->file->get_ID() );
 		$this->assertEquals( 123, $this->file->get_ID() );
 	}
 

@@ -17,27 +17,32 @@ namespace WP_Gistpen\Model;
 class Zip {
 
 	/**
-	 * Gistpen's description
+	 * Zip description
 	 *
 	 * @var string
 	 * @since 0.4.0
 	 */
-	public $description = '';
+	protected $description = '';
 
 	/**
-	 * Files contained in the Gistpen
+	 * Files contained by the Zip
 	 *
 	 * @var array
 	 * @since 0.4.0
 	 */
-	public $files;
+	protected $files;
 
 	/**
 	 * Post's ID
+	 *
 	 * @var int
 	 * @since 0.4.0
 	 */
-	public $ID;
+	protected $ID = null;
+
+	protected $status = '';
+
+	protected $password = '';
 
 	public function __construct( $plugin_name, $version ) {
 
@@ -67,6 +72,12 @@ class Zip {
 		$this->files[] = $file;
 	}
 
+	public function add_files( $files ) {
+		foreach ( $files as $file ) {
+			$this->add_file( $file );
+		}
+	}
+
 	/**
 	 * Get the file's DB ID
 	 *
@@ -85,6 +96,24 @@ class Zip {
 	 */
 	public function set_ID( $ID ) {
 		$this->ID = (int) $ID;
+	}
+
+	public function set_status( $status ) {
+		// @todo this needs validation
+		$this->status = $status;
+	}
+
+	public function get_status() {
+		return $this->status;
+	}
+
+	public function set_password( $password ) {
+		// @todo what kind of data does this need to be? hashed, etc.?
+		$this->password = $password;
+	}
+
+	public function get_password() {
+		return $this->password;
 	}
 
 	public function get_post_content() {
@@ -110,23 +139,5 @@ class Zip {
 
 		return $shortcode_content;
 	}
-
-	// /**
-	//  * Updates the post object with object details
-	//  *
-	//  * @since 0.4.0
-	//  */
-	// public function update_post() {
-	// 	if ( isset( $this->description ) ) {
-	// 		$this->post->post_title = $this->description;
-	// 	}
-
-	// 	foreach ( $this->files as &$file ) {
-	// 		$file->update_post();
-	// 		$file->update_status( $this->post->post_status );
-	// 	}
-
-	// 	unset( $file );
-	// }
 
 }

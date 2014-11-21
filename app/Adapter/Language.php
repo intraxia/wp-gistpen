@@ -1,6 +1,8 @@
 <?php
 namespace WP_Gistpen\Adapter;
 
+use WP_Gistpen\Model\Language as Model;
+
 /**
  * This is the class description.
  *
@@ -41,5 +43,20 @@ class Language {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+	}
+
+	/**
+	 * Retrieves the term stdCLass object for a language slug
+	 *
+	 * @param  string $slug
+	 * @return stdClass|WP_Error       term object or Error
+	 * @since 0.4.0
+	 */
+	public function by_slug( $slug ) {
+		return new Model( $this->plugin_name, $this->version, $slug );
+	}
+
+	public function blank() {
+		return new Model( $this->plugin_name, $this->version );
 	}
 }

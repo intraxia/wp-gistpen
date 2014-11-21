@@ -46,7 +46,7 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		$curl = curl_init();
 		curl_setopt_array($curl, array(
 			// CURLOPT_CONNECTTIMEOUT => 1,
-			CURLOPT_URL => 'http://html5.validator.nu/',
+			CURLOPT_URL => 'https://html5.validator.nu/',
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_POST => true,
 			CURLOPT_POSTFIELDS => array(

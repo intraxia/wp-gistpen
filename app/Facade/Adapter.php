@@ -63,6 +63,20 @@ class Adapter {
 			throw new \Exception( "Can't build model {$model}" );
 		}
 
-		return $this->$model;
+		return $this->{$model};
+	}
+
+	public function build_by_array_of_posts( $posts ) {
+		$models = array();
+
+		foreach ( $posts as $post ) {
+			if ( 0 === $post->post_parent ) {
+				$models[] = $this->build( 'zip' )->by_post( $post );
+			} else {
+				$models[] = $this->build( 'file' )->by_post( $post );
+			}
+		}
+
+		return $models;
 	}
 }

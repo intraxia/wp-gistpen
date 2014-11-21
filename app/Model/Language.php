@@ -56,25 +56,25 @@ class Language {
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	protected $plugin_name;
 
 	/**
 	 * The version of this plugin.
 	 *
 	 * @since    0.5.0
-	 * @access   private
+	 * @access   protected
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+	protected $version;
 
 	/**
 	 * The language slug.
 	 *
 	 * @since    0.5.0
-	 * @access   private
+	 * @access   protected
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $slug;
+	protected $slug;
 
 	public function __construct( $plugin_name, $version, $slug = '' ) {
 
@@ -117,6 +117,12 @@ class Language {
 	 * @throws Exception If invalid slug
 	 */
 	public function validate_slug( $slug ) {
+		// empty slug is allowed
+		if ( '' === $slug ) {
+			return;
+		}
+
+		// otherwise, the slug needs ot match a supported slug
 		if ( ! array_search( $slug, self::$supported ) ) {
 			throw new \Exception( __( "Invalid language slug", $this->plugin_name ), 1);
 		}
@@ -129,12 +135,10 @@ class Language {
 	 * @return string The language slug used by Prism for highlighting
 	 */
 	public function get_prism_slug() {
-		$prism_slug = ( $this->slug == 'js' ? 'javascript' :
+		return ( $this->slug == 'js' ? 'javascript' :
 			( $this->slug == 'sass' ? 'scss' :
 			( $this->slug == 'sh' ? 'bash' :
 			$this->slug ) ) );
-
-		return $prism_slug;
 	}
 
 	/**
@@ -144,12 +148,10 @@ class Language {
 	 * @return string The file extension slug
 	 */
 	public function get_file_ext() {
-		$file_ext = ( $this->slug == 'sass' ? 'scss' :
+		return ( $this->slug == 'sass' ? 'scss' :
 			( $this->slug == 'bash' ? 'sh' :
 			( $this->slug == 'ruby' ? 'rb' :
 			$this->slug ) ) );
-
-		return $file_ext;
 	}
 
 	/**
@@ -159,8 +161,6 @@ class Language {
 	 * @return string The display name
 	 */
 	public function get_display_name() {
-		$display_name = array_search( $this->slug, self::$supported );
-
-		return $display_name;
+		return array_search( $this->slug, self::$supported );
 	}
 }
