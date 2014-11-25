@@ -3,7 +3,6 @@ namespace WP_Gistpen\Facade;
 
 use WP_Gistpen\Database\Query;
 use WP_Gistpen\Database\Persistance;
-use WP_Gistpen\Database\Migration;
 
 /**
  * This class handles all of the AJAX responses
@@ -50,10 +49,22 @@ class Database {
 
 	}
 
+	/**
+	 * Query the database
+	 *
+	 * @return Query query object
+	 * @since 0.5.0
+	 */
 	public function query() {
 		return $this->query;
 	}
 
+	/**
+	 * Persist to database
+	 *
+	 * @return Persistance persistance object
+	 * @since 0.5.0
+	 */
 	public function persist() {
 		return $this->persistance;
 	}

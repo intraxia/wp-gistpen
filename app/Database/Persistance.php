@@ -25,7 +25,7 @@ class Persistance {
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    [current version]
+	 * @since    0.5.0
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
@@ -34,7 +34,7 @@ class Persistance {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    [current version]
+	 * @since    0.5.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -43,7 +43,7 @@ class Persistance {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    [current version]
+	 * @since    0.5.0
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
@@ -55,9 +55,9 @@ class Persistance {
 	}
 
 	/**
-	 * Save the WP_Gistpen_Post to the database
+	 * Save the Zip to the database
 	 *
-	 * @param  WP_Gistpen_Post $post
+	 * @param  Zip $post
 	 * @return int|WP_Error    post_id on success, WP_Error on failure
 	 * @since  0.4.0
 	 */
@@ -108,10 +108,11 @@ class Persistance {
 	}
 
 	/**
-	 * Save the WP_Gistpen_File to the database
+	 * Save the File to the database with a given $zip_id
 	 *
-	 * @param  WP_Gistpen_File $post
-	 * @return true|WP_Error   post_id on success, WP_Error on failure
+	 * @param  File $file File model object
+	 * @param  int $zip_id ID of the zip parent
+	 * @return int|WP_Error   post_id on success, WP_Error on failure
 	 * @since  0.4.0
 	 */
 	public function by_file_and_zip_id( $file, $zip_id ) {
@@ -143,6 +144,11 @@ class Persistance {
 
 	}
 
+	/**
+	 * Save a Gistpen by array
+	 * @param  array $data Array of Gistpen data
+	 * @return int|WP_Error       Saved Gistpen's ID or WP_Error on failure
+	 */
 	public function by_array( $data ) {
 		$defaults = array(
 			'post_type'   => 'gistpen',

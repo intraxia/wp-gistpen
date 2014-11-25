@@ -47,7 +47,7 @@ class App {
 	public $register;
 
 	/**
-	 * The class responsible for plugin functionality.
+	 * The classes responsible for plugin functionality.
 	 *
 	 * @since    0.5.0
 	 * @access   public
@@ -130,7 +130,8 @@ class App {
 	}
 
 	/**
-	 * Register the content aspect of the Gistpen.
+	 * Register all of the hooks related to the saving functionality
+	 * of the plugin.
 	 *
 	 * @since    0.5.0
 	 * @access   private
@@ -173,7 +174,7 @@ class App {
 	}
 
 	/**
-	 * Register all of the hooks related to the dashboard functionality
+	 * Register all of the hooks related to the front-end content
 	 * of the plugin.
 	 *
 	 * @since    0.5.0
@@ -193,7 +194,7 @@ class App {
 	}
 
 	/**
-	 * Register all of the hooks related to the dashboard functionality
+	 * Register all of the hooks related to the dashboard assets
 	 * of the plugin.
 	 *
 	 * @since    0.5.0
@@ -209,7 +210,7 @@ class App {
 	}
 
 	/**
-	 * Register all of the hooks related to the dashboard functionality
+	 * Register all of the hooks related to the editor views
 	 * of the plugin.
 	 *
 	 * @since    0.5.0
@@ -238,13 +239,20 @@ class App {
 		$this->loader->add_filter( 'posts_orderby', $this->editor, 'edit_screen_orderby', 10, 2);
 	}
 
+	/**
+	 * Register all of the hooks related to the database migrations
+	 * for the plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
 	public function define_migration_hooks() {
 		$this->migration = new Migration( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_init', $this->migration, 'run' );
 	}
 
 	/**
-	 * Register all of the hooks related to the web functionality
+	 * Register all of the hooks related to the Prism assets
 	 * of the plugin.
 	 *
 	 * @since    0.5.0
@@ -261,6 +269,13 @@ class App {
 
 	}
 
+	/**
+	 * Register all of the hooks related to the settings views
+	 * of the plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
 	private function define_settings_hooks() {
 		$this->settings = new Register\View\Settings( $this->get_plugin_name(), $this->get_version() );
 
@@ -272,7 +287,7 @@ class App {
 	}
 
 	/**
-	 * Register all of the hooks related to the TinyMCE functionality
+	 * Register all of the hooks related to the TinyMCE assets
 	 * of the plugin.
 	 *
 	 * @since    0.5.0
@@ -288,7 +303,7 @@ class App {
 	}
 
 	/**
-	 * Register all of the hooks related to the web functionality
+	 * Register all of the hooks related to the web assets
 	 * of the plugin.
 	 *
 	 * @since    0.5.0

@@ -1,13 +1,10 @@
 <?php
 namespace WP_Gistpen\Register\Assets;
 
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Model\Language;
 
 /**
- * The dashboard-specific functionality of the plugin.
- *
- * Defines the plugin name, version, a settings page, and two examples hooks
- * for how to enqueue the dashboard-specific stylesheet and JavaScript.
+ * Registers the web assets of the plugin.
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
@@ -89,7 +86,7 @@ class Dashboard {
 		wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, false );
 
 		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
-		wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Query::get_languages() );
+		wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Language::$supported );
 
 	}
 

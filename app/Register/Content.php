@@ -2,11 +2,12 @@
 namespace WP_Gistpen\Register;
 
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
+ * Registers the front-end content output
+ *
+ * @package    WP_Gistpen
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.5.0
  */
 
 use WP_Gistpen\Facade\Database;

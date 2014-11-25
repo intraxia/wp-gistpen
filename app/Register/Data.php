@@ -2,9 +2,7 @@
 namespace WP_Gistpen\Register;
 
 /**
- * Fired during plugin activation.
- *
- * This class defines all code necessary to run during the plugin's activation.
+ * Registers the data types in WordPress
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
@@ -28,7 +26,7 @@ class Data {
 	}
 
 	/**
-	 * Register the Gistpen post_type
+	 * Register the gistpen post_type
 	 *
 	 * @since    0.1.0
 	 */

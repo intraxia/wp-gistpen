@@ -20,6 +20,13 @@ use \WP_Query;
  */
 class Migration {
 
+	/**
+	 * Languages removed from version 0.3.0
+	 * Support for these languages needs to be readded in the future
+	 *
+	 * @var array
+	 * @since 0.3.0
+	 */
 	public $removed_langs_0_3_0 = array(
 		'AppleScript' => 'applescript',
 		'ActionScript3' => 'as3',
@@ -34,6 +41,12 @@ class Migration {
 		'Xml' => 'xml',
 	);
 
+	/**
+	 * Languages added in version 0.3.0
+	 *
+	 * @var array
+	 * @since 0.3.0
+	 */
 	public $added_langs_0_3_0 = array(
 		'C' => 'c',
 		'Coffeescript' => 'coffeescript',
@@ -82,6 +95,11 @@ class Migration {
 
 	}
 
+	/**
+	 * Check current version and run migration if necessary
+	 *
+	 * @since 0.3.0
+	 */
 	public function run() {
 		// Check if plugin needs to be upgraded
 		$version = get_option( 'wp_gistpen_version', '0.0.0' );
@@ -93,7 +111,7 @@ class Migration {
 	}
 
 	/**
-	 * Checks current version and manages database changes
+	 * Checks current version and updates the database accordingly
 	 *
 	 * @param  string $version Current version number
 	 * @since  0.3.0
@@ -113,7 +131,6 @@ class Migration {
 	/**
 	 * Update the database to version 0.3.0
 	 *
-	 * @return bool true if successful
 	 * @since 0.3.0
 	 */
 	public function update_to_0_3_0() {
@@ -168,7 +185,6 @@ class Migration {
 	/**
 	 * Update the database to version 0.4.0
 	 *
-	 * @return bool true if successful
 	 * @since 0.4.0
 	 */
 	public function update_to_0_4_0() {

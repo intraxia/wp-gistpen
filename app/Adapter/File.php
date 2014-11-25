@@ -4,12 +4,12 @@ namespace WP_Gistpen\Adapter;
 use WP_Gistpen\Model\File as FileModel;
 
 /**
- * This is the class description.
+ * Builds file models based on various data inputs
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
- * @since      [current version]
+ * @since      0.5.0
  */
 class File {
 
@@ -36,7 +36,7 @@ class File {
 	 *
 	 * @since    0.5.0
 	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 * @var      string    $version           The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -45,8 +45,15 @@ class File {
 
 	}
 
+	/**
+	 * Build a File model by array of data
+	 *
+	 * @param  array $data array of data
+	 * @return File       File model
+	 * @since 0.5.0
+	 */
 	public function by_array( $data ) {
-		$file = new FileModel( $this->plugin_name, $this->version );
+		$file = $this->blank();
 
 		$data = array_intersect_key( $data, array_flip( array( "ID", "slug", "code" ) ) );
 
@@ -58,8 +65,15 @@ class File {
 		return $file;
 	}
 
+	/**
+	 * Build a File model by $post data
+	 *
+	 * @param  WP_Post $post zip's post data
+	 * @return File       File model
+	 * @since 0.5.0
+	 */
 	public function by_post( $post ) {
-		$file = new FileModel( $this->plugin_name, $this->version );
+		$file = $this->blank();
 
 		if ( isset( $post->ID ) ) {
 			$file->set_ID( $post->ID );
@@ -74,6 +88,12 @@ class File {
 		return $file;
 	}
 
+	/**
+	 * Builds a blank file model
+	 *
+	 * @return File   file model
+	 * @since 0.5.0
+	 */
 	public function blank() {
 		return new FileModel( $this->plugin_name, $this->version );
 	}

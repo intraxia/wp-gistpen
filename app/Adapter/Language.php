@@ -1,15 +1,15 @@
 <?php
 namespace WP_Gistpen\Adapter;
 
-use WP_Gistpen\Model\Language as Model;
+use WP_Gistpen\Model\Language as LanguageModel;
 
 /**
- * This is the class description.
+ * Builds language models based on various data inputs
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
- * @since      [current version]
+ * @since      0.5.0
  */
 class Language {
 
@@ -46,17 +46,23 @@ class Language {
 	}
 
 	/**
-	 * Retrieves the term stdCLass object for a language slug
+	 * Builds the Language object by language slug
 	 *
 	 * @param  string $slug
-	 * @return stdClass|WP_Error       term object or Error
+	 * @return Language       Language object
 	 * @since 0.4.0
 	 */
 	public function by_slug( $slug ) {
-		return new Model( $this->plugin_name, $this->version, $slug );
+		return new LanguageModel( $this->plugin_name, $this->version, $slug );
 	}
 
+	/**
+	 * Builds a blank Language object
+	 *
+	 * @return Language Language object
+	 * @since 0.5.0
+	 */
 	public function blank() {
-		return new Model( $this->plugin_name, $this->version );
+		return new LanguageModel( $this->plugin_name, $this->version );
 	}
 }

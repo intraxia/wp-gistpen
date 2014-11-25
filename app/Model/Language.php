@@ -2,18 +2,12 @@
 namespace WP_Gistpen\Model;
 
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
- */
-
-/**
- * This class represents the language.
+ * Manages the Gistpen's file language data
  *
- * @package WP_Gistpen_Language
- * @author  James DiGioia <jamesorodig@gmail.com>
+ * @package    WP_Gistpen
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.5.0
  */
 class Language {
 
@@ -74,7 +68,7 @@ class Language {
 	 * @access   protected
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	protected $slug = '';
+	protected $slug;
 
 	public function __construct( $plugin_name, $version, $slug = '' ) {
 

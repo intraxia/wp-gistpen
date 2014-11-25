@@ -16,9 +16,7 @@ use WP_Gistpen\Model\Language;
 class Activator {
 
 	/**
-	 * Short Description. (use period)
-	 *
-	 * Long Description.
+	 * Runs on plugin activation
 	 *
 	 * @since    0.5.0
 	 */

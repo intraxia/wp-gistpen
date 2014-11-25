@@ -2,7 +2,7 @@
 namespace WP_Gistpen\Register\View;
 
 /**
- * This class handles all of the AJAX responses
+ * This class registers all of the settings page views
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>

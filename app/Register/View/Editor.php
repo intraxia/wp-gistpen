@@ -1,23 +1,18 @@
 <?php
 namespace WP_Gistpen\Register\View;
+
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
+ * This class registers all of the settings page views
+ *
+ * @package    WP_Gistpen
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.5.0
  */
 
 use \stdClass;
 use WP_Gistpen\Database\Query;
 
-/**
- * This class manipulates the
- * editor for the Gistpen edit screen.
- *
- * @package WP_Gistpen_Editor
- * @author  James DiGioia <jamesorodig@gmail.com>
- */
 class Editor {
 
 	/**

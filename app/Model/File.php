@@ -2,18 +2,12 @@
 namespace WP_Gistpen\Model;
 
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
- */
-
-/**
- * This class holds a Gistpen file's information.
+ * Manages the Gistpen's file data
  *
- * @package WP_Gistpen_File
- * @author  James DiGioia <jamesorodig@gmail.com>
+ * @package    WP_Gistpen
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.5.0
  */
 class File {
 
@@ -153,20 +147,21 @@ class File {
 	}
 
 	/**
-	 * [description]
+	 * Get the file's filename with file extension
 	 *
 	 * @since  0.4.0
-	 * @return [type] [description]
+	 * @return string filename w/ ext
 	 */
 	public function get_filename() {
 		return $this->slug . '.' . $this->language->get_file_ext();
 	}
 
 	/**
-	 * [description]
+	 * Get's the file's post content for display
+	 * on the front-end
 	 *
-	 * @since  0.4.0
-	 * @return [type] [description]
+	 * @return string File's post content
+	 * @since 0.4.0
 	 */
 	public function get_post_content() {
 		$post_content = '<div id="wp-gistpenfile-' . $this->slug . '">';
@@ -192,10 +187,11 @@ class File {
 	}
 
 	/**
-	 * [description]
+	 * Get's the file's shortcode content for display
+	 * on the front-end
 	 *
-	 * @since  0.4.0
-	 * @return [type] [description]
+	 * @return string File's post content
+	 * @since 0.4.0
 	 */
 	public function get_shortcode_content( $highlight = null ) {
 		$this->highlight = $highlight;

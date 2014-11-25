@@ -51,6 +51,7 @@ class Query {
 
 		$this->adapter = new Adapter( $plugin_name, $version );
 
+		// Default query args
 		$this->args = array(
 			'post_type'      => 'gistpen',
 			'order'          => 'DESC',
@@ -61,6 +62,13 @@ class Query {
 
 	}
 
+	/**
+	 * Get the most recently posted Gistpens
+	 * This ignores whether they're zips or files
+	 *
+	 * @return array Array of model objects
+	 * @since 0.5.0
+	 */
 	public function by_recent() {
 		$search_results = get_posts( $this->args );
 
@@ -76,7 +84,7 @@ class Query {
 	/**
 	 * Search for recent Files
 	 *
-	 * @param  int|null $search Search term, or null for recent 5
+	 * @param  string $search Search term, or null for recent 5
 	 * @return array         search results, empty array if no results
 	 * @since 0.4.0
 	 */
@@ -95,6 +103,13 @@ class Query {
 		return $results;
 	}
 
+	/**
+	 * Gets and builds an object model based on a WP_Post object
+	 *
+	 * @param  WP_Post $post model's WP_Post object
+	 * @return object       WP_Gistpen model object
+	 * @since 0.5.0
+	 */
 	public function by_post( $post ) {
 		if ( $post->post_type !== 'gistpen' ) {
 			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
@@ -115,6 +130,13 @@ class Query {
 		return $result;
 	}
 
+	/**
+	 * Gets and builds an object model based on a post's ID
+	 *
+	 * @param  int $post_id model's post ID
+	 * @return object       WP_Gistpen model object
+	 * @since 0.5.0
+	 */
 	public function by_id( $post_id ) {
 		$post = get_post( $post_id );
 
@@ -122,10 +144,10 @@ class Query {
 	}
 
 	/**
-	 * Retrieves the term stdCLass object for a WP_Post object
+	 * Retrieves the Language object for a given post ID
 	 *
-	 * @param  WP_Post $post
-	 * @return stdClass|WP_Error       term object or Error
+	 * @param  int $post_id
+	 * @return Language
 	 * @since 0.4.0
 	 */
 	public function language_by_post_id( $post_id ) {
@@ -141,10 +163,10 @@ class Query {
 	}
 
 	/**
-	 * Retrieves the all the WP_Gistpen_File's for a WP_Post object
+	 * Retrieves the all the files for a zip's WP_Post object
 	 *
 	 * @param  WP_Post $post
-	 * @return array|WP_Error       array of WP_Gistpen_Files or Error
+	 * @return array|WP_Error       array of Files
 	 * @since  0.4.0
 	 */
 	protected function files_by_post( $post ) {

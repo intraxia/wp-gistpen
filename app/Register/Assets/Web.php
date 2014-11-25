@@ -2,10 +2,8 @@
 namespace WP_Gistpen\Register\Assets;
 
 /**
- * The public-facing functionality of the plugin.
+ * Registers the web assets of the plugin.
  *
- * Defines the plugin name, version, and two examples hooks for how to
- * enqueue the dashboard-specific stylesheet and JavaScript.
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>

@@ -66,6 +66,13 @@ class Adapter {
 		return $this->{$model};
 	}
 
+	/**
+	 * Build an array of models using an array of posts as input
+	 *
+	 * @param  array $posts Array of WP_Post objects
+	 * @return array        Array of Gistpen model objects
+	 * @since 0.5.0
+	 */
 	public function build_by_array_of_posts( $posts ) {
 		$models = array();
 

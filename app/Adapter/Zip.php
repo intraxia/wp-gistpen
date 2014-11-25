@@ -4,12 +4,12 @@ namespace WP_Gistpen\Adapter;
 use WP_Gistpen\Model\Zip as ZipModel;
 
 /**
- * This is the class description.
+ * Builds zip models based on various data inputs
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
- * @since      [current version]
+ * @since      0.5.0
  */
 class Zip {
 
@@ -45,8 +45,15 @@ class Zip {
 
 	}
 
+	/**
+	 * Build a Zip model by array of data
+	 *
+	 * @param  array $data array of data
+	 * @return Zip       Zip model
+	 * @since 0.5.0
+	 */
 	public function by_array( $data ) {
-		$zip = new ZipModel( $this->plugin_name, $this->version );
+		$zip = $this->blank();
 
 		$data = array_intersect_key( $data, array_flip( array( "description", "ID", "status", "password" ) ) );
 
@@ -58,8 +65,15 @@ class Zip {
 		return $zip;
 	}
 
+	/**
+	 * Build a Zip model by $post data
+	 *
+	 * @param  WP_Post $post zip's post data
+	 * @return Zip       Zip model
+	 * @since 0.5.0
+	 */
 	public function by_post( $post ) {
-		$zip = new ZipModel( $this->plugin_name, $this->version );
+		$zip = $this->blank();
 
 		if ( isset( $post->ID ) ) {
 			$zip->set_ID( $post->ID );
@@ -77,6 +91,12 @@ class Zip {
 		return $zip;
 	}
 
+	/**
+	 * Builds a blank zip model
+	 *
+	 * @return Zip zip model
+	 * @since 0.5.0
+	 */
 	public function blank() {
 		return new ZipModel( $this->plugin_name, $this->version );
 	}

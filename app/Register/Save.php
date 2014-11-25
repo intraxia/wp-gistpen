@@ -5,19 +5,19 @@ use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 
 /**
- * This is the class description.
+ * This is the functionality for the save_post hook
  *
  * @package    WP_Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
- * @since      [current version]
+ * @since      0.5.0
  */
 class Save {
 
 	/**
 	 * The ID of this plugin.
 	 *
-	 * @since    [current version]
+	 * @since    0.5.0
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
@@ -26,7 +26,7 @@ class Save {
 	/**
 	 * The version of this plugin.
 	 *
-	 * @since    [current version]
+	 * @since    0.5.0
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
@@ -43,7 +43,7 @@ class Save {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    [current version]
+	 * @since    0.5.0
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */

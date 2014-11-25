@@ -126,7 +126,7 @@ class Loader {
 	}
 
 	/**
-	 * Register the filters and actions with WordPress.
+	 * Register the filters, actions, and shortcodes with WordPress.
 	 *
 	 * @since    0.5.0
 	 */

@@ -2,18 +2,13 @@
 namespace WP_Gistpen\Register\Assets;
 
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
- */
-
-/**
- * This class manipulates the TinyMCE editor.
+ * Registers the TinyMCE assets of the plugin.
  *
- * @package WP_Gistpen_TinyMCE
- * @author  James DiGioia <jamesorodig@gmail.com>
+ *
+ * @package    WP_Gistpen
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.5.0
  */
 class TinyMCE {
 
