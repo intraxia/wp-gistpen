@@ -69,7 +69,11 @@ class Zip {
 			throw new Exception("File objects only added to files");
 		}
 
-		$this->files[] = $file;
+		if ( isset( $file->ID ) ) {
+			$this->files[$file->ID] = $file;
+		} else {
+			$this->files[] = $file;
+		}
 	}
 
 	public function add_files( $files ) {

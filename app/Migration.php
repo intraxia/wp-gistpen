@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Migration;
+namespace WP_Gistpen;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -8,11 +8,9 @@ namespace WP_Gistpen\Migration;
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
-use \WP_Post;
+use WP_Gistpen\Facade\Adapter;
+use WP_Gistpen\Facade\Database;
 use \WP_Query;
-use \stdClass;
 
 /**
  * This class checks the current version and runs any updates necessary.
@@ -78,6 +76,9 @@ class Migration {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+
+		$this->database = new Database( $plugin_name, $version );
+		$this->adapter = new Adapter( $plugin_name, $version );
 
 	}
 
@@ -224,14 +225,14 @@ class Migration {
 			// Update post type to remove the 's'
 			$post->post_type = 'gistpen';
 
-			$wpgp_post = Query::create( $post );
-			$wpgp_post->files[] = new File( new WP_Post( new stdClass ), new Language( new stdClass  ) );
+			$zip = $this->adapter->build( 'zip' )->by_post( $post );
+			$file = $this->adapter->build( 'file' )->blank();
 
 			// Migrate title to file's name
-			$wpgp_post->files[0]->slug = $post->post_title;
+			$file->set_slug( $post->post_title );
 
 			// Migrate description to Gistpen title and remove post_meta
-			$wpgp_post->description = get_post_meta( $post->ID, '_wpgp_gistpen_description', true );
+			$zip->set_description( get_post_meta( $post->ID, '_wpgp_gistpen_description', true ) );
 			$result = delete_post_meta( $post->ID, '_wpgp_gistpen_description' );
 
 			if ( is_wp_error( $result ) ) {
@@ -242,7 +243,7 @@ class Migration {
 			}
 
 			// Set content
-			$wpgp_post->files[0]->code = $content;
+			$file->set_code( $content );
 
 			// Migrate Gistpen's language and remove
 			// @todo move this into helper function?
@@ -252,7 +253,7 @@ class Migration {
 			}
 
 			// Don't forget to remove that holdover!
-			$wpgp_post->files[0]->language->slug = str_replace( "-old", "", $lang->slug );
+			$file->set_language( $this->adapter->build( 'language' )->by_slug( str_replace( "-old", "", $lang->slug ) ) );
 
 			$result = wp_set_object_terms( $post->ID, array(), 'language', false );
 
@@ -263,9 +264,9 @@ class Migration {
 				print ( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message() );
 			}
 
-			$wpgp_post->files[0]->update_timestamps( $post->post_date, $post->post_date_gmt );
+			$zip->add_file( $file );
 
-			$result = Query::save( $wpgp_post );
+			$result = $this->database->persist()->by_zip( $zip );
 
 			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit

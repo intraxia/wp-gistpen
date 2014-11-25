@@ -89,7 +89,7 @@ class Content {
 				return;
 			}
 
-			return $zip->post_content;
+			return $zip->get_post_content();
 		}
 
 		return $content;
@@ -138,14 +138,14 @@ class Content {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
-		$post = Query::get( $args['id'] );
+		$zip = $this->database->query()->by_id( $args['id'] );
 
-		if( is_wp_error( $post ) ) {
+		if( is_wp_error( $zip ) ) {
 			// @todo handle each error
 			return;
 		}
 
-		return $post->get_shortcode_content( $args['highlight'] );
+		return $zip->get_shortcode_content( $args['highlight'] );
 
 	}
 

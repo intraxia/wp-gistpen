@@ -1,7 +1,7 @@
 <?php
 
 use WP_Gistpen\Model\Language;
-use WP_Gistpen\Migration\Migration;
+use WP_Gistpen\Migration;
 /**
  * @group  migration
  */
@@ -15,14 +15,10 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 
 		$this->migration = new Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		update_option( 'wp_gistpen_version', '0.0.0' );
+		update_option( 'wp_gistpen_version', '0.3.1' );
 	}
 
 	function set_up_0_4_0_test_posts() {
-		$this->markTestIncomplete(
-			'This test has not been implemented yet.'
-		);
-
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );
 
@@ -36,7 +32,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 		$terms = get_terms( 'language', 'hide_empty=0' );
 
 		foreach ($terms as $term) {
-			$languages[] = $term->term_id;
+			$languages[] = $term->slug;
 		}
 
 		$num_posts = count( $languages );
@@ -55,7 +51,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 			$lang_num = rand( 0, ( $num_posts ) );
 
 			// Get the language's id
-			$lang_id = $languages[$lang_num];
+			$lang_slug = $languages[$lang_num];
 
 			// Remove the language and reindex the languages array
 			unset( $languages[$lang_num] );
@@ -65,7 +61,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 			update_post_meta( $gistpen_id, '_wpgp_gistpen_description', 'This is a description of the Gistpen.' );
 
 			// Give the post the language
-			wp_set_object_terms( $gistpen_id, $lang_id, 'language', false );
+			wp_set_object_terms( $gistpen_id, $lang_slug, 'language', false );
 
 			// Create and set up the user
 			$user_id = $this->factory->user->create(array( 'role' => 'administrator' ) );

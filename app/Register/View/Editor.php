@@ -162,7 +162,7 @@ class Editor {
 
 		if( 'gistpen' == $screen->id ):
 
-			$zip = Query::get( get_the_ID() );
+			$zip = $this->database->query()->by_id( get_the_ID() );
 
 			if ( is_wp_error( $zip ) ) {?>
 				<script>
@@ -172,10 +172,10 @@ class Editor {
 				return;
 			}
 
-			if ( empty( $zip->files ) ) {
-				$files = array( new stdClass );
+			if ( empty( $zip->get_files() ) ) {
+				$files = array( $this->adapter->build( 'file' )->blank() );
 			} else {
-				foreach ($zip->files as $file) {
+				foreach ($zip->get_files() as $file) {
 					// unindex the array or we get indexed JSON
 					$files[] = $file;
 				}
@@ -261,9 +261,9 @@ class Editor {
 		if ( 'gistpen_files' === $column_name ) {
 			$zip = Query::get( $post_id );
 			echo "<ul>";
-			foreach ( $zip->files as $file ) {
+			foreach ( $zip->get_files() as $file ) {
 				echo "<li>";
-				echo $file->filename;
+				echo $file->get_filename();
 				echo "</li>";
 			}
 			echo "</ul>";

@@ -2,7 +2,7 @@
 use WP_Gistpen\Register\Content;
 
 /**
- * @group content
+ * @group register
  */
 class WP_Gistpen_Register_Content_Test extends WP_Gistpen_UnitTestCase {
 
@@ -27,7 +27,7 @@ class WP_Gistpen_Register_Content_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_shortcode_content_child() {
-		$content = $this->register->add_shortcode( array( 'id' => $this->files[0], 'highlight' => null ) );
+		$content = $this->content->add_shortcode( array( 'id' => $this->files[0], 'highlight' => null ) );
 
 		$sub_str_count = substr_count( $content, '<h3 class="wp-gistpenfile-title">' );
 		$this->assertEquals( 1, $sub_str_count );
@@ -38,7 +38,7 @@ class WP_Gistpen_Register_Content_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_shortcode_content_parent() {
-		$content = $this->register->add_shortcode( array( 'id' => $this->gistpen->ID, 'highlight' => null ) );
+		$content = $this->content->add_shortcode( array( 'id' => $this->gistpen->ID, 'highlight' => null ) );
 
 		$sub_str_count = substr_count( $content, '<h3 class="wp-gistpenfile-title">' );
 		$this->assertEquals( 3, $sub_str_count );
@@ -49,7 +49,7 @@ class WP_Gistpen_Register_Content_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_shortcode_with_highlight() {
-		$content = $this->register->add_shortcode( array( 'id' => $this->files[0], 'highlight' => '1' ) );
+		$content = $this->content->add_shortcode( array( 'id' => $this->files[0], 'highlight' => '1' ) );
 
 		$sub_str_count = substr_count( $content, 'data-line=' );
 		$this->assertEquals( 1, $sub_str_count );

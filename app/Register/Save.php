@@ -1,6 +1,9 @@
 <?php
 namespace WP_Gistpen\Register;
 
+use WP_Gistpen\Facade\Database;
+use WP_Gistpen\Facade\Adapter;
+
 /**
  * This is the class description.
  *
@@ -30,6 +33,14 @@ class Save {
 	private $version;
 
 	/**
+	 * Errors codes
+	 *
+	 * @var string
+	 * @since 0.4.0
+	 */
+	public $errors = '';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    [current version]
@@ -41,15 +52,10 @@ class Save {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-	}
+		$this->database = new Database( $this->plugin_name, $this->version );
+		$this->adapter = new Adapter( $this->plugin_name, $this->version );
 
-	/**
-	 * Errors codes
-	 *
-	 * @var string
-	 * @since 0.4.0
-	 */
-	static $errors;
+	}
 
 	/**
 	 * save_post action hook callback
@@ -59,7 +65,7 @@ class Save {
 	 * @param  int    $gistpen_id  Gistpen post id
 	 * @since  0.4.0
 	 */
-	public static function save_post_hook( $post_id ) {
+	public function save_post_hook( $post_id ) {
 		// Check user permissions
 		if ( ! current_user_can( 'edit_post', $post_id ) ) {
 			return;
@@ -80,68 +86,50 @@ class Save {
 			return;
 		}
 
-		$zip = Query::get( $post_id );
+		$zip = $this->database->query()->by_id( $post_id );
 
 		if ( is_wp_error( $zip ) ) {
 			// @todo create ourselves a blank zip
-			return;
+			$zip = $this->adapter->build( 'zip' )->blank();
 		}
 
 		foreach ( $file_ids as $file_id ) {
 
-			if( array_key_exists( $file_id, $zip->files ) ) {
-				$file = $zip->files[$file_id];
-
-				$file_id_w_dash = '-' . $file_id;
-
-				$file->slug = $_POST['wp-gistpenfile-slug' . $file_id_w_dash];
-				$file->code = $_POST['wp-gistpenfile-code' . $file_id_w_dash];
-				$file->language->slug = $_POST['wp-gistpenfile-language' . $file_id_w_dash];
-
-				$zip->files[$file_id] = $file;
-
+			if( array_key_exists( $file_id, $zip->get_files() ) ) {
+				$file = $zip->get_files()[$file_id];
 			} else {
-				// create a blank file
-				$file = new stdClass;
-				$file->post_type = 'gistpen';
-				$file->post_parent = $post_id;
+				$file = $this->adapter->build( 'file' )->blank();
+
 				// check if post exists
 				if ( get_post_status( $file_id ) ) {
 					// we'll use it if it does
-					$file->ID = $file_id;
+					$file->set_ID( $file_id );
 				}
 
-				$file = new File( new WP_Post( $file ), new Language( new stdClass ) );
-
-				$file_id_w_dash = '-' . $file_id;
-
-				// and fill it with data
-				$file->slug = $_POST['wp-gistpenfile-slug' . $file_id_w_dash];
-				$file->code = $_POST['wp-gistpenfile-code' . $file_id_w_dash];
-				$file->language->slug = $_POST['wp-gistpenfile-language' . $file_id_w_dash];
-
-				$zip->files[] = $file;
-
 			}
+
+			$file_id_w_dash = '-' . $file_id;
+
+			$file->set_slug( $_POST['wp-gistpenfile-slug' . $file_id_w_dash] );
+			$file->set_code( $_POST['wp-gistpenfile-code' . $file_id_w_dash] );
+			$file->set_language( $this->adapter->build( 'language' )->by_slug( $_POST['wp-gistpenfile-language' . $file_id_w_dash] ) );
+
+			$zip->add_file( $file );
 
 			unset($file);
 		}
 
-		$zip->update_post();
+		remove_action( 'save_post_gistpen', array( $this, 'save_post_hook' ) );
 
-		self::$errors = '';
-
-		remove_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
-		foreach ( $zip->files as $file ) {
-			$result = Query::save( $file );
-			if( is_wp_error( $result ) ) {
-				self::$errors .= $result->get_error_code() . ',';
-			}
+		$result = $this->database->persist()->by_zip( $zip );
+		if( is_wp_error( $result ) ) {
+			$this->errors = $result->get_error_code() . ',';
 		}
-		add_action( 'save_post_gistpen', array( 'WP_Gistpen_Saver', 'save_gistpen' ) );
 
-		if ( self::$errors !== '' ) {
-			add_filter('redirect_post_location',array( 'WP_Gistpen_Saver', 'return_errors' ) );
+		add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ) );
+
+		if ( $this->errors !== '' ) {
+			add_filter('redirect_post_location',array( $this, 'return_errors' ) );
 		}
 	}
 
@@ -151,6 +139,6 @@ class Save {
 	 * @return string           Updated GET params
 	 */
 	public static function return_errors( $location ) {
-		return add_query_arg( 'gistpen-errors', rtrim( self::$errors, "," ), $location );
+		return add_query_arg( 'gistpen-errors', rtrim( $this->errors, "," ), $location );
 	}
 }

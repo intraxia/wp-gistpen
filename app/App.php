@@ -239,7 +239,7 @@ class App {
 	}
 
 	public function define_migration_hooks() {
-		$this->migration = new Migration\Migration( $this->get_plugin_name(), $this->get_version() );
+		$this->migration = new Migration( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_init', $this->migration, 'run' );
 	}
 
