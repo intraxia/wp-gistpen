@@ -47,7 +47,6 @@ class Database {
 
 		$this->query = new Query( $this->plugin_name, $this->version );
 		$this->persistance = new Persistance( $this->plugin_name, $this->version );
-		$this->migration = new Migration( $this->plugin_name, $this->version );
 
 	}
 

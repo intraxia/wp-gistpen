@@ -74,7 +74,7 @@ class Language {
 	 * @access   protected
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	protected $slug;
+	protected $slug = '';
 
 	public function __construct( $plugin_name, $version, $slug = '' ) {
 

@@ -130,6 +130,10 @@ class File {
 	 * @return string File language
 	 */
 	public function get_language() {
+		if ( ! isset( $this->language) ) {
+			return null;
+		}
+
 		return $this->language;
 	}
 
