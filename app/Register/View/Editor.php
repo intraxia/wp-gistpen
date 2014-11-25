@@ -167,22 +167,25 @@ class Editor {
 				return;
 			}
 
-			if ( empty( $zip->get_files() ) ) {
-				$files = array( $this->adapter->build( 'file' )->blank() );
+			$files = $zip->get_files();
+
+			if ( empty( $files ) ) {
+				$files[] = $this->adapter->build( 'file' )->blank();
 			} else {
-				foreach ($zip->get_files() as $file) {
+				foreach ( $files as $file ) {
 					// unindex the array or we get indexed JSON
 					$files[] = $file;
 				}
 			}
 
 			$jsFiles = json_encode( $files ); ?>
+
 			<script type="text/javascript">
 				jQuery(function() {
 					GistpenEditor.init(<?php echo $jsFiles; ?>);
 				});
-			</script><?php
-		endif;
+			</script>
+		<?php endif;
 	}
 
 	/**
