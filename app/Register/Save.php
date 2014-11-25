@@ -95,8 +95,10 @@ class Save {
 
 		foreach ( $file_ids as $file_id ) {
 
-			if( array_key_exists( $file_id, $zip->get_files() ) ) {
-				$file = $zip->get_files()[$file_id];
+			$files = $zip->get_files();
+
+			if( array_key_exists( $file_id, $files ) ) {
+				$file = $files[$file_id];
 			} else {
 				$file = $this->adapter->build( 'file' )->blank();
 
