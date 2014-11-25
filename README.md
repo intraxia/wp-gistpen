@@ -10,7 +10,7 @@
 
 A self-hosted alternative to putting your code snippets on Gist.
 
-[![Build Status](https://travis-ci.org/mAAdhaTTah/WP-Gistpen.svg?branch=develop)](https://travis-ci.org/mAAdhaTTah/WP-Gistpen)
+[![Build Status](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/build-status/develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop)
 
 ## Description ##
 
