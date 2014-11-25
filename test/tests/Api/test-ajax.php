@@ -1,9 +1,9 @@
 <?php
 
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Facade\Database;
 
 /**
- * @group  ajax
+ * @group  api
  */
 class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
@@ -31,6 +31,8 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 		$this->create_post_and_children();
+
+		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 	}
 
 	function test_failed_no_nonce() {
@@ -117,13 +119,17 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInternalType( 'integer', $this->response->data->id );
 		$this->assertTrue( $this->response->data->id !== 0 );
 
-		$zip = Query::get( $this->response->data->id );
+		$zip = $this->database->query()->by_id( $this->response->data->id );
 
-		$this->assertNotInstanceOf( 'WP_Error', $zip );
-		$this->assertEquals( 'New Gistpen Description', $zip->description );
-		$this->assertEquals( 'draft', $zip->post->post_status );
-		$this->assertCount( 1, $zip->files );
-		$this->assertEquals( 'php', array_pop( $zip->files )->language->slug );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $zip );
+		$this->assertEquals( 'New Gistpen Description', $zip->get_description() );
+		$this->assertEquals( 'draft', $zip->get_status() );
+
+		$files = $zip->get_files();
+		$this->assertCount( 1, $files );
+
+		$file = array_pop( $files );
+		$this->assertEquals( 'php', $file->get_language()->get_slug() );
 	}
 
 	function test_succeeded_save_theme() {
@@ -136,6 +142,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->response = json_decode($this->_last_response);
 
 		$this->check_response_succeeded();
+		$this->assertEquals( 'twilight', get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) );
 	}
 
 	function test_failed_without_parent() {

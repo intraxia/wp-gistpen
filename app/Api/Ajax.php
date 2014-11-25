@@ -116,19 +116,24 @@ class Ajax {
 	public function create_gistpen() {
 		$this->check_security();
 
-		$data = array(
-			'description' => $_POST['wp-gistpenfile-language'],
+		$zip_data = array(
+			'description' => $_POST['wp-gistfile-description'],
 			'status'      => $_POST['post_status'],
-			'files'       => array(
-				array(
-					'slug' => $_POST['wp-gistpenfile-slug'],
-					'code' => $_POST['wp-gistpenfile-code'],
-					'language' => $_POST['wp-gistpenfile-language']
-				)
-			)
 		);
+		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
 
-		$result = $this->database->persist()->by_zip( $this->adapter->build( 'zip' )->by_array( $data ) );
+		$file_data = array(
+			'slug' => $_POST['wp-gistpenfile-slug'],
+			'code' => $_POST['wp-gistpenfile-code']
+		);
+		$file = $this->adapter->build( 'file' )->by_array( $file_data );
+
+		$language = $this->adapter->build( 'language' )->by_slug( $_POST['wp-gistpenfile-language'] );
+		$file->set_language( $language );
+
+		$zip->add_file( $file );
+
+		$result = $this->database->persist()->by_zip( $zip );
 
 		if( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
@@ -167,7 +172,7 @@ class Ajax {
 			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
 		}
 
-		$result = $this->database->persist->by_file_and_zip_id( $this->adapter->build( 'file' )->blank(), $_POST['parent_id'] );
+		$result = $this->database->persist()->by_file_and_zip_id( $this->adapter->build( 'file' )->blank(), $_POST['parent_id'] );
 
 		if( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
