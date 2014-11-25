@@ -16,9 +16,7 @@
     "**/.*",
     "node_modules",
     "bower_components",
-    "public/assets/vendor",
-    "test",
-    "tests"
+    "test"
   ],
   "devDependencies": {
     "prism": "git@github.com:mAAdhaTTah/prism.git",
