@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen;
+namespace WP_Gistpen\Register;
 
 /**
  * @package   WP_Gistpen
@@ -9,7 +9,7 @@ namespace WP_Gistpen;
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Facade\Database;
 
 /**
  * This class manipulates the Gistpen post content.
@@ -49,6 +49,8 @@ class Content {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->database = new Database( $this->plugin_name, $this->version );
+
 	}
 
 	/**
@@ -80,7 +82,7 @@ class Content {
 		global $post;
 
 		if( 'gistpen' == $post->post_type ) {
-			$zip = Query::get( $post );
+			$zip = $this->database->query()->by_post( $post );
 
 			if( is_wp_error( $zip ) ) {
 				// @todo handle each error
@@ -112,6 +114,39 @@ class Content {
 		$query->set( 'post_parent', 0 );
 
 		return $query;
+	}
+
+	/**
+	 * Register the shortcode to embed the Gistpen
+	 *
+	 * @param    array      $atts    attributes passed into the shortcode
+	 * @return   string
+	 * @since    0.1.0
+	 */
+	public function add_shortcode( $atts ) {
+
+		$args = shortcode_atts(
+			array(
+				'id' => null,
+				'highlight' => null
+			), $atts,
+			'gistpen'
+		);
+
+		// If the user didn't provide an ID, raise an error
+		if( $args['id'] === null ) {
+			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
+		}
+
+		$post = Query::get( $args['id'] );
+
+		if( is_wp_error( $post ) ) {
+			// @todo handle each error
+			return;
+		}
+
+		return $post->get_shortcode_content( $args['highlight'] );
+
 	}
 
 }

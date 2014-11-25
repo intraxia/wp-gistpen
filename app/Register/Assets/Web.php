@@ -1,21 +1,18 @@
 <?php
-namespace WP_Gistpen\Assets;
+namespace WP_Gistpen\Register\Assets;
 
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
- */
-
-/**
- * This class manipulates the TinyMCE editor.
+ * The public-facing functionality of the plugin.
  *
- * @package WP_Gistpen_TinyMCE
- * @author  James DiGioia <jamesorodig@gmail.com>
+ * Defines the plugin name, version, and two examples hooks for how to
+ * enqueue the dashboard-specific stylesheet and JavaScript.
+ *
+ * @package    WP_Gistpen
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.5.0
  */
-class TinyMCE {
+class Web {
 
 	/**
 	 * The ID of this plugin.
@@ -63,26 +60,25 @@ class TinyMCE {
 	}
 
 	/**
-	 * Adds the TinyMCE plugin
+	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @param  array $plugins Currently added plugins
-	 * @return array          Array with newly added plugin
-	 * @since 0.4.0
+	 * @since    0.5.0
 	 */
-	public function mce_external_plugins( $plugins ) {
-		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'assets/js/tinymce' . $this->min . '.js';
-		return $plugins;
+	public function enqueue_styles() {
+
+		wp_enqueue_style( $this->plugin_name .'-web-styles', WP_GISTPEN_URL . 'assets/css/web' . $this->min . '.css', array(), $this->version, 'all' );
+
 	}
 
 	/**
-	 * Adds the TinyMCE button
+	 * Register the stylesheets for the public-facing side of the site.
 	 *
-	 * @param  array $buttons Currently added buttons
-	 * @return array          Array with newly added button
-	 * @since 0.4.0
+	 * @since    0.5.0
 	 */
-	public function mce_buttons( $buttons ) {
-		array_push( $buttons, 'wp_gistpen' );
-		return $buttons;
+	public function enqueue_scripts() {
+
+		wp_enqueue_script( $this->plugin_name .'-web-scripts', WP_GISTPEN_URL . 'assets/js/web' . $this->min . '.js', array( 'jquery' ), $this->version, true );
+
 	}
+
 }

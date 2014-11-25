@@ -24,7 +24,7 @@ class Activator {
 	 */
 	public static function activate() {
 		// @todo we don't want to redefine this here if we can help it
-		$register = new Register( 'wp-gistpen', '0.5.0' );
+		$register = new Register\Data( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 		$register->language_tax();
 		self::add_languages();
 		// @todo or here

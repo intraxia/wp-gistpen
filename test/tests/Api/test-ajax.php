@@ -5,7 +5,7 @@ use WP_Gistpen\Database\Query;
 /**
  * @group  ajax
  */
-class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
+class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
 	public $user_id;
 	public $response;
@@ -31,8 +31,6 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 		$this->create_post_and_children();
-
-		// $this->query = $mock = \Mockery::mock( 'alias:WP_Gistpen\Database\Query' );
 	}
 
 	function test_failed_no_nonce() {
@@ -64,11 +62,6 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 	function test_succeeded_recent_gistpens() {
 		$this->set_correct_security();
 
-		// $this->query
-		// 	->shouldReceive( 'search' )
-		// 	->with( null )
-		// 	->andReturn( array( 1 ) );
-
 		try {
 			$this->_handleAjax( 'get_gistpens' );
 		} catch ( WPAjaxDieContinueException $e ) {}
@@ -82,10 +75,18 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->set_correct_security();
 		$_POST['gistpen_search_term'] = 'Post title 2';
 
-		// $this->query
-		// 	->shouldReceive( 'search' )
-		// 	->with( 'Post title 2' )
-		// 	->andReturn( array( 1 ) );
+		try {
+			$this->_handleAjax( 'get_gistpens' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertCount( 1, $this->response->data->gistpens );
+	}
+
+	function test_succeeded_search_returns_empty() {
+		$this->set_correct_security();
+		$_POST['gistpen_search_term'] = 'asdf';
 
 		try {
 			$this->_handleAjax( 'get_gistpens' );
@@ -93,23 +94,8 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->response = json_decode($this->_last_response);
 
 		$this->check_response_succeeded();
+		$this->assertCount( 0, $this->response->data->gistpens );
 	}
-
-	// function test_failed_search_returns_error() {
-	// 	$this->set_correct_security();
-
-	// 	$this->query
-	// 		->shouldReceive( 'search' )
-	// 		->with( null )
-	// 		->andReturn( new WP_Error );
-
-	// 	try {
-	// 		$this->_handleAjax( 'get_gistpens' );
-	// 	} catch ( WPAjaxDieContinueException $e ) {}
-	// 	$this->response = json_decode($this->_last_response);
-
-	// 	$this->check_response_failed();
-	// }
 
 	function test_succeeded_gistpen_creation() {
 		$this->set_correct_security();
@@ -140,29 +126,6 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'php', array_pop( $zip->files )->language->slug );
 	}
 
-	// @todo list requirements? Is that necessary? Should we test "Need everything below"?
-	// function test_failed_gistpen_creation() {
-	// 	$this->set_correct_security();
-	// 	$_POST['wp-gistpenfile-slug'] = 'New Gistpen';
-	// 	$_POST['wp-gistfile-description'] = 'New Gistpen Description';
-	// 	$_POST['wp-gistpenfile-code'] = 'echo $stuff;';
-	// 	$_POST['post_status'] = 'draft';
-	// 	$_POST['wp-gistpenfile-language'] = 'php';
-
-	// 	$this->query
-	// 		->shouldReceive( 'save' )
-	// 		->with( null )
-	// 		->andReturn( new WP_Error );
-
-	// 	try {
-	// 		$this->_handleAjax( 'create_gistpen' );
-	// 	} catch ( WPAjaxDieContinueException $e ) {}
-	// 	$this->response = json_decode($this->_last_response);
-
-	// 	$this->check_response_failed();
-	// }
-
-	// @todo Requirements again?
 	function test_succeeded_save_theme() {
 		$this->set_correct_security();
 		$_POST['theme'] = 'twilight';
@@ -185,23 +148,6 @@ class WP_Gistpen_AJAX_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->check_response_failed();
 	}
-
-	// function test_failed_query_new_id() {
-	// 	$this->set_correct_security();
-	// 	$_POST['parent_id'] = $this->gistpen->ID;
-
-	// 	$this->query
-	// 		->shouldReceive( 'save' )
-	// 		->with( null )
-	// 		->andReturn( new WP_Error );
-
-	// 	try {
-	// 		$this->_handleAjax( 'get_gistpenfile_id' );
-	// 	} catch ( WPAjaxDieContinueException $e ) {}
-	// 	$this->response = json_decode($this->_last_response);
-
-	// 	$this->check_response_failed();
-	// }
 
 	function test_succeeded_get_new_id() {
 		$this->set_correct_security();

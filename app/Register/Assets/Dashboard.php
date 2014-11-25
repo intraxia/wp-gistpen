@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Assets;
+namespace WP_Gistpen\Register\Assets;
 
 use WP_Gistpen\Database\Query;
 
@@ -87,8 +87,8 @@ class Dashboard {
 		wp_localize_script( $this->plugin_name .'-dashboard-script', 'WP_GISTPEN_URL', WP_GISTPEN_URL );
 
 		wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, false );
-		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
 
+		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
 		wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Query::get_languages() );
 
 	}

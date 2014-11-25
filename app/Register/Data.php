@@ -1,7 +1,5 @@
 <?php
-namespace WP_Gistpen;
-
-use WP_Gistpen\Database\Query;
+namespace WP_Gistpen\Register;
 
 /**
  * Fired during plugin activation.
@@ -13,7 +11,7 @@ use WP_Gistpen\Database\Query;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Register {
+class Data {
 
 	/**
 	 * Initialize the class and set its properties.
@@ -120,61 +118,6 @@ class Register {
 		);
 
 		register_taxonomy( 'wpgp_language', array( 'gistpen' ), $args );
-
-	}
-
-	/**
-	 * Register the shortcode to embed the Gistpen
-	 *
-	 * @param    array      $atts    attributes passed into the shortcode
-	 * @return   string
-	 * @since    0.1.0
-	 */
-	public function add_shortcode( $atts ) {
-
-		$args = shortcode_atts(
-			array(
-				'id' => null,
-				'highlight' => null
-			), $atts,
-			'gistpen'
-		);
-
-		// If the user didn't provide an ID, raise an error
-		if( $args['id'] === null ) {
-			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
-		}
-
-		$post = Query::get( $args['id'] );
-
-		if( is_wp_error( $post ) ) {
-			// @todo handle each error
-			return;
-		}
-
-		return $post->get_shortcode_content( $args['highlight'] );
-
-	}
-
-	/**
-	 * Register the settings page (obviously)
-	 *
-	 * @since 0.3.0
-	 */
-	public function register_setting() {
-		register_setting( $this->plugin_name, $this->plugin_name );
-	}
-
-	/**
-	 * Initialize the metabox class.
-	 *
-	 * @since    0.2.0
-	 */
-	public function initialize_meta_boxes() {
-
-		if ( ! class_exists( 'cmb_Meta_Box' ) ) {
-			require_once( WP_GISTPEN_DIR . 'lib/webdevstudios/cmb/init.php' );
-		}
 
 	}
 }

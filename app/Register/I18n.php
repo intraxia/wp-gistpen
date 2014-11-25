@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen;
+namespace WP_Gistpen\Register;
 
 /**
  * Define the internationalization functionality.

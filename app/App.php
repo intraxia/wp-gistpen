@@ -9,7 +9,6 @@ use WP_Gistpen\Assets\Web;
 use WP_Gistpen\Page\Editor;
 use WP_Gistpen\Page\Settings;
 
-use WP_Gistpen\Database\Migration;
 use WP_Gistpen\Database\Persistance;
 
 /**
@@ -98,7 +97,7 @@ class App {
 		$this->loader = new Loader();
 		$this->set_locale();
 
-		$this->register_content();
+		$this->register_data();
 
 		$this->define_ajax_hooks();
 		$this->define_content_hooks();
@@ -123,7 +122,7 @@ class App {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new I18n();
+		$plugin_i18n = new Register\I18n();
 		$plugin_i18n->set_domain( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
@@ -136,12 +135,11 @@ class App {
 	 * @since    0.5.0
 	 * @access   private
 	 */
-	private function register_content() {
-		$this->register = new Register( $this->get_plugin_name(), $this->get_version() );
+	private function register_data() {
+		$this->register = new Register\Data( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'init', $this->register, 'post_type' );
 		$this->loader->add_action( 'init', $this->register, 'language_tax' );
-		$this->loader->add_action( 'init', $this->register, 'initialize_meta_boxes' );
 		// Register the settings page
 		$this->loader->add_action( 'admin_init', $this->register, 'register_setting' );
 		$this->loader->add_shortcode( 'gistpen', $this->register, 'add_shortcode' );
@@ -156,7 +154,7 @@ class App {
 	 */
 	private function define_ajax_hooks() {
 
-		$this->ajax = new Ajax( $this->get_plugin_name(), $this->get_version() );
+		$this->ajax = new Api\Ajax( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'edit_form_after_title', $this->ajax, 'embed_nonce' );
 
@@ -183,7 +181,7 @@ class App {
 	 */
 	private function define_content_hooks() {
 
-		$this->content = new Content( $this->get_plugin_name(), $this->get_version() );
+		$this->content = new Register\Content( $this->get_plugin_name(), $this->get_version() );
 
 		// Remove some filters from the Gistpen content
 		$this->loader->add_action( 'the_content', $this->content, 'remove_filters' );
@@ -203,7 +201,7 @@ class App {
 	 */
 	private function define_dashboard_hooks() {
 
-		$this->dashboard = new Dashboard( $this->get_plugin_name(), $this->get_version() );
+		$this->dashboard = new Register\Assets\Dashboard( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_scripts' );
@@ -218,7 +216,7 @@ class App {
 	 * @access   private
 	 */
 	private function define_editor_hooks() {
-		$this->editor = new Editor( $this->get_plugin_name(), $this->get_version() );
+		$this->editor = new Register\View\Editor( $this->get_plugin_name(), $this->get_version() );
 		// Render the error messages
 		$this->loader->add_action( 'admin_notices', $this->editor, 'add_admin_errors' );
 		// Edit the placeholder text in the Gistpen title box
@@ -240,9 +238,8 @@ class App {
 		$this->loader->add_filter( 'posts_orderby', $this->editor, 'edit_screen_orderby', 10, 2);
 	}
 
-	public function define_migration_hooks()
-	{
-		$this->migration = new Migration( $this->get_plugin_name(), $this->get_version() );
+	public function define_migration_hooks() {
+		$this->migration = new Migration\Migration( $this->get_plugin_name(), $this->get_version() );
 		$this->loader->add_action( 'admin_init', $this->migration, 'run' );
 	}
 
@@ -255,7 +252,7 @@ class App {
 	 */
 	private function define_prism_hooks() {
 
-		$this->prism = new Prism( $this->get_plugin_name(), $this->get_version() );
+		$this->prism = new Register\Assets\Prism( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
@@ -265,10 +262,11 @@ class App {
 	}
 
 	private function define_settings_hooks() {
-		$this->settings = new Settings( $this->get_plugin_name(), $this->get_version() );
+		$this->settings = new Register\View\Settings( $this->get_plugin_name(), $this->get_version() );
 
 		// Add the options page and menu item.
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_plugin_admin_menu' );
+		$this->loader->add_action( 'init', $this->settings, 'initialize_meta_boxes' );
 		// Add an action link pointing to the options page.
 		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings, 'add_action_links' );
 	}
@@ -282,7 +280,7 @@ class App {
 	 */
 	private function define_tinymce_hooks() {
 
-		$this->tinymce = new TinyMCE( $this->get_plugin_name(), $this->get_version() );
+		$this->tinymce = new Register\Assets\TinyMCE( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce, 'mce_external_plugins' );
 		$this->loader->add_filter( 'mce_buttons', $this->tinymce, 'mce_buttons' );
@@ -298,7 +296,7 @@ class App {
 	 */
 	private function define_web_hooks() {
 
-		$this->web = new Web( $this->get_plugin_name(), $this->get_version() );
+		$this->web = new Register\Assets\Web( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->web, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->web, 'enqueue_scripts' );

@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Page;
+namespace WP_Gistpen\Register\View;
 
 /**
  * This class handles all of the AJAX responses
@@ -84,6 +84,29 @@ class Settings {
 			),
 			$links
 		);
+
+	}
+
+
+	/**
+	 * Register the settings page (obviously)
+	 *
+	 * @since 0.3.0
+	 */
+	public function register_setting() {
+		register_setting( $this->plugin_name, $this->plugin_name );
+	}
+
+	/**
+	 * Initialize the metabox class.
+	 *
+	 * @since    0.2.0
+	 */
+	public function initialize_meta_boxes() {
+
+		if ( ! class_exists( 'cmb_Meta_Box' ) ) {
+			require_once( WP_GISTPEN_DIR . 'lib/webdevstudios/cmb/init.php' );
+		}
 
 	}
 }

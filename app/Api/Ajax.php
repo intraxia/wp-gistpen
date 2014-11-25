@@ -1,11 +1,8 @@
 <?php
-namespace WP_Gistpen;
+namespace WP_Gistpen\Api;
 
-use \WP_Post;
-use WP_Gistpen\Database\Query;
-use WP_Gistpen\Model\Zip;
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
+use WP_Gistpen\Facade\Database;
+use WP_Gistpen\Facade\Adapter;
 
 /**
  * This class handles all of the AJAX responses
@@ -56,6 +53,9 @@ class Ajax {
 		$this->version = $version;
 		$this->nonce_field = '_ajax_wp_gistpen';
 
+		$this->database = new Database( $plugin_name, $version );
+		$this->adapter = new Adapter( $plugin_name, $version );
+
 	}
 
 	/**
@@ -96,20 +96,15 @@ class Ajax {
 	public function get_gistpens() {
 		$this->check_security();
 
-		$search = null;
-
 		if ( isset( $_POST['gistpen_search_term'] ) ) {
-			$search = $_POST['gistpen_search_term'];
-		}
-		$results = Query::search( $search );
-
-		if ( is_wp_error( $results ) ) {
-			wp_send_json_error( array( 'error' => $results->get_error_message() ) );
+			$results = $this->database->query()->by_string( $_POST['gistpen_search_term'] );
+		} else {
+			$results = $this->database->query()->by_recent();
 		}
 
-		$data = array( 'gistpens' => $results );
-
-		wp_send_json_success( $data );
+		wp_send_json_success( array(
+			'gistpens' => $results
+		) );
 	}
 
 	/**
@@ -121,26 +116,19 @@ class Ajax {
 	public function create_gistpen() {
 		$this->check_security();
 
-		$post_data = new WP_Post( new \stdClass );
-		$post_data->post_type = 'gistpen';
-		$post_data->post_status = $_POST['post_status'];
+		$data = array(
+			'description' => $_POST['wp-gistpenfile-language'],
+			'status'      => $_POST['post_status'],
+			'files'       => array(
+				array(
+					'slug' => $_POST['wp-gistpenfile-slug'],
+					'code' => $_POST['wp-gistpenfile-code'],
+					'language' => $_POST['wp-gistpenfile-language']
+				)
+			)
+		);
 
-		$result = Query::create( $post_data );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_messages() ) );
-		}
-
-		$result->description = $_POST['wp-gistfile-description'];
-
-		$file = new File( new WP_Post( new \stdClass ), new Language( new \stdClass  ) );
-		$file->slug = $_POST['wp-gistpenfile-slug'];
-		$file->code = $_POST['wp-gistpenfile-code'];
-		$file->language->slug = $_POST['wp-gistpenfile-language'];
-
-		$result->files[] = $file;
-
-		$result = Query::save( $result );
+		$result = $this->database->persist()->by_zip( $this->adapter->build( 'zip' )->by_array( $data ) );
 
 		if( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
@@ -179,17 +167,7 @@ class Ajax {
 			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
 		}
 
-		$file = new \stdCLass;
-		$file->post_type = 'gistpen';
-		$file->post_parent = $_POST['parent_id'];
-		$file->post_status = 'auto-draft';
-
-		$file = new WP_Post( $file );
-		$language = new \stdCLass;
-		$language->slug = 'bash';
-		$file = new File( $file, new Language( $language ) );
-
-		$result = Query::save( $file );
+		$result = $this->database->persist->by_file_and_zip_id( $this->adapter->build( 'file' )->blank(), $_POST['parent_id'] );
 
 		if( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );

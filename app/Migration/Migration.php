@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Database;
+namespace WP_Gistpen\Migration;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
