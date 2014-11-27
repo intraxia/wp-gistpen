@@ -110,6 +110,15 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 		}
 	}
 
+	function test_delete_children() {
+		$this->create_post_and_children();
+		$this->save->delete_post_hook( $this->gistpen->ID );
+
+		$zip = $this->database->query()->by_id( $this->gistpen->ID );
+
+		$this->assertCount( 0, $zip->get_files() );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}

@@ -125,11 +125,21 @@ class Save {
 
 		$result = $this->database->persist()->by_zip( $zip );
 		if( is_wp_error( $result ) ) {
-			$this->errors = $result->get_error_code() . ',';
+			$this->errors .= $result->get_error_code() . ',';
 		}
 
 		add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ) );
 
+		$this->check_errors();
+	}
+
+	/**
+	 * Check if we need to add errors to the rediect
+	 * and add the filter if we do
+	 *
+	 * @since 0.5.0
+	 */
+	public function check_errors() {
 		if ( $this->errors !== '' ) {
 			add_filter('redirect_post_location',array( $this, 'return_errors' ) );
 		}
@@ -142,5 +152,26 @@ class Save {
 	 */
 	public static function return_errors( $location ) {
 		return add_query_arg( 'gistpen-errors', rtrim( $this->errors, "," ), $location );
+	}
+
+	/**
+	 * Deletes the files when a zip gets deleted
+	 * @param  int $post_id post ID of the zip being deleted
+	 * @since  0.5.0
+	 */
+	public function delete_post_hook( $post_id ) {
+		$zip = $this->database->query()->by_id( $post_id );
+
+		$files = $zip->get_files();
+
+		foreach ($files as $file ) {
+			$result = wp_delete_post( $file->get_ID(), true );
+
+			if( is_wp_error( $result ) ) {
+				$this->errors .= $result->get_error_code() . ',';
+			}
+		}
+
+		$this->check_errors();
 	}
 }
