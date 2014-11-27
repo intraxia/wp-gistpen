@@ -55,7 +55,7 @@ class File {
 	public function by_array( $data ) {
 		$file = $this->blank();
 
-		$data = array_intersect_key( $data, array_flip( array( "ID", "slug", "code" ) ) );
+		$data = array_intersect_key( $data, array_flip( array( 'ID', 'slug', 'code' ) ) );
 
 		foreach ( $data as $key => $value ) {
 			$function = 'set_' . $key;

@@ -38,15 +38,6 @@ class App {
 	protected $loader;
 
 	/**
-	 * The class responsible for the registering the content functionality.
-	 *
-	 * @since    0.5.0
-	 * @access   public
-	 * @var      Web    $public    Registers all the content functionality for the plugin.
-	 */
-	public $register;
-
-	/**
 	 * The classes responsible for plugin functionality.
 	 *
 	 * @since    0.5.0
@@ -55,6 +46,7 @@ class App {
 	public $ajax;
 	public $content;
 	public $dashboard;
+	public $data;
 	public $editor;
 	public $migration;
 	public $prism;
@@ -137,12 +129,12 @@ class App {
 	 * @access   private
 	 */
 	private function register_data() {
-		$this->register = new Register\Data( $this->get_plugin_name(), $this->get_version() );
+		$this->data = new Register\Data( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'init', $this->register, 'post_type' );
-		$this->loader->add_action( 'init', $this->register, 'language_tax' );
+		$this->loader->add_action( 'init', $this->data, 'post_type' );
+		$this->loader->add_action( 'init', $this->data, 'language_tax' );
 		// Register the settings page
-		$this->loader->add_shortcode( 'gistpen', $this->register, 'add_shortcode' );
+		$this->loader->add_shortcode( 'gistpen', $this->data, 'add_shortcode' );
 	}
 
 	/**
@@ -224,18 +216,18 @@ class App {
 		// Hook in repeatable file editor
 		$this->loader->add_action( 'edit_form_after_title', $this->editor, 'render_gistfile_editor' );
 		// Init all the rendered editors
-		$this->loader->add_action( 'admin_print_footer_scripts', $this->editor, 'add_ace_editor_init_inline', 99);
+		$this->loader->add_action( 'admin_print_footer_scripts', $this->editor, 'add_ace_editor_init_inline', 99 );
 
 		// Rearrange Gistpen layout
 		$this->loader->add_filter( 'screen_layout_columns', $this->editor, 'screen_layout_columns' );
 		$this->loader->add_action( 'admin_menu', $this->editor, 'remove_meta_boxes' );
 		$this->loader->add_filter( 'get_user_option_screen_layout_gistpen', $this->editor, 'screen_layout_gistpen' );
-		$this->loader->add_filter( 'get_user_option_meta-box-order_gistpen', $this->editor, 'gistpen_meta_box_order');
+		$this->loader->add_filter( 'get_user_option_meta-box-order_gistpen', $this->editor, 'gistpen_meta_box_order' );
 
 		// Add files column to and reorder Gistpen edit screen
 		$this->loader->add_filter( 'manage_gistpen_posts_columns', $this->editor, 'manage_posts_columns' );
-		$this->loader->add_action( 'manage_gistpen_posts_custom_column', $this->editor, 'manage_posts_custom_column', 10, 2);
-		$this->loader->add_filter( 'posts_orderby', $this->editor, 'edit_screen_orderby', 10, 2);
+		$this->loader->add_action( 'manage_gistpen_posts_custom_column', $this->editor, 'manage_posts_custom_column', 10, 2 );
+		$this->loader->add_filter( 'posts_orderby', $this->editor, 'edit_screen_orderby', 10, 2 );
 	}
 
 	/**

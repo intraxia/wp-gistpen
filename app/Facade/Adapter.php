@@ -34,6 +34,30 @@ class Adapter {
 	private $version;
 
 	/**
+	 * Adapter\File object
+	 *
+	 * @var Adapter\File
+	 * @since 0.5.0
+	 */
+	private $file;
+
+	/**
+	 * Adapter\Language object
+	 *
+	 * @var Adapter\Language
+	 * @since 0.5.0
+	 */
+	private $language;
+
+	/**
+	 * Adapter\Zip object
+	 *
+	 * @var Adapter\Zip
+	 * @since 0.5.0
+	 */
+	private $zip;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0

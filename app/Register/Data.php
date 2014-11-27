@@ -12,6 +12,24 @@ namespace WP_Gistpen\Register;
 class Data {
 
 	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -112,7 +130,7 @@ class Data {
 			'show_in_nav_menus'          => true,
 			'show_tagcloud'              => false,
 			'required'                   => true,
-			'capabilities'               => $capabilities
+			'capabilities'               => $capabilities,
 		);
 
 		register_taxonomy( 'wpgp_language', array( 'gistpen' ), $args );

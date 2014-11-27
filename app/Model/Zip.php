@@ -16,6 +16,24 @@ namespace WP_Gistpen\Model;
 class Zip {
 
 	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+	/**
 	 * Zip description
 	 *
 	 * @var string
@@ -102,11 +120,11 @@ class Zip {
 	 */
 	public function add_file( $file ) {
 		if ( ! $file instanceof File ) {
-			throw new Exception("File objects only added to files");
+			throw new Exception( 'File objects only added to files' );
 		}
 
-		if ( isset( $file->ID ) ) {
-			$this->files[$file->ID] = $file;
+		if ( null !== $file->get_ID() ) {
+			$this->files[ $file->get_ID() ] = $file;
 		} else {
 			$this->files[] = $file;
 		}
@@ -195,7 +213,7 @@ class Zip {
 	public function get_post_content() {
 		$post_content = '';
 
-		if( ! empty( $this->files ) ) {
+		if ( ! empty( $this->files ) ) {
 			foreach ( $this->files as $file ) {
 				$post_content .= $file->get_post_content();
 			}
@@ -214,7 +232,7 @@ class Zip {
 	public function get_shortcode_content() {
 		$shortcode_content = '';
 
-		if( ! empty( $this->files ) ) {
+		if ( ! empty( $this->files ) ) {
 			foreach ( $this->files as $file ) {
 				$shortcode_content .= $file->get_shortcode_content();
 			}

@@ -33,6 +33,22 @@ class Database {
 	private $version;
 
 	/**
+	 * Database\Query object
+	 *
+	 * @var Database\Query
+	 * @since 0.5.0
+	 */
+	private $query;
+
+	/**
+	 * Database\Persistance object
+	 *
+	 * @var Database\Persistance
+	 * @since 0.5.0
+	 */
+	private $persistance;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0

@@ -51,7 +51,7 @@ class Prism {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		if( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
+		if ( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
 			$this->min = '.min';
 		}
 
@@ -97,7 +97,7 @@ class Prism {
 	private function get_theme() {
 		$theme = cmb_get_option( $this->plugin_name, '_wpgp_gistpen_highlighter_theme' );
 
-		if( '' == $theme || 'default' == $theme ) {
+		if ( '' == $theme || 'default' == $theme ) {
 			$theme = '';
 		} else {
 			$theme = '-' . $theme;

@@ -39,6 +39,14 @@ class Content {
 	private $version;
 
 	/**
+	 * Database Facade object
+	 *
+	 * @var Facade\Database
+	 * @since 0.5.0
+	 */
+	private $database;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -61,7 +69,7 @@ class Content {
 	 */
 	public function remove_filters( $content ) {
 
-		if( 'gistpen' == get_post_type() ) {
+		if ( 'gistpen' == get_post_type() ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
 			remove_filter( 'the_content', 'capital_P_dangit' );
@@ -82,10 +90,10 @@ class Content {
 	public function post_content( $content = '' ) {
 		global $post;
 
-		if( 'gistpen' == $post->post_type ) {
+		if ( 'gistpen' == $post->post_type ) {
 			$zip = $this->database->query()->by_post( $post );
 
-			if( is_wp_error( $zip ) ) {
+			if ( is_wp_error( $zip ) ) {
 				// @todo handle each error
 				return;
 			}
@@ -129,19 +137,19 @@ class Content {
 		$args = shortcode_atts(
 			array(
 				'id' => null,
-				'highlight' => null
+				'highlight' => null,
 			), $atts,
 			'gistpen'
 		);
 
 		// If the user didn't provide an ID, raise an error
-		if( $args['id'] === null ) {
+		if ( $args['id'] === null ) {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
 		$zip = $this->database->query()->by_id( $args['id'] );
 
-		if( is_wp_error( $zip ) ) {
+		if ( is_wp_error( $zip ) ) {
 			// @todo handle each error
 			return;
 		}

@@ -41,6 +41,22 @@ class Ajax {
 	private $nonce_field;
 
 	/**
+	 * Database Facade object
+	 *
+	 * @var Facade\Database
+	 * @since 0.5.0
+	 */
+	private $database;
+
+	/**
+	 * Adapter Facade object
+	 *
+	 * @var Facade\Adapter
+	 * @since  0.5.0
+	 */
+	private $adapter;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -77,7 +93,7 @@ class Ajax {
 	public function check_security() {
 		// Check the nonce
 		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
-			wp_send_json_error( array( 'error' => __( "Nonce check failed.", $this->plugin_name ) ) );
+			wp_send_json_error( array( 'error' => __( 'Nonce check failed.', $this->plugin_name ) ) );
 		}
 
 		// Check if user has proper permisissions
@@ -103,7 +119,7 @@ class Ajax {
 		}
 
 		wp_send_json_success( array(
-			'gistpens' => $results
+			'gistpens' => $results,
 		) );
 	}
 
@@ -124,7 +140,7 @@ class Ajax {
 
 		$file_data = array(
 			'slug' => $_POST['wp-gistpenfile-slug'],
-			'code' => $_POST['wp-gistpenfile-code']
+			'code' => $_POST['wp-gistpenfile-code'],
 		);
 		$file = $this->adapter->build( 'file' )->by_array( $file_data );
 
@@ -135,7 +151,7 @@ class Ajax {
 
 		$result = $this->database->persist()->by_zip( $zip );
 
-		if( is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
@@ -168,13 +184,13 @@ class Ajax {
 	public function get_gistpenfile_id() {
 		$this->check_security();
 
-		if( ! array_key_exists('parent_id', $_POST ) ) {
+		if ( ! array_key_exists( 'parent_id', $_POST ) ) {
 			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
 		}
 
 		$result = $this->database->persist()->by_file_and_zip_id( $this->adapter->build( 'file' )->blank(), $_POST['parent_id'] );
 
-		if( is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
@@ -189,13 +205,13 @@ class Ajax {
 	public function delete_gistpenfile() {
 		$this->check_security();
 
-		if( ! array_key_exists('fileID', $_POST ) ) {
+		if ( ! array_key_exists( 'fileID', $_POST ) ) {
 			wp_send_json_error( array( 'messages' => array( 'File ID not sent.' ) ) );
 		}
 
 		$result = wp_delete_post( $_POST['fileID'], true );
 
-		if( ! $result ) {
+		if ( ! $result ) {
 			wp_send_json_error( array( 'message' => __( 'wp_delete_post failed', $this->plugin_name ) ) );
 		}
 

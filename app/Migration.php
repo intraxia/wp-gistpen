@@ -57,7 +57,7 @@ class Migration {
 		'HTML/Markup' => 'markup',
 		'Objective-C' => 'objectivec',
 		'Swift' => 'swift',
-		'Twig' => 'twig'
+		'Twig' => 'twig',
 	);
 
 	/**
@@ -77,6 +77,22 @@ class Migration {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
+
+	/**
+	 * Database Facade object
+	 *
+	 * @var Facade\Database
+	 * @since 0.5.0
+	 */
+	private $database;
+
+	/**
+	 * Adapter Facade object
+	 *
+	 * @var Facade\Adapter
+	 * @since  0.5.0
+	 */
+	private $adapter;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -104,7 +120,7 @@ class Migration {
 		// Check if plugin needs to be upgraded
 		$version = get_option( 'wp_gistpen_version', '0.0.0' );
 
-		if( $version !== $this->version ) {
+		if ( $version !== $this->version ) {
 			$this->update( $version );
 			update_option( 'wp_gistpen_version', $this->version );
 		}
@@ -118,11 +134,11 @@ class Migration {
 	 */
 	public function update( $version ) {
 
-		if( version_compare( $version, '0.3.0', '<' ) ) {
+		if ( version_compare( $version, '0.3.0', '<' ) ) {
 			$this->update_to_0_3_0();
 		}
 
-		if( version_compare( $version, '0.4.0', '<' ) ) {
+		if ( version_compare( $version, '0.4.0', '<' ) ) {
 			$this->update_to_0_4_0();
 		}
 
@@ -135,29 +151,28 @@ class Migration {
 	 */
 	public function update_to_0_3_0() {
 
-		foreach( $this->added_langs_0_3_0 as $lang => $slug ) {
+		foreach ( $this->added_langs_0_3_0 as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'language', array( 'slug' => $slug ) );
 			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit
-				deactivate_plugins( 'WP-Gistpen');
+				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( "Failed to successfully insert {$slug}. Error: " . $result->get_error_message() );
+				print ( __( "Failed to successfully insert {$slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
 			}
-
 		}
 
-		foreach( $this->removed_langs_0_3_0 as $lang => $slug ) {
+		foreach ( $this->removed_langs_0_3_0 as $lang => $slug ) {
 			// check if there are any gistpens in the db for this language
 			$query = new WP_Query(
 				array(
 					'language' => $slug,
-					'post_type' => 'gistpens'
+					'post_type' => 'gistpens',
 				));
 
 			// Migrate XML to Markup
 			if ( 'xml' == $slug && $query->have_posts() ) {
 
-				while( $query->have_posts() ) {
+				while ( $query->have_posts() ) {
 					$query->the_post();
 					wp_delete_object_term_relationships( get_the_id(), 'language' );
 					wp_set_object_terms( get_the_id(), 'markup', 'language', false );
@@ -166,18 +181,17 @@ class Migration {
 				wp_reset_postdata();
 			}
 
-			if( ! $query->have_posts() ) {
+			if ( ! $query->have_posts() ) {
 				// only delete language if it's got no Gistpens
 				$term = get_term_by( 'slug', $slug, 'language', 'ARRAY_A' );
 				$result = wp_delete_term( $term['term_id'], 'language' );
 				if ( is_wp_error( $result ) ) {
 					// Deactivate and quit
-					deactivate_plugins( 'WP-Gistpen');
+					deactivate_plugins( 'WP-Gistpen' );
 					// and provide an error
-					print ( "Failed to successfully delete {$slug}. Error: " . $result->get_error_message() );
+					print ( __( "Failed to successfully delete {$slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
 				}
 			}
-
 		}
 
 	}
@@ -204,25 +218,25 @@ class Migration {
 			// We're going to move the current term to a holdover
 			$result = wp_update_term( $term->term_id, 'language', array(
 				'slug' => $term->slug . '-old',
-				'name' => $term->name . '-old'
+				'name' => $term->name . '-old',
 			) );
-			if( is_wp_error( $result ) ) {
+			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit
-				deactivate_plugins( __FILE__);
+				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( "Failed to successfully set holdover for language {$term->slug}. Error: " . $result->get_error_message() );
+				print ( __( "Failed to successfully set holdover for language {$term->slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
 			}
 
 			// So we can create new terms with the old slug/name combo
 			$result = wp_insert_term( $term->name, 'wpgp_language', array(
 				'slug' => $term->slug,
-				'name' => $term->name
+				'name' => $term->name,
 			) );
-			if( is_wp_error( $result ) ) {
+			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit
-				deactivate_plugins( __FILE__);
+				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( "Failed to successfully insert language {$term->slug}. Error: " . $result->get_error_message() );
+				print ( __( "Failed to successfully insert language {$term->slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
 			}
 		}
 
@@ -230,7 +244,7 @@ class Migration {
 		$posts = get_posts( array(
 			'post_type' => 'gistpens',
 			'posts_per_page' => -1,
-			'post_status' => 'any'
+			'post_status' => 'any',
 		) );
 
 		foreach ( $posts as $post ) {
@@ -253,9 +267,9 @@ class Migration {
 
 			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit
-				deactivate_plugins( 'WP-Gistpen');
+				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( "Failed to successfully delete description meta from {$post->ID}. Error: " . $result->get_error_message() );
+				print ( __( "Failed to successfully delete description meta from {$post->ID}. Error: " . $result->get_error_message(), $this->plugin_name ) );
 			}
 
 			// Set content
@@ -264,20 +278,22 @@ class Migration {
 			// Migrate Gistpen's language and remove
 			// @todo move this into helper function?
 			$terms = get_the_terms( $post->ID, 'language' );
-			if( $terms ) {
+			if ( $terms ) {
 				$lang = array_pop( $terms );
+			} else {
+				$lang = '';
 			}
 
 			// Don't forget to remove that holdover!
-			$file->set_language( $this->adapter->build( 'language' )->by_slug( str_replace( "-old", "", $lang->slug ) ) );
+			$file->set_language( $this->adapter->build( 'language' )->by_slug( str_replace( '-old', '', $lang->slug ) ) );
 
 			$result = wp_set_object_terms( $post->ID, array(), 'language', false );
 
 			if ( is_wp_error( $result ) ) {
 				// Deactivate and quit
-				deactivate_plugins( __FILE__);
+				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message() );
+				print ( __( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message(), $this->plugin_name ) );
 			}
 
 			$zip->add_file( $file );
@@ -288,9 +304,8 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( __FILE__);
 				// and provide an error
-				print ( "Failed to successfully save {$post->ID} in new format. Error: " . $result->get_error_message() );
+				print ( __( "Failed to successfully save {$post->ID} in new format. Error: " . $result->get_error_message(), $this->plugin_name ) );
 			}
-
 		}
 
 		$terms = get_terms( 'language', 'hide_empty=0' );
