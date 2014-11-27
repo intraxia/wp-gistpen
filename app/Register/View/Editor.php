@@ -10,8 +10,7 @@ namespace WP_Gistpen\Register\View;
  * @since      0.5.0
  */
 
-use \stdClass;
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Facade\Database;
 
 class Editor {
 
@@ -73,6 +72,8 @@ class Editor {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+
+		$this->database = new Database( $this->plugin_name, $this->version );
 
 	}
 
@@ -257,7 +258,7 @@ class Editor {
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'gistpen_files' === $column_name ) {
-			$zip = Query::get( $post_id );
+			$zip = $this->database->query()->by_id( $post_id );
 			echo "<ul>";
 			foreach ( $zip->get_files() as $file ) {
 				echo "<li>";

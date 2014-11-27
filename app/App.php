@@ -142,7 +142,6 @@ class App {
 		$this->loader->add_action( 'init', $this->register, 'post_type' );
 		$this->loader->add_action( 'init', $this->register, 'language_tax' );
 		// Register the settings page
-		$this->loader->add_action( 'admin_init', $this->register, 'register_setting' );
 		$this->loader->add_shortcode( 'gistpen', $this->register, 'add_shortcode' );
 	}
 
@@ -282,6 +281,7 @@ class App {
 		// Add the options page and menu item.
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_plugin_admin_menu' );
 		$this->loader->add_action( 'init', $this->settings, 'initialize_meta_boxes' );
+		$this->loader->add_action( 'admin_init', $this->settings, 'register_setting' );
 		// Add an action link pointing to the options page.
 		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings, 'add_action_links' );
 	}
