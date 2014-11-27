@@ -44,9 +44,12 @@ class WP_Gistpen_Persistance_Test extends WP_Gistpen_UnitTestCase {
 		$files = $saved_zip->get_files();
 
 		$this->assertCount( 1, $files );
-		$this->assertContains( 'new-code', $files[0]->get_slug() );
-		$this->assertEquals( 'if possible do this', $files[0]->get_code() );
-		$this->assertEquals( 'twig', $files[0]->get_language()->get_slug() );
+
+		$file = array_pop( $files );
+
+		$this->assertContains( 'new-code', $file->get_slug() );
+		$this->assertEquals( 'if possible do this', $file->get_code() );
+		$this->assertEquals( 'twig', $file->get_language()->get_slug() );
 	}
 
 	function test_succeeded_save_by_zip_no_files() {
