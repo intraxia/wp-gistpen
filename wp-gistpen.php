@@ -63,11 +63,11 @@ register_deactivation_hook( __FILE__, array( 'WP_Gistpen\Deactivator', 'deactiva
  */
 class WP_Gistpen {
 
-	static $app;
+	public static $app;
 
-	static $plugin_name = 'wp-gistpen';
+	public static $plugin_name = 'wp-gistpen';
 
-	static $version = '0.5.0';
+	public static $version = '0.5.0';
 
 	public static function init() {
 
