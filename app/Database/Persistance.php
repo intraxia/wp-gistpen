@@ -65,7 +65,7 @@ class Persistance {
 		$data = array(
 			'post_title'    => $zip->get_description(),
 			'post_status'   => $zip->get_status(),
-			'post_password' => $zip->get_password()
+			'post_password' => $zip->get_password(),
 		);
 
 		if ( $zip->get_ID() !== null ) {
@@ -74,7 +74,7 @@ class Persistance {
 
 		$result = $this->by_array( $data );
 
-		if( is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
@@ -87,7 +87,7 @@ class Persistance {
 				'post_content'  => $file->get_code(),
 				'post_status'   => $zip->get_status(),
 				'post_parent'   => $post_id,
-				'post_password' => $zip->get_password()
+				'post_password' => $zip->get_password(),
 			);
 
 			if ( $file->get_ID() !== null ) {
@@ -99,7 +99,7 @@ class Persistance {
 
 			$result = $this->by_array( $data );
 
-			if( is_wp_error( $result ) ) {
+			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
 		}
@@ -121,7 +121,7 @@ class Persistance {
 			'post_name'     => $file->get_slug(),
 			'post_content'  => $file->get_code(),
 			'post_status'   => get_post_status( $zip_id ),
-			'post_parent'   => $zip_id
+			'post_parent'   => $zip_id,
 		);
 
 		if ( $file->get_ID() !== null ) {
@@ -133,7 +133,7 @@ class Persistance {
 
 		$result = $this->by_array( $data );
 
-		if( is_wp_error( $result ) ) {
+		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
@@ -152,7 +152,7 @@ class Persistance {
 	public function by_array( $data ) {
 		$defaults = array(
 			'post_type'   => 'gistpen',
-			'post_status' => 'auto-draft'
+			'post_status' => 'auto-draft',
 		);
 		$data = array_merge( $defaults, $data );
 

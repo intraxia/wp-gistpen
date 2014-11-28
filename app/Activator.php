@@ -40,13 +40,13 @@ class Activator {
 		// note to self: delete this line in version 0.4.0
 		delete_option( 'wp_gistpen_langs_installed' );
 
-		if ( true === get_option( 'wp_gistpens_languages_installed') ) {
+		if ( true === get_option( 'wp_gistpens_languages_installed' ) ) {
 			return;
 		}
 
-		foreach( Language::$supported as $lang => $slug ) {
+		foreach ( Language::$supported as $lang => $slug ) {
 			$result = wp_insert_term( $lang, 'wpgp_language', array( 'slug' => $slug ) );
-			if( is_wp_error( $result ) ) {
+			if ( is_wp_error( $result ) ) {
 				// @todo write error message?
 			}
 		}

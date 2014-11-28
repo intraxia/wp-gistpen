@@ -40,7 +40,7 @@ class Language {
 		'HTML/Markup' => 'markup',
 		'Objective-C' => 'objectivec',
 		'Swift' => 'swift',
-		'Twig' => 'twig'
+		'Twig' => 'twig',
 	);
 
 	/**
@@ -118,7 +118,7 @@ class Language {
 
 		// otherwise, the slug needs ot match a supported slug
 		if ( ! array_search( $slug, self::$supported ) ) {
-			throw new \Exception( __( "Invalid language slug: {$slug}", $this->plugin_name ), 1);
+			throw new \Exception( __( "Invalid language slug: {$slug}", $this->plugin_name ), 1 );
 		}
 	}
 

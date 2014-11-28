@@ -12,6 +12,24 @@ namespace WP_Gistpen\Model;
 class File {
 
 	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+	/**
 	 * File's slug
 	 *
 	 * @var string
@@ -140,7 +158,7 @@ class File {
 	public function set_language( $language ) {
 
 		if ( ! $language instanceof Language ) {
-			throw new \Exception( __( 'set_language requires a Model\Language object', $this->plugin_name ), 1);
+			throw new \Exception( __( 'set_language requires a Model\Language object', $this->plugin_name ), 1 );
 		}
 
 		$this->language = $language;
@@ -171,7 +189,7 @@ class File {
 		$post_content .= '<pre class="gistpen line-numbers"';
 
 		// Line highlighting and offset will go here
-		if( $this->highlight !== null ) {
+		if ( $this->highlight !== null ) {
 			$post_content .= 'data-line="' . $this->highlight . '"';
 		}
 

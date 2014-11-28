@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
 // If we don't have the right PHP version, abort.
 if ( version_compare( PHP_VERSION, '5.3.0', '<' ) ) {
 	deactivate_plugins( basename( __FILE__ ) );
-	wp_die('<p><strong>Plugin Name</strong> requires PHP  version 5.3 or greater.</p>', 'Plugin Activation Error',  array( 'response' => 200 ) );
+	wp_die( '<p><strong>Plugin Name</strong> requires PHP  version 5.3 or greater.</p>', 'Plugin Activation Error',  array( 'response' => 200 ) );
 }
 
 /*----------------------------------------------------------------------------*
@@ -63,11 +63,11 @@ register_deactivation_hook( __FILE__, array( 'WP_Gistpen\Deactivator', 'deactiva
  */
 class WP_Gistpen {
 
-	static $app;
+	public static $app;
 
-	static $plugin_name = 'wp-gistpen';
+	public static $plugin_name = 'wp-gistpen';
 
-	static $version = '0.5.0';
+	public static $version = '0.5.0';
 
 	public static function init() {
 
@@ -96,4 +96,4 @@ function wp_gistpen() {
 	return WP_Gistpen::init();
 }
 wp_gistpen();
-add_filter('wp_insert_post_empty_content', '__return_false');
+add_filter( 'wp_insert_post_empty_content', '__return_false' );

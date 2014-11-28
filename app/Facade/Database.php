@@ -33,6 +33,22 @@ class Database {
 	private $version;
 
 	/**
+	 * WP_Gistpen\Database\Query object
+	 *
+	 * @var Query
+	 * @since 0.5.0
+	 */
+	private $query;
+
+	/**
+	 * WP_Gistpen\Database\Persistance object
+	 *
+	 * @var Persistance
+	 * @since 0.5.0
+	 */
+	private $persistance;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0

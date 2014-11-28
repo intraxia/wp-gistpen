@@ -38,6 +38,22 @@ class Query {
 	private $version;
 
 	/**
+	 * Adapter Facade object
+	 *
+	 * @var Adapter
+	 * @since  0.5.0
+	 */
+	private $adapter;
+
+	/**
+	 * Default query args
+	 *
+	 * @var  array
+	 * @since 0.5.0
+	 */
+	private $args;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -115,7 +131,7 @@ class Query {
 			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
 		}
 
-		if( 0 !== $post->post_parent ) {
+		if ( 0 !== $post->post_parent ) {
 			$result = $this->adapter
 				->build( 'file' )
 				->by_post( $post );
@@ -153,7 +169,7 @@ class Query {
 	public function language_by_post_id( $post_id ) {
 		$terms = get_the_terms( $post_id, 'wpgp_language' );
 
-		if( empty( $terms ) ) {
+		if ( empty( $terms ) ) {
 			return $this->adapter->build( 'language' )->blank();
 		}
 
@@ -178,7 +194,7 @@ class Query {
 			'orderby' => 'date',
 		) );
 
-		if( empty( $file_posts ) ) {
+		if ( empty( $file_posts ) ) {
 			return $file_posts;
 		}
 
@@ -189,7 +205,7 @@ class Query {
 
 			$file->set_language( $this->language_by_post_id( $file_post->ID ) );
 
-			$files[$file_post->ID] = $file;
+			$files[ $file_post->ID ] = $file;
 		}
 
 		return $files;

@@ -10,8 +10,7 @@ namespace WP_Gistpen\Register\View;
  * @since      0.5.0
  */
 
-use \stdClass;
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Facade\Database;
 
 class Editor {
 
@@ -41,7 +40,7 @@ class Editor {
 		'monokai' => 'Monokai',
 		'solarized_dark' => 'Solarized Dark',
 		'solarized_light' => 'Solarized Light',
-		'twilight' => 'Twilight'
+		'twilight' => 'Twilight',
 	);
 
 	/**
@@ -63,6 +62,22 @@ class Editor {
 	private $version;
 
 	/**
+	 * Database Facade object
+	 *
+	 * @var Database
+	 * @since 0.5.0
+	 */
+	private $database;
+
+	/**
+	 * Adapter Facade object
+	 *
+	 * @var Adapter
+	 * @since  0.5.0
+	 */
+	private $adapter;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -74,10 +89,17 @@ class Editor {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->database = new Database( $this->plugin_name, $this->version );
+
 	}
 
+	/**
+	 * Display any errors from the save hooks in the admin dashboard
+	 *
+	 * @since 0.4.0
+	 */
 	public function add_admin_errors() {
-		if ( array_key_exists( 'gistpen-errors', $_GET) ) { ?>
+		if ( array_key_exists( 'gistpen-errors', $_GET ) ) { ?>
 			<div class="error">
 				<p><?php
 					_e( 'The post saved with error codes: ', $this->plugin_name );
@@ -95,14 +117,14 @@ class Editor {
 	 * @since  0.4.0
 	 */
 	public function new_enter_title_here( $title ){
-			$screen = get_current_screen();
+		$screen = get_current_screen();
 
-			if ( 'gistpen' == $screen->post_type ){
-				$title = __( 'Gistpen description...', $this->plugin_name );
-			}
-
-			return $title;
+		if ( 'gistpen' == $screen->post_type ){
+			$title = __( 'Gistpen description...', $this->plugin_name );
 		}
+
+		return $title;
+	}
 
 	/**
 	 * Manage rendering of repeatable Gistfile editor
@@ -113,13 +135,13 @@ class Editor {
 
 		$screen = get_current_screen();
 
-		if( 'gistpen' == $screen->id ) {
+		if ( 'gistpen' == $screen->id ) {
 
 			$this->render_theme_selector(); ?>
 			<div id="wp-gistfile-wrap"></div>
 			<input type="hidden" id="file_ids" name="file_ids" value=""><?php
 
-			echo submit_button( __('Add Gistfile', $this->plugin_name), 'primary', 'add-gistfile', true );
+			echo submit_button( __( 'Add Gistfile', $this->plugin_name ), 'primary', 'add-gistfile', true );
 
 		}
 	}
@@ -136,7 +158,7 @@ class Editor {
 				<?php _e( 'Ace Editor Theme: ', $this->plugin_name ); ?>
 			</label>
 			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
-			<?php foreach ($this->ace_themes as $slug => $name): ?>
+			<?php foreach ( $this->ace_themes as $slug => $name ) : ?>
 				<?php $selected = get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) == $slug ? 'selected' : ''; ?>
 				<option value="<?php echo $slug; ?>" <?php echo $selected; ?> >
 					<?php echo $name; ?>
@@ -155,7 +177,7 @@ class Editor {
 	public function add_ace_editor_init_inline() {
 		$screen = get_current_screen();
 
-		if( 'gistpen' == $screen->id ):
+		if ( 'gistpen' == $screen->id ):
 
 			$zip = $this->database->query()->by_id( get_the_ID() );
 
@@ -222,13 +244,13 @@ class Editor {
 	 */
 	public function gistpen_meta_box_order(){
 		return array(
-				'normal'   => join( ",", array(
+				'normal'   => join( ',', array(
 					'gistfile_editor',
 					'submitdiv',
 					'trackbacksdiv',
 					'tagsdiv-post_tag',
 					'commentstatusdiv',
-					'wpseo_meta'
+					'wpseo_meta',
 				) ),
 				'side'     => '',
 				'advanced' => '',
@@ -257,14 +279,14 @@ class Editor {
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'gistpen_files' === $column_name ) {
-			$zip = Query::get( $post_id );
-			echo "<ul>";
+			$zip = $this->database->query()->by_id( $post_id );
+			echo '<ul>';
 			foreach ( $zip->get_files() as $file ) {
-				echo "<li>";
+				echo '<li>';
 				echo $file->get_filename();
-				echo "</li>";
+				echo '</li>';
 			}
-			echo "</ul>";
+			echo '</ul>';
 		}
 	}
 
@@ -276,7 +298,7 @@ class Editor {
 	 * @since  0.4.0
 	 */
 	public function edit_screen_orderby( $orderby, $query ) {
-		if( is_admin() && $query->query_vars['post_type'] === 'gistpen' ) {
+		if ( is_admin() && $query->query_vars['post_type'] === 'gistpen' ) {
 			$orderby = 'wp_posts.post_date DESC';
 		}
 

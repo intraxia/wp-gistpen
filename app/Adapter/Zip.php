@@ -55,7 +55,7 @@ class Zip {
 	public function by_array( $data ) {
 		$zip = $this->blank();
 
-		$data = array_intersect_key( $data, array_flip( array( "description", "ID", "status", "password" ) ) );
+		$data = array_intersect_key( $data, array_flip( array( 'description', 'ID', 'status', 'password' ) ) );
 
 		foreach ( $data as $key => $value ) {
 			$function = 'set_' . $key;

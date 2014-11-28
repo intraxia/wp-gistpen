@@ -34,6 +34,30 @@ class Adapter {
 	private $version;
 
 	/**
+	 * WP_Gistpen\Adapter\File object
+	 *
+	 * @var FileAdapter
+	 * @since 0.5.0
+	 */
+	private $file;
+
+	/**
+	 * WP_Gistpen\Adapter\Language object
+	 *
+	 * @var LanguageAdapter
+	 * @since 0.5.0
+	 */
+	private $language;
+
+	/**
+	 * WP_Gistpen\Adapter\Zip object
+	 *
+	 * @var ZipAdapter
+	 * @since 0.5.0
+	 */
+	private $zip;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
