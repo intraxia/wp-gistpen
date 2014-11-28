@@ -34,25 +34,25 @@ class Adapter {
 	private $version;
 
 	/**
-	 * Adapter\File object
+	 * WP_Gistpen\Adapter\File object
 	 *
-	 * @var Adapter\File
+	 * @var FileAdapter
 	 * @since 0.5.0
 	 */
 	private $file;
 
 	/**
-	 * Adapter\Language object
+	 * WP_Gistpen\Adapter\Language object
 	 *
-	 * @var Adapter\Language
+	 * @var LanguageAdapter
 	 * @since 0.5.0
 	 */
 	private $language;
 
 	/**
-	 * Adapter\Zip object
+	 * WP_Gistpen\Adapter\Zip object
 	 *
-	 * @var Adapter\Zip
+	 * @var ZipAdapter
 	 * @since 0.5.0
 	 */
 	private $zip;

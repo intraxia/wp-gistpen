@@ -40,7 +40,7 @@ class Query {
 	/**
 	 * Adapter Facade object
 	 *
-	 * @var Facade\Adapter
+	 * @var Adapter
 	 * @since  0.5.0
 	 */
 	private $adapter;

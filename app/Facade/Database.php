@@ -33,17 +33,17 @@ class Database {
 	private $version;
 
 	/**
-	 * Database\Query object
+	 * WP_Gistpen\Database\Query object
 	 *
-	 * @var Database\Query
+	 * @var Query
 	 * @since 0.5.0
 	 */
 	private $query;
 
 	/**
-	 * Database\Persistance object
+	 * WP_Gistpen\Database\Persistance object
 	 *
-	 * @var Database\Persistance
+	 * @var Persistance
 	 * @since 0.5.0
 	 */
 	private $persistance;

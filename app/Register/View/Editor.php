@@ -64,7 +64,7 @@ class Editor {
 	/**
 	 * Database Facade object
 	 *
-	 * @var Facade\Database
+	 * @var Database
 	 * @since 0.5.0
 	 */
 	private $database;
@@ -72,7 +72,7 @@ class Editor {
 	/**
 	 * Adapter Facade object
 	 *
-	 * @var Facade\Adapter
+	 * @var Adapter
 	 * @since  0.5.0
 	 */
 	private $adapter;
@@ -93,6 +93,11 @@ class Editor {
 
 	}
 
+	/**
+	 * Display any errors from the save hooks in the admin dashboard
+	 *
+	 * @since 0.4.0
+	 */
 	public function add_admin_errors() {
 		if ( array_key_exists( 'gistpen-errors', $_GET ) ) { ?>
 			<div class="error">

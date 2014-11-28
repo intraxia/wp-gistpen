@@ -43,7 +43,7 @@ class Ajax {
 	/**
 	 * Database Facade object
 	 *
-	 * @var Facade\Database
+	 * @var Database
 	 * @since 0.5.0
 	 */
 	private $database;
@@ -51,7 +51,7 @@ class Ajax {
 	/**
 	 * Adapter Facade object
 	 *
-	 * @var Facade\Adapter
+	 * @var Adapter
 	 * @since  0.5.0
 	 */
 	private $adapter;

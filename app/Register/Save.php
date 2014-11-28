@@ -35,7 +35,7 @@ class Save {
 	/**
 	 * Database Facade object
 	 *
-	 * @var Facade\Database
+	 * @var Database
 	 * @since 0.5.0
 	 */
 	private $database;
@@ -43,7 +43,7 @@ class Save {
 	/**
 	 * Adapter Facade object
 	 *
-	 * @var Facade\Adapter
+	 * @var Adapter
 	 * @since  0.5.0
 	 */
 	private $adapter;

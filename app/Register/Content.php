@@ -41,7 +41,7 @@ class Content {
 	/**
 	 * Database Facade object
 	 *
-	 * @var Facade\Database
+	 * @var Database
 	 * @since 0.5.0
 	 */
 	private $database;
