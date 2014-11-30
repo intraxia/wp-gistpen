@@ -50,6 +50,7 @@ class App {
 	public $editor;
 	public $migration;
 	public $prism;
+	public $save;
 	public $settings;
 	public $tinymce;
 	public $web;
@@ -97,6 +98,7 @@ class App {
 		$this->define_editor_hooks();
 		$this->define_migration_hooks();
 		$this->define_prism_hooks();
+		$this->define_save_hooks();
 		$this->define_settings_hooks();
 		$this->define_tinymce_hooks();
 		$this->define_web_hooks();
@@ -257,6 +259,20 @@ class App {
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->prism, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->prism, 'enqueue_scripts' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the saving and deleting posts.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function define_save_hooks() {
+
+		$this->save = new Register\Save( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'save_post_gistpen', $this->save, 'save_post_hook' );
 
 	}
 

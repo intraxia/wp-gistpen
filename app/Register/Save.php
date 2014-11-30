@@ -104,6 +104,10 @@ class Save {
 
 		$zip = $this->database->query()->by_id( $post_id );
 
+		if ( ! $zip instanceof \WP_Gistpen\Model\Zip ) {
+			return;
+		}
+
 		if ( is_wp_error( $zip ) ) {
 			// @todo create ourselves a blank zip
 			$zip = $this->adapter->build( 'zip' )->blank();
@@ -136,14 +140,14 @@ class Save {
 			unset($file);
 		}
 
-		remove_action( 'save_post_gistpen', array( $this, 'save_post_hook' ) );
+		remove_action( 'save_post_gistpen', array( $this, 'save_post_hook' ), 10, 1 );
 
 		$result = $this->database->persist()->by_zip( $zip );
 		if ( is_wp_error( $result ) ) {
 			$this->errors .= $result->get_error_code() . ',';
 		}
 
-		add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ) );
+		add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ), 10, 1 );
 
 		$this->check_errors();
 	}

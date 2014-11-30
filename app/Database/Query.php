@@ -128,7 +128,7 @@ class Query {
 	 */
 	public function by_post( $post ) {
 		if ( $post->post_type !== 'gistpen' ) {
-			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
+			return new \WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
 		}
 
 		if ( 0 !== $post->post_parent ) {

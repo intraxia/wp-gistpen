@@ -89,13 +89,13 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 
 		$_POST['file_ids'] .= ' ' . $file_id;
 
-		$file_id = "-" . $file_id;
+		$file_id_w_dash = "-" . $file_id;
 
-		$_POST['wp-gistpenfile-slug' . $file_id] = "New title " . $file_id;
-		$_POST['wp-gistpenfile-code' . $file_id] = "New content " . $file_id;
-		$_POST['wp-gistpenfile-language' . $file_id] = 'js';
+		$_POST['wp-gistpenfile-slug' . $file_id_w_dash] = "New title " . $file_id;
+		$_POST['wp-gistpenfile-code' . $file_id_w_dash] = "New content " . $file_id;
+		$_POST['wp-gistpenfile-language' . $file_id_w_dash] = 'js';
 
-		$this->save->save_post_hook( $this->gistpen->ID );
+		wp_update_post( array( 'ID'=> $this->gistpen->ID ) );
 
 		$zip = $this->database->query()->by_id( $this->gistpen->ID );
 

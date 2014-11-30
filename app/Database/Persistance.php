@@ -8,8 +8,6 @@ namespace WP_Gistpen\Database;
  * @copyright 2014 James DiGioia
  */
 
-use \stdClass;
-use \WP_Post;
 use WP_Gistpen\Model\File;
 use WP_Gistpen\Model\Language;
 
@@ -81,7 +79,9 @@ class Persistance {
 		$post_id = $result;
 		unset($result);
 
-		foreach ( $zip->get_files() as $file ) {
+		$files = $zip->get_files();
+
+		foreach ( $files as $file ) {
 			$data = array(
 				'post_name'     => $file->get_slug(),
 				'post_content'  => $file->get_code(),
@@ -116,7 +116,6 @@ class Persistance {
 	 * @since  0.4.0
 	 */
 	public function by_file_and_zip_id( $file, $zip_id ) {
-		// @todo manipulate into necessary array
 		$data = array(
 			'post_name'     => $file->get_slug(),
 			'post_content'  => $file->get_code(),
