@@ -48,12 +48,12 @@ class Data {
 	 *
 	 * @since    0.1.0
 	 */
-	public function post_type() {
+	public function post_type_gistpen() {
 		$labels = array(
 			'name'                => _x( 'Gistpens', 'Post Type General Name', $this->plugin_name ),
 			'singular_name'       => _x( 'Gistpen', 'Post Type Singular Name', $this->plugin_name ),
 			'menu_name'           => __( 'Gistpens', $this->plugin_name ),
-			'parent_item_colon'   => __( 'Parent Gistpen', $this->plugin_name ),
+			'parent_item_colon'   => __( 'Parent Gistpen:', $this->plugin_name ),
 			'all_items'           => __( 'All Gistpens', $this->plugin_name ),
 			'view_item'           => __( 'View Gistpen', $this->plugin_name ),
 			'add_new_item'        => __( 'Add New Gistpen', $this->plugin_name ),
@@ -61,8 +61,8 @@ class Data {
 			'edit_item'           => __( 'Edit Gistpen', $this->plugin_name ),
 			'update_item'         => __( 'Update Gistpen', $this->plugin_name ),
 			'search_items'        => __( 'Search Gistpens', $this->plugin_name ),
-			'not_found'           => __( 'Gistpen Not found', $this->plugin_name ),
-			'not_found_in_trash'  => __( 'Gistpen Not found in Trash', $this->plugin_name ),
+			'not_found'           => __( 'Gistpen not found', $this->plugin_name ),
+			'not_found_in_trash'  => __( 'No Gistpens found in Trash', $this->plugin_name ),
 		);
 		$args = array(
 			'label'                => __( 'gistpens', $this->plugin_name ),
@@ -96,7 +96,7 @@ class Data {
 	 *
 	 * @since    0.1.0
 	 */
-	public function language_tax() {
+	public function taxonomy_language() {
 
 		$labels = array(
 			'name'                       => _x( 'Languages', 'Taxonomy General Name', $this->plugin_name ),

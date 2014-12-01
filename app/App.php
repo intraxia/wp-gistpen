@@ -133,8 +133,8 @@ class App {
 	private function register_data() {
 		$this->data = new Register\Data( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'init', $this->data, 'post_type' );
-		$this->loader->add_action( 'init', $this->data, 'language_tax' );
+		$this->loader->add_action( 'init', $this->data, 'post_type_gistpen' );
+		$this->loader->add_action( 'init', $this->data, 'taxonomy_language' );
 		// Register the settings page
 		$this->loader->add_shortcode( 'gistpen', $this->data, 'add_shortcode' );
 	}
