@@ -144,6 +144,14 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertGreaterThan( 0, $terms );
 	}
 
+	function set_up_0_5_0_test_posts() {
+		$this->create_post_and_children();
+	}
+
+	function test_update_to_0_5_0() {
+		$this->markTestIncomplete('Migration deletes revisions, but means to save them not currently available.');
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}

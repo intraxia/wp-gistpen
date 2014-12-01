@@ -142,6 +142,10 @@ class Migration {
 			$this->update_to_0_4_0();
 		}
 
+		if ( version_compare( $version, '0.5.0', '<' ) ) {
+			$this->update_to_0_5_0();
+		}
+
 	}
 
 	/**
@@ -315,6 +319,28 @@ class Migration {
 		}
 
 		flush_rewrite_rules( true );
+	}
+
+	/**
+	 * Update the database to version 0.5.0
+	 *
+	 * Takes care of:
+	 * * Deleting all the current (useless) post revisions
+	 *
+	 * @since 0.5.0
+	 */
+	public function update_to_0_5_0() {
+		$posts = get_posts( array(
+			'post_type' => 'revision',
+			'post_status' => 'any',
+			'nopaging' => 'true',
+		));
+
+		foreach ($posts as $post) {
+			if ( get_post_type( $post->post_parent ) === 'gistpen' ) {
+				wp_delete_post( $post->ID, true );
+			}
+		}
 	}
 
 }
