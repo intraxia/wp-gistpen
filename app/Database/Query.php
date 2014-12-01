@@ -108,7 +108,7 @@ class Query {
 		$this->args['s'] = $search;
 
 		$search_results = get_posts( $this->args );
-		unset($this->args['s']);
+		unset( $this->args['s'] );
 
 		if ( empty( $search_results ) ) {
 			return $search_results;
@@ -182,10 +182,10 @@ class Query {
 	 * Retrieves the all the files for a zip's WP_Post object
 	 *
 	 * @param  WP_Post $post
-	 * @return array|WP_Error       array of Files
+	 * @return array       array of Files
 	 * @since  0.4.0
 	 */
-	protected function files_by_post( $post ) {
+	public function files_by_post( $post ) {
 		$file_posts = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID,

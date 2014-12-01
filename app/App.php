@@ -273,6 +273,8 @@ class App {
 		$this->save = new Register\Save( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'save_post_gistpen', $this->save, 'save_post_hook' );
+		$this->loader->add_action( 'transition_post_status', $this->save, 'sync_post_status', 10, 3 );
+		$this->loader->add_action( 'before_delete_post', $this->save, 'delete_post_hook' );
 
 	}
 

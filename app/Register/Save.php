@@ -166,31 +166,76 @@ class Save {
 
 	/**
 	 * Adds the errors to the url, if any
+	 *
 	 * @param  string $location Current GET params
 	 * @return string           Updated GET params
+	 * @since  0.5.0
 	 */
 	public function return_errors( $location ) {
 		return add_query_arg( 'gistpen-errors', rtrim( $this->errors, ',' ), $location );
 	}
 
 	/**
+	 * Keeps the File's post_status in sync with
+	 * the Zip's post_status
+	 *
+	 * @param  string $old_status
+	 * @param  string $new_status
+	 * @param  obj    $post       WP_Post object for zip
+	 * @since  0.5.0
+	 */
+	public function sync_post_status( $new_status, $old_status, $post ) {
+		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent && $new_status !== $old_status ) {
+			// set to old status so we can query on it
+			$post->post_status = $old_status;
+
+			$files = $this->database->query()->files_by_post( $post );
+
+			foreach ( $files as $file ) {
+				remove_action( 'save_post_gistpen', array( $this, 'save_post_hook' ) );
+				remove_action( 'transition_post_status', array( $this, 'sync_post_status' ) );
+
+				$result = wp_update_post( array(
+					'ID' => $file->get_ID(),
+					'post_status' => $new_status,
+				), true );
+
+				add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ) );
+				add_action( 'transition_post_status', array( $this, 'sync_post_status' ), 10, 3 );
+
+				if ( is_wp_error( $result ) ) {
+					$this->errors .= $result->get_error_code() . ',';
+				}
+			}
+		}
+	}
+
+
+	/**
 	 * Deletes the files when a zip gets deleted
+	 *
 	 * @param  int $post_id post ID of the zip being deleted
 	 * @since  0.5.0
 	 */
 	public function delete_post_hook( $post_id ) {
-		$zip = $this->database->query()->by_id( $post_id );
+		$post = get_post( $post_id );
 
-		$files = $zip->get_files();
+		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
+			$zip = $this->database->query()->by_post( $post );
 
-		foreach ( $files as $file ) {
-			$result = wp_delete_post( $file->get_ID(), true );
+			$files = $zip->get_files();
 
-			if ( is_wp_error( $result ) ) {
-				$this->errors .= $result->get_error_code() . ',';
+			foreach ( $files as $file ) {
+				remove_action( 'delete_post', array( $this, 'delete_post_hook' ) );
+				$result = wp_delete_post( $file->get_ID(), true );
+				add_action( 'delete_post', array( $this, 'delete_post_hook' ) );
+
+				if ( is_wp_error( $result ) ) {
+					$this->errors .= $result->get_error_code() . ',';
+				}
 			}
-		}
 
-		$this->check_errors();
+			$this->check_errors();
+		}
 	}
 }
