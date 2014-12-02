@@ -57,6 +57,14 @@ class Save {
 	public $errors = '';
 
 	/**
+	 * Files array to be added to zip
+	 *
+	 * @var array
+	 * @since 0.5.0
+	 */
+	private $files;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -97,43 +105,25 @@ class Save {
 		}
 
 		$file_ids = explode( ' ', trim( $_POST['file_ids'] ) );
-
 		if ( empty( $file_ids ) ) {
 			return;
 		}
 
 		$zip = $this->database->query()->by_id( $post_id );
-
 		if ( ! $zip instanceof \WP_Gistpen\Model\Zip ) {
 			return;
 		}
 
-		if ( is_wp_error( $zip ) ) {
-			// @todo create ourselves a blank zip
-			$zip = $this->adapter->build( 'zip' )->blank();
-		}
+		$this->files = $zip->get_files();
 
 		foreach ( $file_ids as $file_id ) {
 
-			$files = $zip->get_files();
+			$file = $this->get_file( $file_id );
+			$args = $this->get_args( '-' . $file_id );
 
-			if ( array_key_exists( $file_id, $files ) ) {
-				$file = $files[ $file_id ];
-			} else {
-				$file = $this->adapter->build( 'file' )->blank();
-
-				// check if post exists
-				if ( get_post_status( $file_id ) ) {
-					// we'll use it if it does
-					$file->set_ID( $file_id );
-				}
-			}
-
-			$file_id_w_dash = '-' . $file_id;
-
-			$file->set_slug( $_POST[ 'wp-gistpenfile-slug' . $file_id_w_dash ] );
-			$file->set_code( $_POST[ 'wp-gistpenfile-code' . $file_id_w_dash ] );
-			$file->set_language( $this->adapter->build( 'language' )->by_slug( $_POST[ 'wp-gistpenfile-language' . $file_id_w_dash ] ) );
+			$file->set_slug( $args['slug'] );
+			$file->set_code( $args['code'] );
+			$file->set_language( $args['language'] );
 
 			$zip->add_file( $file );
 
@@ -150,6 +140,48 @@ class Save {
 		add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ), 10, 1 );
 
 		$this->check_errors();
+	}
+
+	/**
+	 * Retrieves a File object based on the file ID
+	 *
+	 * @param  int                   $file_id post ID of the file
+	 * @return WP_Gistpen\Model\File          File model object
+	 * @since  0.5.0
+	 */
+	private function get_file( $file_id ) {
+		if ( array_key_exists( $file_id, $this->files ) ) {
+			$file = $this->files[ $file_id ];
+		} else {
+			$file = $this->adapter->build( 'file' )->blank();
+
+			// check if post exists
+			if ( get_post_status( $file_id ) ) {
+				// we'll use it if it does
+				$file->set_ID( $file_id );
+			}
+		}
+
+		return $file;
+	}
+
+	/**
+	 * Retrieves, validates, and organizes the arguments for the File
+	 * from the $_POST superglobal
+	 *
+	 * @param  string $file_id_w_dash
+	 * @return array                 Arguments required for manipulating File model object
+	 * @since  0.5.0
+	 */
+	private function get_args( $file_id_w_dash ) {
+		$args = array();
+
+		// @todo validation
+		$args['slug'] = $_POST[ 'wp-gistpenfile-slug' . $file_id_w_dash ];
+		$args['code'] = $_POST[ 'wp-gistpenfile-code' . $file_id_w_dash ];
+		$args['language'] = $this->adapter->build( 'language' )->by_slug( $_POST[ 'wp-gistpenfile-language' . $file_id_w_dash ] );
+
+		return $args;
 	}
 
 	/**
