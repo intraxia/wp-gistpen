@@ -281,13 +281,11 @@ class Editor {
 	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'gistpen_files' === $column_name ) {
 			$zip = $this->database->query()->by_id( $post_id );
-			echo '<ul>';
+
 			foreach ( $zip->get_files() as $file ) {
-				echo '<li>';
 				echo $file->get_filename();
-				echo '</li>';
+				echo '<br>';
 			}
-			echo '</ul>';
 		}
 	}
 
