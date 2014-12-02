@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Database;
+namespace WP_Gistpen\Database\Query;
 
 /**
  * @package   WP_Gistpen
@@ -17,7 +17,7 @@ use WP_Gistpen\Facade\Adapter;
  * @package WP_Gistpen_Query
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Query {
+class Head {
 
 	/**
 	 * The ID of this plugin.

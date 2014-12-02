@@ -1,6 +1,6 @@
 <?php
 
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Database\Query\Head as Query;
 use WP_Gistpen\Model\Zip;
 use WP_Gistpen\Model\File;
 use WP_Gistpen\Model\Language;

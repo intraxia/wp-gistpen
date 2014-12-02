@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Database;
+namespace WP_Gistpen\Database\Persistance;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -15,10 +15,10 @@ use WP_Gistpen\Model\Language;
  * This class manipulates the saving of parent Gistpen
  * and all child Gistpens.
  *
- * @package Persistance
+ * @package Head
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Persistance {
+class Head {
 
 	/**
 	 * The ID of this plugin.

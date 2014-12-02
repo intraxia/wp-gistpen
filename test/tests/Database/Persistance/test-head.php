@@ -1,7 +1,7 @@
 <?php
 
-use WP_Gistpen\Database\Persistance;
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Database\Persistance\Head as Persistance;
+use WP_Gistpen\Database\Query\Head as Query;
 use WP_Gistpen\Facade\Adapter;
 
 /**
