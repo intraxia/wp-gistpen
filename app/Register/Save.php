@@ -57,6 +57,14 @@ class Save {
 	public $errors = '';
 
 	/**
+	 * ID of current ZIP
+	 *
+	 * @var int
+	 * @since 0.5.0
+	 */
+	private $ID;
+
+	/**
 	 * Files array to be added to zip
 	 *
 	 * @var array
@@ -83,8 +91,9 @@ class Save {
 
 	/**
 	 * save_post action hook callback
-	 * to save all the files and
-	 * attach them to the Gistpen
+	 *
+	 * Checks if it's a Gistpen or a revision
+	 * and handles them appropriately.
 	 *
 	 * @param  int    $gistpen_id  Gistpen post id
 	 * @since  0.4.0
@@ -95,11 +104,24 @@ class Save {
 			return;
 		}
 
-		if ( wp_is_post_revision( $post_id ) || wp_is_post_autosave( $post_id )  ) {
-			// @todo save revision children + autosave
+		$this->ID = $post_id;
+
+		if ( wp_is_post_revision( $this->ID ) && 'gistpen' === get_post_type( wp_get_post_parent_id( $this->ID ) ) ) {
 			return;
+		} elseif ( 'gistpen' === get_post_type( $this->ID ) ) {
+			$this->save_head();
 		}
 
+		$this->check_errors();
+	}
+
+	/**
+	 * Saves the latest zip data in the main database row
+	 * Uses git naming conventions
+	 *
+	 * @since 0.5.0
+	 */
+	private function save_head() {
 		if ( ! array_key_exists( 'file_ids', $_POST ) ) {
 			return;
 		}
@@ -109,17 +131,37 @@ class Save {
 			return;
 		}
 
-		$zip = $this->database->query()->by_id( $post_id );
+		$zip = $this->database->query()->by_id( $this->ID );
 		if ( ! $zip instanceof \WP_Gistpen\Model\Zip ) {
 			return;
 		}
 
+		$zip = $this->update_zip_from_post_global( $zip, $file_ids );
+
+		remove_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
+
+		$result = $this->database->persist()->by_zip( $zip );
+		if ( is_wp_error( $result ) ) {
+			$this->errors .= $result->get_error_code() . ',';
+		}
+
+		add_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
+	}
+
+	/**
+	 * Updates the files array past on the current $_POST data
+	 *
+	 * @param  WP_Gistpen\Model\Zip    $zip  object to update
+	 * @return WP_Gistpen\Model\Zip          updated object
+	 * @since  0.5.0
+	 */
+	private function update_zip_from_post_global( $zip, $file_ids ) {
 		$this->files = $zip->get_files();
 
 		foreach ( $file_ids as $file_id ) {
 
 			$file = $this->get_file( $file_id );
-			$args = $this->get_args( '-' . $file_id );
+			$args = $this->get_args( $file_id );
 
 			$file->set_slug( $args['slug'] );
 			$file->set_code( $args['code'] );
@@ -130,16 +172,7 @@ class Save {
 			unset($file);
 		}
 
-		remove_action( 'save_post_gistpen', array( $this, 'save_post_hook' ), 10, 1 );
-
-		$result = $this->database->persist()->by_zip( $zip );
-		if ( is_wp_error( $result ) ) {
-			$this->errors .= $result->get_error_code() . ',';
-		}
-
-		add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ), 10, 1 );
-
-		$this->check_errors();
+		return $zip;
 	}
 
 	/**
@@ -173,13 +206,13 @@ class Save {
 	 * @return array                 Arguments required for manipulating File model object
 	 * @since  0.5.0
 	 */
-	private function get_args( $file_id_w_dash ) {
+	private function get_args( $file_id ) {
 		$args = array();
 
 		// @todo validation
-		$args['slug'] = $_POST[ 'wp-gistpenfile-slug' . $file_id_w_dash ];
-		$args['code'] = $_POST[ 'wp-gistpenfile-code' . $file_id_w_dash ];
-		$args['language'] = $this->adapter->build( 'language' )->by_slug( $_POST[ 'wp-gistpenfile-language' . $file_id_w_dash ] );
+		$args['slug'] = $_POST[ 'wp-gistpenfile-slug-' . $file_id ];
+		$args['code'] = $_POST[ 'wp-gistpenfile-code-' . $file_id ];
+		$args['language'] = $this->adapter->build( 'language' )->by_slug( $_POST[ 'wp-gistpenfile-language-' . $file_id ] );
 
 		return $args;
 	}

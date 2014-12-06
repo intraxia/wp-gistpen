@@ -88,6 +88,12 @@ class Dashboard {
 		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
 		wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Language::$supported );
 
+		$screen = get_current_screen();
+
+		if ( 'gistpen' === $screen->id ) {
+			wp_dequeue_script( 'autosave' );
+		}
+
 	}
 
 }

@@ -56,7 +56,7 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 			$_POST['wp-gistpenfile-language' . $file_id] = 'js';
 		}
 
-		$this->save->save_post_hook( $this->gistpen->ID );
+		wp_update_post( array( 'ID'=> $this->gistpen->ID ) );
 
 		$zip = $this->database->query()->by_id( $this->gistpen->ID );
 
