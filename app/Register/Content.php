@@ -98,7 +98,22 @@ class Content {
 				return;
 			}
 
-			return $zip->get_post_content();
+			$content .= $zip->get_post_content();
+
+			// @todo this can be refactored away somewhere
+			// into Collection object?
+			// $revisions = $this->database->query( 'commit' )->all_by_parent_id( $post->ID );
+
+			// if ( ! empty( $revisions ) ) {
+
+			// 	foreach ( $revisions as $revision ) {
+			// 		$content .= "<small>";
+			// 		$content .= hash( 'md5', $revision->get_post_content() );
+			// 		$content .= "</small>";
+			// 		$content .= "<br>";
+			// 	}
+			// }
+
 		}
 
 		return $content;
