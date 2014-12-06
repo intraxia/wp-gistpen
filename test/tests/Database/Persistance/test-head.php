@@ -7,7 +7,7 @@ use WP_Gistpen\Facade\Adapter;
 /**
  * @group  database
  */
-class WP_Gistpen_Persistance_Test extends WP_Gistpen_UnitTestCase {
+class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

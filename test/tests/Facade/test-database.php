@@ -35,6 +35,12 @@ class WP_Gistpen_Facade_Database_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInstanceOf('WP_Gistpen\Database\Persistance\Head', $persist );
 	}
 
+	function test_get_commit_persistance() {
+		$persist = $this->database->persist( 'commit' );
+
+		$this->assertInstanceOf('WP_Gistpen\Database\Persistance\Commit', $persist );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}
