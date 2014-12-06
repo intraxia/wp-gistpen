@@ -86,8 +86,8 @@ class Database {
 	 * @since 0.5.0
 	 */
 	public function persist( $type = 'head' ) {
-		if ( ! array_key_exists( $type, $this->query ) ) {
-			throw new \Exception( "Can't query on type {$type}" );
+		if ( ! array_key_exists( $type, $this->persistance ) ) {
+			throw new \Exception( "Can't persist on type {$type}" );
 		}
 
 		return $this->persistance[ $type ];
