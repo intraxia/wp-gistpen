@@ -2,6 +2,7 @@
 namespace WP_Gistpen\Facade;
 
 use WP_Gistpen\Database\Query\Head as HeadQuery;
+use WP_Gistpen\Database\Query\Commit as CommitQuery;
 use WP_Gistpen\Database\Persistance\Head as HeadPersistance;
 use WP_Gistpen\Database\Persistance\Commit as CommitPersistance;
 
@@ -62,6 +63,7 @@ class Database {
 		$this->version = $version;
 
 		$this->query['head'] = new HeadQuery( $this->plugin_name, $this->version );
+		$this->query['commit'] = new CommitQuery( $this->plugin_name, $this->version );
 
 		$this->persistance['head'] = new HeadPersistance( $this->plugin_name, $this->version );
 		$this->persistance['commit'] = new CommitPersistance( $this->plugin_name, $this->version );

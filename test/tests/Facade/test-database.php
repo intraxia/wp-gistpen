@@ -23,6 +23,12 @@ class WP_Gistpen_Facade_Database_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInstanceOf('WP_Gistpen\Database\Query\Head', $query );
 	}
 
+	function test_get_commit_query() {
+		$query = $this->database->query( 'commit' );
+
+		$this->assertInstanceOf('WP_Gistpen\Database\Query\Commit', $query );
+	}
+
 	function test_get_head_persistance() {
 		$persist = $this->database->persist( 'head' );
 
