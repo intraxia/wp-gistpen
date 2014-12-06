@@ -81,8 +81,8 @@ class File {
 		if ( isset( $post->post_content ) ) {
 			$file->set_code( $post->post_content );
 		}
-		if ( isset( $post->post_name ) ) {
-			$file->set_slug( $post->post_name );
+		if ( isset( $post->post_title ) ) {
+			$file->set_slug( $post->post_title );
 		}
 
 		return $file;

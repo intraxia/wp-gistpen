@@ -39,6 +39,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->gistpens = $this->factory->post->create_many( $num_posts, array(
 			'post_type' => 'gistpens',
+			'post_status' => 'publish',
 		), array(
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
 			'post_name' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
@@ -109,7 +110,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 			$this->assertContains( 'Post content', $child->post_content );
 
 			// The child post should have the correct filename
-			$this->assertEmpty( $child->post_title );
+			$this->assertContains( 'post-title', $child->post_title );
 			$this->assertContains( 'post-title', $child->post_name );
 
 			// The child should be a gistpen
@@ -127,7 +128,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 		$posts = get_posts( array(
 			'post_type' => 'gistpens',
 			'posts_per_page' => -1,
-			'post_status' => 'any'
+			'post_status' => 'publish'
 		) );
 
 		// There should be no gistpens left behind

@@ -83,7 +83,7 @@ class Head {
 
 		foreach ( $files as $file ) {
 			$data = array(
-				'post_name'     => $file->get_slug(),
+				'post_title'    => $file->get_slug(),
 				'post_content'  => $file->get_code(),
 				'post_status'   => $zip->get_status(),
 				'post_parent'   => $post_id,
@@ -117,7 +117,7 @@ class Head {
 	 */
 	public function by_file_and_zip_id( $file, $zip_id ) {
 		$data = array(
-			'post_name'     => $file->get_slug(),
+			'post_title'    => $file->get_slug(),
 			'post_content'  => $file->get_code(),
 			'post_status'   => get_post_status( $zip_id ),
 			'post_parent'   => $zip_id,
