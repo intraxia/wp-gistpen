@@ -192,16 +192,7 @@ class Editor {
 
 			$files = $zip->get_files();
 
-			if ( empty( $files ) ) {
-				$files[] = $this->adapter->build( 'file' )->blank();
-			} else {
-				foreach ( $files as $file ) {
-					// unindex the array or we get indexed JSON
-					$files[] = $file;
-				}
-			}
-
-			$jsFiles = json_encode( $files ); ?>
+			$jsFiles = $this->adapter->build( 'file' )->to_json( $files ); ?>
 
 			<script type="text/javascript">
 				jQuery(function() {

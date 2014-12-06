@@ -97,4 +97,32 @@ class File {
 	public function blank() {
 		return new FileModel( $this->plugin_name, $this->version );
 	}
+
+	/**
+	 * Transforms an array of files to json
+	 *
+	 * @param  array  $files array of files to transform
+	 * @return string        file data in json
+	 */
+	public function to_json($files) {
+		if ( empty( $files ) ) {
+				return json_encode( array() );
+		}
+
+		$json = array();
+
+		foreach ( $files as $file ) {
+
+			$data = new \stdClass;
+			$data->slug = $file->get_slug();
+			$data->code = $file->get_code();
+			$data->ID = $file->get_ID();
+			$data->language = new \stdClass;
+			$data->language->slug = $file->get_language()->get_slug();
+
+			$json[] = $data;
+		}
+
+		return json_encode( $json );
+	}
 }
