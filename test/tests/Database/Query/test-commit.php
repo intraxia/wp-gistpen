@@ -1,10 +1,7 @@
 <?php
 
 use WP_Gistpen\Database\Query\Commit as Query;
-use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Model\Zip;
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
 
 /**
  * @group database
@@ -18,12 +15,11 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->create_post_and_children();
 
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-
-		$parent_zip = $this->database->query()->by_id( $this->gistpen->ID );
-		$this->database->persist( 'commit' )->by_parent_zip( $parent_zip );
-
 		$this->query = new Query( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+
+		$migration = new WP_Gistpen\Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		delete_post_meta( $this->gistpen->ID, 'wpgp_revisions' );
+		$migration->update_to_0_5_0();
 	}
 
 	function test_get_commits() {

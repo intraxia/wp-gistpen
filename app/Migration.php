@@ -336,10 +336,23 @@ class Migration {
 			'nopaging' => 'true',
 		));
 
-		foreach ($posts as $post) {
+		foreach ( $posts as $post ) {
 			if ( get_post_type( $post->post_parent ) === 'gistpen' ) {
 				wp_delete_post( $post->ID, true );
 			}
+		}
+
+		$posts = get_posts( array(
+			'post_type'   => 'gistpen',
+			'post_status' => 'any',
+			'nopaging'    => 'true',
+			'post_parent' => 0,
+		));
+
+		foreach ( $posts as $post ) {
+			$zip = $this->adapter->build( 'zip' )->by_post( $post );
+
+			$this->database->persist( 'commit' )->by_parent_zip( $zip );
 		}
 	}
 

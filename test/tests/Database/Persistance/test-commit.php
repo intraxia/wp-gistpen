@@ -15,12 +15,23 @@ class WP_Gistpen_Persistance_Commit_Test extends WP_Gistpen_UnitTestCase {
 		$this->_setRole( 'administrator' );
 		$this->create_post_and_children();
 
+		$posts = get_posts( array(
+			'post_type' => 'revision',
+			'post_status' => 'any',
+			'nopaging' => 'true',
+		));
+
+		foreach ( $posts as $post ) {
+			if ( get_post_type( $post->post_parent ) === 'gistpen' ) {
+				wp_delete_post( $post->ID, true );
+			}
+		}
+
+		delete_post_meta( $this->gistpen->ID, 'wpgp_revisions' );
+
 		$this->persistance = new Persistance( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 		$this->query = new Query( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 		$this->adapter = new Adapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-
-		$this->zip = $this->adapter->build( 'zip' )->blank();
-		$this->file = $this->adapter->build( 'file' )->blank();
 	}
 
 	function test_save_new_commit() {
