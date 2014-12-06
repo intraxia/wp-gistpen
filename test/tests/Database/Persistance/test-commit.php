@@ -26,18 +26,14 @@ class WP_Gistpen_Persistance_Commit_Test extends WP_Gistpen_UnitTestCase {
 	function test_save_new_commit() {
 		$parent_zip = $this->query->by_id( $this->gistpen->ID );
 
-		$revision_id = wp_save_post_revision( $this->gistpen->ID );
-
-		foreach ( $parent_zip->get_files() as $file ) {
-			$this->assertCount( 0, wp_get_post_revisions( $file->get_ID() ) );
-		}
-
-		$result = $this->persistance->by_parent_zip( $parent_zip, $revision_id );
+		$result = $this->persistance->by_parent_zip( $parent_zip );
 
 		$this->assertInternalType( 'array', $result );
-		$this->assertCount( 3, $result['files'] );
+		$this->assertInternalType( 'int', $result['ID'] );
+		$this->assertInternalType( 'array', $result['meta'] );
+		$this->assertCount( 3, $result['meta']['files'] );
 
-		foreach ( $result['files'] as $file_revision_id ) {
+		foreach ( $result['meta']['files'] as $file_revision_id ) {
 			$this->assertEquals( 'revision', get_post_type( $file_revision_id ) );
 		}
 

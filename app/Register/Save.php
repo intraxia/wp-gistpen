@@ -106,11 +106,17 @@ class Save {
 
 		$this->ID = $post_id;
 
-		if ( wp_is_post_revision( $this->ID ) && 'gistpen' === get_post_type( wp_get_post_parent_id( $this->ID ) ) ) {
-			return;
-		} elseif ( 'gistpen' === get_post_type( $this->ID ) ) {
+		remove_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
+
+		if ( 'gistpen' === get_post_type( $this->ID ) ) {
 			$this->save_head();
+
+			if ( 'auto-draft' !== get_post_status( $this->ID ) ) {
+				$this->save_commit();
+			}
 		}
+
+		add_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
 
 		$this->check_errors();
 	}
@@ -138,20 +144,46 @@ class Save {
 
 		$zip = $this->update_zip_from_post_global( $zip, $file_ids );
 
-		remove_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
-
 		$result = $this->database->persist()->by_zip( $zip );
 
 		$this->add_error( $result );
 
-		add_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
+	}
+
+	/**
+	 * Saves a new revision for the current zip data
+	 * Uses git naming conventions
+	 *
+	 * @since 0.5.0
+	 */
+	private function save_commit() {
+		$parent_zip = $this->database->query()->by_id( $this->ID );
+
+		if ( ! $parent_zip instanceof \WP_Gistpen\Model\Zip ) {
+			return;
+		}
+
+		$revisions_meta = get_post_meta( $this->ID, 'wpgp_revisions', true );
+
+		if ( empty( $revisions_meta ) ) {
+			$revisions_meta = array();
+		}
+
+		$result = $this->database->persist( 'commit' )->by_parent_zip( $parent_zip );
+
+		$this->add_error( $result );
+
+		$revisions_meta[ $result['ID'] ] = $result['meta'];
+
+		update_post_meta( $this->ID, 'wpgp_revisions', $revisions_meta );
+
 	}
 
 	/**
 	 * Updates the files array past on the current $_POST data
 	 *
-	 * @param  WP_Gistpen\Model\Zip    $zip  object to update
-	 * @return WP_Gistpen\Model\Zip          updated object
+	 * @param  \WP_Gistpen\Model\Zip    $zip  object to update
+	 * @return \WP_Gistpen\Model\Zip          updated object
 	 * @since  0.5.0
 	 */
 	private function update_zip_from_post_global( $zip, $file_ids ) {
@@ -198,6 +230,19 @@ class Save {
 	}
 
 	/**
+	 * Remove the action hook to save a post revision
+	 *
+	 * We're going to be handling this ourselves on the save_post hook
+	 * @param  int $post_id
+	 * @since  0.5.0
+	 */
+	public function remove_revision_save( $post_id ) {
+		if ( 'gistpen' === get_post_type( $post_id ) ) {
+			remove_action( 'post_updated', 'wp_save_post_revision', 10 );
+		}
+	}
+
+	/**
 	 * Keeps the File's post_status in sync with
 	 * the Zip's post_status
 	 *
@@ -214,7 +259,7 @@ class Save {
 			$files = $this->database->query()->files_by_post( $post );
 
 			foreach ( $files as $file ) {
-				remove_action( 'save_post_gistpen', array( $this, 'save_post_hook' ), 10, 1 );
+				remove_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
 				remove_action( 'transition_post_status', array( $this, 'sync_post_status', 10, 3 ) );
 
 				$result = wp_update_post( array(
@@ -222,7 +267,7 @@ class Save {
 					'post_status' => $new_status,
 				), true );
 
-				add_action( 'save_post_gistpen', array( $this, 'save_post_hook' ), 10, 1 );
+				add_action( 'save_post', array( $this, 'save_post_hook' ), 10, 1 );
 				add_action( 'transition_post_status', array( $this, 'sync_post_status' ), 10, 3 );
 
 				$this->add_error( $result );
@@ -246,9 +291,9 @@ class Save {
 			$files = $zip->get_files();
 
 			foreach ( $files as $file ) {
-				remove_action( 'delete_post', array( $this, 'delete_post_hook' ) );
+				remove_action( 'delete_post', array( $this, 'delete_post_hook' ), 10, 1 );
 				$result = wp_delete_post( $file->get_ID(), true );
-				add_action( 'delete_post', array( $this, 'delete_post_hook' ) );
+				add_action( 'delete_post', array( $this, 'delete_post_hook' ), 10, 1 );
 
 				$this->add_error( $result );
 			}

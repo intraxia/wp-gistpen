@@ -27,6 +27,9 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		foreach ( $this->files as $file ) {
 			wp_set_object_terms( $file, 'php', 'wpgp_language', false );
 		}
+
+		$migration = new WP_Gistpen\Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$migration->update_to_0_5_0();
 	}
 
 	// Source: http://stackoverflow.com/questions/5010300/best-practices-to-test-protected-methods-with-phpunit-on-abstract-classes

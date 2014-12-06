@@ -63,26 +63,24 @@ class Commit {
 		$meta = array();
 		$meta['meta'] = array();
 
+		$result = wp_save_post_revision( $parent_zip->get_ID() );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$meta['ID'] = $result;
+
 		$files = $parent_zip->get_files();
 
 		foreach ( $files as $file ) {
-			$data = array(
-				'post_name'     => $file->get_slug(),
-				'post_content'  => $file->get_code(),
-				'post_parent'   => $file->get_ID(),
-			);
-
-			if ( $file->get_language() !== null ) {
-				$data['tax_input'] = array( 'wpgp_language' => $file->get_language()->get_slug() );
-			}
-
-			$result = $this->by_array( $data );
+			$result = wp_save_post_revision( $file->get_ID() );
 
 			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
 
-			$meta['files'][] = $result;
+			$meta['meta']['files'][] = $result;
 		}
 
 		return $meta;
