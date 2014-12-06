@@ -30,6 +30,7 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 
 		$migration = new WP_Gistpen\Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 		$migration->update_to_0_5_0();
+		delete_post_meta( $this->gistpen->ID, 'wpgp_revisions' );
 	}
 
 	// Source: http://stackoverflow.com/questions/5010300/best-practices-to-test-protected-methods-with-phpunit-on-abstract-classes

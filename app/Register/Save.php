@@ -163,19 +163,9 @@ class Save {
 			return;
 		}
 
-		$revisions_meta = get_post_meta( $this->ID, 'wpgp_revisions', true );
-
-		if ( empty( $revisions_meta ) ) {
-			$revisions_meta = array();
-		}
-
 		$result = $this->database->persist( 'commit' )->by_parent_zip( $parent_zip );
 
 		$this->add_error( $result );
-
-		$revisions_meta[ $result['ID'] ] = $result['meta'];
-
-		update_post_meta( $this->ID, 'wpgp_revisions', $revisions_meta );
 
 	}
 

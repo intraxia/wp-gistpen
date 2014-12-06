@@ -19,21 +19,17 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 		$this->create_post_and_children();
 
 		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+
 		$parent_zip = $this->database->query()->by_id( $this->gistpen->ID );
-		$revisions_meta = array();
-		for ($i=1; $i < 3; $i++) {
-			$result = $this->database->persist( 'commit' )->by_parent_zip( $parent_zip );
-			$revisions_meta[ $result['ID'] ] = $result['meta'];
-		}
-		update_post_meta( $this->gistpen->ID, 'wpgp_revisions', $revisions_meta );
+		$this->database->persist( 'commit' )->by_parent_zip( $parent_zip );
 
 		$this->query = new Query( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 	}
 
-	function test_get_revisions() {
+	function test_get_commits() {
 		$revisions = $this->query->all_by_parent_id( $this->gistpen->ID );
 
-		$this->assertCount( 2, $revisions );
+		$this->assertCount( 1, $revisions );
 
 		foreach ( $revisions as $revision ) {
 			$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $revision );

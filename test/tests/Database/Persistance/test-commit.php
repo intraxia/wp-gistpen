@@ -28,13 +28,16 @@ class WP_Gistpen_Persistance_Commit_Test extends WP_Gistpen_UnitTestCase {
 
 		$result = $this->persistance->by_parent_zip( $parent_zip );
 
-		$this->assertInternalType( 'array', $result );
-		$this->assertInternalType( 'int', $result['ID'] );
-		$this->assertInternalType( 'array', $result['meta'] );
-		$this->assertCount( 3, $result['meta']['files'] );
+		$this->assertCount( 1, $result );
 
-		foreach ( $result['meta']['files'] as $file_revision_id ) {
-			$this->assertEquals( 'revision', get_post_type( $file_revision_id ) );
+		foreach ( $result as $ID => $meta ) {
+			$this->assertInternalType( 'array', $meta );
+			$this->assertInternalType( 'int', $ID );
+			$this->assertCount( 3, $meta['files'] );
+
+			foreach ( $meta['files'] as $file_revision_id ) {
+				$this->assertEquals( 'revision', get_post_type( $file_revision_id ) );
+			}
 		}
 
 		foreach ( $parent_zip->get_files() as $file ) {

@@ -60,16 +60,20 @@ class Commit {
 	 * @since  0.4.0
 	 */
 	public function by_parent_zip( $parent_zip ) {
-		$meta = array();
-		$meta['meta'] = array();
+		$revisions_meta = get_post_meta( $parent_zip->get_ID(), 'wpgp_revisions', true );
+
+		if ( empty( $revisions_meta ) ) {
+			$revisions_meta = array();
+		}
 
 		$result = wp_save_post_revision( $parent_zip->get_ID() );
 
-		if ( is_wp_error( $result ) ) {
-			return $result;
+		if ( empty( $result ) ) {
+			return;
 		}
 
-		$meta['ID'] = $result;
+		$revision_id = $result;
+		$revision_files = array();
 
 		$files = $parent_zip->get_files();
 
@@ -80,10 +84,16 @@ class Commit {
 				return $result;
 			}
 
-			$meta['meta']['files'][] = $result;
+			$revision_files[] = $result;
 		}
 
-		return $meta;
+		$meta['files'] = $revision_files;
+
+		$revisions_meta[ $revision_id ] = $meta;
+
+		update_post_meta( $parent_zip->get_ID(), 'wpgp_revisions', $revisions_meta );
+
+		return $revisions_meta;
 	}
 
 	/**

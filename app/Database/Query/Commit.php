@@ -10,6 +10,7 @@ namespace WP_Gistpen\Database\Query;
  */
 
 use WP_Gistpen\Facade\Adapter;
+use WP_Gistpen\Database\Query\Head as HeadQuery;
 
 /**
  * This class saves and gets Gistpen commits from the database
@@ -46,6 +47,14 @@ class Commit {
 	private $adapter;
 
 	/**
+	 * Database Facade object
+	 *
+	 * @var Database
+	 * @since 0.5.0
+	 */
+	private $database;
+
+	/**
 	 * Default query args
 	 *
 	 * @var  array
@@ -66,6 +75,7 @@ class Commit {
 		$this->version = $version;
 
 		$this->adapter = new Adapter( $plugin_name, $version );
+		$this->head = new HeadQuery( $plugin_name, $version );
 
 	}
 
@@ -80,6 +90,10 @@ class Commit {
 		$revisions_meta = get_post_meta( $parent_id, 'wpgp_revisions', true );
 		$revisions = array();
 
+		if ( empty( $revisions_meta ) ) {
+			return $revisions;
+		}
+
 		foreach ( $revisions_meta as $revision_id => $revision_meta ) {
 			$zip_post = get_post( $revision_id );
 
@@ -89,6 +103,8 @@ class Commit {
 				$file_post = get_post( $file_id );
 
 				$file = $this->adapter->build( 'file' )->by_post( $file_post );
+
+				$file->set_language( $this->head->language_by_post_id( $file_id ) );
 
 				$zip->add_file( $file );
 			}
