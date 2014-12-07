@@ -1,6 +1,9 @@
 <?php
 namespace WP_Gistpen\Register\View;
 
+use WP_Gistpen\Facade\Database;
+use WP_Gistpen\Facade\Adapter;
+
 /**
  * This class registers all of the settings page views
  *
@@ -9,9 +12,6 @@ namespace WP_Gistpen\Register\View;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-
-use WP_Gistpen\Facade\Database;
-
 class Editor {
 
 	/**
@@ -90,6 +90,7 @@ class Editor {
 		$this->version = $version;
 
 		$this->database = new Database( $this->plugin_name, $this->version );
+		$this->adapter = new Adapter( $this->plugin_name, $this->version );
 
 	}
 
@@ -191,16 +192,7 @@ class Editor {
 
 			$files = $zip->get_files();
 
-			if ( empty( $files ) ) {
-				$files[] = $this->adapter->build( 'file' )->blank();
-			} else {
-				foreach ( $files as $file ) {
-					// unindex the array or we get indexed JSON
-					$files[] = $file;
-				}
-			}
-
-			$jsFiles = json_encode( $files ); ?>
+			$jsFiles = $this->adapter->build( 'file' )->to_json( $files ); ?>
 
 			<script type="text/javascript">
 				jQuery(function() {
@@ -280,18 +272,17 @@ class Editor {
 	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'gistpen_files' === $column_name ) {
 			$zip = $this->database->query()->by_id( $post_id );
-			echo '<ul>';
+
 			foreach ( $zip->get_files() as $file ) {
-				echo '<li>';
 				echo $file->get_filename();
-				echo '</li>';
+				echo '<br>';
 			}
-			echo '</ul>';
 		}
 	}
 
 	/**
 	 * Reorders in reverse chron on the Gistpen edit screen
+	 *
 	 * @param  string   $orderby  the query's orderby statement
 	 * @param  WP_Query $query    current query obj
 	 * @return string          new orderby statement

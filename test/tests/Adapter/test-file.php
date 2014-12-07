@@ -80,8 +80,7 @@ class WP_Gistpen_FileAdapter_Test extends WP_Gistpen_UnitTestCase {
 	function test_build_by_post() {
 		$post = new WP_Post( new stdClass );
 		$post->post_content = 'echo $stuff;';
-		$post->post_name = 'test-this';
-		$post->post_title = 'Something irrelevant';
+		$post->post_title = 'Test This';
 		$post->ID = 123;
 
 		$file = $this->adapter->by_post( $post );

@@ -92,7 +92,7 @@ class File {
 	 * @param string $slug File slug
 	 */
 	public function set_slug( $slug ) {
-		$this->slug = $slug;
+		$this->slug = strtolower( str_replace( ' ', '-', $slug ) );
 	}
 
 	/**

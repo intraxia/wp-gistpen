@@ -18,29 +18,8 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 		$this->_setRole( 'administrator' );
 	}
 
-	// these stubs could be useful later but aren't necessary now
-	function test_failed_without_perms() {
-		// $this->markTestIncomplete(
-		// 	'This test has not been implemented yet.'
-		// );
-	}
-
-	function test_failed_if_revision() {
-		// $this->markTestIncomplete(
-		// 	'This test has not been implemented yet.'
-		// );
-	}
-
-	function test_failed_if_autosave() {
-		// $this->markTestIncomplete(
-		// 	'This test has not been implemented yet.'
-		// );
-	}
-
-	function test_failed_without_ids() {
-		// $this->markTestIncomplete(
-		// 	'This test has not been implemented yet.'
-		// );
+	function test_save_revision() {
+		wp_save_post_revision( $this->gistpen->ID );
 	}
 
 	function test_succeeded_update_post() {
@@ -49,14 +28,12 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 		foreach ( $this->files as $file_id ) {
 			$_POST['file_ids'] .= ' ' . $file_id;
 
-			$file_id = "-" . $file_id;
-
-			$_POST['wp-gistpenfile-slug' . $file_id] = "New title " . $file_id;
-			$_POST['wp-gistpenfile-code' . $file_id] = "New content " . $file_id;
-			$_POST['wp-gistpenfile-language' . $file_id] = 'js';
+			$_POST['wp-gistpenfile-slug-' . $file_id] = "New title " . $file_id;
+			$_POST['wp-gistpenfile-code-' . $file_id] = "New content " . $file_id;
+			$_POST['wp-gistpenfile-language-' . $file_id] = 'js';
 		}
 
-		$this->save->save_post_hook( $this->gistpen->ID );
+		wp_update_post( array( 'ID'=> $this->gistpen->ID, 'post_type' => 'gistpen' ) );
 
 		$zip = $this->database->query()->by_id( $this->gistpen->ID );
 
@@ -65,9 +42,24 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertCount( 3, $files );
 
 		foreach ( $files as $file ) {
-			$this->assertContains( 'new-title', $file->get_slug() );
-			$this->assertContains( 'New content', $file->get_code() );
+			$this->assertEquals( 'new-title-' . $file->get_ID(), $file->get_slug() );
+			$this->assertEquals( 'New content ' . $file->get_ID(), $file->get_code() );
 			$this->assertEquals( 'js', $file->get_language()->get_slug() );
+		}
+
+		$revisions = wp_get_post_revisions( $this->gistpen->ID );
+
+		$this->assertCount( 1, $revisions );
+
+		$revision = array_pop( $revisions );
+		$revision_id = $revision->ID;
+
+		$revision_meta = get_post_meta( $this->gistpen->ID, 'wpgp_revisions', true );
+
+		$this->assertCount( 3, $revision_meta[ $revision_id ]['files'] );
+
+		foreach ( $revision_meta[ $revision_id ]['files'] as $file_id ) {
+			$this->assertEquals( 'revision', get_post_type( $file_id ) );
 		}
 	}
 
@@ -89,13 +81,13 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 
 		$_POST['file_ids'] .= ' ' . $file_id;
 
-		$file_id = "-" . $file_id;
+		$file_id_w_dash = "-" . $file_id;
 
-		$_POST['wp-gistpenfile-slug' . $file_id] = "New title " . $file_id;
-		$_POST['wp-gistpenfile-code' . $file_id] = "New content " . $file_id;
-		$_POST['wp-gistpenfile-language' . $file_id] = 'js';
+		$_POST['wp-gistpenfile-slug' . $file_id_w_dash] = "New title " . $file_id;
+		$_POST['wp-gistpenfile-code' . $file_id_w_dash] = "New content " . $file_id;
+		$_POST['wp-gistpenfile-language' . $file_id_w_dash] = 'js';
 
-		$this->save->save_post_hook( $this->gistpen->ID );
+		wp_update_post( array( 'ID'=> $this->gistpen->ID ) );
 
 		$zip = $this->database->query()->by_id( $this->gistpen->ID );
 
@@ -108,15 +100,59 @@ class WP_Gistpen_Register_Save_Test extends WP_Gistpen_UnitTestCase {
 			$this->assertContains( 'New content', $file->get_code() );
 			$this->assertEquals( 'js', $file->get_language()->get_slug() );
 		}
+
+		$revisions = wp_get_post_revisions( $this->gistpen->ID );
+
+		$this->assertCount( 1, $revisions );
+
+		$revision = array_pop( $revisions );
+		$revision_id = $revision->ID;
+
+		$revision_meta = get_post_meta( $this->gistpen->ID, 'wpgp_revisions', true );
+
+		$this->assertCount( 4, $revision_meta[ $revision_id ]['files'] );
+
+		foreach ( $revision_meta[ $revision_id ]['files'] as $file_id ) {
+			$this->assertEquals( 'revision', get_post_type( $file_id ) );
+		}
+	}
+
+	function test_status_stays_in_sync() {
+		$zip = $this->database->query()->by_id( $this->gistpen->ID );
+
+		wp_update_post( array(
+			'ID' => $this->gistpen->ID,
+			'post_status' => 'pending',
+		) );
+
+		$this->assertEquals( 'pending', get_post_status( $zip->get_ID() ) );
+
+		$files = $zip->get_files();
+
+		foreach ( $files as $file ) {
+			$this->assertEquals( 'pending', get_post_status( $file->get_ID() ) );
+		}
+
+		wp_update_post( array(
+			'ID' => $this->gistpen->ID,
+			'post_status' => 'trash',
+		) );
+
+		$this->assertEquals( 'trash', get_post_status( $zip->get_ID() ) );
+
+		$files = $zip->get_files();
+
+		foreach ( $files as $file ) {
+			$this->assertEquals( 'trash', get_post_status( $file->get_ID() ) );
+		}
 	}
 
 	function test_delete_children() {
-		$this->create_post_and_children();
-		$this->save->delete_post_hook( $this->gistpen->ID );
+		wp_delete_post( $this->gistpen->ID, true );
 
-		$zip = $this->database->query()->by_id( $this->gistpen->ID );
-
-		$this->assertCount( 0, $zip->get_files() );
+		foreach ($this->files as $file_id => $value) {
+			$this->assertEquals( null, get_post($file_id) );
+		}
 	}
 
 	function tearDown() {

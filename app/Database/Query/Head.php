@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Database;
+namespace WP_Gistpen\Database\Query;
 
 /**
  * @package   WP_Gistpen
@@ -17,7 +17,7 @@ use WP_Gistpen\Facade\Adapter;
  * @package WP_Gistpen_Query
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Query {
+class Head {
 
 	/**
 	 * The ID of this plugin.
@@ -108,7 +108,7 @@ class Query {
 		$this->args['s'] = $search;
 
 		$search_results = get_posts( $this->args );
-		unset($this->args['s']);
+		unset( $this->args['s'] );
 
 		if ( empty( $search_results ) ) {
 			return $search_results;
@@ -128,7 +128,7 @@ class Query {
 	 */
 	public function by_post( $post ) {
 		if ( $post->post_type !== 'gistpen' ) {
-			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
+			return new \WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
 		}
 
 		if ( 0 !== $post->post_parent ) {
@@ -182,10 +182,10 @@ class Query {
 	 * Retrieves the all the files for a zip's WP_Post object
 	 *
 	 * @param  WP_Post $post
-	 * @return array|WP_Error       array of Files
+	 * @return array       array of Files
 	 * @since  0.4.0
 	 */
-	protected function files_by_post( $post ) {
+	public function files_by_post( $post ) {
 		$file_posts = get_children( array(
 			'post_type' => 'gistpen',
 			'post_parent' => $post->ID,

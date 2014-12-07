@@ -1,13 +1,13 @@
 <?php
 
-use WP_Gistpen\Database\Persistance;
-use WP_Gistpen\Database\Query;
+use WP_Gistpen\Database\Persistance\Head as Persistance;
+use WP_Gistpen\Database\Query\Head as Query;
 use WP_Gistpen\Facade\Adapter;
 
 /**
  * @group  database
  */
-class WP_Gistpen_Persistance_Test extends WP_Gistpen_UnitTestCase {
+class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

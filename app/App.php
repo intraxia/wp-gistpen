@@ -50,6 +50,7 @@ class App {
 	public $editor;
 	public $migration;
 	public $prism;
+	public $save;
 	public $settings;
 	public $tinymce;
 	public $web;
@@ -97,6 +98,7 @@ class App {
 		$this->define_editor_hooks();
 		$this->define_migration_hooks();
 		$this->define_prism_hooks();
+		$this->define_save_hooks();
 		$this->define_settings_hooks();
 		$this->define_tinymce_hooks();
 		$this->define_web_hooks();
@@ -131,8 +133,8 @@ class App {
 	private function register_data() {
 		$this->data = new Register\Data( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'init', $this->data, 'post_type' );
-		$this->loader->add_action( 'init', $this->data, 'language_tax' );
+		$this->loader->add_action( 'init', $this->data, 'post_type_gistpen' );
+		$this->loader->add_action( 'init', $this->data, 'taxonomy_language' );
 		// Register the settings page
 		$this->loader->add_shortcode( 'gistpen', $this->data, 'add_shortcode' );
 	}
@@ -257,6 +259,25 @@ class App {
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->prism, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->prism, 'enqueue_scripts' );
+
+	}
+
+	/**
+	 * Register all of the hooks related to the saving and deleting posts.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function define_save_hooks() {
+
+		$this->save = new Register\Save( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'save_post', $this->save, 'save_post_hook' );
+		$this->loader->add_action( 'post_updated', $this->save, 'remove_revision_save', 9 );
+		$this->loader->add_action( 'transition_post_status', $this->save, 'sync_post_status', 10, 3 );
+		$this->loader->add_action( 'before_delete_post', $this->save, 'delete_post_hook' );
+
+		$this->loader->add_filter( 'wp_save_post_revision_check_for_changes', $this->save, 'disable_check_for_change', 10, 3 );
 
 	}
 

@@ -1,8 +1,10 @@
 <?php
 namespace WP_Gistpen\Facade;
 
-use WP_Gistpen\Database\Query;
-use WP_Gistpen\Database\Persistance;
+use WP_Gistpen\Database\Query\Head as HeadQuery;
+use WP_Gistpen\Database\Query\Commit as CommitQuery;
+use WP_Gistpen\Database\Persistance\Head as HeadPersistance;
+use WP_Gistpen\Database\Persistance\Commit as CommitPersistance;
 
 /**
  * This class handles all of the AJAX responses
@@ -33,20 +35,20 @@ class Database {
 	private $version;
 
 	/**
-	 * WP_Gistpen\Database\Query object
+	 * Array containing all query objects
 	 *
-	 * @var Query
+	 * @var array
 	 * @since 0.5.0
 	 */
-	private $query;
+	private $query = array();
 
 	/**
-	 * WP_Gistpen\Database\Persistance object
+	 * Array containing all persistance objects
 	 *
-	 * @var Persistance
+	 * @var array
 	 * @since 0.5.0
 	 */
-	private $persistance;
+	private $persistance = array();
 
 	/**
 	 * Initialize the class and set its properties.
@@ -60,8 +62,11 @@ class Database {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		$this->query = new Query( $this->plugin_name, $this->version );
-		$this->persistance = new Persistance( $this->plugin_name, $this->version );
+		$this->query['head'] = new HeadQuery( $this->plugin_name, $this->version );
+		$this->query['commit'] = new CommitQuery( $this->plugin_name, $this->version );
+
+		$this->persistance['head'] = new HeadPersistance( $this->plugin_name, $this->version );
+		$this->persistance['commit'] = new CommitPersistance( $this->plugin_name, $this->version );
 
 	}
 
@@ -71,8 +76,12 @@ class Database {
 	 * @return Query query object
 	 * @since 0.5.0
 	 */
-	public function query() {
-		return $this->query;
+	public function query( $type = 'head' ) {
+		if ( ! array_key_exists( $type, $this->query ) ) {
+			throw new \Exception( "Can't query on type {$type}" );
+		}
+
+		return $this->query[ $type ];
 	}
 
 	/**
@@ -81,7 +90,11 @@ class Database {
 	 * @return Persistance persistance object
 	 * @since 0.5.0
 	 */
-	public function persist() {
-		return $this->persistance;
+	public function persist( $type = 'head' ) {
+		if ( ! array_key_exists( $type, $this->persistance ) ) {
+			throw new \Exception( "Can't persist on type {$type}" );
+		}
+
+		return $this->persistance[ $type ];
 	}
 }

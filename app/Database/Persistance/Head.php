@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Database;
+namespace WP_Gistpen\Database\Persistance;
 /**
  * @package   WP_Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
@@ -8,8 +8,6 @@ namespace WP_Gistpen\Database;
  * @copyright 2014 James DiGioia
  */
 
-use \stdClass;
-use \WP_Post;
 use WP_Gistpen\Model\File;
 use WP_Gistpen\Model\Language;
 
@@ -17,10 +15,10 @@ use WP_Gistpen\Model\Language;
  * This class manipulates the saving of parent Gistpen
  * and all child Gistpens.
  *
- * @package Persistance
+ * @package Head
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Persistance {
+class Head {
 
 	/**
 	 * The ID of this plugin.
@@ -81,9 +79,11 @@ class Persistance {
 		$post_id = $result;
 		unset($result);
 
-		foreach ( $zip->get_files() as $file ) {
+		$files = $zip->get_files();
+
+		foreach ( $files as $file ) {
 			$data = array(
-				'post_name'     => $file->get_slug(),
+				'post_title'    => $file->get_slug(),
 				'post_content'  => $file->get_code(),
 				'post_status'   => $zip->get_status(),
 				'post_parent'   => $post_id,
@@ -116,9 +116,8 @@ class Persistance {
 	 * @since  0.4.0
 	 */
 	public function by_file_and_zip_id( $file, $zip_id ) {
-		// @todo manipulate into necessary array
 		$data = array(
-			'post_name'     => $file->get_slug(),
+			'post_title'    => $file->get_slug(),
 			'post_content'  => $file->get_code(),
 			'post_status'   => get_post_status( $zip_id ),
 			'post_parent'   => $zip_id,
