@@ -93,11 +93,14 @@ class Head {
 			if ( $file->get_ID() !== null ) {
 				$data['ID'] = $file->get_ID();
 			}
-			if ( $file->get_language() !== null ) {
-				$data['tax_input'] = array( 'wpgp_language' => $file->get_language()->get_slug() );
-			}
 
 			$result = $this->by_array( $data );
+
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+
+			$result = wp_set_object_terms( $result, $file->get_language()->get_slug(), 'wpgp_language', false );
 
 			if ( is_wp_error( $result ) ) {
 				return $result;
