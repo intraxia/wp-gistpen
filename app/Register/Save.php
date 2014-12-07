@@ -293,6 +293,23 @@ class Save {
 	}
 
 	/**
+	 * Disables checking for changes when we save a post revision
+	 *
+	 * @param  bool $check_for_changes whether we check for changes
+	 * @param  \WP_Post $last_revision     previous revision object
+	 * @param  \WP_Post $post              current revision
+	 * @return bool                        whether we check for changes
+	 * @since  0.5.0
+	 */
+	public function disable_check_for_change( $check_for_changes, $last_revision, $post ) {
+		if ( 'gistpen' === $post->post_type ) {
+			$check_for_changes = false;
+		}
+
+		return $check_for_changes;
+	}
+
+	/**
 	 * Retrieves, validates, and organizes the arguments for the File
 	 * from the $_POST superglobal
 	 *
