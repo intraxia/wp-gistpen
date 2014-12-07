@@ -18,7 +18,7 @@
 
 		$prefix = '_wpgp_';
 
-		cmb_metabox_form( array(
+		cmb2_metabox_form( array(
 			'id'         => 'option_metabox',
 			'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->plugin_name ) ),
 			'show_names' => true,
@@ -36,7 +36,7 @@
 						'twilight' => __( 'Twilight', $this->plugin_name ),
 						'coy' => __( 'Coy', $this->plugin_name ),
 					),
-					'default' => cmb_get_option( $this->plugin_name, $prefix . 'gistpen_highlighter_theme' )
+					'default' => cmb2_get_option( $this->plugin_name, $prefix . 'gistpen_highlighter_theme' )
 				),
 				array(
 					'name' => __( 'Enable line numbers', $this->plugin_name ),
