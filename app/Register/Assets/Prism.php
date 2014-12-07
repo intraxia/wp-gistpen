@@ -72,7 +72,7 @@ class Prism {
 			wp_enqueue_style( $this->plugin_name . '-prism-line-highlight', WP_GISTPEN_URL . 'assets/css/prism/plugins/line-highlight/prism-line-highlight.css', array( $this->plugin_name . '-prism-theme' ), $this->version );
 
 			// Add line numbers css if needed
-			if ( is_admin() ||  'on' === cmb_get_option( $this->plugin_name, '_wpgp_gistpen_line_numbers' ) ) {
+			if ( is_admin() ||  'on' === cmb2_get_option( $this->plugin_name, '_wpgp_gistpen_line_numbers' ) ) {
 				wp_enqueue_style( $this->plugin_name . '-prism-line-numbers', WP_GISTPEN_URL . 'assets/css/prism/plugins/line-numbers/prism-line-numbers.css', array( $this->plugin_name . '-prism-theme' ), $this->version );
 			}
 		}
@@ -95,7 +95,7 @@ class Prism {
 	 * @since    0.5.0
 	 */
 	private function get_theme() {
-		$theme = cmb_get_option( $this->plugin_name, '_wpgp_gistpen_highlighter_theme' );
+		$theme = cmb2_get_option( $this->plugin_name, '_wpgp_gistpen_highlighter_theme' );
 
 		if ( '' == $theme || 'default' == $theme ) {
 			$theme = '';

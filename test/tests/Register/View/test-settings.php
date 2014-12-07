@@ -1,6 +1,8 @@
 <?php
 use WP_Gistpen\Register\View\Settings;
-
+/**
+ * @group register
+ */
 class WP_Gistpen_View_Settings_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
