@@ -91,6 +91,7 @@ class App {
 		$this->set_locale();
 
 		$this->register_data();
+		$this->register_wp_cli_command();
 
 		$this->define_ajax_hooks();
 		$this->define_content_hooks();
@@ -137,6 +138,18 @@ class App {
 		$this->loader->add_action( 'init', $this->data, 'taxonomy_language' );
 		// Register the settings page
 		$this->loader->add_shortcode( 'gistpen', $this->data, 'add_shortcode' );
+	}
+
+	/**
+	 * Register the WP CLI commands for WP-Gistpen.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function register_wp_cli_command() {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			\WP_CLI::add_command( 'wpgp', 'WP_Gistpen\CLI\Command' );
+		}
 	}
 
 	/**

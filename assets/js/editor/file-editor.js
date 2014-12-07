@@ -71,7 +71,7 @@ FileEditor.prototype  = {
 	appendLanguages: function() {
 		var thiseditor = this;
 		jQuery.each(gistpenLanguages, function(index, el) {
-			jQuery('<option></option>').val(index).text(el).appendTo(thiseditor.languageSelect);
+			jQuery('<option></option>').val(el).text(index).appendTo(thiseditor.languageSelect);
 		});
 	},
 

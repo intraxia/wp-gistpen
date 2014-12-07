@@ -33,7 +33,6 @@ class Language {
 		'Sass' => 'sass',
 		'Scala' => 'scala',
 		'Sql' => 'sql',
-		'C' => 'c',
 		'Go' => 'go',
 		'HTTP' => 'http',
 		'ini' => 'ini',
