@@ -47,12 +47,12 @@ class Commit {
 	private $adapter;
 
 	/**
-	 * Database Facade object
+	 * HeadQuery object
 	 *
-	 * @var Database
+	 * @var HeadQuery
 	 * @since 0.5.0
 	 */
-	private $database;
+	private $head;
 
 	/**
 	 * Default query args

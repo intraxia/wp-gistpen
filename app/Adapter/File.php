@@ -106,7 +106,7 @@ class File {
 	 * @param  array  $files array of files to transform
 	 * @return string        file data in json
 	 */
-	public function to_json($files) {
+	public function to_json( $files ) {
 		if ( empty( $files ) ) {
 				return json_encode( array() );
 		}

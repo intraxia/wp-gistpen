@@ -74,6 +74,7 @@ class Commit {
 
 		$revision_id = $result;
 		$revision_files = array();
+		$meta = array();
 
 		$files = $parent_zip->get_files();
 
