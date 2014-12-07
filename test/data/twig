@@ -1,0 +1,21 @@
+{% if posts|length %}
+  {% for article in articles %}
+  <div>
+  {{ article.title|upper() }}
+
+  {# outputs 'WELCOME' #}
+  </div>
+  {% endfor %}
+{% endif %}
+
+{% set user = json_encode(user) %}
+
+{{ random(['apple', 'orange', 'citrus']) }}
+
+{{ include(template_from_string("Hello {{ name }}")) }}
+
+
+{#
+Comments may be long and multiline.
+Markup is <em>not</em> highlighted within comments.
+#}
