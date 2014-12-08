@@ -2,6 +2,7 @@
 namespace WP_Gistpen\CLI;
 
 use \WP_CLI;
+use WP_Gistpen\Account\Gist;
 use WP_Gistpen\Model\Language;
 use WP_Gistpen\Facade\Adapter;
 use WP_Gistpen\Facade\Database;
@@ -71,7 +72,49 @@ class Command extends \WP_CLI_Command {
 			$this->database->persist( 'head' )->by_zip( $zip );
 			$this->database->persist( 'commit' )->by_parent_zip( $zip );
 
-			WP_CLI::success( __( "Successfully added language {$lang}" ) );
+			WP_CLI::success( __( "Successfully added language {$lang}", \WP_Gistpen::$plugin_name ) );
 		}
+	}
+
+	/**
+	 * Sets the Gist token.
+	 *
+	 * Get your Gist token by following
+	 * the instructions found here:
+	 * http://jamesdigioia.com/wp-gistpen/#gist-token
+	 *
+	 * ## OPTIONS
+	 *
+	 * <token>
+	 * : Your Gist token.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp wpgp set_token 123545678910abcde
+	 *
+	 * @synopsis <token>
+	 */
+	function set_token( $args, $assoc_args ) {
+		$success = false;
+
+		list( $token ) = $args;
+
+		$client = new Gist( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+
+		$client->authenticate( $token );
+
+		if ( is_wp_error( $error = $client->check_token() ) ) {
+			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', \WP_Gistpen::$plugin_name ) . $error->get_error_message() );
+		}
+
+		if ( cmb2_options( \WP_Gistpen::$plugin_name )->update( '_wpgp_gist_token', $token ) ) {
+			$success = cmb2_options( \WP_Gistpen::$plugin_name )->set();
+		}
+
+		if ( ! $success ) {
+			WP_CLI::error( __( 'Gist token update failed.', \WP_Gistpen::$plugin_name ) );
+		}
+
+		WP_CLI::success( __( 'Gist token updated.', \WP_Gistpen::$plugin_name ) );
 	}
 }

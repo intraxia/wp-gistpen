@@ -1,6 +1,8 @@
 <?php
 namespace WP_Gistpen\Register\View;
 
+use WP_Gistpen\Account\Gist;
+
 /**
  * This class registers all of the settings page views
  *
@@ -87,6 +89,34 @@ class Settings {
 
 	}
 
+	/**
+	 * Validates the OAuth token and  before save.
+	 *
+	 * OAuth token
+	 *
+	 * @param    null            $override_value null if validation fails
+	 * @param    string          $value          value to validate
+	 * @param    int             $object_id      CMB2_Options object id
+	 * @param    array           $args           CMB2 args
+	 * @param    CMB2_Sanitize   $validation_obj validation object
+	 * @return   string                          empty string if token doesn't validate
+	 * @since    0.5.0
+	 */
+	public function validate_gist_token( $override_value, $value, $object_id, $args, $validation_obj ) {
+		if ( '_wpgp_gist_token' !== $args['id'] || empty( $value ) || $validation_obj->value === $validation_obj->field->value ) {
+			return $value;
+		}
+
+		$client = new Gist( $this->plugin_name, $this->version );
+		$client->authenticate( $value );
+
+		if ( is_wp_error( $error = $client->check_token() ) ) {
+			set_transient( '_wpgp_github_token_error_message', $error->get_error_message(), 15 );
+			return '';
+		}
+
+		return $value;
+	}
 
 	/**
 	 * Register the settings page (obviously)

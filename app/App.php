@@ -309,6 +309,9 @@ class App {
 		$this->loader->add_action( 'admin_init', $this->settings, 'register_setting' );
 		// Add an action link pointing to the options page.
 		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings, 'add_action_links' );
+
+		// Add validation to saving the gist token
+		$this->loader->add_filter( 'cmb2_validate_text', $this->settings, 'validate_gist_token', 10, 5 );
 	}
 
 	/**

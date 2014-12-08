@@ -12,6 +12,16 @@
 
 <div class="wrap">
 
+	<?php if ( false !== get_transient( '_wpgp_github_token_error_message' ) ) : ?>
+		<div class="error">
+			<p>
+				<?php _e( 'Gist token failed to validate. Error message: ', $this->plugin_name ); ?>
+				<?php echo esc_html( get_transient( '_wpgp_github_token_error_message' ) ); ?>
+			</p>
+		</div>
+		<?php delete_transient( '_wpgp_github_token_error_message' ); ?>
+	<?php endif; ?>
+
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 	<?php
@@ -42,6 +52,11 @@
 					'name' => __( 'Enable line numbers', $this->plugin_name ),
 					'id'   => $prefix . 'gistpen_line_numbers',
 					'type' => 'checkbox',
+				),
+				array(
+					'name' => __( 'Add your Gist token', $this->plugin_name ),
+					'id'   => $prefix . 'gist_token',
+					'type' => 'text',
 				),
 			)
 		), $this->plugin_name );
