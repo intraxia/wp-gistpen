@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Register\View;
+namespace WP_Gistpen\View;
 
 use WP_Gistpen\Account\Gist;
 

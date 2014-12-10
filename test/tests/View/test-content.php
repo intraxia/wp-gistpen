@@ -1,5 +1,5 @@
 <?php
-use WP_Gistpen\Register\Content;
+use WP_Gistpen\View\Content;
 
 /**
  * @group register

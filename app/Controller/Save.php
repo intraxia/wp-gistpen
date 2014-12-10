@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Register;
+namespace WP_Gistpen\Controller;
 
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;

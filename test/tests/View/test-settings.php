@@ -1,5 +1,5 @@
 <?php
-use WP_Gistpen\Register\View\Settings;
+use WP_Gistpen\View\Settings;
 /**
  * @group register
  */

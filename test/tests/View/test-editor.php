@@ -1,5 +1,5 @@
 <?php
-use WP_Gistpen\Register\View\Editor;
+use WP_Gistpen\View\Editor;
 
 class WP_Gistpen_View_Editor_Test extends WP_Gistpen_UnitTestCase {
 

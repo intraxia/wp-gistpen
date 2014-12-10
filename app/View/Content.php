@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Register;
+namespace WP_Gistpen\View;
 
 /**
  * Registers the front-end content output
@@ -165,7 +165,7 @@ class Content {
 		$zip = $this->database->query()->by_id( $args['id'] );
 
 		if ( is_wp_error( $zip ) ) {
-			// @todo handle each error
+			// @todo each error
 			return;
 		}
 

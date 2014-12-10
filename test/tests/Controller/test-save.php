@@ -1,6 +1,6 @@
 <?php
 use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Register\Save;
+use WP_Gistpen\Controller\Save;
 
 /**
  * @group register

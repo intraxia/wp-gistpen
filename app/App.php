@@ -188,7 +188,7 @@ class App {
 	 */
 	private function define_content_hooks() {
 
-		$this->content = new Register\Content( $this->get_plugin_name(), $this->get_version() );
+		$this->content = new View\Content( $this->get_plugin_name(), $this->get_version() );
 
 		// Remove some filters from the Gistpen content
 		$this->loader->add_action( 'the_content', $this->content, 'remove_filters' );
@@ -223,7 +223,7 @@ class App {
 	 * @access   private
 	 */
 	private function define_editor_hooks() {
-		$this->editor = new Register\View\Editor( $this->get_plugin_name(), $this->get_version() );
+		$this->editor = new View\Editor( $this->get_plugin_name(), $this->get_version() );
 		// Render the error messages
 		$this->loader->add_action( 'admin_notices', $this->editor, 'add_admin_errors' );
 		// Edit the placeholder text in the Gistpen title box
@@ -283,7 +283,7 @@ class App {
 	 */
 	private function define_save_hooks() {
 
-		$this->save = new Register\Save( $this->get_plugin_name(), $this->get_version() );
+		$this->save = new Controller\Save( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'save_post', $this->save, 'save_post_hook' );
 		$this->loader->add_action( 'post_updated', $this->save, 'remove_revision_save', 9 );
@@ -302,7 +302,7 @@ class App {
 	 * @access   private
 	 */
 	private function define_settings_hooks() {
-		$this->settings = new Register\View\Settings( $this->get_plugin_name(), $this->get_version() );
+		$this->settings = new View\Settings( $this->get_plugin_name(), $this->get_version() );
 
 		// Add the options page and menu item.
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_plugin_admin_menu' );
