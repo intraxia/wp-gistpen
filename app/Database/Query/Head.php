@@ -11,6 +11,7 @@ namespace WP_Gistpen\Database\Query;
 
 use WP_Gistpen\Facade\Adapter;
 use \WP_Query;
+use \WP_Error;
 
 /**
  * This class saves and gets Gistpens from the database
@@ -222,6 +223,7 @@ class Head {
 			'post_type' => 'gistpen',
 			'meta_key' => '_wpgp_gist_id',
 			'meta_value' => $gist_id,
+			'suppress_filters' => true,
 		) );
 
 		$posts = $query->get_posts();
@@ -256,7 +258,8 @@ class Head {
 			'post_parent'  => 0,
 			'meta_key'     => '_wpgp_gist_id',
 			'meta_value'   => 'none',
-			'meta_compare' => '='
+			'meta_compare' => '=',
+			'suppress_filters' => true,
 		));
 
 		foreach ( $query->get_posts() as $post ) {
