@@ -4,6 +4,7 @@ namespace WP_Gistpen\Account;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 use Github\Client;
+use Github\HttpClient\Message\ResponseMediator as Mediator;
 
 /**
  * This is the class description.
@@ -104,7 +105,7 @@ class Gist {
 		$success = true;
 
 		try {
-			$user = $this->client->api( 'me' )->show();
+			$user = $this->get_me();
 		} catch ( \Github\Exception\TwoFactorAuthenticationRequiredException $e ) {
 			$success = new \WP_Error( $e->getCode(), $e->getMessage() );
 		} catch ( \Github\Exception\RuntimeException $e ) {
@@ -114,9 +115,30 @@ class Gist {
 		delete_transient( '_wpgp_github_token_user_info' );
 
 		if ( ! is_wp_error( $success ) ) {
-			set_transient( '_wpgp_github_token_user_info', $user, 7 * DAY_IN_SECONDS );
+			set_transient( '_wpgp_github_token_user_info', $user );
 		}
 
 		return $success;
+	}
+	/**
+	 * Shortcut to call the Gist API
+	 *
+	 * @return \Github\Client\Api\Gists
+	 * @since 0.5.0
+	 */
+	protected function call() {
+		return $this->client->api( 'gists' );
+	}
+
+	/**
+	 * Shortcut to get all information
+	 * for the current user from the
+	 * Github API
+	 *
+	 * @return \Github\Api\CurrentUser
+	 * @since 0.5.0
+	 */
+	protected function get_me() {
+		return $this->client->api( 'me' )->show();
 	}
 }
