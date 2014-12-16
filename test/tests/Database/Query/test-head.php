@@ -63,6 +63,26 @@ class WP_Gistpen_Database_Query_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInstanceOf( 'WP_Gistpen\Model\File', $file );
 	}
 
+	function test_succeeeded_get_missing_gist_id() {
+		$this->create_post_and_children();
+
+		$zips = $this->query->missing_gist_id();
+
+		$this->assertInternalType( 'array', $zips );
+		$this->assertCount( 2, $zips );
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', array_pop( $zips ) );
+	}
+
+	function test_succeeeded_get_by_gist_id() {
+		$this->create_post_and_children();
+
+		update_post_meta( $this->gistpen->ID, '_wpgp_gist_id', '12345' );
+
+		$zip = $this->query->by_gist_id( '12345' );
+
+		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $zip );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}

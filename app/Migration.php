@@ -326,6 +326,8 @@ class Migration {
 	 *
 	 * Takes care of:
 	 * * Deleting all the current (useless) post revisions
+	 * * Add a new revision at the current layout
+	 * * Add gist_id = none post_meta to all Gistpens
 	 *
 	 * @since 0.5.0
 	 */
@@ -353,6 +355,8 @@ class Migration {
 			$zip = $this->adapter->build( 'zip' )->by_post( $post );
 
 			$this->database->persist( 'commit' )->by_parent_zip( $zip );
+
+			update_post_meta( $post->ID, '_wpgp_gist_id', 'none' );
 		}
 	}
 

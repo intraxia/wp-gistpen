@@ -27,6 +27,8 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		foreach ( $this->files as $file ) {
 			wp_set_object_terms( $file, 'php', 'wpgp_language', false );
 		}
+
+		update_post_meta( $this->gistpen->ID, '_wpgp_gist_id', 'none' );
 	}
 
 	// Source: http://stackoverflow.com/questions/5010300/best-practices-to-test-protected-methods-with-phpunit-on-abstract-classes

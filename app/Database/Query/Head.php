@@ -10,6 +10,7 @@ namespace WP_Gistpen\Database\Query;
  */
 
 use WP_Gistpen\Facade\Adapter;
+use \WP_Query;
 
 /**
  * This class saves and gets Gistpens from the database
@@ -73,7 +74,7 @@ class Head {
 			'order'          => 'DESC',
 			'orderby'        => 'date',
 			'numberposts'    => 5,
-			'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' )
+			'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' ),
 		);
 
 	}
@@ -211,4 +212,57 @@ class Head {
 		return $files;
 	}
 
+	/**
+	 * Gets Gistpen matching given Gist ID
+	 * @param  string $gist_id Gist ID to search for
+	 * @return Zip             Zip with given Gist ID
+	 */
+	public function by_gist_id( $gist_id ) {
+		$query = new WP_Query( array(
+			'post_type' => 'gistpen',
+			'meta_key' => '_wpgp_gist_id',
+			'meta_value' => $gist_id,
+		) );
+
+		$posts = $query->get_posts();
+
+		if ( empty( $posts ) ) {
+			return new WP_Error( 'no_gistpen_found', __( "Gistpen with Gist ID {$gist_id} not found", $this->plugin_name ) );
+		}
+
+		if ( 1 !== count ( $posts ) ) {
+			return new WP_Error( 'multiple_gistpens_found', __( "Multiple Gistpens with Gist ID {$gist_id} found.", $this->plugin_name ) );
+		}
+
+		$post = array_pop( $posts );
+
+		return $this->by_post( $post );
+	}
+
+	/**
+	 * Gets all Gistpens missing Gist IDs
+	 *
+	 * @return array Zips missing Gist IDs
+	 * @since  0.5.0
+	 */
+	public function missing_gist_id() {
+		$zips = array();
+
+		$query = new WP_Query( array(
+			'post_type'    => 'gistpen',
+			'order'        => 'DESC',
+			'orderby'      => 'date',
+			'post_status'  => array( 'publish', 'pending', 'draft', 'future', 'private' ),
+			'post_parent'  => 0,
+			'meta_key'     => '_wpgp_gist_id',
+			'meta_value'   => 'none',
+			'meta_compare' => '='
+		));
+
+		foreach ( $query->get_posts() as $post ) {
+			$zips[] = $this->by_post( $post );
+		}
+
+		return $zips;
+	}
 }
