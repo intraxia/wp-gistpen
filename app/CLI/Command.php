@@ -95,8 +95,6 @@ class Command extends \WP_CLI_Command {
 	 * @synopsis <token>
 	 */
 	function set_token( $args, $assoc_args ) {
-		$success = false;
-
 		list( $token ) = $args;
 
 		$client = new Gist( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );

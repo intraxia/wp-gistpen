@@ -216,7 +216,7 @@ class Head {
 	/**
 	 * Gets Gistpen matching given Gist ID
 	 * @param  string $gist_id Gist ID to search for
-	 * @return Zip             Zip with given Gist ID
+	 * @return Zip|WP_error    Zip with given Gist ID, WP_Error if multitple/no Zips match
 	 */
 	public function by_gist_id( $gist_id ) {
 		$query = new WP_Query( array(
