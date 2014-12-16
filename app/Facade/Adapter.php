@@ -2,6 +2,7 @@
 namespace WP_Gistpen\Facade;
 
 use WP_Gistpen\Adapter\File as FileAdapter;
+use WP_Gistpen\Adapter\Gist as GistAdapter;
 use WP_Gistpen\Adapter\Language as LanguageAdapter;
 use WP_Gistpen\Adapter\Zip as ZipAdapter;
 
@@ -70,6 +71,7 @@ class Adapter {
 		$this->version = $version;
 
 		$this->file = new FileAdapter( $plugin_name, $version );
+		$this->gist = new GistAdapter( $plugin_name, $version );
 		$this->language = new LanguageAdapter( $plugin_name, $version );
 		$this->zip = new ZipAdapter( $plugin_name, $version );
 

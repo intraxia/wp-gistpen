@@ -29,6 +29,12 @@ class WP_Gistpen_Facade_Adapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertInstanceOf('WP_Gistpen\Adapter\Zip', $zip );
 	}
 
+	function test_get_gist_adapter() {
+		$gist = $this->adapter->build( 'gist' );
+
+		$this->assertInstanceOf('WP_Gistpen\Adapter\Gist', $gist );
+	}
+
 	function test_fail_everything_else() {
 		$this->setExpectedException('Exception');
 
