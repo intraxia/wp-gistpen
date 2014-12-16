@@ -57,7 +57,7 @@ class Head {
 	 *
 	 * @param  Zip $post
 	 * @return int|WP_Error    post_id on success, WP_Error on failure
-	 * @since  0.4.0
+	 * @since  0.5.0
 	 */
 	public function by_zip( $zip ) {
 		$data = array(
@@ -116,7 +116,7 @@ class Head {
 	 * @param  File $file File model object
 	 * @param  int $zip_id ID of the zip parent
 	 * @return int|WP_Error   post_id on success, WP_Error on failure
-	 * @since  0.4.0
+	 * @since  0.5.0
 	 */
 	public function by_file_and_zip_id( $file, $zip_id ) {
 		$data = array(
@@ -148,8 +148,10 @@ class Head {
 
 	/**
 	 * Save a Gistpen by array
+	 *
 	 * @param  array $data Array of Gistpen data
 	 * @return int|WP_Error       Saved Gistpen's ID or WP_Error on failure
+	 * @since  0.5.0
 	 */
 	public function by_array( $data ) {
 		$defaults = array(
@@ -159,5 +161,16 @@ class Head {
 		$data = array_merge( $defaults, $data );
 
 		return wp_insert_post( $data, true );
+	}
+
+	/**
+	 * Save a Gist ID to the Gistpen
+	 *
+	 * @param  int    $zip_id  post ID of zip to update
+	 * @param  string $gist_id Gist ID to save
+	 * @since  0.5.0
+	 */
+	public function set_gist_id( $zip_id, $gist_id ) {
+		return update_post_meta( $zip_id, '_wpgp_gist_id', $gist_id );
 	}
 }

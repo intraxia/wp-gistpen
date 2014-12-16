@@ -89,6 +89,12 @@ class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'twig', $saved_file->get_language()->get_slug() );
 	}
 
+	function test_save_gist_id() {
+		$this->persistance->set_gist_id( $this->gistpen->ID, '12345' );
+
+		$this->assertEquals( '12345', get_post_meta( $this->gistpen->ID, '_wpgp_gist_id', true ) );
+	}
+
 	function tearDown() {
 		parent::tearDown();
 	}
