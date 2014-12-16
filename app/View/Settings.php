@@ -74,6 +74,37 @@ class Settings {
 	}
 
 	/**
+	 * Display GitHub user info on settings page
+	 *
+	 * @since 0.5.0
+	 */
+	public function github_user_layout() {
+		$user = get_transient( '_wpgp_github_token_user_info' );
+
+		if ( false === $user ) {
+			$client = new Gist( $this->plugin_name, $this->version );
+
+			if ( false === cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) ) {
+				return;
+			}
+
+			$client->authenticate( cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) );
+			$client->check_token();
+
+			$user = get_transient( '_wpgp_github_token_user_info' );
+		}
+
+		echo '<h3>';
+		echo 'Authorized User';
+		echo '</h3>';
+
+		echo '<strong>Username:</strong> ' . $user['login'] . '<br>';
+		echo '<strong>Email:</strong> ' . $user['email'] . '<br>';
+		echo '<strong>Public Gists:</strong> ' . $user['public_gists'] . '<br>';
+		echo '<strong>Private Gists:</strong> ' . $user['private_gists'];
+	}
+
+	/**
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    0.1.0
