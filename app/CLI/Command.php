@@ -107,9 +107,7 @@ class Command extends \WP_CLI_Command {
 			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', \WP_Gistpen::$plugin_name ) . $error->get_error_message() );
 		}
 
-		if ( cmb2_options( \WP_Gistpen::$plugin_name )->update( '_wpgp_gist_token', $token ) ) {
-			$success = cmb2_options( \WP_Gistpen::$plugin_name )->set();
-		}
+		$success = cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token', $token );
 
 		if ( ! $success ) {
 			WP_CLI::error( __( 'Gist token update failed.', \WP_Gistpen::$plugin_name ) );
