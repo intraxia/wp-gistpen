@@ -27,7 +27,7 @@ gulp.task('init', function() {
 
 gulp.task('watch', function () {
 	gulp.watch(
-		'assets/js/**',
+		'assets/js/!(ace)/*.js',
 		['scripts']);
 		gulp.watch(
 		'assets/scss/**',
@@ -46,7 +46,7 @@ gulp.task('build', function() {
 gulp.task('scripts', function() {
 	var promises = [];
 
-	glob.sync('assets/js/*').forEach(function(filePath) {
+	glob.sync('assets/js/!(ace)').forEach(function(filePath) {
 		if (fs.statSync(filePath).isDirectory()) {
 			var defer = Q.defer();
 			var pipeline = gulp.src(filePath + '/**/*.js')
