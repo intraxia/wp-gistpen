@@ -78,6 +78,25 @@ class Gist {
 	}
 
 	/**
+	 * Sets up the client object with
+	 * the authentication token and
+	 * checks if the token is still valid
+	 *
+	 * @since 0.5.0
+	 */
+	private function set_up_client() {
+		$token = (string) cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' );
+
+		if ( empty( $token ) ) {
+			return new WP_Error( 'no_github_token', 'No GitHub OAuth token available.' );
+		}
+
+		$this->authenticate( $token );
+
+		return $token;
+	}
+
+	/**
 	 * Add OAuth token to Github\Client
 	 *
 	 * Adds the supplied token to the attached Github\Client
@@ -98,7 +117,7 @@ class Gist {
 	 * object if it fails, caches the user data if it succeeds.
 	 *
 	 * @param  string          $token     Authentication token
-	 * @return bool|WP_Error              true of success, WP_Error on failure
+	 * @return bool|\WP_Error              true of success, WP_Error on failure
 	 * @since  0.5.0
 	 */
 	public function check_token() {
@@ -106,9 +125,7 @@ class Gist {
 
 		try {
 			$user = $this->get_me();
-		} catch ( \Github\Exception\TwoFactorAuthenticationRequiredException $e ) {
-			$success = new \WP_Error( $e->getCode(), $e->getMessage() );
-		} catch ( \Github\Exception\RuntimeException $e ) {
+		} catch ( \Exception $e ) {
 			$success = new \WP_Error( $e->getCode(), $e->getMessage() );
 		}
 
@@ -119,6 +136,35 @@ class Gist {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Creates a new Gist based on Zip
+	 *
+	 * @param  Zip             $zip    Gist data
+	 * @return string|WP_Error         Gist id on success, WP_Error on failure
+	 * @since  0.5.0
+	 */
+	public function create_gist( $zip ) {
+		$result = $this->set_up_client();
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$gist = $this->adapter->build( 'gist' )->create_by_zip( $zip );
+
+		try {
+			$response = $this->call()->create( $gist );
+		} catch ( \Exception $e ) {
+			$response = new \WP_Error( $e->getCode(), $e->getMessage() );
+		}
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		return $response['id'];
 	}
 	/**
 	 * Shortcut to call the Gist API

@@ -163,7 +163,9 @@ class App {
 
 		$this->ajax = new Api\Ajax( $this->get_plugin_name(), $this->get_version() );
 
+		// Embed the AJAX nonce on the editor & settings page
 		$this->loader->add_action( 'edit_form_after_title', $this->ajax, 'embed_nonce' );
+		$this->loader->add_action( 'wpgp_settings_before_title', $this->ajax, 'embed_nonce' );
 
 		// AJAX hook for TinyMCE button
 		$this->loader->add_action( 'wp_ajax_get_gistpens', $this->ajax, 'get_gistpens' );
@@ -176,6 +178,10 @@ class App {
 		// AJAX hooks to add and delete Gistfile editors
 		$this->loader->add_action( 'wp_ajax_get_gistpenfile_id', $this->ajax, 'get_gistpenfile_id' );
 		$this->loader->add_action( 'wp_ajax_delete_gistpenfile', $this->ajax, 'delete_gistpenfile' );
+
+		// AJAX hooks for exporting Gistpens
+		$this->loader->add_action( 'wp_ajax_get_gistpens_missing_gist_id', $this->ajax, 'get_gistpens_missing_gist_id' );
+		$this->loader->add_action( 'wp_ajax_create_gist_from_gistpen_id', $this->ajax, 'create_gist_from_gistpen_id' );
 
 	}
 

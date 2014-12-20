@@ -3,6 +3,7 @@ namespace WP_Gistpen\CLI;
 
 use \WP_CLI;
 use WP_Gistpen\Account\Gist;
+use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Model\Language;
 use WP_Gistpen\Facade\Adapter;
 use WP_Gistpen\Facade\Database;
@@ -69,10 +70,12 @@ class Command extends \WP_CLI_Command {
 
 			$zip->add_file( $file );
 
-			$this->database->persist( 'head' )->by_zip( $zip );
+			$result = $this->database->persist( 'head' )->by_zip( $zip );
+			$this->database->persist( 'head' )->set_gist_id( $result, 'none' );
 			$this->database->persist( 'commit' )->by_parent_zip( $zip );
 
 			WP_CLI::success( __( "Successfully added language {$lang}", \WP_Gistpen::$plugin_name ) );
+			sleep( 1 );
 		}
 	}
 
@@ -112,5 +115,41 @@ class Command extends \WP_CLI_Command {
 		}
 
 		WP_CLI::success( __( 'Gist token updated.', \WP_Gistpen::$plugin_name ) );
+	}
+
+	/**
+	 * Exports Gists
+	 *
+	 * If your Gist account is authorized, exports
+	 * all Gistpens not already exported to Gist.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp wpgp export_gistpens
+	 *
+	 */
+	function export_gistpens( $args, $assoc_args ) {
+		$ids = $this->database->query( 'head' )->missing_gist_id();
+
+		if ( is_wp_error( $ids ) ) {
+			WP_CLI::error( __( 'Failed to get post IDs missing Gist IDs. Error: ', $this->plugin_name ) . $ids->get_error_message() );
+		}
+
+		if ( empty( $ids ) ) {
+			WP_CLI::error( __( 'No Gistpens missing Gist IDs.', \WP_Gistpen::$plugin_name ) );
+		}
+
+		$sync = new Sync( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+
+		foreach ( $ids as $id ) {
+			$result = $sync->export_gistpen( $id );
+
+			if ( is_wp_error( $result ) ){
+				WP_CLI::error( __( 'Failed to create Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
+			}
+
+			WP_CLI::success( __( 'Successfully exported Gistpen: ', \WP_Gistpen::$plugin_name ) . $result->get_description() );
+			sleep( 1 );
+		}
 	}
 }

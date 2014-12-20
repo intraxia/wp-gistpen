@@ -17,7 +17,8 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 			'description' => 'This zip',
 			'status'      => 'publish',
 			'ID'          => 123,
-			'password'    => 'asdf'
+			'password'    => 'asdf',
+			'gist_id'     => '12345',
 		);
 
 		$zip = $this->adapter->by_array( $data );
@@ -26,6 +27,7 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'publish', $zip->get_status() );
 		$this->assertEquals( 123, $zip->get_ID() );
 		$this->assertEquals( 'asdf', $zip->get_password() );
+		$this->assertEquals( '12345', $zip->get_gist_id() );
 	}
 
 	function test_build_by_array_with_extra_vars() {
@@ -34,7 +36,8 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 			'status'      => 'publish',
 			'ID'          => 123,
 			'password'    => 'asdf',
-			'extra'       => 'Something irrelevant'
+			'gist_id'     => '12345',
+			'extra'       => 'Something irrelevant',
 		);
 
 		$zip = $this->adapter->by_array( $data );
@@ -43,6 +46,7 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'publish', $zip->get_status() );
 		$this->assertEquals( 123, $zip->get_ID() );
 		$this->assertEquals( 'asdf', $zip->get_password() );
+		$this->assertEquals( '12345', $zip->get_gist_id() );
 	}
 
 	function test_build_by_array_with_only_ID() {
@@ -56,6 +60,7 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( '', $zip->get_status() );
 		$this->assertEquals( 123, $zip->get_ID() );
 		$this->assertEquals( '', $zip->get_password() );
+		$this->assertEquals( 'none', $zip->get_gist_id() );
 	}
 
 	function test_build_by_array_with_only_description() {
@@ -69,6 +74,7 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( '', $zip->get_status() );
 		$this->assertEquals( null, $zip->get_ID() );
 		$this->assertEquals( '', $zip->get_password() );
+		$this->assertEquals( 'none', $zip->get_gist_id() );
 	}
 
 	function test_build_by_array_with_only_status() {
@@ -82,6 +88,7 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'publish', $zip->get_status() );
 		$this->assertEquals( null, $zip->get_ID() );
 		$this->assertEquals( '', $zip->get_password() );
+		$this->assertEquals( 'none', $zip->get_gist_id() );
 	}
 
 	function test_build_by_array_with_only_password() {
@@ -95,6 +102,21 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( '', $zip->get_status() );
 		$this->assertEquals( null, $zip->get_ID() );
 		$this->assertEquals( 'asdf', $zip->get_password() );
+		$this->assertEquals( 'none', $zip->get_gist_id() );
+	}
+
+	function test_build_by_array_with_only_gist_id() {
+		$data = array(
+			'gist_id' => '12345'
+		);
+
+		$zip = $this->adapter->by_array( $data );
+
+		$this->assertEquals( '', $zip->get_description() );
+		$this->assertEquals( '', $zip->get_status() );
+		$this->assertEquals( null, $zip->get_ID() );
+		$this->assertEquals( '', $zip->get_password() );
+		$this->assertEquals( '12345', $zip->get_gist_id() );
 	}
 
 	function test_build_by_post() {
@@ -103,6 +125,7 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$post->post_status = 'publish';
 		$post->post_password = 'asdf';
 		$post->ID = 123;
+		$post->gist_id = '12345';
 
 		$zip = $this->adapter->by_post( $post );
 
@@ -110,6 +133,7 @@ class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'publish', $zip->get_status() );
 		$this->assertEquals( 123, $zip->get_ID() );
 		$this->assertEquals( 'asdf', $zip->get_password() );
+		$this->assertEquals( '12345', $zip->get_gist_id() );
 	}
 
 	function tearDown() {

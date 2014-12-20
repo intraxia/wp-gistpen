@@ -55,7 +55,7 @@ class Zip {
 	public function by_array( $data ) {
 		$zip = $this->blank();
 
-		$data = array_intersect_key( $data, array_flip( array( 'description', 'ID', 'status', 'password' ) ) );
+		$data = array_intersect_key( $data, array_flip( array( 'description', 'ID', 'status', 'password', 'gist_id' ) ) );
 
 		foreach ( $data as $key => $value ) {
 			$function = 'set_' . $key;
@@ -86,6 +86,9 @@ class Zip {
 		}
 		if ( isset( $post->post_password ) ) {
 			$zip->set_password( $post->post_password );
+		}
+		if ( isset( $post->gist_id ) ) {
+			$zip->set_gist_id( $post->gist_id );
 		}
 
 		return $zip;

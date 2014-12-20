@@ -10,6 +10,8 @@
  */
 ?>
 
+<?php do_action( 'wpgp_settings_before_title' ); ?>
+
 <div class="wpgp-wrap">
 
 <h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
@@ -82,3 +84,5 @@ EOL
 	?></code></pre>
 
 </div>
+
+<?php include_once( 'settings-export.inc.php' ); ?>

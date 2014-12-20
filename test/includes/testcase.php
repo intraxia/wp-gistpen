@@ -1,4 +1,5 @@
 <?php
+use \Mockery as m;
 
 class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 
@@ -15,6 +16,15 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		$this->mock_lang = $this->getMockBuilder( 'WP_Gistpen\Model\Language' )->disableOriginalConstructor()->getMock();
 		$this->mock_post = $this->getMockBuilder( 'WP_Gistpen\Model\Post' )->disableOriginalConstructor()->getMock();
 		$this->mock_file = $this->getMockBuilder( 'WP_Gistpen\Model\File' )->disableOriginalConstructor()->getMock();
+
+		$this->mock_sync = m::mock('WP_Gistpen\Controller\Sync');
+		$this->mock_database = m::mock('WP_Gistpen\Facade\Database');
+	}
+
+	function tearDown() {
+		parent::tearDown();
+
+		m::close();
 	}
 
 	function create_post_and_children() {

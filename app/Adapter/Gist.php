@@ -46,7 +46,7 @@ class Gist {
 	/**
 	 * Converts a Zip into API array for Gist
 	 *
-	 * @param  Zip $zip Zip to turn into API data
+	 * @param  \WP_Gistpen\Model\Zip $zip Zip to turn into API data
 	 * @return array      Gist data
 	 */
 	public function create_by_zip( $zip ) {

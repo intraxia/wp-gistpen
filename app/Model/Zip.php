@@ -73,6 +73,14 @@ class Zip {
 	 */
 	protected $password = '';
 
+	/**
+	 * Zips's Gist ID
+	 *
+	 * @var string
+	 * @since 0.5.0
+	 */
+	protected $gist_id = 'none';
+
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
@@ -201,6 +209,26 @@ class Zip {
 	public function set_password( $password ) {
 		// @todo what kind of data does this need to be? hashed, etc.?
 		$this->password = $password;
+	}
+
+	/**
+	 * Get the zip's Gist ID
+	 *
+	 * @return string Zip's Gist ID
+	 * @since  0.5.0
+	 */
+	public function get_gist_id() {
+		return $this->gist_id;
+	}
+
+	/**
+	 * Set the zip's Gist ID
+	 *
+	 * @param string $gist_id Zip's Gist ID
+	 * @since  0.5.0
+	 */
+	public function set_gist_id( $gist_id ) {
+		$this->gist_id = $gist_id;
 	}
 
 	/**

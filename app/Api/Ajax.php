@@ -1,6 +1,7 @@
 <?php
 namespace WP_Gistpen\Api;
 
+use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 
@@ -46,7 +47,7 @@ class Ajax {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	public $database;
 
 	/**
 	 * Adapter Facade object
@@ -54,7 +55,15 @@ class Ajax {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	public $adapter;
+
+	/**
+	 * Sync object
+	 *
+	 * @var Sync
+	 * @since  0.5.0
+	 */
+	public $sync;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -71,6 +80,8 @@ class Ajax {
 
 		$this->database = new Database( $plugin_name, $version );
 		$this->adapter = new Adapter( $plugin_name, $version );
+
+		$this->sync = new Sync( $plugin_name, $version );
 
 	}
 
@@ -93,12 +104,12 @@ class Ajax {
 	public function check_security() {
 		// Check the nonce
 		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
-			wp_send_json_error( array( 'error' => __( 'Nonce check failed.', $this->plugin_name ) ) );
+			wp_send_json_error( array( 'message' => __( 'Nonce check failed.', $this->plugin_name ) ) );
 		}
 
 		// Check if user has proper permisissions
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_send_json_error( array( 'error' => __( "User doesn't have proper permisissions.", $this->plugin_name ) ) );
+			wp_send_json_error( array( 'message' => __( "User doesn't have proper permisissions.", $this->plugin_name ) ) );
 		}
 	}
 
@@ -216,5 +227,62 @@ class Ajax {
 		}
 
 		wp_send_json_success();
+	}
+
+	/**
+	 * AJAX hook to get JSON of Gistpen IDs missing Gist IDs
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_gistpens_missing_gist_id() {
+		$this->check_security();
+
+		$result = $this->database->query( 'head' )->missing_gist_id();
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
+		}
+
+		if ( empty( $result ) ) {
+			wp_send_json_error( array( 'message' => __( 'No Gistpens missing Gist IDs.', $this->plugin_name ) ) );
+		}
+
+		wp_send_json_success( array( 'ids' => $result ) );
+	}
+
+	/**
+	 * AJAX hook to trigger export of Gistpen
+	 *
+	 * @since 0.5.0
+	 */
+	public function create_gist_from_gistpen_id() {
+		$this->check_security();
+
+		// @todo escape this
+		// cast to integer?
+		$id = intval( $_POST['gistpen_id'] );
+
+		if ( 0 === $id ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Invalid Gistpen ID.', $this->plugin_name ),
+			) );
+		}
+
+		$result = $this->sync->export_gistpen( $id );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => $result->get_error_message(),
+			) );
+		}
+
+		sleep( 1 );
+
+		wp_send_json_success( array(
+			'code'    => 'success',
+			'message' => __( 'Successfully exported Gistpen: ', $this->plugin_name ) . $result->get_description(),
+		) );
 	}
 }

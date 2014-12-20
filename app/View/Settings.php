@@ -79,7 +79,9 @@ class Settings {
 	 * @since 0.5.0
 	 */
 	public function github_user_layout() {
-		if ( false === cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) ) {
+		$token = (string) cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' );
+
+		if ( false === $token ) {
 			return;
 		}
 
@@ -87,10 +89,9 @@ class Settings {
 
 		if ( false === $user ) {
 			$client = new Gist( $this->plugin_name, $this->version );
+			$client->authenticate( $token );
 
-			$result = $client->set_up_client();
-
-			if ( is_wp_error( $result ) ) {
+			if ( is_wp_error( $error = $client->check_token() ) ) {
 				// If this token doesn't validate, clear it and bail.
 				cmb2_update_option( $this->plugin_name, '_wpgp_gist_token', '' );
 				delete_transient( '_wpgp_github_token_user_info' );
@@ -103,10 +104,12 @@ class Settings {
 
 		?><h3>Authorized User</h3>
 
-		<strong><?php _e( "Username:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['login'] ); ?><br>
-		<strong><?php _e( "Email:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['email'] ); ?><br>
-		<strong><?php _e( "Public Gists:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['public_gists'] ); ?><br>
-		<strong><?php _e( "Private Gists:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['private_gists'] ); ?><br><?php
+		<strong><?php _e( 'Username:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['login'] ); ?><br>
+		<strong><?php _e( 'Email:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['email'] ); ?><br>
+		<strong><?php _e( 'Public Gists:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['public_gists'] ); ?><br>
+		<strong><?php _e( 'Private Gists:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['private_gists'] ); ?><br><br><?php
+
+		submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false );
 	}
 
 	/**

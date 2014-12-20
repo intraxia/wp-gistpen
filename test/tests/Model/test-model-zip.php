@@ -37,6 +37,12 @@ class WP_Gistpen_Model_Zip_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 123, $this->zip->get_ID() );
 	}
 
+	function test_get_set_gist_id() {
+		$this->zip->set_gist_id( '12345' );
+
+		$this->assertEquals( '12345', $this->zip->get_gist_id() );
+	}
+
 	function test_get_post_content() {
 		$this->zip->add_file( $this->mock_file );
 

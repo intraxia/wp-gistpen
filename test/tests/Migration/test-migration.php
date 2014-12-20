@@ -15,10 +15,11 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 
 		$this->migration = new Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		update_option( 'wp_gistpen_version', '0.3.1' );
 	}
 
 	function set_up_0_4_0_test_posts() {
+		update_option( 'wp_gistpen_version', '0.3.1' );
+
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );
 

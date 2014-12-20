@@ -43,6 +43,14 @@ class Adapter {
 	private $file;
 
 	/**
+	 * WP_Gistpen\Adapter\Gist object
+	 *
+	 * @var GistAdapter
+	 * @since 0.5.0
+	 */
+	private $gist;
+
+	/**
 	 * WP_Gistpen\Adapter\Language object
 	 *
 	 * @var LanguageAdapter

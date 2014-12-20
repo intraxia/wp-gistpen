@@ -80,7 +80,8 @@ class Settings {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name . '-settings-script', WP_GISTPEN_URL . 'assets/js/settings' . $this->min . '.js', array( 'jquery', 'backbone', 'underscore', $this->plugin_name . '-prism' ), $this->version, true );
+		wp_enqueue_script( 'ajaxq', WP_GISTPEN_URL . 'assets/js/ajaxq' . $this->min . '.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name . '-settings-script', WP_GISTPEN_URL . 'assets/js/settings' . $this->min . '.js', array( 'jquery', 'jquery-ui-progressbar', 'ajaxq', 'backbone', 'underscore', $this->plugin_name . '-prism' ), $this->version, true );
 		wp_localize_script( $this->plugin_name .'-settings-script', 'WP_GISTPEN_URL', WP_GISTPEN_URL );
 
 		$screen = get_current_screen();

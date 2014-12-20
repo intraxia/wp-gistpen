@@ -1,6 +1,7 @@
 <?php
 
 use WP_Gistpen\Facade\Database;
+use WP_Gistpen\Facade\App;
 
 /**
  * @group  api
@@ -43,7 +44,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->check_response_failed();
 
-		$this->assertEquals( "Nonce check failed.", $this->response->data->error );
+		$this->assertEquals( "Nonce check failed.", $this->response->data->message );
 	}
 
 	function test_failed_no_perms() {
@@ -58,7 +59,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->check_response_failed();
 
-		$this->assertEquals( "User doesn't have proper permisissions.", $this->response->data->error );
+		$this->assertEquals( "User doesn't have proper permisissions.", $this->response->data->message );
 	}
 
 	function test_succeeded_recent_gistpens() {
@@ -192,6 +193,57 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->response = json_decode($this->_last_response);
 
 		$this->check_response_succeeded();
+	}
+
+	function test_gistpens_missing_gist_id() {
+		App::get('ajax')->database = $this->mock_database;
+		App::get('ajax')->sync = $this->mock_sync;
+
+		$this->set_correct_security();
+
+		$this->mock_database->
+			shouldReceive( 'query' )
+			->times( 1 )
+			->andReturn( $this->mock_database );
+		$this->mock_database->
+			shouldReceive( 'missing_gist_id' )
+			->times( 1 )
+			->andReturn( array( $this->gistpen->ID ) );
+
+		try {
+			$this->_handleAjax( 'get_gistpens_missing_gist_id' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertObjectHasAttribute( 'ids', $this->response->data );
+		$this->assertInternalType( 'array', $this->response->data->ids );
+		$this->assertCount( 1, $this->response->data->ids );
+	}
+
+	function test_create_gist_from_gistpen_id() {
+		App::get('ajax')->database = $this->mock_database;
+		App::get('ajax')->sync = $this->mock_sync;
+
+		$this->set_correct_security();
+
+		$this->mock_sync->
+			shouldReceive( 'export_gistpen' )
+			->times( 1 )
+			->with( $this->gistpen->ID )
+			->andReturn( $this->database->query( 'head' )->by_post( $this->gistpen ) );
+
+		$_POST['gistpen_id'] = $this->gistpen->ID;
+
+		try {
+			$this->_handleAjax( 'create_gist_from_gistpen_id' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertObjectHasAttribute( 'code', $this->response->data );
+		$this->assertEquals( 'success', $this->response->data->code );
+		$this->assertObjectHasAttribute( 'message', $this->response->data );
 	}
 
 	function tearDown() {
