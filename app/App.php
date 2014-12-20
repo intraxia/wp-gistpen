@@ -95,7 +95,7 @@ class App {
 
 		$this->define_ajax_hooks();
 		$this->define_content_hooks();
-		$this->define_dashboard_hooks();
+		$this->define_settings_assets();
 		$this->define_editor_hooks();
 		$this->define_migration_hooks();
 		$this->define_prism_hooks();
@@ -200,18 +200,18 @@ class App {
 	}
 
 	/**
-	 * Register all of the hooks related to the dashboard assets
+	 * Register all of the assets for the settings page
 	 * of the plugin.
 	 *
 	 * @since    0.5.0
 	 * @access   private
 	 */
-	private function define_dashboard_hooks() {
+	private function define_settings_assets() {
 
-		$this->dashboard = new Register\Assets\Dashboard( $this->get_plugin_name(), $this->get_version() );
+		$this->settings = new Register\Assets\Settings( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->dashboard, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings, 'enqueue_scripts' );
 
 	}
 
@@ -307,6 +307,10 @@ class App {
 		// Add the options page and menu item.
 		$this->loader->add_action( 'admin_menu', $this->settings, 'add_plugin_admin_menu' );
 		$this->loader->add_action( 'admin_init', $this->settings, 'register_setting' );
+
+		// Add GitHub User layout before the CMB2 settings form
+		$this->loader->add_action( 'cmb2_before_form', $this->settings, 'github_user_layout' );
+
 		// Add an action link pointing to the options page.
 		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings, 'add_action_links' );
 

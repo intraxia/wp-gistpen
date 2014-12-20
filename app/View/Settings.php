@@ -79,29 +79,34 @@ class Settings {
 	 * @since 0.5.0
 	 */
 	public function github_user_layout() {
+		if ( false === cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) ) {
+			return;
+		}
+
 		$user = get_transient( '_wpgp_github_token_user_info' );
 
 		if ( false === $user ) {
 			$client = new Gist( $this->plugin_name, $this->version );
 
-			if ( false === cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) ) {
+			$result = $client->set_up_client();
+
+			if ( is_wp_error( $result ) ) {
+				// If this token doesn't validate, clear it and bail.
+				cmb2_update_option( $this->plugin_name, '_wpgp_gist_token', '' );
+				delete_transient( '_wpgp_github_token_user_info' );
+
 				return;
 			}
-
-			$client->authenticate( cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) );
-			$client->check_token();
 
 			$user = get_transient( '_wpgp_github_token_user_info' );
 		}
 
-		echo '<h3>';
-		echo 'Authorized User';
-		echo '</h3>';
+		?><h3>Authorized User</h3>
 
-		echo '<strong>Username:</strong> ' . $user['login'] . '<br>';
-		echo '<strong>Email:</strong> ' . $user['email'] . '<br>';
-		echo '<strong>Public Gists:</strong> ' . $user['public_gists'] . '<br>';
-		echo '<strong>Private Gists:</strong> ' . $user['private_gists'];
+		<strong><?php _e( "Username:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['login'] ); ?><br>
+		<strong><?php _e( "Email:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['email'] ); ?><br>
+		<strong><?php _e( "Public Gists:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['public_gists'] ); ?><br>
+		<strong><?php _e( "Private Gists:", $this->plugin_name ); ?></strong><?php echo esc_html( $user['private_gists'] ); ?><br><?php
 	}
 
 	/**
@@ -142,7 +147,17 @@ class Settings {
 		$client->authenticate( $value );
 
 		if ( is_wp_error( $error = $client->check_token() ) ) {
-			set_transient( '_wpgp_github_token_error_message', $error->get_error_message(), 15 );
+			delete_transient( '_wpgp_github_token_user_info' ); ?>
+
+			<div class="error">
+				<p>
+					<?php
+						_e( 'Gist token failed to validate. Error message: ', $this->plugin_name );
+						echo esc_html( $error->get_error_message() );
+					?>
+				</p>
+			</div><?php
+
 			return '';
 		}
 

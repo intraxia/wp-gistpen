@@ -11,7 +11,7 @@ use WP_Gistpen\Model\Language;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Dashboard {
+class Settings {
 
 	/**
 	 * The ID of this plugin.
@@ -80,17 +80,17 @@ class Dashboard {
 	 */
 	public function enqueue_scripts() {
 
-		wp_enqueue_script( $this->plugin_name . '-dashboard-script', WP_GISTPEN_URL . 'assets/js/dashboard' . $this->min . '.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script( $this->plugin_name .'-dashboard-script', 'WP_GISTPEN_URL', WP_GISTPEN_URL );
-
-		wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, false );
-
-		wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
-		wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Language::$supported );
+		wp_enqueue_script( $this->plugin_name . '-settings-script', WP_GISTPEN_URL . 'assets/js/settings' . $this->min . '.js', array( 'jquery', 'backbone', 'underscore', $this->plugin_name . '-prism' ), $this->version, true );
+		wp_localize_script( $this->plugin_name .'-settings-script', 'WP_GISTPEN_URL', WP_GISTPEN_URL );
 
 		$screen = get_current_screen();
 
 		if ( 'gistpen' === $screen->id ) {
+			wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, false );
+
+			wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
+			wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Language::$supported );
+
 			wp_dequeue_script( 'autosave' );
 		}
 

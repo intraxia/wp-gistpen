@@ -10,23 +10,9 @@
  */
 ?>
 
-<div class="wrap">
+<div class="wpgp-wrap">
 
-	<?php if ( false !== get_transient( '_wpgp_github_token_error_message' ) ) : ?>
-		<div class="error">
-			<p>
-				<?php
-					_e( 'Gist token failed to validate. Error message: ', $this->plugin_name );
-					echo esc_html( get_transient( '_wpgp_github_token_error_message' ) );
-				?>
-			</p>
-		</div>
-		<?php delete_transient( '_wpgp_github_token_error_message' ); ?>
-	<?php endif; ?>
-
-	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-
-	<?php $this->github_user_layout(); ?>
+<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 	<?php
 
@@ -55,7 +41,6 @@
 						'twilight' => __( 'Twilight', $this->plugin_name ),
 						'coy' => __( 'Coy', $this->plugin_name ),
 					),
-					'default' => cmb2_get_option( $this->plugin_name, $prefix . 'gistpen_highlighter_theme' )
 				),
 				array(
 					'name' => __( 'Enable line numbers', $this->plugin_name ),
@@ -66,6 +51,34 @@
 		), $this->plugin_name );
 	?>
 
-	<pre class="gistpen line-numbers" data-src="<?php echo WP_GISTPEN_URL; ?>assets/js/prism.js"></pre>
+	<pre class="gistpen line-numbers"><code class="language-markup"><?php
+echo htmlentities(<<<EOL
+<?xml version="1.0"?>
+<response value="ok" xml:lang="en">
+  <text>Ok</text>
+  <comment html_allowed="true"/>
+  <ns1:description><![CDATA[
+  CDATA is <not> magical.
+  ]]></ns1:description>
+  <a></a> <a/>
+</response>
+
+
+<!DOCTYPE html>
+<title>Title</title>
+
+<style>body {width: 500px;}</style>
+
+<script type="application/javascript">
+  function \$init() {return true;}
+</script>
+
+<body>
+  <p checked class="title" id='title'>Title</p>
+  <!-- here goes the rest of the page -->
+</body>
+EOL
+);
+	?></code></pre>
 
 </div>
