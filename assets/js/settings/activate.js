@@ -1,16 +1,17 @@
-var Gistpen = {};
+window.wpgpSettings = {};
 
 jQuery(function($) {
 	"use strict";
 
+	var settings = window.wpgpSettings;
+
 	Prism.hooks.add('after-highlight', function(env) {
-		var preview = new Gistpen.Preview();
+		var preview = new settings.Preview();
 
 		preview.setClickHandlers();
 	});
 
-	var exporter = new Gistpen.Export();
+	var exp = new settings.Export();
 
-	exporter.setClickHandlers();
-
+	exp.setClickHandlers();
 });

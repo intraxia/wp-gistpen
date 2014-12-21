@@ -10,7 +10,7 @@ namespace WP_Gistpen\Register\Assets;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class TinyMCE {
+class Button {
 
 	/**
 	 * The ID of this plugin.
@@ -65,7 +65,7 @@ class TinyMCE {
 	 * @since 0.4.0
 	 */
 	public function mce_external_plugins( $plugins ) {
-		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'assets/js/tinymce' . $this->min . '.js';
+		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'assets/js/button' . $this->min . '.js';
 		return $plugins;
 	}
 
