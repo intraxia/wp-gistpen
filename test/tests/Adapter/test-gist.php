@@ -20,7 +20,7 @@ class WP_Gistpen_Adapter_Gist_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'Post title 1', $gist['description'] );
 		$this->assertTrue( $gist['public'] );
-		$this->assertCount( 3, $gist['files'], 'message');
+		$this->assertCount( 3, $gist['files'] );
 
 		foreach ( $gist['files'] as $filename => $data ) {
 			$this->assertContains( 'post-title', $filename );

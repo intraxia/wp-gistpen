@@ -192,11 +192,17 @@ class Editor {
 
 			$files = $zip->get_files();
 
-			$jsFiles = $this->adapter->build( 'file' )->to_json( $files ); ?>
+			$zip_json = $this->adapter->build( 'json' )->by_zip( $zip ); ?>
 
 			<script type="text/javascript">
-				jQuery(function() {
-					GistpenEditor.init(<?php echo $jsFiles; ?>);
+				jQuery(function($) {
+					"use strict";
+
+					var editor = window.wpgpEditor;
+					var form = $('form#post');
+
+					var main = new editor.Main(<?php echo $zip_json; ?>);
+					form.prepend(main.render());
 				});
 			</script>
 		<?php endif;
