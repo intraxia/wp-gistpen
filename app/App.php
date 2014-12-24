@@ -270,14 +270,10 @@ class App {
 	 */
 	private function define_editor_hooks() {
 		$this->editor = new View\Editor( $this->get_plugin_name(), $this->get_version() );
-		// Render the error messages
-		$this->loader->add_action( 'admin_notices', $this->editor, 'add_admin_errors' );
-		// Edit the placeholder text in the Gistpen title box
-		$this->loader->add_filter( 'enter_title_here', $this->editor, 'new_enter_title_here' );
 		// Hook in repeatable file editor
-		$this->loader->add_action( 'edit_form_after_title', $this->editor, 'render_gistfile_editor' );
+		$this->loader->add_action( 'edit_form_after_title', $this->editor, 'render_editor_div' );
 		// Init all the rendered editors
-		$this->loader->add_action( 'admin_print_footer_scripts', $this->editor, 'add_ace_editor_init_inline', 99 );
+		$this->loader->add_action( 'admin_print_footer_scripts', $this->editor, 'init_editor', 99 );
 
 		// Rearrange Gistpen layout
 		$this->loader->add_filter( 'screen_layout_columns', $this->editor, 'screen_layout_columns' );

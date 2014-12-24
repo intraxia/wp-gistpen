@@ -1,5 +1,5 @@
 // Some styles for the Gistpen editor
-#wp-gistfile-wrap {
+#wpgp-editor {
 
 	.ace-editor {
 		height: 360px;
@@ -16,7 +16,7 @@
 		margin-bottom: 15px;
 	}
 
-	._wpgp_ace_theme-wrap {
+	.wpgp-ace-settings {
 		margin: 10px;
 
 		label {
@@ -27,6 +27,14 @@
 	.wp-gistpenfile-language, .wp-gistpenfile-slug {
 		float: left;
 	}
+}
+
+.wpgp-ace {
+	margin: 10px 0;
+}
+
+#wpgp-addfile {
+	margin-top: 5px;
 }
 
 #normal-sortables .postbox {
