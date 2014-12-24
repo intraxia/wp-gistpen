@@ -69,7 +69,7 @@ class Settings {
 	 */
 	public function display_plugin_admin_page() {
 
-		include_once( WP_GISTPEN_DIR . 'partials/settings-page.php' );
+		include_once( WP_GISTPEN_DIR . 'partials/settings/page.php' );
 
 	}
 

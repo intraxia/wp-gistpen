@@ -3,6 +3,7 @@ namespace WP_Gistpen\View;
 
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
+use WP_Gistpen\Model\Language;
 
 /**
  * This class registers all of the settings page views
@@ -34,7 +35,7 @@ class Editor {
 		'github' => 'GitHub',
 		'idle_fingers' => 'Idle Fingers',
 		'katzenmilch' => 'Katzenmilch',
-		'kr' => 'KR',
+		'kr_theme' => 'KR',
 		'kuroir' => 'Kuroir',
 		'merbivore' => 'Merbivore',
 		'monokai' => 'Monokai',
@@ -95,78 +96,16 @@ class Editor {
 	}
 
 	/**
-	 * Display any errors from the save hooks in the admin dashboard
-	 *
-	 * @since 0.4.0
-	 */
-	public function add_admin_errors() {
-		if ( array_key_exists( 'gistpen-errors', $_GET ) ) { ?>
-			<div class="error">
-				<p><?php
-					_e( 'The post saved with error codes: ', $this->plugin_name );
-					echo $_GET['gistpen-errors'];
-				?></p>
-			</div><?php
-		}
-	}
-
-	/**
-	 * Returns new Gistpen title placeholder text
-	 *
-	 * @param  string   $title   default placeholder text
-	 * @return string            new placeholder text
-	 * @since  0.4.0
-	 */
-	public function new_enter_title_here( $title ){
-		$screen = get_current_screen();
-
-		if ( 'gistpen' == $screen->post_type ){
-			$title = __( 'Gistpen description...', $this->plugin_name );
-		}
-
-		return $title;
-	}
-
-	/**
 	 * Manage rendering of repeatable Gistfile editor
 	 *
 	 * @since     0.4.0
 	 */
-	public function render_gistfile_editor() {
-
-		$screen = get_current_screen();
-
-		if ( 'gistpen' == $screen->id ) {
-
-			$this->render_theme_selector(); ?>
-			<div id="wp-gistfile-wrap"></div>
-			<input type="hidden" id="file_ids" name="file_ids" value=""><?php
-
-			echo submit_button( __( 'Add Gistfile', $this->plugin_name ), 'primary', 'add-gistfile', true );
-
+	public function render_editor_div() {
+		if ( 'gistpen' == get_current_screen()->id ) {
+			include_once( WP_GISTPEN_DIR . 'partials/editor/main.inc.php' );
+			include_once( WP_GISTPEN_DIR . 'partials/editor/zip.inc.php' );
+			include_once( WP_GISTPEN_DIR . 'partials/editor/file.inc.php' );
 		}
-	}
-
-	/**
-	 * Render the selection box for the ACE editor theme
-	 *
-	 * @return string   ACE theme selection box
-	 * @since  0.4.0
-	 */
-	public function render_theme_selector() { ?>
-		<div class="_wpgp_ace_theme-wrap">
-			<label for="_wpgp_ace_theme">
-				<?php _e( 'Ace Editor Theme: ', $this->plugin_name ); ?>
-			</label>
-			<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
-			<?php foreach ( $this->ace_themes as $slug => $name ) : ?>
-				<?php $selected = get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) == $slug ? 'selected' : ''; ?>
-				<option value="<?php echo $slug; ?>" <?php echo $selected; ?> >
-					<?php echo $name; ?>
-				</option>
-			<?php endforeach; ?>
-			</select>
-		</div><?php
 	}
 
 	/**
@@ -175,28 +114,27 @@ class Editor {
 	 * @return string   ACE editor init script
 	 * @since 0.4.0
 	 */
-	public function add_ace_editor_init_inline() {
-		$screen = get_current_screen();
-
-		if ( 'gistpen' == $screen->id ):
+	public function init_editor() {
+		if ( 'gistpen' == get_current_screen()->id ):
 
 			$zip = $this->database->query()->by_id( get_the_ID() );
 
-			if ( is_wp_error( $zip ) ) {?>
-				<script>
-					console.log(<?php echo $zip->get_error_message();  ?>);
-				</script>
-				<?php
+			if ( is_wp_error( $zip ) ) {
+				// @todo
 				return;
 			}
 
-			$files = $zip->get_files();
-
-			$jsFiles = $this->adapter->build( 'file' )->to_json( $files ); ?>
+			$zip_json = $this->adapter->build( 'json' )->by_zip( $zip ); ?>
 
 			<script type="text/javascript">
-				jQuery(function() {
-					GistpenEditor.init(<?php echo $jsFiles; ?>);
+				jQuery(function($) {
+					"use strict";
+
+					var editor = window.wpgpEditor;
+					var form = $('form#post');
+
+					var main = new editor.Main(<?php echo $zip_json; ?>);
+					form.prepend(main.render());
 				});
 			</script>
 		<?php endif;

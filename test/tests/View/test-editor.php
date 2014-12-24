@@ -1,6 +1,9 @@
 <?php
 use WP_Gistpen\View\Editor;
 
+/**
+ * @group view
+ */
 class WP_Gistpen_View_Editor_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
@@ -16,18 +19,9 @@ class WP_Gistpen_View_Editor_Test extends WP_Gistpen_UnitTestCase {
 		$post = $this->gistpen;
 	}
 
-	function test_gistfile_editor() {
-		ob_start();
-		$this->editor->render_gistfile_editor();
-		$html = ob_get_contents();
-		ob_end_clean();
-
-		$this->assertValidHTML( $html );
-	}
-
 	function test_ace_editor_init() {
 		ob_start();
-		$this->editor->add_ace_editor_init_inline();
+		$this->editor->init_editor();
 		$html = ob_get_contents();
 		ob_end_clean();
 

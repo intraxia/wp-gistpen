@@ -44,15 +44,17 @@ class App {
 	 * @access   public
 	 */
 	public $ajax;
+	public $button;
 	public $content;
 	public $dashboard;
 	public $data;
 	public $editor;
 	public $migration;
+	public $popup_assets;
 	public $prism;
 	public $save;
-	public $settings;
-	public $tinymce;
+	public $settings_assets;
+	public $settings_view;
 	public $web;
 
 	/**
@@ -95,13 +97,19 @@ class App {
 
 		$this->define_ajax_hooks();
 		$this->define_content_hooks();
+
+		$this->define_popup_assets();
+
 		$this->define_settings_assets();
+		$this->define_settings_hooks();
+
+		$this->define_editor_assets();
 		$this->define_editor_hooks();
+
 		$this->define_migration_hooks();
 		$this->define_prism_hooks();
 		$this->define_save_hooks();
-		$this->define_settings_hooks();
-		$this->define_tinymce_hooks();
+		$this->define_button_hooks();
 		$this->define_web_hooks();
 
 	}
@@ -214,10 +222,42 @@ class App {
 	 */
 	private function define_settings_assets() {
 
-		$this->settings = new Register\Assets\Settings( $this->get_plugin_name(), $this->get_version() );
+		$this->settings_assets = new Register\Assets\Settings( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings, 'enqueue_scripts' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings_assets, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings_assets, 'enqueue_scripts' );
+
+	}
+
+	/**
+	 * Register all of the assets for the settings page
+	 * of the plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function define_popup_assets() {
+
+		$this->popup_assets = new Register\Assets\Popup( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->popup_assets, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->popup_assets, 'enqueue_scripts' );
+
+	}
+
+	/**
+	 * Register all of the assets for the settings page
+	 * of the plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 */
+	private function define_editor_assets() {
+
+		$this->editor = new Register\Assets\Editor( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->editor, 'enqueue_styles' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $this->editor, 'enqueue_scripts' );
 
 	}
 
@@ -230,14 +270,10 @@ class App {
 	 */
 	private function define_editor_hooks() {
 		$this->editor = new View\Editor( $this->get_plugin_name(), $this->get_version() );
-		// Render the error messages
-		$this->loader->add_action( 'admin_notices', $this->editor, 'add_admin_errors' );
-		// Edit the placeholder text in the Gistpen title box
-		$this->loader->add_filter( 'enter_title_here', $this->editor, 'new_enter_title_here' );
 		// Hook in repeatable file editor
-		$this->loader->add_action( 'edit_form_after_title', $this->editor, 'render_gistfile_editor' );
+		$this->loader->add_action( 'edit_form_after_title', $this->editor, 'render_editor_div' );
 		// Init all the rendered editors
-		$this->loader->add_action( 'admin_print_footer_scripts', $this->editor, 'add_ace_editor_init_inline', 99 );
+		$this->loader->add_action( 'admin_print_footer_scripts', $this->editor, 'init_editor', 99 );
 
 		// Rearrange Gistpen layout
 		$this->loader->add_filter( 'screen_layout_columns', $this->editor, 'screen_layout_columns' );
@@ -308,20 +344,20 @@ class App {
 	 * @access   private
 	 */
 	private function define_settings_hooks() {
-		$this->settings = new View\Settings( $this->get_plugin_name(), $this->get_version() );
+		$this->settings_view = new View\Settings( $this->get_plugin_name(), $this->get_version() );
 
 		// Add the options page and menu item.
-		$this->loader->add_action( 'admin_menu', $this->settings, 'add_plugin_admin_menu' );
-		$this->loader->add_action( 'admin_init', $this->settings, 'register_setting' );
+		$this->loader->add_action( 'admin_menu', $this->settings_view, 'add_plugin_admin_menu' );
+		$this->loader->add_action( 'admin_init', $this->settings_view, 'register_setting' );
 
 		// Add GitHub User layout before the CMB2 settings form
-		$this->loader->add_action( 'cmb2_before_form', $this->settings, 'github_user_layout' );
+		$this->loader->add_action( 'cmb2_before_form', $this->settings_view, 'github_user_layout' );
 
 		// Add an action link pointing to the options page.
-		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings, 'add_action_links' );
+		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings_view, 'add_action_links' );
 
 		// Add validation to saving the gist token
-		$this->loader->add_filter( 'cmb2_validate_text', $this->settings, 'validate_gist_token', 10, 5 );
+		$this->loader->add_filter( 'cmb2_validate_text', $this->settings_view, 'validate_gist_token', 10, 5 );
 	}
 
 	/**
@@ -331,12 +367,12 @@ class App {
 	 * @since    0.5.0
 	 * @access   private
 	 */
-	private function define_tinymce_hooks() {
+	private function define_button_hooks() {
 
-		$this->tinymce = new Register\Assets\TinyMCE( $this->get_plugin_name(), $this->get_version() );
+		$this->button = new Register\Assets\Button( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_filter( 'mce_external_plugins', $this->tinymce, 'mce_external_plugins' );
-		$this->loader->add_filter( 'mce_buttons', $this->tinymce, 'mce_buttons' );
+		$this->loader->add_filter( 'mce_external_plugins', $this->button, 'mce_external_plugins' );
+		$this->loader->add_filter( 'mce_buttons', $this->button, 'mce_buttons' );
 
 	}
 
