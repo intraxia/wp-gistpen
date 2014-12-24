@@ -170,6 +170,17 @@ class Ajax {
 	}
 
 	/**
+	 * Retrieves the ACE editor theme from the user meta
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_ace_theme() {
+		$this->check_security();
+
+		wp_send_json_success( array( 'theme' => get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) ) );
+	}
+
+	/**
 	 * Saves the ACE editor theme to the user meta
 	 *
 	 * @since     0.4.0

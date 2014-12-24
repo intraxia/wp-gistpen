@@ -180,8 +180,9 @@ class App {
 		$this->loader->add_action( 'wp_ajax_get_gistpen_languages', $this->ajax, 'get_gistpen_languages' );
 		$this->loader->add_action( 'wp_ajax_create_gistpen', $this->ajax, 'create_gistpen' );
 
-		// AJAX hook to save Ace theme
+		// AJAX hook to save and retrieve Ace theme
 		$this->loader->add_action( 'wp_ajax_save_ace_theme', $this->ajax, 'save_ace_theme' );
+		$this->loader->add_action( 'wp_ajax_get_ace_theme', $this->ajax, 'get_ace_theme' );
 
 		// AJAX hooks to add and delete Gistfile editors
 		$this->loader->add_action( 'wp_ajax_get_gistpenfile_id', $this->ajax, 'get_gistpenfile_id' );

@@ -133,6 +133,19 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'php', $file->get_language()->get_slug() );
 	}
 
+	function test_succeeded_get_theme() {
+		$this->set_correct_security();
+		update_user_meta( get_current_user_id(), '_wpgp_ace_theme', 'testtheme' );
+
+		try {
+			$this->_handleAjax( 'get_ace_theme' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertEquals( 'testtheme', $this->response->data->theme );
+	}
+
 	function test_succeeded_save_theme() {
 		$this->set_correct_security();
 		$_POST['theme'] = 'twilight';
