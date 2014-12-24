@@ -1,0 +1,1 @@
+window.wpgpEditor = { Views: {}, Models: {} };

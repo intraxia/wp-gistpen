@@ -76,8 +76,8 @@ class Editor {
 	 */
 	public function enqueue_scripts() {
 		if ( 'gistpen' === get_current_screen()->id ) {
-			wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, false );
-			wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', $this->plugin_name . '-ace-script' ), $this->version, false );
+			wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, true );
+			wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'jquery', 'backbone', 'underscore', $this->plugin_name . '-ace-script' ), $this->version, true );
 			wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Language::$supported );
 			wp_dequeue_script( 'autosave' );
 		}
