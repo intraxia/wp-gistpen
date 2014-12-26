@@ -137,7 +137,6 @@ class Ajax {
 	/**
 	 * Responds to AJAX request to create new Gistpen
 	 *
-	 * @return string $post_id the id of the created Gistpen
 	 * @since  0.2.0
 	 */
 	public function create_gistpen() {
@@ -192,49 +191,6 @@ class Ajax {
 
 		if ( ! $result ) {
 			wp_send_json_error();
-		}
-
-		wp_send_json_success();
-	}
-
-
-	/**
-	 * AJAX hook to get a new ACE editor
-	 *
-	 * @since     0.4.0
-	 */
-	public function get_gistpenfile_id() {
-		$this->check_security();
-
-		if ( ! array_key_exists( 'parent_id', $_POST ) ) {
-			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
-		}
-
-		$result = $this->database->persist()->by_file_and_zip_id( $this->adapter->build( 'file' )->blank(), $_POST['parent_id'] );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
-
-		wp_send_json_success( array( 'id' => $result ) );
-	}
-
-	/**
-	 * AJAX hook to delete an ACE editor
-	 *
-	 * @since     0.4.0
-	 */
-	public function delete_gistpenfile() {
-		$this->check_security();
-
-		if ( ! array_key_exists( 'fileID', $_POST ) ) {
-			wp_send_json_error( array( 'messages' => array( 'File ID not sent.' ) ) );
-		}
-
-		$result = wp_delete_post( $_POST['fileID'], true );
-
-		if ( ! $result ) {
-			wp_send_json_error( array( 'message' => __( 'wp_delete_post failed', $this->plugin_name ) ) );
 		}
 
 		wp_send_json_success();
