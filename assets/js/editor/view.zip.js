@@ -2,12 +2,6 @@
 	var viewzip = Backbone.View.extend({
 		id: 'wpgp-zip',
 		template: _.template($("script#wpgpZip").html()),
-		defaults: {
-			description: "",
-			ID: null,
-			status: "",
-			password: ""
-		},
 
 		events: {
 			'keyup input#title': 'updateDescription'
