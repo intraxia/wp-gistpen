@@ -10,13 +10,14 @@
 		render: function() {
 			this.$el.append( this.template() );
 
-			this.select = this.$el.find('select');
+			this.$select = this.$el.find('select');
+			this.$addFile = this.$el.find('input#wpgp-addfile');
 
 			return this;
 		},
 
 		updateTheme: function() {
-			this.model.set('acetheme', this.select.val());
+			this.model.set('acetheme', this.$select.val());
 		},
 
 		addFile: function(e) {

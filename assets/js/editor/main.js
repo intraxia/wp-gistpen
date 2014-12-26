@@ -4,13 +4,13 @@
 	var main = Backbone.Model.extend({
 		$nonce: $('#_ajax_wp_gistpen'),
 		defaults: {
-			acetheme: 'ambiance'
+			acetheme: ''
 		},
 
 		initialize: function(atts, opts) {
-			this.attachListeners();
+			this.getTheme();
 
-			this.getData();
+			this.attachListeners();
 
 			this.view = new editor.Views.Main({model: this});
 
@@ -18,8 +18,8 @@
 			this.files = new editor.Files(this.get('files'));
 		},
 
-		getData: function() {
-			that = this;
+		getTheme: function() {
+			var that = this;
 
 			$.post(ajaxurl, {
 				nonce: that.getNonce(),
@@ -27,14 +27,17 @@
 			}, function(response, textStatus, xhr) {
 				if(response.success === true && "" !== response.data.theme) {
 					that.set('acetheme', response.data.theme);
+					that.view.$select.val(that.get('acetheme'));
 				}
+
+				that.files.view.updateThemes(that.get('acetheme'));
 			});
 		},
 
 		render: function() {
 			this.view.render();
 			this.view.$el.prepend( this.zip.view.render().el );
-			this.view.$el.find('.wpgp-ace-settings').after( this.files.view.render().el );
+			this.view.$el.find('.wpgp-main-settings').after( this.files.view.render().el );
 
 			return this.view.$el;
 		},
@@ -46,7 +49,7 @@
 		},
 
 		updateThemes: function() {
-			that = this;
+			var that = this;
 
 			this.files.view.updateThemes(this.get('acetheme'));
 
