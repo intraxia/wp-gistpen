@@ -179,6 +179,7 @@ class App {
 		$this->loader->add_action( 'wp_ajax_get_gistpens', $this->ajax, 'get_gistpens' );
 		$this->loader->add_action( 'wp_ajax_get_gistpen_languages', $this->ajax, 'get_gistpen_languages' );
 		$this->loader->add_action( 'wp_ajax_create_gistpen', $this->ajax, 'create_gistpen' );
+		$this->loader->add_action( 'wp_ajax_save_gistpen', $this->ajax, 'save_gistpen' );
 
 		// AJAX hook to save and retrieve Ace theme
 		$this->loader->add_action( 'wp_ajax_save_ace_theme', $this->ajax, 'save_ace_theme' );

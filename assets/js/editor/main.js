@@ -71,6 +71,28 @@
 			this.updateThemes();
 		},
 
+		updateGistpen: function() {
+			var that = this;
+
+			return $.ajax({
+				url: ajaxurl,
+				type: 'POST',
+				data: {
+					action: 'save_gistpen',
+					nonce: that.getNonce(),
+
+					zip: that.toJSON()
+				},
+			});
+		},
+
+		toJSON: function() {
+			var atts = _.clone( this.zip.attributes );
+			atts.files = _.clone( this.files.toJSON() );
+
+			return atts;
+		},
+
 		getNonce: function() {
 			return $.trim(this.$nonce.val());
 		}

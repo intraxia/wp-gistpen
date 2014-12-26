@@ -169,6 +169,43 @@ class Ajax {
 	}
 
 	/**
+	 * AJAX hook to save Gistpen in the editor
+	 *
+	 * @since 0.5.0
+	 */
+	public function save_gistpen() {
+		$this->check_security();
+
+		$zip_data = $_POST['zip'];
+
+		if ( 'auto-draft' === $zip_data['status'] ) {
+			$zip_data['status'] = 'draft';
+		}
+
+		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
+
+		foreach ( $zip_data['files'] as $file_data ) {
+			$file = $this->adapter->build( 'file' )->by_array( $file_data );
+			$file->set_language( $this->adapter->build( 'language' )->by_slug( $file_data['language'] ) );
+			$zip->add_file( $file );
+		}
+
+		$result = $this->database->persist( 'head' )->by_zip( $zip );
+
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => $result->get_error_message(),
+			) );
+		}
+
+		wp_send_json_success( array(
+			'code'    => 'updated',
+			'message' => __( "Successfully updated Gistpen ", $this->plugin_name ) . $result,
+		) );
+	}
+
+	/**
 	 * Retrieves the ACE editor theme from the user meta
 	 *
 	 * @since 0.5.0

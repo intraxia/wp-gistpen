@@ -133,6 +133,32 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'php', $file->get_language()->get_slug() );
 	}
 
+	function test_succeeded_save_gistpen() {
+		$this->set_correct_security();
+		$_POST['zip'] = array(
+			'description'  => 'New Gistpen Description',
+			'status'       => 'auto-draft',
+			'ID'           => null,
+			'files'        => array(
+				array(
+					'slug'     => 'New Gistpen',
+					'code'     => 'echo $stuff;',
+					'ID'       => null,
+					'language' => 'php',
+				),
+			),
+		);
+
+		try {
+			$this->_handleAjax( 'save_gistpen' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertEquals( 'updated', $this->response->data->code );
+		$this->assertContains( 'Successfully updated Gistpen', $this->response->data->message );
+	}
+
 	function test_succeeded_get_theme() {
 		$this->set_correct_security();
 		update_user_meta( get_current_user_id(), '_wpgp_ace_theme', 'testtheme' );

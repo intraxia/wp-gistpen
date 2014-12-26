@@ -81,7 +81,7 @@ class Head {
 
 		$files = $zip->get_files();
 
-		foreach ( $files as $file ) {
+		foreach ( $files as $id => $file ) {
 			$data = array(
 				'post_title'    => $file->get_slug(),
 				'post_content'  => $file->get_code(),
