@@ -19,16 +19,17 @@
 			this.$inputDescription = this.$el.find('#title');
 			this.$labelDescription = this.$el.find('#title-prompt-text');
 
+			if ( '' !== this.model.get('description') ) {
+				this.$labelDescription.addClass('screen-reader-text');
+			}
+
+			this.addListeners();
+
 			return this;
 		},
 
-		updateDescription: function() {
+		addListeners: function() {
 			that = this;
-			this.model.set('description', this.$inputDescription.val());
-
-			if ( '' === this.$inputDescription.val() ) {
-				this.$labelDescription.removeClass('screen-reader-text');
-			}
 
 			this.$labelDescription.click(function(){
 				that.$labelDescription.addClass('screen-reader-text');
@@ -44,6 +45,10 @@
 			}).keydown(function(e){
 				that.$labelDescription.addClass('screen-reader-text');
 			});
+		},
+
+		updateDescription: function() {
+			this.model.set('description', this.$inputDescription.val());
 		}
 	});
 
