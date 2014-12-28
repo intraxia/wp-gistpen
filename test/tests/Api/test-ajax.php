@@ -232,7 +232,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->set_correct_security();
 
 		$this->mock_sync->
-			shouldReceive( 'export_gistpen' )
+			shouldReceive( 'update_gist' )
 			->times( 1 )
 			->with( $this->gistpen->ID )
 			->andReturn( $this->database->query( 'head' )->by_post( $this->gistpen ) );

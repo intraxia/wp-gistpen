@@ -321,7 +321,7 @@ class Ajax {
 			) );
 		}
 
-		$result = $this->sync->export_gistpen( $id );
+		$result = $this->sync->update_gist( $id );
 
 		$this->check_error( $result );
 		sleep( 1 );

@@ -78,15 +78,15 @@ class Sync {
 	}
 
 	/**
-	 * Exports all the unsynced Gistpens to Gist
+	 * Exports unsynced Gistpen to Gist
 	 *
 	 * @return string|WP_Error Gist ID on success, WP_Error on failure
 	 * @since 0.5.0
 	 */
-	public function export_gistpen( $zip_id ) {
+	public function create_gist( $zip_id ) {
 		$zip = $this->database->query( 'head' )->by_id( $zip_id );
 
-		if ( is_wp_error( $zip ) ){
+		if ( is_wp_error( $zip ) ) {
 			return $zip;
 		}
 
@@ -96,13 +96,13 @@ class Sync {
 
 		$response = $this->gist->create_gist( $zip );
 
-		if ( is_wp_error( $response ) ){
+		if ( is_wp_error( $response ) ) {
 			return $response;
 		}
 
 		$result = $this->database->persist( 'head' )->set_gist_id( $zip_id, $result );
 
-		if ( is_wp_error( $result ) ){
+		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 

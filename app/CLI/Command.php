@@ -125,10 +125,10 @@ class Command extends \WP_CLI_Command {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     wp wpgp export_gistpens
+	 *     wp wpgp create_gists
 	 *
 	 */
-	function export_gistpens( $args, $assoc_args ) {
+	function create_gists( $args, $assoc_args ) {
 		$ids = $this->database->query( 'head' )->missing_gist_id();
 
 		if ( is_wp_error( $ids ) ) {
@@ -142,7 +142,7 @@ class Command extends \WP_CLI_Command {
 		$sync = new Sync( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 
 		foreach ( $ids as $id ) {
-			$result = $sync->export_gistpen( $id );
+			$result = $sync->update_gist( $id );
 
 			if ( is_wp_error( $result ) ){
 				WP_CLI::error( __( 'Failed to create Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
