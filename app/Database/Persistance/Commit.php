@@ -55,8 +55,8 @@ class Commit {
 	/**
 	 * Save the Zip to the database
 	 *
-	 * @param  Zip $post
-	 * @return array    revision meta to save
+	 * @param  Zip              $parent_zip   Zip model of the parent to save
+	 * @return array|\WP_Error                revision meta saved, WP_Error if failed
 	 * @since  0.4.0
 	 */
 	public function by_parent_zip( $parent_zip ) {
@@ -69,7 +69,7 @@ class Commit {
 		$result = wp_save_post_revision( $parent_zip->get_ID() );
 
 		if ( 0 === $result || null === $result ) {
-			return new WP_Error( 'revision_save_fail', __( 'Failed to save revision for ', $this->plugin_name ) . $parent_zip->get_ID() );
+			return new \WP_Error( 'revision_save_fail', __( 'Failed to save revision for ', $this->plugin_name ) . $parent_zip->get_ID() );
 		}
 
 		$revision_id = $result;

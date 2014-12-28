@@ -21,7 +21,8 @@ gulp.task('init', function() {
 	runs(
 		['clean-bower', 'clean-composer'],
 		'install',
-		['scripts', 'styles', 'packages']
+		['scripts', 'styles', 'packages'],
+		'watch'
 	);
 });
 

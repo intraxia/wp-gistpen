@@ -66,6 +66,53 @@ class Save {
 	}
 
 	/**
+	 * Update a Zip and save a new revision
+	 *
+	 * @param  array  $zip_data  Array of zip data
+	 * @return int|\WP_Error      Zip ID on success, WP_Error on failure
+	 * @since  0.5.0
+	 */
+	public function update( $zip_data ) {
+		if ( 'auto-draft' === $zip_data['status'] ) {
+			$zip_data['status'] = 'draft';
+		}
+
+		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
+
+		// Check user permissions
+		if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
+			return;
+		}
+
+		foreach ( $zip_data['files'] as $file_data ) {
+			$file = $this->adapter->build( 'file' )->by_array( $file_data );
+			$file->set_language( $this->adapter->build( 'language' )->by_slug( $file_data['language'] ) );
+
+			$zip->add_file( $file );
+		}
+
+		$result = $this->database->persist( 'head' )->by_zip( $zip );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$post_id = $result;
+
+		$zip = $this->database->query( 'head' )->by_id( $post_id );
+
+		$result = $this->database->persist( 'commit' )->by_parent_zip( $zip );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		do_action( 'wpgp_after_update', $post_id );
+
+		return $post_id;
+	}
+
+	/**
 	 * Remove the action hook to save a post revision
 	 *
 	 * We're going to be handling this ourselves on the save_post hook
@@ -95,7 +142,7 @@ class Save {
 			$files = $this->database->query()->files_by_post( $post );
 
 			foreach ( $files as $file ) {
-				$result = wp_update_post( array(
+				wp_update_post( array(
 					'ID' => $file->get_ID(),
 					'post_status' => $new_status,
 				), true );
@@ -120,7 +167,7 @@ class Save {
 			$files = $zip->get_files();
 
 			foreach ( $files as $file ) {
-				$result = wp_delete_post( $file->get_ID(), true );
+				wp_delete_post( $file->get_ID(), true );
 			}
 
 			do_action( 'wpgp_after_delete', $zip );

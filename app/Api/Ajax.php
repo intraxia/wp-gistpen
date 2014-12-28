@@ -1,6 +1,7 @@
 <?php
 namespace WP_Gistpen\Api;
 
+use WP_Gistpen\Controller\Save;
 use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
@@ -66,6 +67,14 @@ class Ajax {
 	public $sync;
 
 	/**
+	 * Save object
+	 *
+	 * @var Save
+	 * @since  0.5.0
+	 */
+	public $save;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -81,6 +90,7 @@ class Ajax {
 		$this->database = new Database( $plugin_name, $version );
 		$this->adapter = new Adapter( $plugin_name, $version );
 
+		$this->save = new Save( $plugin_name, $version );
 		$this->sync = new Sync( $plugin_name, $version );
 
 	}
@@ -176,21 +186,10 @@ class Ajax {
 	public function save_gistpen() {
 		$this->check_security();
 
+		// @todo validate data
 		$zip_data = $_POST['zip'];
 
-		if ( 'auto-draft' === $zip_data['status'] ) {
-			$zip_data['status'] = 'draft';
-		}
-
-		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
-
-		foreach ( $zip_data['files'] as $file_data ) {
-			$file = $this->adapter->build( 'file' )->by_array( $file_data );
-			$file->set_language( $this->adapter->build( 'language' )->by_slug( $file_data['language'] ) );
-			$zip->add_file( $file );
-		}
-
-		$result = $this->database->persist( 'head' )->by_zip( $zip );
+		$result = $this->save->update( $zip_data );
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array(
@@ -201,7 +200,7 @@ class Ajax {
 
 		wp_send_json_success( array(
 			'code'    => 'updated',
-			'message' => __( "Successfully updated Gistpen ", $this->plugin_name ) . $result,
+			'message' => __( 'Successfully updated Gistpen ', $this->plugin_name ) . $result,
 		) );
 	}
 
