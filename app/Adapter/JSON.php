@@ -53,13 +53,12 @@ class JSON {
 	 */
 	public function by_zip( ZipModel $zip ) {
 		$json = new \stdClass;
-		$json->zip = new \stdClass;
 
-		$json->zip->ID = $zip->get_ID();
-		$json->zip->description = $zip->get_description();
-		$json->zip->status = $zip->get_status();
-		$json->zip->password = $zip->get_password();
-		$json->zip->gist_id = $zip->get_gist_id();
+		$json->ID = $zip->get_ID();
+		$json->description = $zip->get_description();
+		$json->status = $zip->get_status();
+		$json->password = $zip->get_password();
+		$json->gist_id = $zip->get_gist_id();
 
 		$json->files = $this->by_files( $zip->get_files() );
 

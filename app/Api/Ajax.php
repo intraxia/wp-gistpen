@@ -132,9 +132,9 @@ class Ajax {
 	/**
 	 * Checks if the result is a WP_Error object
 	 *
-	 * @param  any    $result Result to check
+	 * @param  $result Result to check
 	 * @return Sends error and halts execution if anything doesn't check out
-	 * @since 0.5.0
+	 * @since  0.5.0
 	 */
 	private function check_error( $result ) {
 		if ( is_wp_error( $result ) ) {
@@ -166,6 +166,32 @@ class Ajax {
 		wp_send_json_success( array(
 			'gistpens' => $results,
 		) );
+	}
+
+	/**
+	 * Returns the data for a single Gistpen
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_gistpen() {
+		$this->check_security();
+
+		if ( ! array_key_exists( 'post_id', $_POST ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gistpen ID sent', $this->plugin_name ),
+			) );
+		}
+
+		$post_id = (int) $_POST['post_id'];
+
+		$zip = $this->database->query()->by_id( $post_id );
+
+		$this->check_error( $zip );
+
+		$zip_json = $this->adapter->build( 'json' )->by_zip( $zip );
+
+		wp_send_json_success( json_decode( $zip_json ) );
 	}
 
 	/**

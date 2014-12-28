@@ -109,38 +109,6 @@ class Editor {
 	}
 
 	/**
-	 * Hooks into admin footer to initate ACE editors
-	 *
-	 * @return string   ACE editor init script
-	 * @since 0.4.0
-	 */
-	public function init_editor() {
-		if ( 'gistpen' == get_current_screen()->id ):
-
-			$zip = $this->database->query()->by_id( get_the_ID() );
-
-			if ( is_wp_error( $zip ) ) {
-				// @todo
-				return;
-			}
-
-			$zip_json = $this->adapter->build( 'json' )->by_zip( $zip ); ?>
-
-			<script type="text/javascript">
-				jQuery(function($) {
-					"use strict";
-
-					var editor = window.wpgpEditor;
-					var form = $('form#post');
-
-					var main = new editor.Main(<?php echo $zip_json; ?>);
-					form.prepend(main.render());
-				});
-			</script>
-		<?php endif;
-	}
-
-	/**
 	 * Force the Gistpen layout to one column
 	 *
 	 * @since  0.4.0

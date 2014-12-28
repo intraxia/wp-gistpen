@@ -100,6 +100,20 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertCount( 0, $this->response->data->gistpens );
 	}
 
+	function test_get_gistpen() {
+		$this->set_correct_security();
+		$_POST['post_id'] = $this->gistpen->ID;
+
+		try {
+			$this->_handleAjax( 'get_gistpen' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertInstanceOf( 'stdClass', $this->response->data );
+		$this->assertInternalType( 'array', $this->response->data->files );
+	}
+
 	function test_succeeded_gistpen_creation() {
 		$this->set_correct_security();
 		$_POST['wp-gistpenfile-slug'] = 'New Gistpen';

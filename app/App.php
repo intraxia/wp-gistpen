@@ -177,7 +177,7 @@ class App {
 
 		// AJAX hook for TinyMCE button
 		$this->loader->add_action( 'wp_ajax_get_gistpens', $this->ajax, 'get_gistpens' );
-		$this->loader->add_action( 'wp_ajax_get_gistpen_languages', $this->ajax, 'get_gistpen_languages' );
+		$this->loader->add_action( 'wp_ajax_get_gistpen', $this->ajax, 'get_gistpen' );
 		$this->loader->add_action( 'wp_ajax_create_gistpen', $this->ajax, 'create_gistpen' );
 		$this->loader->add_action( 'wp_ajax_save_gistpen', $this->ajax, 'save_gistpen' );
 
@@ -268,10 +268,9 @@ class App {
 	 */
 	private function define_editor_hooks() {
 		$this->editor = new View\Editor( $this->get_plugin_name(), $this->get_version() );
+
 		// Hook in repeatable file editor
 		$this->loader->add_action( 'edit_form_after_title', $this->editor, 'render_editor_div' );
-		// Init all the rendered editors
-		$this->loader->add_action( 'admin_print_footer_scripts', $this->editor, 'init_editor', 99 );
 
 		// Rearrange Gistpen layout
 		$this->loader->add_filter( 'screen_layout_columns', $this->editor, 'screen_layout_columns' );

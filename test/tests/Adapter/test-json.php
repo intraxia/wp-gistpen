@@ -24,7 +24,7 @@ class WP_Gistpen_Adapter_JSON_Test extends WP_Gistpen_UnitTestCase {
 		$json_obj = json_decode($json);
 		$this->assertTrue( ( json_last_error() == JSON_ERROR_NONE ), 'String is not valid json' );
 
-		$this->assertEquals( 'Post title 1', $json_obj->zip->description );
+		$this->assertEquals( 'Post title 1', $json_obj->description );
 		$this->assertCount( 3, $json_obj->files );
 
 		foreach ( $json_obj->files as $data ) {

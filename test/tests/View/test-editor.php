@@ -19,9 +19,9 @@ class WP_Gistpen_View_Editor_Test extends WP_Gistpen_UnitTestCase {
 		$post = $this->gistpen;
 	}
 
-	function test_ace_editor_init() {
+	function test_editor_div() {
 		ob_start();
-		$this->editor->init_editor();
+		$this->editor->render_editor_div();
 		$html = ob_get_contents();
 		ob_end_clean();
 
