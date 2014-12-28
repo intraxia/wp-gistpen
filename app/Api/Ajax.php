@@ -111,15 +111,37 @@ class Ajax {
 	 * @return Sends error and halts execution if anything doesn't check out
 	 * @since  0.4.0
 	 */
-	public function check_security() {
+	private function check_security() {
 		// Check the nonce
 		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
-			wp_send_json_error( array( 'message' => __( 'Nonce check failed.', $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Nonce check failed.', $this->plugin_name ),
+			) );
 		}
 
 		// Check if user has proper permisissions
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_send_json_error( array( 'message' => __( "User doesn't have proper permisissions.", $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( "User doesn't have proper permisissions.", $this->plugin_name ),
+			) );
+		}
+	}
+
+	/**
+	 * Checks if the result is a WP_Error object
+	 *
+	 * @param  any    $result Result to check
+	 * @return Sends error and halts execution if anything doesn't check out
+	 * @since 0.5.0
+	 */
+	private function check_error( $result ) {
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => $result->get_error_message(),
+			) );
 		}
 	}
 
@@ -138,6 +160,8 @@ class Ajax {
 		} else {
 			$results = $this->database->query()->by_recent();
 		}
+
+		$this->check_error( $results );
 
 		wp_send_json_success( array(
 			'gistpens' => $results,
@@ -171,9 +195,7 @@ class Ajax {
 
 		$result = $this->database->persist()->by_zip( $zip );
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
+		$this->check_error( $result );
 
 		wp_send_json_success( array( 'id' => $result ) );
 	}
@@ -191,12 +213,7 @@ class Ajax {
 
 		$result = $this->save->update( $zip_data );
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array(
-				'code'    => 'error',
-				'message' => $result->get_error_message(),
-			) );
-		}
+		$this->check_error( $result );
 
 		wp_send_json_success( array(
 			'code'    => 'updated',
@@ -226,7 +243,10 @@ class Ajax {
 		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
 
 		if ( ! $result ) {
-			wp_send_json_error();
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Failed to update Ace theme.', $this->plugin_name ),
+			) );
 		}
 
 		wp_send_json_success();
@@ -247,7 +267,10 @@ class Ajax {
 		}
 
 		if ( empty( $result ) ) {
-			wp_send_json_error( array( 'message' => __( 'No Gistpens missing Gist IDs.', $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gistpens missing Gist IDs.', $this->plugin_name ),
+			) );
 		}
 
 		wp_send_json_success( array( 'ids' => $result ) );
@@ -274,13 +297,7 @@ class Ajax {
 
 		$result = $this->sync->export_gistpen( $id );
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array(
-				'code'    => 'error',
-				'message' => $result->get_error_message(),
-			) );
-		}
-
+		$this->check_error( $result );
 		sleep( 1 );
 
 		wp_send_json_success( array(
