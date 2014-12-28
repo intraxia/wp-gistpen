@@ -95,12 +95,10 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 	 * @source https://github.com/kevintweber/phpunit-markup-validators/blob/master/src/kevintweber/PhpunitMarkupValidators/Connector/HTMLConnector.php
 	 */
 	public function setHtmlInput($value) {
-		if (stripos($value, 'html>') === false) {
-			return '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Test</title></head><body>' . $value . '</body></html>';
-		}
-		else {
-			return $value;
+		if ( substr( $value, 0, 15 ) !== '<!DOCTYPE html>' ) {
+			$value =  '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Test</title></head><body>' . $value . '</body></html>';
 		}
 
+		return $value;
 	}
 }

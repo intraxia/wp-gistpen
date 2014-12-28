@@ -355,6 +355,9 @@ class App {
 
 		// Add validation to saving the gist token
 		$this->loader->add_filter( 'cmb2_validate_text', $this->settings_view, 'validate_gist_token', 10, 5 );
+
+		// Modify form format for valid HTML
+		$this->loader->add_filter( 'cmb2_get_metabox_form_format', $this->settings_view, 'modify_form_output', 10, 3 );
 	}
 
 	/**
