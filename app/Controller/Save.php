@@ -328,6 +328,22 @@ class Save {
 		return $args;
 	}
 
+	/**
+	 * Allows empty zip to save
+	 *
+	 * @param  bool   $maybe_empty Whether post should be considered empty
+	 * @param  array  $postarr     Array of post data
+	 * @return bool                Result of empty check
+	 * @since  0.5.0
+	 */
+	public function allow_empty_zip( $maybe_empty, $postarr ) {
+		if ( 'gistpen' === $postarr['post_type'] && 0 === $postarr['post_parent'] ) {
+			$maybe_empty = false;
+		}
+
+		return $maybe_empty;
+	}
+
 	public function add_error( $result ) {
 		if ( is_wp_error( $result ) ) {
 			$this->errors .= $result->get_error_code() . ',';

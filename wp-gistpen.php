@@ -96,4 +96,3 @@ function wp_gistpen() {
 	return WP_Gistpen::init();
 }
 wp_gistpen();
-add_filter( 'wp_insert_post_empty_content', '__return_false' );

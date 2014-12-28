@@ -331,6 +331,7 @@ class App {
 		$this->loader->add_action( 'before_delete_post', $this->save, 'delete_post_hook' );
 
 		$this->loader->add_filter( 'wp_save_post_revision_check_for_changes', $this->save, 'disable_check_for_change', 10, 3 );
+		$this->loader->add_filter( 'wp_insert_post_empty_content', $this->save, 'allow_empty_zip', 10, 2 );
 
 	}
 
