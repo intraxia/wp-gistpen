@@ -21,7 +21,7 @@
 		$prefix = '_wpgp_';
 
 		cmb2_metabox_form( array(
-			'id'         => 'option_metabox',
+			'id'         => 'wpgp_option_metabox',
 			'show_on'    => array( 'key' => 'options-page', 'value' => array( $this->plugin_name ) ),
 			'show_names' => true,
 			'fields'     => array(
@@ -85,4 +85,4 @@ EOL
 
 </div>
 
-<?php include_once( 'settings-export.inc.php' ); ?>
+<?php include_once( 'export.inc.php' ); ?>

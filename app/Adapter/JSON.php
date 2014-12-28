@@ -1,0 +1,100 @@
+<?php
+namespace WP_Gistpen\Adapter;
+
+use WP_Gistpen\Model\Zip as ZipModel;
+
+/**
+ * Builds JSON based on various
+ *
+ * @package    WP_Gistpen
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      0.5.0
+ */
+class JSON {
+
+	/**
+	 * The ID of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $plugin_name    The ID of this plugin.
+	 */
+	private $plugin_name;
+
+	/**
+	 * The version of this plugin.
+	 *
+	 * @since    0.5.0
+	 * @access   private
+	 * @var      string    $version    The current version of this plugin.
+	 */
+	private $version;
+
+	/**
+	 * Initialize the class and set its properties.
+	 *
+	 * @since    0.5.0
+	 * @var      string    $plugin_name       The name of this plugin.
+	 * @var      string    $version    The version of this plugin.
+	 */
+	public function __construct( $plugin_name, $version ) {
+
+		$this->plugin_name = $plugin_name;
+		$this->version = $version;
+
+	}
+
+	/**
+	 * Transforms a Zip to json
+	 *
+	 * @param  ZipModel $zip Zip to transform
+	 * @return string        file data in json
+	 */
+	public function by_zip( ZipModel $zip ) {
+		$json = new \stdClass;
+
+		$json->ID = $zip->get_ID();
+		$json->description = $zip->get_description();
+		$json->status = $zip->get_status();
+		$json->password = $zip->get_password();
+		$json->gist_id = $zip->get_gist_id();
+
+		$json->files = $this->by_files( $zip->get_files() );
+
+		return json_encode( $json );
+	}
+
+	/**
+	 * Transforms an array of files to json
+	 *
+	 * @param  array  $files array of files to transform
+	 * @return string        file data in json
+	 */
+	public function by_files( $files ) {
+		$data = array();
+
+		if ( empty( $files ) ) {
+			$json = new \stdClass;
+			$json->slug = '';
+			$json->code = '';
+			$json->ID = null;
+			$json->language = '';
+
+			$data[] = $json;
+		} else {
+			foreach ( $files as $file ) {
+
+				$json = new \stdClass;
+				$json->slug = $file->get_slug();
+				$json->code = $file->get_code();
+				$json->ID = $file->get_ID();
+				$json->language = $file->get_language()->get_slug();
+
+				$data[] = $json;
+			}
+		}
+
+		return $data;
+	}
+}

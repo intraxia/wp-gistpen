@@ -3,7 +3,6 @@
 	tinymce.create( 'tinymce.plugins.wp_gistpen', {
 
 		init: function( editor, url )  {
-
 			// Add the Insert Gistpen button
 			editor.addButton( 'wp_gistpen', {
 				//text: 'Insert Gistpen',

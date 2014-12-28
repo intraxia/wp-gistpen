@@ -85,7 +85,11 @@ class Prism {
 	 * @since    0.5.0
 	 */
 	private function is_prism_required() {
-		return true;
+		if ( ! is_admin() || 'settings_page_wp-gistpen' === get_current_screen()->id ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

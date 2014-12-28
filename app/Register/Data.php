@@ -68,7 +68,7 @@ class Data {
 			'label'                => __( 'gistpens', $this->plugin_name ),
 			'description'          => __( 'A collection of code snippets.', $this->plugin_name ),
 			'labels'               => $labels,
-			'supports'             => array( 'title', 'author', 'comments', 'revisions' ),
+			'supports'             => array( 'author', 'comments', 'revisions' ),
 			'taxonomies'           => array( 'post_tag', 'wpgp_language' ),
 			'hierarchical'         => true,
 			'public'               => true,

@@ -100,6 +100,20 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertCount( 0, $this->response->data->gistpens );
 	}
 
+	function test_get_gistpen() {
+		$this->set_correct_security();
+		$_POST['post_id'] = $this->gistpen->ID;
+
+		try {
+			$this->_handleAjax( 'get_gistpen' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertInstanceOf( 'stdClass', $this->response->data );
+		$this->assertInternalType( 'array', $this->response->data->files );
+	}
+
 	function test_succeeded_gistpen_creation() {
 		$this->set_correct_security();
 		$_POST['wp-gistpenfile-slug'] = 'New Gistpen';
@@ -133,6 +147,45 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertEquals( 'php', $file->get_language()->get_slug() );
 	}
 
+	function test_succeeded_save_gistpen() {
+		$this->set_correct_security();
+		$_POST['zip'] = array(
+			'description'  => 'New Gistpen Description',
+			'status'       => 'auto-draft',
+			'ID'           => null,
+			'files'        => array(
+				array(
+					'slug'     => 'New Gistpen',
+					'code'     => 'echo $stuff;',
+					'ID'       => null,
+					'language' => 'php',
+				),
+			),
+		);
+
+		try {
+			$this->_handleAjax( 'save_gistpen' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertEquals( 'updated', $this->response->data->code );
+		$this->assertContains( 'Successfully updated Gistpen', $this->response->data->message );
+	}
+
+	function test_succeeded_get_theme() {
+		$this->set_correct_security();
+		update_user_meta( get_current_user_id(), '_wpgp_ace_theme', 'testtheme' );
+
+		try {
+			$this->_handleAjax( 'get_ace_theme' );
+		} catch ( WPAjaxDieContinueException $e ) {}
+		$this->response = json_decode($this->_last_response);
+
+		$this->check_response_succeeded();
+		$this->assertEquals( 'testtheme', $this->response->data->theme );
+	}
+
 	function test_succeeded_save_theme() {
 		$this->set_correct_security();
 		$_POST['theme'] = 'twilight';
@@ -144,55 +197,6 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->check_response_succeeded();
 		$this->assertEquals( 'twilight', get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) );
-	}
-
-	function test_failed_without_parent() {
-		$this->set_correct_security();
-
-		try {
-			$this->_handleAjax( 'get_gistpenfile_id' );
-		} catch ( WPAjaxDieContinueException $e ) {}
-		$this->response = json_decode($this->_last_response);
-
-		$this->check_response_failed();
-	}
-
-	function test_succeeded_get_new_id() {
-		$this->set_correct_security();
-		$_POST['parent_id'] = $this->gistpen->ID;
-
-		try {
-			$this->_handleAjax( 'get_gistpenfile_id' );
-		} catch ( WPAjaxDieContinueException $e ) {}
-		$this->response = json_decode($this->_last_response);
-
-		$this->check_response_succeeded();
-		$this->assertObjectHasAttribute( 'id', $this->response->data );
-		$this->assertInternalType( 'integer', $this->response->data->id );
-		$this->assertTrue( $this->response->data->id !== 0 );
-	}
-
-	function test_failed_delete_file_needs_id() {
-		$this->set_correct_security();
-
-		try {
-			$this->_handleAjax( 'delete_gistpenfile' );
-		} catch ( WPAjaxDieContinueException $e ) {}
-		$this->response = json_decode($this->_last_response);
-
-		$this->check_response_failed();
-	}
-
-	function test_succeeded_delete_file() {
-		$this->set_correct_security();
-		$_POST['fileID'] = $this->files[0];
-
-		try {
-			$this->_handleAjax( 'delete_gistpenfile' );
-		} catch ( WPAjaxDieContinueException $e ) {}
-		$this->response = json_decode($this->_last_response);
-
-		$this->check_response_succeeded();
 	}
 
 	function test_gistpens_missing_gist_id() {

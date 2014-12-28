@@ -15,13 +15,14 @@ var gulp = require('gulp'),
 	extrep = require('gulp-ext-replace'),
 	zip = require('gulp-zip');
 
-gulp.task('default', ['init', 'watch']);
+gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
 gulp.task('init', function() {
 	runs(
 		['clean-bower', 'clean-composer'],
 		'install',
-		['scripts', 'styles', 'packages']
+		['scripts', 'styles', 'packages'],
+		'watch'
 	);
 });
 

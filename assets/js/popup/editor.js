@@ -1,26 +1,16 @@
-function FileEditor(file) {
-	this.file = typeof file !== "undefined" ? file : {};
+function TinyMCEFileEditor(file) {
 	this.scaffoldEditor();
 	this.appendEditor();
-
-	this.fileID = typeof this.file.ID !== "undefined" ? this.file.ID : '';
-	this.addID();
-
-	this.fileName = typeof this.file.slug !== "undefined" ? this.file.slug : '';
-	this.addName();
-
-	this.fileContent = typeof this.file.code !== "undefined" ? this.file.code : '';
-	this.addContent();
-
-	this.fileLanguage = (typeof this.file.language !== "undefined" && typeof this.file.language.slug !== "undefined") ? (this.file.language.slug === "javascript" ? "js" : this.file.language.slug) : 'bash';
-	this.addLanguage();
-
-	this.activateAceEditor();
+	this.appendPostStatusSelector();
 	this.loadClickHandlers();
+	this.deleteFileButton.remove();
+	this.textButton.remove();
+	this.aceButton.remove();
+	this.aceEditorDiv.remove();
 
 }
 
-FileEditor.prototype  = {
+TinyMCEFileEditor.prototype  = {
 
 	scaffoldEditor: function() {
 		//	HTML looks like this:
@@ -63,9 +53,9 @@ FileEditor.prototype  = {
 	},
 
 	appendEditor: function() {
-		this.editorFull.appendTo(GistpenEditor.editorWrap);
+		this.editorFull.appendTo(jQuery('#wp-gistfile-wrap'));
 		this.appendLanguages();
-		// add label: <label for="wp-gistpenfile-slug-'+this.fileID+'" style="display: none;">Gistfilename</label>\
+		// add label: <label for="wp-gistpenfile-name-'+this.fileID+'" style="display: none;">Gistfilename</label>\
 	},
 
 	appendLanguages: function() {
@@ -73,6 +63,12 @@ FileEditor.prototype  = {
 		jQuery.each(gistpenLanguages, function(index, el) {
 			jQuery('<option></option>').val(el).text(index).appendTo(thiseditor.languageSelect);
 		});
+	},
+
+	appendPostStatusSelector: function() {
+		this.post_status = jQuery('<label for="post_status" style="display: none;">Post Status</label><select class="post_status" name="post_status"><option value="publish">Published</option><option value="draft">Draft</option></select>');
+		this.post_status.appendTo(this.editorFull.find('.wp-editor-tools'));
+		this.post_status = jQuery('select.post_status');
 	},
 
 	activateAceEditor: function() {
@@ -87,48 +83,15 @@ FileEditor.prototype  = {
 	},
 
 	setTheme: function() {
-		this.aceEditor.setTheme('ace/theme/' + GistpenEditor.themeSelect.val());
+		this.aceEditor.setTheme('ace/theme/twilight');
 	},
 
 	setMode: function() {
-		var mode = this.languageSelect.val();
-		// Nothin is set on init, so default to bash
-		if (null === mode) {
-			this.languageSelect.val('bash');
-			mode = 'bash';
-		}
-		if('js' === mode) {
-			this.aceEditor.getSession().setMode('ace/mode/javascript');
-		} else if( 'bash' === mode) {
-			this.aceEditor.getSession().setMode('ace/mode/sh');
-		} else {
-			this.aceEditor.getSession().setMode('ace/mode/' + mode);
-		}
+
 	},
 
 	loadClickHandlers: function() {
 		var thiseditor = this;
-
-		this.textButton.click(function(){
-			thiseditor.switchToText();
-		});
-
-		this.aceButton.click(function(){
-			thiseditor.switchToAce();
-		});
-
-		this.aceEditor.getSession().on('change', function(event) {
-			thiseditor.updateTextContent();
-		});
-
-		this.deleteFileButton.click(function(event) {
-			event.preventDefault();
-			thiseditor.deleteEditor();
-		});
-
-		GistpenEditor.themeSelect.change(function(event) {
-			thiseditor.aceEditor.setTheme('ace/theme/' + GistpenEditor.themeSelect.val());
-		});
 
 		this.languageSelect.change(function() {
 			thiseditor.setMode();

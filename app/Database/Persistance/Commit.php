@@ -55,8 +55,8 @@ class Commit {
 	/**
 	 * Save the Zip to the database
 	 *
-	 * @param  Zip $post
-	 * @return array    revision meta to save
+	 * @param  Zip              $parent_zip   Zip model of the parent to save
+	 * @return array|\WP_Error                revision meta saved, WP_Error if failed
 	 * @since  0.4.0
 	 */
 	public function by_parent_zip( $parent_zip ) {
@@ -68,29 +68,25 @@ class Commit {
 
 		$result = wp_save_post_revision( $parent_zip->get_ID() );
 
-		if ( empty( $result ) ) {
-			return;
+		if ( 0 === $result || null === $result ) {
+			return new \WP_Error( 'revision_save_fail', __( 'Failed to save revision for ', $this->plugin_name ) . $parent_zip->get_ID() );
 		}
 
 		$revision_id = $result;
-		$revision_files = array();
-		$meta = array();
 
 		$files = $parent_zip->get_files();
+		$file_ids = array();
 
 		foreach ( $files as $file ) {
-			$result = wp_save_post_revision( $file->get_ID() );
+			$file_id = $file->get_ID();
 
-			if ( is_wp_error( $result ) ) {
-				return $result;
-			}
+			wp_save_post_revision( $file_id );
 
-			$revision_files[] = $result;
+			$file_revisions = wp_get_post_revisions( $file_id );
+			$file_ids[] = array_shift( $file_revisions );
 		}
 
-		$meta['files'] = $revision_files;
-
-		$revisions_meta[ $revision_id ] = $meta;
+		$revisions_meta[ $revision_id ]['files'] = $file_ids;
 
 		update_post_meta( $parent_zip->get_ID(), 'wpgp_revisions', $revisions_meta );
 

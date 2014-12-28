@@ -11,7 +11,7 @@ use WP_Gistpen\Model\Language;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Settings {
+class Editor {
 
 	/**
 	 * The ID of this plugin.
@@ -64,8 +64,8 @@ class Settings {
 	 * @since    0.5.0
 	 */
 	public function enqueue_styles() {
-		if ( 'settings_page_wp-gistpen' === get_current_screen()->id ) {
-			wp_enqueue_style( $this->plugin_name .'-settings-styles', WP_GISTPEN_URL . 'assets/css/settings' . $this->min . '.css', array(), $this->version, 'all' );
+		if ( 'gistpen' === get_current_screen()->id ) {
+			wp_enqueue_style( $this->plugin_name .'-editor-styles', WP_GISTPEN_URL . 'assets/css/editor' . $this->min . '.css', array(), $this->version );
 		}
 	}
 
@@ -75,11 +75,14 @@ class Settings {
 	 * @since    0.5.0
 	 */
 	public function enqueue_scripts() {
-		if ( 'settings_page_wp-gistpen' === get_current_screen()->id ) {
+		if ( 'gistpen' === get_current_screen()->id ) {
 			wp_enqueue_script( 'ajaxq', WP_GISTPEN_URL . 'assets/js/ajaxq' . $this->min . '.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( $this->plugin_name . '-settings-script', WP_GISTPEN_URL . 'assets/js/settings' . $this->min . '.js', array( 'jquery', 'jquery-ui-progressbar', 'ajaxq', 'backbone', 'underscore', $this->plugin_name . '-prism' ), $this->version, true );
-			wp_localize_script( $this->plugin_name .'-settings-script', 'WP_GISTPEN_URL', WP_GISTPEN_URL );
+			wp_enqueue_script( $this->plugin_name . '-ace-script', WP_GISTPEN_URL . 'assets/js/ace/ace.js', array(), $this->version, true );
+			wp_enqueue_script( $this->plugin_name . '-editor-script', WP_GISTPEN_URL . 'assets/js/editor' . $this->min . '.js', array( 'ajaxq', 'backbone', 'underscore', $this->plugin_name . '-ace-script' ), $this->version, true );
+			wp_localize_script( $this->plugin_name . '-editor-script', 'gistpenLanguages', Language::$supported );
+			wp_dequeue_script( 'autosave' );
 		}
+
 	}
 
 }

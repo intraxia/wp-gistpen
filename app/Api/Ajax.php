@@ -1,6 +1,7 @@
 <?php
 namespace WP_Gistpen\Api;
 
+use WP_Gistpen\Controller\Save;
 use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
@@ -66,6 +67,14 @@ class Ajax {
 	public $sync;
 
 	/**
+	 * Save object
+	 *
+	 * @var Save
+	 * @since  0.5.0
+	 */
+	public $save;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -81,6 +90,7 @@ class Ajax {
 		$this->database = new Database( $plugin_name, $version );
 		$this->adapter = new Adapter( $plugin_name, $version );
 
+		$this->save = new Save( $plugin_name, $version );
 		$this->sync = new Sync( $plugin_name, $version );
 
 	}
@@ -101,15 +111,37 @@ class Ajax {
 	 * @return Sends error and halts execution if anything doesn't check out
 	 * @since  0.4.0
 	 */
-	public function check_security() {
+	private function check_security() {
 		// Check the nonce
 		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
-			wp_send_json_error( array( 'message' => __( 'Nonce check failed.', $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Nonce check failed.', $this->plugin_name ),
+			) );
 		}
 
 		// Check if user has proper permisissions
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_send_json_error( array( 'message' => __( "User doesn't have proper permisissions.", $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( "User doesn't have proper permisissions.", $this->plugin_name ),
+			) );
+		}
+	}
+
+	/**
+	 * Checks if the result is a WP_Error object
+	 *
+	 * @param  $result Result to check
+	 * @return Sends error and halts execution if anything doesn't check out
+	 * @since  0.5.0
+	 */
+	private function check_error( $result ) {
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => $result->get_error_message(),
+			) );
 		}
 	}
 
@@ -129,15 +161,42 @@ class Ajax {
 			$results = $this->database->query()->by_recent();
 		}
 
+		$this->check_error( $results );
+
 		wp_send_json_success( array(
 			'gistpens' => $results,
 		) );
 	}
 
 	/**
+	 * Returns the data for a single Gistpen
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_gistpen() {
+		$this->check_security();
+
+		if ( ! array_key_exists( 'post_id', $_POST ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gistpen ID sent', $this->plugin_name ),
+			) );
+		}
+
+		$post_id = (int) $_POST['post_id'];
+
+		$zip = $this->database->query()->by_id( $post_id );
+
+		$this->check_error( $zip );
+
+		$zip_json = $this->adapter->build( 'json' )->by_zip( $zip );
+
+		wp_send_json_success( json_decode( $zip_json ) );
+	}
+
+	/**
 	 * Responds to AJAX request to create new Gistpen
 	 *
-	 * @return string $post_id the id of the created Gistpen
 	 * @since  0.2.0
 	 */
 	public function create_gistpen() {
@@ -162,11 +221,41 @@ class Ajax {
 
 		$result = $this->database->persist()->by_zip( $zip );
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
+		$this->check_error( $result );
 
 		wp_send_json_success( array( 'id' => $result ) );
+	}
+
+	/**
+	 * AJAX hook to save Gistpen in the editor
+	 *
+	 * @since 0.5.0
+	 */
+	public function save_gistpen() {
+		$this->check_security();
+
+		// @todo validate data
+		$zip_data = $_POST['zip'];
+
+		$result = $this->save->update( $zip_data );
+
+		$this->check_error( $result );
+
+		wp_send_json_success( array(
+			'code'    => 'updated',
+			'message' => __( 'Successfully updated Gistpen ', $this->plugin_name ) . $result,
+		) );
+	}
+
+	/**
+	 * Retrieves the ACE editor theme from the user meta
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_ace_theme() {
+		$this->check_security();
+
+		wp_send_json_success( array( 'theme' => get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) ) );
 	}
 
 	/**
@@ -180,50 +269,10 @@ class Ajax {
 		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
 
 		if ( ! $result ) {
-			wp_send_json_error();
-		}
-
-		wp_send_json_success();
-	}
-
-
-	/**
-	 * AJAX hook to get a new ACE editor
-	 *
-	 * @since     0.4.0
-	 */
-	public function get_gistpenfile_id() {
-		$this->check_security();
-
-		if ( ! array_key_exists( 'parent_id', $_POST ) ) {
-			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
-		}
-
-		$result = $this->database->persist()->by_file_and_zip_id( $this->adapter->build( 'file' )->blank(), $_POST['parent_id'] );
-
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
-
-		wp_send_json_success( array( 'id' => $result ) );
-	}
-
-	/**
-	 * AJAX hook to delete an ACE editor
-	 *
-	 * @since     0.4.0
-	 */
-	public function delete_gistpenfile() {
-		$this->check_security();
-
-		if ( ! array_key_exists( 'fileID', $_POST ) ) {
-			wp_send_json_error( array( 'messages' => array( 'File ID not sent.' ) ) );
-		}
-
-		$result = wp_delete_post( $_POST['fileID'], true );
-
-		if ( ! $result ) {
-			wp_send_json_error( array( 'message' => __( 'wp_delete_post failed', $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Failed to update Ace theme.', $this->plugin_name ),
+			) );
 		}
 
 		wp_send_json_success();
@@ -244,7 +293,10 @@ class Ajax {
 		}
 
 		if ( empty( $result ) ) {
-			wp_send_json_error( array( 'message' => __( 'No Gistpens missing Gist IDs.', $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gistpens missing Gist IDs.', $this->plugin_name ),
+			) );
 		}
 
 		wp_send_json_success( array( 'ids' => $result ) );
@@ -271,13 +323,7 @@ class Ajax {
 
 		$result = $this->sync->export_gistpen( $id );
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array(
-				'code'    => 'error',
-				'message' => $result->get_error_message(),
-			) );
-		}
-
+		$this->check_error( $result );
 		sleep( 1 );
 
 		wp_send_json_success( array(
