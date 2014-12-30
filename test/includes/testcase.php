@@ -13,12 +13,24 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		parent::setUp();
 		$this->factory = new WP_Gistpen_UnitTest_Factory;
 
+		// Mock models
 		$this->mock_lang = $this->getMockBuilder( 'WP_Gistpen\Model\Language' )->disableOriginalConstructor()->getMock();
-		$this->mock_post = $this->getMockBuilder( 'WP_Gistpen\Model\Post' )->disableOriginalConstructor()->getMock();
+		$this->mock_zip = m::mock( 'WP_Gistpen\Model\Zip' );
 		$this->mock_file = $this->getMockBuilder( 'WP_Gistpen\Model\File' )->disableOriginalConstructor()->getMock();
+		$this->mock_history = m::mock( 'WP_Gistpen\Collection\History' );
 
-		$this->mock_sync = m::mock('WP_Gistpen\Controller\Sync');
-		$this->mock_database = m::mock('WP_Gistpen\Facade\Database');
+		// Mock controllers
+		$this->mock_sync = m::mock( 'WP_Gistpen\Controller\Sync' );
+
+		// Mock adapters
+		$this->mock_gist_adapter = m::mock( 'WP_Gistpen\Adapter\Gist' );
+
+		// Mock Facades
+		$this->mock_database = m::mock( 'WP_Gistpen\Facade\Database' );
+		$this->mock_adapter = m::mock( 'WP_Gistpen\Facade\Adapter' );
+
+		// 3rd Party dependencies
+		$this->mock_github_client = m::mock( 'Github\Client' );
 	}
 
 	function tearDown() {

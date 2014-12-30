@@ -4,7 +4,6 @@ namespace WP_Gistpen\Account;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 use Github\Client;
-use Github\HttpClient\Message\ResponseMediator as Mediator;
 
 /**
  * This is the class description.
@@ -35,20 +34,12 @@ class Gist {
 	private $version;
 
 	/**
-	 * Database Facade object
-	 *
-	 * @var Database
-	 * @since 0.5.0
-	 */
-	private $database;
-
-	/**
 	 * Adapter Facade object
 	 *
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Github\Client object
@@ -56,7 +47,7 @@ class Gist {
 	 * @var \Github\Client
 	 * @since 0.5.0
 	 */
-	private $client;
+	protected $client;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -70,9 +61,7 @@ class Gist {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		$this->database = new Database( $this->plugin_name, $this->version );
 		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
 		$this->client = new Client();
 
 	}
@@ -88,7 +77,7 @@ class Gist {
 		$token = (string) cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' );
 
 		if ( empty( $token ) ) {
-			return new WP_Error( 'no_github_token', 'No GitHub OAuth token available.' );
+			return new \WP_Error( 'no_github_token', 'No GitHub OAuth token available.' );
 		}
 
 		$this->authenticate( $token );
@@ -124,7 +113,7 @@ class Gist {
 		$success = true;
 
 		try {
-			$user = $this->get_me();
+			$user = $this->show_me();
 		} catch ( \Exception $e ) {
 			$success = new \WP_Error( $e->getCode(), $e->getMessage() );
 		}
@@ -139,20 +128,20 @@ class Gist {
 	}
 
 	/**
-	 * Creates a new Gist based on Zip
+	 * Creates a new Gist based on History
 	 *
-	 * @param  Zip             $zip    Gist data
-	 * @return string|WP_Error         Gist id on success, WP_Error on failure
+	 * @param  History          $history    Gist data
+	 * @return string|\WP_Error         Gist id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
-	public function create_gist( $zip ) {
+	public function create_gist( $history ) {
 		$result = $this->set_up_client();
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
-		$gist = $this->adapter->build( 'gist' )->create_by_zip( $zip );
+		$gist = $this->adapter->build( 'gist' )->create_by_history( $history );
 
 		try {
 			$response = $this->call()->create( $gist );
@@ -166,6 +155,36 @@ class Gist {
 
 		return $response['id'];
 	}
+
+	/**
+	 * Update an existing Gist based on Zip
+	 *
+	 * @param  Zip             $history    Gist data
+	 * @return string|\WP_Error         Gist id on success, WP_Error on failure
+	 * @since  0.5.0
+	 */
+	public function update_gist( $history ) {
+		$result = $this->set_up_client();
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$gist = $this->adapter->build( 'gist' )->update_by_history( $history );
+
+		try {
+			$response = $this->call()->update( $history->get_gist_id(), $gist );
+		} catch ( \Exception $e ) {
+			$response = new \WP_Error( $e->getCode(), $e->getMessage() );
+		}
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		return $response['id'];
+	}
+
 	/**
 	 * Shortcut to call the Gist API
 	 *
@@ -184,7 +203,7 @@ class Gist {
 	 * @return \Github\Api\CurrentUser
 	 * @since 0.5.0
 	 */
-	protected function get_me() {
+	protected function show_me() {
 		return $this->client->api( 'me' )->show();
 	}
 }
