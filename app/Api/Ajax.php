@@ -189,9 +189,9 @@ class Ajax {
 
 		$this->check_error( $zip );
 
-		$zip_json = $this->adapter->build( 'json' )->by_zip( $zip );
+		$zip_json = $this->adapter->build( 'api' )->by_zip( $zip );
 
-		wp_send_json_success( json_decode( $zip_json ) );
+		wp_send_json_success( $zip_json );
 	}
 
 	/**

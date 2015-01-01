@@ -2,6 +2,7 @@
 namespace WP_Gistpen\Adapter;
 
 use WP_Gistpen\Model\Zip as ZipModel;
+use \stdClass;
 
 /**
  * Builds JSON based on various
@@ -11,7 +12,7 @@ use WP_Gistpen\Model\Zip as ZipModel;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class JSON {
+class Api {
 
 	/**
 	 * The ID of this plugin.
@@ -52,17 +53,17 @@ class JSON {
 	 * @return string        file data in json
 	 */
 	public function by_zip( ZipModel $zip ) {
-		$json = new \stdClass;
+		$api = new stdClass;
 
-		$json->ID = $zip->get_ID();
-		$json->description = $zip->get_description();
-		$json->status = $zip->get_status();
-		$json->password = $zip->get_password();
-		$json->gist_id = $zip->get_gist_id();
+		$api->ID = $zip->get_ID();
+		$api->description = $zip->get_description();
+		$api->status = $zip->get_status();
+		$api->password = $zip->get_password();
+		$api->gist_id = $zip->get_gist_id();
 
-		$json->files = $this->by_files( $zip->get_files() );
+		$api->files = $this->by_files( $zip->get_files() );
 
-		return json_encode( $json );
+		return $api;
 	}
 
 	/**
@@ -75,26 +76,45 @@ class JSON {
 		$data = array();
 
 		if ( empty( $files ) ) {
-			$json = new \stdClass;
-			$json->slug = '';
-			$json->code = '';
-			$json->ID = null;
-			$json->language = '';
+			$api = new stdClass;
+			$api->slug = '';
+			$api->code = '';
+			$api->ID = null;
+			$api->language = '';
 
-			$data[] = $json;
+			$data[] = $api;
 		} else {
 			foreach ( $files as $file ) {
+				$api = new stdClass;
+				$api->slug = $file->get_slug();
+				$api->code = $file->get_code();
+				$api->ID = $file->get_ID();
+				$api->language = $file->get_language()->get_slug();
 
-				$json = new \stdClass;
-				$json->slug = $file->get_slug();
-				$json->code = $file->get_code();
-				$json->ID = $file->get_ID();
-				$json->language = $file->get_language()->get_slug();
-
-				$data[] = $json;
+				$data[] = $api;
 			}
 		}
 
 		return $data;
+	}
+
+	public function by_history( $history ) {
+		$commits = $history->get_commits();
+
+		$api = array();
+
+		foreach ( $commits as $commit ) {
+			$commit_json = new stdClass;
+
+			$commit_json->commit_id = $commit->get_commit_id();
+			$commit_json->head_id = $commit->get_head_id();
+			$commit_json->create_date = $commit->get_create_date();
+			$commit_json->saved_files = $commit->get_saved_files();
+			$commit_json->deleted_files = $commit->get_deleted_files();
+
+			$api[] = $commit_json;
+		}
+
+		return json_encode( $api );
 	}
 }
