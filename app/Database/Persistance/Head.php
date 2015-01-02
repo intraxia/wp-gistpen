@@ -8,8 +8,12 @@ namespace WP_Gistpen\Database\Persistance;
  * @copyright 2014 James DiGioia
  */
 
+use WP_Gistpen\Database\Query\Head as HeadQuery;
+use WP_Gistpen\Facade\Adapter;
+use WP_Gistpen\Model\Commit as CommitModel;
 use WP_Gistpen\Model\File;
 use WP_Gistpen\Model\Language;
+
 
 /**
  * This class manipulates the saving of parent Gistpen
@@ -39,6 +43,20 @@ class Head {
 	private $version;
 
 	/**
+	 * Adapter facade
+	 *
+	 * @var Adapter
+	 */
+	private $adapter;
+
+	/**
+	 * Database object for querying Head
+	 *
+	 * @var HeadQuery
+	 */
+	private $head_query;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -50,13 +68,17 @@ class Head {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->adapter = new Adapter( $plugin_name, $version );
+		$this->head_query = new HeadQuery( $plugin_name, $version );
+
+
 	}
 
 	/**
 	 * Save the Zip to the database
 	 *
 	 * @param  Zip $post
-	 * @return int|WP_Error    post_id on success, WP_Error on failure
+	 * @return int|\WP_Error    post_id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
 	public function by_zip( $zip ) {
@@ -76,17 +98,22 @@ class Head {
 			return $result;
 		}
 
-		$post_id = $result;
+		$zip_id = $result;
+		$results = array();
+		$results['zip'] = $zip_id;
+		$results['files'] = array();
+		$results['deleted'] = array();
 		unset($result);
 
 		$files = $zip->get_files();
+		$files_to_delete = $this->head_query->files_by_post( get_post( $zip_id ) );
 
 		foreach ( $files as $id => $file ) {
 			$data = array(
 				'post_title'    => $file->get_slug(),
 				'post_content'  => $file->get_code(),
 				'post_status'   => $zip->get_status(),
-				'post_parent'   => $post_id,
+				'post_parent'   => $zip_id,
 				'post_password' => $zip->get_password(),
 			);
 
@@ -100,14 +127,37 @@ class Head {
 				return $result;
 			}
 
-			$result = wp_set_object_terms( $result, $file->get_language()->get_slug(), 'wpgp_language', false );
+			$file_id = $result;
+			unset( $result );
+
+			$result = wp_set_object_terms( $file_id, $file->get_language()->get_slug(), 'wpgp_language', false );
 
 			if ( is_wp_error( $result ) ) {
 				return $result;
 			}
+
+			$results['files'][] = $file_id;
+			unset( $files_to_delete[ $file_id ] );
 		}
 
-		return $post_id;
+		foreach ( $files_to_delete as $id => $file ) {
+			$result = wp_update_post( array(
+				'ID'          => $id,
+				'post_type'   => 'gistpen',
+				'post_status' => 'inherit',
+			), true );
+
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
+
+			$deleted_file_id = $result;
+			unset( $result );
+
+			$results['deleted'][] = $deleted_file_id;
+		}
+
+		return $results;
 	}
 
 	/**
@@ -172,5 +222,24 @@ class Head {
 	 */
 	public function set_gist_id( $zip_id, $gist_id ) {
 		return update_post_meta( $zip_id, '_wpgp_gist_id', $gist_id );
+	}
+
+	/**
+	 * Saves a new Gist filename for each file
+	 *
+	 * @param array $files Array of Files
+	 * @since 0.5.0
+	 */
+	public function set_gist_filename_by_files( $files ) {
+		if ( ! is_array( $files ) ) {
+			return new WP_Error( 'not_array', __( "set_gist_filename_by_files didn't get an array.", $this->plugin_name ) );
+		}
+
+		foreach ( $files as &$file ) {
+			update_post_meta( $file->get_ID(), '_wpgp_gist_filename', $file->get_filename() );
+			$file->set_gist_filename( $file->get_filename() );
+		}
+
+		return $files;
 	}
 }

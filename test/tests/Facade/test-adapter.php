@@ -2,7 +2,7 @@
 use WP_Gistpen\Facade\Adapter;
 
 /**
- * @group  adapter
+ * @group  facades
  */
 class WP_Gistpen_Facade_Adapter_Test extends WP_Gistpen_UnitTestCase {
 
@@ -36,9 +36,9 @@ class WP_Gistpen_Facade_Adapter_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_json_adapter() {
-		$json = $this->adapter->build( 'json' );
+		$api = $this->adapter->build( 'api' );
 
-		$this->assertInstanceOf('WP_Gistpen\Adapter\JSON', $json );
+		$this->assertInstanceOf('WP_Gistpen\Adapter\Api', $api );
 	}
 
 	function test_fail_everything_else() {

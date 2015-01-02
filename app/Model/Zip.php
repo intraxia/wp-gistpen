@@ -131,8 +131,10 @@ class Zip {
 			throw new Exception( 'File objects only added to files' );
 		}
 
-		if ( null !== $file->get_ID() ) {
-			$this->files[ $file->get_ID() ] = $file;
+		$file_id = $file->get_ID();
+
+		if ( null !== $file_id ) {
+			$this->files[ $file_id ] = $file;
 		} else {
 			$this->files[] = $file;
 		}

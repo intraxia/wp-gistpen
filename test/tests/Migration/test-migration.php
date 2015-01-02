@@ -1,9 +1,10 @@
 <?php
 
+use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Model\Language;
 use WP_Gistpen\Migration;
 /**
- * @group  migration
+ * @group  migrations
  */
 class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 
@@ -15,6 +16,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 
 		$this->migration = new Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 	}
 
 	function set_up_0_4_0_test_posts() {
@@ -151,7 +153,13 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_update_to_0_5_0() {
-		$this->markTestIncomplete('Migration deletes revisions, but means to save them not currently available.');
+		$this->set_up_0_5_0_test_posts();
+
+		$this->migration->update_to_0_5_0();
+
+		$history = $this->database->query( 'commit' )->history_by_head_id( $this->gistpen->ID );
+
+		$this->assertCount( 1, $history );
 	}
 
 	function tearDown() {

@@ -137,6 +137,7 @@ class Head {
 			$result = $this->adapter
 				->build( 'file' )
 				->by_post( $post );
+
 			$result->set_language( $this->language_by_post_id( $post->ID ) );
 		} else {
 			$post->gist_id = $this->gist_id_by_post_id( $post->ID );
@@ -144,6 +145,8 @@ class Head {
 			$result = $this->adapter
 				->build( 'zip' )
 				->by_post( $post );
+
+			$result->set_gist_id( $this->gist_id_by_post_id( $post->ID ) );
 			$result->add_files( $this->files_by_post( $post ) );
 		}
 
@@ -190,7 +193,13 @@ class Head {
 	 * @since  0.5.0
 	 */
 	public function gist_id_by_post_id( $post_id ) {
-		return get_post_meta( $post_id, '_wpgp_gist_id', true );
+		$gist_id = get_post_meta( $post_id, '_wpgp_gist_id', true );
+
+		if ( empty( $gist_id ) ) {
+			$gist_id = 'none';
+		}
+
+		return $gist_id;
 	}
 
 	/**

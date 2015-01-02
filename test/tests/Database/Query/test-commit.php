@@ -23,7 +23,7 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_commits() {
-		$revisions = $this->query->all_by_parent_id( $this->gistpen->ID );
+		$revisions = $this->query->history_by_head_id( $this->gistpen->ID );
 
 		$this->assertCount( 1, $revisions );
 

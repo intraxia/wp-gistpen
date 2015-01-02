@@ -352,9 +352,19 @@ class Migration {
 		));
 
 		foreach ( $posts as $post ) {
-			$zip = $this->adapter->build( 'zip' )->by_post( $post );
+			$ids = array();
 
-			$this->database->persist( 'commit' )->by_parent_zip( $zip );
+			$zip = $this->database->query( 'head' )->by_post( $post );
+
+			$ids['zip'] = $zip->get_ID();
+			$ids['files'] = array();
+			$files = $zip->get_files();
+
+			foreach ( $files as $file ) {
+				$ids['files'][] = $file->get_ID();
+			}
+
+			$this->database->persist( 'commit' )->by_ids( $ids );
 
 			update_post_meta( $post->ID, '_wpgp_gist_id', 'none' );
 		}

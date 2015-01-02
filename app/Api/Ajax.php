@@ -223,7 +223,7 @@ class Ajax {
 
 		$this->check_error( $result );
 
-		wp_send_json_success( array( 'id' => $result ) );
+		wp_send_json_success( array( 'id' => $result['zip'] ) );
 	}
 
 	/**
@@ -310,8 +310,6 @@ class Ajax {
 	public function create_gist_from_gistpen_id() {
 		$this->check_security();
 
-		// @todo escape this
-		// cast to integer?
 		$id = intval( $_POST['gistpen_id'] );
 
 		if ( 0 === $id ) {

@@ -26,6 +26,11 @@ class WP_Gistpen_Model_Zip_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_add_file() {
+		$this->mock_file
+			->shouldReceive( 'get_ID' )
+			->once()
+			->andReturn( 123 );
+
 		$this->zip->add_file( $this->mock_file );
 
 		$this->assertCount( 1, $this->zip->get_files() );
@@ -44,23 +49,29 @@ class WP_Gistpen_Model_Zip_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_post_content() {
-		$this->zip->add_file( $this->mock_file );
-
 		$this->mock_file
-			->expects( $this->once() )
-			->method( 'get_post_content' )
-			->will( $this->returnValue('Post content') );
+			->shouldReceive( 'get_ID' )
+			->once()
+			->andReturn( 123 )
+			->shouldReceive( 'get_post_content' )
+			->once()
+			->andReturn( 'Post content' );
+
+		$this->zip->add_file( $this->mock_file );
 
 		$this->assertContains( 'Post content', $this->zip->get_post_content() );
 	}
 
 	function test_get_shortcode_content() {
-		$this->zip->add_file( $this->mock_file );
-
 		$this->mock_file
-			->expects( $this->once() )
-			->method( 'get_shortcode_content' )
-			->will( $this->returnValue('Shortcode content') );
+			->shouldReceive( 'get_ID' )
+			->once()
+			->andReturn( 123 )
+			->shouldReceive( 'get_shortcode_content' )
+			->once()
+			->andReturn( 'Shortcode content' );
+
+		$this->zip->add_file( $this->mock_file );
 
 		$this->assertContains( 'Shortcode content', $this->zip->get_shortcode_content() );
 	}

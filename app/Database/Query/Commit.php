@@ -9,8 +9,10 @@ namespace WP_Gistpen\Database\Query;
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Facade\Adapter;
+use WP_Gistpen\Collection\History;
 use WP_Gistpen\Database\Query\Head as HeadQuery;
+use WP_Gistpen\Facade\Adapter;
+use WP_Gistpen\Model\Commit as CommitModel;
 
 /**
  * This class saves and gets Gistpen commits from the database
@@ -80,39 +82,114 @@ class Commit {
 	}
 
 	/**
+	 * Gets and builds a History Collection for a given post ID
+	 *
+	 * @param  int     $post_id model's post ID
+	 * @return History          WP_Gistpen model object
+	 * @since 0.5.0
+	 */
+	public function history_by_head_id( $head_id ) {
+		$history = $this->adapter->build( 'history' )->blank();
+		$revisions = wp_get_post_revisions( $head_id );
+
+		foreach ( $revisions as $revision ) {
+			$commit = $this->by_post( $revision );
+
+			$history->add_commit( $commit );
+		}
+
+		return $history;
+	}
+
+	/**
+	 * Get the latest Commit based on the Head ID
+	 *
+	 * @param  int    $head_id ID of the Head Zip to query on
+	 * @return Commit          Latest Commit object
+	 */
+	public function latest_by_head_id( $head_id ) {
+		$revisions = wp_get_post_revisions( $head_id, array( 'posts_per_page' => 1 ) );
+		$revision = array_shift( $revisions );
+
+		$commit = $this->by_post( $revision );
+
+		return $commit;
+	}
+
+	/**
+	 * Gets and builds a Commit model based on a WP_Post object
+	 *
+	 * @param  WP_Post $post model's WP_Post object
+	 * @return object       Commit model object
+	 * @since 0.5.0
+	 */
+	public function by_post( $post ) {
+		// @todo validate this post so it's a revision & pulling from a Zip
+		$commit = $this->adapter->build( 'commit' )->by_post( $post );
+
+		$meta = get_metadata( 'post', $commit->get_ID(), '_wpgp_commit_meta', true );
+
+		foreach ( $meta['state_ids'] as $state_id ) {
+			$state = $this->state_by_id( $state_id, $commit->get_ID() );
+
+			$commit->add_state( $state );
+		}
+
+		return $commit;
+	}
+
+	/**
 	 * Gets and builds an object model based on a post's ID
 	 *
 	 * @param  int $post_id model's post ID
 	 * @return object       WP_Gistpen model object
 	 * @since 0.5.0
 	 */
-	public function all_by_parent_id( $parent_id ) {
-		$revisions_meta = get_post_meta( $parent_id, 'wpgp_revisions', true );
-		$revisions = array();
+	public function by_id( $post_id ) {
+		$revision = get_post( $post_id );
 
-		if ( empty( $revisions_meta ) ) {
-			return $revisions;
-		}
-
-		foreach ( $revisions_meta as $revision_id => $revision_meta ) {
-			$zip_post = get_post( $revision_id );
-
-			$zip = $this->adapter->build( 'zip' )->by_post( $zip_post );
-
-			foreach ( $revision_meta['files'] as $file_id ) {
-				$file_post = get_post( $file_id );
-
-				$file = $this->adapter->build( 'file' )->by_post( $file_post );
-
-				$file->set_language( $this->head->language_by_post_id( $file_id ) );
-
-				$zip->add_file( $file );
-			}
-
-			$revisions[] = $zip;
-		}
-
-		return $revisions;
+		return $this->by_post( $revision );
 	}
 
+	/**
+	 * Get a State object by the State's ID and its Commit ID
+	 *
+	 * @param  int    $state_id  ID of the State
+	 * @param  int    $commit_id ID of the State's Commit
+	 * @return State             State object
+	 * @since  0.5.0
+	 */
+	public function state_by_id( $state_id, $commit_id ) {
+		$state_post = get_post( $state_id );
+		$meta = get_metadata( 'post', $state_id, "_wpgp_{$commit_id}_state_meta", true );
+		$state_post->status = $meta['status'];
+		if ( 'new' !== $meta['status'] ) {
+			$state_post->gist_id = $meta['gist_id'];
+		}
+
+		$state = $this->adapter->build( 'state' )->by_post( $state_post );
+
+		$state->set_language( $this->language_by_state_id( $state_id ) );
+
+		return $state;
+	}
+
+	/**
+	 * Retrieves the Language object for a given State ID
+	 *
+	 * @param  int $post_id
+	 * @return Language
+	 * @since  0.4.0
+	 */
+	public function language_by_state_id( $state_id ) {
+		$terms = get_the_terms( $state_id, 'wpgp_language' );
+
+		if ( empty( $terms ) ) {
+			return $this->adapter->build( 'language' )->blank();
+		}
+
+		$term = array_pop( $terms );
+
+		return $this->adapter->build( 'language' )->by_slug( $term->slug );
+	}
 }

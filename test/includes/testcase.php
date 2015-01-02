@@ -14,10 +14,12 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		$this->factory = new WP_Gistpen_UnitTest_Factory;
 
 		// Mock models
-		$this->mock_lang = $this->getMockBuilder( 'WP_Gistpen\Model\Language' )->disableOriginalConstructor()->getMock();
+		$this->mock_lang = m::mock( 'WP_Gistpen\Model\Language' );;
 		$this->mock_zip = m::mock( 'WP_Gistpen\Model\Zip' );
-		$this->mock_file = $this->getMockBuilder( 'WP_Gistpen\Model\File' )->disableOriginalConstructor()->getMock();
+		$this->mock_file = m::mock( 'WP_Gistpen\Model\File' );
 		$this->mock_history = m::mock( 'WP_Gistpen\Collection\History' );
+		$this->mock_commit = m::mock( 'WP_Gistpen\Model\Commit\Meta' );
+		$this->mock_state = m::mock( 'WP_Gistpen\Model\Commit\State' );
 
 		// Mock controllers
 		$this->mock_sync = m::mock( 'WP_Gistpen\Controller\Sync' );

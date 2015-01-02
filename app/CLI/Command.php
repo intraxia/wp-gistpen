@@ -3,6 +3,7 @@ namespace WP_Gistpen\CLI;
 
 use \WP_CLI;
 use WP_Gistpen\Account\Gist;
+use WP_Gistpen\Controller\Save;
 use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Model\Language;
 use WP_Gistpen\Facade\Adapter;
@@ -21,6 +22,7 @@ class Command extends \WP_CLI_Command {
 	public function __construct() {
 		$this->database = new Database( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 		$this->adapter = new Adapter( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+		$this->save = new Save( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 	}
 
 	/**
@@ -58,21 +60,20 @@ class Command extends \WP_CLI_Command {
 			}
 			fclose( $fh );
 
-			$zip = $this->adapter->build( 'zip' )->blank();
+			$zip_data = array();
 
-			$zip->set_status( 'publish' );
-			$zip->set_description( $lang . ' Example' );
+			$zip_data['status'] = 'publish';
+			$zip_data['description'] = $lang . ' Example';
+			$zip_data['files'] = array();
 
-			$file = $this->adapter->build( 'file' )->blank();
-			$file->set_code( trim( $code ) );
-			$file->set_slug( $slug . '-file' );
-			$file->set_language( $this->adapter->build( 'language' )->by_slug( $slug ) );
+			$file = array();
+			$file['code'] = trim( $code );
+			$file['slug'] = $slug . '-file';
+			$file['language'] = $slug;
 
-			$zip->add_file( $file );
+			$zip_data['files'][] = $file;
 
-			$result = $this->database->persist( 'head' )->by_zip( $zip );
-			$this->database->persist( 'head' )->set_gist_id( $result, 'none' );
-			$this->database->persist( 'commit' )->by_parent_zip( $zip );
+			$this->save->update( $zip_data );
 
 			WP_CLI::success( __( "Successfully added language {$lang}", \WP_Gistpen::$plugin_name ) );
 			sleep( 1 );

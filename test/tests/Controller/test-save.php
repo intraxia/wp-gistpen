@@ -3,7 +3,7 @@ use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Controller\Save;
 
 /**
- * @group controller
+ * @group controllers
  */
 class WP_Gistpen_Controller_Save_Test extends WP_Gistpen_UnitTestCase {
 
@@ -12,48 +12,133 @@ class WP_Gistpen_Controller_Save_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 
-		$this->save = new Save( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->save = new SaveTest( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->save->set_database( $this->mock_database );
 
 		$this->create_post_and_children();
 		$this->_setRole( 'administrator' );
 	}
 
-	function test_update_zip() {
-		$zip_data = array(
-			'ID'          => $this->gistpen->ID,
-			'description' => 'New Description',
-			'status'      => 'pending',
-			'password'    => '',
-			'files'       => array(),
+	function test_update_fails_no_perms() {
+		$this->_setRole( 'subscriber' );
+		$data = array(
+			'description'  => 'New Gistpen Description',
+			'status'       => 'auto-draft',
+			'ID'           => $this->gistpen->ID,
+			'files'        => array(
+				array(
+					'slug'     => 'New Gistpen',
+					'code'     => 'echo $stuff;',
+					'ID'       => null,
+					'language' => 'php',
+				),
+			),
 		);
 
-		foreach ( $this->files as $file_id ) {
-			$zip_data['files'][] = array(
-				'ID'       => $file_id,
-				'slug'     => 'new-slug-' . $file_id,
-				'code'     => "put {$file_id}",
-				'language' => 'ruby'
-			);
-		}
+		$result = $this->save->update( $data );
 
-		$result = $this->save->update( $zip_data );
+		$this->assertInstanceOf( 'WP_Error', $result );
+	}
+
+	function test_update_fails_head_fails() {
+		$this->mock_database
+			->shouldReceive( 'persist' )
+			->with( 'head' )
+			->once()
+			->andReturn( $this->mock_database )
+			->shouldReceive( 'by_zip' )
+			->once()
+			->andReturn( new WP_Error );
+
+		$data = array(
+			'description'  => 'New Gistpen Description',
+			'status'       => 'auto-draft',
+			'ID'           => null,
+			'files'        => array(
+				array(
+					'slug'     => 'New Gistpen',
+					'code'     => 'echo $stuff;',
+					'ID'       => null,
+					'language' => 'php',
+				),
+			),
+		);
+
+		$result = $this->save->update( $data );
+
+		$this->assertInstanceOf( 'WP_Error', $result );
+	}
+
+	function test_update_fails_commit_fails() {
+		$this->mock_database
+			->shouldReceive( 'persist' )
+			->with( 'head' )
+			->once()
+			->andReturn( $this->mock_database )
+			->shouldReceive( 'by_zip' )
+			->once()
+			->andReturn( array() )
+			->shouldReceive( 'persist' )
+			->with( 'commit' )
+			->once()
+			->andReturn( $this->mock_database )
+			->shouldReceive( 'by_ids' )
+			->once()
+			->andReturn( new WP_Error );
+
+		$data = array(
+			'description'  => 'New Gistpen Description',
+			'status'       => 'auto-draft',
+			'ID'           => null,
+			'files'        => array(
+				array(
+					'slug'     => 'New Gistpen',
+					'code'     => 'echo $stuff;',
+					'ID'       => null,
+					'language' => 'php',
+				),
+			),
+		);
+
+		$result = $this->save->update( $data );
+
+		$this->assertInstanceOf( 'WP_Error', $result );
+	}
+
+	function test_update_succeeds() {
+		$this->mock_database
+			->shouldReceive( 'persist' )
+			->with( 'head' )
+			->once()
+			->andReturn( $this->mock_database )
+			->shouldReceive( 'by_zip' )
+			->once()
+			->andReturn( array( 'zip' => 1 ) )
+			->shouldReceive( 'persist' )
+			->with( 'commit' )
+			->once()
+			->andReturn( $this->mock_database )
+			->shouldReceive( 'by_ids' )
+			->once()
+			->andReturn( array() );
+
+		$data = array(
+			'description'  => 'New Gistpen Description',
+			'status'       => 'auto-draft',
+			'ID'           => null,
+			'files'        => array(
+				array(
+					'slug'     => 'New Gistpen',
+					'code'     => 'echo $stuff;',
+					'ID'       => null,
+					'language' => 'php',
+				),
+			),
+		);
+
+		$result = $this->save->update( $data );
 
 		$this->assertInternalType( 'int', $result );
-
-		$zip = $this->database->query( 'head' )->by_id( $result );
-
-		$this->assertEquals( 'New Description', $zip->get_description() );
-		$this->assertEquals( 'pending', $zip->get_status() );
-		$this->assertCount( 3, $zip->get_files() );
-
-		$files = $zip->get_files();
-
-		foreach ( $files as $file ) {
-			$file_id = $file->get_ID();
-			$this->assertEquals( 'new-slug-' . $file_id, $file->get_slug() );
-			$this->assertEquals( "put {$file_id}", $file->get_code() );
-			$this->assertEquals( 'ruby', $file->get_language()->get_slug() );
-		}
 	}
 
 	function test_status_stays_in_sync() {
@@ -96,5 +181,11 @@ class WP_Gistpen_Controller_Save_Test extends WP_Gistpen_UnitTestCase {
 
 	function tearDown() {
 		parent::tearDown();
+	}
+}
+
+class SaveTest extends Save {
+	public function set_database( $database ) {
+		$this->database = $database;
 	}
 }

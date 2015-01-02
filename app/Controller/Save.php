@@ -38,7 +38,7 @@ class Save {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	protected $database;
 
 	/**
 	 * Adapter Facade object
@@ -46,7 +46,7 @@ class Save {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -81,7 +81,7 @@ class Save {
 
 		// Check user permissions
 		if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
-			return;
+			return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', $this->plugin_name ) . $zip->get_ID() );
 		}
 
 		foreach ( $zip_data['files'] as $file_data ) {
@@ -89,33 +89,31 @@ class Save {
 			$file->set_language( $this->adapter->build( 'language' )->by_slug( $file_data['language'] ) );
 
 			$zip->add_file( $file );
+			unset( $file );
 		}
 
-		$result = $this->database->persist( 'head' )->by_zip( $zip );
+		$results = $this->database->persist( 'head' )->by_zip( $zip );
+
+		if ( is_wp_error( $results ) ) {
+			return $results;
+		}
+
+		$result = $this->database->persist( 'commit' )->by_ids( $results );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
-		$post_id = $result;
+		do_action( 'wpgp_after_update', $results['zip'] );
 
-		$zip = $this->database->query( 'head' )->by_id( $post_id );
-
-		$result = $this->database->persist( 'commit' )->by_parent_zip( $zip );
-
-		if ( is_wp_error( $result ) ) {
-			return $result;
-		}
-
-		do_action( 'wpgp_after_update', $post_id );
-
-		return $post_id;
+		return $results['zip'];
 	}
 
 	/**
 	 * Remove the action hook to save a post revision
 	 *
-	 * We're going to be handling this ourselves on the save_post hook
+	 * We're going to be handling this ourselves
+	 *
 	 * @param  int $post_id
 	 * @since  0.5.0
 	 */
@@ -177,7 +175,7 @@ class Save {
 	/**
 	 * Disables checking for changes when we save a post revision
 	 *
-	 * @param  bool $check_for_changes whether we check for changes
+	 * @param  bool     $check_for_changes whether we check for changes
 	 * @param  \WP_Post $last_revision     previous revision object
 	 * @param  \WP_Post $post              current revision
 	 * @return bool                        whether we check for changes

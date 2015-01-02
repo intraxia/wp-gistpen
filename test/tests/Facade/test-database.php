@@ -2,7 +2,7 @@
 use WP_Gistpen\Facade\Database;
 
 /**
- * @group  database
+ * @group  facades
  */
 class WP_Gistpen_Facade_Database_Test extends WP_Gistpen_UnitTestCase {
 

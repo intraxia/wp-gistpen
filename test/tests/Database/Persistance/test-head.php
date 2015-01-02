@@ -35,9 +35,12 @@ class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
 		$result = $this->persistance->by_zip( $this->zip );
 
 		// Check result
-		$this->assertInternalType( 'int', $result );
+		$this->assertInternalType( 'array', $result );
+		$this->assertInternalType( 'int', $result['zip'] );
+		$this->assertInternalType( 'array', $result['files'] );
+		$this->assertInternalType( 'array', $result['deleted'] );
 
-		$saved_zip = $this->query->by_id( $result );
+		$saved_zip = $this->query->by_id( $result['zip'] );
 
 		$this->assertEquals( "New description", $saved_zip->get_description() );
 
@@ -58,9 +61,12 @@ class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
 		$result = $this->persistance->by_zip( $this->zip );
 
 		// Check result
-		$this->assertInternalType( 'int', $result );
+		$this->assertInternalType( 'array', $result );
+		$this->assertInternalType( 'int', $result['zip'] );
+		$this->assertEmpty( $result['files'] );
+		$this->assertEmpty( $result['deleted'] );
 
-		$saved_zip = $this->query->by_id( $result );
+		$saved_zip = $this->query->by_id( $result['zip'] );
 
 		$this->assertEquals( "New description", $saved_zip->get_description() );
 
