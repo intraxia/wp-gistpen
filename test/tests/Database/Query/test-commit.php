@@ -27,8 +27,10 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertCount( 1, $revisions );
 
-		foreach ( $revisions as $revision ) {
-			$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $revision );
+		foreach ( $revisions->get_commits() as $commit ) {
+			$this->assertInstanceOf( 'WP_Gistpen\Model\Commit\Meta', $commit );
+			$this->assertEquals( 'none', $commit->get_head_gist_id() );
+			$this->assertEquals( 'none', $commit->get_gist_id() );
 		}
 	}
 

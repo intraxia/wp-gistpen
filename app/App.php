@@ -55,6 +55,7 @@ class App {
 	public $save;
 	public $settings_assets;
 	public $settings_view;
+	public $sync;
 	public $web;
 
 	/**
@@ -109,6 +110,7 @@ class App {
 		$this->define_migration_hooks();
 		$this->define_prism_hooks();
 		$this->define_save_hooks();
+		$this->define_sync_hooks();
 		$this->define_button_hooks();
 		$this->define_web_hooks();
 
@@ -331,6 +333,18 @@ class App {
 		$this->loader->add_action( 'transition_post_status', $this->save, 'sync_post_status', 10, 3 );
 		$this->loader->add_action( 'before_delete_post', $this->save, 'delete_files' );
 
+	}
+
+	/**
+	 * Register all of the hooks related to the updated Gists.
+	 *
+	 * @since    0.5.0
+	 * @access   protected
+	 */
+	protected function define_sync_hooks() {
+		$this->sync = new Controller\Sync( $this->get_plugin_name(), $this->get_version() );
+
+		$this->loader->add_filter( 'wpgp_after_update', $this->sync, 'export_gistpen' );
 	}
 
 	/**

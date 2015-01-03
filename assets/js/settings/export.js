@@ -78,19 +78,16 @@
 					gistpen_id: id
 				},
 				success: function(response) {
-
+					that.updateProgress(response);
 				},
 				error: function(response) {
 					jQuery.ajaxq.abort('export');
+					that.updateProgress(response);
 				},
-				complete: function(jqxhr) {
-					that.updateProgress(jqxhr);
-				}
 			});
 		},
 
-		updateProgress: function(jqxhr) {
-			var response = jqxhr.responseJSON;
+		updateProgress: function(response) {
 			var template = _.template(this.templates.status.html());
 
 			this.$progress.progressbar( 'value', this.$progress.progressbar("value") + 1);

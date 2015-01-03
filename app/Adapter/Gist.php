@@ -63,7 +63,7 @@ class Gist {
 		$files = array();
 
 		foreach ( $states as $state ) {
-			$files[ $state->get_gist_id() ] = array( 'content' => $state->get_code() );
+			$files[ $state->get_filename() ] = array( 'content' => $state->get_code() );
 		}
 
 		$gist['files'] = $files;

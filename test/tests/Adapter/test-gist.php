@@ -28,9 +28,9 @@ class WP_Gistpen_Adapter_Gist_Test extends WP_Gistpen_UnitTestCase {
 				$this->mock_state
 			) );
 		$this->mock_state
-			->shouldReceive( 'get_gist_id' )
+			->shouldReceive( 'get_filename' )
 			->once()
-			->andReturn( 'gist-filename' )
+			->andReturn( 'filename' )
 			->shouldReceive( 'get_code' )
 			->once()
 			->andReturn( 'echo $stuff;' );
@@ -42,7 +42,7 @@ class WP_Gistpen_Adapter_Gist_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertCount( 1, $gist['files'] );
 
 		foreach ( $gist['files'] as $filename => $data ) {
-			$this->assertEquals( 'gist-filename', $filename );
+			$this->assertEquals( 'filename', $filename );
 			$this->assertEquals( 'echo $stuff;', $data['content'] );
 		}
 	}
@@ -58,9 +58,9 @@ class WP_Gistpen_Adapter_Gist_Test extends WP_Gistpen_UnitTestCase {
 				$this->mock_state
 			) );
 		$this->mock_state
-			->shouldReceive( 'get_gist_id' )
+			->shouldReceive( 'get_filename' )
 			->once()
-			->andReturn( 'gist-filename' )
+			->andReturn( 'filename' )
 			->shouldReceive( 'get_code' )
 			->once()
 			->andReturn( 'echo $stuff;' );
@@ -72,7 +72,7 @@ class WP_Gistpen_Adapter_Gist_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertCount( 1, $gist['files'] );
 
 		foreach ( $gist['files'] as $filename => $data ) {
-			$this->assertContains( 'gist-filename', $filename );
+			$this->assertContains( 'filename', $filename );
 			$this->assertContains( 'echo $stuff;', $data['content'] );
 		}
 	}

@@ -54,15 +54,7 @@ class Commit {
 	 * @var HeadQuery
 	 * @since 0.5.0
 	 */
-	private $head;
-
-	/**
-	 * Default query args
-	 *
-	 * @var  array
-	 * @since 0.5.0
-	 */
-	private $args;
+	protected $head_query;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -77,7 +69,7 @@ class Commit {
 		$this->version = $version;
 
 		$this->adapter = new Adapter( $plugin_name, $version );
-		$this->head = new HeadQuery( $plugin_name, $version );
+		$this->head_query = new HeadQuery( $plugin_name, $version );
 
 	}
 
@@ -125,7 +117,10 @@ class Commit {
 	 */
 	public function by_post( $post ) {
 		// @todo validate this post so it's a revision & pulling from a Zip
+		$post->post_status = get_post_status( $post->post_parent );
 		$commit = $this->adapter->build( 'commit' )->by_post( $post );
+
+		$commit->set_head_gist_id( $this->head_query->gist_id_by_post_id( $commit->get_head_id() ) );
 
 		$meta = get_metadata( 'post', $commit->get_ID(), '_wpgp_commit_meta', true );
 
@@ -133,6 +128,10 @@ class Commit {
 			$state = $this->state_by_id( $state_id, $commit->get_ID() );
 
 			$commit->add_state( $state );
+		}
+
+		if ( array_key_exists( 'gist_id', $meta ) ) {
+			$commit->set_gist_id( $meta['gist_id'] );
 		}
 
 		return $commit;

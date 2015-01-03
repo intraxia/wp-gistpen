@@ -47,7 +47,7 @@ class Gist {
 	 * @var \Github\Client
 	 * @since 0.5.0
 	 */
-	protected $client;
+	public $client;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -130,18 +130,18 @@ class Gist {
 	/**
 	 * Creates a new Gist based on History
 	 *
-	 * @param  History          $history    Gist data
-	 * @return string|\WP_Error         Gist id on success, WP_Error on failure
+	 * @param  Commit           $comit    Gist data
+	 * @return string|\WP_Error           Gist id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
-	public function create_gist( $history ) {
+	public function create_gist( $commit ) {
 		$result = $this->set_up_client();
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
-		$gist = $this->adapter->build( 'gist' )->create_by_history( $history );
+		$gist = $this->adapter->build( 'gist' )->create_by_commit( $commit );
 
 		try {
 			$response = $this->call()->create( $gist );
@@ -153,7 +153,7 @@ class Gist {
 			return $response;
 		}
 
-		return $response['id'];
+		return $response;
 	}
 
 	/**
@@ -163,17 +163,17 @@ class Gist {
 	 * @return string|\WP_Error         Gist id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
-	public function update_gist( $history ) {
+	public function update_gist( $commit ) {
 		$result = $this->set_up_client();
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
-		$gist = $this->adapter->build( 'gist' )->update_by_history( $history );
+		$gist = $this->adapter->build( 'gist' )->update_by_commit( $commit );
 
 		try {
-			$response = $this->call()->update( $history->get_gist_id(), $gist );
+			$response = $this->call()->update( $commit->get_head_gist_id(), $gist );
 		} catch ( \Exception $e ) {
 			$response = new \WP_Error( $e->getCode(), $e->getMessage() );
 		}
@@ -182,7 +182,7 @@ class Gist {
 			return $response;
 		}
 
-		return $response['id'];
+		return $response;
 	}
 
 	/**

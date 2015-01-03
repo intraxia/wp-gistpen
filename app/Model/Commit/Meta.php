@@ -22,6 +22,14 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	protected $head_id = null;
 
 	/**
+	 * Gist ID for Head Zip
+	 *
+	 * @var   string
+	 * @since 0.5.0
+	 */
+	protected $head_gist_id = 'none';
+
+	/**
 	 * Date committed in GMT
 	 *
 	 * @var string
@@ -38,9 +46,9 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	protected $states = array();
 
 	/**
-	 * Get the Head File ID for the Commit
+	 * Get the Head Zip ID for the Commit
 	 *
-	 * @return int Head File ID
+	 * @return int Head Zip ID
 	 * @since 0.5.0
 	 */
 	public function get_head_id() {
@@ -48,13 +56,33 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	}
 
 	/**
-	 * Validate & set the Head File ID for the Commit
+	 * Validate & set the Head Zip ID for the Commit
 	 *
-	 * @param int $commit_id Head File ID ID
+	 * @param int    $head_id     Head Zip ID ID
 	 * @since 0.5.0
 	 */
 	public function set_head_id( $head_id ) {
 		$this->head_id = (int) $head_id;
+	}
+
+	/**
+	 * Get the Head Zip's Gist ID for the Commit
+	 *
+	 * @return string     Head Zip's Gist ID
+	 * @since 0.5.0
+	 */
+	public function get_head_gist_id() {
+		return $this->head_gist_id;
+	}
+
+	/**
+	 * Validate & set the Head Zip's Gist ID for the Commit
+	 *
+	 * @param int $head_gist_id Head Zip's Gist ID ID
+	 * @since 0.5.0
+	 */
+	public function set_head_gist_id( $head_gist_id ) {
+		$this->head_gist_id = $head_gist_id;
 	}
 
 	/**

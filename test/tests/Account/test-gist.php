@@ -54,7 +54,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 			->once()
 			->andReturn( $this->mock_gist_adapter );
 		$this->mock_gist_adapter
-			->shouldReceive( 'create_by_history')
+			->shouldReceive( 'create_by_commit')
 			->once()
 			->andReturn( array() );
 		$this->mock_github_client
@@ -65,7 +65,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 			->once()
 			->andThrow( new Github\Exception\RuntimeException );
 
-		$result = $this->gist->create_gist( $this->mock_history );
+		$result = $this->gist->create_gist( $this->mock_commit );
 
 		$this->assertInstanceOf( 'WP_Error', $result );
 	}
@@ -79,7 +79,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 			->once()
 			->andReturn( $this->mock_gist_adapter );
 		$this->mock_gist_adapter
-			->shouldReceive( 'create_by_history')
+			->shouldReceive( 'create_by_commit')
 			->once()
 			->andReturn( array() );
 		$this->mock_github_client
@@ -90,9 +90,9 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 			->once()
 			->andReturn( array( 'id' => '1234' ) );
 
-		$result = $this->gist->create_gist( $this->mock_history );
+		$result = $this->gist->create_gist( $this->mock_commit );
 
-		$this->assertEquals( '1234', $result );
+		$this->assertEquals( '1234', $result['id'] );
 	}
 
 	function test_update_gist_catch_exception() {
@@ -104,11 +104,11 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 			->once()
 			->andReturn( $this->mock_gist_adapter );
 		$this->mock_gist_adapter
-			->shouldReceive( 'update_by_history')
+			->shouldReceive( 'update_by_commit')
 			->once()
 			->andReturn( array() );
-		$this->mock_history
-			->shouldReceive( 'get_gist_id' )
+		$this->mock_commit
+			->shouldReceive( 'get_head_gist_id' )
 			->once()
 			->andReturn( 'gist_id' );
 		$this->mock_github_client
@@ -120,7 +120,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 			->withArgs( array( 'gist_id', array() ) )
 			->andThrow( new Github\Exception\RuntimeException );
 
-		$result = $this->gist->update_gist( $this->mock_history );
+		$result = $this->gist->update_gist( $this->mock_commit );
 
 		$this->assertInstanceOf( 'WP_Error', $result );
 	}
@@ -134,25 +134,24 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 			->once()
 			->andReturn( $this->mock_gist_adapter );
 		$this->mock_gist_adapter
-			->shouldReceive( 'update_by_history')
+			->shouldReceive( 'update_by_commit')
 			->once()
 			->andReturn( array() );
 		$this->mock_github_client
 			->shouldReceive( 'authenticate' )
-			->once();
-		$this->mock_history
-			->shouldReceive( 'get_gist_id' )
 			->once()
-			->andReturn( 'gist_id' );
-		$this->mock_github_client
 			->shouldReceive( 'update' )
 			->once()
 			->withArgs( array( 'gist_id', array() ) )
 			->andReturn( array( 'id' => '1234' ) );
+		$this->mock_commit
+			->shouldReceive( 'get_head_gist_id' )
+			->once()
+			->andReturn( 'gist_id' );
 
-		$result = $this->gist->update_gist( $this->mock_history );
+		$result = $this->gist->update_gist( $this->mock_commit );
 
-		$this->assertEquals( '1234', $result );
+		$this->assertEquals( array( 'id' => '1234' ), $result );
 	}
 
 	function tearDown() {

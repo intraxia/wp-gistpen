@@ -1,12 +1,14 @@
 <?php
 
+use WP_Gistpen\Account\Gist;
 use WP_Gistpen\Controller\Save as SaveController;
+use WP_Gistpen\Facade\App;
 use WP_Gistpen\Facade\Database;
 
 /**
- * @group SaveRetrieve
+ * @group integration
  */
-class WP_Gistpen_SaveRetrieve_Test extends WP_Gistpen_UnitTestCase {
+class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
@@ -17,6 +19,35 @@ class WP_Gistpen_SaveRetrieve_Test extends WP_Gistpen_UnitTestCase {
 		$this->_setRole( 'administrator' );
 		$this->create_post_and_children();
 		$this->zip = $this->database->query( 'head' )->by_id( $this->gistpen->ID );
+
+		$gist = new GistTest( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$gist->set_client ( $this->mock_github_client );
+
+		App::get('sync')->gist = $gist;
+		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
+		$this->mock_github_client
+			->shouldReceive( 'authenticate' )
+			->times( 3 )
+			->shouldReceive( 'create' )
+			->once()
+			->andReturn( array(
+				'id' => 'abcde1234',
+				'history' => array(
+					array(
+						'version' => 'thisversion'
+					)
+				)
+			) )
+			->shouldReceive( 'update' )
+			->twice()
+			->andReturn( array(
+				'id' => 'abcde1234',
+				'history' => array(
+					array(
+						'version' => 'thisversion'
+					)
+				)
+			) );
 	}
 
 	function test_save_and_retrieve_succeed() {
@@ -32,6 +63,7 @@ class WP_Gistpen_SaveRetrieve_Test extends WP_Gistpen_UnitTestCase {
 			'status'      => 'pending',
 			'password'    => '',
 			'files'       => array(),
+			'gist_id'     => $this->zip->get_gist_id(),
 		);
 
 		foreach ( $this->zip->get_files() as $file ) {
@@ -92,6 +124,7 @@ class WP_Gistpen_SaveRetrieve_Test extends WP_Gistpen_UnitTestCase {
 			'status'      => 'private',
 			'password'    => '',
 			'files'       => array(),
+			'gist_id'     => $this->zip->get_gist_id(),
 		);
 
 		foreach ( $this->zip->get_files() as $file ) {
@@ -159,6 +192,7 @@ class WP_Gistpen_SaveRetrieve_Test extends WP_Gistpen_UnitTestCase {
 			'status'      => 'draft',
 			'password'    => '',
 			'files'       => array(),
+			'gist_id'     => $this->zip->get_gist_id(),
 		);
 
 		foreach ( $this->zip->get_files() as $file ) {
@@ -223,5 +257,15 @@ class WP_Gistpen_SaveRetrieve_Test extends WP_Gistpen_UnitTestCase {
 
 	function tearDown() {
 		parent::tearDown();
+	}
+}
+
+class GistTest extends Gist {
+	public function set_client($client) {
+		$this->client = $client;
+	}
+
+	public function call() {
+		return $this->client;
 	}
 }

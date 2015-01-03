@@ -104,9 +104,18 @@ class Save {
 			return $result;
 		}
 
-		do_action( 'wpgp_after_update', $results['zip'] );
-
-		return $results['zip'];
+		/**
+		 * After Update filter hook.
+		 *
+		 * Can hook in and return WP_Error objects
+		 * if something happens that results in an error.
+		 * This response is important when communicating
+		 * with GitHub's API. If something goes wrong,
+		 * we want to return that error to the user
+		 * so they can go fix it. This response is returned
+		 * by the Ajax API.
+		 */
+		return apply_filters( 'wpgp_after_update', $results['zip'] );
 	}
 
 	/**

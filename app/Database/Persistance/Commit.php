@@ -131,7 +131,7 @@ class Commit {
 				}
 			}
 
-			add_metadata( 'post', $state_id, "_wpgp_{$commit_id}_state_meta", $state_meta );
+			update_metadata( 'post', $state_id, "_wpgp_{$commit_id}_state_meta", $state_meta );
 
 			$lang_slug = $this->head_query->language_by_post_id( $file_id )->get_slug();
 
@@ -158,14 +158,28 @@ class Commit {
 					'post_parent' => $commit_id,
 				) );
 
-				add_metadata( 'post', $deleted_file_id, "_wpgp_{$commit_id}_state_meta", $state_meta );
+				update_metadata( 'post', $deleted_file_id, "_wpgp_{$commit_id}_state_meta", $state_meta );
 
 				$commit_meta['state_ids'][] = $deleted_file_id;
 			}
 		}
 
-		add_metadata( 'post', $commit_id, '_wpgp_commit_meta', $commit_meta );
+		update_metadata( 'post', $commit_id, '_wpgp_commit_meta', $commit_meta );
 
 		return $commit_id;
+	}
+
+	/**
+	 * Save a Gist ID to the Commit
+	 *
+	 * @param  int    $commit_id  post ID of Commit to update
+	 * @param  string $gist_id    Gist ID to save
+	 * @since  0.5.0
+	 */
+	public function set_gist_id( $commit_id, $gist_id ) {
+		$meta = get_metadata( 'post', $commit_id, '_wpgp_commit_meta', true );
+		$meta['gist_id'] = $gist_id;
+
+		return update_metadata( 'post', $commit_id, '_wpgp_commit_meta', $meta );
 	}
 }

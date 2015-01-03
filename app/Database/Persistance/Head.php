@@ -105,6 +105,12 @@ class Head {
 		$results['deleted'] = array();
 		unset($result);
 
+		$result = $this->set_gist_id( $zip_id, $zip->get_gist_id() );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
 		$files = $zip->get_files();
 		$files_to_delete = $this->head_query->files_by_post( get_post( $zip_id ) );
 
@@ -222,24 +228,5 @@ class Head {
 	 */
 	public function set_gist_id( $zip_id, $gist_id ) {
 		return update_post_meta( $zip_id, '_wpgp_gist_id', $gist_id );
-	}
-
-	/**
-	 * Saves a new Gist filename for each file
-	 *
-	 * @param array $files Array of Files
-	 * @since 0.5.0
-	 */
-	public function set_gist_filename_by_files( $files ) {
-		if ( ! is_array( $files ) ) {
-			return new WP_Error( 'not_array', __( "set_gist_filename_by_files didn't get an array.", $this->plugin_name ) );
-		}
-
-		foreach ( $files as &$file ) {
-			update_post_meta( $file->get_ID(), '_wpgp_gist_filename', $file->get_filename() );
-			$file->set_gist_filename( $file->get_filename() );
-		}
-
-		return $files;
 	}
 }

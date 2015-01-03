@@ -39,6 +39,7 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		parent::tearDown();
 
 		m::close();
+		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', false );
 	}
 
 	function create_post_and_children() {

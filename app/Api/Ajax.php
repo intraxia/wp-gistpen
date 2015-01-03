@@ -319,14 +319,14 @@ class Ajax {
 			) );
 		}
 
-		$result = $this->sync->update_gist( $id );
+		$result = $this->sync->export_gistpen( $id );
 
 		$this->check_error( $result );
 		sleep( 1 );
 
 		wp_send_json_success( array(
 			'code'    => 'success',
-			'message' => __( 'Successfully exported Gistpen: ', $this->plugin_name ) . $result->get_description(),
+			'message' => __( 'Successfully exported Gistpen #', $this->plugin_name ) . $result,
 		) );
 	}
 }

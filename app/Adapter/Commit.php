@@ -84,6 +84,9 @@ class Commit {
 		if ( isset( $post->post_status ) ) {
 			$commit->set_status( $post->post_status );
 		}
+		if ( isset( $post->post_parent ) ) {
+			$commit->set_head_id( $post->post_parent );
+		}
 		if ( isset( $post->gist_id ) ) {
 			$commit->set_gist_id( $post->gist_id );
 		}
