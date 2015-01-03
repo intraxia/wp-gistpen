@@ -185,7 +185,7 @@ class Ajax {
 
 		$post_id = (int) $_POST['post_id'];
 
-		$zip = $this->database->query()->by_id( $post_id );
+		$zip = $this->database->query( 'head' )->by_id( $post_id );
 
 		$this->check_error( $zip );
 
@@ -319,9 +319,18 @@ class Ajax {
 			) );
 		}
 
+		$this->database->persist( 'head' )->set_sync( $id, 'on' );
 		$result = $this->sync->export_gistpen( $id );
 
 		$this->check_error( $result );
+
+		// This will slow the API exporting process when calling
+		// it from the settings page, as the next call
+		// won't start until a response has been returned.
+		// However, we need to implement a more effective
+		// rate limiting, as this API can still receive
+		// multiple requests at once and this sleep will
+		// do nothing about it.
 		sleep( 1 );
 
 		wp_send_json_success( array(

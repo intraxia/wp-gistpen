@@ -57,6 +57,26 @@
 
 .wpgp-zip-settings {
 	margin-bottom: 10px;
+
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+
+	.wpgp-status, .wpgp-sync {
+		display: inline-block;
+		margin-right: 5px;
+	}
+
+	.wpgp-sync {
+		padding: 0 5px;
+
+		input[type="checkbox"] {
+			vertical-align: bottom;
+			margin-left: 5px;
+		}
+	}
 }
 
 .wpgp-ace {

@@ -93,6 +93,10 @@ class Sync {
 
 		$commit = $this->database->query( 'commit' )->latest_by_head_id( $zip_id );
 
+		if ( 'on' !== $commit->get_sync() ) {
+			return $zip_id;
+		}
+
 		if ( 'none' === $commit->get_head_gist_id() ) {
 			$result = $this->create_gist( $commit );
 		} else {

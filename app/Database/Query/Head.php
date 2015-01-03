@@ -141,6 +141,7 @@ class Head {
 			$result->set_language( $this->language_by_post_id( $post->ID ) );
 		} else {
 			$post->gist_id = $this->gist_id_by_post_id( $post->ID );
+			$post->sync = $this->sync_by_post_id( $post->ID );
 
 			$result = $this->adapter
 				->build( 'zip' )
@@ -200,6 +201,23 @@ class Head {
 		}
 
 		return $gist_id;
+	}
+
+	/**
+	 * Retrieves the sync status for a given post ID
+	 *
+	 * @param  int $post_id
+	 * @return string
+	 * @since  0.5.0
+	 */
+	public function sync_by_post_id( $post_id ) {
+		$sync = get_post_meta( $post_id, '_wpgp_sync', true );
+
+		if ( 'on' !== $sync ) {
+			$sync = 'off';
+		}
+
+		return $sync;
 	}
 
 	/**

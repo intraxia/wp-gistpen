@@ -121,6 +121,7 @@ class Commit {
 		$commit = $this->adapter->build( 'commit' )->by_post( $post );
 
 		$commit->set_head_gist_id( $this->head_query->gist_id_by_post_id( $commit->get_head_id() ) );
+		$commit->set_sync( $this->head_query->sync_by_post_id( $commit->get_head_id() ) );
 
 		$meta = get_metadata( 'post', $commit->get_ID(), '_wpgp_commit_meta', true );
 
@@ -161,8 +162,14 @@ class Commit {
 	public function state_by_id( $state_id, $commit_id ) {
 		$state_post = get_post( $state_id );
 		$meta = get_metadata( 'post', $state_id, "_wpgp_{$commit_id}_state_meta", true );
-		$state_post->status = $meta['status'];
-		if ( 'new' !== $meta['status'] ) {
+
+		if ( ! array_key_exists( 'status', $meta ) ) {
+			$state_post->status = 'new';
+		} else {
+			$state_post->status = $meta['status'];
+		}
+
+		if ( 'new' !== $state_post->status ) {
 			$state_post->gist_id = $meta['gist_id'];
 		}
 

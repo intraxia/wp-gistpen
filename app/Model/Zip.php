@@ -81,6 +81,14 @@ class Zip {
 	 */
 	protected $gist_id = 'none';
 
+	/**
+	 * Zips's sync status
+	 *
+	 * @var   string
+	 * @since 0.5.0
+	 */
+	protected $sync = 'off';
+
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
@@ -231,6 +239,30 @@ class Zip {
 	 */
 	public function set_gist_id( $gist_id ) {
 		$this->gist_id = $gist_id;
+	}
+
+	/**
+	 * Get the zip's sync status
+	 *
+	 * @return bool Zip's sync status
+	 * @since  0.5.0
+	 */
+	public function get_sync() {
+		return $this->sync;
+	}
+
+	/**
+	 * Set the zip's sync status
+	 *
+	 * @param  bool   $sync Zip's sync status
+	 * @since  0.5.0
+	 */
+	public function set_sync( $sync ) {
+		if ( 'on' !== $sync ) {
+			$sync = 'off';
+		}
+
+		$this->sync = $sync;
 	}
 
 	/**

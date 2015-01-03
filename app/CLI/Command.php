@@ -23,6 +23,7 @@ class Command extends \WP_CLI_Command {
 		$this->database = new Database( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 		$this->adapter = new Adapter( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 		$this->save = new Save( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+		$this->sync = new Sync( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 	}
 
 	/**
@@ -75,7 +76,7 @@ class Command extends \WP_CLI_Command {
 
 			$this->save->update( $zip_data );
 
-			WP_CLI::success( __( "Successfully added language {$lang}", \WP_Gistpen::$plugin_name ) );
+			WP_CLI::success( __( "Successfully added example for language {$lang}", \WP_Gistpen::$plugin_name ) );
 			sleep( 1 );
 		}
 	}
@@ -140,16 +141,16 @@ class Command extends \WP_CLI_Command {
 			WP_CLI::error( __( 'No Gistpens missing Gist IDs.', \WP_Gistpen::$plugin_name ) );
 		}
 
-		$sync = new Sync( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-
 		foreach ( $ids as $id ) {
-			$result = $sync->export_gistpen( $id );
+			$this->database->persist( 'head' )->set_sync( $id, 'on' );
+			$result = $this->sync->export_gistpen( $id );
 
 			if ( is_wp_error( $result ) ){
 				WP_CLI::error( __( 'Failed to create Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
 			}
 
 			WP_CLI::success( __( 'Successfully exported Gistpen #', \WP_Gistpen::$plugin_name ) . $result );
+
 			sleep( 1 );
 		}
 	}

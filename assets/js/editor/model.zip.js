@@ -6,7 +6,8 @@
 			description: "",
 			ID: null,
 			status: "",
-			password: ""
+			password: "",
+			sync: "off",
 		},
 
 		initialize: function() {
@@ -15,6 +16,9 @@
 			}
 			if('auto-draft' === this.get('status')) {
 				this.set('status', 'draft');
+			}
+			if('on' !== this.get('sync')) {
+				this.set('sync', 'off');
 			}
 
 			this.view = new editor.Views.Zip({model: this});

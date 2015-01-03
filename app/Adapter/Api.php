@@ -60,6 +60,7 @@ class Api {
 		$api->status = $zip->get_status();
 		$api->password = $zip->get_password();
 		$api->gist_id = $zip->get_gist_id();
+		$api->sync = $zip->get_sync();
 
 		$api->files = $this->by_files( $zip->get_files() );
 

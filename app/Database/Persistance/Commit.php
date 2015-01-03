@@ -100,7 +100,9 @@ class Commit {
 
 		$commit_id = wp_save_post_revision( $ids['zip'] );
 
-		// @todo error checking
+		if ( null === $commit_id || 0 === $commit_id ) {
+			return new \WP_Error( 'revision_save_error', __( 'Failed to save revision for ID# ', $this->plugin_name ) . $ids['zip'] );
+		}
 
 		$commit_meta = array();
 

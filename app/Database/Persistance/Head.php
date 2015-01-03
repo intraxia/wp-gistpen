@@ -111,6 +111,12 @@ class Head {
 			return $result;
 		}
 
+		$result = $this->set_sync( $zip_id, $zip->get_sync() );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
 		$files = $zip->get_files();
 		$files_to_delete = $this->head_query->files_by_post( get_post( $zip_id ) );
 
@@ -228,5 +234,16 @@ class Head {
 	 */
 	public function set_gist_id( $zip_id, $gist_id ) {
 		return update_post_meta( $zip_id, '_wpgp_gist_id', $gist_id );
+	}
+
+	/**
+	 * Save the sync status to the Zip
+	 *
+	 * @param  int    $zip_id  post ID of zip to update
+	 * @param  string $gist_id Gist ID to save
+	 * @since  0.5.0
+	 */
+	public function set_sync( $zip_id, $sync ) {
+		return update_post_meta( $zip_id, '_wpgp_sync', $sync );
 	}
 }

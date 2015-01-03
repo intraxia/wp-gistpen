@@ -8,14 +8,23 @@
 </div>
 
 <div class="wpgp-zip-settings">
-	<label for="wpgp-zip-status" id="zip-status-text"><?php _e( 'Post Status:', $this->plugin_name ); ?></label>
-	<select class="wpgp-zip-status">
-		<?php foreach ( get_post_statuses() as $slug => $status ) : ?>
-			<option value="<?php echo $slug; ?>">
-				<?php echo $status; ?>
-			</option>
-		<?php endforeach; ?>
-	</select>
+
+	<div class="wpgp-status">
+		<label for="wpgp-zip-status" id="zip-status-text"><?php _e( 'Post Status:', $this->plugin_name ); ?></label>
+		<select id="wpgp-zip-status">
+			<?php foreach ( get_post_statuses() as $slug => $status ) : ?>
+				<option value="<?php echo $slug; ?>">
+					<?php echo $status; ?>
+				</option>
+			<?php endforeach; ?>
+		</select>
+	</div>
+
+	<div class="wpgp-sync">
+		<input type="checkbox" name="wpgp-zip-sync" id="wpgp-zip-sync">
+		<label for="wpgp-zip-sync" id="zip-sync-text"><?php _e( 'Sync Gistpen with Gist?', $this->plugin_name ); ?></label>
+	</div>
+
 </div>
 
 </script>
