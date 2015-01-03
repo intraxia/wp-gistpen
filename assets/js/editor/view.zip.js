@@ -4,7 +4,8 @@
 		template: _.template($("script#wpgpZip").html()),
 
 		events: {
-			'keyup input#title': 'updateDescription'
+			'keyup input#title': 'updateDescription',
+			'change select.wpgp-zip-status': 'updateLanguage',
 		},
 
 		render: function() {
@@ -12,10 +13,13 @@
 
 			this.$inputDescription = this.$el.find('#title');
 			this.$labelDescription = this.$el.find('#title-prompt-text');
+			this.$selectStatus = this.$('.wpgp-zip-status');
 
 			if ( '' !== this.model.get('description') ) {
 				this.$labelDescription.addClass('screen-reader-text');
 			}
+
+			this.$selectStatus.val(this.model.get('status'));
 
 			this.addListeners();
 
@@ -43,6 +47,10 @@
 
 		updateDescription: function() {
 			this.model.set('description', this.$inputDescription.val());
+		},
+
+		updateLanguage: function() {
+			this.model.set('status', this.$selectStatus.val());
 		}
 	});
 

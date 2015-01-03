@@ -7,4 +7,15 @@
 	</div>
 </div>
 
+<div class="wpgp-zip-settings">
+	<label for="wpgp-zip-status" id="zip-status-text"><?php _e( 'Post Status:', $this->plugin_name ); ?></label>
+	<select class="wpgp-zip-status">
+		<?php foreach ( get_post_statuses() as $slug => $status ) : ?>
+			<option value="<?php echo $slug; ?>">
+				<?php echo $status; ?>
+			</option>
+		<?php endforeach; ?>
+	</select>
+</div>
+
 </script>

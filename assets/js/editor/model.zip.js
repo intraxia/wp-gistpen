@@ -13,6 +13,9 @@
 			if('Auto Draft' === this.get('description')) {
 				this.set('description', '');
 			}
+			if('auto-draft' === this.get('status')) {
+				this.set('status', 'draft');
+			}
 
 			this.view = new editor.Views.Zip({model: this});
 		},
