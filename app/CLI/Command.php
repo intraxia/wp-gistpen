@@ -22,6 +22,7 @@ class Command extends \WP_CLI_Command {
 	public function __construct() {
 		$this->database = new Database( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 		$this->adapter = new Adapter( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+		$this->gist = new Gist( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 		$this->save = new Save( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 		$this->sync = new Sync( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
 	}
@@ -120,7 +121,7 @@ class Command extends \WP_CLI_Command {
 	}
 
 	/**
-	 * Exports Gists
+	 * Exports Gistpens
 	 *
 	 * If your Gist account is authorized, exports
 	 * all Gistpens not already exported to Gist.
@@ -152,6 +153,43 @@ class Command extends \WP_CLI_Command {
 			WP_CLI::success( __( 'Successfully exported Gistpen #', \WP_Gistpen::$plugin_name ) . $result );
 
 			sleep( 1 );
+		}
+	}
+
+	/**
+	 * Import Gists
+	 *
+	 * If your Gist account is authorized, imports
+	 * all Gists not already imported to Gistpen.
+	 *
+	 * ## EXAMPLES
+	 *
+	 *     wp wpgp import_gists
+	 *
+	 */
+	function import_gists( $args, $assoc_args ) {
+		$gists = $this->gist->get_gists();
+
+		if ( is_wp_error( $gists ) ) {
+			WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ', $this->plugin_name ) . $gists->get_error_message() );
+		}
+
+		if ( empty( $gists ) ) {
+			WP_CLI::error( __( 'No Gists retrieved.', \WP_Gistpen::$plugin_name ) );
+		}
+
+		foreach ( $gists as $gist ) {
+			$result = $this->sync->import_gist( $gist );
+
+			if ( $result instanceof \WP_Gistpen\Model\Zip ) {
+				continue;
+			}
+
+			if ( is_wp_error( $result ) ){
+				WP_CLI::error( __( 'Failed to import Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
+			}
+
+			WP_CLI::success( __( 'Successfully imported Gist #', \WP_Gistpen::$plugin_name ) . $gist );
 		}
 	}
 }

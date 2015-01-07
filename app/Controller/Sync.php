@@ -2,6 +2,7 @@
 namespace WP_Gistpen\Controller;
 
 use WP_Gistpen\Account\Gist;
+use WP_Gistpen\Model\Zip;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 use \WP_CLI;
@@ -107,8 +108,6 @@ class Sync {
 			return $result;
 		}
 
-		// Need to return the Zip ID if we succeed
-		// or if there's no OAuth token.
 		return $zip_id;
 	}
 
@@ -161,5 +160,54 @@ class Sync {
 		}
 
 		return $response;
+	}
+
+	/**
+	 * Imports a Gist into Gistpen by ID
+	 *
+	 * @param  string             $gist_id    Gist ID
+	 * @return string|\WP_Error               Gist ID on success, WP_Error on failure
+	 * @since  0.5.0
+	 */
+	public function import_gist( $gist_id ) {
+		// Exit if this gist has already been imported
+		$query = $this->database->query( 'head' )->by_gist_id( $gist_id );
+
+		if ( $query instanceof Zip ) {
+			return $query;
+		}
+
+		$response = $this->gist->get_gist( $gist_id );
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$zip = $response['zip'];
+		$version = $response['version'];
+		unset( $response );
+
+		$result = $this->database->persist( 'head' )->by_zip( $zip );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$ids = $result;
+		unset( $result );
+
+		$result = $this->database->persist( 'commit' )->by_ids( $ids );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$result = $this->database->persist( 'commit' )->set_gist_id( $result, $version );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		return $ids['zip'];
 	}
 }

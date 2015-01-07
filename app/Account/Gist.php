@@ -186,7 +186,79 @@ class Gist {
 	}
 
 	/**
+	 * Retrieves all the Gist IDs for the current user
+	 *
+	 * @return array      array of gist IDs
+	 * @since  0.5.0
+	 */
+	public function get_gists() {
+		$result = $this->set_up_client();
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$gists = array();
+
+		try {
+			$response = $this->call()->all();
+		} catch ( \Exception $e ) {
+			$response = new \WP_Error( $e->getCode(), $e->getMessage() );
+		}
+
+		$gists = array();
+
+		foreach ( $response as $gist ) {
+			$gists[] = $gist['id'];
+		}
+
+		return $gists;
+	}
+
+	/**
+	 * Retrieves an individual Gist
+	 *
+	 * @param  string $id Gist id
+	 * @return array      array response with Zip and commit version sha
+	 * @since  0.5.0
+	 */
+	public function get_gist( $id ) {
+		$result = $this->set_up_client();
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		try {
+			$response = $this->call()->show( $id );
+		} catch ( \Exception $e ) {
+			$response = new \WP_Error( $e->getCode(), $e->getMessage() );
+		}
+
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
+
+		$zip = $this->adapter->build( 'zip' )->by_gist( $response );
+
+		foreach ( $response['files'] as $filename => $file_data ) {
+			$file = $this->adapter->build( 'file' )->by_gist( $file_data );
+			$file->set_language( $this->adapter->build( 'language' )->by_gist( $file_data['language'] ) );
+
+			$zip->add_file( $file );
+		}
+
+		$result = array(
+			'zip' => $zip,
+			'version' => $response['history'][0]['version']
+		);
+
+		return $result;
+	}
+
+	/**
 	 * Shortcut to call the Gist API
+	 * Makes the class easier to test
 	 *
 	 * @return \Github\Client\Api\Gists
 	 * @since 0.5.0

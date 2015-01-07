@@ -261,7 +261,9 @@ class Head {
 	public function by_gist_id( $gist_id ) {
 		$query = new WP_Query( array(
 			'post_type'        => 'gistpen',
+			'post_parent'      => 0,
 			'meta_key'         => '_wpgp_gist_id',
+			'meta_compare'     => '=',
 			'meta_value'       => $gist_id,
 			'suppress_filters' => true,
 		) );
@@ -269,7 +271,7 @@ class Head {
 		$posts = $query->get_posts();
 
 		if ( empty( $posts ) ) {
-			return new WP_Error( 'no_gistpen_found', __( "Gistpen with Gist ID {$gist_id} not found", $this->plugin_name ) );
+			return array();
 		}
 
 		if ( 1 !== count( $posts ) ) {

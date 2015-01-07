@@ -91,6 +91,21 @@ class File {
 	}
 
 	/**
+	 * Build a File model by Gist API data
+	 *
+	 * @param  array     $gist Gist API data
+	 * @return FileModel       built File
+	 */
+	public function by_gist( $gist ) {
+		$file = $this->blank();
+
+		$file->set_code( $gist['content'] );
+		$file->set_slug( $gist['filename'] );
+
+		return $file;
+	}
+
+	/**
 	 * Builds a blank file model
 	 *
 	 * @return File   file model
