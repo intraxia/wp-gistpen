@@ -30,14 +30,6 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	protected $head_gist_id = 'none';
 
 	/**
-	 * Date committed in GMT
-	 *
-	 * @var string
-	 * @since    0.5.0
-	 */
-	protected $create_date = '';
-
-	/**
 	 * Array of File States
 	 *
 	 * @var array
@@ -86,7 +78,7 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	}
 
 	/**
-	 * Get the Array of States foir
+	 * Get the Array of States
 	 *
 	 * @return array Array of states
 	 * @since  0.5.0
@@ -114,46 +106,5 @@ class Meta extends \WP_Gistpen\Model\Zip {
 		} else {
 			$this->states[] = $state;
 		}
-	}
-
-	/**
-	 * Get the Commit's Gist ID
-	 *
-	 * @return string Commit's Gist ID
-	 * @since  0.5.0
-	 */
-	public function get_gist_id() {
-		return $this->gist_id;
-	}
-
-	/**
-	 * Set the Commit's Gist ID
-	 *
-	 * @param string $gist_id Commit's Gist ID
-	 * @since  0.5.0
-	 */
-	public function set_gist_id( $gist_id ) {
-		$this->gist_id = $gist_id;
-	}
-
-	/**
-	 * Get the date this Commit was made
-	 *
-	 * @return string Date created in GMT
-	 * @since  0.5.0
-	 */
-	public function get_create_date() {
-		return $this->create_date;
-	}
-
-	/**
-	 * Validate & set the date this Commit was made
-	 *
-	 * @return string Date created in GMT
-	 * @since  0.5.0
-	 */
-	public function set_create_date( $create_date ) {
-		// @todo validate date
-		$this->create_date = $create_date;
 	}
 }

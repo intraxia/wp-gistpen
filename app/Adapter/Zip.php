@@ -55,7 +55,7 @@ class Zip {
 	public function by_array( $data ) {
 		$zip = $this->blank();
 
-		$data = array_intersect_key( $data, array_flip( array( 'description', 'ID', 'status', 'password', 'gist_id', 'sync' ) ) );
+		$data = array_intersect_key( $data, array_flip( array( 'description', 'ID', 'status', 'password', 'gist_id', 'sync', 'create_date' ) ) );
 
 		foreach ( $data as $key => $value ) {
 			$function = 'set_' . $key;
@@ -92,6 +92,9 @@ class Zip {
 		}
 		if ( isset( $post->sync ) ) {
 			$zip->set_sync( $post->sync );
+		}
+		if ( isset( $post->post_date_gmt ) ) {
+			$zip->set_create_date( $post->post_date_gmt );
 		}
 
 		return $zip;

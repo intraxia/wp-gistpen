@@ -92,6 +92,11 @@ class Head {
 			$data['ID'] = $zip->get_ID();
 		}
 
+		if ( '' !== $zip->get_create_date() ) {
+			$data['post_date_gmt'] = $zip->get_create_date();
+			$data['post_date'] = get_date_from_gmt( $zip->get_create_date() );
+		}
+
 		$result = $this->by_array( $data );
 
 		if ( is_wp_error( $result ) ) {

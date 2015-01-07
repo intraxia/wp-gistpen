@@ -89,6 +89,14 @@ class Zip {
 	 */
 	protected $sync = 'off';
 
+	/**
+	 * Date craeted in GMT
+	 *
+	 * @var string
+	 * @since    0.5.0
+	 */
+	protected $create_date = '';
+
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
@@ -263,6 +271,27 @@ class Zip {
 		}
 
 		$this->sync = $sync;
+	}
+
+	/**
+	 * Get the date this Commit was made
+	 *
+	 * @return string Date created in GMT
+	 * @since  0.5.0
+	 */
+	public function get_create_date() {
+		return $this->create_date;
+	}
+
+	/**
+	 * Validate & set the date this Commit was made
+	 *
+	 * @return string Date created in GMT
+	 * @since  0.5.0
+	 */
+	public function set_create_date( $create_date ) {
+		// @todo validate date
+		$this->create_date = $create_date;
 	}
 
 	/**
