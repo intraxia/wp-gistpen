@@ -1,7 +1,8 @@
 <?php
 
 use WP_Gistpen\Database\Persistance\Commit as Persistance;
-use WP_Gistpen\Database\Query\Head as Query;
+use WP_Gistpen\Database\Query\Commit as CommitQuery;
+use WP_Gistpen\Database\Query\Head as HeadQuery;
 use WP_Gistpen\Facade\Adapter;
 
 /**
@@ -30,31 +31,22 @@ class WP_Gistpen_Persistance_Commit_Test extends WP_Gistpen_UnitTestCase {
 		delete_post_meta( $this->gistpen->ID, 'wpgp_revisions' );
 
 		$this->persistance = new Persistance( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->query = new Query( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->head_query = new HeadQuery( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->commit_query = new CommitQuery( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 		$this->adapter = new Adapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
 	}
 
 	function test_save_new_commit() {
-		$parent_zip = $this->query->by_id( $this->gistpen->ID );
+		$ids = array(
+			'zip'   => $this->gistpen->ID,
+			'files' => $this->files,
+		);
 
-		$result = $this->persistance->by_parent_zip( $parent_zip );
+		$result = $this->persistance->by_ids( $ids );
 
-		$this->assertCount( 1, $result );
+		$history = $this->commit_query->history_by_head_id( $this->gistpen->ID );
 
-		foreach ( $result as $ID => $meta ) {
-			$this->assertInternalType( 'array', $meta );
-			$this->assertInternalType( 'int', $ID );
-			$this->assertCount( 3, $meta['files'] );
-
-			foreach ( $meta['files'] as $file_revision_id ) {
-				$this->assertEquals( 'revision', get_post_type( $file_revision_id ) );
-			}
-		}
-
-		foreach ( $parent_zip->get_files() as $file ) {
-			$this->assertCount( 1, wp_get_post_revisions( $file->get_ID() ) );
-		}
-
+		$this->assertCount( 1, $history );
 	}
 
 	function tearDown() {

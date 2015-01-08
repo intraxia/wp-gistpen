@@ -10,6 +10,8 @@ namespace WP_Gistpen\Database\Query;
  */
 
 use WP_Gistpen\Facade\Adapter;
+use \WP_Query;
+use \WP_Error;
 
 /**
  * This class saves and gets Gistpens from the database
@@ -73,7 +75,7 @@ class Head {
 			'order'          => 'DESC',
 			'orderby'        => 'date',
 			'numberposts'    => 5,
-			'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' )
+			'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' ),
 		);
 
 	}
@@ -128,18 +130,24 @@ class Head {
 	 */
 	public function by_post( $post ) {
 		if ( $post->post_type !== 'gistpen' ) {
-			return new \WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
+			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
 		}
 
 		if ( 0 !== $post->post_parent ) {
 			$result = $this->adapter
 				->build( 'file' )
 				->by_post( $post );
+
 			$result->set_language( $this->language_by_post_id( $post->ID ) );
 		} else {
+			$post->gist_id = $this->gist_id_by_post_id( $post->ID );
+			$post->sync = $this->sync_by_post_id( $post->ID );
+
 			$result = $this->adapter
 				->build( 'zip' )
 				->by_post( $post );
+
+			$result->set_gist_id( $this->gist_id_by_post_id( $post->ID ) );
 			$result->add_files( $this->files_by_post( $post ) );
 		}
 
@@ -164,7 +172,7 @@ class Head {
 	 *
 	 * @param  int $post_id
 	 * @return Language
-	 * @since 0.4.0
+	 * @since  0.4.0
 	 */
 	public function language_by_post_id( $post_id ) {
 		$terms = get_the_terms( $post_id, 'wpgp_language' );
@@ -176,6 +184,40 @@ class Head {
 		$term = array_pop( $terms );
 
 		return $this->adapter->build( 'language' )->by_slug( $term->slug );
+	}
+
+	/**
+	 * Retrieves the Gist ID for a given post ID
+	 *
+	 * @param  int $post_id
+	 * @return string
+	 * @since  0.5.0
+	 */
+	public function gist_id_by_post_id( $post_id ) {
+		$gist_id = get_post_meta( $post_id, '_wpgp_gist_id', true );
+
+		if ( empty( $gist_id ) ) {
+			$gist_id = 'none';
+		}
+
+		return $gist_id;
+	}
+
+	/**
+	 * Retrieves the sync status for a given post ID
+	 *
+	 * @param  int $post_id
+	 * @return string
+	 * @since  0.5.0
+	 */
+	public function sync_by_post_id( $post_id ) {
+		$sync = get_post_meta( $post_id, '_wpgp_sync', true );
+
+		if ( 'on' !== $sync ) {
+			$sync = 'off';
+		}
+
+		return $sync;
 	}
 
 	/**
@@ -211,4 +253,57 @@ class Head {
 		return $files;
 	}
 
+	/**
+	 * Gets Gistpen matching given Gist ID
+	 * @param  string $gist_id Gist ID to search for
+	 * @return \WP_Gistpen\Model\Zip|\WP_error    Zip with given Gist ID, WP_Error if multitple/no Zips match
+	 */
+	public function by_gist_id( $gist_id ) {
+		$query = new WP_Query( array(
+			'post_type'        => 'gistpen',
+			'post_parent'      => 0,
+			'meta_key'         => '_wpgp_gist_id',
+			'meta_compare'     => '=',
+			'meta_value'       => $gist_id,
+			'suppress_filters' => true,
+		) );
+
+		$posts = $query->get_posts();
+
+		if ( empty( $posts ) ) {
+			return array();
+		}
+
+		if ( 1 !== count( $posts ) ) {
+			return new WP_Error( 'multiple_gistpens_found', __( "Multiple Gistpens with Gist ID {$gist_id} found.", $this->plugin_name ) );
+		}
+
+		$post = array_pop( $posts );
+
+		return $this->by_post( $post );
+	}
+
+	/**
+	 * Gets all Gistpens missing Gist IDs
+	 *
+	 * @return array Zips missing Gist IDs
+	 * @since  0.5.0
+	 */
+	public function missing_gist_id() {
+		$query = new WP_Query( array(
+			'post_type'        => 'gistpen',
+			'order'            => 'ASC',
+			'orderby'          => 'date',
+			'post_status'      => array( 'publish', 'pending', 'draft', 'future', 'private' ),
+			'post_parent'      => 0,
+			'meta_key'         => '_wpgp_gist_id',
+			'meta_value'       => 'none',
+			'meta_compare'     => '=',
+			'suppress_filters' => true,
+			'nopaging'         => true,
+			'fields'           => 'ids',
+		));
+
+		return $query->get_posts();
+	}
 }

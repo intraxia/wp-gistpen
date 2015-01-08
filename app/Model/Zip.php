@@ -73,6 +73,30 @@ class Zip {
 	 */
 	protected $password = '';
 
+	/**
+	 * Zips's Gist ID
+	 *
+	 * @var string
+	 * @since 0.5.0
+	 */
+	protected $gist_id = 'none';
+
+	/**
+	 * Zips's sync status
+	 *
+	 * @var   string
+	 * @since 0.5.0
+	 */
+	protected $sync = 'off';
+
+	/**
+	 * Date craeted in GMT
+	 *
+	 * @var string
+	 * @since    0.5.0
+	 */
+	protected $create_date = '';
+
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
@@ -123,8 +147,10 @@ class Zip {
 			throw new Exception( 'File objects only added to files' );
 		}
 
-		if ( null !== $file->get_ID() ) {
-			$this->files[ $file->get_ID() ] = $file;
+		$file_id = $file->get_ID();
+
+		if ( null !== $file_id ) {
+			$this->files[ $file_id ] = $file;
 		} else {
 			$this->files[] = $file;
 		}
@@ -201,6 +227,71 @@ class Zip {
 	public function set_password( $password ) {
 		// @todo what kind of data does this need to be? hashed, etc.?
 		$this->password = $password;
+	}
+
+	/**
+	 * Get the zip's Gist ID
+	 *
+	 * @return string Zip's Gist ID
+	 * @since  0.5.0
+	 */
+	public function get_gist_id() {
+		return $this->gist_id;
+	}
+
+	/**
+	 * Set the zip's Gist ID
+	 *
+	 * @param string $gist_id Zip's Gist ID
+	 * @since  0.5.0
+	 */
+	public function set_gist_id( $gist_id ) {
+		$this->gist_id = $gist_id;
+	}
+
+	/**
+	 * Get the zip's sync status
+	 *
+	 * @return bool Zip's sync status
+	 * @since  0.5.0
+	 */
+	public function get_sync() {
+		return $this->sync;
+	}
+
+	/**
+	 * Set the zip's sync status
+	 *
+	 * @param  bool   $sync Zip's sync status
+	 * @since  0.5.0
+	 */
+	public function set_sync( $sync ) {
+		if ( 'on' !== $sync ) {
+			$sync = 'off';
+		}
+
+		$this->sync = $sync;
+	}
+
+	/**
+	 * Get the date this Commit was made
+	 *
+	 * @return string Date created in GMT
+	 * @since  0.5.0
+	 */
+	public function get_create_date() {
+		return $this->create_date;
+	}
+
+	/**
+	 * Validate & set the date this Commit was made
+	 *
+	 * @return string Date created in GMT
+	 * @since  0.5.0
+	 */
+	public function set_create_date( $create_date ) {
+		// @todo validate date
+		$this->create_date = $create_date;
 	}
 
 	/**

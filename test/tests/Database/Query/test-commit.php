@@ -23,12 +23,14 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_commits() {
-		$revisions = $this->query->all_by_parent_id( $this->gistpen->ID );
+		$revisions = $this->query->history_by_head_id( $this->gistpen->ID );
 
 		$this->assertCount( 1, $revisions );
 
-		foreach ( $revisions as $revision ) {
-			$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $revision );
+		foreach ( $revisions->get_commits() as $commit ) {
+			$this->assertInstanceOf( 'WP_Gistpen\Model\Commit\Meta', $commit );
+			$this->assertEquals( 'none', $commit->get_head_gist_id() );
+			$this->assertEquals( 'none', $commit->get_gist_id() );
 		}
 	}
 

@@ -1,4 +1,5 @@
 <?php
+use \Mockery as m;
 
 class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 
@@ -12,9 +13,33 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		parent::setUp();
 		$this->factory = new WP_Gistpen_UnitTest_Factory;
 
-		$this->mock_lang = $this->getMockBuilder( 'WP_Gistpen\Model\Language' )->disableOriginalConstructor()->getMock();
-		$this->mock_post = $this->getMockBuilder( 'WP_Gistpen\Model\Post' )->disableOriginalConstructor()->getMock();
-		$this->mock_file = $this->getMockBuilder( 'WP_Gistpen\Model\File' )->disableOriginalConstructor()->getMock();
+		// Mock models
+		$this->mock_lang = m::mock( 'WP_Gistpen\Model\Language' );;
+		$this->mock_zip = m::mock( 'WP_Gistpen\Model\Zip' );
+		$this->mock_file = m::mock( 'WP_Gistpen\Model\File' );
+		$this->mock_history = m::mock( 'WP_Gistpen\Collection\History' );
+		$this->mock_commit = m::mock( 'WP_Gistpen\Model\Commit\Meta' );
+		$this->mock_state = m::mock( 'WP_Gistpen\Model\Commit\State' );
+
+		// Mock controllers
+		$this->mock_sync = m::mock( 'WP_Gistpen\Controller\Sync' );
+
+		// Mock adapters
+		$this->mock_gist_adapter = m::mock( 'WP_Gistpen\Adapter\Gist' );
+
+		// Mock Facades
+		$this->mock_database = m::mock( 'WP_Gistpen\Facade\Database' );
+		$this->mock_adapter = m::mock( 'WP_Gistpen\Facade\Adapter' );
+
+		// 3rd Party dependencies
+		$this->mock_github_client = m::mock( 'Github\Client' );
+	}
+
+	function tearDown() {
+		parent::tearDown();
+
+		m::close();
+		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', false );
 	}
 
 	function create_post_and_children() {
@@ -27,6 +52,8 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 		foreach ( $this->files as $file ) {
 			wp_set_object_terms( $file, 'php', 'wpgp_language', false );
 		}
+
+		update_post_meta( $this->gistpen->ID, '_wpgp_gist_id', 'none' );
 	}
 
 	// Source: http://stackoverflow.com/questions/5010300/best-practices-to-test-protected-methods-with-phpunit-on-abstract-classes
@@ -83,12 +110,10 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 	 * @source https://github.com/kevintweber/phpunit-markup-validators/blob/master/src/kevintweber/PhpunitMarkupValidators/Connector/HTMLConnector.php
 	 */
 	public function setHtmlInput($value) {
-		if (stripos($value, 'html>') === false) {
-			return '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Test</title></head><body>' . $value . '</body></html>';
-		}
-		else {
-			return $value;
+		if ( substr( $value, 0, 15 ) !== '<!DOCTYPE html>' ) {
+			$value =  '<!DOCTYPE html><html><head><meta charset="utf-8" /><title>Test</title></head><body>' . $value . '</body></html>';
 		}
 
+		return $value;
 	}
 }

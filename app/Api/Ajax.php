@@ -1,6 +1,9 @@
 <?php
 namespace WP_Gistpen\Api;
 
+use WP_Gistpen\Account\Gist;
+use WP_Gistpen\Controller\Save;
+use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 
@@ -46,7 +49,7 @@ class Ajax {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	public $database;
 
 	/**
 	 * Adapter Facade object
@@ -54,7 +57,23 @@ class Ajax {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	public $adapter;
+
+	/**
+	 * Sync object
+	 *
+	 * @var Sync
+	 * @since  0.5.0
+	 */
+	public $sync;
+
+	/**
+	 * Save object
+	 *
+	 * @var Save
+	 * @since  0.5.0
+	 */
+	public $save;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -71,6 +90,10 @@ class Ajax {
 
 		$this->database = new Database( $plugin_name, $version );
 		$this->adapter = new Adapter( $plugin_name, $version );
+
+		$this->save = new Save( $plugin_name, $version );
+		$this->sync = new Sync( $plugin_name, $version );
+		$this->gist = new Gist( $plugin_name, $version );
 
 	}
 
@@ -90,15 +113,37 @@ class Ajax {
 	 * @return Sends error and halts execution if anything doesn't check out
 	 * @since  0.4.0
 	 */
-	public function check_security() {
+	private function check_security() {
 		// Check the nonce
 		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
-			wp_send_json_error( array( 'error' => __( 'Nonce check failed.', $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Nonce check failed.', $this->plugin_name ),
+			) );
 		}
 
 		// Check if user has proper permisissions
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_send_json_error( array( 'error' => __( "User doesn't have proper permisissions.", $this->plugin_name ) ) );
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( "User doesn't have proper permisissions.", $this->plugin_name ),
+			) );
+		}
+	}
+
+	/**
+	 * Checks if the result is a WP_Error object
+	 *
+	 * @param  $result Result to check
+	 * @return Sends error and halts execution if anything doesn't check out
+	 * @since  0.5.0
+	 */
+	private function check_error( $result ) {
+		if ( is_wp_error( $result ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => $result->get_error_message(),
+			) );
 		}
 	}
 
@@ -118,15 +163,42 @@ class Ajax {
 			$results = $this->database->query()->by_recent();
 		}
 
+		$this->check_error( $results );
+
 		wp_send_json_success( array(
 			'gistpens' => $results,
 		) );
 	}
 
 	/**
+	 * Returns the data for a single Gistpen
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_gistpen() {
+		$this->check_security();
+
+		if ( ! array_key_exists( 'post_id', $_POST ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gistpen ID sent', $this->plugin_name ),
+			) );
+		}
+
+		$post_id = (int) $_POST['post_id'];
+
+		$zip = $this->database->query( 'head' )->by_id( $post_id );
+
+		$this->check_error( $zip );
+
+		$zip_json = $this->adapter->build( 'api' )->by_zip( $zip );
+
+		wp_send_json_success( $zip_json );
+	}
+
+	/**
 	 * Responds to AJAX request to create new Gistpen
 	 *
-	 * @return string $post_id the id of the created Gistpen
 	 * @since  0.2.0
 	 */
 	public function create_gistpen() {
@@ -151,11 +223,41 @@ class Ajax {
 
 		$result = $this->database->persist()->by_zip( $zip );
 
-		if ( is_wp_error( $result ) ) {
-			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
-		}
+		$this->check_error( $result );
 
-		wp_send_json_success( array( 'id' => $result ) );
+		wp_send_json_success( array( 'id' => $result['zip'] ) );
+	}
+
+	/**
+	 * AJAX hook to save Gistpen in the editor
+	 *
+	 * @since 0.5.0
+	 */
+	public function save_gistpen() {
+		$this->check_security();
+
+		// @todo validate data
+		$zip_data = $_POST['zip'];
+
+		$result = $this->save->update( $zip_data );
+
+		$this->check_error( $result );
+
+		wp_send_json_success( array(
+			'code'    => 'updated',
+			'message' => __( 'Successfully updated Gistpen ', $this->plugin_name ) . $result,
+		) );
+	}
+
+	/**
+	 * Retrieves the ACE editor theme from the user meta
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_ace_theme() {
+		$this->check_security();
+
+		wp_send_json_success( array( 'theme' => get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) ) );
 	}
 
 	/**
@@ -169,52 +271,127 @@ class Ajax {
 		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
 
 		if ( ! $result ) {
-			wp_send_json_error();
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Failed to update Ace theme.', $this->plugin_name ),
+			) );
 		}
 
 		wp_send_json_success();
 	}
 
-
 	/**
-	 * AJAX hook to get a new ACE editor
+	 * AJAX hook to get JSON of Gistpen IDs missing Gist IDs
 	 *
-	 * @since     0.4.0
+	 * @since 0.5.0
 	 */
-	public function get_gistpenfile_id() {
+	public function get_gistpens_missing_gist_id() {
 		$this->check_security();
 
-		if ( ! array_key_exists( 'parent_id', $_POST ) ) {
-			wp_send_json_error( array( 'messages' => array( 'Parent ID not sent.' ) ) );
-		}
-
-		$result = $this->database->persist()->by_file_and_zip_id( $this->adapter->build( 'file' )->blank(), $_POST['parent_id'] );
+		$result = $this->database->query( 'head' )->missing_gist_id();
 
 		if ( is_wp_error( $result ) ) {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
-		wp_send_json_success( array( 'id' => $result ) );
+		if ( empty( $result ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gistpens to export.', $this->plugin_name ),
+			) );
+		}
+
+		wp_send_json_success( array( 'ids' => $result ) );
 	}
 
 	/**
-	 * AJAX hook to delete an ACE editor
+	 * AJAX hook to trigger export of Gistpen
 	 *
-	 * @since     0.4.0
+	 * @since 0.5.0
 	 */
-	public function delete_gistpenfile() {
+	public function create_gist_from_gistpen_id() {
 		$this->check_security();
 
-		if ( ! array_key_exists( 'fileID', $_POST ) ) {
-			wp_send_json_error( array( 'messages' => array( 'File ID not sent.' ) ) );
+		$id = intval( $_POST['gistpen_id'] );
+
+		if ( 0 === $id ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'Invalid Gistpen ID.', $this->plugin_name ),
+			) );
 		}
 
-		$result = wp_delete_post( $_POST['fileID'], true );
+		$this->database->persist( 'head' )->set_sync( $id, 'on' );
+		$result = $this->sync->export_gistpen( $id );
 
-		if ( ! $result ) {
-			wp_send_json_error( array( 'message' => __( 'wp_delete_post failed', $this->plugin_name ) ) );
+		$this->check_error( $result );
+
+		// This will slow the API exporting process when calling
+		// it from the settings page, as the next call
+		// won't start until a response has been returned.
+		// However, we need to implement a more effective
+		// rate limiting, as this API can still receive
+		// multiple requests at once and this sleep will
+		// do nothing about it.
+		sleep( 1 );
+
+		wp_send_json_success( array(
+			'code'    => 'success',
+			'message' => __( 'Successfully exported Gistpen #', $this->plugin_name ) . $result,
+		) );
+	}
+
+	/**
+	 * Get all the Gist IDs for the user from
+	 * Gist and check if they've been imported already
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_new_user_gists() {
+		$this->check_security();
+
+		$gists = $this->gist->get_gists();
+
+		$this->check_error( $gists );
+
+		$new_user_gists = array();
+
+		foreach ( $gists as $gist ) {
+			$result = $this->database->query( 'head' )->by_gist_id( $gist );
+
+			if ( empty( $result ) ) {
+				$new_user_gists[] = $gist;
+			}
 		}
 
-		wp_send_json_success();
+		if( empty( $new_user_gists ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gists to import.', $this->plugin_name ),
+			) );
+		}
+
+		wp_send_json_success( array( 'gist_ids' => $new_user_gists ) );
+	}
+
+	/**
+	 * Import a given Gist ID into the database
+	 *
+	 * @since 0.5.0
+	 */
+	public function import_gist() {
+		$this->check_security();
+
+		// @todo validate gist ID
+		$gist_id = $_POST['gist_id'];
+
+		$result = $this->sync->import_gist( $gist_id );
+
+		$this->check_error( $result );
+
+		wp_send_json_success( array(
+			'code'    => 'success',
+			'message' => __( 'Successfully imported Gist #', $this->plugin_name ) . $gist_id,
+		) );
 	}
 }

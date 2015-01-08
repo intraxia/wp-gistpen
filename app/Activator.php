@@ -26,7 +26,7 @@ class Activator {
 		$register->taxonomy_language();
 		self::add_languages();
 		// @todo or here
-		// update_option( 'wp_gistpen_version', self::VERSION );
+		update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
 		flush_rewrite_rules( true );
 	}
 

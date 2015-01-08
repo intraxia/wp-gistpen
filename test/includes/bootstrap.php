@@ -19,4 +19,3 @@ require_once dirname( __FILE__ ) . '/factory.php';
 require_once dirname( __FILE__ ) . '/testcase.php';
 
 update_option( 'wp_gistpen_version', '0.5.0' );
-WP_Gistpen\Activator::activate();

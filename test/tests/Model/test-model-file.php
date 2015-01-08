@@ -54,9 +54,9 @@ class WP_Gistpen_Model_File_Test extends WP_Gistpen_UnitTestCase {
 		$this->file->set_language( $this->mock_lang );
 
 		$this->mock_lang
-			->expects( $this->once() )
-			->method( 'get_file_ext' )
-			->will( $this->returnValue('js') );
+			->shouldReceive( 'get_file_ext' )
+			->once()
+			->andReturn( 'js' );
 
 		$filename = $this->file->get_filename();
 
@@ -71,13 +71,12 @@ class WP_Gistpen_Model_File_Test extends WP_Gistpen_UnitTestCase {
 		$this->file->set_language( $this->mock_lang );
 
 		$this->mock_lang
-			->expects( $this->once() )
-			->method( 'get_file_ext' )
-			->will( $this->returnValue('js') );
-		$this->mock_lang
-			->expects( $this->once() )
-			->method( 'get_prism_slug' )
-			->will( $this->returnValue('javascript') );
+			->shouldReceive( 'get_file_ext' )
+			->once()
+			->andReturn( 'js' )
+			->shouldReceive( 'get_prism_slug' )
+			->once()
+			->andReturn( 'javascript' );
 
 		$post_content = $this->file->get_post_content();
 
@@ -92,13 +91,12 @@ class WP_Gistpen_Model_File_Test extends WP_Gistpen_UnitTestCase {
 		$this->file->set_language( $this->mock_lang );
 
 		$this->mock_lang
-			->expects( $this->once() )
-			->method( 'get_file_ext' )
-			->will( $this->returnValue('js') );
-		$this->mock_lang
-			->expects( $this->once() )
-			->method( 'get_prism_slug' )
-			->will( $this->returnValue('javascript') );
+			->shouldReceive( 'get_file_ext' )
+			->once()
+			->andReturn( 'js' )
+			->shouldReceive( 'get_prism_slug' )
+			->once()
+			->andReturn( 'javascript' );
 
 		$shortcode_content = $this->file->get_shortcode_content();
 

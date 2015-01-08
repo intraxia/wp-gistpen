@@ -15,19 +15,20 @@ var gulp = require('gulp'),
 	extrep = require('gulp-ext-replace'),
 	zip = require('gulp-zip');
 
-gulp.task('default', ['init', 'watch']);
+gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
 gulp.task('init', function() {
 	runs(
 		['clean-bower', 'clean-composer'],
 		'install',
-		['scripts', 'styles', 'packages']
+		['scripts', 'styles', 'packages'],
+		'watch'
 	);
 });
 
 gulp.task('watch', function () {
 	gulp.watch(
-		'assets/js/**',
+		'assets/js/!(ace)/*.js',
 		['scripts']);
 		gulp.watch(
 		'assets/scss/**',
@@ -46,7 +47,7 @@ gulp.task('build', function() {
 gulp.task('scripts', function() {
 	var promises = [];
 
-	glob.sync('assets/js/*').forEach(function(filePath) {
+	glob.sync('assets/js/!(ace)').forEach(function(filePath) {
 		if (fs.statSync(filePath).isDirectory()) {
 			var defer = Q.defer();
 			var pipeline = gulp.src(filePath + '/**/*.js')
@@ -74,7 +75,7 @@ gulp.task('styles', function() {
 		.pipe(gulp.dest('assets/css'));
 });
 
-gulp.task('packages', ['prism', 'ace']);
+gulp.task('packages', ['prism', 'ace', 'ajaxq']);
 
 gulp.task('prism', function() {
 	var scripts = gulp.src([
@@ -92,7 +93,7 @@ gulp.task('prism', function() {
 		'bower_components/prism/components/prism-scala.js',
 		'bower_components/prism/components/prism-scss.js',
 		'bower_components/prism/components/prism-sql.js',
-		// New languages
+		// New languages - v0.3.0
 		'bower_components/prism/components/prism-c.js',
 		'bower_components/prism/components/prism-coffeescript.js',
 		'bower_components/prism/components/prism-csharp.js',
@@ -123,6 +124,15 @@ gulp.task('prism', function() {
 gulp.task('ace', function() {
 	return gulp.src('bower_components/ace-builds/src-min-noconflict/**')
 		.pipe(gulp.dest('assets/js/ace'));
+});
+
+gulp.task('ajaxq', function() {
+	return gulp.src('bower_components/ajaxq/*.js')
+		.pipe(concat('ajaxq.js'))
+		.pipe(gulp.dest('assets/js'))
+		.pipe(uglify())
+		.pipe(extrep('.min.js'))
+		.pipe(gulp.dest('assets/js'));
 });
 
 gulp.task('clean-bower', function(cb) {

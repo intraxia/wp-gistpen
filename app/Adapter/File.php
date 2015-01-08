@@ -91,6 +91,21 @@ class File {
 	}
 
 	/**
+	 * Build a File model by Gist API data
+	 *
+	 * @param  array     $gist Gist API data
+	 * @return FileModel       built File
+	 */
+	public function by_gist( $gist ) {
+		$file = $this->blank();
+
+		$file->set_code( $gist['content'] );
+		$file->set_slug( $gist['filename'] );
+
+		return $file;
+	}
+
+	/**
 	 * Builds a blank file model
 	 *
 	 * @return File   file model
@@ -98,33 +113,5 @@ class File {
 	 */
 	public function blank() {
 		return new FileModel( $this->plugin_name, $this->version );
-	}
-
-	/**
-	 * Transforms an array of files to json
-	 *
-	 * @param  array  $files array of files to transform
-	 * @return string        file data in json
-	 */
-	public function to_json( $files ) {
-		if ( empty( $files ) ) {
-				return json_encode( array() );
-		}
-
-		$json = array();
-
-		foreach ( $files as $file ) {
-
-			$data = new \stdClass;
-			$data->slug = $file->get_slug();
-			$data->code = $file->get_code();
-			$data->ID = $file->get_ID();
-			$data->language = new \stdClass;
-			$data->language->slug = $file->get_language()->get_slug();
-
-			$json[] = $data;
-		}
-
-		return json_encode( $json );
 	}
 }

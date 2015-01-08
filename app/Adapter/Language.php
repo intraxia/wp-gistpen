@@ -57,6 +57,28 @@ class Language {
 	}
 
 	/**
+	 * Builds the language object based on Gist's language slug
+	 *
+	 * @param  string $language Gist's language string
+	 * @return LanguageModel
+	 * @since  0.5.0
+	 */
+	public function by_gist( $language ) {
+		$slug = strtolower( $language );
+
+		// @todo map Gist languages -> Gistpen slugs
+
+		try {
+			$language = new LanguageModel( $this->plugin_name, $this->version, $slug );
+		} catch ( \Exception $e ) {
+			// Default to "plaintext" if we don't support the imported language
+			$language = new LanguageModel( $this->plugin_name, $this->version, 'plaintext' );
+		}
+
+		return $language;
+	}
+
+	/**
 	 * Builds a blank Language object
 	 *
 	 * @return Language Language object
