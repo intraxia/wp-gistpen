@@ -1,13 +1,8 @@
-/* This stylesheet is used to style the admin option form of the plugin. */
 i.mce-i-icons {
 	display: inline-block;
 	-webkit-font-smoothing: antialiased;
 	font: normal 20px/1 'dashicons';
 	vertical-align: top;
-}
-
-i.mce-i-icons:before {
-	content: "\f464";
 }
 
 #wp-gistpen-insert-dialog {

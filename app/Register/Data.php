@@ -82,7 +82,7 @@ class Data {
 			'exclude_from_search'  => false,
 			'publicly_queryable'   => true,
 			'capability_type'      => 'post',
-			'menu_icon'            => 'dashicons-edit',
+			'menu_icon'            => 'dashicons-editor-code',
 			'rewrite'              => array(
 				'slug'               => 'gistpens',
 				'with_front'         => true,

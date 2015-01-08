@@ -18,6 +18,7 @@ This change log follows the [Keep a Changelog standards][keepachangelog]. Versio
 * Unminified scripts enqueued when `WP_SCRIPT_DEBUG` is true
 * ACE editor rewritten in Backbone.js
 	- Saving and updating all done with AJAX
+* Menu icon pen -> code
 
 #### Fixed
 * Deleting bug
