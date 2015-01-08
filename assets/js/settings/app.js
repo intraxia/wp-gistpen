@@ -14,4 +14,8 @@ jQuery(function($) {
 	var exp = new settings.Export();
 
 	exp.setClickHandlers();
+
+	var imp = new settings.Import();
+
+	imp.setClickHandlers();
 });

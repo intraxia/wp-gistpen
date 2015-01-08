@@ -54,7 +54,7 @@
 	?>
 
 	<pre class="gistpen line-numbers"><code class="language-markup"><?php
-echo htmlentities(<<<EOL
+echo esc_html(<<<EOL
 <?xml version="1.0"?>
 <response value="ok" xml:lang="en">
   <text>Ok</text>
@@ -86,3 +86,5 @@ EOL
 </div>
 
 <?php include_once( 'export.inc.php' ); ?>
+<?php include_once( 'import.inc.php' ); ?>
+<?php include_once( 'status.inc.php' ); ?>

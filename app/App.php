@@ -191,6 +191,10 @@ class App {
 		$this->loader->add_action( 'wp_ajax_get_gistpens_missing_gist_id', $this->ajax, 'get_gistpens_missing_gist_id' );
 		$this->loader->add_action( 'wp_ajax_create_gist_from_gistpen_id', $this->ajax, 'create_gist_from_gistpen_id' );
 
+		// AJAX hooks for importing Gists
+		$this->loader->add_action( 'wp_ajax_get_new_user_gists', $this->ajax, 'get_new_user_gists' );
+		$this->loader->add_action( 'wp_ajax_import_gist', $this->ajax, 'import_gist' );
+
 	}
 
 	/**

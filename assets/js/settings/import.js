@@ -1,10 +1,10 @@
 (function($){
 	var exp = Backbone.Model.extend({
 		initialize: function(opts) {
-			this.startBtn = jQuery('#export-gistpens');
+			this.startBtn = jQuery('#import-gists');
 			this.wrap = jQuery('.wpgp-wrap');
 			this.templates = {};
-			this.templates.header = jQuery("script#exportHeaderTemplate");
+			this.templates.header = jQuery("script#importHeaderTemplate");
 			this.templates.status = jQuery("script#statusTemplate");
 		},
 
@@ -17,7 +17,7 @@
 
 			this.startBtn.prop("disabled", true);
 
-			this.getGistpenIDs();
+			this.getGistIDs();
 
 			this.startBtn.click(function(e) {
 					e.preventDefault();
@@ -26,22 +26,22 @@
 
 					that.appendHeader();
 
-					that.gistpenIDs.forEach(function(id) {
-						that.exportID(id);
+					that.gistIDs.forEach(function(id) {
+						that.importID(id);
 					});
 			});
 		},
 
-		getGistpenIDs: function() {
+		getGistIDs: function() {
 			var that = this;
 			jQuery.post(ajaxurl, {
-				action: 'get_gistpens_missing_gist_id',
+				action: 'get_new_user_gists',
 				nonce: jQuery('#_ajax_wp_gistpen').val()
 			}, function(response) {
 				if(false === response.success) {
 					that.startBtn.val(response.data.message);
 				} else {
-					that.gistpenIDs = response.data.ids;
+					that.gistIDs = response.data.gist_ids;
 					that.startBtn.prop("disabled", false);
 				}
 			});
@@ -55,32 +55,32 @@
 			this.backLink = this.header.find("a");
 			this.$progress = this.header.find("#progressbar");
 			this.$progressLabel = this.header.find(".progress-label");
-			this.$status = jQuery('#export-status');
+			this.$status = jQuery('#import-status');
 
 			var result = this.$progress.progressbar({
-				max: that.gistpenIDs.length,
+				max: that.gistIDs.length,
 				value: 0,
 				enable: true
 			});
 		},
 
-		exportID: function(id) {
+		importID: function(id) {
 			var that = this;
 
-			jQuery.ajaxq('export', {
+			jQuery.ajaxq('import', {
 				url: ajaxurl,
 				type: 'POST',
 				data: {
-					action: 'create_gist_from_gistpen_id',
+					action: 'import_gist',
 					nonce: jQuery('#_ajax_wp_gistpen').val(),
 
-					gistpen_id: id
+					gist_id: id
 				},
 				success: function(response) {
 					that.updateProgress(response);
 				},
 				error: function(response) {
-					jQuery.ajaxq.abort('export');
+					jQuery.ajaxq.abort('import');
 					that.updateProgress(response);
 				},
 			});
@@ -98,5 +98,5 @@
 		}
 	});
 
-	window.wpgpSettings.Export = exp;
+	window.wpgpSettings.Import = exp;
 })(jQuery);

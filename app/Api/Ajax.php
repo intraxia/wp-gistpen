@@ -1,6 +1,7 @@
 <?php
 namespace WP_Gistpen\Api;
 
+use WP_Gistpen\Account\Gist;
 use WP_Gistpen\Controller\Save;
 use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Facade\Database;
@@ -92,6 +93,7 @@ class Ajax {
 
 		$this->save = new Save( $plugin_name, $version );
 		$this->sync = new Sync( $plugin_name, $version );
+		$this->gist = new Gist( $plugin_name, $version );
 
 	}
 
@@ -295,7 +297,7 @@ class Ajax {
 		if ( empty( $result ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'No Gistpens missing Gist IDs.', $this->plugin_name ),
+				'message' => __( 'No Gistpens to export.', $this->plugin_name ),
 			) );
 		}
 
@@ -336,6 +338,60 @@ class Ajax {
 		wp_send_json_success( array(
 			'code'    => 'success',
 			'message' => __( 'Successfully exported Gistpen #', $this->plugin_name ) . $result,
+		) );
+	}
+
+	/**
+	 * Get all the Gist IDs for the user from
+	 * Gist and check if they've been imported already
+	 *
+	 * @since 0.5.0
+	 */
+	public function get_new_user_gists() {
+		$this->check_security();
+
+		$gists = $this->gist->get_gists();
+
+		$this->check_error( $gists );
+
+		$new_user_gists = array();
+
+		foreach ( $gists as $gist ) {
+			$result = $this->database->query( 'head' )->by_gist_id( $gist );
+
+			if ( empty( $result ) ) {
+				$new_user_gists[] = $gist;
+			}
+		}
+
+		if( empty( $new_user_gists ) ) {
+			wp_send_json_error( array(
+				'code'    => 'error',
+				'message' => __( 'No Gists to import.', $this->plugin_name ),
+			) );
+		}
+
+		wp_send_json_success( array( 'gist_ids' => $new_user_gists ) );
+	}
+
+	/**
+	 * Import a given Gist ID into the database
+	 *
+	 * @since 0.5.0
+	 */
+	public function import_gist() {
+		$this->check_security();
+
+		// @todo validate gist ID
+		$gist_id = $_POST['gist_id'];
+
+		$result = $this->sync->import_gist( $gist_id );
+
+		$this->check_error( $result );
+
+		wp_send_json_success( array(
+			'code'    => 'success',
+			'message' => __( 'Successfully imported Gist #', $this->plugin_name ) . $gist_id,
 		) );
 	}
 }

@@ -115,9 +115,11 @@ class Settings {
 		<strong><?php _e( 'Username:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['login'] ); ?><br>
 		<strong><?php _e( 'Email:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['email'] ); ?><br>
 		<strong><?php _e( 'Public Gists:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['public_gists'] ); ?><br>
-		<strong><?php _e( 'Private Gists:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['private_gists'] ); ?><br><br><?php
+		<strong><?php _e( 'Private Gists:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['private_gists'] ); ?><br><br>
 
-		submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false );
+		<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?><br>
+		<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
+		<?php
 	}
 
 	/**
