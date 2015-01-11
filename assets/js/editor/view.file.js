@@ -82,7 +82,7 @@
 
 			if('js' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/javascript');
-			} else if( 'bash' === modelLang) {
+			} else if('bash' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/sh');
 			} else if('c' === modelLang || 'cpp' ===modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/c_cpp');
