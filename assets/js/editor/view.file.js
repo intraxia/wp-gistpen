@@ -94,6 +94,8 @@
 				this.aceEditor.getSession().setMode('ace/mode/text');
 			} else if('py' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/python');
+			} else if('go' === modelLang) {
+				this.aceEditor.getSession().setMode('ace/mode/golang');
 			} else {
 				this.aceEditor.getSession().setMode('ace/mode/' + modelLang);
 			}
