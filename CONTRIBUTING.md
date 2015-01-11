@@ -33,7 +33,19 @@ WP-Gistpen adheres to the WordPress coding standards, which are enforced by [Scr
 
 If you're writing new functions or features, please include unit tests for them. Unit tests should test as few assumptions as possible, which means minimize the number of assertions per test, if possible. Unit test function names start with `test_should` followed by what the test should prove.
 
-The current unit tests need to be rewritten and improved, so most of them probably don't currently adhere to this standard.
+The current unit tests need to be rewritten and improved, so most of them don't adhere to this standard. Please help us improve by adhering to these standards in your pull requests.
+
+### Supporting a New Language
+
+Currently, our language support is limited primarily by the languages supported by Prism. If you want to add support to WP-Gistpen for a language that is supported by Prism, please confirm that it works in these places:
+
+1. Prism highlighting
+2. ACE Editor
+3. Gist Import/Export
+
+This way we can maintain consistent support for all languages.
+
+If Prism doesn't support the language you are looking for, please open a ticket and we'll look into adding support.
 
   [1]: https://getcomposer.org/
   [2]: https://www.npmjs.org/
