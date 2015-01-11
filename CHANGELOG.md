@@ -24,6 +24,8 @@ This change log follows the [Keep a Changelog standards][keepachangelog]. Versio
 * Deleting bug
 	- Files were being left behind when Zips were deleted
 * Strings are now translatable
+* All languages cleaned up and verified working
+	- HTML & XML are split again
 
 ### [0.4.0] - 2014-10-03
 
