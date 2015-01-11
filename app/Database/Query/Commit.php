@@ -103,9 +103,7 @@ class Commit {
 		$revisions = wp_get_post_revisions( $head_id, array( 'posts_per_page' => 1 ) );
 		$revision = array_shift( $revisions );
 
-		$commit = $this->by_post( $revision );
-
-		return $commit;
+		return $this->by_post( $revision );
 	}
 
 	/**
@@ -126,7 +124,7 @@ class Commit {
 		$meta = get_metadata( 'post', $commit->get_ID(), '_wpgp_commit_meta', true );
 
 		foreach ( $meta['state_ids'] as $state_id ) {
-			$state = $this->state_by_id( $state_id, $commit->get_ID() );
+			$state = $this->state_by_id( $state_id );
 
 			$commit->add_state( $state );
 		}
@@ -159,9 +157,9 @@ class Commit {
 	 * @return State             State object
 	 * @since  0.5.0
 	 */
-	public function state_by_id( $state_id, $commit_id ) {
+	public function state_by_id( $state_id ) {
 		$state_post = get_post( $state_id );
-		$meta = get_metadata( 'post', $state_id, "_wpgp_{$commit_id}_state_meta", true );
+		$meta = get_metadata( 'post', $state_id, "_wpgp_state_meta", true );
 
 		if ( ! array_key_exists( 'status', $meta ) ) {
 			$state_post->status = 'new';

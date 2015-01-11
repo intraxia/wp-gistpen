@@ -94,7 +94,7 @@ class Sync {
 
 		$commit = $this->database->query( 'commit' )->latest_by_head_id( $zip_id );
 
-		if ( 'on' !== $commit->get_sync() ) {
+		if ( 'on' !== $commit->get_sync() || 'none' !== $commit->get_gist_id() ) {
 			return $zip_id;
 		}
 

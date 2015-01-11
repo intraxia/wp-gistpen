@@ -45,6 +45,7 @@ class Commit {
 	 * Adapter facade
 	 *
 	 * @var Adapter
+	 * @since    0.5.0
 	 */
 	private $adapter;
 
@@ -52,6 +53,7 @@ class Commit {
 	 * Database object for querying Head
 	 *
 	 * @var HeadQuery
+	 * @since    0.5.0
 	 */
 	private $head_query;
 
@@ -59,8 +61,33 @@ class Commit {
 	 * Database object for querying Commit
 	 *
 	 * @var CommitQuery
+	 * @since    0.5.0
 	 */
 	private $commit_query;
+
+	/**
+	 * Whether the current commit changed
+	 *
+	 * @var boolean
+	 * @since    0.5.0
+	 */
+	protected $changed = false;
+
+	/**
+	 * Commit meta for the current commit
+	 *
+	 * @var   array
+	 * @since 0.5.0
+	 */
+	protected $commit_meta = array( 'state_ids' => array() );
+
+	/**
+	 * ID for current commit
+	 *
+	 * @var integer
+	 * @since    0.5.0
+	 */
+	protected $commit_id = 0;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -88,33 +115,95 @@ class Commit {
 	 * @since  0.5.0
 	 */
 	public function by_ids( $ids ) {
-		// @todo validate $ids?
-		$revisions = wp_get_post_revisions( $ids['zip'] );
+		// reset object defaults
+		$this->changed = false;
+		$this->commit_meta = array( 'state_ids' => array() );
+		$this->commit_id = 0;
+		$this->ids = $ids;
 
-		if ( ! empty( $revisions ) ) {
+		if ( ! array_key_exists( 'zip', $this->ids ) || ! is_integer( $this->ids['zip'] ) ) {
+			// @todo add message
+			return new \WP_Error();
+		}
+
+		if ( array_key_exists( 'files', $this->ids ) && is_array( $this->ids['files'] ) ) {
+			$this->states_by_file_ids( $this->ids['files'] );
+		}
+
+		if ( array_key_exists('deleted', $this->ids ) && is_array( $this->ids['deleted'] ) ) {
+			$this->deleted_states_by_file_ids( $this->ids['deleted'] );
+		}
+
+		// If files haven't changed...
+		if ( ! $this->changed ) {
+			// ...and if no states are connected...
+			if ( empty( $this->commit_meta['state_ids'] ) ) {
+				// ...then we're done.
+				return $this->ids;
+			}
+
+			$revisions = wp_get_post_revisions( $this->ids['zip'] );
+
+			// ...and there are no commits...
+			if ( empty( $revisions ) ) {
+				// ...save a commit...
+				$this->commit_id = wp_save_post_revision( $this->ids['zip'] );
+			}
+		// ...but if files have changed and no commit was saved...
+		} elseif ( 0 === $this->commit_id ) {
+			// ...save a commit...
+			$this->commit_id = wp_save_post_revision( $this->ids['zip'] );
+		}
+
+		// ...and if no commit has been saved...
+		if ( 0 === $this->commit_id ) {
 			$prev_revision = array_shift( $revisions );
-			$prev_commit_id = $prev_revision->ID;
-			unset( $prev_revision );
-			unset( $revisions );
+			$current_post = get_post( $this->ids['zip'] );
+
+			// ...and if the description has changed...
+			if ( normalize_whitespace( $current_post->post_title ) !== normalize_whitespace( $prev_revision->post_title ) ) {
+				// ...save a commit...
+				$this->commit_id = wp_save_post_revision( $this->ids['zip'] );
+			}
 		}
 
-		$commit_id = wp_save_post_revision( $ids['zip'] );
-
-		if ( null === $commit_id || 0 === $commit_id ) {
-			return new \WP_Error( 'revision_save_error', __( 'Failed to save revision for ID# ', $this->plugin_name ) . $ids['zip'] );
+		// ...and if a commit has been saved...
+		if ( 0 !== $this->commit_id ) {
+			// ...save the commit meta.
+			update_metadata( 'post', $this->commit_id, '_wpgp_commit_meta', $this->commit_meta );
 		}
 
-		$commit_meta = array();
+		return $this->ids;
+	}
 
-		foreach ( $ids['files'] as $file_id ) {
-			$state_meta = array();
-
-			// check if previous revision(s) exists
-			$file_revisions = wp_get_post_revisions( $file_id );
+	/**
+	 * Saves new States for array of Files IDs
+	 *
+	 * @param  array $file_ids Array of File IDs
+	 * @return bool            whether this saved new files
+	 * @since  0.5.0
+	 */
+	protected function states_by_file_ids( $file_ids ) {
+		$changed = false;
+		foreach ( $file_ids as $file_id ) {
+			if ( ! is_integer( $file_id ) ) {
+				continue;
+			}
 
 			$state_id = wp_save_post_revision( $file_id );
+			$revisions = wp_get_post_revisions( $file_id );
 
-			if ( empty( $file_revisions ) ) {
+			if ( null === $state_id || 0 === $state_id ) {
+				$prev_revision = array_shift( $revisions );
+				$state_id = $prev_revision->ID;
+
+				$this->commit_meta['state_ids'][] = $state_id;
+				continue;
+			}
+
+			$state_meta = array();
+
+			if ( empty( $revisions ) ) {
 				// if not, set status to 'new'
 				$state_meta['status'] = 'new';
 			} else {
@@ -122,53 +211,64 @@ class Commit {
 				$state_meta['status'] = 'updated';
 
 				// Set prev filename as current gist_id
-				$prev_revision = array_shift( $file_revisions );
-				$prev_state = $this->commit_query->state_by_id( $prev_revision->ID, $prev_commit_id );
+				$prev_revision = array_shift( $revisions );
+				$prev_state = $this->commit_query->state_by_id( $prev_revision->ID );
 				$state_meta['gist_id'] = $prev_state->get_filename();
-
-				if ( empty( $state_id ) ) {
-					// if we fail to save a revision, it's because there was no change
-					// so we use the state ID of the previous commit
-					$state_id = $prev_state->get_ID();
-				}
 			}
 
-			update_metadata( 'post', $state_id, "_wpgp_{$commit_id}_state_meta", $state_meta );
+			update_metadata( 'post', $state_id, "_wpgp_state_meta", $state_meta );
 
 			$lang_slug = $this->head_query->language_by_post_id( $file_id )->get_slug();
 
 			wp_set_object_terms( $state_id, $lang_slug, 'wpgp_language', false );
 
-			$commit_meta['state_ids'][] = $state_id;
+			$this->changed = true;
+			$changed = true;
+
+			$this->commit_meta['state_ids'][] = $state_id;
 		}
 
-		if ( array_key_exists( 'deleted', $ids ) ) {
-			foreach ( $ids['deleted'] as $deleted_file_id ) {
-				$file_revisions = wp_get_post_revisions( $deleted_file_id );
-				$prev_revision = array_shift( $file_revisions );
-				$prev_state = $this->commit_query->state_by_id( $prev_revision->ID, $prev_commit_id );
+		return $changed;
+	}
 
-				$state_meta = array(
-					'status'  => 'deleted',
-					'gist_id' => $prev_state->get_filename(),
-				);
-
-				wp_update_post( array(
-					'ID'          => $deleted_file_id,
-					'post_type'   => 'revision',
-					'post_status' => 'inherit',
-					'post_parent' => $commit_id,
-				) );
-
-				update_metadata( 'post', $deleted_file_id, "_wpgp_{$commit_id}_state_meta", $state_meta );
-
-				$commit_meta['state_ids'][] = $deleted_file_id;
+	/**
+	 * Sets files as deleted by array of File IDs
+	 *
+	 * @param  array $file_ids Array of File IDs
+	 * @return bool            whether this saved new files
+	 * @since  0.5.0
+	 */
+	public function deleted_states_by_file_ids( $file_ids ) {
+		$changed = false;
+		foreach ( $file_ids as $file_id ) {
+			if ( ! is_integer( $file_id ) ) {
+				continue;
 			}
+
+			if ( 0 === $this->commit_id ) {
+				$this->commit_id = wp_save_post_revision( $this->ids['zip'] );
+			}
+
+			$revisions = wp_get_post_revisions( $file_id );
+			$prev_revision = array_shift( $revisions );
+			$prev_state = $this->commit_query->state_by_id( $prev_revision->ID );
+
+			$state_meta = array(
+				'status'  => 'deleted',
+				'gist_id' => $prev_state->get_filename(),
+			);
+
+			wp_update_post( array(
+				'ID'          => $file_id,
+				'post_type'   => 'revision',
+				'post_status' => 'inherit',
+				'post_parent' => $this->commit_id,
+			) );
+
+			update_metadata( 'post', $file_id, "_wpgp_state_meta", $state_meta );
+
+			$this->commit_meta['state_ids'][] = $file_id;
 		}
-
-		update_metadata( 'post', $commit_id, '_wpgp_commit_meta', $commit_meta );
-
-		return $commit_id;
 	}
 
 	/**
