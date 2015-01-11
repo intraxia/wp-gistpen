@@ -127,7 +127,7 @@ class Editor {
 	 * @since  0.4.0
 	 */
 	public function remove_meta_boxes() {
-		remove_meta_box( 'submitdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'submitdiv', 'gistpen', 'side' );
 		remove_meta_box( 'commentsdiv', 'gistpen', 'normal' );
 		remove_meta_box( 'revisionsdiv', 'gistpen', 'normal' );
 		remove_meta_box( 'authordiv', 'gistpen', 'normal' );
