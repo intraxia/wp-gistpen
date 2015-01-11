@@ -32,6 +32,13 @@ class Language {
 	private $version;
 
 	/**
+	 * Map of Gist to Gistpen languages
+	 * @var   array
+	 * @since 0.5.0
+	 */
+	protected $map;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -43,6 +50,15 @@ class Language {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
+		$this->map = array(
+			'scss'        => 'sass',
+			'python'      => 'py',
+			'text'        => 'plaintext',
+			'javascript'  => 'js',
+			'c#'          => 'csharp',
+			'shell'       => 'bash',
+			'objective-c' => 'objectivec'
+		);
 	}
 
 	/**
@@ -66,7 +82,9 @@ class Language {
 	public function by_gist( $language ) {
 		$slug = strtolower( $language );
 
-		// @todo map Gist languages -> Gistpen slugs
+		if ( array_key_exists( $slug, $this->map ) ) {
+			$slug = $this->map[ $slug ];
+		}
 
 		try {
 			$language = new LanguageModel( $this->plugin_name, $this->version, $slug );
