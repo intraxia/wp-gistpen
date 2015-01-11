@@ -171,7 +171,10 @@ class File {
 	 * @return string filename w/ ext
 	 */
 	public function get_filename() {
-		return $this->slug . '.' . $this->language->get_file_ext();
+		// Do we want to readd file ext as an option?
+		// Note that we currently can't export Gists with language data.
+		// The file extension is the only we get that data in properly.
+		return $this->slug; // . '.' . $this->language->get_file_ext();
 	}
 
 	/**
