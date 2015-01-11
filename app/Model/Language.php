@@ -152,7 +152,11 @@ class Language {
 		return ( $this->slug == 'sass' ? 'scss' :
 			( $this->slug == 'bash' ? 'sh' :
 			( $this->slug == 'ruby' ? 'rb' :
-			$this->slug ) ) );
+			( $this->slug == 'plaintext' ? 'txt' :
+			( $this->slug == 'csharp' ? 'cs' :
+			( $this->slug == 'coffeescript' ? 'coffee' :
+			( $this->slug == 'objectivec' ? 'm' :
+			$this->slug ) ) ) ) ) ) );
 	}
 
 	/**

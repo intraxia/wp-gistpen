@@ -53,6 +53,7 @@ class Command extends \WP_CLI_Command {
 		remove_filter( 'content_filtered_save_pre', 'wp_filter_post_kses' );
 
 		foreach ( Language::$supported as $lang => $slug ) {
+			$lang_model = new Language( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version, $slug );
 			// Code snippets sourced from: https://highlightjs.org/static/demo/
 			$code = '';
 
@@ -70,7 +71,7 @@ class Command extends \WP_CLI_Command {
 
 			$file = array();
 			$file['code'] = trim( $code );
-			$file['slug'] = $slug . '-file';
+			$file['slug'] = $slug . '-file.' . $lang_model->get_file_ext();
 			$file['language'] = $slug;
 
 			$zip_data['files'][] = $file;
