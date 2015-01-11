@@ -25,7 +25,7 @@ class Language {
 		'CSS' => 'css',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
-		'JScript' => 'js',
+		'JavaScript' => 'js',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
 		'Python' => 'py',
