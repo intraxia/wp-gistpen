@@ -130,7 +130,7 @@ class Language {
 	public function get_prism_slug() {
 		return ( $this->slug == 'js' ? 'javascript' :
 			( $this->slug == 'sass' ? 'scss' :
-			( $this->slug == 'sh' ? 'bash' :
+			( $this->slug == 'py' ? 'python' :
 			$this->slug ) ) );
 	}
 

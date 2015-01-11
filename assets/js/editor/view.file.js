@@ -92,6 +92,8 @@
 				this.aceEditor.getSession().setMode(({path: "ace/mode/php", inline: true}));
 			} else if('plaintext' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/text');
+			} else if('py' === modelLang) {
+				this.aceEditor.getSession().setMode('ace/mode/python');
 			} else {
 				this.aceEditor.getSession().setMode('ace/mode/' + modelLang);
 			}
