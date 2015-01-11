@@ -88,6 +88,8 @@
 				this.aceEditor.getSession().setMode('ace/mode/c_cpp');
 			} else if('coffeescript' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/coffee');
+			} else if('php' === modelLang) {
+				this.aceEditor.getSession().setMode(({path: "ace/mode/php", inline: true}));
 			} else {
 				this.aceEditor.getSession().setMode('ace/mode/' + modelLang);
 			}
