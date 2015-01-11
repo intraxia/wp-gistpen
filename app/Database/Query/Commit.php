@@ -161,7 +161,7 @@ class Commit {
 		$state_post = get_post( $state_id );
 		$meta = get_metadata( 'post', $state_id, "_wpgp_state_meta", true );
 
-		if ( ! array_key_exists( 'status', $meta ) ) {
+		if ( empty( $meta ) || ! array_key_exists( 'status', $meta ) ) {
 			$state_post->status = 'new';
 		} else {
 			$state_post->status = $meta['status'];
