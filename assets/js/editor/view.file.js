@@ -84,7 +84,7 @@
 				this.aceEditor.getSession().setMode('ace/mode/javascript');
 			} else if('bash' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/sh');
-			} else if('c' === modelLang || 'cpp' ===modelLang) {
+			} else if('c' === modelLang || 'cpp' === modelLang || 'swift' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/c_cpp');
 			} else if('coffeescript' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/coffee');
