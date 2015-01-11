@@ -280,9 +280,8 @@ class App {
 
 		// Rearrange Gistpen layout
 		$this->loader->add_filter( 'screen_layout_columns', $this->editor, 'screen_layout_columns' );
-		$this->loader->add_action( 'admin_menu', $this->editor, 'remove_meta_boxes' );
+		$this->loader->add_action( 'add_meta_boxes', $this->editor, 'remove_meta_boxes' );
 		$this->loader->add_filter( 'get_user_option_screen_layout_gistpen', $this->editor, 'screen_layout_gistpen' );
-		$this->loader->add_filter( 'get_user_option_meta-box-order_gistpen', $this->editor, 'gistpen_meta_box_order' );
 
 		// Add files column to and reorder Gistpen edit screen
 		$this->loader->add_filter( 'manage_gistpen_posts_columns', $this->editor, 'manage_posts_columns' );

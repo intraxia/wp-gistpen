@@ -127,32 +127,19 @@ class Editor {
 	 * @since  0.4.0
 	 */
 	public function remove_meta_boxes() {
-		remove_meta_box( 'slugdiv', 'gistpen', 'normal' );
-		remove_meta_box( 'formatdiv', 'gistpen', 'normal' );
-		remove_meta_box( 'postcustom', 'gistpen', 'normal' );
-		remove_meta_box( 'postexcerpt', 'gistpen', 'normal' );
+		remove_meta_box( 'submitdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'commentsdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'revisionsdiv', 'gistpen', 'normal' );
 		remove_meta_box( 'authordiv', 'gistpen', 'normal' );
-	}
-
-	/**
-	 * Rearrange remaining metaboxes
-	 *
-	 * @return array New order for metaboxes
-	 * @since 0.4.0
-	 */
-	public function gistpen_meta_box_order(){
-		return array(
-				'normal'   => join( ',', array(
-					'gistfile_editor',
-					'submitdiv',
-					'trackbacksdiv',
-					'tagsdiv-post_tag',
-					'commentstatusdiv',
-					'wpseo_meta',
-				) ),
-				'side'     => '',
-				'advanced' => '',
-		);
+		remove_meta_box( 'slugdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'tagsdiv-post_tag', 'gistpen', 'side' );
+		remove_meta_box( 'categorydiv', 'gistpen', 'side' );
+		remove_meta_box( 'gistpenexcerpt', 'gistpen', 'normal' );
+		remove_meta_box( 'formatdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'trackbacksdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'gistpencustom', 'gistpen', 'normal' );
+		remove_meta_box( 'commentstatusdiv', 'gistpen', 'normal' );
+		remove_meta_box( 'postimagediv', 'gistpen', 'side' );
 	}
 
 	/**
