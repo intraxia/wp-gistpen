@@ -90,6 +90,8 @@
 				this.aceEditor.getSession().setMode('ace/mode/coffee');
 			} else if('php' === modelLang) {
 				this.aceEditor.getSession().setMode(({path: "ace/mode/php", inline: true}));
+			} else if('plaintext' === modelLang) {
+				this.aceEditor.getSession().setMode('ace/mode/text');
 			} else {
 				this.aceEditor.getSession().setMode('ace/mode/' + modelLang);
 			}
