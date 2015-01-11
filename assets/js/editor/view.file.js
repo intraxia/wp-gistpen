@@ -90,7 +90,7 @@
 				this.aceEditor.getSession().setMode('ace/mode/coffee');
 			} else if('php' === modelLang) {
 				this.aceEditor.getSession().setMode(({path: "ace/mode/php", inline: true}));
-			} else if('plaintext' === modelLang) {
+			} else if('plaintext' === modelLang || 'http' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/text');
 			} else if('py' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/python');
