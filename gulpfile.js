@@ -37,8 +37,10 @@ gulp.task('watch', function () {
 
 gulp.task('build', function() {
 	runs(
-		'init',
+		['clean-bower', 'clean-composer'],
+		['scripts', 'styles', 'packages'],
 		'copy',
+		'install-build',
 		'zip',
 		'clean-build'
 	);
@@ -147,14 +149,17 @@ gulp.task('install', function() {
 	return merge(composer({ bin: 'composer' }), bower());
 });
 
+gulp.task('install-build', function() {
+	return merge(composer({cwd: './build', bin: 'composer' }), bower());
+});
+
 gulp.task('copy', function() {
 	return gulp.src([
 		'./**',
 		'!./*.png',
 		'!./.*',
-		'!./*.json',
-		'!./*.lock',
 		'!./*.xml',
+		'!./*.zip',
 		'!./gulpfile.js',
 		'!./*.sublime-*',
 		'!./node_modules/**',
@@ -168,7 +173,7 @@ gulp.task('copy', function() {
 });
 
 gulp.task('zip', function() {
-	return gulp.src('build/**')
+	return gulp.src(['build/**', '!./*.json', '!./*.lock'])
 		.pipe(zip('wp-gistpen.zip'))
 		.pipe(gulp.dest('./'));
 });
