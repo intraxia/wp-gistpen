@@ -36,10 +36,11 @@ class Language {
 		'Go' => 'go',
 		'HTTP' => 'http',
 		'ini' => 'ini',
-		'HTML/Markup' => 'markup',
+		'HTML' => 'html',
 		'Objective-C' => 'objectivec',
 		'Swift' => 'swift',
 		'Twig' => 'twig',
+		'XML' => 'xml'
 	);
 
 	/**
@@ -115,6 +116,11 @@ class Language {
 			return;
 		}
 
+		// Convert "Markup" to "HTML"
+		if ( 'markup' === $slug ) {
+			$slug = 'html';
+		}
+
 		// otherwise, the slug needs ot match a supported slug
 		if ( ! array_search( $slug, self::$supported ) ) {
 			throw new \Exception( __( "Invalid language slug: {$slug}", $this->plugin_name ), 1 );
@@ -131,7 +137,9 @@ class Language {
 		return ( $this->slug == 'js' ? 'javascript' :
 			( $this->slug == 'sass' ? 'scss' :
 			( $this->slug == 'py' ? 'python' :
-			$this->slug ) ) );
+			( $this->slug == 'html' ? 'markup' :
+			( $this->slug == 'xml' ? 'markup' :
+			$this->slug ) ) ) ) );
 	}
 
 	/**
