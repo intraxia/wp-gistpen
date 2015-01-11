@@ -1,8 +1,8 @@
-# How to Contribute to Plugin Name #
+# How to Contribute to WP-Gistpen
 
-## Requirements ##
+## Requirements
 
-wp-plugin-boilerplate comes with these tool requirements:
+For development, WP-Gistpen requires these tools:
 
 1. PHP 5.3+
 	* Note: WordPress is compatible back to 5.2, so not all your users will be able to use this plugin yet.
@@ -11,23 +11,33 @@ wp-plugin-boilerplate comes with these tool requirements:
 3. [Bower][3], for front-end libraries.
 4. [Gulp][4], for project builds
 
-## Installation ##
+If you need help with any of these tools, please ask!
+
+## Installation
 
 1. Clone the repository.
-2. Fill in your info everywhere.
-3. `npm install`
-6. `gulp`
-7. ???
-8. Profit!
+2. `npm install`
+3. `gulp init`
+4. Make and commit your changes
+5. Open a pull request again `develop`
+4. ???
+5. Profit!
 
-## Guidelines ##
+## Guidelines
 
-Let you user developers know how to contribute. What branch should they pull against? What kind of things should they work on? Wiki? Etc.
+#### Code style
 
-If you want to contribute to wp-plugin-boilerplate, please work on and pull against the `develop` branch. If you're contributing to anything in the `app` folder, consider merging [upstream][5].
+WP-Gistpen adheres to the WordPress coding standards, which are enforced by [Scrutinizer][6]. When you open a pull request, please address any issues it raises for you, if possible.
+
+### Unit tests
+
+If you're writing new functions or features, please include unit tests for them. Unit tests should test as few assumptions as possible, which means minimize the number of assertions per test, if possible. Unit test function names start with `test_should` followed by what the test should prove.
+
+The current unit tests need to be rewritten and improved, so most of them probably don't currently adhere to this standard.
 
   [1]: https://getcomposer.org/
   [2]: https://www.npmjs.org/
   [3]: http://bower.io/
   [4]: http://gulpjs.com/
   [5]: https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate
+  [6]: https://scrutinizer-ci.com/
