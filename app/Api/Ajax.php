@@ -157,13 +157,15 @@ class Ajax {
 	public function get_gistpens() {
 		$this->check_security();
 
-		if ( isset( $_POST['gistpen_search_term'] ) ) {
+		if ( isset( $_POST['gistpen_search_term'] ) && ! empty( $_POST['gistpen_search_term'] ) ) {
 			$results = $this->database->query()->by_string( $_POST['gistpen_search_term'] );
 		} else {
 			$results = $this->database->query()->by_recent();
 		}
 
 		$this->check_error( $results );
+
+		$results = $this->adapter->build( 'api' )->by_array_of_models( $results );
 
 		wp_send_json_success( array(
 			'gistpens' => $results,

@@ -146,8 +146,6 @@ class App {
 
 		$this->loader->add_action( 'init', $this->data, 'post_type_gistpen' );
 		$this->loader->add_action( 'init', $this->data, 'taxonomy_language' );
-		// Register the settings page
-		$this->loader->add_shortcode( 'gistpen', $this->data, 'add_shortcode' );
 	}
 
 	/**
@@ -214,6 +212,8 @@ class App {
 		$this->loader->add_filter( 'the_content', $this->content, 'post_content' );
 		// Remove child posts from the archive page
 		$this->loader->add_filter( 'pre_get_posts', $this->content, 'pre_get_posts' );
+		// Register the shortcode
+		$this->loader->add_shortcode( 'gistpen', $this->content, 'add_shortcode' );
 
 	}
 

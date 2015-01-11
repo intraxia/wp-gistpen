@@ -70,7 +70,7 @@ var InsertGistpenDialog = {
 			action: 'get_gistpens',
 
 			nonce: jQuery.trim(jQuery('#_ajax_wp_gistpen').val()),
-			gistpen_search_term: jQuery('#gistpen-search-field').val()
+			gistpen_search_term: jQuery.trim(jQuery('#gistpen-search-field').val())
 		}, function(response) {
 			if (response.success === false) {
 				jQuery('<li><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="none"></div><div class="gistpen-title">'+response.data.message+'</div></li>').prependTo('.gistpen-list');

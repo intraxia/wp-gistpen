@@ -65,6 +65,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
 	function test_succeeded_recent_gistpens() {
 		$this->set_correct_security();
+		$_POST['gistpen_search_term'] = '';
 
 		try {
 			$this->_handleAjax( 'get_gistpens' );

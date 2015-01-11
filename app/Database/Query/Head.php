@@ -94,7 +94,7 @@ class Head {
 			return $search_results;
 		}
 
-		$results = $this->adapter->build_by_array_of_posts( $search_results );
+		$results = $this->by_array_of_posts( $search_results );
 
 		return $results;
 	}
@@ -116,7 +116,23 @@ class Head {
 			return $search_results;
 		}
 
-		$results = $this->adapter->build_by_array_of_posts( $search_results );
+		$results = $this->by_array_of_posts( $search_results );
+
+		return $results;
+	}
+
+	/**
+	 * Turns an array of WP_Post objects into an array of Models
+	 * @param  array  $array Array of Posts
+	 * @return array         array of Models
+	 * @since  0.5.0
+	 */
+	public function by_array_of_posts( $array ) {
+		$results = array();
+
+		foreach ( $array as $post ) {
+			$results[] = $this->by_post( $post );
+		}
 
 		return $results;
 	}
