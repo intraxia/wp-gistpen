@@ -110,12 +110,17 @@ class Settings {
 			$user = get_transient( '_wpgp_github_token_user_info' );
 		}
 
+		$login = array_key_exists('login', $user) ? $user['login'] : '';
+		$email = array_key_exists('email', $user) ? $user['email'] : '';
+		$public_gists = array_key_exists('public_gists', $user) ? $user['public_gists'] : '0';
+		$private_gists = array_key_exists('private_gists', $user) ? $user['private_gists'] : '0';
+
 		?><h3>Authorized User</h3>
 
-		<strong><?php _e( 'Username:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['login'] ); ?><br>
-		<strong><?php _e( 'Email:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['email'] ); ?><br>
-		<strong><?php _e( 'Public Gists:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['public_gists'] ); ?><br>
-		<strong><?php _e( 'Private Gists:', $this->plugin_name ); ?></strong><?php echo esc_html( $user['private_gists'] ); ?><br><br>
+		<strong><?php _e( 'Username: ', $this->plugin_name ); ?></strong><?php echo esc_html( $login ); ?><br>
+		<strong><?php _e( 'Email: ', $this->plugin_name ); ?></strong><?php echo esc_html( $email ); ?><br>
+		<strong><?php _e( 'Public Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
+		<strong><?php _e( 'Private Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
 
 		<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?><br>
 		<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
