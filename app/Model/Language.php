@@ -134,12 +134,21 @@ class Language {
 	 * @return string The language slug used by Prism for highlighting
 	 */
 	public function get_prism_slug() {
-		return ( $this->slug == 'js' ? 'javascript' :
-			( $this->slug == 'sass' ? 'scss' :
-			( $this->slug == 'py' ? 'python' :
-			( $this->slug == 'html' ? 'markup' :
-			( $this->slug == 'xml' ? 'markup' :
-			$this->slug ) ) ) ) );
+		$map = array(
+			'js' => 'javascript',
+			'sass' => 'scss',
+			'py' => 'python',
+			'html' => 'markup',
+			'xml' => 'markup',
+		);
+
+		$slug = $this->slug;
+
+		if ( array_key_exists( $slug, $map ) ) {
+			$slug = $map[ $slug ];
+		}
+
+		return $slug;
 	}
 
 	/**
@@ -149,14 +158,24 @@ class Language {
 	 * @return string The file extension slug
 	 */
 	public function get_file_ext() {
-		return ( $this->slug == 'sass' ? 'scss' :
-			( $this->slug == 'bash' ? 'sh' :
-			( $this->slug == 'ruby' ? 'rb' :
-			( $this->slug == 'plaintext' ? 'txt' :
-			( $this->slug == 'csharp' ? 'cs' :
-			( $this->slug == 'coffeescript' ? 'coffee' :
-			( $this->slug == 'objectivec' ? 'm' :
-			$this->slug ) ) ) ) ) ) );
+		$map = 	array(
+			'sass' => 'scss',
+			'bash' => 'sh',
+			'ruby' => 'rb',
+			'plaintext' => 'txt',
+			'csharp' => 'cs',
+			'coffeescript' => 'coffee',
+			'objectivec' => 'm',
+			'actionscript' => 'as',
+		);
+
+		$slug = $this->slug;
+
+		if ( array_key_exists( $slug, $map ) ) {
+			$slug = $map[ $slug ];
+		}
+
+		return $slug;
 	}
 
 	/**
