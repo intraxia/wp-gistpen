@@ -29,7 +29,7 @@
 			});
 
 			if("" === this.model.get('language')) {
-				this.model.set('language', 'bash');
+				this.model.set('language', 'plaintext');
 			}
 
 			this.$langSelect.val(this.model.get('language'));
