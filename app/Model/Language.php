@@ -18,6 +18,7 @@ class Language {
 	 * @since    0.1.0
 	 */
 	public static $supported = array(
+		'ActionScript' => 'actionscript',
 		'Bash' => 'bash',
 		'C' => 'c',
 		'Coffeescript' => 'coffeescript',
