@@ -19,6 +19,7 @@ class Language {
 	 */
 	public static $supported = array(
 		'ActionScript' => 'actionscript',
+		'AppleScript' => 'applescript',
 		'Bash' => 'bash',
 		'C' => 'c',
 		'Coffeescript' => 'coffeescript',
