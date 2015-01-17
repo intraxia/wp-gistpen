@@ -34,6 +34,7 @@ class Language {
 		'HAML' => 'haml',
 		'Java' => 'java',
 		'JavaScript' => 'js',
+		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
 		'Python' => 'py',
@@ -179,6 +180,7 @@ class Language {
 			'erlang' => 'erl',
 			'gherkin' => 'feature',
 			'git' => 'diff',
+			'perl' => 'pl',
 		);
 
 		$slug = $this->slug;

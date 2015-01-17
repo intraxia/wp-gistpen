@@ -115,6 +115,7 @@ gulp.task('prism', function() {
 		'bower_components/prism/components/prism-gherkin.js',
 		'bower_components/prism/components/prism-git.js',
 		'bower_components/prism/components/prism-haml.js',
+		'bower_components/prism/components/prism-perl.js',
 		// Prism Plugins
 		'bower_components/prism/plugins/line-numbers/prism-line-numbers.js',
 		'bower_components/prism/plugins/line-highlight/prism-line-highlight.js',
