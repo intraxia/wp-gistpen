@@ -31,6 +31,7 @@ class Language {
 		'Gherkin/Cucumber' => 'gherkin',
 		'Git/Diff' => 'git',
 		'Groovy' => 'groovy',
+		'HAML' => 'haml',
 		'Java' => 'java',
 		'JavaScript' => 'js',
 		'PHP' => 'php',
