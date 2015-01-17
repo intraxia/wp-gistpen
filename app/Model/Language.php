@@ -25,6 +25,7 @@ class Language {
 		'Coffeescript' => 'coffeescript',
 		'C#' => 'csharp',
 		'CSS' => 'css',
+		'Dart' => 'dart',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
 		'JavaScript' => 'js',

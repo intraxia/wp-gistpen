@@ -109,6 +109,7 @@ gulp.task('prism', function() {
 		// New languages - v0.5.0
 		'bower_components/prism/components/prism-actionscript.js',
 		'bower_components/prism/components/prism-applescript.js',
+		'bower_components/prism/components/prism-dart.js',
 		// Prism Plugins
 		'bower_components/prism/plugins/line-numbers/prism-line-numbers.js',
 		'bower_components/prism/plugins/line-highlight/prism-line-highlight.js',
