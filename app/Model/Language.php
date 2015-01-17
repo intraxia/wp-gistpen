@@ -28,6 +28,7 @@ class Language {
 		'Dart' => 'dart',
 		'Eiffel' => 'eiffel',
 		'Erlang' => 'erlang',
+		'Gherkin/Cucumber' => 'gherkin',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
 		'JavaScript' => 'js',
@@ -174,6 +175,7 @@ class Language {
 			'actionscript' => 'as',
 			'eiffel' => 'e',
 			'erlang' => 'erl',
+			'gherkin' => 'feature',
 		);
 
 		$slug = $this->slug;
