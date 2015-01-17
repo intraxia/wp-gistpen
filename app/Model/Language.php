@@ -29,6 +29,7 @@ class Language {
 		'Eiffel' => 'eiffel',
 		'Erlang' => 'erlang',
 		'Gherkin/Cucumber' => 'gherkin',
+		'Git/Diff' => 'git',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
 		'JavaScript' => 'js',
@@ -176,6 +177,7 @@ class Language {
 			'eiffel' => 'e',
 			'erlang' => 'erl',
 			'gherkin' => 'feature',
+			'git' => 'diff',
 		);
 
 		$slug = $this->slug;

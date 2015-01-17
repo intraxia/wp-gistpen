@@ -1,0 +1,8 @@
+# On branch prism-examples
+# Changes to be committed:
+#   (use "git reset HEAD &lt;file>..." to unstage)
+#
+#       new file:   examples/prism-git.html
+
+- Some deleted line
++ Some added line

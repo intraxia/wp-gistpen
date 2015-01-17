@@ -96,6 +96,8 @@
 				this.aceEditor.getSession().setMode('ace/mode/python');
 			} else if('go' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/golang');
+			} else if('git' === modelLang) {
+				this.aceEditor.getSession().setMode('ace/mode/diff');
 			} else {
 				this.aceEditor.getSession().setMode('ace/mode/' + modelLang);
 			}
