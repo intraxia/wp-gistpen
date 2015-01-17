@@ -111,6 +111,7 @@ gulp.task('prism', function() {
 		'bower_components/prism/components/prism-applescript.js',
 		'bower_components/prism/components/prism-dart.js',
 		'bower_components/prism/components/prism-eiffel.js',
+		'bower_components/prism/components/prism-erlang.js',
 		// Prism Plugins
 		'bower_components/prism/plugins/line-numbers/prism-line-numbers.js',
 		'bower_components/prism/plugins/line-highlight/prism-line-highlight.js',

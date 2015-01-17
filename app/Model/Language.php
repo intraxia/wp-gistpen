@@ -27,6 +27,7 @@ class Language {
 		'CSS' => 'css',
 		'Dart' => 'dart',
 		'Eiffel' => 'eiffel',
+		'Erlang' => 'erlang',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
 		'JavaScript' => 'js',
@@ -172,6 +173,7 @@ class Language {
 			'objectivec' => 'm',
 			'actionscript' => 'as',
 			'eiffel' => 'e',
+			'erlang' => 'erl',
 		);
 
 		$slug = $this->slug;
