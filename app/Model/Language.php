@@ -26,6 +26,7 @@ class Language {
 		'C#' => 'csharp',
 		'CSS' => 'css',
 		'Dart' => 'dart',
+		'Eiffel' => 'eiffel',
 		'Groovy' => 'groovy',
 		'Java' => 'java',
 		'JavaScript' => 'js',
@@ -170,6 +171,7 @@ class Language {
 			'coffeescript' => 'coffee',
 			'objectivec' => 'm',
 			'actionscript' => 'as',
+			'eiffel' => 'e',
 		);
 
 		$slug = $this->slug;
