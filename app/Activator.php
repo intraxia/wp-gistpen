@@ -21,38 +21,13 @@ class Activator {
 	 * @since    0.5.0
 	 */
 	public static function activate() {
-		// @todo we don't want to redefine this here if we can help it
-		$register = new Register\Data( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$register->taxonomy_language();
-		self::add_languages();
-		// @todo or here
-		update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
+
+		if ( ! get_option( 'wp_gistpen_activate' ) ) {
+			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
+		}
+
+		update_option( '_wpgp_activated', 'done' );
 		flush_rewrite_rules( true );
-	}
-
-	/**
-	 * Create the languages
-	 *
-	 * @since    0.1.0
-	 */
-	public static function add_languages() {
-
-		// note to self: delete this line in version 0.4.0
-		delete_option( 'wp_gistpen_langs_installed' );
-
-		if ( true === get_option( 'wp_gistpens_languages_installed' ) ) {
-			return;
-		}
-
-		foreach ( Language::$supported as $lang => $slug ) {
-			$result = wp_insert_term( $lang, 'wpgp_language', array( 'slug' => $slug ) );
-			if ( is_wp_error( $result ) ) {
-				// @todo write error message?
-			}
-		}
-
-		update_option( 'wp_gistpens_languages_installed', true );
-
 	}
 
 }
