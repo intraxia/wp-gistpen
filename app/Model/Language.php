@@ -47,6 +47,7 @@ class Language {
 		'PowerShell' => 'powershell',
 		'Python' => 'py',
 		'R' => 'r',
+		'Rust' => 'rust',
 		'Ruby' => 'ruby',
 		'Sass' => 'sass',
 		'Scala' => 'scala',
@@ -194,6 +195,7 @@ class Language {
 			'markdown' => 'md',
 			'nasm' => 'asm',
 			'powershell' => 'ps1',
+			'rust' => 'rs',
 		);
 
 		$slug = $this->slug;
