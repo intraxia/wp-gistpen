@@ -32,6 +32,7 @@ class Language {
 		'Git/Diff' => 'git',
 		'Groovy' => 'groovy',
 		'HAML' => 'haml',
+		'Handlebars' => 'handlebars',
 		'Java' => 'java',
 		'JavaScript' => 'js',
 		'Perl' => 'perl',
