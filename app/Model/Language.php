@@ -52,6 +52,7 @@ class Language {
 		'Sass' => 'sass',
 		'Scala' => 'scala',
 		'Scheme' => 'scheme',
+		'Smarty' => 'smarty',
 		'Sql' => 'sql',
 		'Go' => 'go',
 		'HTTP' => 'http',
@@ -198,6 +199,7 @@ class Language {
 			'powershell' => 'ps1',
 			'rust' => 'rs',
 			'scheme' => 'scm',
+			'smarty' => 'tpl',
 		);
 
 		$slug = $this->slug;
