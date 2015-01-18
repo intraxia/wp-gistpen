@@ -20,6 +20,7 @@
   ],
   "devDependencies": {
     "prism": "git@github.com:mAAdhaTTah/prism.git#3fb3c14d4bff64adf36ac6aa26576b9d77698915",
+    "prism-monokai": "git@github.com:Ahrengot/Monokai-theme-for-Prism.js.git#b3ff33faba7615c4a72c5bbfa2fdefd3f0b010bd",
     "ace-builds": "~1.1.5",
     "ajaxq": "~0.0.2"
   }

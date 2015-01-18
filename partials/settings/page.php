@@ -42,6 +42,7 @@
 						'okaidia' => __( 'Okaidia', $this->plugin_name ),
 						'twilight' => __( 'Twilight', $this->plugin_name ),
 						'coy' => __( 'Coy', $this->plugin_name ),
+						'monokai' => __( 'Monokai', $this->plugin_name ),
 					),
 				),
 				array(
