@@ -46,6 +46,7 @@ class Language {
 		'PlainText' => 'plaintext',
 		'PowerShell' => 'powershell',
 		'Python' => 'py',
+		'R' => 'r',
 		'Ruby' => 'ruby',
 		'Sass' => 'sass',
 		'Scala' => 'scala',
