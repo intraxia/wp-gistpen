@@ -26,7 +26,8 @@
 			'show_names' => true,
 			'fields'     => array(
 				array(
-					'name' => __( 'Add your Gist token', $this->plugin_name ),
+					'name' => __( 'Add your GitHub token', $this->plugin_name ),
+					'desc' => '<a href="https://github.com/settings/tokens/new">' . __( 'Create a GitHub token', $this->plugin_name ) . '</a>',
 					'id'   => $prefix . 'gist_token',
 					'type' => 'text',
 				),
