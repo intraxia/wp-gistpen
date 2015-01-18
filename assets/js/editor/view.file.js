@@ -98,6 +98,8 @@
 				this.aceEditor.getSession().setMode('ace/mode/golang');
 			} else if('git' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/diff');
+			} else if('nasm' === modelLang) {
+				this.aceEditor.getSession().setMode('ace/mode/assembly_x86');
 			} else {
 				this.aceEditor.getSession().setMode('ace/mode/' + modelLang);
 			}

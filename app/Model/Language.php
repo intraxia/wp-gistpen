@@ -18,6 +18,7 @@ class Language {
 	 * @since    0.1.0
 	 */
 	public static $supported = array(
+		'Assembly (NASM)' => 'nasm',
 		'ActionScript' => 'actionscript',
 		'AppleScript' => 'applescript',
 		'Bash' => 'bash',
@@ -189,6 +190,7 @@ class Language {
 			'perl' => 'pl',
 			'latex' => 'tex',
 			'markdown' => 'md',
+			'nasm' => 'asm',
 		);
 
 		$slug = $this->slug;
