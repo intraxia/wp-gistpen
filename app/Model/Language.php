@@ -44,6 +44,7 @@ class Language {
 		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
+		'PowerShell' => 'powershell',
 		'Python' => 'py',
 		'Ruby' => 'ruby',
 		'Sass' => 'sass',
@@ -191,6 +192,7 @@ class Language {
 			'latex' => 'tex',
 			'markdown' => 'md',
 			'nasm' => 'asm',
+			'powershell' => 'ps1',
 		);
 
 		$slug = $this->slug;

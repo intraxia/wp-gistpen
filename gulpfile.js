@@ -123,6 +123,7 @@ gulp.task('prism', function() {
 		'bower_components/prism/components/prism-matlab.js',
 		'bower_components/prism/components/prism-nasm.js',
 		'bower_components/prism/components/prism-perl.js',
+		'bower_components/prism/components/prism-powershell.js',
 		// Prism Plugins
 		'bower_components/prism/plugins/line-numbers/prism-line-numbers.js',
 		'bower_components/prism/plugins/line-highlight/prism-line-highlight.js',
