@@ -39,6 +39,7 @@ class Language {
 		'LaTeX' => 'latex',
 		'LESS' => 'less',
 		'Markdown' => 'markdown',
+		'Matlab' => 'matlab',
 		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
