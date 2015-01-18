@@ -37,6 +37,7 @@ class Language {
 		'Java' => 'java',
 		'JavaScript' => 'js',
 		'LaTeX' => 'latex',
+		'LESS' => 'less',
 		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
