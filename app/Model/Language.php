@@ -31,9 +31,13 @@ class Language {
 		'Erlang' => 'erlang',
 		'Gherkin/Cucumber' => 'gherkin',
 		'Git/Diff' => 'git',
+		'Go' => 'go',
 		'Groovy' => 'groovy',
 		'HAML' => 'haml',
 		'Handlebars' => 'handlebars',
+		'HTML' => 'html',
+		'HTTP' => 'http',
+		'ini' => 'ini',
 		'Jade' => 'jade',
 		'Java' => 'java',
 		'JavaScript' => 'js',
@@ -41,6 +45,7 @@ class Language {
 		'LESS' => 'less',
 		'Markdown' => 'markdown',
 		'Matlab' => 'matlab',
+		'Objective-C' => 'objectivec',
 		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
@@ -54,14 +59,9 @@ class Language {
 		'Scheme' => 'scheme',
 		'Smarty' => 'smarty',
 		'Sql' => 'sql',
-		'Go' => 'go',
-		'HTTP' => 'http',
-		'ini' => 'ini',
-		'HTML' => 'html',
-		'Objective-C' => 'objectivec',
 		'Swift' => 'swift',
 		'Twig' => 'twig',
-		'XML' => 'xml'
+		'XML' => 'xml',
 	);
 
 	/**
