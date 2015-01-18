@@ -38,6 +38,7 @@ class Language {
 		'JavaScript' => 'js',
 		'LaTeX' => 'latex',
 		'LESS' => 'less',
+		'Markdown' => 'markdown',
 		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
@@ -186,6 +187,7 @@ class Language {
 			'git' => 'diff',
 			'perl' => 'pl',
 			'latex' => 'tex',
+			'markdown' => 'md',
 		);
 
 		$slug = $this->slug;
