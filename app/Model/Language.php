@@ -36,6 +36,7 @@ class Language {
 		'Jade' => 'jade',
 		'Java' => 'java',
 		'JavaScript' => 'js',
+		'LaTeX' => 'latex',
 		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
@@ -183,6 +184,7 @@ class Language {
 			'gherkin' => 'feature',
 			'git' => 'diff',
 			'perl' => 'pl',
+			'latex' => 'tex',
 		);
 
 		$slug = $this->slug;
