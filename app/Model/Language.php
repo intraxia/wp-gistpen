@@ -51,6 +51,7 @@ class Language {
 		'Ruby' => 'ruby',
 		'Sass' => 'sass',
 		'Scala' => 'scala',
+		'Scheme' => 'scheme',
 		'Sql' => 'sql',
 		'Go' => 'go',
 		'HTTP' => 'http',
@@ -196,6 +197,7 @@ class Language {
 			'nasm' => 'asm',
 			'powershell' => 'ps1',
 			'rust' => 'rs',
+			'scheme' => 'scm',
 		);
 
 		$slug = $this->slug;
