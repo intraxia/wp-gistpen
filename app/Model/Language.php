@@ -33,6 +33,7 @@ class Language {
 		'Groovy' => 'groovy',
 		'HAML' => 'haml',
 		'Handlebars' => 'handlebars',
+		'Jade' => 'jade',
 		'Java' => 'java',
 		'JavaScript' => 'js',
 		'Perl' => 'perl',
