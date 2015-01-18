@@ -4,6 +4,7 @@ namespace WP_Gistpen\Account;
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 use Github\Client;
+use Github\ResultPager;
 
 /**
  * This is the class description.
@@ -178,10 +179,6 @@ class Gist {
 			$response = new \WP_Error( $e->getCode(), $e->getMessage() );
 		}
 
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-
 		return $response;
 	}
 
@@ -201,12 +198,14 @@ class Gist {
 		$gists = array();
 
 		try {
-			$response = $this->call()->all();
+			$response = $this->all();
 		} catch ( \Exception $e ) {
 			$response = new \WP_Error( $e->getCode(), $e->getMessage() );
 		}
 
-		$gists = array();
+		if ( is_wp_error( $response ) ) {
+			return $response;
+		}
 
 		foreach ( $response as $gist ) {
 			$gists[] = $gist['id'];
@@ -265,6 +264,17 @@ class Gist {
 	 */
 	protected function call() {
 		return $this->client->api( 'gists' );
+	}
+
+	/**
+	 * Retrieves all the Gists using the ResultPager api
+	 *
+	 * @return array All the Gists for the logged in use
+	 * @since  0.5.0
+	 */
+	protected function all() {
+		$pager = new ResultPager( $this->client );
+		return $pager->fetchAll( $this->call(), 'all' );
 	}
 
 	/**
