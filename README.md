@@ -8,17 +8,69 @@
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
+## Description ##
+
 A self-hosted alternative to putting your code snippets on Gist.
 
 [![Build Status](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/build-status/develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop)
 
-## Description ##
-
 You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement for your WordPress blog.
+
+Features include:
+
+* Revision saving
+* Gist import & export
+* ACE editor
+* PrismJS syntax highlighting
+* Supported Languages
+	- Assembly (NASM)
+	- ActionScript
+	- AppleScript
+	- Bash
+	- C
+	- Coffeescript
+	- C#
+	- CSS
+	- Dart
+	- Eiffel
+	- Erlang
+	- Gherkin/Cucumber
+	- Git/Diff
+	- Go
+	- Groovy
+	- HAML
+	- Handlebars
+	- HTML
+	- HTTP
+	- ini
+	- Jade
+	- Java
+	- JavaScript
+	- LaTeX
+	- LESS
+	- Markdown
+	- Matlab
+	- Objective-C
+	- Perl
+	- PHP
+	- PlainText
+	- PowerShell
+	- Python
+	- R
+	- Rust
+	- Ruby
+	- Sass
+	- Scala
+	- Scheme
+	- Smarty
+	- Sql
+	- Swift
+	- Twig
+	- XML
 
 ## Installation ##
 
-### Using The WordPress Dashboard ###
+### Using the WordPress Dashboard ###
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Search for 'wp-gistpen'
@@ -73,6 +125,18 @@ Offset does not yet work but will be added soon.
 
 You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen-slug}.{lines}`. The lines don't need to be highlighted in advance for the link to work, and they will be highlighted when the link is clicked. The `{lines}` should match the same format as above.
 
+### How do I get my Gist token? ###
+
+1. Login to GitHub.
+2. Go to Settings -> Applications.
+3. Under "Personal access tokens", click "Generate New Token."
+4. Give it a name, click create
+	* The default settings work, but make you sure you at least include the `gist` and `user` scopes.
+5. Copy the generated token.
+6. Paste it into the settings page.
+7. ???
+8. Profit!
+
 ### What is the future of this plugin? ###
 
 Eventually, I hope to make this plugin interoperable with Gist, allowing you to import your current Gists, fork other people's Gists into your Gistpen, and publishing your Gistpens to Gist.
@@ -100,5 +164,9 @@ Twilight theme with line numbers enabled. Check out all the themes at [PrismJS.c
 The current options page.
 
 ![](screenshot-5.png)
+
+The options page with a token saved. 
+
+![](screenshot-6.png)
 
 Gistpen editor screen with Ace editor
