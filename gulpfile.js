@@ -13,7 +13,8 @@ var gulp = require('gulp'),
 	sass = require('gulp-sass'),
 	rimraf = require('rimraf'),
 	extrep = require('gulp-ext-replace'),
-	zip = require('gulp-zip');
+	zip = require('gulp-zip'),
+	rename = require("gulp-rename");
 
 gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
@@ -142,7 +143,11 @@ gulp.task('prism', function() {
 	var styles = gulp.src('bower_components/prism/**/*.css')
 		.pipe(gulp.dest('assets/css/prism/'));
 
-	return merge(scripts, styles);
+	var monokai = gulp.src('bower_components/prism-monokai/styles/*.css')
+		.pipe(rename('prism-monokai.css'))
+		.pipe(gulp.dest('assets/css/prism/themes/'));
+
+	return merge(scripts, styles, monokai);
 });
 
 gulp.task('ace', function() {
