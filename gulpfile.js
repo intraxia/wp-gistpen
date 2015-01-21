@@ -195,7 +195,7 @@ gulp.task('copy', function() {
 });
 
 gulp.task('zip', function() {
-	return gulp.src(['build/**', '!./*.json', '!./*.lock'])
+	return gulp.src(['build/**', '!build/*.json', '!build/*.lock'])
 		.pipe(zip('wp-gistpen.zip'))
 		.pipe(gulp.dest('./'));
 });
