@@ -1,0 +1,14 @@
+!!!
+html(lang="en")
+	head
+		meta(charset="utf-8")
+		title CSS Hover Effect on Vertical Menu
+		link(rel="stylesheet", href="style.css")
+	body
+		ul.leftmenu
+			li
+				a(href="http://learnwebtutorials.com/tutorial-install-node-js-windows") Learn NodeJS
+			li
+				a(href="http://learnwebtutorials.com/wordpress-tutorials") Learn WordPress
+			li
+				a(href="http://learnwebtutorials.com/php-tutorials") Learn PHP

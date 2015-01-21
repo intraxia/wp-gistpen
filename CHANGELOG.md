@@ -11,6 +11,28 @@ This change log follows the [Keep a Changelog standards][keepachangelog]. Versio
 		+ Unsupported languages get changed to "Plaintext" - sorry!
 * New Feature: Revisions and history
 * Bad tests for everything :/
+* New languages:
+	- Actionscript
+	- Applescript
+	- Dart
+	- Eiffel
+	- Erlang
+	- Gherkin
+	- Git
+	- Haml
+	- Handlebars
+	- Jade
+	- LaTeX
+	- LESS
+	- Markdown
+	- Matlab
+	- NASM
+	- Perl
+	- Powershell
+	- R
+	- Rust
+	- Scheme
+	- Smarty
 
 #### Changed
 * CMB -> CMB2

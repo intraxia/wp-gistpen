@@ -29,7 +29,7 @@
 			});
 
 			if("" === this.model.get('language')) {
-				this.model.set('language', 'bash');
+				this.model.set('language', 'plaintext');
 			}
 
 			this.$langSelect.val(this.model.get('language'));
@@ -91,11 +91,15 @@
 			} else if('php' === modelLang) {
 				this.aceEditor.getSession().setMode(({path: "ace/mode/php", inline: true}));
 			} else if('plaintext' === modelLang || 'http' === modelLang) {
-				this.aceEditor.getSession().setMode('ace/mode/text');
+				this.aceEditor.getSession().setMode('ace/mode/plain_text');
 			} else if('py' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/python');
 			} else if('go' === modelLang) {
 				this.aceEditor.getSession().setMode('ace/mode/golang');
+			} else if('git' === modelLang) {
+				this.aceEditor.getSession().setMode('ace/mode/diff');
+			} else if('nasm' === modelLang) {
+				this.aceEditor.getSession().setMode('ace/mode/assembly_x86');
 			} else {
 				this.aceEditor.getSession().setMode('ace/mode/' + modelLang);
 			}

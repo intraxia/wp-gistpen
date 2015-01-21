@@ -57,7 +57,11 @@ class Language {
 			'javascript'  => 'js',
 			'c#'          => 'csharp',
 			'shell'       => 'bash',
-			'objective-c' => 'objectivec'
+			'objective-c' => 'objectivec',
+			'tex'         => 'latex',
+			'diff'        => 'git',
+			'cucumber'    => 'gherkin',
+			'assembly'    => 'nasm',
 		);
 	}
 

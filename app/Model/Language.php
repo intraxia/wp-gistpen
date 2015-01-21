@@ -18,29 +18,50 @@ class Language {
 	 * @since    0.1.0
 	 */
 	public static $supported = array(
+		'Assembly (NASM)' => 'nasm',
+		'ActionScript' => 'actionscript',
+		'AppleScript' => 'applescript',
 		'Bash' => 'bash',
 		'C' => 'c',
 		'Coffeescript' => 'coffeescript',
 		'C#' => 'csharp',
 		'CSS' => 'css',
+		'Dart' => 'dart',
+		'Eiffel' => 'eiffel',
+		'Erlang' => 'erlang',
+		'Gherkin/Cucumber' => 'gherkin',
+		'Git/Diff' => 'git',
+		'Go' => 'go',
 		'Groovy' => 'groovy',
+		'HAML' => 'haml',
+		'Handlebars' => 'handlebars',
+		'HTML' => 'html',
+		'HTTP' => 'http',
+		'ini' => 'ini',
+		'Jade' => 'jade',
 		'Java' => 'java',
 		'JavaScript' => 'js',
+		'LaTeX' => 'latex',
+		'LESS' => 'less',
+		'Markdown' => 'markdown',
+		'Matlab' => 'matlab',
+		'Objective-C' => 'objectivec',
+		'Perl' => 'perl',
 		'PHP' => 'php',
 		'PlainText' => 'plaintext',
+		'PowerShell' => 'powershell',
 		'Python' => 'py',
+		'R' => 'r',
+		'Rust' => 'rust',
 		'Ruby' => 'ruby',
 		'Sass' => 'sass',
 		'Scala' => 'scala',
+		'Scheme' => 'scheme',
+		'Smarty' => 'smarty',
 		'Sql' => 'sql',
-		'Go' => 'go',
-		'HTTP' => 'http',
-		'ini' => 'ini',
-		'HTML' => 'html',
-		'Objective-C' => 'objectivec',
 		'Swift' => 'swift',
 		'Twig' => 'twig',
-		'XML' => 'xml'
+		'XML' => 'xml',
 	);
 
 	/**
@@ -134,12 +155,21 @@ class Language {
 	 * @return string The language slug used by Prism for highlighting
 	 */
 	public function get_prism_slug() {
-		return ( $this->slug == 'js' ? 'javascript' :
-			( $this->slug == 'sass' ? 'scss' :
-			( $this->slug == 'py' ? 'python' :
-			( $this->slug == 'html' ? 'markup' :
-			( $this->slug == 'xml' ? 'markup' :
-			$this->slug ) ) ) ) );
+		$map = array(
+			'js' => 'javascript',
+			'sass' => 'scss',
+			'py' => 'python',
+			'html' => 'markup',
+			'xml' => 'markup',
+		);
+
+		$slug = $this->slug;
+
+		if ( array_key_exists( $slug, $map ) ) {
+			$slug = $map[ $slug ];
+		}
+
+		return $slug;
 	}
 
 	/**
@@ -149,14 +179,36 @@ class Language {
 	 * @return string The file extension slug
 	 */
 	public function get_file_ext() {
-		return ( $this->slug == 'sass' ? 'scss' :
-			( $this->slug == 'bash' ? 'sh' :
-			( $this->slug == 'ruby' ? 'rb' :
-			( $this->slug == 'plaintext' ? 'txt' :
-			( $this->slug == 'csharp' ? 'cs' :
-			( $this->slug == 'coffeescript' ? 'coffee' :
-			( $this->slug == 'objectivec' ? 'm' :
-			$this->slug ) ) ) ) ) ) );
+		$map = 	array(
+			'sass' => 'scss',
+			'bash' => 'sh',
+			'ruby' => 'rb',
+			'plaintext' => 'txt',
+			'csharp' => 'cs',
+			'coffeescript' => 'coffee',
+			'objectivec' => 'm',
+			'actionscript' => 'as',
+			'eiffel' => 'e',
+			'erlang' => 'erl',
+			'gherkin' => 'feature',
+			'git' => 'diff',
+			'perl' => 'pl',
+			'latex' => 'tex',
+			'markdown' => 'md',
+			'nasm' => 'asm',
+			'powershell' => 'ps1',
+			'rust' => 'rs',
+			'scheme' => 'scm',
+			'smarty' => 'tpl',
+		);
+
+		$slug = $this->slug;
+
+		if ( array_key_exists( $slug, $map ) ) {
+			$slug = $map[ $slug ];
+		}
+
+		return $slug;
 	}
 
 	/**
