@@ -365,7 +365,7 @@ class App {
 		$this->loader->add_action( 'admin_init', $this->settings_view, 'register_setting' );
 
 		// Add GitHub User layout before the CMB2 settings form
-		$this->loader->add_action( 'cmb2_before_form', $this->settings_view, 'github_user_layout' );
+		$this->loader->add_action( 'cmb2_before_options-page_form_wpgp_option_metabox', $this->settings_view, 'github_user_layout' );
 
 		// Add an action link pointing to the options page.
 		$this->loader->add_filter( 'plugin_action_links_' . WP_GISTPEN_BASENAME, $this->settings_view, 'add_action_links' );
