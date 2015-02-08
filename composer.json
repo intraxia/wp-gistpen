@@ -12,8 +12,8 @@
   ],
   "require": {
     "php": ">=5.3.0",
-      "composer/installers": "v1.0.12",
-      "webdevstudios/cmb2": "dev-master#971e325ad7475934ebbcdab88e12dad15bcd49bb",
+    "composer/installers": "v1.0.12",
+    "webdevstudios/cmb2": "2.0.0.9",
     "knplabs/github-api": "~1.4"
   },
   "require-dev": {

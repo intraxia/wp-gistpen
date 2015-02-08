@@ -319,6 +319,9 @@ class Migration {
 	 * @since 0.5.0
 	 */
 	public function update_to_0_5_0() {
+		delete_option( 'wp_gistpens_languages_installed' );
+		delete_option( 'wp_gistpen_langs_installed' );
+
 		$posts = get_posts( array(
 			'post_type' => 'revision',
 			'post_status' => 'any',
