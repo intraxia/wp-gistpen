@@ -24,6 +24,10 @@ class Activator {
 
 		if ( ! get_option( 'wp_gistpen_activate' ) ) {
 			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
+
+			// this is where CMB2 loads up, which doesn't fire on activation
+			\cmb2_bootstrap_200beta::go()->include_cmb();
+			cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_revisions_enabled', 'on' );
 		}
 
 		update_option( '_wpgp_activated', 'done' );

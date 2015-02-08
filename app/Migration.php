@@ -319,6 +319,7 @@ class Migration {
 	 * @since 0.5.0
 	 */
 	public function update_to_0_5_0() {
+		cmb2_update_option( $this->plugin_name, '_wpgp_revisions_enabled', 'on' );
 		delete_option( 'wp_gistpens_languages_installed' );
 		delete_option( 'wp_gistpen_langs_installed' );
 
