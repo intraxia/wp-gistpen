@@ -54,35 +54,28 @@
 		), $this->plugin_name );
 	?>
 
-	<pre class="gistpen line-numbers"><code class="language-markup"><?php
-echo esc_html(<<<EOL
-<?xml version="1.0"?>
-<response value="ok" xml:lang="en">
-  <text>Ok</text>
-  <comment html_allowed="true"/>
-  <ns1:description><![CDATA[
-  CDATA is <not> magical.
-  ]]></ns1:description>
-  <a></a> <a/>
-</response>
+	<pre class="gistpen line-numbers"><code class="language-ruby"># Simple for loop using a range.
+for i in (1..4)
+    print i," "
+end
+print "\n"
 
+for i in (1...4)
+    print i," "
+end
+print "\n"
 
-<!DOCTYPE html>
-<title>Title</title>
+# Running through a list (which is what they do).
+items = [ 'Mark', 12, 'goobers', 18.45 ]
+for it in items
+    print it, " "
+end
+print "\n"
 
-<style>body {width: 500px;}</style>
-
-<script type="application/javascript">
-  function \$init() {return true;}
-</script>
-
-<body>
-  <p checked class="title" id='title'>Title</p>
-  <!-- here goes the rest of the page -->
-</body>
-EOL
-);
-	?></code></pre>
+# Go through the legal subscript values of an array.
+for i in (0...items.length)
+    print items[0..i].join(" "), "\n"
+end</code></pre>
 
 </div>
 
