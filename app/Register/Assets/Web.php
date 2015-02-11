@@ -68,15 +68,4 @@ class Web {
 
 	}
 
-	/**
-	 * Register the stylesheets for the public-facing side of the site.
-	 *
-	 * @since    0.5.0
-	 */
-	public function enqueue_scripts() {
-
-		wp_enqueue_script( $this->plugin_name .'-web-scripts', WP_GISTPEN_URL . 'assets/js/web' . $this->min . '.js', array( 'jquery' ), $this->version, true );
-
-	}
-
 }

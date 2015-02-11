@@ -405,7 +405,6 @@ class App {
 		$this->web = new Register\Assets\Web( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->web, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $this->web, 'enqueue_scripts' );
 
 	}
 

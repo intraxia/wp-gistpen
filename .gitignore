@@ -41,8 +41,7 @@ node_modules
 bower_components
 
 # Generated files
-assets/js/*.js
-assets/js/ace
+assets/js/**
 assets/css/**
 build
 wp-gistpen.zip

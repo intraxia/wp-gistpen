@@ -1,30 +1,15 @@
 var gulp = require('gulp'),
-	composer = require('gulp-composer'),
-	bower = require('gulp-bower'),
 	glob = require('glob'),
 	fs = require('fs'),
 	Q = require('Q'),
 	path = require('path'),
-	merge = require('merge-stream'),
-	runs = require('run-sequence'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
 	minify = require('gulp-minify-css'),
 	sass = require('gulp-sass'),
-	rimraf = require('rimraf'),
-	extrep = require('gulp-ext-replace'),
-	zip = require('gulp-zip');
+	extrep = require('gulp-ext-replace');
 
 gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
-
-gulp.task('init', function() {
-	runs(
-		['clean-bower', 'clean-composer'],
-		'install',
-		['scripts', 'styles', 'packages'],
-		'watch'
-	);
-});
 
 gulp.task('watch', function () {
 	gulp.watch(
@@ -35,26 +20,17 @@ gulp.task('watch', function () {
 		['styles']);
 });
 
-gulp.task('build', function() {
-	runs(
-		['clean-bower', 'clean-composer'],
-		['scripts', 'styles', 'packages'],
-		'copy',
-		'install-build',
-		'zip',
-		'clean-build'
-	);
-});
+gulp.task('build', ['scripts', 'styles', 'packages']);
 
 gulp.task('scripts', function() {
 	var promises = [];
 
-	glob.sync('assets/js/!(ace)').forEach(function(filePath) {
+	glob.sync('assets/src/js/!(js)').forEach(function(filePath) {
 		if (fs.statSync(filePath).isDirectory()) {
 			var defer = Q.defer();
 			var pipeline = gulp.src(filePath + '/**/*.js')
 				.pipe(concat(path.basename(filePath) + '.js'))
-				.pipe(gulp.dest(path.resolve(filePath, '..')))
+				.pipe(gulp.dest('assets/js'))
 				.pipe(uglify())
 				.pipe(concat(path.basename(filePath) + '.min.js'))
 				.pipe(gulp.dest('assets/js'));
@@ -69,7 +45,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('styles', function() {
-	return gulp.src('assets/scss/*.scss')
+	return gulp.src('assets/src/scss/*.scss')
 		.pipe(sass())
 		.pipe(gulp.dest('assets/css'))
 		.pipe(minify())
@@ -80,7 +56,10 @@ gulp.task('styles', function() {
 gulp.task('packages', ['prism', 'ace', 'ajaxq']);
 
 gulp.task('prism', function() {
-	var scripts = gulp.src([
+	var promises = [];
+
+	var scriptspromise = Q.defer();
+	var scriptspipe = gulp.src([
 		'bower_components/prism/components/prism-core.js',
 		'bower_components/prism/components/prism-markup.js',
 		'bower_components/prism/components/prism-css.js',
@@ -138,11 +117,21 @@ gulp.task('prism', function() {
 		.pipe(uglify())
 		.pipe(extrep('.min.js'))
 		.pipe(gulp.dest('assets/js'));
+	scriptspipe.on('end', function() {
+		scriptspromise.resolve();
+	});
+	promises.push(scriptspromise);
 
-	var styles = gulp.src('bower_components/prism/**/*.css')
+	var stylespromise = Q.defer();
+	var stylespipe = gulp.src('bower_components/prism/**/*.css')
 		.pipe(gulp.dest('assets/css/prism/'));
+	stylespipe.on('end', function() {
+		scriptspromise.resolve();
+	});
 
-	return merge(scripts, styles);
+	promises.push(stylespromise);
+
+	return promises;
 });
 
 gulp.task('ace', function() {
@@ -157,49 +146,4 @@ gulp.task('ajaxq', function() {
 		.pipe(uglify())
 		.pipe(extrep('.min.js'))
 		.pipe(gulp.dest('assets/js'));
-});
-
-gulp.task('clean-bower', function(cb) {
-	rimraf('bower_components', cb);
-});
-
-gulp.task('clean-composer', function(cb) {
-	rimraf('lib', cb);
-});
-
-gulp.task('install', function() {
-	return merge(composer({ bin: 'composer' }), bower());
-});
-
-gulp.task('install-build', function() {
-	return merge(composer({cwd: './build', bin: 'composer' }), bower());
-});
-
-gulp.task('copy', function() {
-	return gulp.src([
-		'./**',
-		'!./*.png',
-		'!./.*',
-		'!./*.xml',
-		'!./*.zip',
-		'!./gulpfile.js',
-		'!./*.sublime-*',
-		'!./node_modules/**',
-		'!./node_modules/',
-		'!./bower_components/**',
-		'!./bower_components/',
-		'!./test/**',
-		'!./test/',
-	], { base: './' })
-		.pipe(gulp.dest('build'));
-});
-
-gulp.task('zip', function() {
-	return gulp.src(['build/**', '!build/*.json', '!build/*.lock'])
-		.pipe(zip('wp-gistpen.zip'))
-		.pipe(gulp.dest('./'));
-});
-
-gulp.task('clean-build', function(cb) {
-	rimraf('build', cb);
 });
