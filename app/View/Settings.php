@@ -122,8 +122,15 @@ class Settings {
 		<strong><?php _e( 'Public Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
 		<strong><?php _e( 'Private Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
 
-		<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?><br>
-		<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
+		<p class="cmb2-metabox-description">
+			<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?>
+			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", $this->plugin_name ); ?>
+		</p>
+
+		<p class="cmb2-metabox-description">
+			<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
+			<?php _e( "When you import Gists, only Gists not previously imported will be added.", $this->plugin_name ); ?>
+		</p>
 		<?php
 	}
 
