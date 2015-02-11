@@ -1,0 +1,15 @@
+assets/src
+bin
+bower_components
+node_modules
+test
+.editorconfig
+.gitignore
+.scrutinizer.yml
+.svnignore
+.travis.yml
+*.json
+*.lock
+*.md
+*.xml
+gulpfile.js
