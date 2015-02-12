@@ -95,6 +95,12 @@ Features include:
 
 ## Frequently Asked Questions ##
 
+### What are the plugin's requirements? ###
+
+First, revisions need to be enabled. They can be disabled in `wp-config.php`, but WP-Gistpen relies on them to keep everything in sync. A future version will remove this dependency, but it's currently required.
+
+Additionally, your PHP version should be 5.3+. If you're a developer using 5.2, may God have mercy on your soul.
+
 ### How do I create a Gistpen and insert it into the post? ###
 
 To add a new Gistpen, go to Gistpens -> Add New, and paste in your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
