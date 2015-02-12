@@ -3,7 +3,7 @@
 **Donate link:** http://jamesdigioia.com/  
 **Tags:** gist, code snippets, codepen  
 **Requires at least:** 3.9  
-**Tested up to:** 4.0  
+**Tested up to:** 4.1  
 **Stable tag:** 0.5.0b3  
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -97,9 +97,9 @@ Features include:
 
 ### How do I create a Gistpen and insert it into the post? ###
 
-WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and paste in your code.
+To add a new Gistpen, go to Gistpens -> Add New, and paste in your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
 
-You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the pen button. From the pop-up, select one of the recent Gistpens or create a new one by pasting in your code and clicking "Insert".
+You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the code button. From the pop-up, select one of the recent Gistpens, search your Gistpens, or create a new one by pasting in your code and clicking "Insert".
 
 After inserting the shortcode, your code will appear in your post, highlighted by [PrismJS](http://prismjs.com).
 
@@ -125,7 +125,7 @@ Offset does not yet work but will be added soon.
 
 You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen-slug}.{lines}`. The lines don't need to be highlighted in advance for the link to work, and they will be highlighted when the link is clicked. The `{lines}` should match the same format as above.
 
-### How do I get my Gist token? ###
+### How do I get my Gist token from GitHub? ###
 
 1. Login to GitHub.
 2. Go to Settings -> Applications.
@@ -136,6 +136,12 @@ You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen
 6. Paste it into the settings page.
 7. ???
 8. Profit!
+
+### How do I sync my Gistpens to Gist? ###
+
+Gistpens can be exported en masse from the Gistpens settings page. All Gistpens will be synced, only if the Gistpen hasn't been synced yet, but **regardless of whether syncing for the Gistpen is enabled**. Syncing will then be enabled on the exported Gistpens.
+
+If you do not want this, you can enable/disable Gistpen syncing on a per-Gistpen basis. Just click the checkbox on the Gistpen edit page, and any changes will be reflected on the corresponding Gist on update. If you uncheck that box, future changes will not be reflected on Gist.
 
 ### What is the future of this plugin? ###
 
@@ -165,7 +171,7 @@ The current options page.
 
 ![](screenshot-5.png)
 
-The options page with a token saved. 
+The options page with a token saved.
 
 ![](screenshot-6.png)
 
