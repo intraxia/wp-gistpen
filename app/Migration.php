@@ -141,11 +141,8 @@ class Migration {
 			$this->update_to_0_4_0();
 		}
 
-		if ( version_compare( $version, '0.5.0', '<' ) ) {
+		if ( version_compare( $version, '0.5.2', '<' ) ) {
 			$this->update_to_0_5_0();
-		}
-
-		if ( version_compare( $version, '0.5.1', '<' ) ) {
 			$this->update_to_0_5_1();
 		}
 
@@ -326,6 +323,13 @@ class Migration {
 		delete_option( 'wp_gistpens_languages_installed' );
 		delete_option( 'wp_gistpen_langs_installed' );
 
+		// Need to remove these filters first
+		remove_filter( 'the_content', 'wpautop' );
+		remove_filter( 'the_content', 'wptexturize' );
+		remove_filter( 'the_content', 'capital_P_dangit' );
+		remove_filter( 'the_content', 'convert_chars' );
+		remove_filter( 'get_the_excerpt', 'wp_trim_excerpt' );
+
 		$posts = get_posts( array(
 			'post_type' => 'revision',
 			'post_status' => 'any',
@@ -367,7 +371,7 @@ class Migration {
 	/**
 	 * Fixes a database bug with the filename
 	 *
-	 * @since 0.5.0
+	 * @since 0.5.1
 	 */
 	public function update_to_0_5_1() {
 		$posts = get_posts( array(

@@ -67,7 +67,7 @@ class WP_Gistpen {
 
 	public static $plugin_name = 'wp-gistpen';
 
-	public static $version = '0.5.1';
+	public static $version = '0.5.2';
 
 	public static function init() {
 
