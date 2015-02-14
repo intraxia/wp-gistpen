@@ -145,6 +145,10 @@ class Migration {
 			$this->update_to_0_5_0();
 		}
 
+		if ( version_compare( $version, '0.5.1', '<' ) ) {
+			$this->update_to_0_5_1();
+		}
+
 	}
 
 	/**
@@ -357,6 +361,34 @@ class Migration {
 			$this->database->persist( 'commit' )->by_ids( $ids );
 
 			update_post_meta( $post->ID, '_wpgp_gist_id', 'none' );
+		}
+	}
+
+	/**
+	 * Fixes a database bug with the filename
+	 *
+	 * @since 0.5.0
+	 */
+	public function update_to_0_5_1() {
+		$posts = get_posts( array(
+			'post_type' => 'revision',
+			'post_status' => 'any',
+			'nopaging' => 'true',
+		));
+
+		foreach ( $posts as $post ) {
+			if ( get_post_type( $post->post_parent ) !== 'gistpen' ) {
+				continue;
+			}
+
+			$head_post = get_post( $post->post_parent );
+
+			if ( 0 !== $head_post->post_parent ) {
+				wp_update_post( array(
+					'ID' => $post->ID,
+					'post_title' => ! empty( $head_post->post_title ) ? $head_post->post_title : $head_post->post_name,
+				) );
+			}
 		}
 	}
 
