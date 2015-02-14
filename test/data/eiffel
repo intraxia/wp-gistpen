@@ -1,0 +1,87 @@
+class
+	ENTRY
+			-- One entrant's time in a race
+
+feature
+	entrant: STRING
+			-- Entrant, identified by sailnumber
+
+	elapsed_seconds: INTEGER
+			-- Actual elapsed time, not adjusted
+
+	elapsed_minutes: REAL is
+			-- Actual elapsed time, not adjusted
+			-- in minutes and decimal minutes
+		do
+			Result := elapsed_seconds / 60
+		end -- elapsed_minutes
+
+	status: INTEGER
+			-- Status of entrant in this race
+
+	dnc: INTEGER is 0
+			-- Status value, 'Did not compete'
+
+	ok, rtd, dsq: INTEGER is unique
+			-- Status values:
+			-- Finished, Retired, Disqualified
+
+	finish (in_time: INTEGER) is
+			-- Entrant finished. Note elapsed time, in seconds
+		do
+			elapsed_seconds := in_time
+			status := ok
+		end -- finish
+
+	retire is
+			-- Entrant retired from race
+		do
+			status := rtd
+		end -- retire
+
+	disqualify is
+			-- Do not score this entry
+		do
+			status := dsq
+		end -- disqualify
+
+	started: BOOLEAN is
+			-- Did the entrant start the race?
+		do
+			Result := status = ok or status = rtd
+		end -- started
+
+	finished: BOOLEAN is
+			-- Did the entrant finish the race?
+		do
+			Result := status = ok
+		end -- finished
+
+	retired: BOOLEAN is
+			-- Did the entrant retire?
+		do
+			Result := status = rtd
+		end -- retired
+
+	disqualified: BOOLEAN is
+			-- Was the entrant disqualified?
+		do
+			Result := status = dsq
+		end -- disqualified
+
+	identify (sailnumber: STRING) is
+			-- Record or change the entrant
+		do
+			entrant := sailnumber
+		end -- identify
+
+	identity: STRING is
+			-- Readable form of entrant, even if none
+		do
+			Result := entrant
+			if entrant = Void then
+				Result := "(Unidentified)"
+			end
+		end -- identity
+
+end -- class ENTRY

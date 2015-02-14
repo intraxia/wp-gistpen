@@ -1,220 +1,149 @@
 var gulp = require('gulp'),
-	rimraf = require('rimraf'),
+	glob = require('glob'),
+	fs = require('fs'),
+	Q = require('Q'),
+	path = require('path'),
 	concat = require('gulp-concat'),
 	uglify = require('gulp-uglify'),
-	composer = require('gulp-composer'),
-	bower = require('gulp-bower'),
-	zip = require('gulp-zip'),
+	minify = require('gulp-minify-css'),
 	sass = require('gulp-sass'),
-	gulpif = require('gulp-if'),
-	runs = require('run-sequence'),
-	merge = require('merge-stream'),
-	print = require('gulp-print'),
-	building = false;
+	extrep = require('gulp-ext-replace');
 
-var paths = {
-	js: {
-		public: {
-			files: [
-				'bower_components/prism/components/prism-core.js',
-				'bower_components/prism/components/prism-markup.js',
-				'bower_components/prism/components/prism-css.js',
-				'bower_components/prism/components/prism-clike.js',
-				'bower_components/prism/components/prism-javascript.js',
-				'bower_components/prism/components/prism-php.js',
-				'bower_components/prism/components/prism-bash.js',
-				'bower_components/prism/components/prism-groovy.js',
-				'bower_components/prism/components/prism-java.js',
-				'bower_components/prism/components/prism-python.js',
-				'bower_components/prism/components/prism-ruby.js',
-				'bower_components/prism/components/prism-scala.js',
-				'bower_components/prism/components/prism-scss.js',
-				'bower_components/prism/components/prism-sql.js',
-				// New languages
-				'bower_components/prism/components/prism-c.js',
-				'bower_components/prism/components/prism-coffeescript.js',
-				'bower_components/prism/components/prism-csharp.js',
-				'bower_components/prism/components/prism-go.js',
-				'bower_components/prism/components/prism-http.js',
-				'bower_components/prism/components/prism-ini.js',
-				'bower_components/prism/components/prism-markup.js',
-				'bower_components/prism/components/prism-objectivec.js',
-				'bower_components/prism/components/prism-swift.js',
-				'bower_components/prism/components/prism-twig.js',
-				// Prism Plugins
-				'bower_components/prism/plugins/line-numbers/prism-line-numbers.js',
-				'bower_components/prism/plugins/line-highlight/prism-line-highlight.js',
-				'bower_components/prism/plugins/file-highlight/prism-file-highlight.js',
-				// Other files
-				'public/assets/js/*.js',
-				'!public/assets/js/*.min.js'],
-			output: {
-				filename: 'wp-gistpen.min.js',
-				dir: 'public/assets/js/'
-			},
-		},
-		admin: {
-			files: ['admin/assets/js/wp-gistpen-admin.js'],
-			output: {
-				filename: 'wp-gistpen-admin.min.js',
-				dir: 'admin/assets/js/'
-			},
-		},
-		tinymce: {
-			files: ['admin/assets/js/tinymce-plugin.js'],
-			output: {
-				filename: 'tinymce-plugin.min.js',
-				dir: 'admin/assets/js/'
-			},
-		},
-		editor: {
-			files: [
-				'admin/assets/js/gistpen-editor.js',
-				'admin/assets/js/file-editor.js',
-				'admin/assets/js/tinymce-file-editor.js',
-				'admin/assets/js/insert-dialog.js'
-			],
-			output: {
-				filename: 'wp-gistpen-editor.min.js',
-				dir: 'admin/assets/js/'
-			},
-		},
-	},
-	scss: {
-		admin: {
-			files: ['admin/assets/scss/wp-gistpen-admin.scss'],
-			output: 'admin/assets/css/'
-		},
-		public: {
-			files: ['public/assets/scss/wp-gistpen-public.scss'],
-			output: 'public/assets/css/'
-		},
-		editor: {
-			files: ['admin/assets/scss/wp-gistpen-editor.scss'],
-			output: 'admin/assets/css/'
-		}
-	},
-	copy: [
-		'**/*.php',
-		'**/*.png',
-		'**/*.pot',
-		'.*',
-		'*.txt',
-		'*.php',
-		'*.json',
-		'*.lock',
-		'!node_modules/**',
-		'!includes/**',
-		'!bower_components/**',
-		'!*.sublime-*'],
-	build: 'build/'
-};
+gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
-gulp.task('init', function() {
-	runs(
-		['clean-bower', 'clean-composer'],
-		'install',
-		['scripts', 'styles']
-	);
-});
-
-gulp.task('update', ['scripts', 'styles']);
-
-gulp.task('watch', ['update'], function () {
+gulp.task('watch', function () {
 	gulp.watch(
-		[].concat(
-			paths.js.public.files,
-			paths.js.admin.files,
-			paths.js.tinymce.files,
-			paths.js.editor.files,
-			paths.scss.admin.files,
-			paths.scss.public.files,
-			paths.scss.editor.files,
-			paths.copy),
-		['update']);
+		'assets/js/!(ace)/*.js',
+		['scripts']);
+		gulp.watch(
+		'assets/scss/**',
+		['styles']);
 });
 
-gulp.task('build', function() {
-	runs('copy', 'init', 'zip', 'clean');
-});
-
-gulp.task('clean', function(cb) {
-	rimraf(paths.build, cb);
-});
-
-gulp.task('zip', function() {
-	return gulp.src(paths.build + '**')
-		.pipe(zip('wp-gistpen.zip'))
-		.pipe(gulp.dest('./'));
-});
-
-gulp.task('copy', ['set-build-var'], function() {
-	return gulp.src(paths.copy)
-		.pipe(gulp.dest(paths.build));
-});
-
-gulp.task('set-build-var', function(cb) {
-	var err;
-	building = true;
-	cb(err);
-});
-
-gulp.task('install', function() {
-	var composed, bowered;
-
-	if (building) {
-		composed = composer({bin: 'composer', cwd: process.cwd()+'/'+paths.build});
-		bowered = bower({cwd: paths.build});
-	}
-
-	composed = composer({ bin: 'composer' });
-	bowered = bower();
-
-	return merge(composed, bowered);
-});
-
-gulp.task('clean-bower', function(cb) {
-	rimraf('bower_components', cb);
-});
-
-gulp.task('clean-composer', function(cb) {
-	rimraf('includes', cb);
-});
+gulp.task('build', ['scripts', 'styles', 'packages']);
 
 gulp.task('scripts', function() {
-	var stream;
-	var aceStream;
+	var promises = [];
 
-	for(var location in paths.js) {
-		stream = gulp.src(paths.js[location].files)
-			.pipe(concat(paths.js[location].output.filename))
-			.pipe(gulpif(building, uglify()))
-			.pipe(gulp.dest(paths.js[location].output.dir))
-			.pipe(gulpif(building, gulp.dest(paths.build + paths.js[location].output.dir)));
-	}
+	glob.sync('assets/src/js/!(js)').forEach(function(filePath) {
+		if (fs.statSync(filePath).isDirectory()) {
+			var defer = Q.defer();
+			var pipeline = gulp.src(filePath + '/**/*.js')
+				.pipe(concat(path.basename(filePath) + '.js'))
+				.pipe(gulp.dest('assets/js'))
+				.pipe(uglify())
+				.pipe(concat(path.basename(filePath) + '.min.js'))
+				.pipe(gulp.dest('assets/js'));
+			pipeline.on('end', function() {
+				defer.resolve();
+			});
+			promises.push(defer.promise);
+		}
+	});
 
-	aceStream = gulp.src('bower_components/ace-builds/src-min-noconflict/**')
-	.pipe(gulp.dest('admin/assets/js/ace/'))
-	.pipe(gulpif(building, gulp.dest(paths.build + 'admin/assets/js/ace/')));
-
-	return merge(stream, aceStream);
-
+	return Q.all(promises);
 });
 
 gulp.task('styles', function() {
-	var stream;
+	return gulp.src('assets/src/scss/*.scss')
+		.pipe(sass())
+		.pipe(gulp.dest('assets/css'))
+		.pipe(minify())
+		.pipe(extrep('.min.css'))
+		.pipe(gulp.dest('assets/css'));
+});
 
-	for(var location in paths.scss) {
-		stream = gulp.src(paths.scss[location].files)
-			.pipe(sass())
-			.pipe(gulp.dest(paths.scss[location].output))
-			.pipe(gulpif(building, gulp.dest(paths.build + paths.scss[location].output)));
-	}
+gulp.task('packages', ['prism', 'ace', 'ajaxq']);
 
-	prismStream = gulp.src('bower_components/prism/**/*.css')
-	.pipe(gulp.dest('public/assets/css/prism/'))
-	.pipe(gulpif(building, gulp.dest(paths.build + 'public/assets/css/prism/')));
+gulp.task('prism', function() {
+	var promises = [];
 
-	return merge(stream, prismStream);
+	var scriptspromise = Q.defer();
+	var scriptspipe = gulp.src([
+		'bower_components/prism/components/prism-core.js',
+		'bower_components/prism/components/prism-markup.js',
+		'bower_components/prism/components/prism-css.js',
+		'bower_components/prism/components/prism-clike.js',
+		'bower_components/prism/components/prism-javascript.js',
+		'bower_components/prism/components/prism-php.js',
+		'bower_components/prism/components/prism-bash.js',
+		'bower_components/prism/components/prism-groovy.js',
+		'bower_components/prism/components/prism-java.js',
+		'bower_components/prism/components/prism-python.js',
+		'bower_components/prism/components/prism-ruby.js',
+		'bower_components/prism/components/prism-scala.js',
+		'bower_components/prism/components/prism-scss.js',
+		'bower_components/prism/components/prism-sql.js',
+		// New languages - v0.3.0
+		'bower_components/prism/components/prism-c.js',
+		'bower_components/prism/components/prism-coffeescript.js',
+		'bower_components/prism/components/prism-csharp.js',
+		'bower_components/prism/components/prism-go.js',
+		'bower_components/prism/components/prism-http.js',
+		'bower_components/prism/components/prism-ini.js',
+		'bower_components/prism/components/prism-markup.js',
+		'bower_components/prism/components/prism-objectivec.js',
+		'bower_components/prism/components/prism-swift.js',
+		'bower_components/prism/components/prism-twig.js',
+		// New languages - v0.5.0
+		'bower_components/prism/components/prism-actionscript.js',
+		'bower_components/prism/components/prism-applescript.js',
+		'bower_components/prism/components/prism-dart.js',
+		'bower_components/prism/components/prism-eiffel.js',
+		'bower_components/prism/components/prism-erlang.js',
+		'bower_components/prism/components/prism-gherkin.js',
+		'bower_components/prism/components/prism-git.js',
+		'bower_components/prism/components/prism-haml.js',
+		'bower_components/prism/components/prism-handlebars.js',
+		'bower_components/prism/components/prism-jade.js',
+		'bower_components/prism/components/prism-latex.js',
+		'bower_components/prism/components/prism-less.js',
+		'bower_components/prism/components/prism-markdown.js',
+		'bower_components/prism/components/prism-matlab.js',
+		'bower_components/prism/components/prism-nasm.js',
+		'bower_components/prism/components/prism-perl.js',
+		'bower_components/prism/components/prism-powershell.js',
+		'bower_components/prism/components/prism-r.js',
+		'bower_components/prism/components/prism-rust.js',
+		'bower_components/prism/components/prism-scheme.js',
+		'bower_components/prism/components/prism-smarty.js',
+		// Prism Plugins
+		'bower_components/prism/plugins/line-numbers/prism-line-numbers.js',
+		'bower_components/prism/plugins/line-highlight/prism-line-highlight.js',
+		'bower_components/prism/plugins/file-highlight/prism-file-highlight.js',
+	])
+		.pipe(concat('prism.js'))
+		.pipe(gulp.dest('assets/js'))
+		.pipe(uglify())
+		.pipe(extrep('.min.js'))
+		.pipe(gulp.dest('assets/js'));
+	scriptspipe.on('end', function() {
+		scriptspromise.resolve();
+	});
+	promises.push(scriptspromise);
 
+	var stylespromise = Q.defer();
+	var stylespipe = gulp.src('bower_components/prism/**/*.css')
+		.pipe(gulp.dest('assets/css/prism/'));
+	stylespipe.on('end', function() {
+		scriptspromise.resolve();
+	});
+
+	promises.push(stylespromise);
+
+	return promises;
+});
+
+gulp.task('ace', function() {
+	return gulp.src('bower_components/ace-builds/src-min-noconflict/**')
+		.pipe(gulp.dest('assets/js/ace'));
+});
+
+gulp.task('ajaxq', function() {
+	return gulp.src('bower_components/ajaxq/*.js')
+		.pipe(concat('ajaxq.js'))
+		.pipe(gulp.dest('assets/js'))
+		.pipe(uglify())
+		.pipe(extrep('.min.js'))
+		.pipe(gulp.dest('assets/js'));
 });

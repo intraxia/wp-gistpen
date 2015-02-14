@@ -3,22 +3,74 @@
 **Donate link:** http://jamesdigioia.com/  
 **Tags:** gist, code snippets, codepen  
 **Requires at least:** 3.9  
-**Tested up to:** 4.0  
-**Stable tag:** 0.4.0  
+**Tested up to:** 4.1  
+**Stable tag:** 0.5.0  
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
+## Description ##
+
 A self-hosted alternative to putting your code snippets on Gist.
 
-[![Build Status](https://travis-ci.org/mAAdhaTTah/WP-Gistpen.svg?branch=develop)](https://travis-ci.org/mAAdhaTTah/WP-Gistpen)
-
-## Description ##
+[![Build Status](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/build-status/develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop)
 
 You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement for your WordPress blog.
 
+Features include:
+
+* Revision saving
+* Gist import & export
+* ACE editor
+* PrismJS syntax highlighting
+* Supported Languages
+	- Assembly (NASM)
+	- ActionScript
+	- AppleScript
+	- Bash
+	- C
+	- Coffeescript
+	- C#
+	- CSS
+	- Dart
+	- Eiffel
+	- Erlang
+	- Gherkin/Cucumber
+	- Git/Diff
+	- Go
+	- Groovy
+	- HAML
+	- Handlebars
+	- HTML
+	- HTTP
+	- ini
+	- Jade
+	- Java
+	- JavaScript
+	- LaTeX
+	- LESS
+	- Markdown
+	- Matlab
+	- Objective-C
+	- Perl
+	- PHP
+	- PlainText
+	- PowerShell
+	- Python
+	- R
+	- Rust
+	- Ruby
+	- Sass
+	- Scala
+	- Scheme
+	- Smarty
+	- Sql
+	- Swift
+	- Twig
+	- XML
+
 ## Installation ##
 
-### Using The WordPress Dashboard ###
+### Using the WordPress Dashboard ###
 
 1. Navigate to the 'Add New' in the plugins dashboard
 2. Search for 'wp-gistpen'
@@ -43,11 +95,17 @@ You use WordPress because you want control over your writing. Why give Gist or C
 
 ## Frequently Asked Questions ##
 
+### What are the plugin's requirements? ###
+
+First, revisions need to be enabled. They can be disabled in `wp-config.php`, but WP-Gistpen relies on them to keep everything in sync. A future version will remove this dependency, but it's currently required.
+
+Additionally, your PHP version should be 5.3+. If you're a developer using 5.2, may God have mercy on your soul.
+
 ### How do I create a Gistpen and insert it into the post? ###
 
-WP-Gistpen registers a new `gistpens` post type. Instead of posting your public code snippets on Gist, go to Gistpens -> Add New, and paste in your code.
+To add a new Gistpen, go to Gistpens -> Add New, and paste in your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
 
-You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the pen button. From the pop-up, select one of the recent Gistpens or create a new one by pasting in your code and clicking "Insert".
+You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the code button. From the pop-up, select one of the recent Gistpens, search your Gistpens, or create a new one by pasting in your code and clicking "Insert".
 
 After inserting the shortcode, your code will appear in your post, highlighted by [PrismJS](http://prismjs.com).
 
@@ -72,6 +130,24 @@ Offset does not yet work but will be added soon.
 ### How do I link to a specific line? ###
 
 You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen-slug}.{lines}`. The lines don't need to be highlighted in advance for the link to work, and they will be highlighted when the link is clicked. The `{lines}` should match the same format as above.
+
+### How do I get my Gist token from GitHub? ###
+
+1. Login to GitHub.
+2. Go to Settings -> Applications.
+3. Under "Personal access tokens", click "Generate New Token."
+4. Give it a name, click create
+	* The default settings work, but make you sure you at least include the `gist` and `user` scopes.
+5. Copy the generated token.
+6. Paste it into the settings page.
+7. ???
+8. Profit!
+
+### How do I sync my Gistpens to Gist? ###
+
+Gistpens can be exported en masse from the Gistpens settings page. All Gistpens will be synced, only if the Gistpen hasn't been synced yet, but **regardless of whether syncing for the Gistpen is enabled**. Syncing will then be enabled on the exported Gistpens.
+
+If you do not want this, you can enable/disable Gistpen syncing on a per-Gistpen basis. Just click the checkbox on the Gistpen edit page, and any changes will be reflected on the corresponding Gist on update. If you uncheck that box, future changes will not be reflected on Gist.
 
 ### What is the future of this plugin? ###
 
@@ -100,5 +176,9 @@ Twilight theme with line numbers enabled. Check out all the themes at [PrismJS.c
 The current options page.
 
 ![](screenshot-5.png)
+
+The options page with a token saved.
+
+![](screenshot-6.png)
 
 Gistpen editor screen with Ace editor
