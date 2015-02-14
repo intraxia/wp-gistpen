@@ -2,6 +2,11 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [0.5.1] - 2015-02-14 ###
+
+#### Fixed ####
+* Add new database migration to fix Gist exports of pre-0.5.0 Gistpens
+
 ### [0.5.0] - 2015-02-14 ###
 
 #### Added ####
