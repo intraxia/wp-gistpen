@@ -123,16 +123,14 @@ echo "Done. Zip file is in /tmp."
 echo "Adding new commit to SVN..."
 svn stat | awk '/^\?/ {print $2}' | xargs svn add > /dev/null 2>&1
 svn stat | awk '/^\M/ {print $2}' | xargs svn add > /dev/null 2>&1
-svn stat | awk '/^\!/ {print $2}' | xargs svn rm --force
+svn stat | awk '/^\!/ {print $2}' | xargs svn rm --force  > /dev/null 2>&1
 
-svn stat
-
-svn ci --username=$SVN_USER -m "Deploy version $NEWVERSION1 to .org"
+svn ci --username=$SVN_USER -m "Deploy version $NEWVERSION1 to .org" -q
 
 echo "Done."
 
 echo -n "Deploying new tag to SVN repo..."
-svn copy $SVN_URL/trunk $SVN_URL/tags/$NEWVERSION1 -m "Release $NEWVERSION1"
+svn copy $SVN_URL/trunk $SVN_URL/tags/$NEWVERSION1 -m "Release $NEWVERSION1" -q
 echo "Done."
 
 echo "Finished deploying $SLUG."
