@@ -5,7 +5,7 @@
 For development, WP-Gistpen requires these tools:
 
 1. PHP 5.3+
-	* Note: WordPress is compatible back to 5.2, so not all your users will be able to use this plugin yet.
+	* Note: WordPress is compatible back to 5.2, so not all users will be able to use this plugin yet.
 2. [Composer][1], for back-end libraries.
 3. [npm][2], for build tools.
 3. [Bower][3], for front-end libraries.
