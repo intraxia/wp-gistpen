@@ -2,6 +2,11 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [0.5.3] - 2015-02-14 ###
+
+#### Fixed ####
+* Disable exporting en masse from the Settings page until we fix export/sync bug
+
 ### [0.5.2] - 2015-02-14 ###
 
 #### Fixed ####
