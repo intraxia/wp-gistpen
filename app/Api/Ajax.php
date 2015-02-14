@@ -366,12 +366,12 @@ class Ajax {
 			}
 		}
 
-		if( empty( $new_user_gists ) ) {
+		// if( empty( $new_user_gists ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
 				'message' => __( 'No Gists to import.', $this->plugin_name ),
 			) );
-		}
+		//}
 
 		wp_send_json_success( array( 'gist_ids' => $new_user_gists ) );
 	}
