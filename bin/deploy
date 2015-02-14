@@ -41,7 +41,7 @@ echo "Versions match in README and $SLUG.php. Let's proceed..."
 # Check if version has already been deployed
 if git show-ref --quiet --tags --verify -- "refs/tags/$NEWVERSION1"
 	then
-		echo "Version $NEWVERSION1 already exists as git tag. Proceeding."
+		echo "Version $NEWVERSION1 already exists as git tag. Proceeding..."
 	else
 		# create git tag
 		echo -n "Version $NEWVERSION1 does not exist. Creating and pushing new version tag to GitHub..."
@@ -52,8 +52,7 @@ if git show-ref --quiet --tags --verify -- "refs/tags/$NEWVERSION1"
 fi
 
 # Check if working directory is clean
-git ls-files --other --error-unmatch . >/dev/null 2>&1; ec=$?
-if test "$ec" = 0; then
+if [ ! -z "$(git status --porcelain)" ]; then
 	echo "There appears to be uncommitted changes in your working directory. Please commit or stash them and try again."
 	exit 1
 fi
@@ -76,7 +75,7 @@ for file in $(find $SVN_DIR/* -type f -and -not -path "*.svn*")
 do
 	rm $file
 done
-find /tmp/$SLUG/trunk -type d -empty -delete
+find /tmp/$SLUG/trunk -type d -and -not -path "*.svn*" -empty -delete
 echo "Done."
 
 # copy current plugin to svn dir
@@ -99,11 +98,11 @@ gulp build --silent
 echo "Done."
 
 # transform the readme
-echo -n "Converting the README to WordPress format..."
 if [ -f README.md ]; then
-	$SVN_DIR/bin/wp2md $SVN_DIR/README.md $SVN_DIR/readme.txt to-wp
+	echo -n "Converting the README to WordPress format..."
+	$SVN_DIR/bin/wp2md $SVN_DIR/README.md $SVN_DIR/README.txt to-wp
+	echo "Done."
 fi
-echo "Done."
 
 # remove unneeded files via .svnignore
 echo -n "Removing unwanted development files using .svnignore..."
@@ -115,14 +114,15 @@ echo "Done."
 
 # build release zip
 echo -n "Building production release zip..."
-zip $SLUG * --quiet
+zip -r $SLUG * --quiet
 mv $SLUG.zip /tmp/$SLUG.zip
 # todo: upload this zip directly to the GitHub release
 echo "Done. Zip file is in /tmp."
 
 # svn addremove
-echo -n "Adding new commit to SVN..."
+echo "Adding new commit to SVN..."
 svn stat | awk '/^\?/ {print $2}' | xargs svn add > /dev/null 2>&1
+svn stat | awk '/^\M/ {print $2}' | xargs svn add > /dev/null 2>&1
 svn stat | awk '/^\!/ {print $2}' | xargs svn rm --force
 
 svn stat
