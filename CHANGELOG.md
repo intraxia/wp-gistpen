@@ -2,7 +2,7 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [0.5.1] - 2015-02-14 ###
+### [0.5.2] - 2015-02-14 ###
 
 #### Fixed ####
 * Add new database migration to fix Gist exports of pre-0.5.0 Gistpens
@@ -154,6 +154,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * Use SyntaxHighlighter to display
 
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
+[0.5.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.2
 [0.5.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.0
 [0.4.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.4.0
 [0.3.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.3.1
