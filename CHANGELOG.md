@@ -1,6 +1,6 @@
 ## Changelog ##
 
-This change log follows the [Keep a Changelog standards][keepachangelog]. Versions follows [Semantic Versioning][semver].
+This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
 ### [0.5.0] - 2015-02-14 ###
 
@@ -148,8 +148,6 @@ This change log follows the [Keep a Changelog standards][keepachangelog]. Versio
 * Embeddable in posts via shortcode
 * Use SyntaxHighlighter to display
 
-[keepachangelog]: http://keepachangelog.com/
-[semver]: http://semver.org/
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
 [0.5.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.0
 [0.4.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.4.0
