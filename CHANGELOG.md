@@ -2,7 +2,7 @@
 
 This change log follows the [Keep a Changelog standards][keepachangelog]. Versions follows [Semantic Versioning][semver].
 
-### [Unreleased][unreleased] ###
+### [0.5.0] - 2015-02-14 ###
 
 #### Added ####
 * MAJOR FEATURE: Gist interoperability
@@ -151,6 +151,7 @@ This change log follows the [Keep a Changelog standards][keepachangelog]. Versio
 [keepachangelog]: http://keepachangelog.com/
 [semver]: http://semver.org/
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
+[0.5.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.0
 [0.4.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.4.0
 [0.3.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.3.1
 [0.3.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.3.0
