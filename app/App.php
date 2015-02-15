@@ -156,7 +156,7 @@ class App {
 	 */
 	private function register_wp_cli_command() {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			\WP_CLI::add_command( 'wpgp', 'WP_Gistpen\CLI\Command' );
+			// \WP_CLI::add_command( 'wpgp', 'WP_Gistpen\CLI\Command' );
 		}
 	}
 

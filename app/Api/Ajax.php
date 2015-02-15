@@ -296,12 +296,12 @@ class Ajax {
 			wp_send_json_error( array( 'message' => $result->get_error_message() ) );
 		}
 
-		if ( empty( $result ) ) {
+		// if ( empty( $result ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
 				'message' => __( 'No Gistpens to export.', $this->plugin_name ),
 			) );
-		}
+		// }
 
 		wp_send_json_success( array( 'ids' => $result ) );
 	}
@@ -371,7 +371,7 @@ class Ajax {
 				'code'    => 'error',
 				'message' => __( 'No Gists to import.', $this->plugin_name ),
 			) );
-		//}
+		// }
 
 		wp_send_json_success( array( 'gist_ids' => $new_user_gists ) );
 	}
