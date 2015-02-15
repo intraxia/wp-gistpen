@@ -2,10 +2,10 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [0.5.3] - 2015-02-14 ###
+### [0.5.4] - 2015-02-14 ###
 
 #### Fixed ####
-* Disable exporting en masse from the Settings page until we fix export/sync bug
+* Disable importing/exporting en masse until we fix export/sync bug
 
 ### [0.5.2] - 2015-02-14 ###
 
@@ -159,6 +159,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * Use SyntaxHighlighter to display
 
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
+[0.5.4]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.4
 [0.5.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.2
 [0.5.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.0
 [0.4.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.4.0
