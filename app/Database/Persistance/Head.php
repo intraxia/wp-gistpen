@@ -110,7 +110,9 @@ class Head {
 		$results['deleted'] = array();
 		unset($result);
 
-		$result = $this->set_gist_id( $zip_id, $zip->get_gist_id() );
+		if ( 'none' !== $zip->get_gist_id() ) {
+			$result = $this->set_gist_id( $zip_id, $zip->get_gist_id() );
+		}
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
