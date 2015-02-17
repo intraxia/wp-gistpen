@@ -2,6 +2,11 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [0.5.6] - 2015-02-17
+
+#### Fixed ####
+* Logic bugs raised by Travis
+
 ### [0.5.5] - 2015-02-15 ###
 
 #### Fixed ####

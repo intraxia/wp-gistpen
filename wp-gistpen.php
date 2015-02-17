@@ -14,7 +14,7 @@
  * Plugin Name:       WP-Gistpen
  * Plugin URI:        http://www.jamesdigioia.com/wp-gistpen/
  * Description:       A self-hosted alternative to putting your code snippets on Gist.
- * Version:           0.5.5
+ * Version:           0.5.6
  * Author:            James DiGioia
  * Author URI:        http://www.jamesdigioia.com/
  * Text Domain:       wp-gistpen
@@ -67,7 +67,7 @@ class WP_Gistpen {
 
 	public static $plugin_name = 'wp-gistpen';
 
-	public static $version = '0.5.2';
+	public static $version = '0.5.6';
 
 	public static function init() {
 

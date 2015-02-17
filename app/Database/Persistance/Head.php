@@ -112,10 +112,10 @@ class Head {
 
 		if ( 'none' !== $zip->get_gist_id() ) {
 			$result = $this->set_gist_id( $zip_id, $zip->get_gist_id() );
-		}
 
-		if ( is_wp_error( $result ) ) {
-			return $result;
+			if ( is_wp_error( $result ) ) {
+				return $result;
+			}
 		}
 
 		$result = $this->set_sync( $zip_id, $zip->get_sync() );

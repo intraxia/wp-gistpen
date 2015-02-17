@@ -36,6 +36,14 @@ if [ "$NEWVERSION1" != "$NEWVERSION2" ];then
 	exit 1
 fi
 
+# Also, make sure to check:
+# bower
+# package
+# composer
+# constant
+# CHANGELOG
+# @todo: something about this - checklist?
+
 echo "Versions match in README and $SLUG.php. Let's proceed..."
 
 # Check if version has already been deployed
