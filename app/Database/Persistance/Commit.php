@@ -203,6 +203,9 @@ class Commit {
 
 			$state_meta = array();
 
+			// Removing the latest revision first
+			array_shift( $revisions );
+
 			if ( empty( $revisions ) ) {
 				// if not, set status to 'new'
 				$state_meta['status'] = 'new';
@@ -211,8 +214,6 @@ class Commit {
 				$state_meta['status'] = 'updated';
 
 				// Set prev filename as current gist_id
-				// Removing the latest revision first
-				array_shift( $revisions );
 				$prev_revision = array_shift( $revisions );
 				$prev_state = $this->commit_query->state_by_id( $prev_revision->ID );
 				$state_meta['gist_id'] = $prev_state->get_filename();
