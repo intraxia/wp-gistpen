@@ -13,10 +13,10 @@ gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
 gulp.task('watch', function () {
 	gulp.watch(
-		'assets/js/!(ace)/*.js',
+		'assets/src/js/**/*.js',
 		['scripts']);
 		gulp.watch(
-		'assets/scss/**',
+		'assets/src/scss/**/*.scss',
 		['styles']);
 });
 
