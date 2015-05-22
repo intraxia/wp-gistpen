@@ -183,7 +183,8 @@ class Editor {
 	 */
 	public function edit_screen_orderby( $orderby, $query ) {
 		if ( is_admin() && $query->query_vars['post_type'] === 'gistpen' ) {
-			$orderby = 'wp_posts.post_date DESC';
+			global $wpdb;
+			$orderby = $wpdb->posts . '.post_date DESC';
 		}
 
 		return $orderby;
