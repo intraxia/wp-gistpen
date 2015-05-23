@@ -43,6 +43,3 @@ bower_components
 # Generated files
 assets/js/**
 assets/css/**
-build
-wp-gistpen.zip
-README.txt

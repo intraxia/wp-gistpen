@@ -14,7 +14,7 @@
  * Plugin Name:       WP-Gistpen
  * Plugin URI:        http://www.jamesdigioia.com/wp-gistpen/
  * Description:       A self-hosted alternative to putting your code snippets on Gist.
- * Version:           0.5.6
+ * Version:           0.5.7
  * Author:            James DiGioia
  * Author URI:        http://www.jamesdigioia.com/
  * Text Domain:       wp-gistpen
@@ -28,12 +28,6 @@
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
-}
-
-// If we don't have the right PHP version, abort.
-if ( version_compare( PHP_VERSION, '5.3.0', '<' ) ) {
-	deactivate_plugins( basename( __FILE__ ) );
-	wp_die( '<p><strong>Plugin Name</strong> requires PHP  version 5.3 or greater.</p>', 'Plugin Activation Error',  array( 'response' => 200 ) );
 }
 
 /*----------------------------------------------------------------------------*
@@ -67,7 +61,7 @@ class WP_Gistpen {
 
 	public static $plugin_name = 'wp-gistpen';
 
-	public static $version = '0.5.6';
+	public static $version = '0.5.7';
 
 	public static function init() {
 
@@ -95,4 +89,9 @@ class WP_Gistpen {
 function wp_gistpen() {
 	return WP_Gistpen::init();
 }
-wp_gistpen();
+
+$updatePhp = new WPUpdatePhp( '5.3.0' );
+
+if ( $updatePhp->does_it_meet_required_php_version( PHP_VERSION ) ) {
+	wp_gistpen();
+}

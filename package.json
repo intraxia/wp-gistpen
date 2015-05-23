@@ -1,6 +1,5 @@
 {
   "name": "wp-gistpen",
-  "version": "0.5.6",
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
   "author": "James DiGioia <jamesorodig@gmail.com>",
   "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
