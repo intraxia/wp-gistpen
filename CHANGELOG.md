@@ -2,7 +2,12 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [0.5.6] - 2015-02-17
+### [0.5.7] - 2015-05-23 ###
+
+#### Fixed ####
+* Use `wpdb` to get the posts table for alternate prefix and Multisite compatibility (thanks @janizde!)
+
+### [0.5.6] - 2015-02-17 ###
 
 #### Fixed ####
 * Logic bugs raised by Travis
@@ -170,6 +175,8 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * Use SyntaxHighlighter to display
 
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
+[0.5.7]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.7
+[0.5.6]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.6
 [0.5.5]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.5
 [0.5.4]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.4
 [0.5.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.2
