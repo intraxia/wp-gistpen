@@ -22,7 +22,7 @@ class Database {
 	 * @var array
 	 * @since 0.5.0
 	 */
-	private $query = array();
+	protected $query = array();
 
 	/**
 	 * Array containing all persistance objects
@@ -30,7 +30,7 @@ class Database {
 	 * @var array
 	 * @since 0.5.0
 	 */
-	private $persistance = array();
+	protected $persistance = array();
 
 	/**
 	 * Initialize the class and set its properties.

@@ -26,7 +26,7 @@ class Content {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	protected $database;
 
 	/**
 	 * Initialize the class and set its properties.

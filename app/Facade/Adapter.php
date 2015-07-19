@@ -26,7 +26,7 @@ class Adapter {
 	 * @var CommitAdapter
 	 * @since 0.5.0
 	 */
-	private $commit;
+	protected $commit;
 
 	/**
 	 * WP_Gistpen\Adapter\File object
@@ -34,7 +34,7 @@ class Adapter {
 	 * @var FileAdapter
 	 * @since 0.5.0
 	 */
-	private $file;
+	protected $file;
 
 	/**
 	 * WP_Gistpen\Adapter\Gist object
@@ -42,7 +42,7 @@ class Adapter {
 	 * @var GistAdapter
 	 * @since 0.5.0
 	 */
-	private $gist;
+	protected $gist;
 
 	/**
 	 * WP_Gistpen\Adapter\History object
@@ -58,7 +58,7 @@ class Adapter {
 	 * @var ApiAdapter
 	 * @since 0.5.0
 	 */
-	private $api;
+	protected $api;
 
 	/**
 	 * WP_Gistpen\Adapter\Language object
@@ -66,7 +66,7 @@ class Adapter {
 	 * @var LanguageAdapter
 	 * @since 0.5.0
 	 */
-	private $language;
+	protected $language;
 
 	/**
 	 * WP_Gistpen\Adapter\State object
@@ -82,7 +82,7 @@ class Adapter {
 	 * @var ZipAdapter
 	 * @since 0.5.0
 	 */
-	private $zip;
+	protected $zip;
 
 	/**
 	 * Initialize the class and set its properties.

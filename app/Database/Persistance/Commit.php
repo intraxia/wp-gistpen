@@ -29,7 +29,7 @@ class Commit {
 	 * @var Adapter
 	 * @since    0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Database object for querying Head
@@ -37,7 +37,7 @@ class Commit {
 	 * @var HeadQuery
 	 * @since    0.5.0
 	 */
-	private $head_query;
+	protected $head_query;
 
 	/**
 	 * Database object for querying Commit
@@ -45,7 +45,7 @@ class Commit {
 	 * @var CommitQuery
 	 * @since    0.5.0
 	 */
-	private $commit_query;
+	protected $commit_query;
 
 	/**
 	 * Whether the current commit changed

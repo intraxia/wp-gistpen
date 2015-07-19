@@ -20,7 +20,7 @@ class Editor {
 	 * @access   private
 	 * @var string
 	 */
-	private $min = '';
+	protected $min = '';
 
 	/**
 	 * Initialize the class and set its properties.

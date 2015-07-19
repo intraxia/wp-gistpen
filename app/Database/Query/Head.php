@@ -27,7 +27,7 @@ class Head {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Default query args
@@ -35,7 +35,7 @@ class Head {
 	 * @var  array
 	 * @since 0.5.0
 	 */
-	private $args;
+	protected $args;
 
 	/**
 	 * Initialize the class and set its properties.

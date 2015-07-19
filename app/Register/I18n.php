@@ -21,7 +21,7 @@ class I18n {
 	 * @access   private
 	 * @var      string    $domain    The domain identifier for this plugin.
 	 */
-	private $domain;
+	protected $domain;
 
 	/**
 	 * Load the plugin text domain for translation.

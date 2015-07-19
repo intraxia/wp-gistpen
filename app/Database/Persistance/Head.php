@@ -29,14 +29,14 @@ class Head {
 	 *
 	 * @var Adapter
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Database object for querying Head
 	 *
 	 * @var HeadQuery
 	 */
-	private $head_query;
+	protected $head_query;
 
 	/**
 	 * Initialize the class and set its properties.

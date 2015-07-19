@@ -65,7 +65,7 @@ class Migration {
 	 * @var Facade\Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	protected $database;
 
 	/**
 	 * Adapter Facade object
@@ -73,7 +73,7 @@ class Migration {
 	 * @var Facade\Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Initialize the class and set its properties.

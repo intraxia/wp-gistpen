@@ -23,7 +23,7 @@ class Ajax {
 	 * @var string
 	 * @since  0.4.0
 	 */
-	private $nonce_field;
+	protected $nonce_field;
 
 	/**
 	 * Database Facade object
