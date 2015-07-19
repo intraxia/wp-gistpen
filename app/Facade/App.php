@@ -15,7 +15,7 @@ class App {
 	 * Retrieve a global object
 	 *
 	 * @param  string $obj Global object name
-	 * @return obj         Global object
+	 * @return mixed         Global object
 	 */
 	public static function get( $obj ) {
 		$app = wp_gistpen();

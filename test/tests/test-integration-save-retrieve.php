@@ -13,8 +13,8 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->save = new SaveController( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->save = new SaveController();
+		$this->database = new Database();
 	}
 
 	function test_sync_save_and_retrieve() {
@@ -74,7 +74,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 		$this->create_post_and_children();
 		$this->zip = $this->database->query( 'head' )->by_id( $this->gistpen->ID );
 
-		$gist = new GistTest( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$gist = new GistTest();
 		$gist->set_client( $this->mock_github_client );
 
 		App::get('sync')->gist = $gist;

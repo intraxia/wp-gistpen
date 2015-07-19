@@ -18,24 +18,6 @@ use \WP_CLI;
 class Sync {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Database Facade object
 	 *
 	 * @var Database
@@ -66,16 +48,11 @@ class Sync {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct() {
+		$this->database = new Database();
+		$this->adapter = new Adapter();
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
-		$this->gist = new Gist( $this->plugin_name, $this->version );
-
+		$this->gist = new Gist();
 	}
 
 	/**
@@ -88,7 +65,7 @@ class Sync {
 	 * @return string|\WP_Error           Zip ID on success, WP_Error on failure
 	 */
 	public function export_gistpen( $zip_id ) {
-		if ( false === cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) ) {
+		if ( false === cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' ) ) {
 			return $zip_id;
 		}
 

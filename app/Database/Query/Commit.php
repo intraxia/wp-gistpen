@@ -63,14 +63,9 @@ class Commit {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $plugin_name, $version );
-		$this->head_query = new HeadQuery( $plugin_name, $version );
-
+	public function __construct() {
+		$this->adapter = new Adapter();
+		$this->head_query = new HeadQuery();
 	}
 
 	/**

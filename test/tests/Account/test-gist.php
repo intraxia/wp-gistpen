@@ -10,7 +10,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->gist = new GistStub( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->gist = new GistStub();
 		$this->gist->set_client( $this->mock_github_client );
 		$this->gist->set_adapter( $this->mock_adapter );
 	}

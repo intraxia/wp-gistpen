@@ -14,38 +14,6 @@ use WP_Gistpen\Model\Zip as ZipModel;
 class Zip {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-	}
-
-	/**
 	 * Build a Zip model by array of data
 	 *
 	 * @param  array $data array of data
@@ -68,8 +36,8 @@ class Zip {
 	/**
 	 * Build a Zip model by $post data
 	 *
-	 * @param  WP_Post $post zip's post data
-	 * @return Zip       Zip model
+	 * @param  \WP_Post $post zip's post data
+	 * @return ZipModel
 	 * @since 0.5.0
 	 */
 	public function by_post( $post ) {
@@ -131,11 +99,11 @@ class Zip {
 	/**
 	 * Builds a blank zip model
 	 *
-	 * @return Zip zip model
+	 * @return ZipModel
 	 * @since 0.5.0
 	 */
 	public function blank() {
-		return new ZipModel( $this->plugin_name, $this->version );
+		return new ZipModel();
 	}
 
 }

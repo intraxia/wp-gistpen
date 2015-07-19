@@ -21,24 +21,6 @@ use WP_Gistpen\Facade\Database;
 class Content {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Database Facade object
 	 *
 	 * @var Database
@@ -53,13 +35,8 @@ class Content {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-
+	public function __construct() {
+		$this->database = new Database();
 	}
 
 	/**
@@ -68,7 +45,6 @@ class Content {
 	 * @since    0.1.0
 	 */
 	public function remove_filters( $content ) {
-
 		if ( 'gistpen' == get_post_type() ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
@@ -122,16 +98,17 @@ class Content {
 	/**
 	 * Filter the child posts from the main query
 	 *
-	 * @param  WP_Query $query query object
+	 * @param  \WP_Query $query query object
+	 * @return \WP_Query
 	 * @since  0.4.0
 	 */
 	public function pre_get_posts( $query ) {
 		if ( ! $query->is_main_query() ) {
-			return;
+			return $query;
 		}
 
 		if ( ! $query->is_post_type_archive( 'gistpen' ) ) {
-			return;
+			return $query;
 		}
 
 		// only top level posts

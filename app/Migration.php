@@ -60,24 +60,6 @@ class Migration {
 	);
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Database Facade object
 	 *
 	 * @var Facade\Database
@@ -100,14 +82,9 @@ class Migration {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $plugin_name, $version );
-		$this->adapter = new Adapter( $plugin_name, $version );
-
+	public function __construct() {
+		$this->database = new Database();
+		$this->adapter = new Adapter();
 	}
 
 	/**
@@ -119,9 +96,9 @@ class Migration {
 		// Check if plugin needs to be upgraded
 		$version = get_option( 'wp_gistpen_version', '0.0.0' );
 
-		if ( $version !== $this->version ) {
+		if ( $version !== \WP_Gistpen::$version ) {
 			$this->update( $version );
-			update_option( 'wp_gistpen_version', $this->version );
+			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
 		}
 	}
 

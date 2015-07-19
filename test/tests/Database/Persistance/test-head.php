@@ -15,9 +15,9 @@ class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
 		$this->_setRole( 'administrator' );
 		$this->create_post_and_children();
 
-		$this->persistance = new Persistance( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->query = new Query( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->adapter = new Adapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->persistance = new Persistance();
+		$this->query = new Query();
+		$this->adapter = new Adapter();
 
 		$this->zip = $this->adapter->build( 'zip' )->blank();
 		$this->file = $this->adapter->build( 'file' )->blank();

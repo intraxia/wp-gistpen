@@ -14,38 +14,6 @@ use WP_Gistpen\Model\Commit\State as StateModel;
 class State {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version           The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-	}
-
-	/**
 	 * Build a State model by array of data
 	 *
 	 * @param  array $data array of data
@@ -68,7 +36,7 @@ class State {
 	/**
 	 * Build a State model by $post data
 	 *
-	 * @param  WP_Post $post zip's post data
+	 * @param  \WP_Post $post zip's post data
 	 * @return State         State model
 	 * @since 0.5.0
 	 */
@@ -102,10 +70,10 @@ class State {
 	/**
 	 * Builds a blank file model
 	 *
-	 * @return File   file model
+	 * @return StateModel   file model
 	 * @since 0.5.0
 	 */
 	public function blank() {
-		return new StateModel( $this->plugin_name, $this->version );
+		return new StateModel();
 	}
 }

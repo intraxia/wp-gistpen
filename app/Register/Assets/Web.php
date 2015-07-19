@@ -13,24 +13,6 @@ namespace WP_Gistpen\Register\Assets;
 class Web {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * The minification string
 	 *
 	 * @since    0.5.0
@@ -46,15 +28,10 @@ class Web {
 	 * @var      string    $plugin_name       The name of the plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		if ( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
+	public function __construct() {
+		if ( ! defined( 'SCRIPT_DEBUG' ) || true !== SCRIPT_DEBUG ) {
 			$this->min = '.min';
 		}
-
 	}
 
 	/**
@@ -63,9 +40,7 @@ class Web {
 	 * @since    0.5.0
 	 */
 	public function enqueue_styles() {
-
-		wp_enqueue_style( $this->plugin_name .'-web-styles', WP_GISTPEN_URL . 'assets/css/web' . $this->min . '.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( \WP_Gistpen::$plugin_name .'-web-styles', WP_GISTPEN_URL . 'assets/css/web' . $this->min . '.css', array(), \WP_Gistpen::$version, 'all' );
 	}
 
 }

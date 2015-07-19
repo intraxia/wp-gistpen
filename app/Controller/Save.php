@@ -15,24 +15,6 @@ use WP_Gistpen\Facade\Adapter;
 class Save {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Database Facade object
 	 *
 	 * @var Database
@@ -55,14 +37,9 @@ class Save {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
+	public function __construct() {
+		$this->database = new Database();
+		$this->adapter = new Adapter();
 	}
 
 	/**
@@ -81,7 +58,7 @@ class Save {
 
 		// Check user permissions
 		if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
-			return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', $this->plugin_name ) . $zip->get_ID() );
+			return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
 		}
 
 		foreach ( $zip_data['files'] as $file_data ) {

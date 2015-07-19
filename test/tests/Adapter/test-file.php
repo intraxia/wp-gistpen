@@ -9,7 +9,7 @@ class WP_Gistpen_FileAdapter_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->adapter = new FileAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new FileAdapter();
 	}
 
 	function test_build_by_array_complete() {

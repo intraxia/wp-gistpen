@@ -9,7 +9,7 @@ class WP_Gistpen_CommitAdapter_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->adapter = new CommitAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new CommitAdapter();
 		$this->time = current_time( 'mysql' );
 	}
 

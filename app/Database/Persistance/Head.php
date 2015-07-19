@@ -25,24 +25,6 @@ use WP_Gistpen\Model\Language;
 class Head {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Adapter facade
 	 *
 	 * @var Adapter
@@ -63,21 +45,15 @@ class Head {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $plugin_name, $version );
-		$this->head_query = new HeadQuery( $plugin_name, $version );
-
-
+	public function __construct() {
+		$this->adapter = new Adapter();
+		$this->head_query = new HeadQuery();
 	}
 
 	/**
 	 * Save the Zip to the database
 	 *
-	 * @param  Zip $post
+	 * @param  \WP_Gistpen\Model\Zip $zip
 	 * @return int|\WP_Error    post_id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
@@ -219,7 +195,7 @@ class Head {
 	 * Save a Gistpen by array
 	 *
 	 * @param  array $data Array of Gistpen data
-	 * @return int|WP_Error       Saved Gistpen's ID or WP_Error on failure
+	 * @return int|\WP_Error       Saved Gistpen's ID or WP_Error on failure
 	 * @since  0.5.0
 	 */
 	public function by_array( $data ) {
@@ -237,6 +213,7 @@ class Head {
 	 *
 	 * @param  int    $zip_id  post ID of zip to update
 	 * @param  string $gist_id Gist ID to save
+	 * @return bool
 	 * @since  0.5.0
 	 */
 	public function set_gist_id( $zip_id, $gist_id ) {
@@ -247,7 +224,8 @@ class Head {
 	 * Save the sync status to the Zip
 	 *
 	 * @param  int    $zip_id  post ID of zip to update
-	 * @param  string $gist_id Gist ID to save
+	 * @param  string $sync Gist ID to save
+	 * @return bool
 	 * @since  0.5.0
 	 */
 	public function set_sync( $zip_id, $sync ) {

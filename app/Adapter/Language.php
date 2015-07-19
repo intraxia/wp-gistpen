@@ -14,24 +14,6 @@ use WP_Gistpen\Model\Language as LanguageModel;
 class Language {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Map of Gist to Gistpen languages
 	 * @var   array
 	 * @since 0.5.0
@@ -45,11 +27,7 @@ class Language {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+	public function __construct() {
 		$this->map = array(
 			'scss'        => 'sass',
 			'python'      => 'py',
@@ -73,7 +51,7 @@ class Language {
 	 * @since 0.4.0
 	 */
 	public function by_slug( $slug ) {
-		return new LanguageModel( $this->plugin_name, $this->version, $slug );
+		return new LanguageModel( $slug );
 	}
 
 	/**
@@ -91,10 +69,10 @@ class Language {
 		}
 
 		try {
-			$language = new LanguageModel( $this->plugin_name, $this->version, $slug );
+			$language = new LanguageModel( $slug );
 		} catch ( \Exception $e ) {
 			// Default to "plaintext" if we don't support the imported language
-			$language = new LanguageModel( $this->plugin_name, $this->version, 'plaintext' );
+			$language = new LanguageModel( 'plaintext' );
 		}
 
 		return $language;
@@ -107,6 +85,6 @@ class Language {
 	 * @since 0.5.0
 	 */
 	public function blank() {
-		return new LanguageModel( $this->plugin_name, $this->version );
+		return new LanguageModel();
 	}
 }

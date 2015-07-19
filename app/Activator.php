@@ -22,7 +22,7 @@ class Activator {
 	 */
 	public static function activate() {
 
-		if ( ! get_option( 'wp_gistpen_activate' ) ) {
+		if ( ! get_option( '_wpgp_activated' ) ) {
 			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
 		}
 

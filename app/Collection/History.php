@@ -14,24 +14,6 @@ use WP_Gistpen\Model\Commit\Meta as Commit;
 class History implements \Countable {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * ID of the head zip
 	 *
 	 * @var   int
@@ -46,20 +28,6 @@ class History implements \Countable {
 	 * @since 0.5.0
 	 */
 	protected $commits = array();
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-	}
 
 	/**
 	 * Returns the number of Commits in this History
@@ -94,7 +62,7 @@ class History implements \Countable {
 	/**
 	 * Get the History's array of Commits
 	 *
-	 * @return array History's array of Commits
+	 * @return \WP_Gistpen\Model\Commit\Meta[]
 	 * @since  0.5.0
 	 */
 	public function get_commits() {
@@ -104,7 +72,7 @@ class History implements \Countable {
 	/**
 	 * Set the array of commits in the History
 	 *
-	 * @param array $commits Array of commits
+	 * @param \WP_Gistpen\Model\Commit\Meta[] $commits
 	 * @since 0.5.0
 	 */
 	public function set_commits( $commits ) {
@@ -119,6 +87,7 @@ class History implements \Countable {
 	 * Validate and add a Commit to the History
 	 *
 	 * @param Commit $commit
+	 * @throws \Exception
 	 * @since 0.5.0
 	 */
 	public function add_commit( $commit ) {

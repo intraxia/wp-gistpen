@@ -16,7 +16,7 @@ class WP_Gistpen_Database_Query_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 
 		$this->create_post_and_children();
-		$this->query = new Query( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->query = new Query();
 	}
 
 	function test_succeeeded_get_by_recent() {

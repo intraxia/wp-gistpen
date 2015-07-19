@@ -17,24 +17,6 @@ use WP_Gistpen\Database\Persistance\Commit as CommitPersistance;
 class Database {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Array containing all query objects
 	 *
 	 * @var array
@@ -57,17 +39,12 @@ class Database {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct() {
+		$this->query['head'] = new HeadQuery();
+		$this->query['commit'] = new CommitQuery();
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->query['head'] = new HeadQuery( $this->plugin_name, $this->version );
-		$this->query['commit'] = new CommitQuery( $this->plugin_name, $this->version );
-
-		$this->persistance['head'] = new HeadPersistance( $this->plugin_name, $this->version );
-		$this->persistance['commit'] = new CommitPersistance( $this->plugin_name, $this->version );
-
+		$this->persistance['head'] = new HeadPersistance();
+		$this->persistance['commit'] = new CommitPersistance();
 	}
 
 	/**

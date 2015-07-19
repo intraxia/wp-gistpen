@@ -16,24 +16,6 @@ namespace WP_Gistpen\Model;
 class Zip {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Zip description
 	 *
 	 * @var string
@@ -44,10 +26,10 @@ class Zip {
 	/**
 	 * Files contained by the Zip
 	 *
-	 * @var array
+	 * @var File[]
 	 * @since 0.4.0
 	 */
-	protected $files;
+	protected $files = array();
 
 	/**
 	 * Post's ID
@@ -90,20 +72,12 @@ class Zip {
 	protected $sync = 'off';
 
 	/**
-	 * Date craeted in GMT
+	 * Date created in GMT
 	 *
 	 * @var string
 	 * @since    0.5.0
 	 */
 	protected $create_date = '';
-
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		$this->files = array();
-
-	}
 
 	/**
 	 * Get the zip's description
@@ -139,12 +113,12 @@ class Zip {
 	 * Validate and add a file to the zip
 	 *
 	 * @param File $file File model object
-	 * @throws Exception If not a File model object
+	 * @throws \Exception If not a File model object
 	 * @since 0.5.0
 	 */
 	public function add_file( $file ) {
 		if ( ! $file instanceof File ) {
-			throw new Exception( 'File objects only added to files' );
+			throw new \Exception( 'File objects only added to files' );
 		}
 
 		$file_id = $file->get_ID();

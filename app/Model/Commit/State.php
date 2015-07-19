@@ -57,11 +57,12 @@ class State extends \WP_Gistpen\Model\File {
 	 * Validate and set the State's change status
 	 *
 	 * @param string $status new State status
+	 * @throws \Exception
 	 * @since 0.5.0
 	 */
 	public function set_status( $status ) {
 		if ( ! in_array( $status, array( 'new', 'updated', 'deleted' ) ) ) {
-			throw new Exception;
+			throw new \Exception;
 		}
 
 		$this->status = $status;

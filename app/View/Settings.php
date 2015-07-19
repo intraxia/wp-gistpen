@@ -14,24 +14,6 @@ use WP_Gistpen\Account\Gist;
 class Settings {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Gist account object
 	 *
 	 * @var Gist
@@ -43,16 +25,9 @@ class Settings {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->client = new Gist( $plugin_name, $version );
-
+	public function __construct() {
+		$this->client = new Gist();
 	}
 
 	/**
@@ -63,10 +38,10 @@ class Settings {
 	public function add_plugin_admin_menu() {
 
 		add_options_page(
-			__( 'WP-Gistpen Settings', $this->plugin_name ),
-			__( 'Gistpens', $this->plugin_name ),
+			__( 'WP-Gistpen Settings', \WP_Gistpen::$plugin_name ),
+			__( 'Gistpens', \WP_Gistpen::$plugin_name ),
 			'edit_posts',
-			$this->plugin_name,
+			\WP_Gistpen::$plugin_name,
 			array( $this, 'display_plugin_admin_page' )
 		);
 
@@ -89,7 +64,7 @@ class Settings {
 	 * @since 0.5.0
 	 */
 	public function github_user_layout() {
-		$token = cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' );
+		$token = cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' );
 
 		if ( false === $token ) {
 			return;
@@ -102,7 +77,7 @@ class Settings {
 
 			if ( is_wp_error( $error = $this->client->check_token() ) ) {
 				// If this token doesn't validate, clear it and bail.
-				cmb2_update_option( $this->plugin_name, '_wpgp_gist_token', '' );
+				cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token', '' );
 				delete_transient( '_wpgp_github_token_user_info' );
 				return;
 			}
@@ -117,19 +92,19 @@ class Settings {
 
 		?><h3>Authorized User</h3>
 
-		<strong><?php _e( 'Username: ', $this->plugin_name ); ?></strong><?php echo esc_html( $login ); ?><br>
-		<strong><?php _e( 'Email: ', $this->plugin_name ); ?></strong><?php echo esc_html( $email ); ?><br>
-		<strong><?php _e( 'Public Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
-		<strong><?php _e( 'Private Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
+		<strong><?php _e( 'Username: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $login ); ?><br>
+		<strong><?php _e( 'Email: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $email ); ?><br>
+		<strong><?php _e( 'Public Gists: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
+		<strong><?php _e( 'Private Gists: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
 
 		<p class="cmb2-metabox-description">
 			<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?>
-			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", $this->plugin_name ); ?>
+			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", \WP_Gistpen::$plugin_name ); ?>
 		</p>
 
 		<p class="cmb2-metabox-description">
 			<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
-			<?php _e( "When you import Gists, only Gists not previously imported will be added.", $this->plugin_name ); ?>
+			<?php _e( "When you import Gists, only Gists not previously imported will be added.", \WP_Gistpen::$plugin_name ); ?>
 		</p>
 		<?php
 	}
@@ -158,7 +133,7 @@ class Settings {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_name ) . '">' . __( 'Settings', $this->plugin_name ) . '</a>'
+				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . \WP_Gistpen::$plugin_name ) . '">' . __( 'Settings', \WP_Gistpen::$plugin_name ) . '</a>'
 			),
 			$links
 		);
@@ -189,7 +164,7 @@ class Settings {
 			<div class="error">
 				<p>
 					<?php
-						_e( 'Gist token failed to validate. Error message: ', $this->plugin_name );
+						_e( 'Gist token failed to validate. Error message: ', \WP_Gistpen::$plugin_name );
 						echo esc_html( $error->get_error_message() );
 					?>
 				</p>
@@ -207,7 +182,7 @@ class Settings {
 	 * @since 0.3.0
 	 */
 	public function register_setting() {
-		register_setting( $this->plugin_name, $this->plugin_name );
+		register_setting( \WP_Gistpen::$plugin_name, \WP_Gistpen::$plugin_name );
 	}
 
 }

@@ -22,24 +22,6 @@ use \WP_Error;
 class Head {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Adapter Facade object
 	 *
 	 * @var Adapter
@@ -62,12 +44,8 @@ class Head {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $plugin_name, $version );
+	public function __construct() {
+		$this->adapter = new Adapter();
 
 		// Default query args
 		$this->args = array(
@@ -77,7 +55,6 @@ class Head {
 			'numberposts'    => 5,
 			'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' ),
 		);
-
 	}
 
 	/**
@@ -140,7 +117,7 @@ class Head {
 	/**
 	 * Gets and builds an object model based on a WP_Post object
 	 *
-	 * @param  WP_Post $post model's WP_Post object
+	 * @param  \WP_Post $post model's WP_Post object
 	 * @return object       WP_Gistpen model object
 	 * @since 0.5.0
 	 */
@@ -187,7 +164,7 @@ class Head {
 	 * Retrieves the Language object for a given post ID
 	 *
 	 * @param  int $post_id
-	 * @return Language
+	 * @return \WP_Gistpen\Model\Language
 	 * @since  0.4.0
 	 */
 	public function language_by_post_id( $post_id ) {
@@ -239,7 +216,7 @@ class Head {
 	/**
 	 * Retrieves the all the files for a zip's WP_Post object
 	 *
-	 * @param  WP_Post $post
+	 * @param  \WP_Post $post
 	 * @return array       array of Files
 	 * @since  0.4.0
 	 */
@@ -291,7 +268,7 @@ class Head {
 		}
 
 		if ( 1 !== count( $posts ) ) {
-			return new WP_Error( 'multiple_gistpens_found', __( "Multiple Gistpens with Gist ID {$gist_id} found.", $this->plugin_name ) );
+			return new WP_Error( 'multiple_gistpens_found', __( "Multiple Gistpens with Gist ID {$gist_id} found.", \WP_Gistpen::$plugin_name ) );
 		}
 
 		$post = array_pop( $posts );

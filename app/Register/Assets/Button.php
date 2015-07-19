@@ -13,24 +13,6 @@ namespace WP_Gistpen\Register\Assets;
 class Button {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * The minification string
 	 *
 	 * @since    0.5.0
@@ -46,15 +28,10 @@ class Button {
 	 * @var      string    $plugin_name       The name of the plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+	public function __construct() {
 		if ( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
 			$this->min = '.min';
 		}
-
 	}
 
 	/**

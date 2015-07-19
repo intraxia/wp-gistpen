@@ -85,11 +85,7 @@ class App {
 	 *
 	 * @since    0.5.0
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+	public function __construct() {
 		$this->loader = new Loader();
 		$this->set_locale();
 
@@ -113,7 +109,6 @@ class App {
 		$this->define_sync_hooks();
 		$this->define_button_hooks();
 		$this->define_web_hooks();
-
 	}
 
 	/**
@@ -128,10 +123,8 @@ class App {
 	private function set_locale() {
 
 		$plugin_i18n = new Register\I18n();
-		$plugin_i18n->set_domain( $this->get_plugin_name() );
-
+		$plugin_i18n->set_domain( \WP_Gistpen::$plugin_name );
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -142,7 +135,7 @@ class App {
 	 * @access   private
 	 */
 	private function register_data() {
-		$this->data = new Register\Data( $this->get_plugin_name(), $this->get_version() );
+		$this->data = new Register\Data();
 
 		$this->loader->add_action( 'init', $this->data, 'post_type_gistpen' );
 		$this->loader->add_action( 'init', $this->data, 'taxonomy_language' );
@@ -169,7 +162,7 @@ class App {
 	 */
 	private function define_ajax_hooks() {
 
-		$this->ajax = new Api\Ajax( $this->get_plugin_name(), $this->get_version() );
+		$this->ajax = new Api\Ajax();
 
 		// Embed the AJAX nonce on the editor & settings page
 		$this->loader->add_action( 'edit_form_after_title', $this->ajax, 'embed_nonce' );
@@ -204,7 +197,7 @@ class App {
 	 */
 	private function define_content_hooks() {
 
-		$this->content = new View\Content( $this->get_plugin_name(), $this->get_version() );
+		$this->content = new View\Content();
 
 		// Remove some filters from the Gistpen content
 		$this->loader->add_action( 'the_content', $this->content, 'remove_filters' );
@@ -226,7 +219,7 @@ class App {
 	 */
 	private function define_settings_assets() {
 
-		$this->settings_assets = new Register\Assets\Settings( $this->get_plugin_name(), $this->get_version() );
+		$this->settings_assets = new Register\Assets\Settings();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings_assets, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->settings_assets, 'enqueue_scripts' );
@@ -242,7 +235,7 @@ class App {
 	 */
 	private function define_popup_assets() {
 
-		$this->popup_assets = new Register\Assets\Popup( $this->get_plugin_name(), $this->get_version() );
+		$this->popup_assets = new Register\Assets\Popup();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->popup_assets, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->popup_assets, 'enqueue_scripts' );
@@ -258,7 +251,7 @@ class App {
 	 */
 	private function define_editor_assets() {
 
-		$this->editor = new Register\Assets\Editor( $this->get_plugin_name(), $this->get_version() );
+		$this->editor = new Register\Assets\Editor();
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->editor, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->editor, 'enqueue_scripts' );
@@ -273,7 +266,7 @@ class App {
 	 * @access   private
 	 */
 	private function define_editor_hooks() {
-		$this->editor = new View\Editor( $this->get_plugin_name(), $this->get_version() );
+		$this->editor = new View\Editor();
 
 		// Hook in repeatable file editor
 		$this->loader->add_action( 'edit_form_after_title', $this->editor, 'render_editor_div' );
@@ -297,7 +290,7 @@ class App {
 	 * @access   private
 	 */
 	public function define_migration_hooks() {
-		$this->migration = new Migration( $this->get_plugin_name(), $this->get_version() );
+		$this->migration = new Migration();
 		$this->loader->add_action( 'admin_init', $this->migration, 'run' );
 	}
 
@@ -310,7 +303,7 @@ class App {
 	 */
 	private function define_prism_hooks() {
 
-		$this->prism = new Register\Assets\Prism( $this->get_plugin_name(), $this->get_version() );
+		$this->prism = new Register\Assets\Prism();
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->prism, 'enqueue_scripts' );
@@ -327,7 +320,7 @@ class App {
 	 */
 	private function define_save_hooks() {
 
-		$this->save = new Controller\Save( $this->get_plugin_name(), $this->get_version() );
+		$this->save = new Controller\Save();
 
 		$this->loader->add_action( 'post_updated', $this->save, 'remove_revision_save', 9 );
 		$this->loader->add_filter( 'wp_insert_post_empty_content', $this->save, 'allow_empty_zip', 10, 2 );
@@ -345,7 +338,7 @@ class App {
 	 * @access   protected
 	 */
 	protected function define_sync_hooks() {
-		$this->sync = new Controller\Sync( $this->get_plugin_name(), $this->get_version() );
+		$this->sync = new Controller\Sync();
 
 		$this->loader->add_filter( 'wpgp_after_update', $this->sync, 'export_gistpen' );
 	}
@@ -358,7 +351,7 @@ class App {
 	 * @access   private
 	 */
 	private function define_settings_hooks() {
-		$this->settings_view = new View\Settings( $this->get_plugin_name(), $this->get_version() );
+		$this->settings_view = new View\Settings();
 
 		// Add the options page and menu item.
 		$this->loader->add_action( 'admin_menu', $this->settings_view, 'add_plugin_admin_menu' );
@@ -386,7 +379,7 @@ class App {
 	 */
 	private function define_button_hooks() {
 
-		$this->button = new Register\Assets\Button( $this->get_plugin_name(), $this->get_version() );
+		$this->button = new Register\Assets\Button();
 
 		$this->loader->add_filter( 'mce_external_plugins', $this->button, 'mce_external_plugins' );
 		$this->loader->add_filter( 'mce_buttons', $this->button, 'mce_buttons' );
@@ -402,7 +395,7 @@ class App {
 	 */
 	private function define_web_hooks() {
 
-		$this->web = new Register\Assets\Web( $this->get_plugin_name(), $this->get_version() );
+		$this->web = new Register\Assets\Web();
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $this->web, 'enqueue_styles' );
 
@@ -418,34 +411,12 @@ class App {
 	}
 
 	/**
-	 * The name of the plugin used to uniquely identify it within the context of
-	 * WordPress and to define internationalization functionality.
-	 *
-	 * @since     0.5.0
-	 * @return    string    The name of the plugin.
-	 */
-	public function get_plugin_name() {
-		return $this->plugin_name;
-	}
-
-	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     0.5.0
-	 * @return    Plugin_Name_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;
 	}
-
-	/**
-	 * Retrieve the version number of the plugin.
-	 *
-	 * @since     0.5.0
-	 * @return    string    The version number of the plugin.
-	 */
-	public function get_version() {
-		return $this->version;
-	}
-
 }

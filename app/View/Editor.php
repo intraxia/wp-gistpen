@@ -45,24 +45,6 @@ class Editor {
 	);
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Database Facade object
 	 *
 	 * @var Database
@@ -85,14 +67,9 @@ class Editor {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
+	public function __construct() {
+		$this->database = new Database();
+		$this->adapter = new Adapter();
 	}
 
 	/**
@@ -151,7 +128,7 @@ class Editor {
 	 */
 	public function manage_posts_columns( $columns ) {
 		return array_merge( $columns, array(
-			'gistpen_files' => __( 'Files', $this->plugin_name )
+			'gistpen_files' => __( 'Files', \WP_Gistpen::$plugin_name )
 		) );
 	}
 

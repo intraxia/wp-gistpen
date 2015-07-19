@@ -13,7 +13,7 @@ class WP_Gistpen_Register_Content_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 
 		$this->create_post_and_children();
-		$this->content = new Content( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->content = new Content();
 	}
 
 	function test_get_post_content() {

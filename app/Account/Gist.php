@@ -17,24 +17,6 @@ use Github\ResultPager;
 class Gist {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Adapter Facade object
 	 *
 	 * @var Adapter
@@ -57,14 +39,9 @@ class Gist {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
+	public function __construct() {
+		$this->adapter = new Adapter();
 		$this->client = new Client();
-
 	}
 
 	/**
@@ -75,7 +52,7 @@ class Gist {
 	 * @since 0.5.0
 	 */
 	private function set_up_client() {
-		$token = (string) cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' );
+		$token = (string) cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' );
 
 		if ( empty( $token ) ) {
 			return new \WP_Error( 'no_github_token', 'No GitHub OAuth token available.' );
@@ -131,7 +108,7 @@ class Gist {
 	/**
 	 * Creates a new Gist based on History
 	 *
-	 * @param  Commit           $comit    Gist data
+	 * @param  Commit           $commit    Gist data
 	 * @return string|\WP_Error           Gist id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
@@ -160,7 +137,7 @@ class Gist {
 	/**
 	 * Update an existing Gist based on Zip
 	 *
-	 * @param  Zip             $history    Gist data
+	 * @param  Zip             $commit    Gist data
 	 * @return string|\WP_Error         Gist id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
@@ -249,7 +226,7 @@ class Gist {
 
 		$result = array(
 			'zip' => $zip,
-			'version' => $response['history'][0]['version']
+			'version' => $response['history'][0]['version'],
 		);
 
 		return $result;
@@ -259,7 +236,7 @@ class Gist {
 	 * Shortcut to call the Gist API
 	 * Makes the class easier to test
 	 *
-	 * @return \Github\Client\Api\Gists
+	 * @return \GitHub\Api\Gists
 	 * @since 0.5.0
 	 */
 	protected function call() {

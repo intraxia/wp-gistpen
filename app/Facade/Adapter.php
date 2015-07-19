@@ -21,24 +21,6 @@ use WP_Gistpen\Adapter\Zip as ZipAdapter;
 class Adapter {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * WP_Gistpen\Adapter\Commit object
 	 *
 	 * @var CommitAdapter
@@ -109,19 +91,15 @@ class Adapter {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->commit = new CommitAdapter( $plugin_name, $version );
-		$this->file = new FileAdapter( $plugin_name, $version );
-		$this->gist = new GistAdapter( $plugin_name, $version );
-		$this->history = new HistoryAdapter( $plugin_name, $version );
-		$this->api = new ApiAdapter( $plugin_name, $version );
-		$this->language = new LanguageAdapter( $plugin_name, $version );
-		$this->state = new StateAdapter( $plugin_name, $version );
-		$this->zip = new ZipAdapter( $plugin_name, $version );
+	public function __construct() {
+		$this->commit = new CommitAdapter();
+		$this->file = new FileAdapter();
+		$this->gist = new GistAdapter();
+		$this->history = new HistoryAdapter();
+		$this->api = new ApiAdapter();
+		$this->language = new LanguageAdapter();
+		$this->state = new StateAdapter();
+		$this->zip = new ZipAdapter();
 
 	}
 

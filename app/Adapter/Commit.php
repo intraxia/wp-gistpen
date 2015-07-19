@@ -14,38 +14,6 @@ use WP_Gistpen\Model\Commit\Meta as CommitModel;
 class Commit {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version           The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-	}
-
-	/**
 	 * Build a Commit model by json string
 	 *
 	 * @param  string $data json of commit data
@@ -68,7 +36,7 @@ class Commit {
 	/**
 	 * Build a Commit model by $post data
 	 *
-	 * @param  WP_Post $post Commit's post data
+	 * @param  \WP_Post $post Commit's post data
 	 * @return Commit       Commit model
 	 * @since 0.5.0
 	 */
@@ -100,10 +68,10 @@ class Commit {
 	/**
 	 * Create a blank commit model
 	 *
-	 * @return Commit   commit model
+	 * @return \WP_Gistpen\Model\Commit\Meta
 	 * @since 0.5.0
 	 */
 	public function blank() {
-		return new CommitModel( $this->plugin_name, $this->version );
+		return new CommitModel();
 	}
 }

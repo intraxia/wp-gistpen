@@ -91,12 +91,12 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	 * Validate and add a State to the Commit
 	 *
 	 * @param State $state State model object
-	 * @throws Exception If not a State model object
+	 * @throws \Exception If not a State model object
 	 * @since 0.5.0
 	 */
 	public function add_state( $state ) {
 		if ( ! $state instanceof State ) {
-			throw new Exception( 'State objects only added to states array' );
+			throw new \Exception( 'State objects only added to states array' );
 		}
 
 		$state_id = $state->get_ID();
