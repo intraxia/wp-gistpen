@@ -1,16 +1,6 @@
 <?php
 namespace WP_Gistpen;
 
-use WP_Gistpen\Assets\Dashboard;
-use WP_Gistpen\Assets\Prism;
-use WP_Gistpen\Assets\TinyMCE;
-use WP_Gistpen\Assets\Web;
-
-use WP_Gistpen\Page\Editor;
-use WP_Gistpen\Page\Settings;
-
-use WP_Gistpen\Database\Persistance;
-
 /**
  * The core plugin class.
  *
@@ -57,24 +47,6 @@ class App {
 	public $settings_view;
 	public $sync;
 	public $web;
-
-	/**
-	 * The unique identifier of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   protected
-	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
-	 * The current version of the plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   protected
-	 * @var      string    $version    The current version of the plugin.
-	 */
-	protected $version;
 
 	/**
 	 * Define the core functionality of the plugin.
