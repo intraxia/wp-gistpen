@@ -59,7 +59,7 @@ class Content {
 	/**
 	 * Add the Gistpen content field to the_content
 	 *
-	 * @param string $atts shortcode attributes
+	 * @param string $content
 	 * @return string post_content
 	 * @since    0.1.0
 	 */

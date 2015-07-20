@@ -11,8 +11,6 @@ namespace WP_Gistpen\Database\Persistance;
 use WP_Gistpen\Database\Query\Head as HeadQuery;
 use WP_Gistpen\Database\Query\Commit as CommitQuery;
 use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
 
 /**
  * This class manipulates the saving of parent Gistpen
@@ -222,7 +220,7 @@ class Commit {
 	 * Sets files as deleted by array of File IDs
 	 *
 	 * @param  array $file_ids Array of File IDs
-	 * @return bool            whether this saved new files
+	 * @todo check if the use of $changed is correct here
 	 * @since  0.5.0
 	 */
 	public function deleted_states_by_file_ids( $file_ids ) {

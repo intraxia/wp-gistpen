@@ -42,7 +42,7 @@ class Api {
 	 * Transforms a Zip to json
 	 *
 	 * @param  ZipModel $zip Zip to transform
-	 * @return string        file data in json
+	 * @return stdClass
 	 * @since  0.5.0
 	 */
 	public function by_zip( ZipModel $zip ) {
@@ -63,8 +63,8 @@ class Api {
 	/**
 	 * Transforms an array of files to json
 	 *
-	 * @param  array  $files array of files to transform
-	 * @return string        file data in json
+	 * @param  FileModel[]  $files array of files to transform
+	 * @return stdClass[]
 	 * @since  0.5.0
 	 */
 	public function by_files( $files ) {

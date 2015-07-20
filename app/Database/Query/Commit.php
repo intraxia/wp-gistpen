@@ -9,10 +9,8 @@ namespace WP_Gistpen\Database\Query;
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Collection\History;
 use WP_Gistpen\Database\Query\Head as HeadQuery;
 use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Commit as CommitModel;
 
 /**
  * This class saves and gets Gistpen commits from the database
@@ -71,8 +69,8 @@ class Commit {
 	/**
 	 * Gets and builds a History Collection for a given post ID
 	 *
-	 * @param  int     $post_id model's post ID
-	 * @return History          WP_Gistpen model object
+	 * @param  int     $head_id model's post ID
+	 * @return \WP_Gistpen\Collection\History          WP_Gistpen model object
 	 * @since 0.5.0
 	 */
 	public function history_by_head_id( $head_id ) {
@@ -148,7 +146,6 @@ class Commit {
 	 * Get a State object by the State's ID and its Commit ID
 	 *
 	 * @param  int    $state_id  ID of the State
-	 * @param  int    $commit_id ID of the State's Commit
 	 * @return \WP_Gistpen\Model\Commit\State             State object
 	 * @since  0.5.0
 	 */
@@ -176,7 +173,7 @@ class Commit {
 	/**
 	 * Retrieves the Language object for a given State ID
 	 *
-	 * @param  int $post_id
+	 * @param  int $state_id
 	 * @return \WP_Gistpen\Model\Language
 	 * @since  0.4.0
 	 */

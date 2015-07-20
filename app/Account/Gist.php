@@ -1,7 +1,6 @@
 <?php
 namespace WP_Gistpen\Account;
 
-use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
 use Github\Client;
 use Github\ResultPager;
@@ -83,7 +82,6 @@ class Gist {
 	 * authenticated token is valid. Returns a WP_Error
 	 * object if it fails, caches the user data if it succeeds.
 	 *
-	 * @param  string          $token     Authentication token
 	 * @return bool|\WP_Error              true of success, WP_Error on failure
 	 * @since  0.5.0
 	 */

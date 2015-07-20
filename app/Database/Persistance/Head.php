@@ -10,9 +10,7 @@ namespace WP_Gistpen\Database\Persistance;
 
 use WP_Gistpen\Database\Query\Head as HeadQuery;
 use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Commit as CommitModel;
 use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
 
 
 /**
