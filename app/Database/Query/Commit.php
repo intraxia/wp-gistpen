@@ -104,7 +104,7 @@ class Commit {
 	/**
 	 * Gets and builds a Commit model based on a WP_Post object
 	 *
-	 * @param  WP_Post $post model's WP_Post object
+	 * @param  \WP_Post $post model's WP_Post object
 	 * @return object       Commit model object
 	 * @since 0.5.0
 	 */
@@ -149,7 +149,7 @@ class Commit {
 	 *
 	 * @param  int    $state_id  ID of the State
 	 * @param  int    $commit_id ID of the State's Commit
-	 * @return State             State object
+	 * @return \WP_Gistpen\Model\Commit\State             State object
 	 * @since  0.5.0
 	 */
 	public function state_by_id( $state_id ) {
@@ -177,7 +177,7 @@ class Commit {
 	 * Retrieves the Language object for a given State ID
 	 *
 	 * @param  int $post_id
-	 * @return Language
+	 * @return \WP_Gistpen\Model\Language
 	 * @since  0.4.0
 	 */
 	public function language_by_state_id( $state_id ) {

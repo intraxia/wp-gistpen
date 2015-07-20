@@ -42,7 +42,7 @@ class Gist {
 	/**
 	 * Converts a Zip into API array for Gist edit endpoint
 	 *
-	 * @param  \WP_Gistpen\Model\Zip $commit Zip to turn into API data
+	 * @param  \WP_Gistpen\Model\Commit\Meta $commit
 	 * @return array      Gist data
 	 */
 	public function update_by_commit( $commit ) {

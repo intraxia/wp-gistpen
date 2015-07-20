@@ -72,6 +72,13 @@ class Commit {
 	protected $commit_id = 0;
 
 	/**
+	 * IDs to save a commit
+	 *
+	 * @var mixed[]
+	 */
+	protected $ids;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -256,6 +263,7 @@ class Commit {
 	 *
 	 * @param  int    $commit_id  post ID of Commit to update
 	 * @param  string $gist_id    Gist ID to save
+	 * @return bool
 	 * @since  0.5.0
 	 */
 	public function set_gist_id( $commit_id, $gist_id ) {

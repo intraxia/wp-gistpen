@@ -25,12 +25,12 @@ class Database {
 	protected $query = array();
 
 	/**
-	 * Array containing all persistance objects
+	 * Array containing all persistence objects
 	 *
 	 * @var array
 	 * @since 0.5.0
 	 */
-	protected $persistance = array();
+	protected $persistence = array();
 
 	/**
 	 * Initialize the class and set its properties.
@@ -43,14 +43,16 @@ class Database {
 		$this->query['head'] = new HeadQuery();
 		$this->query['commit'] = new CommitQuery();
 
-		$this->persistance['head'] = new HeadPersistance();
-		$this->persistance['commit'] = new CommitPersistance();
+		$this->persistence['head'] = new HeadPersistance();
+		$this->persistence['commit'] = new CommitPersistance();
 	}
 
 	/**
 	 * Query the database
 	 *
-	 * @return Query query object
+	 * @param string $type
+	 * @return mixed
+	 * @throws \Exception
 	 * @since 0.5.0
 	 */
 	public function query( $type = 'head' ) {
@@ -62,16 +64,18 @@ class Database {
 	}
 
 	/**
-	 * Persist to database
+	 * Persist to database.
 	 *
-	 * @return Persistance persistance object
+	 * @param string $type
+	 * @return mixed persistence object
+	 * @throws \Exception
 	 * @since 0.5.0
 	 */
 	public function persist( $type = 'head' ) {
-		if ( ! array_key_exists( $type, $this->persistance ) ) {
+		if ( ! array_key_exists( $type, $this->persistence ) ) {
 			throw new \Exception( "Can't persist on type {$type}" );
 		}
 
-		return $this->persistance[ $type ];
+		return $this->persistence[ $type ];
 	}
 }

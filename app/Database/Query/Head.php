@@ -118,7 +118,7 @@ class Head {
 	 * Gets and builds an object model based on a WP_Post object
 	 *
 	 * @param  \WP_Post $post model's WP_Post object
-	 * @return object       WP_Gistpen model object
+	 * @return \WP_Gistpen\Model\Zip|\WP_Gistpen\Model\File
 	 * @since 0.5.0
 	 */
 	public function by_post( $post ) {

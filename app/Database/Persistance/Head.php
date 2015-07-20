@@ -160,7 +160,7 @@ class Head {
 	 *
 	 * @param  File $file File model object
 	 * @param  int $zip_id ID of the zip parent
-	 * @return int|WP_Error   post_id on success, WP_Error on failure
+	 * @return int|\WP_Error   post_id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
 	public function by_file_and_zip_id( $file, $zip_id ) {

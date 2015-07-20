@@ -24,7 +24,7 @@ class History implements \Countable {
 	/**
 	 * Array of Commits in the History
 	 *
-	 * @var   array
+	 * @var   \WP_Gistpen\Model\Commit\Meta[]
 	 * @since 0.5.0
 	 */
 	protected $commits = array();

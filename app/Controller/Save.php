@@ -115,7 +115,7 @@ class Save {
 	 *
 	 * @param  string $old_status
 	 * @param  string $new_status
-	 * @param  obj    $post       WP_Post object for zip
+	 * @param  \WP_Post    $post       WP_Post object for zip
 	 * @since  0.5.0
 	 */
 	public function sync_post_status( $new_status, $old_status, $post ) {

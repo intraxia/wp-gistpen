@@ -86,7 +86,6 @@ class Ajax {
 	/**
 	 * Checks nonce and user permissions for AJAX reqs
 	 *
-	 * @return Sends error and halts execution if anything doesn't check out
 	 * @since  0.4.0
 	 */
 	private function check_security() {
@@ -110,8 +109,7 @@ class Ajax {
 	/**
 	 * Checks if the result is a WP_Error object
 	 *
-	 * @param  $result Result to check
-	 * @return Sends error and halts execution if anything doesn't check out
+	 * @param  mixed|\WP_Error $result
 	 * @since  0.5.0
 	 */
 	private function check_error( $result ) {

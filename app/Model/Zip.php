@@ -102,7 +102,7 @@ class Zip {
 	/**
 	 * Get the zip's files
 	 *
-	 * @return string
+	 * @return File[]
 	 * @since 0.5.0
 	 */
 	public function get_files() {

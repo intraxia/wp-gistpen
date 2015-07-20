@@ -25,7 +25,7 @@ class Api {
 	public function by_array_of_models( $array ) {
 		$api = array();
 
-		foreach ($array as $model) {
+		foreach ( $array as $model ) {
 			if ( $model instanceof ZipModel ) {
 				$api[] = $this->by_zip( $model );
 			}

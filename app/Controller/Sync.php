@@ -91,8 +91,8 @@ class Sync {
 	/**
 	 * Creates a new Gistpen on Gist
 	 *
-	 * @param Commit              $commit    Commit object
-	 * @return string|\WP_Error               Gist ID on success, WP_Error on failure
+	 * @param \WP_Gistpen\Model\Commit\Meta $commit
+	 * @return string|\WP_Error
 	 * @since 0.5.0
 	 */
 	protected function create_gist( $commit ) {
@@ -120,7 +120,8 @@ class Sync {
 	/**
 	 * Updates an existing Gistpen on Gist
 	 *
-	 * @return string|WP_Error Gist ID on success, WP_Error on failure
+	 * @param \WP_Gistpen\Model\Commit\Meta $commit
+	 * @return string|\WP_Error Gist ID on success, WP_Error on failure
 	 * @since 0.5.0
 	 */
 	protected function update_gist( $commit ) {

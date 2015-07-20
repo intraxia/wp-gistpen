@@ -1,8 +1,6 @@
 <?php
 namespace WP_Gistpen\Model\Commit;
 
-use WP_Gistpen\Model\Commit\State;
-
 /**
  * Data object for an individual Commit
  *
@@ -32,7 +30,7 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	/**
 	 * Array of File States
 	 *
-	 * @var array
+	 * @var State[]
 	 * @since 0.5.0
 	 */
 	protected $states = array();
@@ -80,7 +78,7 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	/**
 	 * Get the Array of States
 	 *
-	 * @return array Array of states
+	 * @return \WP_Gistpen\Model\Commit\State[]
 	 * @since  0.5.0
 	 */
 	public function get_states() {

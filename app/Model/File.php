@@ -114,7 +114,7 @@ class File {
 	 * Get the file's language
 	 *
 	 * @since  0.5.0
-	 * @return string File language
+	 * @return null|Language
 	 */
 	public function get_language() {
 		if ( ! isset( $this->language) ) {

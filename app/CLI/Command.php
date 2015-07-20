@@ -20,11 +20,11 @@ use WP_Gistpen\Facade\Database;
 class Command extends \WP_CLI_Command {
 
 	public function __construct() {
-		$this->database = new Database( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->adapter = new Adapter( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->gist = new Gist( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->save = new Save( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->sync = new Sync( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+		$this->database = new Database();
+		$this->adapter = new Adapter();
+		$this->gist = new Gist();
+		$this->save = new Save();
+		$this->sync = new Sync();
 	}
 
 	/**
@@ -53,7 +53,7 @@ class Command extends \WP_CLI_Command {
 		remove_filter( 'content_filtered_save_pre', 'wp_filter_post_kses' );
 
 		foreach ( Language::$supported as $lang => $slug ) {
-			$lang_model = new Language( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version, $slug );
+			$lang_model = new Language( $slug );
 			// Code snippets sourced from: https://highlightjs.org/static/demo/
 			$code = '';
 
@@ -104,7 +104,7 @@ class Command extends \WP_CLI_Command {
 	function set_token( $args, $assoc_args ) {
 		list( $token ) = $args;
 
-		$client = new Gist( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+		$client = new Gist();
 
 		$client->authenticate( $token );
 

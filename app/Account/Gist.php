@@ -108,8 +108,8 @@ class Gist {
 	/**
 	 * Creates a new Gist based on History
 	 *
-	 * @param  Commit           $commit    Gist data
-	 * @return string|\WP_Error           Gist id on success, WP_Error on failure
+	 * @param  \WP_Gistpen\Model\Commit\Meta $commit
+	 * @return string|\WP_Error
 	 * @since  0.5.0
 	 */
 	public function create_gist( $commit ) {
@@ -137,7 +137,7 @@ class Gist {
 	/**
 	 * Update an existing Gist based on Zip
 	 *
-	 * @param  Zip             $commit    Gist data
+	 * @param  \WP_Gistpen\Model\Commit\Meta             $commit    Gist data
 	 * @return string|\WP_Error         Gist id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */

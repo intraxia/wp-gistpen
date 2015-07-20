@@ -108,6 +108,7 @@ class Adapter {
 	 *
 	 * @since    0.5.0
 	 * @var      string    $model       The model type to prepare to build.
+	 * @return   mixed
 	 */
 	public function build( $model ) {
 
