@@ -80,8 +80,14 @@ class Save {
 		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
 
 		// Check user permissions
-		if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
-			return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', $this->plugin_name ) . $zip->get_ID() );
+		if ($zip->get_ID()) {
+			if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
+				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
+			}
+		} else {
+			if ( ! current_user_can( 'edit_posts' ) ) {
+				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
+			}
 		}
 
 		foreach ( $zip_data['files'] as $file_data ) {
