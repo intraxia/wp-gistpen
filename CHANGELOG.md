@@ -2,7 +2,7 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [0.5.8] - 2015-07-26
+### [0.5.8] - 2015-07-26 ###
 
 #### Fixed ####
 * Fixed a bug introduced in WordPress 4.2.3 where cap checks fail for `edit_post` on a post_id of 0.
