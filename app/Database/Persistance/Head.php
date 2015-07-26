@@ -88,7 +88,7 @@ class Head {
 			'post_password' => $zip->get_password(),
 		);
 
-		if ( $zip->get_ID() !== null ) {
+		if ( $zip->get_ID() ) {
 			$data['ID'] = $zip->get_ID();
 		}
 
@@ -136,7 +136,7 @@ class Head {
 				'post_password' => $zip->get_password(),
 			);
 
-			if ( $file->get_ID() !== null ) {
+			if ( $file->get_ID() ) {
 				$data['ID'] = $file->get_ID();
 			}
 
@@ -195,7 +195,7 @@ class Head {
 			'post_parent'   => $zip_id,
 		);
 
-		if ( $file->get_ID() !== null ) {
+		if ( $file->get_ID() ) {
 			$data['ID'] = $file->get_ID();
 		}
 		if ( $file->get_language() !== null ) {
