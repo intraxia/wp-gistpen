@@ -12,6 +12,22 @@ namespace WP_Gistpen\Register;
 class Data {
 
 	/**
+	 * Action hooks for Data service
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'init',
+			'method' => 'post_type_gistpen',
+		),
+		array(
+			'hook' => 'init',
+			'method' => 'taxonomy_language',
+		),
+	);
+
+	/**
 	 * Register the gistpen post_type
 	 *
 	 * @since    0.1.0

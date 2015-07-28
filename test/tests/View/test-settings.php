@@ -9,7 +9,7 @@ class WP_Gistpen_View_Settings_Test extends WP_Gistpen_UnitTestCase {
 		global $title;
 
 		parent::setUp();
-		$this->settings = new Settings();
+		$this->settings = new Settings('wp-gistpen.php');
 		$title = "Settings page";
 	}
 

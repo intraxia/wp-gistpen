@@ -3,7 +3,6 @@ namespace WP_Gistpen\View;
 
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Language;
 
 /**
  * This class registers all of the settings page views
@@ -14,6 +13,51 @@ use WP_Gistpen\Model\Language;
  * @since      0.5.0
  */
 class Editor {
+
+	/**
+	 * Action hooks for the Editor service.
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'edit_form_after_title',
+			'method' => 'render_editor_div',
+		),
+		array(
+			'hook' => 'add_meta_boxes',
+			'method' => 'remove_meta_boxes',
+		),
+		array(
+			'hook' => 'manage_gistpen_posts_custom_column',
+			'method' => 'manage_posts_custom_column',
+		),
+	);
+
+	/**
+	 * Filter hooks for the Editor service.
+	 *
+	 * @var array
+	 */
+	public $filters = array(
+		array(
+			'hook' => 'screen_layout_columns',
+			'method' => 'screen_layout_columns',
+		),
+		array(
+			'hook' => 'get_user_option_screen_layout_gistpen',
+			'method' => 'screen_layout_gistpen',
+		),
+		array(
+			'hook' => 'manage_gistpen_posts_columns',
+			'method' => 'manage_posts_columns',
+		),
+		array(
+			'hook' => 'posts_orderby',
+			'method' => 'edit_screen_orderby',
+			'args' => 2,
+		),
+	);
 
 	/**
 	 * All the Ace themes for select box

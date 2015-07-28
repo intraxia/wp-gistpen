@@ -58,6 +58,62 @@ class Ajax {
 	public $save;
 
 	/**
+	 * Actions hooks for AJAX service
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'edit_form_after_title',
+			'method' => 'embed_nonce',
+		),
+		array(
+			'hook' => 'wpgp_settings_before_title',
+			'method' => 'embed_nonce',
+		),
+		array(
+			'hook' => 'wp_ajax_get_gistpens',
+			'method' => 'get_gistpens',
+		),
+		array(
+			'hook' => 'wp_ajax_get_gistpen',
+			'method' => 'get_gistpen',
+		),
+		array(
+			'hook' => 'wp_ajax_create_gistpen',
+			'method' => 'create_gistpen',
+		),
+		array(
+			'hook' => 'wp_ajax_save_gistpen',
+			'method' => 'save_gistpen',
+		),
+		array(
+			'hook' => 'wp_ajax_save_ace_theme',
+			'method' => 'save_ace_theme',
+		),
+		array(
+			'hook' => 'wp_ajax_get_ace_theme',
+			'method' => 'get_ace_theme',
+		),
+		array(
+			'hook' => 'wp_ajax_get_gistpens_missing_gist_id',
+			'method' => 'get_gistpens_missing_gist_id',
+		),
+		array(
+			'hook' => 'wp_ajax_create_gist_from_gistpen_id',
+			'method' => 'create_gist_from_gistpen_id',
+		),
+		array(
+			'hook' => 'wp_ajax_get_new_user_gists',
+			'method' => 'get_new_user_gists',
+		),
+		array(
+			'hook' => 'wp_ajax_import_gist',
+			'method' => 'import_gist',
+		),
+	);
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0

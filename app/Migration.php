@@ -10,7 +10,7 @@ namespace WP_Gistpen;
 
 use WP_Gistpen\Facade\Adapter;
 use WP_Gistpen\Facade\Database;
-use \WP_Query;
+use WP_Query;
 
 /**
  * This class checks the current version and runs any updates necessary.
@@ -19,6 +19,18 @@ use \WP_Query;
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
 class Migration {
+
+	/**
+	 * Action hooks for the Migration service.
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'admin_init',
+			'method' => 'run',
+		),
+	);
 
 	/**
 	 * Languages removed from version 0.3.0
@@ -144,11 +156,10 @@ class Migration {
 
 		foreach ( $this->removed_langs_0_3_0 as $lang => $slug ) {
 			// check if there are any gistpens in the db for this language
-			$query = new WP_Query(
-				array(
-					'language' => $slug,
-					'post_type' => 'gistpens',
-				));
+			$query = new WP_Query( array(
+				'language' => $slug,
+				'post_type' => 'gistpens',
+			));
 
 			if ( ! $query->have_posts() ) {
 				// only delete language if it's got no Gistpens

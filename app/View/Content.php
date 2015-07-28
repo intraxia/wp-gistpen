@@ -29,6 +29,34 @@ class Content {
 	protected $database;
 
 	/**
+	 * Action hooks for Content service
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'the_content',
+			'method' => 'remove_filters',
+		),
+	);
+
+	/**
+	 * Filter hooks for Content service
+	 *
+	 * @var array
+	 */
+	public $filters = array(
+		array(
+			'hook' => 'the_content',
+			'method' => 'post_content',
+		),
+		array(
+			'hook' => 'pre_get_posts',
+			'method' => 'pre_get_posts',
+		),
+	);
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -42,6 +70,8 @@ class Content {
 	/**
 	 * Remove extra filters from the Gistpen content
 	 *
+	 * @param string $content
+	 * @return string
 	 * @since    0.1.0
 	 */
 	public function remove_filters( $content ) {
@@ -71,7 +101,7 @@ class Content {
 
 			if ( is_wp_error( $zip ) ) {
 				// @todo handle each error
-				return;
+				return '';
 			}
 
 			$content .= $zip->get_post_content();
@@ -143,7 +173,7 @@ class Content {
 
 		if ( is_wp_error( $zip ) ) {
 			// @todo each error
-			return;
+			return '';
 		}
 
 		return $zip->get_shortcode_content( $args['highlight'] );

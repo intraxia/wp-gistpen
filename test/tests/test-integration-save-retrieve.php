@@ -2,8 +2,8 @@
 
 use WP_Gistpen\Account\Gist;
 use WP_Gistpen\Controller\Save as SaveController;
-use WP_Gistpen\Facade\App;
 use WP_Gistpen\Facade\Database;
+use WP_Gistpen\App;
 
 /**
  * @group integration
@@ -77,7 +77,8 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 		$gist = new GistTest();
 		$gist->set_client( $this->mock_github_client );
 
-		App::get('sync')->gist = $gist;
+		$app = App::get();
+		$app['Controller\Sync']->gist = $gist;
 		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 		$this->mock_github_client
 			->shouldReceive( 'authenticate' )

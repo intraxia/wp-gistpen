@@ -2,7 +2,7 @@
 
 use WP_Gistpen\Controller\Sync;
 use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\App;
+use WP_Gistpen\App;
 
 /**
  * @group  api
@@ -202,8 +202,10 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_gistpens_missing_gist_id() {
-		App::get('ajax')->database = $this->mock_database;
-		App::get('ajax')->sync = $this->mock_sync;
+		$app = App::get();
+		$app['Api\Ajax']->database = $this->mock_database;
+		$app = App::get();
+		$app['Api\Ajax']->sync = $this->mock_sync;
 
 		$this->set_correct_security();
 
@@ -227,8 +229,10 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_create_gist_from_gistpen_id() {
-		App::get('ajax')->database = $this->mock_database;
-		App::get('ajax')->sync = $this->mock_sync;
+		$app = App::get();
+		$app['Api\Ajax']->database = $this->mock_database;
+		$app = App::get();
+		$app['Api\Ajax']->sync = $this->mock_sync;
 		$this->mock_database->
 			shouldReceive( 'persist' )
 			->times( 1 )
@@ -259,7 +263,9 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	function tearDown() {
 		parent::tearDown();
 
-		App::get('ajax')->database = new Database();
-		App::get('ajax')->sync = new Sync();
+		$app = App::get();
+		$app['Api\Ajax']->database = new Database();
+		$app = App::get();
+		$app['Api\Ajax']->sync = new Sync();
 	}
 }

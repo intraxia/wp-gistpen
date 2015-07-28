@@ -18,6 +18,18 @@ use \WP_CLI;
 class Sync {
 
 	/**
+	 * Filter hooks for Sync controller.
+	 *
+	 * @var array
+	 */
+	public $filters = array(
+		array(
+			'hook' => 'wpgp_after_update',
+			'method' => 'export_gistpen',
+		)
+	);
+
+	/**
 	 * Database Facade object
 	 *
 	 * @var Database

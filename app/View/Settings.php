@@ -14,6 +14,44 @@ use WP_Gistpen\Account\Gist;
 class Settings {
 
 	/**
+	 * Action hooks for the Settings page.
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'admin_menu',
+			'method' => 'add_plugin_admin_menu',
+		),
+		array(
+			'hook' => 'admin_init',
+			'method' => 'register_setting',
+		),
+		array(
+			'hook' => 'cmb2_before_options-page_form_wpgp_option_metabox',
+			'method' => 'github_user_layout',
+		),
+	);
+
+	/**
+	 * Filter hooks for the Settings page.
+	 *
+	 * @var array
+	 */
+	public $filters = array(
+		array(
+			'hook' => 'cmb2_validate_text',
+			'method' => 'validate_gist_token',
+			'args' => 5,
+		),
+		array(
+			'hook' => 'cmb2_get_metabox_form_format',
+			'method' => 'modify_form_output',
+			'args' => 3,
+		),
+	);
+
+	/**
 	 * Gist account object
 	 *
 	 * @var Gist
@@ -24,9 +62,15 @@ class Settings {
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param string $basename
 	 * @since    0.5.0
 	 */
-	public function __construct() {
+	public function __construct( $basename ) {
+		$this->filters[] = array(
+			'hook' => 'plugin_action_links_' . $basename,
+			'method' => 'add_action_links',
+		);
+
 		$this->client = new Gist();
 	}
 

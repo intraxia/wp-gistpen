@@ -46,52 +46,42 @@ define( 'WP_GISTPEN_BASENAME', plugin_basename( __FILE__ ) );
  */
 require_once 'lib/autoload.php';
 
-/** This action is documented in app/Activator.php */
-register_activation_hook( __FILE__, array( 'WP_Gistpen\Activator', 'activate' ) );
-
-/** This action is documented in app/Deactivator.php */
-register_deactivation_hook( __FILE__, array( 'WP_Gistpen\Deactivator', 'deactivate' ) );
-
 /**
  * Singleton container class
+ * @todo put these somewhere else
  */
 class WP_Gistpen {
-
-	public static $app;
-
 	public static $plugin_name = 'wp-gistpen';
 
 	public static $version = '0.5.8';
-
-	public static function init() {
-
-		if ( null == self::$app ) {
-			self::$app = new WP_Gistpen\App();
-			self::$app->run();
-		}
-
-		return self::$app;
-	}
 }
 
 /**
- * Begins execution of the plugin.
+ * Boot 'er up!
  *
  * Since everything within the plugin is registered via hooks,
- * then kicking off the plugin from this point in the file does
+ * kicking off the plugin from this point in the file does
  * not affect the page life cycle.
- *
- * Also returns copy of the app object so 3rd party developers
- * can interact with the app's hooks contained within.
  *
  * @since    0.5.0
  */
-function wp_gistpen() {
-	return WP_Gistpen::init();
-}
-
 $updatePhp = new WPUpdatePhp( '5.3.0' );
 
 if ( $updatePhp->does_it_meet_required_php_version( PHP_VERSION ) ) {
-	wp_gistpen();
+	$app = new WP_Gistpen\App();
+
+	// @todo push this into the framework
+	$app['URL'] = function() { return plugin_dir_url( __FILE__ ); };
+	$app['DIR'] = function() { return plugin_dir_path( __FILE__ ); };
+	$app['BASENAME'] = function() { return plugin_basename( __FILE__ ); };
+
+	$app->boot();
+
+	/** @todo move these hooks into the boot method? into framework generally */
+
+	/** This action is documented in app/Activator.php */
+	register_activation_hook( __FILE__, array( 'WP_Gistpen\Activator', 'activate' ) );
+
+	/** This action is documented in app/Deactivator.php */
+	register_deactivation_hook( __FILE__, array( 'WP_Gistpen\Deactivator', 'deactivate' ) );
 }

@@ -15,6 +15,46 @@ use WP_Gistpen\Facade\Adapter;
 class Save {
 
 	/**
+	 * Action hooks for the Save controller.
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'post_updated',
+			'method' => 'remove_revision_save',
+			'priority' => 9,
+		),
+		array(
+			'hook' => 'transition_post_status',
+			'method' => 'sync_post_status',
+			'args' => 3,
+		),
+		array(
+			'hook' => 'before_delete_post',
+			'method' => 'delete_files',
+		),
+	);
+
+	/**
+	 * Filter hooks for the Save controller.
+	 *
+	 * @var array
+	 */
+	public $filters = array(
+		array(
+			'hook' => 'wp_insert_post_empty_content',
+			'method' => 'allow_empty_zip',
+			'args' => 2,
+		),
+		array(
+			'hook' => 'wp_save_post_revision_check_for_changes',
+			'method' => 'disable_check_for_change',
+			'args' => 3,
+		)
+	);
+
+	/**
 	 * Database Facade object
 	 *
 	 * @var Database

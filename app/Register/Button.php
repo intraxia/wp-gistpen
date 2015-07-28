@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Register\Assets;
+namespace WP_Gistpen\Register;
 
 /**
  * Registers the TinyMCE assets of the plugin.
@@ -12,6 +12,16 @@ namespace WP_Gistpen\Register\Assets;
  */
 class Button {
 
+	public $filters = array(
+		array(
+			'hook' => 'mce_external_plugins',
+			'method' => 'mce_external_plugins',
+		),
+		array(
+			'hook' => 'mce_buttons',
+			'method' => 'mce_buttons',
+		),
+	);
 	/**
 	 * The minification string
 	 *
@@ -19,7 +29,7 @@ class Button {
 	 * @access   private
 	 * @var string
 	 */
-	protected $min = '';
+	protected $min = '.min';
 
 	/**
 	 * Initialize the class and set its properties.
@@ -28,9 +38,11 @@ class Button {
 	 * @var      string    $plugin_name       The name of the plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct() {
-		if ( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
-			$this->min = '.min';
+	public function __construct( $url ) {
+		$this->url = $url;
+
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$this->min = '';
 		}
 	}
 
@@ -42,7 +54,7 @@ class Button {
 	 * @since 0.4.0
 	 */
 	public function mce_external_plugins( $plugins ) {
-		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'assets/js/button' . $this->min . '.js';
+		$plugins['wp_gistpen'] = $this->url . 'assets/js/button' . $this->min . '.js';
 		return $plugins;
 	}
 

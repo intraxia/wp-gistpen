@@ -15,7 +15,5 @@
     "gulp-sass": "0.7.2",
     "gulp-uglify": "0.3.1",
     "q": "1.0.1"
-  },
-  "author": "maadhattah",
-  "license": "GPL-2.0+"
+  }
 }
