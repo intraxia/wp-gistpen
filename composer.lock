@@ -191,12 +191,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "b2be578b712de3c21ca07051fd18426563fda359"
+                "reference": "45dc3d5ce7a6a049d5258dfe546c5c300bff7354"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/b2be578b712de3c21ca07051fd18426563fda359",
-                "reference": "b2be578b712de3c21ca07051fd18426563fda359",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/45dc3d5ce7a6a049d5258dfe546c5c300bff7354",
+                "reference": "45dc3d5ce7a6a049d5258dfe546c5c300bff7354",
                 "shasum": ""
             },
             "require": {
@@ -227,7 +227,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2015-07-28 03:10:48"
+            "time": "2015-07-30 03:38:10"
         },
         {
             "name": "knplabs/github-api",
@@ -1236,12 +1236,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "b7bf092bc2b3af532ef916805e214febec89ae4b"
+                "reference": "6eef1477f3c4451b6024fadb1254009be4602908"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/b7bf092bc2b3af532ef916805e214febec89ae4b",
-                "reference": "b7bf092bc2b3af532ef916805e214febec89ae4b",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/6eef1477f3c4451b6024fadb1254009be4602908",
+                "reference": "6eef1477f3c4451b6024fadb1254009be4602908",
                 "shasum": ""
             },
             "require": {
@@ -1277,7 +1277,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-07-26 09:09:29"
+            "time": "2015-07-29 07:12:56"
         }
     ],
     "aliases": [],

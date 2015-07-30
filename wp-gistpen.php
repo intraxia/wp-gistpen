@@ -68,13 +68,7 @@ class WP_Gistpen {
 $updatePhp = new WPUpdatePhp( '5.3.0' );
 
 if ( $updatePhp->does_it_meet_required_php_version( PHP_VERSION ) ) {
-	$app = new WP_Gistpen\App();
-
-	// @todo push this into the framework
-	$app['URL'] = function() { return plugin_dir_url( __FILE__ ); };
-	$app['DIR'] = function() { return plugin_dir_path( __FILE__ ); };
-	$app['BASENAME'] = function() { return plugin_basename( __FILE__ ); };
-
+	$app = new WP_Gistpen\App( __FILE__ );
 	$app->boot();
 
 	/** @todo move these hooks into the boot method? into framework generally */

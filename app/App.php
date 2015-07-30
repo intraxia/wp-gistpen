@@ -26,8 +26,8 @@ class App extends \Intraxia\Jaxion\Core\Application {
 	 *
 	 * @since    0.5.0
 	 */
-	public function __construct() {
-		parent::__construct();
+	public function __construct( $file ) {
+		parent::__construct( $file );
 
 		$plugin_i18n = new Register\I18n();
 		$plugin_i18n->set_domain( \WP_Gistpen::$plugin_name );
@@ -61,7 +61,7 @@ class App extends \Intraxia\Jaxion\Core\Application {
 		 * Register Script/Style Assets
 		 */
 		$this['Register\Assets'] = function($app) {
-			$assets = new Register\Assets( $app['URL'] );
+			$assets = new Register\Assets( $app['url'] );
 
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 				$assets->setDebug( true );
@@ -74,7 +74,7 @@ class App extends \Intraxia\Jaxion\Core\Application {
 		 * Register TinyMCE Button Assets
 		 */
 		$this['Register\Button'] = function($app) {
-			return new Register\Button( $app['URL'] );
+			return new Register\Button( $app['url'] );
 		};
 
 		/**
@@ -96,7 +96,7 @@ class App extends \Intraxia\Jaxion\Core\Application {
 			return new View\Editor();
 		};
 		$this['View\Settings'] = function($app) {
-			return new View\Settings( $app['BASENAME'] );
+			return new View\Settings( $app['basename'] );
 		};
 
 		/**
