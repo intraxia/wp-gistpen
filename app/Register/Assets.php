@@ -28,8 +28,11 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 			'src' => 'assets/js/settings',
 			'deps' => array( 'jquery', 'jquery-ui-progressbar', 'ajaxq', 'backbone', 'underscore', \WP_Gistpen::$plugin_name . '-prism' ),
 			'footer' => true,
+			'localize' => array(
+				'name' => 'WP_GISTPEN_URL',
+				'data' => $this->url,
+			),
 		) );
-		wp_localize_script( \WP_Gistpen::$plugin_name .'-settings-script', 'WP_GISTPEN_URL', $this->url ); // @todo push into framework
 
 		/**
 		 * TinyMCE Popup Assets
@@ -49,8 +52,11 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 			'handle' => \WP_Gistpen::$plugin_name . '-popups-script',
 			'src' => 'assets/js/popup',
 			'deps' => array( 'jquery', \WP_Gistpen::$plugin_name . '-ace-script' ),
+			'localize' => array(
+				'name' => 'gistpenLanguages',
+				'data' => Language::$supported,
+			),
 		) );
-		wp_localize_script( \WP_Gistpen::$plugin_name . '-popup-script', 'gistpenLanguages', Language::$supported );
 
 		/**
 		 * Gistpen Editor Assets
@@ -75,8 +81,11 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 			'handle' => \WP_Gistpen::$plugin_name . '-editor-script',
 			'src' => 'assets/js/editor',
 			'deps' => array( 'ajaxq', 'backbone', 'underscore', \WP_Gistpen::$plugin_name . '-ace-script' ),
+			'localize' => array(
+				'name' => 'gistpenLanguages',
+				'data' => Language::$supported,
+			),
 		) );
-		wp_localize_script( \WP_Gistpen::$plugin_name . '-editor-script', 'gistpenLanguages', Language::$supported );
 
 		/**
 		 * Prism Assets
