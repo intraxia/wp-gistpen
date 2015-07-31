@@ -29,10 +29,6 @@ class App extends \Intraxia\Jaxion\Core\Application {
 	public function __construct( $file ) {
 		parent::__construct( $file );
 
-		$plugin_i18n = new Register\I18n();
-		$plugin_i18n->set_domain( \WP_Gistpen::$plugin_name );
-		add_action( 'plugins_loaded', array( $plugin_i18n, 'load_plugin_textdomain' ) );
-
 		/**
 		 * Register Api Endpoints
 		 */
