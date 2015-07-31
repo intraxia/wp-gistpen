@@ -129,10 +129,10 @@ class Settings {
 			$user = get_transient( '_wpgp_github_token_user_info' );
 		}
 
-		$login = array_key_exists('login', $user) ? $user['login'] : '';
-		$email = array_key_exists('email', $user) ? $user['email'] : '';
-		$public_gists = array_key_exists('public_gists', $user) ? $user['public_gists'] : '0';
-		$private_gists = array_key_exists('private_gists', $user) ? $user['private_gists'] : '0';
+		$login = array_key_exists( 'login', $user ) ? $user['login'] : '';
+		$email = array_key_exists( 'email', $user ) ? $user['email'] : '';
+		$public_gists = array_key_exists( 'public_gists', $user ) ? $user['public_gists'] : '0';
+		$private_gists = array_key_exists( 'private_gists', $user ) ? $user['private_gists'] : '0';
 
 		?><h3>Authorized User</h3>
 
@@ -161,7 +161,7 @@ class Settings {
 	 * @return string              modified form format
 	 */
 	public function modify_form_output( $form_format, $object_id, $cmb ) {
-		if ( 'wp-gistpen' == $object_id && 'wpgp_option_metabox' == $cmb->cmb_id ) {
+		if ( 'wp-gistpen' === $object_id && 'wpgp_option_metabox' === $cmb->cmb_id ) {
 			$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<input type="submit" name="submit-cmb" value="%4$s" class="button-primary"></form>';
 		}
 

@@ -39,7 +39,7 @@ class Button {
 	 * @var      string    $version    The version of this plugin.
 	 */
 	public function __construct( $url ) {
-		$this->url = $url;
+		$this->url = $url; // @todo move this class into framework
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			$this->min = '';

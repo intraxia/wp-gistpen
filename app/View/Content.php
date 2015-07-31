@@ -75,7 +75,7 @@ class Content {
 	 * @since    0.1.0
 	 */
 	public function remove_filters( $content ) {
-		if ( 'gistpen' == get_post_type() ) {
+		if ( 'gistpen' === get_post_type() ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
 			remove_filter( 'the_content', 'capital_P_dangit' );
@@ -96,7 +96,7 @@ class Content {
 	public function post_content( $content = '' ) {
 		global $post;
 
-		if ( 'gistpen' == $post->post_type ) {
+		if ( 'gistpen' === $post->post_type ) {
 			$zip = $this->database->query()->by_post( $post );
 
 			if ( is_wp_error( $zip ) ) {

@@ -122,7 +122,7 @@ class Editor {
 	 * @since     0.4.0
 	 */
 	public function render_editor_div() {
-		if ( 'gistpen' == get_current_screen()->id ) {
+		if ( 'gistpen' === get_current_screen()->id ) {
 			include_once( WP_GISTPEN_DIR . 'partials/editor/main.inc.php' );
 			include_once( WP_GISTPEN_DIR . 'partials/editor/zip.inc.php' );
 			include_once( WP_GISTPEN_DIR . 'partials/editor/file.inc.php' );
@@ -172,7 +172,7 @@ class Editor {
 	 */
 	public function manage_posts_columns( $columns ) {
 		return array_merge( $columns, array(
-			'gistpen_files' => __( 'Files', \WP_Gistpen::$plugin_name )
+			'gistpen_files' => __( 'Files', 'wp-gistpen' )
 		) );
 	}
 
