@@ -77,7 +77,7 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 		) );
 		$this->registerScript( array(
 			'type' => 'admin',
-			'condition' => $popup_condition,
+			'condition' => $editor_condition,
 			'handle' => \WP_Gistpen::$plugin_name . '-editor-script',
 			'src' => 'assets/js/editor',
 			'deps' => array( 'ajaxq', 'backbone', 'underscore', \WP_Gistpen::$plugin_name . '-ace-script' ),
