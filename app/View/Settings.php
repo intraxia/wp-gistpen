@@ -82,10 +82,10 @@ class Settings {
 	public function add_plugin_admin_menu() {
 
 		add_options_page(
-			__( 'WP-Gistpen Settings', \WP_Gistpen::$plugin_name ),
-			__( 'Gistpens', \WP_Gistpen::$plugin_name ),
+			__( 'WP-Gistpen Settings', 'wp-gistpen' ),
+			__( 'Gistpens', 'wp-gistpen' ),
 			'edit_posts',
-			\WP_Gistpen::$plugin_name,
+			\WP_Gistpen::$plugin_name, // @todo can we change this to something else? or move this into the framework?
 			array( $this, 'display_plugin_admin_page' )
 		);
 
@@ -136,19 +136,19 @@ class Settings {
 
 		?><h3>Authorized User</h3>
 
-		<strong><?php _e( 'Username: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $login ); ?><br>
-		<strong><?php _e( 'Email: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $email ); ?><br>
-		<strong><?php _e( 'Public Gists: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
-		<strong><?php _e( 'Private Gists: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
+		<strong><?php _e( 'Username: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $login ); ?><br>
+		<strong><?php _e( 'Email: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $email ); ?><br>
+		<strong><?php _e( 'Public Gists: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
+		<strong><?php _e( 'Private Gists: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
 
 		<p class="cmb2-metabox-description">
 			<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?>
-			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", \WP_Gistpen::$plugin_name ); ?>
+			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", 'wp-gistpen' ); ?>
 		</p>
 
 		<p class="cmb2-metabox-description">
 			<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
-			<?php _e( "When you import Gists, only Gists not previously imported will be added.", \WP_Gistpen::$plugin_name ); ?>
+			<?php _e( "When you import Gists, only Gists not previously imported will be added.", 'wp-gistpen' ); ?>
 		</p>
 		<?php
 	}
@@ -177,7 +177,7 @@ class Settings {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . \WP_Gistpen::$plugin_name ) . '">' . __( 'Settings', \WP_Gistpen::$plugin_name ) . '</a>'
+				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . \WP_Gistpen::$plugin_name ) . '">' . __( 'Settings', 'wp-gistpen' ) . '</a>'
 			),
 			$links
 		);
@@ -208,7 +208,7 @@ class Settings {
 			<div class="error">
 				<p>
 					<?php
-						_e( 'Gist token failed to validate. Error message: ', \WP_Gistpen::$plugin_name );
+						_e( 'Gist token failed to validate. Error message: ', 'wp-gistpen' );
 						echo esc_html( $error->get_error_message() );
 					?>
 				</p>

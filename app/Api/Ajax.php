@@ -149,7 +149,7 @@ class Ajax {
 		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'Nonce check failed.', \WP_Gistpen::$plugin_name ),
+				'message' => __( 'Nonce check failed.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -157,7 +157,7 @@ class Ajax {
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( "User doesn't have proper permisissions.", \WP_Gistpen::$plugin_name ),
+				'message' => __( "User doesn't have proper permisissions.", 'wp-gistpen' ),
 			) );
 		}
 	}
@@ -213,7 +213,7 @@ class Ajax {
 		if ( ! array_key_exists( 'post_id', $_POST ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'No Gistpen ID sent', \WP_Gistpen::$plugin_name ),
+				'message' => __( 'No Gistpen ID sent', 'wp-gistpen' ),
 			) );
 		}
 
@@ -277,7 +277,7 @@ class Ajax {
 
 		wp_send_json_success( array(
 			'code'    => 'updated',
-			'message' => __( 'Successfully updated Gistpen ', \WP_Gistpen::$plugin_name ) . $result,
+			'message' => __( 'Successfully updated Gistpen ', 'wp-gistpen' ) . $result,
 		) );
 	}
 
@@ -305,7 +305,7 @@ class Ajax {
 		if ( ! $result ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'Failed to update Ace theme.', \WP_Gistpen::$plugin_name ),
+				'message' => __( 'Failed to update Ace theme.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -329,7 +329,7 @@ class Ajax {
 		if ( empty( $result ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'No Gistpens to export.', \WP_Gistpen::$plugin_name ),
+				'message' => __( 'No Gistpens to export.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -349,7 +349,7 @@ class Ajax {
 		if ( 0 === $id ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'Invalid Gistpen ID.', \WP_Gistpen::$plugin_name ),
+				'message' => __( 'Invalid Gistpen ID.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -369,7 +369,7 @@ class Ajax {
 
 		wp_send_json_success( array(
 			'code'    => 'success',
-			'message' => __( 'Successfully exported Gistpen #', \WP_Gistpen::$plugin_name ) . $result,
+			'message' => __( 'Successfully exported Gistpen #', 'wp-gistpen' ) . $result,
 		) );
 	}
 
@@ -399,7 +399,7 @@ class Ajax {
 		if( empty( $new_user_gists ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'No Gists to import.', \WP_Gistpen::$plugin_name ),
+				'message' => __( 'No Gists to import.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -423,7 +423,7 @@ class Ajax {
 
 		wp_send_json_success( array(
 			'code'    => 'success',
-			'message' => __( 'Successfully imported Gist #', \WP_Gistpen::$plugin_name ) . $gist_id,
+			'message' => __( 'Successfully imported Gist #', 'wp-gistpen' ) . $gist_id,
 		) );
 	}
 }

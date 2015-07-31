@@ -150,7 +150,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully insert {$slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully insert {$slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) ); // @todo this is wrong
 			}
 		}
 
@@ -169,7 +169,7 @@ class Migration {
 					// Deactivate and quit
 					deactivate_plugins( 'WP-Gistpen' );
 					// and provide an error
-					print ( __( "Failed to successfully delete {$slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+					print ( __( "Failed to successfully delete {$slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 				}
 			}
 		}
@@ -204,7 +204,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully set holdover for language {$term->slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully set holdover for language {$term->slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 
 			// So we can create new terms with the old slug/name combo
@@ -216,7 +216,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully insert language {$term->slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully insert language {$term->slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 		}
 
@@ -249,7 +249,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully delete description meta from {$post->ID}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully delete description meta from {$post->ID}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 
 			// Set content
@@ -273,7 +273,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 
 			$zip->add_file( $file );
@@ -284,7 +284,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( __FILE__);
 				// and provide an error
-				print ( __( "Failed to successfully save {$post->ID} in new format. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully save {$post->ID} in new format. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 		}
 

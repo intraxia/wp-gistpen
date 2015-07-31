@@ -78,7 +78,7 @@ class Command extends \WP_CLI_Command {
 
 			$this->save->update( $zip_data );
 
-			WP_CLI::success( __( "Successfully added example for language {$lang}", \WP_Gistpen::$plugin_name ) );
+			WP_CLI::success( __( "Successfully added example for language {$lang}", 'wp-gistpen' ) );
 			sleep( 1 );
 		}
 	}
@@ -109,16 +109,16 @@ class Command extends \WP_CLI_Command {
 		$client->authenticate( $token );
 
 		if ( is_wp_error( $error = $client->check_token() ) ) {
-			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', \WP_Gistpen::$plugin_name ) . $error->get_error_message() );
+			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', 'wp-gistpen' ) . $error->get_error_message() );
 		}
 
 		$success = cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token', $token );
 
 		if ( ! $success ) {
-			WP_CLI::error( __( 'Gist token update failed.', \WP_Gistpen::$plugin_name ) );
+			WP_CLI::error( __( 'Gist token update failed.', 'wp-gistpen' ) );
 		}
 
-		WP_CLI::success( __( 'Gist token updated.', \WP_Gistpen::$plugin_name ) );
+		WP_CLI::success( __( 'Gist token updated.', 'wp-gistpen' ) );
 	}
 
 	/**
@@ -136,11 +136,11 @@ class Command extends \WP_CLI_Command {
 		$ids = $this->database->query( 'head' )->missing_gist_id();
 
 		if ( is_wp_error( $ids ) ) {
-			WP_CLI::error( __( 'Failed to get post IDs missing Gist IDs. Error: ', $this->plugin_name ) . $ids->get_error_message() );
+			WP_CLI::error( __( 'Failed to get post IDs missing Gist IDs. Error: ', 'wp-gistpen' ) . $ids->get_error_message() );
 		}
 
 		if ( empty( $ids ) ) {
-			WP_CLI::error( __( 'No Gistpens missing Gist IDs.', \WP_Gistpen::$plugin_name ) );
+			WP_CLI::error( __( 'No Gistpens missing Gist IDs.', 'wp-gistpen' ) );
 		}
 
 		foreach ( $ids as $id ) {
@@ -148,10 +148,10 @@ class Command extends \WP_CLI_Command {
 			$result = $this->sync->export_gistpen( $id );
 
 			if ( is_wp_error( $result ) ){
-				WP_CLI::error( __( 'Failed to create Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
+				WP_CLI::error( __( 'Failed to create Gist. Error: ', 'wp-gistpen' ) . $result->get_error_message() );
 			}
 
-			WP_CLI::success( __( 'Successfully exported Gistpen #', \WP_Gistpen::$plugin_name ) . $result );
+			WP_CLI::success( __( 'Successfully exported Gistpen #', 'wp-gistpen' ) . $result );
 
 			sleep( 1 );
 		}
@@ -172,11 +172,11 @@ class Command extends \WP_CLI_Command {
 		$gists = $this->gist->get_gists();
 
 		if ( is_wp_error( $gists ) ) {
-			WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ', $this->plugin_name ) . $gists->get_error_message() );
+			WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ', 'wp-gistpen' ) . $gists->get_error_message() );
 		}
 
 		if ( empty( $gists ) ) {
-			WP_CLI::error( __( 'No Gists retrieved.', \WP_Gistpen::$plugin_name ) );
+			WP_CLI::error( __( 'No Gists retrieved.', 'wp-gistpen' ) );
 		}
 
 		foreach ( $gists as $gist ) {
@@ -187,10 +187,10 @@ class Command extends \WP_CLI_Command {
 			}
 
 			if ( is_wp_error( $result ) ){
-				WP_CLI::error( __( 'Failed to import Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
+				WP_CLI::error( __( 'Failed to import Gist. Error: ', 'wp-gistpen' ) . $result->get_error_message() );
 			}
 
-			WP_CLI::success( __( 'Successfully imported Gist #', \WP_Gistpen::$plugin_name ) . $gist );
+			WP_CLI::success( __( 'Successfully imported Gist #', 'wp-gistpen' ) . $gist );
 		}
 	}
 }
