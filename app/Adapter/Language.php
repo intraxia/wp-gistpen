@@ -18,30 +18,19 @@ class Language {
 	 * @var   array
 	 * @since 0.5.0
 	 */
-	protected $map;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct() {
-		$this->map = array(
-			'scss'        => 'sass',
-			'python'      => 'py',
-			'text'        => 'plaintext',
-			'javascript'  => 'js',
-			'c#'          => 'csharp',
-			'shell'       => 'bash',
-			'objective-c' => 'objectivec',
-			'tex'         => 'latex',
-			'diff'        => 'git',
-			'cucumber'    => 'gherkin',
-			'assembly'    => 'nasm',
-		);
-	}
+	protected $map = array(
+		'scss'        => 'sass',
+		'python'      => 'py',
+		'text'        => 'plaintext',
+		'javascript'  => 'js',
+		'c#'          => 'csharp',
+		'shell'       => 'bash',
+		'objective-c' => 'objectivec',
+		'tex'         => 'latex',
+		'diff'        => 'git',
+		'cucumber'    => 'gherkin',
+		'assembly'    => 'nasm',
+	);
 
 	/**
 	 * Builds the Language object by language slug
