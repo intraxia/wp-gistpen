@@ -18,4 +18,4 @@ require_once dirname( __FILE__ ) . '/factory.php';
 
 require_once dirname( __FILE__ ) . '/testcase.php';
 
-WP_Gistpen\Activator::activate();
+WP_Gistpen\App::get()->activate();
