@@ -18,13 +18,7 @@ namespace WP_Gistpen;
 class App extends \Intraxia\Jaxion\Core\Application {
 
 	/**
-	 * Define the core functionality of the plugin.
-	 *
-	 * Set the plugin name and the plugin version that can be used throughout the plugin.
-	 * Load the dependencies, define the locale, and set the hooks for the Dashboard and
-	 * the public-facing side of the site.
-	 *
-	 * @since    0.5.0
+	 * @inheritdoc
 	 */
 	public function __construct( $file ) {
 		parent::__construct( $file );
@@ -103,4 +97,24 @@ class App extends \Intraxia\Jaxion\Core\Application {
 			\WP_CLI::add_command( 'wpgp', 'WP_Gistpen\CLI\Command' );
 		}
 	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function activate() {
+		if ( ! get_option( '_wpgp_activated' ) ) {
+			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
+		}
+
+		update_option( '_wpgp_activated', 'done' );
+		flush_rewrite_rules( true );
+	}
+
+	/**
+	 * @inheritdoc
+	 */
+	public function deactivate() {
+		flush_rewrite_rules( true );
+	}
+
 }

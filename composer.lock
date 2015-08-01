@@ -191,12 +191,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "b2e1300ef6bcd842aab911e9460a96ece62f656b"
+                "reference": "e14dbbf05d8153c5668fc0a7308410e5998db9ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/b2e1300ef6bcd842aab911e9460a96ece62f656b",
-                "reference": "b2e1300ef6bcd842aab911e9460a96ece62f656b",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/e14dbbf05d8153c5668fc0a7308410e5998db9ff",
+                "reference": "e14dbbf05d8153c5668fc0a7308410e5998db9ff",
                 "shasum": ""
             },
             "require": {
@@ -227,7 +227,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2015-07-30 12:01:37"
+            "time": "2015-07-31 12:18:18"
         },
         {
             "name": "knplabs/github-api",
@@ -548,12 +548,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "df29d420311aa94ed1eb26560b573710f3603b2d"
+                "reference": "a5402c806385366dc0bb5a885ff47685d129ddac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/df29d420311aa94ed1eb26560b573710f3603b2d",
-                "reference": "df29d420311aa94ed1eb26560b573710f3603b2d",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/a5402c806385366dc0bb5a885ff47685d129ddac",
+                "reference": "a5402c806385366dc0bb5a885ff47685d129ddac",
                 "shasum": ""
             },
             "require": {
@@ -602,7 +602,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-07-27 14:08:10"
+            "time": "2015-08-01 05:20:12"
         },
         {
             "name": "phpunit/php-file-iterator",

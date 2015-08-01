@@ -70,12 +70,4 @@ $updatePhp = new WPUpdatePhp( '5.3.0' );
 if ( $updatePhp->does_it_meet_required_php_version( PHP_VERSION ) ) {
 	$app = new WP_Gistpen\App( __FILE__ );
 	$app->boot();
-
-	/** @todo move these hooks into the boot method? into framework generally */
-
-	/** This action is documented in app/Activator.php */
-	register_activation_hook( __FILE__, array( 'WP_Gistpen\Activator', 'activate' ) );
-
-	/** This action is documented in app/Deactivator.php */
-	register_deactivation_hook( __FILE__, array( 'WP_Gistpen\Deactivator', 'deactivate' ) );
 }
