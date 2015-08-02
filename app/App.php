@@ -82,11 +82,11 @@ class App extends \Intraxia\Jaxion\Core\Application {
 		$this['View\Content'] = function() {
 			return new View\Content();
 		};
-		$this['View\Editor'] = function() {
-			return new View\Editor();
+		$this['View\Editor'] = function($app) {
+			return new View\Editor( $app['path'] );
 		};
 		$this['View\Settings'] = function($app) {
-			return new View\Settings( $app['basename'] );
+			return new View\Settings( $app['basename'], $app['path'] );
 		};
 
 		/**
@@ -94,7 +94,10 @@ class App extends \Intraxia\Jaxion\Core\Application {
 		 */
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			// @todo push into framework
-			\WP_CLI::add_command( 'wpgp', 'WP_Gistpen\CLI\Command' );
+			$this['CLI\Command'] = function($app) {
+				return new CLI\Command( $app['path'] );
+			};
+			\WP_CLI::add_command( 'wpgp', $this['CLI\Command'] );
 		}
 	}
 

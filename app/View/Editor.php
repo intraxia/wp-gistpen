@@ -89,6 +89,13 @@ class Editor {
 	);
 
 	/**
+	 * Plugin path
+	 *
+	 * @var string
+	 */
+	protected $path;
+
+	/**
 	 * Database Facade object
 	 *
 	 * @var Database
@@ -111,7 +118,8 @@ class Editor {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct() {
+	public function __construct( $path ) {
+		$this->path = $path;
 		$this->database = new Database();
 		$this->adapter = new Adapter();
 	}
@@ -123,9 +131,9 @@ class Editor {
 	 */
 	public function render_editor_div() {
 		if ( 'gistpen' === get_current_screen()->id ) {
-			include_once( WP_GISTPEN_DIR . 'partials/editor/main.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/zip.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/file.inc.php' );
+			include_once( $this->path . 'partials/editor/main.inc.php' );
+			include_once( $this->path . 'partials/editor/zip.inc.php' );
+			include_once( $this->path . 'partials/editor/file.inc.php' );
 		}
 	}
 

@@ -10,7 +10,8 @@ class WP_Gistpen_View_Editor_Test extends WP_Gistpen_UnitTestCase {
 		global $post;
 
 		parent::setUp();
-		$this->editor = new Editor();
+		$app = WP_Gistpen\App::get();
+		$this->editor = new Editor( $app['path'] );
 
 		$this->create_post_and_children();
 

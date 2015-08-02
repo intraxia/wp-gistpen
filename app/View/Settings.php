@@ -52,6 +52,13 @@ class Settings {
 	);
 
 	/**
+	 * Plugin path
+	 *
+	 * @var string
+	 */
+	protected $path;
+
+	/**
 	 * Gist account object
 	 *
 	 * @var Gist
@@ -63,9 +70,12 @@ class Settings {
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $basename
+	 * @param string $path
 	 * @since    0.5.0
 	 */
-	public function __construct( $basename ) {
+	public function __construct( $basename, $path ) {
+		$this->path = $path;
+
 		$this->filters[] = array(
 			'hook' => 'plugin_action_links_' . $basename,
 			'method' => 'add_action_links',
@@ -98,7 +108,7 @@ class Settings {
 	 */
 	public function display_plugin_admin_page() {
 
-		include_once( WP_GISTPEN_DIR . 'partials/settings/page.php' );
+		include_once( $this->path . 'partials/settings/page.php' );
 
 	}
 

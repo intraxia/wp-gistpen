@@ -19,7 +19,15 @@ use WP_Gistpen\Facade\Database;
  */
 class Command extends \WP_CLI_Command {
 
-	public function __construct() {
+	/**
+	 * Plugin path
+	 *
+	 * @var string
+	 */
+	protected $path;
+
+	public function __construct( $path ) {
+		$this->path = $path;
 		$this->database = new Database();
 		$this->adapter = new Adapter();
 		$this->gist = new Gist();
@@ -57,7 +65,7 @@ class Command extends \WP_CLI_Command {
 			// Code snippets sourced from: https://highlightjs.org/static/demo/
 			$code = '';
 
-			$fh = fopen( WP_GISTPEN_DIR . 'test/data/' . $slug,'r' );
+			$fh = fopen( $this->path . 'test/data/' . $slug,'r' );
 			while ( $line = fgets( $fh ) ) {
 				$code .= $line;
 			}
