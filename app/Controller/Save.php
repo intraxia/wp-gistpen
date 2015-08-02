@@ -3,6 +3,8 @@ namespace WP_Gistpen\Controller;
 
 use WP_Gistpen\Facade\Database;
 use WP_Gistpen\Facade\Adapter;
+use WP_Gistpen\Model\File;
+use WP_Gistpen\Model\Zip;
 
 /**
  * This is the functionality for the save_post hook
@@ -51,7 +53,7 @@ class Save {
 			'hook' => 'wp_save_post_revision_check_for_changes',
 			'method' => 'disable_check_for_change',
 			'args' => 3,
-		)
+		),
 	);
 
 	/**
@@ -94,20 +96,22 @@ class Save {
 			$zip_data['status'] = 'draft';
 		}
 
+		/** @var Zip $zip */
 		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
 
 		// Check user permissions
-		if ($zip->get_ID()) {
+		if ( $zip->get_ID() ) {
 			if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
-				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
+				return new \WP_Error( 'no_perms', sprintf( __( 'User does not have permission to edit post %d', 'wp-gistpen' ), $zip->get_ID() ) );
 			}
 		} else {
 			if ( ! current_user_can( 'edit_posts' ) ) {
-				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
+				return new \WP_Error( 'no_perms', sprintf( __( 'User does not have permission to edit post %d', 'wp-gistpen' ), $zip->get_ID() ) );
 			}
 		}
 
 		foreach ( $zip_data['files'] as $file_data ) {
+			/** @var File $file */
 			$file = $this->adapter->build( 'file' )->by_array( $file_data );
 			$file->set_language( $this->adapter->build( 'language' )->by_slug( $file_data['language'] ) );
 
@@ -172,6 +176,7 @@ class Save {
 			$files = $this->database->query()->files_by_post( $post );
 
 			foreach ( $files as $file ) {
+				/** @var File $file */
 				wp_update_post( array(
 					'ID' => $file->get_ID(),
 					'post_status' => $new_status,
@@ -192,6 +197,7 @@ class Save {
 		$post = get_post( $post_id );
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
+			/** @var Zip $zip */
 			$zip = $this->database->query()->by_post( $post );
 
 			$files = $zip->get_files();

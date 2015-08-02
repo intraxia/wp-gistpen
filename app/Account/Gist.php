@@ -54,7 +54,7 @@ class Gist {
 		$token = (string) cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' );
 
 		if ( empty( $token ) ) {
-			return new \WP_Error( 'no_github_token', 'No GitHub OAuth token available.' );
+			return new \WP_Error( 'no_github_token', __( 'No GitHub OAuth token available.', 'wp-gistpen' ) );
 		}
 
 		$this->authenticate( $token );

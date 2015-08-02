@@ -10,6 +10,10 @@ msgstr ""
 "PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
 
+#: app/Account/Gist.php:57
+msgid "No GitHub OAuth token available."
+msgstr ""
+
 #: app/Api/Ajax.php:152
 msgid "Nonce check failed."
 msgstr ""
@@ -38,7 +42,7 @@ msgstr ""
 msgid "Invalid Gistpen ID."
 msgstr ""
 
-#: app/Api/Ajax.php:372, app/CLI/Command.php:154
+#: app/Api/Ajax.php:372, app/CLI/Command.php:162
 msgid "Successfully exported Gistpen #"
 msgstr ""
 
@@ -46,48 +50,60 @@ msgstr ""
 msgid "No Gists to import."
 msgstr ""
 
-#: app/Api/Ajax.php:426, app/CLI/Command.php:193
+#: app/Api/Ajax.php:426, app/CLI/Command.php:201
 msgid "Successfully imported Gist #"
 msgstr ""
 
-#: app/CLI/Command.php:81
+#: app/CLI/Command.php:89
 msgid "Successfully added example for language {$lang}"
 msgstr ""
 
-#: app/CLI/Command.php:112
+#: app/CLI/Command.php:120
 msgid "Gist token failed to authenticate. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:118
+#: app/CLI/Command.php:126
 msgid "Gist token update failed."
 msgstr ""
 
-#: app/CLI/Command.php:121
+#: app/CLI/Command.php:129
 msgid "Gist token updated."
 msgstr ""
 
-#: app/CLI/Command.php:139
+#: app/CLI/Command.php:147
 msgid "Failed to get post IDs missing Gist IDs. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:143
+#: app/CLI/Command.php:151
 msgid "No Gistpens missing Gist IDs."
 msgstr ""
 
-#: app/CLI/Command.php:151
+#: app/CLI/Command.php:159
 msgid "Failed to create Gist. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:175
+#: app/CLI/Command.php:183
 msgid "Failed to get Gist IDs for your account. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:179
+#: app/CLI/Command.php:187
 msgid "No Gists retrieved."
 msgstr ""
 
-#: app/CLI/Command.php:190
+#: app/CLI/Command.php:198
 msgid "Failed to import Gist. Error: "
+msgstr ""
+
+#: app/Controller/Save.php:105, app/Controller/Save.php:109
+msgid "User does not have permission to edit post %d"
+msgstr ""
+
+#: app/Database/Query/Head.php:126
+msgid "WP_Gistpen_Query::get() didn't get a Gistpen"
+msgstr ""
+
+#: app/Database/Query/Head.php:271
+msgid "Multiple Gistpens with Gist ID %s found."
 msgstr ""
 
 #: app/Migration.php:153
@@ -128,7 +144,7 @@ msgctxt "Post Type Singular Name"
 msgid "Gistpen"
 msgstr ""
 
-#: app/Register/Data.php:39, app/View/Settings.php:86
+#: app/Register/Data.php:39, app/View/Settings.php:96
 msgid "Gistpens"
 msgstr ""
 
@@ -242,42 +258,42 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: app/View/Editor.php:175
+#: app/View/Editor.php:183
 msgid "Files"
 msgstr ""
 
-#: app/View/Settings.php:85
+#: app/View/Settings.php:95
 msgid "WP-Gistpen Settings"
 msgstr ""
 
-#: app/View/Settings.php:139
+#: app/View/Settings.php:149
 msgid "Username: "
 msgstr ""
 
-#: app/View/Settings.php:140
+#: app/View/Settings.php:150
 msgid "Email: "
 msgstr ""
 
-#: app/View/Settings.php:141
+#: app/View/Settings.php:151
 msgid "Public Gists: "
 msgstr ""
 
-#: app/View/Settings.php:142
+#: app/View/Settings.php:152
 msgid "Private Gists: "
 msgstr ""
 
-#: app/View/Settings.php:146
+#: app/View/Settings.php:156
 msgid "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually."
 msgstr ""
 
-#: app/View/Settings.php:151
+#: app/View/Settings.php:161
 msgid "When you import Gists, only Gists not previously imported will be added."
 msgstr ""
 
-#: app/View/Settings.php:180
+#: app/View/Settings.php:190
 msgid "Settings"
 msgstr ""
 
-#: app/View/Settings.php:211
+#: app/View/Settings.php:221
 msgid "Gist token failed to validate. Error message: "
 msgstr ""
