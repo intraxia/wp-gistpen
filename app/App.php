@@ -92,13 +92,9 @@ class App extends \Intraxia\Jaxion\Core\Application {
 		/**
 		 * Register Command
 		 */
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			// @todo push into framework
-			$this['CLI\Command'] = function($app) {
-				return new CLI\Command( $app['path'] );
-			};
-			\WP_CLI::add_command( 'wpgp', $this['CLI\Command'] );
-		}
+		$this->command('wpgp', function($app) {
+			return new CLI\Command( $app['path'] );
+		} );
 	}
 
 	/**
