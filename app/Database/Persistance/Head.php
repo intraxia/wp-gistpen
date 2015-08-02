@@ -198,11 +198,10 @@ class Head {
 	 * @since  0.5.0
 	 */
 	public function by_array( $data ) {
-		$defaults = array(
+		$data = wp_parse_args($data, array(
 			'post_type'   => 'gistpen',
 			'post_status' => 'auto-draft',
-		);
-		$data = array_merge( $defaults, $data );
+		) );
 
 		return wp_insert_post( $data, true );
 	}
