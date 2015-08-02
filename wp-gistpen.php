@@ -68,6 +68,5 @@ class WP_Gistpen {
 $updatePhp = new WPUpdatePhp( '5.3.0' );
 
 if ( $updatePhp->does_it_meet_required_php_version( PHP_VERSION ) ) {
-	$app = new WP_Gistpen\App( __FILE__ );
-	$app->boot();
+	call_user_func( array( new WP_Gistpen\App( __FILE__ ), 'boot' ) );
 }
