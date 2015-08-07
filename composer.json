@@ -15,7 +15,8 @@
     "webdevstudios/cmb2": "2.0.0.9",
     "knplabs/github-api": "~1.4",
     "wpupdatephp/wp-update-php": "~1.0",
-    "intraxia/jaxion": "dev-master"
+    "intraxia/jaxion": "dev-master",
+    "intraxia/codestyle": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "4.3.*",
@@ -30,6 +31,11 @@
   },
   "config": {
     "vendor-dir": "lib"
+  },
+  "scripts": {
+    "sniff": "phpcs -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=summary",
+    "clean": "phpcbf -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=summary",
+    "test": "phpunit"
   },
   "extra": {
     "installer-paths": {

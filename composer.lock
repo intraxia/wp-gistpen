@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e7130bf9910d25d2776ef3dc388f60c5",
+    "hash": "1871dee984bc7c284c7ebc6f04815db8",
     "packages": [
         {
             "name": "composer/installers",
@@ -186,17 +186,48 @@
             "time": "2015-04-29 17:06:53"
         },
         {
+            "name": "intraxia/codestyle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/intraxia/codestyle.git",
+                "reference": "e87330e48ede141072dc14a90228a86b64df2c3f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/intraxia/codestyle/zipball/e87330e48ede141072dc14a90228a86b64df2c3f",
+                "reference": "e87330e48ede141072dc14a90228a86b64df2c3f",
+                "shasum": ""
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "~2.2"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "mAAdhaTTah",
+                    "email": "jamesorodig@gmail.com"
+                }
+            ],
+            "description": "The Intraxia PHP Coding Standards.",
+            "time": "2015-08-05 00:28:26"
+        },
+        {
             "name": "intraxia/jaxion",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "8960eb0daf719ffae800d7608a2f00b6c6da86ac"
+                "reference": "1bd99fcb6ba99a3578534e5b4695ea791cb336df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/8960eb0daf719ffae800d7608a2f00b6c6da86ac",
-                "reference": "8960eb0daf719ffae800d7608a2f00b6c6da86ac",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/1bd99fcb6ba99a3578534e5b4695ea791cb336df",
+                "reference": "1bd99fcb6ba99a3578534e5b4695ea791cb336df",
                 "shasum": ""
             },
             "require": {
@@ -227,7 +258,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2015-08-02 16:18:25"
+            "time": "2015-08-05 00:35:30"
         },
         {
             "name": "knplabs/github-api",
@@ -235,12 +266,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/php-github-api.git",
-                "reference": "99c6b87265f5dd26a19a1fa3f24f70a7d1455589"
+                "reference": "fccb5164bba691157b779a452d8a383b514ab209"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/99c6b87265f5dd26a19a1fa3f24f70a7d1455589",
-                "reference": "99c6b87265f5dd26a19a1fa3f24f70a7d1455589",
+                "url": "https://api.github.com/repos/KnpLabs/php-github-api/zipball/fccb5164bba691157b779a452d8a383b514ab209",
+                "reference": "fccb5164bba691157b779a452d8a383b514ab209",
                 "shasum": ""
             },
             "require": {
@@ -288,7 +319,7 @@
                 "gist",
                 "github"
             ],
-            "time": "2015-07-07 10:27:29"
+            "time": "2015-08-06 09:36:33"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -548,12 +579,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "f41108eb9d8282cad3274e87a6b1b3478d9f8ce0"
+                "reference": "40103f9b335f1d84daed099f180b9de12ba080e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/f41108eb9d8282cad3274e87a6b1b3478d9f8ce0",
-                "reference": "f41108eb9d8282cad3274e87a6b1b3478d9f8ce0",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/40103f9b335f1d84daed099f180b9de12ba080e7",
+                "reference": "40103f9b335f1d84daed099f180b9de12ba080e7",
                 "shasum": ""
             },
             "require": {
@@ -561,7 +592,7 @@
                 "phpunit/php-file-iterator": "~1.3",
                 "phpunit/php-text-template": "~1.2",
                 "phpunit/php-token-stream": "~1.3",
-                "sebastian/environment": "^1.3.1",
+                "sebastian/environment": "^1.3.2",
                 "sebastian/version": "~1.0"
             },
             "require-dev": {
@@ -602,7 +633,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-08-02 10:50:04"
+            "time": "2015-08-04 03:45:55"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -1032,12 +1063,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "3e39374f4c9ec3757839e2952e7a68ac28941760"
+                "reference": "6324c907ce7a52478eeeaede764f48733ef5ae44"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/3e39374f4c9ec3757839e2952e7a68ac28941760",
-                "reference": "3e39374f4c9ec3757839e2952e7a68ac28941760",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6324c907ce7a52478eeeaede764f48733ef5ae44",
+                "reference": "6324c907ce7a52478eeeaede764f48733ef5ae44",
                 "shasum": ""
             },
             "require": {
@@ -1074,7 +1105,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2015-08-02 04:41:00"
+            "time": "2015-08-03 06:14:51"
         },
         {
             "name": "sebastian/exporter",
@@ -1284,7 +1315,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "intraxia/jaxion": 20
+        "intraxia/jaxion": 20,
+        "intraxia/codestyle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
