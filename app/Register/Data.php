@@ -1,10 +1,10 @@
 <?php
-namespace WP_Gistpen\Register;
+namespace Intraxia\Gistpen\Register;
 
 /**
  * Registers the data types in WordPress
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0

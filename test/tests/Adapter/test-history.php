@@ -1,9 +1,9 @@
 <?php
-use WP_Gistpen\Adapter\History as HistoryAdapter;
+use Intraxia\Gistpen\Adapter\History as HistoryAdapter;
 /**
  * @group  adapters
  */
-class WP_Gistpen_Adapter_History_Test extends WP_Gistpen_UnitTestCase {
+class Adapter_History_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
@@ -13,7 +13,7 @@ class WP_Gistpen_Adapter_History_Test extends WP_Gistpen_UnitTestCase {
 	function test_build_blank() {
 		$history = $this->adapter->blank();
 
-		$this->assertInstanceOf( 'WP_Gistpen\Collection\History', $history );
+		$this->assertInstanceOf( 'Intraxia\Gistpen\Collection\History', $history );
 	}
 
 	function tearDown() {

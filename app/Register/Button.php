@@ -1,11 +1,11 @@
 <?php
-namespace WP_Gistpen\Register;
+namespace Intraxia\Gistpen\Register;
 
 /**
  * Registers the TinyMCE assets of the plugin.
  *
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -54,7 +54,7 @@ class Button {
 	 * @since 0.4.0
 	 */
 	public function mce_external_plugins( $plugins ) {
-		$plugins['wp_gistpen'] = $this->url . 'assets/js/button' . $this->min . '.js';
+		$plugins['Intraxia\Gistpen'] = $this->url . 'assets/js/button' . $this->min . '.js';
 		return $plugins;
 	}
 
@@ -66,7 +66,7 @@ class Button {
 	 * @since 0.4.0
 	 */
 	public function mce_buttons( $buttons ) {
-		array_push( $buttons, 'wp_gistpen' );
+		array_push( $buttons, 'Intraxia\Gistpen' );
 		return $buttons;
 	}
 }

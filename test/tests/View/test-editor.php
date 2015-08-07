@@ -1,16 +1,16 @@
 <?php
-use WP_Gistpen\View\Editor;
+use Intraxia\Gistpen\View\Editor;
 
 /**
  * @group view
  */
-class WP_Gistpen_View_Editor_Test extends WP_Gistpen_UnitTestCase {
+class View_Editor_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		global $post;
 
 		parent::setUp();
-		$app = WP_Gistpen\App::get();
+		$app = Intraxia\Gistpen\App::get();
 		$this->editor = new Editor( $app['path'] );
 
 		$this->create_post_and_children();

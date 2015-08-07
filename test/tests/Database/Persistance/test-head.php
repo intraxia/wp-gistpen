@@ -1,13 +1,13 @@
 <?php
 
-use WP_Gistpen\Database\Persistance\Head as Persistance;
-use WP_Gistpen\Database\Query\Head as Query;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Database\Persistance\Head as Persistance;
+use Intraxia\Gistpen\Database\Query\Head as Query;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * @group  database
  */
-class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
+class Persistance_Head_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
@@ -89,7 +89,7 @@ class WP_Gistpen_Persistance_Head_Test extends WP_Gistpen_UnitTestCase {
 
 		$saved_file = $this->query->by_id( $result );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Model\File', $saved_file );
+		$this->assertInstanceOf( 'Intraxia\Gistpen\Model\File', $saved_file );
 		$this->assertEquals( 'new-code', $saved_file->get_slug() );
 		$this->assertEquals( 'if possible do this', $saved_file->get_code() );
 		$this->assertEquals( 'twig', $saved_file->get_language()->get_slug() );

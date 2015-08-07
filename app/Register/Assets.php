@@ -1,7 +1,7 @@
 <?php
-namespace WP_Gistpen\Register;
+namespace Intraxia\Gistpen\Register;
 
-use WP_Gistpen\Model\Language;
+use Intraxia\Gistpen\Model\Language;
 
 class Assets extends \Intraxia\Jaxion\Register\Assets {
 
@@ -18,18 +18,18 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 		$this->registerStyle( array(
 			'type' => 'admin',
 			'condition' => $settings_condition,
-			'handle' => \WP_Gistpen::$plugin_name .'-settings-styles',
+			'handle' => \Gistpen::$plugin_name .'-settings-styles',
 			'src' => 'assets/css/settings',
 		) );
 		$this->registerScript( array(
 			'type' => 'admin',
 			'condition' => $settings_condition,
-			'handle' => \WP_Gistpen::$plugin_name . '-settings-script',
+			'handle' => \Gistpen::$plugin_name . '-settings-script',
 			'src' => 'assets/js/settings',
-			'deps' => array( 'jquery', 'jquery-ui-progressbar', 'ajaxq', 'backbone', 'underscore', \WP_Gistpen::$plugin_name . '-prism' ),
+			'deps' => array( 'jquery', 'jquery-ui-progressbar', 'ajaxq', 'backbone', 'underscore', \Gistpen::$plugin_name . '-prism' ),
 			'footer' => true,
 			'localize' => array(
-				'name' => 'WP_GISTPEN_URL',
+				'name' => 'Intraxia\Gistpen_URL',
 				'data' => $this->url,
 			),
 		) );
@@ -43,15 +43,15 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 		$this->registerStyle( array(
 			'type' => 'admin',
 			'condition' => $popup_condition,
-			'handle' => \WP_Gistpen::$plugin_name .'-popup-styles',
+			'handle' => \Gistpen::$plugin_name .'-popup-styles',
 			'src' => 'assets/css/popup',
 		) );
 		$this->registerScript( array(
 			'type' => 'admin',
 			'condition' => $popup_condition,
-			'handle' => \WP_Gistpen::$plugin_name . '-popups-script',
+			'handle' => \Gistpen::$plugin_name . '-popups-script',
 			'src' => 'assets/js/popup',
-			'deps' => array( 'jquery', \WP_Gistpen::$plugin_name . '-ace-script' ),
+			'deps' => array( 'jquery', \Gistpen::$plugin_name . '-ace-script' ),
 			'localize' => array(
 				'name' => 'gistpenLanguages',
 				'data' => Language::$supported,
@@ -72,15 +72,15 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 		$this->registerStyle( array(
 			'type' => 'admin',
 			'condition' => $editor_condition,
-			'handle' => \WP_Gistpen::$plugin_name .'-editor-styles',
+			'handle' => \Gistpen::$plugin_name .'-editor-styles',
 			'src' => 'assets/css/editor',
 		) );
 		$this->registerScript( array(
 			'type' => 'admin',
 			'condition' => $editor_condition,
-			'handle' => \WP_Gistpen::$plugin_name . '-editor-script',
+			'handle' => \Gistpen::$plugin_name . '-editor-script',
 			'src' => 'assets/js/editor',
-			'deps' => array( 'ajaxq', 'backbone', 'underscore', \WP_Gistpen::$plugin_name . '-ace-script' ),
+			'deps' => array( 'ajaxq', 'backbone', 'underscore', \Gistpen::$plugin_name . '-ace-script' ),
 			'localize' => array(
 				'name' => 'gistpenLanguages',
 				'data' => Language::$supported,
@@ -100,29 +100,29 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 		$this->registerStyle( array(
 			'type' => 'shared',
 			'condition' => $prism_condition,
-			'handle' => \WP_Gistpen::$plugin_name .'-prism-theme',
+			'handle' => \Gistpen::$plugin_name .'-prism-theme',
 			'src' => 'assets/css/prism/themes/prism' . $this->get_prism_theme(),
 		) );
 		$this->registerStyle( array(
 			'type' => 'shared',
 			'condition' => $prism_condition,
-			'handle' => \WP_Gistpen::$plugin_name .'-prism-line-highlight',
+			'handle' => \Gistpen::$plugin_name .'-prism-line-highlight',
 			'src' => 'assets/css/prism/plugins/line-highlight/prism-line-highlight',
-			'deps' => array( \WP_Gistpen::$plugin_name . '-prism-theme' ),
+			'deps' => array( \Gistpen::$plugin_name . '-prism-theme' ),
 		) );
 		$this->registerStyle( array(
 			'type' => 'shared',
 			'condition' => function() use ($prism_condition) {
-				return $prism_condition() && ( is_admin() ||  'on' === cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gistpen_line_numbers' ) );
+				return $prism_condition() && ( is_admin() ||  'on' === cmb2_get_option( \Gistpen::$plugin_name, '_wpgp_gistpen_line_numbers' ) );
 			},
-			'handle' => \WP_Gistpen::$plugin_name .'-prism-line-numbers',
+			'handle' => \Gistpen::$plugin_name .'-prism-line-numbers',
 			'src' => 'assets/css/prism/plugins/line-numbers/prism-line-numbers',
-			'deps' => array( \WP_Gistpen::$plugin_name . '-prism-theme' ),
+			'deps' => array( \Gistpen::$plugin_name . '-prism-theme' ),
 		) );
 		$this->registerScript( array(
 			'type' => 'shared',
 			'condition' => $prism_condition,
-			'handle' => \WP_Gistpen::$plugin_name .'-prism',
+			'handle' => \Gistpen::$plugin_name .'-prism',
 			'src' => 'assets/js/prism',
 			'deps' => array( 'jquery' ),
 		) );
@@ -133,7 +133,7 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 		$this->registerStyle( array(
 			'type' => 'web',
 			'condition' => function() { return true; },
-			'handle' => \WP_Gistpen::$plugin_name .'-web-styles',
+			'handle' => \Gistpen::$plugin_name .'-web-styles',
 			'src' => 'assets/css/web',
 		) );
 
@@ -155,7 +155,7 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 			'condition' => function() use ($popup_condition, $editor_condition) {
 				return $popup_condition() || $editor_condition();
 			},
-			'handle' => \WP_Gistpen::$plugin_name . '-ace-script',
+			'handle' => \Gistpen::$plugin_name . '-ace-script',
 			'src' => 'assets/js/ace/ace',
 		) );
 	}
@@ -167,7 +167,7 @@ class Assets extends \Intraxia\Jaxion\Register\Assets {
 	 * @since    0.5.0
 	 */
 	protected function get_prism_theme() {
-		$theme = cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gistpen_highlighter_theme' );
+		$theme = cmb2_get_option( \Gistpen::$plugin_name, '_wpgp_gistpen_highlighter_theme' );
 
 		if ( '' === $theme || 'default' === $theme ) {
 			$theme = '';

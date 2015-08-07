@@ -1,10 +1,10 @@
 <?php
-use WP_Gistpen\View\Content;
+use Intraxia\Gistpen\View\Content;
 
 /**
  * @group register
  */
-class WP_Gistpen_Register_Content_Test extends WP_Gistpen_UnitTestCase {
+class Register_Content_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	public $gistpen;
 	public $gistpenfiles;

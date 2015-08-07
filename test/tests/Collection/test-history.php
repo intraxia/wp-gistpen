@@ -1,11 +1,11 @@
 <?php
-use WP_Gistpen\Collection\History as HistoryCollection;
-use WP_Gistpen\Model\Commit\Meta as Commit;
+use Intraxia\Gistpen\Collection\History as HistoryCollection;
+use Intraxia\Gistpen\Model\Commit\Meta as Commit;
 
 /**
  * @group collections
  */
-class WP_Gistpen_Collection_History_Test extends WP_Gistpen_UnitTestCase {
+class Collection_History_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

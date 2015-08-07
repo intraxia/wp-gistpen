@@ -1,18 +1,18 @@
 <?php
-namespace WP_Gistpen\CLI;
+namespace Intraxia\Gistpen\CLI;
 
 use \WP_CLI;
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Controller\Save;
-use WP_Gistpen\Controller\Sync;
-use WP_Gistpen\Model\Language;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Controller\Save;
+use Intraxia\Gistpen\Controller\Sync;
+use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
 
 /**
  * Registers the CLI commands for WP-Gistpen
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -120,7 +120,7 @@ class Command extends \WP_CLI_Command {
 			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', 'wp-gistpen' ) . $error->get_error_message() );
 		}
 
-		$success = cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token', $token );
+		$success = cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', $token );
 
 		if ( ! $success ) {
 			WP_CLI::error( __( 'Gist token update failed.', 'wp-gistpen' ) );
@@ -190,7 +190,7 @@ class Command extends \WP_CLI_Command {
 		foreach ( $gists as $gist ) {
 			$result = $this->sync->import_gist( $gist );
 
-			if ( $result instanceof \WP_Gistpen\Model\Zip ) {
+			if ( $result instanceof \Gistpen\Model\Zip ) {
 				continue;
 			}
 

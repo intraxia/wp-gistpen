@@ -1,11 +1,11 @@
 <?php
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * @group accounts
  */
-class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
+class Account_Gist_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
@@ -46,7 +46,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_create_gist_catch_exception() {
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
+		cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 
 		$this->mock_adapter
 			->shouldReceive( 'build' )
@@ -71,7 +71,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_create_gist_succeed() {
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
+		cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 
 		$this->mock_adapter
 			->shouldReceive( 'build' )
@@ -96,7 +96,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_update_gist_catch_exception() {
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
+		cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 
 		$this->mock_adapter
 			->shouldReceive( 'build' )
@@ -126,7 +126,7 @@ class WP_Gistpen_Account_Gist_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_update_gist_succeed() {
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
+		cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 
 		$this->mock_adapter
 			->shouldReceive( 'build' )

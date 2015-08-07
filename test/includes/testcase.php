@@ -1,45 +1,52 @@
 <?php
+namespace Intraxia\Gistpen\Test;
+
+use Gistpen;
 use \Mockery as m;
+use SimpleXMLElement;
+use WP_Ajax_UnitTestCase;
 
-class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
-
+class UnitTestCase extends WP_Ajax_UnitTestCase
+{
 	public $mock_lang;
 	public $mock_post;
 	public $mock_file;
 	public $gistpen;
 	public $files;
 
-	function setUp() {
-		parent::setUp();
-		$this->factory = new WP_Gistpen_UnitTest_Factory;
+    function setUp()
+    {
+        parent::setUp();
+        $this->factory = new UnitTest_Factory;
 
 		// Mock models
-		$this->mock_lang = m::mock( 'WP_Gistpen\Model\Language' );;
-		$this->mock_zip = m::mock( 'WP_Gistpen\Model\Zip' );
-		$this->mock_file = m::mock( 'WP_Gistpen\Model\File' );
-		$this->mock_history = m::mock( 'WP_Gistpen\Collection\History' );
-		$this->mock_commit = m::mock( 'WP_Gistpen\Model\Commit\Meta' );
-		$this->mock_state = m::mock( 'WP_Gistpen\Model\Commit\State' );
+		$this->mock_lang = m::mock( 'Intraxia\Gistpen\Model\Language' );;
+		$this->mock_zip = m::mock( 'Intraxia\Gistpen\Model\Zip' );
+		$this->mock_file = m::mock( 'Intraxia\Gistpen\Model\File' );
+		$this->mock_history = m::mock( 'Intraxia\Gistpen\Collection\History' );
+		$this->mock_commit = m::mock( 'Intraxia\Gistpen\Model\Commit\Meta' );
+		$this->mock_state = m::mock( 'Intraxia\Gistpen\Model\Commit\State' );
 
 		// Mock controllers
-		$this->mock_sync = m::mock( 'WP_Gistpen\Controller\Sync' );
+		$this->mock_sync = m::mock( 'Intraxia\Gistpen\Controller\Sync' );
 
 		// Mock adapters
-		$this->mock_gist_adapter = m::mock( 'WP_Gistpen\Adapter\Gist' );
+		$this->mock_gist_adapter = m::mock( 'Intraxia\Gistpen\Adapter\Gist' );
 
 		// Mock Facades
-		$this->mock_database = m::mock( 'WP_Gistpen\Facade\Database' );
-		$this->mock_adapter = m::mock( 'WP_Gistpen\Facade\Adapter' );
+		$this->mock_database = m::mock( 'Intraxia\Gistpen\Facade\Database' );
+		$this->mock_adapter = m::mock( 'Intraxia\Gistpen\Facade\Adapter' );
 
 		// 3rd Party dependencies
 		$this->mock_github_client = m::mock( 'Github\Client' );
 	}
 
-	function tearDown() {
-		parent::tearDown();
+	function tearDown()
+    {
+        parent::tearDown();
 
 		m::close();
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', false );
+        cmb2_update_option(Gistpen::$plugin_name, '_wpgp_gist_token', false);
 	}
 
 	function create_post_and_children() {

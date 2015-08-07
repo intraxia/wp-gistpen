@@ -4,7 +4,7 @@
  *
  * A self-hosted alternative to putting your code snippets on Gist.
  *
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
@@ -39,7 +39,8 @@ require_once 'lib/autoload.php';
  * Singleton container class
  * @todo put these somewhere else
  */
-class WP_Gistpen {
+class Gistpen
+{
 	public static $plugin_name = 'wp-gistpen';
 
 	public static $version = '0.5.8';
@@ -57,5 +58,5 @@ class WP_Gistpen {
 $updatePhp = new WPUpdatePhp( '5.3.0' );
 
 if ( $updatePhp->does_it_meet_required_php_version( PHP_VERSION ) ) {
-	call_user_func( array( new WP_Gistpen\App( __FILE__ ), 'boot' ) );
+    call_user_func(array(new Intraxia\Gistpen\App( __FILE__ ), 'boot'));
 }

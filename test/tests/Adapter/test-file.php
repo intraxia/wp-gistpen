@@ -1,10 +1,10 @@
 <?php
-use WP_Gistpen\Adapter\File as FileAdapter;
+use Intraxia\Gistpen\Adapter\File as FileAdapter;
 
 /**
  * @group adapters
  */
-class WP_Gistpen_FileAdapter_Test extends WP_Gistpen_UnitTestCase {
+class FileAdapter_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

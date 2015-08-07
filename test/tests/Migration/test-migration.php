@@ -1,12 +1,12 @@
 <?php
 
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Model\Language;
-use WP_Gistpen\Migration;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Migration;
 /**
  * @group  migrations
  */
-class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
+class Migration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	public $posts;
 	public $gistpens;
@@ -20,7 +20,7 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function set_up_0_4_0_test_posts() {
-		update_option( 'wp_gistpen_version', '0.3.1' );
+		update_option( 'Intraxia\Gistpen_version', '0.3.1' );
 
 		register_post_type( 'gistpens', array() );
 		register_taxonomy( 'language', array( 'gistpens' ) );

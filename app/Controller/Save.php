@@ -1,15 +1,15 @@
 <?php
-namespace WP_Gistpen\Controller;
+namespace Intraxia\Gistpen\Controller;
 
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Zip;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\File;
+use Intraxia\Gistpen\Model\Zip;
 
 /**
  * This is the functionality for the save_post hook
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0

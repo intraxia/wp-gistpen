@@ -1,12 +1,12 @@
 <?php
 
-use WP_Gistpen\Database\Query\Commit as Query;
-use WP_Gistpen\Model\Zip;
+use Intraxia\Gistpen\Database\Query\Commit as Query;
+use Intraxia\Gistpen\Model\Zip;
 
 /**
  * @group database
  */
-class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
+class Database_Query_Commit_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	public $query;
 
@@ -17,7 +17,7 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->query = new Query();
 
-		$migration = new WP_Gistpen\Migration();
+		$migration = new Intraxia\Gistpen\Migration();
 		delete_post_meta( $this->gistpen->ID, 'wpgp_revisions' );
 		$migration->update_to_0_5_0();
 	}
@@ -28,7 +28,7 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 		$this->assertCount( 1, $revisions );
 
 		foreach ( $revisions->get_commits() as $commit ) {
-			$this->assertInstanceOf( 'WP_Gistpen\Model\Commit\Meta', $commit );
+			$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Commit\Meta', $commit );
 			$this->assertEquals( 'none', $commit->get_head_gist_id() );
 			$this->assertEquals( 'none', $commit->get_gist_id() );
 		}

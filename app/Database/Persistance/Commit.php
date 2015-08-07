@@ -1,16 +1,16 @@
 <?php
-namespace WP_Gistpen\Database\Persistance;
+namespace Intraxia\Gistpen\Database\Persistance;
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Database\Query\Commit as CommitQuery;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Database\Query\Commit as CommitQuery;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * This class manipulates the saving of parent Gistpen

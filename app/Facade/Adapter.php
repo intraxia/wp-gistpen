@@ -1,19 +1,19 @@
 <?php
-namespace WP_Gistpen\Facade;
+namespace Intraxia\Gistpen\Facade;
 
-use WP_Gistpen\Adapter\Commit as CommitAdapter;
-use WP_Gistpen\Adapter\File as FileAdapter;
-use WP_Gistpen\Adapter\Gist as GistAdapter;
-use WP_Gistpen\Adapter\History as HistoryAdapter;
-use WP_Gistpen\Adapter\Api as ApiAdapter;
-use WP_Gistpen\Adapter\Language as LanguageAdapter;
-use WP_Gistpen\Adapter\State as StateAdapter;
-use WP_Gistpen\Adapter\Zip as ZipAdapter;
+use Intraxia\Gistpen\Adapter\Commit as CommitAdapter;
+use Intraxia\Gistpen\Adapter\File as FileAdapter;
+use Intraxia\Gistpen\Adapter\Gist as GistAdapter;
+use Intraxia\Gistpen\Adapter\History as HistoryAdapter;
+use Intraxia\Gistpen\Adapter\Api as ApiAdapter;
+use Intraxia\Gistpen\Adapter\Language as LanguageAdapter;
+use Intraxia\Gistpen\Adapter\State as StateAdapter;
+use Intraxia\Gistpen\Adapter\Zip as ZipAdapter;
 
 /**
  * This is the class description.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -21,7 +21,7 @@ use WP_Gistpen\Adapter\Zip as ZipAdapter;
 class Adapter {
 
 	/**
-	 * WP_Gistpen\Adapter\Commit object
+	 * Intraxia\Gistpen\Adapter\Commit object
 	 *
 	 * @var CommitAdapter
 	 * @since 0.5.0
@@ -29,7 +29,7 @@ class Adapter {
 	protected $commit;
 
 	/**
-	 * WP_Gistpen\Adapter\File object
+	 * Intraxia\Gistpen\Adapter\File object
 	 *
 	 * @var FileAdapter
 	 * @since 0.5.0
@@ -37,7 +37,7 @@ class Adapter {
 	protected $file;
 
 	/**
-	 * WP_Gistpen\Adapter\Gist object
+	 * Intraxia\Gistpen\Adapter\Gist object
 	 *
 	 * @var GistAdapter
 	 * @since 0.5.0
@@ -45,7 +45,7 @@ class Adapter {
 	protected $gist;
 
 	/**
-	 * WP_Gistpen\Adapter\History object
+	 * Intraxia\Gistpen\Adapter\History object
 	 *
 	 * @var   HistoryAdapter
 	 * @since 0.5.0
@@ -53,7 +53,7 @@ class Adapter {
 	protected $history;
 
 	/**
-	 * WP_Gistpen\Adapter\Api object
+	 * Intraxia\Gistpen\Adapter\Api object
 	 *
 	 * @var ApiAdapter
 	 * @since 0.5.0
@@ -61,7 +61,7 @@ class Adapter {
 	protected $api;
 
 	/**
-	 * WP_Gistpen\Adapter\Language object
+	 * Intraxia\Gistpen\Adapter\Language object
 	 *
 	 * @var LanguageAdapter
 	 * @since 0.5.0
@@ -69,7 +69,7 @@ class Adapter {
 	protected $language;
 
 	/**
-	 * WP_Gistpen\Adapter\State object
+	 * Intraxia\Gistpen\Adapter\State object
 	 *
 	 * @var StateAdapter
 	 * @since 0.5.0
@@ -77,7 +77,7 @@ class Adapter {
 	protected $state;
 
 	/**
-	 * WP_Gistpen\Adapter\Zip object
+	 * Intraxia\Gistpen\Adapter\Zip object
 	 *
 	 * @var ZipAdapter
 	 * @since 0.5.0

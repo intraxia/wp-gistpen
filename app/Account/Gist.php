@@ -1,14 +1,14 @@
 <?php
-namespace WP_Gistpen\Account;
+namespace Intraxia\Gistpen\Account;
 
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Adapter;
 use Github\Client;
 use Github\ResultPager;
 
 /**
  * This is the class description.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -51,7 +51,7 @@ class Gist {
 	 * @since 0.5.0
 	 */
 	private function set_up_client() {
-		$token = (string) cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' );
+		$token = (string) cmb2_get_option( \Gistpen::$plugin_name, '_wpgp_gist_token' );
 
 		if ( empty( $token ) ) {
 			return new \WP_Error( 'no_github_token', __( 'No GitHub OAuth token available.', 'wp-gistpen' ) );
@@ -106,7 +106,7 @@ class Gist {
 	/**
 	 * Creates a new Gist based on History
 	 *
-	 * @param  \WP_Gistpen\Model\Commit\Meta $commit
+	 * @param  \Gistpen\Model\Commit\Meta $commit
 	 * @return string|\WP_Error
 	 * @since  0.5.0
 	 */
@@ -135,7 +135,7 @@ class Gist {
 	/**
 	 * Update an existing Gist based on Zip
 	 *
-	 * @param  \WP_Gistpen\Model\Commit\Meta             $commit    Gist data
+	 * @param  \Gistpen\Model\Commit\Meta             $commit    Gist data
 	 * @return string|\WP_Error         Gist id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */

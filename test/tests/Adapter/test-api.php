@@ -1,11 +1,11 @@
 <?php
-use WP_Gistpen\Adapter\Api as ApiAdapter;
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Adapter\Api as ApiAdapter;
+use Intraxia\Gistpen\Facade\Database;
 
 /**
  * @group adapters
  */
-class WP_Gistpen_Adapter_Api_Test extends WP_Gistpen_UnitTestCase {
+class Adapter_Api_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

@@ -1,14 +1,14 @@
 <?php
-namespace WP_Gistpen\Adapter;
+namespace Intraxia\Gistpen\Adapter;
 
-use WP_Gistpen\Model\File as FileModel;
-use WP_Gistpen\Model\Zip as ZipModel;
+use Intraxia\Gistpen\Model\File as FileModel;
+use Intraxia\Gistpen\Model\Zip as ZipModel;
 use \stdClass;
 
 /**
  * Builds JSON based on various
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -119,7 +119,7 @@ class Api {
 	/**
 	 * Generates API JSON by a history object.
 	 *
-	 * @param \WP_Gistpen\Collection\History $history
+	 * @param \Gistpen\Collection\History $history
 	 *
 	 * @return string
 	 */

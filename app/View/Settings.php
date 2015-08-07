@@ -1,12 +1,12 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
-use WP_Gistpen\Account\Gist;
+use Intraxia\Gistpen\Account\Gist;
 
 /**
  * This class registers all of the settings page views
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -95,7 +95,7 @@ class Settings {
 			__( 'WP-Gistpen Settings', 'wp-gistpen' ),
 			__( 'Gistpens', 'wp-gistpen' ),
 			'edit_posts',
-			\WP_Gistpen::$plugin_name, // @todo can we change this to something else? or move this into the framework?
+			\Gistpen::$plugin_name, // @todo can we change this to something else? or move this into the framework?
 			array( $this, 'display_plugin_admin_page' )
 		);
 
@@ -118,7 +118,7 @@ class Settings {
 	 * @since 0.5.0
 	 */
 	public function github_user_layout() {
-		$token = cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' );
+		$token = cmb2_get_option( \Gistpen::$plugin_name, '_wpgp_gist_token' );
 
 		if ( false === $token ) {
 			return;
@@ -131,7 +131,7 @@ class Settings {
 
 			if ( is_wp_error( $error = $this->client->check_token() ) ) {
 				// If this token doesn't validate, clear it and bail.
-				cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token', '' );
+				cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '' );
 				delete_transient( '_wpgp_github_token_user_info' );
 				return;
 			}
@@ -187,7 +187,7 @@ class Settings {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . \WP_Gistpen::$plugin_name ) . '">' . __( 'Settings', 'wp-gistpen' ) . '</a>'
+				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . \Gistpen::$plugin_name ) . '">' . __( 'Settings', 'wp-gistpen' ) . '</a>'
 			),
 			$links
 		);
@@ -236,7 +236,7 @@ class Settings {
 	 * @since 0.3.0
 	 */
 	public function register_setting() {
-		register_setting( \WP_Gistpen::$plugin_name, \WP_Gistpen::$plugin_name );
+		register_setting( \Gistpen::$plugin_name, \Gistpen::$plugin_name );
 	}
 
 }

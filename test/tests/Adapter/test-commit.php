@@ -1,10 +1,10 @@
 <?php
-use WP_Gistpen\Adapter\Commit as CommitAdapter;
+use Intraxia\Gistpen\Adapter\Commit as CommitAdapter;
 
 /**
  * @group adapters
  */
-class WP_Gistpen_CommitAdapter_Test extends WP_Gistpen_UnitTestCase {
+class CommitAdapter_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

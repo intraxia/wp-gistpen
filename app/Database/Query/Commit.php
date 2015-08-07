@@ -1,21 +1,21 @@
 <?php
-namespace WP_Gistpen\Database\Query;
+namespace Intraxia\Gistpen\Database\Query;
 
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * This class saves and gets Gistpen commits from the database
  *
- * @package WP_Gistpen_Query
+ * @package Intraxia\Gistpen_Query
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
 class Commit {
@@ -70,7 +70,7 @@ class Commit {
 	 * Gets and builds a History Collection for a given post ID
 	 *
 	 * @param  int     $head_id model's post ID
-	 * @return \WP_Gistpen\Collection\History          WP_Gistpen model object
+	 * @return \Gistpen\Collection\History          Intraxia\Gistpen model object
 	 * @since 0.5.0
 	 */
 	public function history_by_head_id( $head_id ) {
@@ -133,7 +133,7 @@ class Commit {
 	 * Gets and builds an object model based on a post's ID
 	 *
 	 * @param  int $post_id model's post ID
-	 * @return object       WP_Gistpen model object
+	 * @return object       Intraxia\Gistpen model object
 	 * @since 0.5.0
 	 */
 	public function by_id( $post_id ) {
@@ -146,7 +146,7 @@ class Commit {
 	 * Get a State object by the State's ID and its Commit ID
 	 *
 	 * @param  int    $state_id  ID of the State
-	 * @return \WP_Gistpen\Model\Commit\State             State object
+	 * @return \Gistpen\Model\Commit\State             State object
 	 * @since  0.5.0
 	 */
 	public function state_by_id( $state_id ) {
@@ -174,7 +174,7 @@ class Commit {
 	 * Retrieves the Language object for a given State ID
 	 *
 	 * @param  int $state_id
-	 * @return \WP_Gistpen\Model\Language
+	 * @return \Gistpen\Model\Language
 	 * @since  0.4.0
 	 */
 	public function language_by_state_id( $state_id ) {

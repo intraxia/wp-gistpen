@@ -1,14 +1,14 @@
 <?php
 
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Controller\Save as SaveController;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\App;
+use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Controller\Save as SaveController;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\App;
 
 /**
  * @group integration
  */
-class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
+class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
@@ -79,7 +79,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 		$app = App::get();
 		$app['Controller\Sync']->gist = $gist;
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
+		cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 		$this->mock_github_client
 			->shouldReceive( 'authenticate' )
 			->times( 3 )

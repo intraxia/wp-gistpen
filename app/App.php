@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen;
+namespace Intraxia\Gistpen;
 
 /**
  * The core plugin class.
@@ -10,7 +10,7 @@ namespace WP_Gistpen;
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -102,7 +102,7 @@ class App extends \Intraxia\Jaxion\Core\Application {
 	 */
 	public function activate() {
 		if ( ! get_option( '_wpgp_activated' ) ) {
-			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
+			update_option( 'Intraxia\Gistpen_version', \Gistpen::$version );
 		}
 
 		update_option( '_wpgp_activated', 'done' );

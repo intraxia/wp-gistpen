@@ -1,15 +1,15 @@
 <?php
-use WP_Gistpen\View\Settings;
+use Intraxia\Gistpen\View\Settings;
 /**
  * @group register
  */
-class WP_Gistpen_View_Settings_Test extends WP_Gistpen_UnitTestCase {
+class View_Settings_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		global $title;
 
 		parent::setUp();
-		$app = WP_Gistpen\App::get();
+		$app = Intraxia\Gistpen\App::get();
 		$this->settings = new Settings($app['basename'], $app['path']);
 		$title = "Settings page";
 	}

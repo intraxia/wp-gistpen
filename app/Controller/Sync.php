@@ -1,16 +1,16 @@
 <?php
-namespace WP_Gistpen\Controller;
+namespace Intraxia\Gistpen\Controller;
 
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Model\Zip;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Model\Zip;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
 use \WP_CLI;
 
 /**
  * Manages the data to keep the database in sync with Gist.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -77,7 +77,7 @@ class Sync {
 	 * @return string|\WP_Error           Zip ID on success, WP_Error on failure
 	 */
 	public function export_gistpen( $zip_id ) {
-		if ( false === cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' ) ) {
+		if ( false === cmb2_get_option( \Gistpen::$plugin_name, '_wpgp_gist_token' ) ) {
 			return $zip_id;
 		}
 
@@ -103,7 +103,7 @@ class Sync {
 	/**
 	 * Creates a new Gistpen on Gist
 	 *
-	 * @param \WP_Gistpen\Model\Commit\Meta $commit
+	 * @param \Gistpen\Model\Commit\Meta $commit
 	 * @return string|\WP_Error
 	 * @since 0.5.0
 	 */
@@ -132,7 +132,7 @@ class Sync {
 	/**
 	 * Updates an existing Gistpen on Gist
 	 *
-	 * @param \WP_Gistpen\Model\Commit\Meta $commit
+	 * @param \Gistpen\Model\Commit\Meta $commit
 	 * @return string|\WP_Error Gist ID on success, WP_Error on failure
 	 * @since 0.5.0
 	 */

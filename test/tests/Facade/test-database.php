@@ -1,10 +1,10 @@
 <?php
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Database;
 
 /**
  * @group  facades
  */
-class WP_Gistpen_Facade_Database_Test extends WP_Gistpen_UnitTestCase {
+class Facade_Database_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
@@ -14,37 +14,37 @@ class WP_Gistpen_Facade_Database_Test extends WP_Gistpen_UnitTestCase {
 	function test_get_head_query() {
 		$query = $this->database->query( 'head' );
 
-		$this->assertInstanceOf('WP_Gistpen\Database\Query\Head', $query );
+		$this->assertInstanceOf('Intraxia\Gistpen\Database\Query\Head', $query );
 	}
 
 	function test_get_head_query_no_arg() {
 		$query = $this->database->query();
 
-		$this->assertInstanceOf('WP_Gistpen\Database\Query\Head', $query );
+		$this->assertInstanceOf('Intraxia\Gistpen\Database\Query\Head', $query );
 	}
 
 	function test_get_commit_query() {
 		$query = $this->database->query( 'commit' );
 
-		$this->assertInstanceOf('WP_Gistpen\Database\Query\Commit', $query );
+		$this->assertInstanceOf('Intraxia\Gistpen\Database\Query\Commit', $query );
 	}
 
 	function test_get_head_persistance() {
 		$persist = $this->database->persist( 'head' );
 
-		$this->assertInstanceOf('WP_Gistpen\Database\Persistance\Head', $persist );
+		$this->assertInstanceOf('Intraxia\Gistpen\Database\Persistance\Head', $persist );
 	}
 
 	function test_get_head_persistance_no_arg() {
 		$persist = $this->database->persist();
 
-		$this->assertInstanceOf('WP_Gistpen\Database\Persistance\Head', $persist );
+		$this->assertInstanceOf('Intraxia\Gistpen\Database\Persistance\Head', $persist );
 	}
 
 	function test_get_commit_persistance() {
 		$persist = $this->database->persist( 'commit' );
 
-		$this->assertInstanceOf('WP_Gistpen\Database\Persistance\Commit', $persist );
+		$this->assertInstanceOf('Intraxia\Gistpen\Database\Persistance\Commit', $persist );
 	}
 
 	function tearDown() {

@@ -1,16 +1,16 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
 /**
  * Registers the front-end content output
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Database;
 
 /**
  * This class manipulates the Gistpen post content.

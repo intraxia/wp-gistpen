@@ -1,15 +1,15 @@
 <?php
-namespace WP_Gistpen;
+namespace Intraxia\Gistpen;
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
 use WP_Query;
 
 /**
@@ -106,11 +106,11 @@ class Migration {
 	 */
 	public function run() {
 		// Check if plugin needs to be upgraded
-		$version = get_option( 'wp_gistpen_version', '0.0.0' );
+		$version = get_option( 'Intraxia\Gistpen_version', '0.0.0' );
 
-		if ( $version !== \WP_Gistpen::$version ) {
+		if ( $version !== \Gistpen::$version ) {
 			$this->update( $version );
-			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
+			update_option( 'Intraxia\Gistpen_version', \Gistpen::$version );
 		}
 	}
 
@@ -308,8 +308,8 @@ class Migration {
 	 * @since 0.5.0
 	 */
 	public function update_to_0_5_0() {
-		delete_option( 'wp_gistpens_languages_installed' );
-		delete_option( 'wp_gistpen_langs_installed' );
+		delete_option( 'Intraxia\Gistpens_languages_installed' );
+		delete_option( 'Intraxia\Gistpen_langs_installed' );
 
 		// Need to remove these filters first
 		remove_filter( 'the_content', 'wpautop' );

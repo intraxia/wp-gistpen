@@ -25,7 +25,7 @@
   "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
-      "WP_Gistpen\\": "app/"
+      "Intraxia\\Gistpen\\": "app/"
     },
     "files": ["lib/cmb2/init.php"]
   },

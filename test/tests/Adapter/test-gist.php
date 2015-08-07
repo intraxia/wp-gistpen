@@ -1,10 +1,10 @@
 <?php
-use WP_Gistpen\Adapter\Gist as GistAdapter;
+use Intraxia\Gistpen\Adapter\Gist as GistAdapter;
 
 /**
  * @group adapters
  */
-class WP_Gistpen_Adapter_Gist_Test extends WP_Gistpen_UnitTestCase {
+class Adapter_Gist_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

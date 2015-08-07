@@ -1,7 +1,7 @@
 <script type="text/template" id="wpgpMain">
 
 <div class="wpgp-main-settings">
-	<label id="ace-theme-select" for="_wpgp_ace_theme"><?php _e( 'Ace Editor Theme: ', \WP_Gistpen::$plugin_name ); ?></label>
+	<label id="ace-theme-select" for="_wpgp_ace_theme"><?php _e( 'Ace Editor Theme: ', \Gistpen::$plugin_name ); ?></label>
 	<select name="_wpgp_ace_theme" id="_wpgp_ace_theme">
 	<?php foreach ( $this->ace_themes as $slug => $name ) : ?>
 		<option value="<?php echo $slug; ?>"><?php echo $name; ?></option>

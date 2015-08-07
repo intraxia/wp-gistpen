@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Model;
+namespace Intraxia\Gistpen\Model;
 
 /**
  * Manages the Gistpen's zip data
@@ -8,7 +8,7 @@ namespace WP_Gistpen\Model;
  * individual Gistpen can hold, as well as metadata
  * about the Gistpen.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0

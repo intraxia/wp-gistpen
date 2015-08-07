@@ -1,16 +1,16 @@
 <?php
-namespace WP_Gistpen\Database\Persistance;
+namespace Intraxia\Gistpen\Database\Persistance;
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\File;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\File;
 
 
 /**
@@ -51,7 +51,7 @@ class Head {
 	/**
 	 * Save the Zip to the database
 	 *
-	 * @param  \WP_Gistpen\Model\Zip $zip
+	 * @param  \Gistpen\Model\Zip $zip
 	 * @return int|\WP_Error    post_id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */

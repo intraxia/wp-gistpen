@@ -1,10 +1,10 @@
 <?php
-namespace WP_Gistpen\Model;
+namespace Intraxia\Gistpen\Model;
 
 /**
  * Manages the Gistpen's file language data
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -120,7 +120,7 @@ class Language {
 
 		// otherwise, the slug needs ot match a supported slug
 		if ( ! array_search( $slug, self::$supported ) ) {
-			throw new \Exception( __( "Invalid language slug: {$slug}", \WP_Gistpen::$plugin_name ), 1 );
+			throw new \Exception( __( "Invalid language slug: {$slug}", \Gistpen::$plugin_name ), 1 );
 		}
 	}
 

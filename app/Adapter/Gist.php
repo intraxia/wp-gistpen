@@ -1,12 +1,12 @@
 <?php
-namespace WP_Gistpen\Adapter;
+namespace Intraxia\Gistpen\Adapter;
 
-use WP_Gistpen\Model\Commit\Meta;
+use Intraxia\Gistpen\Model\Commit\Meta;
 
 /**
  * This is the class description.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.dev/wp-gistpen/
  * @since      0.5.0
@@ -16,7 +16,7 @@ class Gist {
 	/**
 	 * Converts a Zip into API array for Gist create endpoint
 	 *
-	 * @param  \WP_Gistpen\Model\Commit\Meta $commit History to turn into API data
+	 * @param  \Gistpen\Model\Commit\Meta $commit History to turn into API data
 	 * @return array                      Gist data
 	 */
 	public function create_by_commit( $commit ) {
@@ -42,7 +42,7 @@ class Gist {
 	/**
 	 * Converts a Zip into API array for Gist edit endpoint
 	 *
-	 * @param  \WP_Gistpen\Model\Commit\Meta $commit
+	 * @param  \Gistpen\Model\Commit\Meta $commit
 	 * @return array      Gist data
 	 */
 	public function update_by_commit( $commit ) {

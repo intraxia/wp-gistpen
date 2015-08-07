@@ -1,11 +1,11 @@
 <?php
-namespace WP_Gistpen\Adapter;
+namespace Intraxia\Gistpen\Adapter;
 
-use WP_Gistpen\Collection\History as HistoryCollection;
+use Intraxia\Gistpen\Collection\History as HistoryCollection;
 /**
  * Adapts data to build a Commit History.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0

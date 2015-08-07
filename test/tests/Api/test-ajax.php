@@ -1,13 +1,13 @@
 <?php
 
-use WP_Gistpen\Controller\Sync;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\App;
+use Intraxia\Gistpen\Controller\Sync;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\App;
 
 /**
  * @group  api
  */
-class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
+class Api_Ajax_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	public $user_id;
 	public $response;
@@ -138,7 +138,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
 		$zip = $this->database->query()->by_id( $this->response->data->id );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $zip );
+		$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Zip', $zip );
 		$this->assertEquals( 'New Gistpen Description', $zip->get_description() );
 		$this->assertEquals( 'draft', $zip->get_status() );
 

@@ -1,11 +1,11 @@
 <?php
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Controller\Save;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Controller\Save;
 
 /**
  * @group controllers
  */
-class WP_Gistpen_Controller_Save_Test extends WP_Gistpen_UnitTestCase {
+class Controller_Save_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

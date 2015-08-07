@@ -1,11 +1,11 @@
 <?php
-namespace WP_Gistpen\Api;
+namespace Intraxia\Gistpen\Api;
 
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Controller\Save;
-use WP_Gistpen\Controller\Sync;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Controller\Save;
+use Intraxia\Gistpen\Controller\Sync;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * This class handles all of the AJAX responses

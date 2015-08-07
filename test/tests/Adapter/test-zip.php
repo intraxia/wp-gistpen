@@ -1,10 +1,10 @@
 <?php
-use WP_Gistpen\Adapter\Zip as ZipAdapter;
+use Intraxia\Gistpen\Adapter\Zip as ZipAdapter;
 
 /**
  * @group adapters
  */
-class WP_Gistpen_ZipAdapter_Test extends WP_Gistpen_UnitTestCase {
+class ZipAdapter_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

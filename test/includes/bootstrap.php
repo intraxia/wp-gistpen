@@ -1,6 +1,6 @@
 <?php
 
-define('WP_GISTPEN_TESTING', true);
+define('Intraxia\Gistpen_TESTING', true);
 
 $_tests_dir = getenv('WP_TESTS_DIR');
 if ( !$_tests_dir ) $_tests_dir = '/tmp/wordpress-tests-lib';
@@ -18,4 +18,4 @@ require_once dirname( __FILE__ ) . '/factory.php';
 
 require_once dirname( __FILE__ ) . '/testcase.php';
 
-WP_Gistpen\App::get()->activate();
+Intraxia\Gistpen\App::get()->activate();

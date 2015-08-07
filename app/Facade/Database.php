@@ -1,15 +1,15 @@
 <?php
-namespace WP_Gistpen\Facade;
+namespace Intraxia\Gistpen\Facade;
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Database\Query\Commit as CommitQuery;
-use WP_Gistpen\Database\Persistance\Head as HeadPersistance;
-use WP_Gistpen\Database\Persistance\Commit as CommitPersistance;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Database\Query\Commit as CommitQuery;
+use Intraxia\Gistpen\Database\Persistance\Head as HeadPersistance;
+use Intraxia\Gistpen\Database\Persistance\Commit as CommitPersistance;
 
 /**
  * This class handles all of the AJAX responses
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0

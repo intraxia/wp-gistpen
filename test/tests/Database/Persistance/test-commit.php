@@ -1,14 +1,14 @@
 <?php
 
-use WP_Gistpen\Database\Persistance\Commit as Persistance;
-use WP_Gistpen\Database\Query\Commit as CommitQuery;
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Database\Persistance\Commit as Persistance;
+use Intraxia\Gistpen\Database\Query\Commit as CommitQuery;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * @group  database
  */
-class WP_Gistpen_Persistance_Commit_Test extends WP_Gistpen_UnitTestCase {
+class Persistance_Commit_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
