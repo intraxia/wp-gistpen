@@ -1,6 +1,6 @@
 <?php
 
-use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Controller\Save as SaveController;
 use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\App;
@@ -74,15 +74,18 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 		$this->create_post_and_children();
 		$this->zip = $this->database->query( 'head' )->by_id( $this->gistpen->ID );
 
-		$gist = new GistTest();
-		$gist->set_client( $this->mock_github_client );
+        $app = App::get();
 
-		$app = App::get();
+		$gist = new Gist($app['Facade\Adapter'], $this->mock_github_client);
+
 		$app['Controller\Sync']->gist = $gist;
 		cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 		$this->mock_github_client
 			->shouldReceive( 'authenticate' )
-			->times( 3 )
+            ->once()
+            ->shouldReceive( 'api' )
+            ->times( 3 )
+            ->andReturn($this->mock_github_client)
 			->shouldReceive( 'create' )
 			->once()
 			->andReturn( array(
@@ -534,15 +537,5 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function tearDown() {
 		parent::tearDown();
-	}
-}
-
-class GistTest extends Gist {
-	public function set_client($client) {
-		$this->client = $client;
-	}
-
-	public function call() {
-		return $this->client;
 	}
 }

@@ -10,7 +10,7 @@ class View_Settings_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		parent::setUp();
 		$app = Intraxia\Gistpen\App::get();
-		$this->settings = new Settings($app['basename'], $app['path']);
+		$this->settings = new Settings($app['Client\Gist'], $app['basename'], $app['path']);
 		$title = "Settings page";
 	}
 

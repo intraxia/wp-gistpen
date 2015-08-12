@@ -1,7 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\View;
 
-use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Client\Gist;
 
 /**
  * This class registers all of the settings page views
@@ -66,23 +66,26 @@ class Settings {
 	 */
 	public $client;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @param string $basename
-	 * @param string $path
-	 * @since    0.5.0
-	 */
-	public function __construct( $basename, $path ) {
-		$this->path = $path;
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @param Gist $gist
+     * @param string $basename
+     * @param string $path
+     *
+     * @since    0.5.0
+     */
+    public function __construct(Gist $gist, $basename, $path)
+    {
+        $this->path = $path;
 
-		$this->filters[] = array(
-			'hook' => 'plugin_action_links_' . $basename,
-			'method' => 'add_action_links',
-		);
+        $this->filters[] = array(
+            'hook' => 'plugin_action_links_' . $basename,
+            'method' => 'add_action_links',
+        );
 
-		$this->client = new Gist();
-	}
+        $this->client = $gist;
+    }
 
 	/**
 	 * Register the administration menu for this plugin into the WordPress Dashboard menu.
@@ -127,9 +130,9 @@ class Settings {
 		$user = get_transient( '_wpgp_github_token_user_info' );
 
 		if ( false === $user ) {
-			$this->client->authenticate( $token );
+            $this->client->setToken($token);
 
-			if ( is_wp_error( $error = $this->client->check_token() ) ) {
+			if (!$this->client->isTokenValid()) {
 				// If this token doesn't validate, clear it and bail.
 				cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '' );
 				delete_transient( '_wpgp_github_token_user_info' );
@@ -210,9 +213,9 @@ class Settings {
 			return $value;
 		}
 
-		$this->client->authenticate( $value );
+        $this->client->setToken($value);
 
-		if ( is_wp_error( $error = $this->client->check_token() ) ) {
+		if (!$this->client->isTokenValid()) {
 			delete_transient( '_wpgp_github_token_user_info' ); ?>
 
 			<div class="error">

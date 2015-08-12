@@ -1,6 +1,9 @@
 <?php
 namespace Intraxia\Gistpen;
 
+use Github\Client as GitHubClient;
+use Intraxia\Jaxion\Core\Application;
+
 /**
  * The core plugin class.
  *
@@ -15,7 +18,8 @@ namespace Intraxia\Gistpen;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class App extends \Intraxia\Jaxion\Core\Application {
+class App extends Application
+{
 
 	/**
 	 * @inheritdoc
@@ -23,12 +27,19 @@ class App extends \Intraxia\Jaxion\Core\Application {
 	public function __construct( $file ) {
 		parent::__construct( $file );
 
-		/**
-		 * Register Api Endpoints
-		 */
-		$this['Api\Ajax'] = function() {
-			return new Api\Ajax();
-		};
+        /**
+         * Register Client Services
+         */
+        $this['Client\Gist'] = function ($app) {
+            return new Client\Gist($app['Facade\Adapter'], new GitHubClient());
+        };
+
+        /**
+         * Register Api Endpoints
+         */
+        $this['Api\Ajax'] = function ($app) {
+            return new Api\Ajax($app['Controller\Sync'], $app['Client\Gist']);
+        };
 
 		/**
 		 * Register Controllers
@@ -36,9 +47,16 @@ class App extends \Intraxia\Jaxion\Core\Application {
 		$this['Controller\Save'] = function() {
 			return new Controller\Save();
 		};
-		$this['Controller\Sync'] = function() {
-			return new Controller\Sync();
-		};
+        $this['Controller\Sync'] = function ($app) {
+            return new Controller\Sync($app['Client\Gist']);
+        };
+
+        /**
+         * Register Facades
+         */
+        $this['Facade\Adapter'] = function () {
+            return new Facade\Adapter();
+        };
 
 		/**
 		 * Register Migration Script
@@ -85,9 +103,9 @@ class App extends \Intraxia\Jaxion\Core\Application {
 		$this['View\Editor'] = function($app) {
 			return new View\Editor( $app['path'] );
 		};
-		$this['View\Settings'] = function($app) {
-			return new View\Settings( $app['basename'], $app['path'] );
-		};
+        $this['View\Settings'] = function ($app) {
+            return new View\Settings($app['Client\Gist'], $app['basename'], $app['path']);
+        };
 
 		/**
 		 * Register Command

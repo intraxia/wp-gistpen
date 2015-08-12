@@ -1,8 +1,9 @@
 <?php
 namespace Intraxia\Gistpen\CLI;
 
+use Github\Client;
 use \WP_CLI;
-use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Controller\Save;
 use Intraxia\Gistpen\Controller\Sync;
 use Intraxia\Gistpen\Model\Language;
@@ -112,13 +113,13 @@ class Command extends \WP_CLI_Command {
 	function set_token( $args, $assoc_args ) {
 		list( $token ) = $args;
 
-		$client = new Gist();
+		$client = new Gist($this->adapter, new Client());
 
-		$client->authenticate( $token );
+		$client->setToken($token);
 
-		if ( is_wp_error( $error = $client->check_token() ) ) {
-			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', 'wp-gistpen' ) . $error->get_error_message() );
-		}
+        if (!$client->isTokenValid()) {
+            WP_CLI::error(sprintf(__( 'Gist token failed to authenticate. Error: %s', 'wp-gistpen' ), $client->getError()));
+        }
 
 		$success = cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', $token );
 
@@ -177,7 +178,7 @@ class Command extends \WP_CLI_Command {
 	 *
 	 */
 	function import_gists( $args, $assoc_args ) {
-		$gists = $this->gist->get_gists();
+		$gists = $this->gist->all();
 
 		if ( is_wp_error( $gists ) ) {
 			WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ', 'wp-gistpen' ) . $gists->get_error_message() );

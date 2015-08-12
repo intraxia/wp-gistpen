@@ -265,7 +265,6 @@ class Api_Ajax_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		$app = App::get();
 		$app['Api\Ajax']->database = new Database();
-		$app = App::get();
-		$app['Api\Ajax']->sync = new Sync();
+		$app['Api\Ajax']->sync = $app['Controller\Sync'];
 	}
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Controller;
 
-use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Model\Zip;
 use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\Facade\Adapter;
@@ -46,26 +46,27 @@ class Sync {
 	protected $adapter;
 
 	/**
-	 * Gist Account object
+	 * Gist Client object
 	 *
 	 * @var    Gist
 	 * @since  0.5.0
 	 */
 	public $gist;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct() {
-		$this->database = new Database();
-		$this->adapter = new Adapter();
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    0.5.0
+     *
+     * @param Gist $gist
+     */
+    public function __construct(Gist $gist)
+    {
+        $this->database = new Database();
+        $this->adapter = new Adapter();
 
-		$this->gist = new Gist();
-	}
+        $this->gist = $gist;
+    }
 
 	/**
 	 * Exports a Gistpen to Gist based on its ID
@@ -108,7 +109,7 @@ class Sync {
 	 * @since 0.5.0
 	 */
 	protected function create_gist( $commit ) {
-		$response = $this->gist->create_gist( $commit );
+		$response = $this->gist->create( $commit );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -137,7 +138,7 @@ class Sync {
 	 * @since 0.5.0
 	 */
 	protected function update_gist( $commit ) {
-		$response = $this->gist->update_gist( $commit );
+		$response = $this->gist->update( $commit );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -167,7 +168,7 @@ class Sync {
 			return $query;
 		}
 
-		$response = $this->gist->get_gist( $gist_id );
+		$response = $this->gist->get( $gist_id );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;

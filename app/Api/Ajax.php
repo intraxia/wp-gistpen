@@ -1,7 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Api;
 
-use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Controller\Save;
 use Intraxia\Gistpen\Controller\Sync;
 use Intraxia\Gistpen\Facade\Database;
@@ -113,21 +113,25 @@ class Ajax {
 		),
 	);
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 */
-	public function __construct() {
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    0.5.0
+     *
+     * @param Sync $sync
+     * @param Gist $gist
+     */
+    public function __construct(Sync $sync, Gist $gist)
+    {
 		$this->nonce_field = '_ajax_wp_gistpen';
 
-		$this->database = new Database();
-		$this->adapter = new Adapter();
+        $this->database = new Database();
+        $this->adapter = new Adapter();
 
-		$this->save = new Save();
-		$this->sync = new Sync();
-		$this->gist = new Gist();
-	}
+        $this->save = new Save();
+        $this->sync = $sync;
+        $this->gist = $gist;
+    }
 
 	/**
 	 * Embed the nonce in the head of the editor
@@ -382,7 +386,7 @@ class Ajax {
 	public function get_new_user_gists() {
 		$this->check_security();
 
-		$gists = $this->gist->get_gists();
+		$gists = $this->gist->all();
 
 		$this->check_error( $gists );
 
