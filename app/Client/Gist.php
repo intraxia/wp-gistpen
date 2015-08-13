@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Client;
 
 use Exception;
+use Intraxia\Gistpen\Contract\GistAdapter;
 use Intraxia\Gistpen\Facade\Adapter;
 use Github\Client;
 use Github\ResultPager;
@@ -147,12 +148,12 @@ class Gist
      * Prepares the commit Meta and its set of states and creates a new Gist
      * from that commit meta.
      *
-     * @param Meta $commit
+     * @param GistAdapter $commit
      *
      * @return false|array
      * @since  0.5.0
      */
-    public function create(Meta $commit)
+    public function create(GistAdapter $commit)
     {
         if (!$this->isReady()) {
             $this->setErrorNotReady();
@@ -160,10 +161,8 @@ class Gist
             return false;
         }
 
-        $gist = $this->adapter->build('gist')->create_by_commit($commit);
-
         try {
-            return $this->client->api('gists')->create($gist);
+            return $this->client->api('gists')->create($commit->toGist());
         } catch (Exception $e) {
             $this->error = new WP_Error($e->getCode(), $e->getMessage());
 
@@ -174,12 +173,13 @@ class Gist
     /**
      * Update an existing Gist based on Zip
      *
-     * @param  \Intraxia\Gistpen\Model\Commit\Meta $commit
+     * @param GistAdapter $commit
      *
      * @return bool
+     * @throws Exception
      * @since  0.5.0
      */
-    public function update(Meta $commit)
+    public function update(GistAdapter $commit)
     {
         if (!$this->isReady()) {
             $this->setErrorNotReady();
@@ -187,10 +187,8 @@ class Gist
             return false;
         }
 
-        $gist = $this->adapter->build('gist')->update_by_commit($commit);
-
         try {
-            return $this->client->api('gists')->update($commit->get_head_gist_id(), $gist);
+            return $this->client->api('gists')->update($commit->getGistSha(), $commit->toGist());
         } catch (Exception $e) {
             $this->error = new WP_Error($e->getCode(), $e->getMessage());
 

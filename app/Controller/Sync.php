@@ -88,7 +88,7 @@ class Sync {
 			return $zip_id;
 		}
 
-		if ( 'none' === $commit->get_head_gist_id() ) {
+		if ( 'none' === $commit->getGistSha() ) {
 			$result = $this->create_gist( $commit );
 		} else {
 			$result = $this->update_gist( $commit );

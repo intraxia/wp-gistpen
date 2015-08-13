@@ -37,14 +37,6 @@ class Adapter {
 	protected $file;
 
 	/**
-	 * Intraxia\Gistpen\Adapter\Gist object
-	 *
-	 * @var GistAdapter
-	 * @since 0.5.0
-	 */
-	protected $gist;
-
-	/**
 	 * Intraxia\Gistpen\Adapter\History object
 	 *
 	 * @var   HistoryAdapter
@@ -94,7 +86,6 @@ class Adapter {
 	public function __construct() {
 		$this->commit = new CommitAdapter();
 		$this->file = new FileAdapter();
-		$this->gist = new GistAdapter();
 		$this->history = new HistoryAdapter();
 		$this->api = new ApiAdapter();
 		$this->language = new LanguageAdapter();

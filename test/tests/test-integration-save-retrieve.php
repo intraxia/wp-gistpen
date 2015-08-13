@@ -167,7 +167,7 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		$this->assertEquals( 'First Description', $commit->get_description() );
 		$this->assertCount( 3, $commit->get_states() );
-		$this->assertEquals( 'none', $commit->get_head_gist_id() );
+		$this->assertEquals('none', $commit->getGistSha());
 		$this->assertEquals( 'off', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -234,7 +234,7 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		$this->assertEquals( 'First Description', $commit->get_description() );
 		$this->assertCount( 3, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'on', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -307,7 +307,7 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		$this->assertEquals( 'Second Description', $commit->get_description() );
 		$this->assertCount( 4, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'off', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -373,7 +373,7 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		$this->assertEquals( 'Second Description', $commit->get_description() );
 		$this->assertCount( 4, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'on', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -442,7 +442,7 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		$this->assertEquals( 'Third Description', $commit->get_description() );
 		$this->assertCount( 4, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'off', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -514,7 +514,7 @@ class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		$this->assertEquals( 'Third Description', $commit->get_description() );
 		$this->assertCount( 3, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+		$this->assertEquals( 'abcde1234', $commit->getGistSha() );
 		$this->assertEquals( 'on', $commit->get_sync() );
 
 		$states = $commit->get_states();

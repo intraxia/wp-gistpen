@@ -92,14 +92,8 @@ class GistTest extends UnitTestCase
     {
         cmb2_update_option(\Gistpen::$plugin_name, '_wpgp_gist_token', '1234');
 
-        $this->mock_adapter
-            ->shouldReceive('build')
-            ->with('gist')
-            ->once()
-            ->andReturn($this->mock_gist_adapter);
-        $this->mock_gist_adapter
-            ->shouldReceive('create_by_commit')
-            ->with($this->mock_commit)
+        $this->mock_commit
+            ->shouldReceive('toGist')
             ->once()
             ->andReturn(array());
         $this->mock_github_client
@@ -121,15 +115,6 @@ class GistTest extends UnitTestCase
     {
         cmb2_update_option(\Gistpen::$plugin_name, '_wpgp_gist_token', '1234');
 
-        $this->mock_adapter
-            ->shouldReceive('build')
-            ->with('gist')
-            ->once()
-            ->andReturn($this->mock_gist_adapter);
-        $this->mock_gist_adapter
-            ->shouldReceive('create_by_commit')
-            ->once()
-            ->andReturn(array());
         $this->mock_github_client
             ->shouldReceive('authenticate')
             ->once();
@@ -137,6 +122,9 @@ class GistTest extends UnitTestCase
             ->shouldReceive('create')
             ->once()
             ->andReturn(array('id' => '1234'));
+        $this->mock_commit
+            ->shouldReceive('toGist')
+            ->andReturn(array());
 
         $result = $this->gist->create($this->mock_commit);
 
@@ -156,17 +144,12 @@ class GistTest extends UnitTestCase
     {
         cmb2_update_option(\Gistpen::$plugin_name, '_wpgp_gist_token', '1234');
 
-        $this->mock_adapter
-            ->shouldReceive('build')
-            ->with('gist')
-            ->once()
-            ->andReturn($this->mock_gist_adapter);
-        $this->mock_gist_adapter
-            ->shouldReceive('update_by_commit')
+        $this->mock_commit
+            ->shouldReceive('toGist')
             ->once()
             ->andReturn(array());
         $this->mock_commit
-            ->shouldReceive('get_head_gist_id')
+            ->shouldReceive('getGistSha')
             ->once()
             ->andReturn('gist_id');
         $this->mock_github_client
@@ -186,13 +169,8 @@ class GistTest extends UnitTestCase
     {
         cmb2_update_option(\Gistpen::$plugin_name, '_wpgp_gist_token', '1234');
 
-        $this->mock_adapter
-            ->shouldReceive('build')
-            ->with('gist')
-            ->once()
-            ->andReturn($this->mock_gist_adapter);
-        $this->mock_gist_adapter
-            ->shouldReceive('update_by_commit')
+        $this->mock_commit
+            ->shouldReceive('toGist')
             ->once()
             ->andReturn(array());
         $this->mock_github_client
@@ -203,7 +181,7 @@ class GistTest extends UnitTestCase
             ->withArgs(array('gist_id', array()))
             ->andReturn(array('id' => '1234'));
         $this->mock_commit
-            ->shouldReceive('get_head_gist_id')
+            ->shouldReceive('getGistSha')
             ->once()
             ->andReturn('gist_id');
 

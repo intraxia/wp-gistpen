@@ -29,12 +29,6 @@ class Facade_Adapter_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 		$this->assertInstanceOf('Intraxia\Gistpen\Adapter\Zip', $zip );
 	}
 
-	function test_get_gist_adapter() {
-		$gist = $this->adapter->build( 'gist' );
-
-		$this->assertInstanceOf('Intraxia\Gistpen\Adapter\Gist', $gist );
-	}
-
 	function test_get_json_adapter() {
 		$api = $this->adapter->build( 'api' );
 

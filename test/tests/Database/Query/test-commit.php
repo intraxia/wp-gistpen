@@ -29,7 +29,7 @@ class Database_Query_Commit_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 		foreach ( $revisions->get_commits() as $commit ) {
 			$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Commit\Meta', $commit );
-			$this->assertEquals( 'none', $commit->get_head_gist_id() );
+            $this->assertEquals('none', $commit->getGistSha());
 			$this->assertEquals( 'none', $commit->get_gist_id() );
 		}
 	}

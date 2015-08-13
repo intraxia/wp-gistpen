@@ -1,6 +1,9 @@
 <?php
 namespace Intraxia\Gistpen\Model\Commit;
 
+use Intraxia\Gistpen\Contract\GistAdapter;
+use Intraxia\Gistpen\Model\Zip;
+
 /**
  * Data object for an individual Commit
  *
@@ -9,7 +12,7 @@ namespace Intraxia\Gistpen\Model\Commit;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Meta extends \Intraxia\Gistpen\Model\Zip {
+class Meta extends Zip implements GistAdapter {
 
 	/**
 	 * Head ID
@@ -61,7 +64,8 @@ class Meta extends \Intraxia\Gistpen\Model\Zip {
 	 * @return string     Head Zip's Gist ID
 	 * @since 0.5.0
 	 */
-	public function get_head_gist_id() {
+    public function getGistSha()
+    {
 		return $this->head_gist_id;
 	}
 
@@ -71,14 +75,15 @@ class Meta extends \Intraxia\Gistpen\Model\Zip {
 	 * @param int $head_gist_id Head Zip's Gist ID ID
 	 * @since 0.5.0
 	 */
-	public function set_head_gist_id( $head_gist_id ) {
-		$this->head_gist_id = $head_gist_id;
+    public function setGistSha($sha)
+    {
+        $this->head_gist_id = $sha;
 	}
 
 	/**
 	 * Get the Array of States
 	 *
-	 * @return \Gistpen\Model\Commit\State[]
+	 * @return \Intraxia\Gistpen\Model\Commit\State[]
 	 * @since  0.5.0
 	 */
 	public function get_states() {
@@ -105,4 +110,90 @@ class Meta extends \Intraxia\Gistpen\Model\Zip {
 			$this->states[] = $state;
 		}
 	}
+
+    /**
+     * @inheritdoc
+     */
+    public function toGist()
+    {
+        return $this->getGistSha() === 'none' ? $this->toCreateGist() : $this->toUpdateGist();
+    }
+
+    /**
+     * Transforms the Commit Meta object into
+     * a Gist-formatted array for Gist creation.
+     *
+     * @return array
+     */
+    protected function toCreateGist()
+    {
+        $gist = array(
+            'description' => $this->get_description(),
+        );
+
+        $this->setGistStatus($gist);
+
+        $states = $this->get_states();
+        $files = array();
+
+        foreach ($states as $state) {
+            $files[$state->get_filename()] = array('content' => $state->get_code());
+        }
+
+        $gist['files'] = $files;
+
+        return $gist;
+    }
+
+    /**
+     * Transforms the Commit Meta object into
+     * a Gist-formatted array for Gist updating.
+     *
+     * @return array
+     */
+    protected function toUpdateGist()
+    {
+        $gist = array(
+            'description' => $this->get_description(),
+        );
+
+        $this->setGistStatus($gist);
+
+        $states = $this->get_states();
+        $files = array();
+
+        foreach ($states as $state) {
+            switch ($state->get_status()) {
+                case 'new':
+                    $files[$state->get_filename()] = array(
+                        'content' => $state->get_code(),
+                    );
+                    break;
+                case 'updated':
+                    $files[$state->get_gist_id()] = array(
+                        'content'  => $state->get_code(),
+                        'filename' => $state->get_filename(),
+                    );
+                    break;
+                case 'deleted':
+                    $files[$state->get_gist_id()] = null;
+                    break;
+            }
+        }
+
+        $gist['files'] = $files;
+
+        return $gist;
+    }
+
+    /**
+     * Sets the status on the Gist array based on
+     * the commit's status.
+     *
+     * @param  array  $gist   Array of Gist API data
+     * @since  0.5.0
+     */
+    protected function setGistStatus(&$gist) {
+        $gist['public'] = 'publish' === $this->get_status() ? true : false;
+    }
 }

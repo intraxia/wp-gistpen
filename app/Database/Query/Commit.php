@@ -111,7 +111,7 @@ class Commit {
 		$post->post_status = get_post_status( $post->post_parent );
 		$commit = $this->adapter->build( 'commit' )->by_post( $post );
 
-		$commit->set_head_gist_id( $this->head_query->gist_id_by_post_id( $commit->get_head_id() ) );
+		$commit->setGistSha( $this->head_query->gist_id_by_post_id( $commit->get_head_id() ) );
 		$commit->set_sync( $this->head_query->sync_by_post_id( $commit->get_head_id() ) );
 
 		$meta = get_metadata( 'post', $commit->get_ID(), '_wpgp_commit_meta', true );
