@@ -29,8 +29,7 @@
   "autoload": {
     "psr-4": {
       "Intraxia\\Gistpen\\": "app/"
-    },
-    "files": ["lib/cmb2/init.php"]
+    }
   },
   "config": {
     "vendor-dir": "lib"

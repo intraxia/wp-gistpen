@@ -31,9 +31,11 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /**
- * Include the autoloader
+ * Include the autoloader & CMB2
  */
 require_once 'lib/autoload.php';
+// @todo can this go in the autoloader and have ocular/phpunit work?
+require_once 'lib/cmb2/init.php';
 
 /**
  * Singleton container class
