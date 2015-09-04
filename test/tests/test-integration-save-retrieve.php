@@ -1,20 +1,20 @@
 <?php
 
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Controller\Save as SaveController;
-use WP_Gistpen\Facade\App;
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Client\Gist;
+use Intraxia\Gistpen\Controller\Save as SaveController;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\App;
 
 /**
  * @group integration
  */
-class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
+class Integration_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
 
-		$this->save = new SaveController( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->save = new SaveController();
+		$this->database = new Database();
 	}
 
 	function test_sync_save_and_retrieve() {
@@ -74,14 +74,18 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 		$this->create_post_and_children();
 		$this->zip = $this->database->query( 'head' )->by_id( $this->gistpen->ID );
 
-		$gist = new GistTest( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$gist->set_client( $this->mock_github_client );
+        $app = App::get();
 
-		App::get('sync')->gist = $gist;
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
+		$gist = new Gist($app['Facade\Adapter'], $this->mock_github_client);
+
+		$app['Controller\Sync']->gist = $gist;
+		cmb2_update_option( \Gistpen::$plugin_name, '_wpgp_gist_token', '1234' );
 		$this->mock_github_client
 			->shouldReceive( 'authenticate' )
-			->times( 3 )
+            ->once()
+            ->shouldReceive( 'api' )
+            ->times( 3 )
+            ->andReturn($this->mock_github_client)
 			->shouldReceive( 'create' )
 			->once()
 			->andReturn( array(
@@ -163,7 +167,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'First Description', $commit->get_description() );
 		$this->assertCount( 3, $commit->get_states() );
-		$this->assertEquals( 'none', $commit->get_head_gist_id() );
+		$this->assertEquals('none', $commit->getGistSha());
 		$this->assertEquals( 'off', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -230,7 +234,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'First Description', $commit->get_description() );
 		$this->assertCount( 3, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'on', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -303,7 +307,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'Second Description', $commit->get_description() );
 		$this->assertCount( 4, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'off', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -369,7 +373,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'Second Description', $commit->get_description() );
 		$this->assertCount( 4, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'on', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -438,7 +442,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'Third Description', $commit->get_description() );
 		$this->assertCount( 4, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+        $this->assertEquals('abcde1234', $commit->getGistSha());
 		$this->assertEquals( 'off', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -510,7 +514,7 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->assertEquals( 'Third Description', $commit->get_description() );
 		$this->assertCount( 3, $commit->get_states() );
-		$this->assertEquals( 'abcde1234', $commit->get_head_gist_id() );
+		$this->assertEquals( 'abcde1234', $commit->getGistSha() );
 		$this->assertEquals( 'on', $commit->get_sync() );
 
 		$states = $commit->get_states();
@@ -533,15 +537,5 @@ class WP_Gistpen_Integration_Test extends WP_Gistpen_UnitTestCase {
 
 	function tearDown() {
 		parent::tearDown();
-	}
-}
-
-class GistTest extends Gist {
-	public function set_client($client) {
-		$this->client = $client;
-	}
-
-	public function call() {
-		return $this->client;
 	}
 }

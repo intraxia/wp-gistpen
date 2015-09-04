@@ -1,15 +1,15 @@
 <?php
-namespace WP_Gistpen\Model\Commit;
+namespace Intraxia\Gistpen\Model\Commit;
 
 /**
  * This is the class description.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class State extends \WP_Gistpen\Model\File {
+class State extends \Intraxia\Gistpen\Model\File {
 
 	/**
 	 * The state's status
@@ -57,11 +57,12 @@ class State extends \WP_Gistpen\Model\File {
 	 * Validate and set the State's change status
 	 *
 	 * @param string $status new State status
+	 * @throws \Exception
 	 * @since 0.5.0
 	 */
 	public function set_status( $status ) {
 		if ( ! in_array( $status, array( 'new', 'updated', 'deleted' ) ) ) {
-			throw new Exception;
+			throw new \Exception;
 		}
 
 		$this->status = $status;

@@ -13,9 +13,9 @@
     "gulp-ext-replace": "0.1.0",
     "gulp-minify-css": "0.3.10",
     "gulp-sass": "0.7.2",
+    "gulp-sort": "^1.1.1",
     "gulp-uglify": "0.3.1",
+    "gulp-wp-pot": "^1.0.1",
     "q": "1.0.1"
-  },
-  "author": "maadhattah",
-  "license": "GPL-2.0+"
+  }
 }

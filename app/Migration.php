@@ -1,16 +1,17 @@
 <?php
-namespace WP_Gistpen;
+namespace Intraxia\Gistpen;
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Facade\Database;
-use \WP_Query;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Zip;
+use WP_Query;
 
 /**
  * This class checks the current version and runs any updates necessary.
@@ -19,6 +20,18 @@ use \WP_Query;
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
 class Migration {
+
+	/**
+	 * Action hooks for the Migration service.
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'admin_init',
+			'method' => 'run',
+		),
+	);
 
 	/**
 	 * Languages removed from version 0.3.0
@@ -60,30 +73,12 @@ class Migration {
 	);
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Database Facade object
 	 *
 	 * @var Facade\Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	protected $database;
 
 	/**
 	 * Adapter Facade object
@@ -91,7 +86,7 @@ class Migration {
 	 * @var Facade\Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -100,14 +95,9 @@ class Migration {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $plugin_name, $version );
-		$this->adapter = new Adapter( $plugin_name, $version );
-
+	public function __construct() {
+		$this->database = new Database();
+		$this->adapter = new Adapter();
 	}
 
 	/**
@@ -117,11 +107,11 @@ class Migration {
 	 */
 	public function run() {
 		// Check if plugin needs to be upgraded
-		$version = get_option( 'wp_gistpen_version', '0.0.0' );
+		$version = get_option( 'Intraxia\Gistpen_version', '0.0.0' );
 
-		if ( $version !== $this->version ) {
+		if ( $version !== \Gistpen::$version ) {
 			$this->update( $version );
-			update_option( 'wp_gistpen_version', $this->version );
+			update_option( 'Intraxia\Gistpen_version', \Gistpen::$version );
 		}
 	}
 
@@ -161,17 +151,16 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully insert {$slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully insert {$slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) ); // @todo this is wrong
 			}
 		}
 
 		foreach ( $this->removed_langs_0_3_0 as $lang => $slug ) {
 			// check if there are any gistpens in the db for this language
-			$query = new WP_Query(
-				array(
-					'language' => $slug,
-					'post_type' => 'gistpens',
-				));
+			$query = new WP_Query( array(
+				'language' => $slug,
+				'post_type' => 'gistpens',
+			));
 
 			if ( ! $query->have_posts() ) {
 				// only delete language if it's got no Gistpens
@@ -181,7 +170,7 @@ class Migration {
 					// Deactivate and quit
 					deactivate_plugins( 'WP-Gistpen' );
 					// and provide an error
-					print ( __( "Failed to successfully delete {$slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+					print ( __( "Failed to successfully delete {$slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 				}
 			}
 		}
@@ -216,7 +205,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully set holdover for language {$term->slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully set holdover for language {$term->slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 
 			// So we can create new terms with the old slug/name combo
@@ -228,7 +217,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully insert language {$term->slug}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully insert language {$term->slug}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 		}
 
@@ -247,7 +236,7 @@ class Migration {
 			// Update post type to remove the 's'
 			$post->post_type = 'gistpen';
 
-			$zip = $this->adapter->build( 'zip' )->by_post( $post );
+            $zip = new Zip($post);
 			$file = $this->adapter->build( 'file' )->blank();
 
 			// Migrate title to file's name
@@ -261,7 +250,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully delete description meta from {$post->ID}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully delete description meta from {$post->ID}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 
 			// Set content
@@ -285,7 +274,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( 'WP-Gistpen' );
 				// and provide an error
-				print ( __( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully delete language from {$post->ID}. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 
 			$zip->add_file( $file );
@@ -296,7 +285,7 @@ class Migration {
 				// Deactivate and quit
 				deactivate_plugins( __FILE__);
 				// and provide an error
-				print ( __( "Failed to successfully save {$post->ID} in new format. Error: " . $result->get_error_message(), $this->plugin_name ) );
+				print ( __( "Failed to successfully save {$post->ID} in new format. Error: " . $result->get_error_message(), 'wp-gistpen' ) );
 			}
 		}
 
@@ -320,8 +309,8 @@ class Migration {
 	 * @since 0.5.0
 	 */
 	public function update_to_0_5_0() {
-		delete_option( 'wp_gistpens_languages_installed' );
-		delete_option( 'wp_gistpen_langs_installed' );
+		delete_option( 'Intraxia\Gistpens_languages_installed' );
+		delete_option( 'Intraxia\Gistpen_langs_installed' );
 
 		// Need to remove these filters first
 		remove_filter( 'the_content', 'wpautop' );

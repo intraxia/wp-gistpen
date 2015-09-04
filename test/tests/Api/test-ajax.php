@@ -1,13 +1,13 @@
 <?php
 
-use WP_Gistpen\Controller\Sync;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\App;
+use Intraxia\Gistpen\Controller\Sync;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\App;
 
 /**
  * @group  api
  */
-class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
+class Api_Ajax_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	public $user_id;
 	public $response;
@@ -34,7 +34,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 		$this->create_post_and_children();
 
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->database = new Database();
 	}
 
 	function test_failed_no_nonce() {
@@ -138,7 +138,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 
 		$zip = $this->database->query()->by_id( $this->response->data->id );
 
-		$this->assertInstanceOf( 'WP_Gistpen\Model\Zip', $zip );
+		$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Zip', $zip );
 		$this->assertEquals( 'New Gistpen Description', $zip->get_description() );
 		$this->assertEquals( 'draft', $zip->get_status() );
 
@@ -202,8 +202,10 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_gistpens_missing_gist_id() {
-		App::get('ajax')->database = $this->mock_database;
-		App::get('ajax')->sync = $this->mock_sync;
+		$app = App::get();
+		$app['Api\Ajax']->database = $this->mock_database;
+		$app = App::get();
+		$app['Api\Ajax']->sync = $this->mock_sync;
 
 		$this->set_correct_security();
 
@@ -227,8 +229,10 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_create_gist_from_gistpen_id() {
-		App::get('ajax')->database = $this->mock_database;
-		App::get('ajax')->sync = $this->mock_sync;
+		$app = App::get();
+		$app['Api\Ajax']->database = $this->mock_database;
+		$app = App::get();
+		$app['Api\Ajax']->sync = $this->mock_sync;
 		$this->mock_database->
 			shouldReceive( 'persist' )
 			->times( 1 )
@@ -259,7 +263,8 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	function tearDown() {
 		parent::tearDown();
 
-		App::get('ajax')->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		App::get('ajax')->sync = new Sync( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$app = App::get();
+		$app['Api\Ajax']->database = new Database();
+		$app['Api\Ajax']->sync = $app['Controller\Sync'];
 	}
 }

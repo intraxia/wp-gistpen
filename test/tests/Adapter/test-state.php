@@ -1,19 +1,19 @@
 <?php
-use WP_Gistpen\Adapter\State as StateAdapter;
+use Intraxia\Gistpen\Adapter\State as StateAdapter;
 /**
  * @group  adapters
  */
-class WP_Gistpen_Adapter_State_Test extends WP_Gistpen_UnitTestCase {
+class Adapter_State_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->adapter = new StateAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new StateAdapter();
 	}
 
 	function test_build_blank() {
 		$state = $this->adapter->blank();
 
-		$this->assertInstanceOf( 'WP_Gistpen\Model\Commit\State', $state );
+		$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Commit\State', $state );
 	}
 
 	function test_build_by_array_complete() {

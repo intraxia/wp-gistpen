@@ -1,5 +1,7 @@
 <?php
-namespace WP_Gistpen\Model;
+namespace Intraxia\Gistpen\Model;
+
+use WP_Post;
 
 /**
  * Manages the Gistpen's zip data
@@ -8,30 +10,12 @@ namespace WP_Gistpen\Model;
  * individual Gistpen can hold, as well as metadata
  * about the Gistpen.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 class Zip {
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
 
 	/**
 	 * Zip description
@@ -44,10 +28,10 @@ class Zip {
 	/**
 	 * Files contained by the Zip
 	 *
-	 * @var array
+	 * @var File[]
 	 * @since 0.4.0
 	 */
-	protected $files;
+	protected $files = array();
 
 	/**
 	 * Post's ID
@@ -90,20 +74,76 @@ class Zip {
 	protected $sync = 'off';
 
 	/**
-	 * Date craeted in GMT
+	 * Date created in GMT
 	 *
 	 * @var string
 	 * @since    0.5.0
 	 */
 	protected $create_date = '';
 
-	public function __construct( $plugin_name, $version ) {
+    /**
+     * Data from constructor.
+     *
+     * @var array|WP_Post
+     */
+    protected $source;
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		$this->files = array();
+    /**
+     * Constructs a new Zip model for a given source.
+     *
+     * The Zip Model constructor accepts an array or a WP_Post object and uses these
+     * data sources to set the default data on the new model.
+     *
+     * @param array|WP_Post $source
+     */
+    public function __construct($source = array())
+    {
+        if (is_array($source)) {
+            $this->buildByArray($source);
+        }
 
-	}
+        if ($source instanceof WP_Post) {
+            $this->buildByPost($source);
+        }
+
+        if ($source) {
+            $this->source = $source;
+        }
+    }
+
+    protected function buildByArray($array)
+    {
+        $array = array_intersect_key($array, array_flip(array('description', 'ID', 'status', 'password', 'gist_id', 'sync', 'create_date')));
+
+        foreach ($array as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
+
+    protected function buildByPost($post)
+    {
+        if (isset($post->ID)) {
+            $this->set_ID( $post->ID );
+        }
+        if ( isset( $post->post_title ) ) {
+            $this->set_description( $post->post_title );
+        }
+        if ( isset( $post->post_status ) ) {
+            $this->set_status( $post->post_status );
+        }
+        if ( isset( $post->post_password ) ) {
+            $this->set_password( $post->post_password );
+        }
+        if ( isset( $post->gist_id ) ) {
+            $this->set_gist_id( $post->gist_id );
+        }
+        if ( isset( $post->sync ) ) {
+            $this->set_sync( $post->sync );
+        }
+        if ( isset( $post->post_date_gmt ) ) {
+            $this->set_create_date( $post->post_date_gmt );
+        }
+    }
 
 	/**
 	 * Get the zip's description
@@ -128,7 +168,7 @@ class Zip {
 	/**
 	 * Get the zip's files
 	 *
-	 * @return string
+	 * @return File[]
 	 * @since 0.5.0
 	 */
 	public function get_files() {
@@ -139,19 +179,23 @@ class Zip {
 	 * Validate and add a file to the zip
 	 *
 	 * @param File $file File model object
-	 * @throws Exception If not a File model object
 	 * @since 0.5.0
 	 */
-	public function add_file( $file ) {
-		if ( ! $file instanceof File ) {
-			throw new Exception( 'File objects only added to files' );
-		}
-
+	public function add_file(File $file)
+    {
 		$file_id = $file->get_ID();
 
-		if ( null !== $file_id ) {
+        if ($file_id) {
 			$this->files[ $file_id ] = $file;
 		} else {
+            // @todo if we add a file to the array, and the new file has no ID
+            // but the array already has some elements, it'll be added with a key numerically
+            // +1 from the last ID, which isn't necessarily where we want it, and could
+            // hypothetically, cause conflicts if another file gets added with that ID
+            // this is unlikely, given how WordPress saves revision in the same posts
+            // table as everything else (meaning the next ID for a given post is likely its revision)
+            // but may still be something worth looking out for. i've forgetten why we index
+            // by ID, but i bet there's a reason.
 			$this->files[] = $file;
 		}
 	}
@@ -262,7 +306,7 @@ class Zip {
 	/**
 	 * Set the zip's sync status
 	 *
-	 * @param  bool   $sync Zip's sync status
+	 * @param  string   $sync Zip's sync status
 	 * @since  0.5.0
 	 */
 	public function set_sync( $sync ) {

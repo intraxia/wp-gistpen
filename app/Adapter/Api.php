@@ -1,51 +1,19 @@
 <?php
-namespace WP_Gistpen\Adapter;
+namespace Intraxia\Gistpen\Adapter;
 
-use WP_Gistpen\Model\File as FileModel;
-use WP_Gistpen\Model\Zip as ZipModel;
+use Intraxia\Gistpen\Model\File as FileModel;
+use Intraxia\Gistpen\Model\Zip as ZipModel;
 use \stdClass;
 
 /**
  * Builds JSON based on various
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 class Api {
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-	}
 
 	/**
 	 * Turns an array of models into an API object
@@ -57,7 +25,7 @@ class Api {
 	public function by_array_of_models( $array ) {
 		$api = array();
 
-		foreach ($array as $model) {
+		foreach ( $array as $model ) {
 			if ( $model instanceof ZipModel ) {
 				$api[] = $this->by_zip( $model );
 			}
@@ -74,7 +42,7 @@ class Api {
 	 * Transforms a Zip to json
 	 *
 	 * @param  ZipModel $zip Zip to transform
-	 * @return string        file data in json
+	 * @return stdClass
 	 * @since  0.5.0
 	 */
 	public function by_zip( ZipModel $zip ) {
@@ -95,8 +63,8 @@ class Api {
 	/**
 	 * Transforms an array of files to json
 	 *
-	 * @param  array  $files array of files to transform
-	 * @return string        file data in json
+	 * @param  FileModel[]  $files array of files to transform
+	 * @return stdClass[]
 	 * @since  0.5.0
 	 */
 	public function by_files( $files ) {
@@ -148,6 +116,13 @@ class Api {
 		return $api;
 	}
 
+	/**
+	 * Generates API JSON by a history object.
+	 *
+	 * @param \Gistpen\Collection\History $history
+	 *
+	 * @return string
+	 */
 	public function by_history( $history ) {
 		$commits = $history->get_commits();
 

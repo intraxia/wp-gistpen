@@ -8,6 +8,8 @@ var gulp = require('gulp'),
 	minify = require('gulp-minify-css'),
 	sass = require('gulp-sass'),
 	extrep = require('gulp-ext-replace');
+var wpPot = require('gulp-wp-pot');
+var sort = require('gulp-sort');
 
 gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
@@ -146,4 +148,16 @@ gulp.task('ajaxq', function() {
 		.pipe(uglify())
 		.pipe(extrep('.min.js'))
 		.pipe(gulp.dest('assets/js'));
+});
+
+gulp.task('translation', function() {
+	return gulp.src('app/**/*.php')
+		.pipe(sort())
+		.pipe(wpPot( {
+			domain: 'wp-gistpen',
+			destFile:'wp-gistpen.pot',
+			package: 'wp-gistpen',
+			bugReport: 'http://github.com/mAAdhaTTah/WP-Gistpen'
+		} ))
+		.pipe(gulp.dest('languages/'));
 });

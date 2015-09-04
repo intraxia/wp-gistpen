@@ -1,21 +1,21 @@
 <?php
 
-use WP_Gistpen\Database\Query;
-use WP_Gistpen\Model\Zip;
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
+use Intraxia\Gistpen\Database\Query;
+use Intraxia\Gistpen\Model\Zip;
+use Intraxia\Gistpen\Model\File;
+use Intraxia\Gistpen\Model\Language;
 
 /**
  * @group models
  */
-class WP_Gistpen_Model_File_Test extends WP_Gistpen_UnitTestCase {
+class Model_File_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	public $file_obj;
 	public $file;
 
 	function setUp() {
 		parent::setUp();
-		$this->file = new File( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->file = new File();
 	}
 
 	function test_get_set_slug() {

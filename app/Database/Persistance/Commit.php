@@ -1,18 +1,16 @@
 <?php
-namespace WP_Gistpen\Database\Persistance;
+namespace Intraxia\Gistpen\Database\Persistance;
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Database\Query\Commit as CommitQuery;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Database\Query\Commit as CommitQuery;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * This class manipulates the saving of parent Gistpen
@@ -24,30 +22,12 @@ use WP_Gistpen\Model\Language;
 class Commit {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Adapter facade
 	 *
 	 * @var Adapter
 	 * @since    0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Database object for querying Head
@@ -55,7 +35,7 @@ class Commit {
 	 * @var HeadQuery
 	 * @since    0.5.0
 	 */
-	private $head_query;
+	protected $head_query;
 
 	/**
 	 * Database object for querying Commit
@@ -63,7 +43,7 @@ class Commit {
 	 * @var CommitQuery
 	 * @since    0.5.0
 	 */
-	private $commit_query;
+	protected $commit_query;
 
 	/**
 	 * Whether the current commit changed
@@ -90,27 +70,29 @@ class Commit {
 	protected $commit_id = 0;
 
 	/**
+	 * IDs to save a commit
+	 *
+	 * @var mixed[]
+	 */
+	protected $ids;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $plugin_name, $version );
-		$this->head_query = new HeadQuery( $plugin_name, $version );
-		$this->commit_query = new CommitQuery( $plugin_name, $version );
-
+	public function __construct() {
+		$this->adapter = new Adapter();
+		$this->head_query = new HeadQuery();
+		$this->commit_query = new CommitQuery();
 	}
 
 	/**
 	 * Save the data for a new commit to the database
 	 *
-	 * @param  Array           $commit Zip model of the parent to save
+	 * @param  <String>int[]           $ids Zip model of the parent to save
 	 * @return array|\WP_Error         revision meta saved, WP_Error if failed
 	 * @since  0.5.0
 	 */
@@ -238,7 +220,7 @@ class Commit {
 	 * Sets files as deleted by array of File IDs
 	 *
 	 * @param  array $file_ids Array of File IDs
-	 * @return bool            whether this saved new files
+	 * @todo check if the use of $changed is correct here
 	 * @since  0.5.0
 	 */
 	public function deleted_states_by_file_ids( $file_ids ) {
@@ -279,6 +261,7 @@ class Commit {
 	 *
 	 * @param  int    $commit_id  post ID of Commit to update
 	 * @param  string $gist_id    Gist ID to save
+	 * @return bool
 	 * @since  0.5.0
 	 */
 	public function set_gist_id( $commit_id, $gist_id ) {

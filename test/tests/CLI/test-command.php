@@ -3,7 +3,7 @@
 /**
  * @group  CLI
  */
-class WP_Gistpen_CLI_Command_Test extends WP_Gistpen_UnitTestCase {
+class CLI_Command_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

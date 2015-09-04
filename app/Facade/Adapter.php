@@ -1,19 +1,19 @@
 <?php
-namespace WP_Gistpen\Facade;
+namespace Intraxia\Gistpen\Facade;
 
-use WP_Gistpen\Adapter\Commit as CommitAdapter;
-use WP_Gistpen\Adapter\File as FileAdapter;
-use WP_Gistpen\Adapter\Gist as GistAdapter;
-use WP_Gistpen\Adapter\History as HistoryAdapter;
-use WP_Gistpen\Adapter\Api as ApiAdapter;
-use WP_Gistpen\Adapter\Language as LanguageAdapter;
-use WP_Gistpen\Adapter\State as StateAdapter;
-use WP_Gistpen\Adapter\Zip as ZipAdapter;
+use Intraxia\Gistpen\Adapter\Commit as CommitAdapter;
+use Intraxia\Gistpen\Adapter\File as FileAdapter;
+use Intraxia\Gistpen\Adapter\Gist as GistAdapter;
+use Intraxia\Gistpen\Adapter\History as HistoryAdapter;
+use Intraxia\Gistpen\Adapter\Api as ApiAdapter;
+use Intraxia\Gistpen\Adapter\Language as LanguageAdapter;
+use Intraxia\Gistpen\Adapter\State as StateAdapter;
+use Intraxia\Gistpen\Adapter\Zip as ZipAdapter;
 
 /**
  * This is the class description.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -21,49 +21,23 @@ use WP_Gistpen\Adapter\Zip as ZipAdapter;
 class Adapter {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
-	 * WP_Gistpen\Adapter\Commit object
+	 * Intraxia\Gistpen\Adapter\Commit object
 	 *
 	 * @var CommitAdapter
 	 * @since 0.5.0
 	 */
-	private $commit;
+	protected $commit;
 
 	/**
-	 * WP_Gistpen\Adapter\File object
+	 * Intraxia\Gistpen\Adapter\File object
 	 *
 	 * @var FileAdapter
 	 * @since 0.5.0
 	 */
-	private $file;
+	protected $file;
 
 	/**
-	 * WP_Gistpen\Adapter\Gist object
-	 *
-	 * @var GistAdapter
-	 * @since 0.5.0
-	 */
-	private $gist;
-
-	/**
-	 * WP_Gistpen\Adapter\History object
+	 * Intraxia\Gistpen\Adapter\History object
 	 *
 	 * @var   HistoryAdapter
 	 * @since 0.5.0
@@ -71,23 +45,23 @@ class Adapter {
 	protected $history;
 
 	/**
-	 * WP_Gistpen\Adapter\Api object
+	 * Intraxia\Gistpen\Adapter\Api object
 	 *
 	 * @var ApiAdapter
 	 * @since 0.5.0
 	 */
-	private $api;
+	protected $api;
 
 	/**
-	 * WP_Gistpen\Adapter\Language object
+	 * Intraxia\Gistpen\Adapter\Language object
 	 *
 	 * @var LanguageAdapter
 	 * @since 0.5.0
 	 */
-	private $language;
+	protected $language;
 
 	/**
-	 * WP_Gistpen\Adapter\State object
+	 * Intraxia\Gistpen\Adapter\State object
 	 *
 	 * @var StateAdapter
 	 * @since 0.5.0
@@ -95,12 +69,12 @@ class Adapter {
 	protected $state;
 
 	/**
-	 * WP_Gistpen\Adapter\Zip object
+	 * Intraxia\Gistpen\Adapter\Zip object
 	 *
 	 * @var ZipAdapter
 	 * @since 0.5.0
 	 */
-	private $zip;
+	protected $zip;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -109,19 +83,14 @@ class Adapter {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->commit = new CommitAdapter( $plugin_name, $version );
-		$this->file = new FileAdapter( $plugin_name, $version );
-		$this->gist = new GistAdapter( $plugin_name, $version );
-		$this->history = new HistoryAdapter( $plugin_name, $version );
-		$this->api = new ApiAdapter( $plugin_name, $version );
-		$this->language = new LanguageAdapter( $plugin_name, $version );
-		$this->state = new StateAdapter( $plugin_name, $version );
-		$this->zip = new ZipAdapter( $plugin_name, $version );
+	public function __construct() {
+		$this->commit = new CommitAdapter();
+		$this->file = new FileAdapter();
+		$this->history = new HistoryAdapter();
+		$this->api = new ApiAdapter();
+		$this->language = new LanguageAdapter();
+		$this->state = new StateAdapter();
+		$this->zip = new ZipAdapter();
 
 	}
 
@@ -130,6 +99,7 @@ class Adapter {
 	 *
 	 * @since    0.5.0
 	 * @var      string    $model       The model type to prepare to build.
+	 * @return   mixed
 	 */
 	public function build( $model ) {
 

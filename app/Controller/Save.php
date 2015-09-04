@@ -1,36 +1,60 @@
 <?php
-namespace WP_Gistpen\Controller;
+namespace Intraxia\Gistpen\Controller;
 
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\File;
+use Intraxia\Gistpen\Model\Zip;
 
 /**
- * This is the functionality for the save_post hook
+ * This is the functionality for the save_post hook.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Save {
+class Save
+{
+	/**
+	 * Action hooks for the Save controller.
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'post_updated',
+			'method' => 'remove_revision_save',
+			'priority' => 9,
+		),
+		array(
+			'hook' => 'transition_post_status',
+			'method' => 'sync_post_status',
+			'args' => 3,
+		),
+		array(
+			'hook' => 'before_delete_post',
+			'method' => 'delete_files',
+		),
+	);
 
 	/**
-	 * The ID of this plugin.
+	 * Filter hooks for the Save controller.
 	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var array
 	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+	public $filters = array(
+		array(
+			'hook' => 'wp_insert_post_empty_content',
+			'method' => 'allow_empty_zip',
+			'args' => 2,
+		),
+		array(
+			'hook' => 'wp_save_post_revision_check_for_changes',
+			'method' => 'disable_check_for_change',
+			'args' => 3,
+		),
+	);
 
 	/**
 	 * Database Facade object
@@ -55,14 +79,9 @@ class Save {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
+	public function __construct() {
+		$this->database = new Database();
+		$this->adapter = new Adapter();
 	}
 
 	/**
@@ -77,20 +96,21 @@ class Save {
 			$zip_data['status'] = 'draft';
 		}
 
-		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
+        $zip = new Zip($zip_data);
 
 		// Check user permissions
-		if ($zip->get_ID()) {
+		if ( $zip->get_ID() ) {
 			if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
-				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
+				return new \WP_Error( 'no_perms', sprintf( __( 'User does not have permission to edit post %d', 'wp-gistpen' ), $zip->get_ID() ) );
 			}
 		} else {
 			if ( ! current_user_can( 'edit_posts' ) ) {
-				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
+				return new \WP_Error( 'no_perms', sprintf( __( 'User does not have permission to edit post %d', 'wp-gistpen' ), $zip->get_ID() ) );
 			}
 		}
 
 		foreach ( $zip_data['files'] as $file_data ) {
+			/** @var File $file */
 			$file = $this->adapter->build( 'file' )->by_array( $file_data );
 			$file->set_language( $this->adapter->build( 'language' )->by_slug( $file_data['language'] ) );
 
@@ -144,7 +164,7 @@ class Save {
 	 *
 	 * @param  string $old_status
 	 * @param  string $new_status
-	 * @param  obj    $post       WP_Post object for zip
+	 * @param  \WP_Post    $post       WP_Post object for zip
 	 * @since  0.5.0
 	 */
 	public function sync_post_status( $new_status, $old_status, $post ) {
@@ -155,6 +175,7 @@ class Save {
 			$files = $this->database->query()->files_by_post( $post );
 
 			foreach ( $files as $file ) {
+				/** @var File $file */
 				wp_update_post( array(
 					'ID' => $file->get_ID(),
 					'post_status' => $new_status,
@@ -175,6 +196,7 @@ class Save {
 		$post = get_post( $post_id );
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
+			/** @var Zip $zip */
 			$zip = $this->database->query()->by_post( $post );
 
 			$files = $zip->get_files();

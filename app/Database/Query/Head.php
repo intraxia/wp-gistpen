@@ -1,43 +1,26 @@
 <?php
-namespace WP_Gistpen\Database\Query;
+namespace Intraxia\Gistpen\Database\Query;
 
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\Zip;
 use \WP_Query;
 use \WP_Error;
 
 /**
  * This class saves and gets Gistpens from the database
  *
- * @package WP_Gistpen_Query
+ * @package Intraxia\Gistpen_Query
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
 class Head {
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
 
 	/**
 	 * Adapter Facade object
@@ -45,7 +28,7 @@ class Head {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Default query args
@@ -53,7 +36,7 @@ class Head {
 	 * @var  array
 	 * @since 0.5.0
 	 */
-	private $args;
+	protected $args;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -62,12 +45,8 @@ class Head {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $plugin_name, $version );
+	public function __construct() {
+		$this->adapter = new Adapter();
 
 		// Default query args
 		$this->args = array(
@@ -77,7 +56,6 @@ class Head {
 			'numberposts'    => 5,
 			'post_status'    => array( 'publish', 'pending', 'draft', 'future', 'private' ),
 		);
-
 	}
 
 	/**
@@ -140,13 +118,13 @@ class Head {
 	/**
 	 * Gets and builds an object model based on a WP_Post object
 	 *
-	 * @param  WP_Post $post model's WP_Post object
-	 * @return object       WP_Gistpen model object
+	 * @param  \WP_Post $post model's WP_Post object
+	 * @return \Gistpen\Model\Zip|\Gistpen\Model\File
 	 * @since 0.5.0
 	 */
 	public function by_post( $post ) {
 		if ( $post->post_type !== 'gistpen' ) {
-			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
+			return new WP_Error( 'wrong_post_type', __( "Intraxia\Gistpen_Query::get() didn't get a Gistpen", 'wp-gistpen' ) );
 		}
 
 		if ( 0 !== $post->post_parent ) {
@@ -159,9 +137,7 @@ class Head {
 			$post->gist_id = $this->gist_id_by_post_id( $post->ID );
 			$post->sync = $this->sync_by_post_id( $post->ID );
 
-			$result = $this->adapter
-				->build( 'zip' )
-				->by_post( $post );
+            $result = new Zip($post);
 
 			$result->set_gist_id( $this->gist_id_by_post_id( $post->ID ) );
 			$result->add_files( $this->files_by_post( $post ) );
@@ -174,7 +150,7 @@ class Head {
 	 * Gets and builds an object model based on a post's ID
 	 *
 	 * @param  int $post_id model's post ID
-	 * @return object       WP_Gistpen model object
+	 * @return object       Intraxia\Gistpen model object
 	 * @since 0.5.0
 	 */
 	public function by_id( $post_id ) {
@@ -187,7 +163,7 @@ class Head {
 	 * Retrieves the Language object for a given post ID
 	 *
 	 * @param  int $post_id
-	 * @return Language
+	 * @return \Gistpen\Model\Language
 	 * @since  0.4.0
 	 */
 	public function language_by_post_id( $post_id ) {
@@ -239,7 +215,7 @@ class Head {
 	/**
 	 * Retrieves the all the files for a zip's WP_Post object
 	 *
-	 * @param  WP_Post $post
+	 * @param  \WP_Post $post
 	 * @return array       array of Files
 	 * @since  0.4.0
 	 */
@@ -272,7 +248,7 @@ class Head {
 	/**
 	 * Gets Gistpen matching given Gist ID
 	 * @param  string $gist_id Gist ID to search for
-	 * @return \WP_Gistpen\Model\Zip|\WP_error    Zip with given Gist ID, WP_Error if multitple/no Zips match
+	 * @return \Gistpen\Model\Zip|\WP_error    Zip with given Gist ID, WP_Error if multitple/no Zips match
 	 */
 	public function by_gist_id( $gist_id ) {
 		$query = new WP_Query( array(
@@ -291,7 +267,7 @@ class Head {
 		}
 
 		if ( 1 !== count( $posts ) ) {
-			return new WP_Error( 'multiple_gistpens_found', __( "Multiple Gistpens with Gist ID {$gist_id} found.", $this->plugin_name ) );
+			return new WP_Error( 'multiple_gistpens_found', sprintf( __( 'Multiple Gistpens with Gist ID %s found.', 'wp-gistpen' ), $gist_id ) );
 		}
 
 		$post = array_pop( $posts );

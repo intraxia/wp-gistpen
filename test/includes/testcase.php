@@ -1,45 +1,62 @@
 <?php
-use \Mockery as m;
+namespace Intraxia\Gistpen\Test;
 
-class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
+use Gistpen;
+use Mockery as m;
+use ReflectionClass;
+use SimpleXMLElement;
+use WP_Ajax_UnitTestCase;
 
+class UnitTestCase extends WP_Ajax_UnitTestCase
+{
 	public $mock_lang;
 	public $mock_post;
 	public $mock_file;
 	public $gistpen;
 	public $files;
+    public $mock_zip;
+    public $mock_history;
+    public $mock_commit;
+    public $mock_state;
+    public $mock_sync;
+    public $mock_gist_adapter;
+    public $mock_database;
+    public $mock_adapter;
+    public $mock_github_client;
 
-	function setUp() {
-		parent::setUp();
-		$this->factory = new WP_Gistpen_UnitTest_Factory;
+    public function setUp()
+    {
+        parent::setUp();
+        $this->factory = new UnitTest_Factory;
 
-		// Mock models
-		$this->mock_lang = m::mock( 'WP_Gistpen\Model\Language' );;
-		$this->mock_zip = m::mock( 'WP_Gistpen\Model\Zip' );
-		$this->mock_file = m::mock( 'WP_Gistpen\Model\File' );
-		$this->mock_history = m::mock( 'WP_Gistpen\Collection\History' );
-		$this->mock_commit = m::mock( 'WP_Gistpen\Model\Commit\Meta' );
-		$this->mock_state = m::mock( 'WP_Gistpen\Model\Commit\State' );
+        // Mock models
+        $this->mock_lang = m::mock('\Intraxia\Gistpen\Model\Language');
+        $this->mock_zip = m::mock('\Intraxia\Gistpen\Model\Zip');
+        $this->mock_file = m::mock('\Intraxia\Gistpen\Model\File');
+        $this->mock_history = m::mock('\Intraxia\Gistpen\Collection\History');
+        $this->mock_commit = m::mock('\Intraxia\Gistpen\Model\Commit\Meta');
+        $this->mock_state = m::mock('\Intraxia\Gistpen\Model\Commit\State');
 
-		// Mock controllers
-		$this->mock_sync = m::mock( 'WP_Gistpen\Controller\Sync' );
+        // Mock controllers
+        $this->mock_sync = m::mock('\Intraxia\Gistpen\Controller\Sync');
 
-		// Mock adapters
-		$this->mock_gist_adapter = m::mock( 'WP_Gistpen\Adapter\Gist' );
+        // Mock adapters
+        $this->mock_gist_adapter = m::mock('\Intraxia\Gistpen\Adapter\Gist');
 
-		// Mock Facades
-		$this->mock_database = m::mock( 'WP_Gistpen\Facade\Database' );
-		$this->mock_adapter = m::mock( 'WP_Gistpen\Facade\Adapter' );
+        // Mock Facades
+        $this->mock_database = m::mock('\Intraxia\Gistpen\Facade\Database');
+        $this->mock_adapter = m::mock('\Intraxia\Gistpen\Facade\Adapter');
 
-		// 3rd Party dependencies
-		$this->mock_github_client = m::mock( 'Github\Client' );
-	}
+        // 3rd Party dependencies
+        $this->mock_github_client = m::mock('\Github\Client');
+    }
 
-	function tearDown() {
-		parent::tearDown();
+	function tearDown()
+    {
+        parent::tearDown();
 
 		m::close();
-		cmb2_update_option( WP_Gistpen::$plugin_name, '_wpgp_gist_token', false );
+        cmb2_update_option(\Gistpen::$plugin_name, '_wpgp_gist_token', false);
 	}
 
 	function create_post_and_children() {
@@ -58,7 +75,7 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 
 	// Source: http://stackoverflow.com/questions/5010300/best-practices-to-test-protected-methods-with-phpunit-on-abstract-classes
 	protected static function callProtectedMethod( $name, $classname, $params ) {
-		$class = new ReflectionClass($classname);
+        $class = new ReflectionClass($classname);
 		$method = $class->getMethod($name);
 		$method->setAccessible(true);
 		$obj = new $classname($params);
@@ -68,7 +85,6 @@ class WP_Gistpen_UnitTestCase extends WP_Ajax_UnitTestCase {
 	// @source: http://www.snip2code.com/Snippet/7704/Assert-HTML-validity-with-PHPUnit-
 	public function assertValidHtml($html) {
 		$html = $this->setHtmlInput($html);
-		//exit(var_dump($html));
 		// cURL
 		$curl = curl_init();
 		curl_setopt_array($curl, array(

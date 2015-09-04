@@ -1,35 +1,27 @@
 <?php
-namespace WP_Gistpen\Register\Assets;
+namespace Intraxia\Gistpen\Register;
 
 /**
  * Registers the TinyMCE assets of the plugin.
  *
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 class Button {
 
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
+	public $filters = array(
+		array(
+			'hook' => 'mce_external_plugins',
+			'method' => 'mce_external_plugins',
+		),
+		array(
+			'hook' => 'mce_buttons',
+			'method' => 'mce_buttons',
+		),
+	);
 	/**
 	 * The minification string
 	 *
@@ -37,7 +29,7 @@ class Button {
 	 * @access   private
 	 * @var string
 	 */
-	private $min = '';
+	protected $min = '.min';
 
 	/**
 	 * Initialize the class and set its properties.
@@ -46,15 +38,12 @@ class Button {
 	 * @var      string    $plugin_name       The name of the plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $url ) {
+		$this->url = $url; // @todo move this class into framework
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		if ( ! defined( 'SCRIPT_DEBUG' ) || SCRIPT_DEBUG !== true ) {
-			$this->min = '.min';
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$this->min = '';
 		}
-
 	}
 
 	/**
@@ -65,7 +54,7 @@ class Button {
 	 * @since 0.4.0
 	 */
 	public function mce_external_plugins( $plugins ) {
-		$plugins['wp_gistpen'] = WP_GISTPEN_URL . 'assets/js/button' . $this->min . '.js';
+		$plugins['Intraxia\Gistpen'] = $this->url . 'assets/js/button' . $this->min . '.js';
 		return $plugins;
 	}
 
@@ -77,7 +66,7 @@ class Button {
 	 * @since 0.4.0
 	 */
 	public function mce_buttons( $buttons ) {
-		array_push( $buttons, 'wp_gistpen' );
+		array_push( $buttons, 'Intraxia\Gistpen' );
 		return $buttons;
 	}
 }

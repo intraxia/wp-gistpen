@@ -1,16 +1,16 @@
 <?php
-namespace WP_Gistpen\Controller;
+namespace Intraxia\Gistpen\Controller;
 
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Model\Zip;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Client\Gist;
+use Intraxia\Gistpen\Model\Zip;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
 use \WP_CLI;
 
 /**
  * Manages the data to keep the database in sync with Gist.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -18,22 +18,16 @@ use \WP_CLI;
 class Sync {
 
 	/**
-	 * The ID of this plugin.
+	 * Filter hooks for Sync controller.
 	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var array
 	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+	public $filters = array(
+		array(
+			'hook' => 'wpgp_after_update',
+			'method' => 'export_gistpen',
+		)
+	);
 
 	/**
 	 * Database Facade object
@@ -41,7 +35,7 @@ class Sync {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	protected $database;
 
 	/**
 	 * Adapter Facade object
@@ -49,34 +43,30 @@ class Sync {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
-	 * Gist Account object
+	 * Gist Client object
 	 *
 	 * @var    Gist
 	 * @since  0.5.0
 	 */
 	public $gist;
 
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    0.5.0
+     *
+     * @param Gist $gist
+     */
+    public function __construct(Gist $gist)
+    {
+        $this->database = new Database();
+        $this->adapter = new Adapter();
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
-		$this->gist = new Gist( $this->plugin_name, $this->version );
-
-	}
+        $this->gist = $gist;
+    }
 
 	/**
 	 * Exports a Gistpen to Gist based on its ID
@@ -88,7 +78,7 @@ class Sync {
 	 * @return string|\WP_Error           Zip ID on success, WP_Error on failure
 	 */
 	public function export_gistpen( $zip_id ) {
-		if ( false === cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' ) ) {
+		if ( false === cmb2_get_option( \Gistpen::$plugin_name, '_wpgp_gist_token' ) ) {
 			return $zip_id;
 		}
 
@@ -98,7 +88,7 @@ class Sync {
 			return $zip_id;
 		}
 
-		if ( 'none' === $commit->get_head_gist_id() ) {
+		if ( 'none' === $commit->getGistSha() ) {
 			$result = $this->create_gist( $commit );
 		} else {
 			$result = $this->update_gist( $commit );
@@ -114,12 +104,12 @@ class Sync {
 	/**
 	 * Creates a new Gistpen on Gist
 	 *
-	 * @param Commit              $commit    Commit object
-	 * @return string|\WP_Error               Gist ID on success, WP_Error on failure
+	 * @param \Gistpen\Model\Commit\Meta $commit
+	 * @return string|\WP_Error
 	 * @since 0.5.0
 	 */
 	protected function create_gist( $commit ) {
-		$response = $this->gist->create_gist( $commit );
+		$response = $this->gist->create( $commit );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -143,11 +133,12 @@ class Sync {
 	/**
 	 * Updates an existing Gistpen on Gist
 	 *
-	 * @return string|WP_Error Gist ID on success, WP_Error on failure
+	 * @param \Gistpen\Model\Commit\Meta $commit
+	 * @return string|\WP_Error Gist ID on success, WP_Error on failure
 	 * @since 0.5.0
 	 */
 	protected function update_gist( $commit ) {
-		$response = $this->gist->update_gist( $commit );
+		$response = $this->gist->update( $commit );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -177,7 +168,7 @@ class Sync {
 			return $query;
 		}
 
-		$response = $this->gist->get_gist( $gist_id );
+		$response = $this->gist->get( $gist_id );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;

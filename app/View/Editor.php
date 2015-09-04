@@ -1,19 +1,63 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Language;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * This class registers all of the settings page views
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 class Editor {
+
+	/**
+	 * Action hooks for the Editor service.
+	 *
+	 * @var array
+	 */
+	public $actions = array(
+		array(
+			'hook' => 'edit_form_after_title',
+			'method' => 'render_editor_div',
+		),
+		array(
+			'hook' => 'add_meta_boxes',
+			'method' => 'remove_meta_boxes',
+		),
+		array(
+			'hook' => 'manage_gistpen_posts_custom_column',
+			'method' => 'manage_posts_custom_column',
+		),
+	);
+
+	/**
+	 * Filter hooks for the Editor service.
+	 *
+	 * @var array
+	 */
+	public $filters = array(
+		array(
+			'hook' => 'screen_layout_columns',
+			'method' => 'screen_layout_columns',
+		),
+		array(
+			'hook' => 'get_user_option_screen_layout_gistpen',
+			'method' => 'screen_layout_gistpen',
+		),
+		array(
+			'hook' => 'manage_gistpen_posts_columns',
+			'method' => 'manage_posts_columns',
+		),
+		array(
+			'hook' => 'posts_orderby',
+			'method' => 'edit_screen_orderby',
+			'args' => 2,
+		),
+	);
 
 	/**
 	 * All the Ace themes for select box
@@ -45,22 +89,11 @@ class Editor {
 	);
 
 	/**
-	 * The ID of this plugin.
+	 * Plugin path
 	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var string
 	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
+	protected $path;
 
 	/**
 	 * Database Facade object
@@ -68,7 +101,7 @@ class Editor {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	protected $database;
 
 	/**
 	 * Adapter Facade object
@@ -76,7 +109,7 @@ class Editor {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -85,14 +118,10 @@ class Editor {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
+	public function __construct( $path ) {
+		$this->path = $path;
+		$this->database = new Database();
+		$this->adapter = new Adapter();
 	}
 
 	/**
@@ -101,10 +130,10 @@ class Editor {
 	 * @since     0.4.0
 	 */
 	public function render_editor_div() {
-		if ( 'gistpen' == get_current_screen()->id ) {
-			include_once( WP_GISTPEN_DIR . 'partials/editor/main.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/zip.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/file.inc.php' );
+		if ( 'gistpen' === get_current_screen()->id ) {
+			include_once( $this->path . 'partials/editor/main.inc.php' );
+			include_once( $this->path . 'partials/editor/zip.inc.php' );
+			include_once( $this->path . 'partials/editor/file.inc.php' );
 		}
 	}
 
@@ -151,7 +180,7 @@ class Editor {
 	 */
 	public function manage_posts_columns( $columns ) {
 		return array_merge( $columns, array(
-			'gistpen_files' => __( 'Files', $this->plugin_name )
+			'gistpen_files' => __( 'Files', 'wp-gistpen' )
 		) );
 	}
 

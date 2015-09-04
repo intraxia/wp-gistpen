@@ -1,14 +1,14 @@
 <?php
-use WP_Gistpen\Adapter\Language as LanguageAdapter;
+use Intraxia\Gistpen\Adapter\Language as LanguageAdapter;
 
 /**
  * @group adapters
  */
-class WP_Gistpen_LanguageAdapter_Test extends WP_Gistpen_UnitTestCase {
+class LanguageAdapter_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->adapter = new LanguageAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new LanguageAdapter();
 	}
 
 	function test_build_by_slug() {

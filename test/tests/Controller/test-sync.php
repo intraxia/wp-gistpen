@@ -3,7 +3,7 @@
 /**
  * @group controllers
  */
-class WP_Gistpen_Controller_Sync_Test extends WP_Gistpen_UnitTestCase {
+class Controller_Sync_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();

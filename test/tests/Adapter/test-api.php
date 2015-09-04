@@ -1,19 +1,19 @@
 <?php
-use WP_Gistpen\Adapter\Api as ApiAdapter;
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Adapter\Api as ApiAdapter;
+use Intraxia\Gistpen\Facade\Database;
 
 /**
  * @group adapters
  */
-class WP_Gistpen_Adapter_Api_Test extends WP_Gistpen_UnitTestCase {
+class Adapter_Api_Test extends \Intraxia\Gistpen\Test\UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
 
 		$this->create_post_and_children();
 
-		$this->adapter = new ApiAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new ApiAdapter();
+		$this->database = new Database();
 	}
 
 	function test_create_api_by_zip() {

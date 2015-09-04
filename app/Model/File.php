@@ -1,33 +1,15 @@
 <?php
-namespace WP_Gistpen\Model;
+namespace Intraxia\Gistpen\Model;
 
 /**
  * Manages the Gistpen's file data
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 class File {
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
 
 	/**
 	 * File's slug
@@ -55,7 +37,7 @@ class File {
 	/**
 	 * File's language object
 	 *
-	 * @var WP_Gistpen\Model\Language
+	 * @var \Gistpen\Model\Language
 	 * @since 0.4.0
 	 */
 	protected $language;
@@ -67,13 +49,6 @@ class File {
 	 * @since 0.4.0
 	 */
 	protected $highlight = null;
-
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-	}
 
 	/**
 	 * Get the file's slug
@@ -139,7 +114,7 @@ class File {
 	 * Get the file's language
 	 *
 	 * @since  0.5.0
-	 * @return string File language
+	 * @return null|Language
 	 */
 	public function get_language() {
 		if ( ! isset( $this->language) ) {
@@ -158,7 +133,7 @@ class File {
 	public function set_language( $language ) {
 
 		if ( ! $language instanceof Language ) {
-			throw new \Exception( __( 'set_language requires a Model\Language object', $this->plugin_name ), 1 );
+			throw new \Exception( __( 'set_language requires a Model\Language object', \Gistpen::$plugin_name ), 1 );
 		}
 
 		$this->language = $language;

@@ -1,11 +1,12 @@
 <?php
-namespace WP_Gistpen\Api;
+namespace Intraxia\Gistpen\Api;
 
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Controller\Save;
-use WP_Gistpen\Controller\Sync;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Client\Gist;
+use Intraxia\Gistpen\Controller\Save;
+use Intraxia\Gistpen\Controller\Sync;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\Zip;
 
 /**
  * This class handles all of the AJAX responses
@@ -18,30 +19,12 @@ use WP_Gistpen\Facade\Adapter;
 class Ajax {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Slug for the nonce field
 	 *
 	 * @var string
 	 * @since  0.4.0
 	 */
-	private $nonce_field;
+	protected $nonce_field;
 
 	/**
 	 * Database Facade object
@@ -76,26 +59,80 @@ class Ajax {
 	public $save;
 
 	/**
-	 * Initialize the class and set its properties.
+	 * Actions hooks for AJAX service
 	 *
-	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 * @var array
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public $actions = array(
+		array(
+			'hook' => 'edit_form_after_title',
+			'method' => 'embed_nonce',
+		),
+		array(
+			'hook' => 'wpgp_settings_before_title',
+			'method' => 'embed_nonce',
+		),
+		array(
+			'hook' => 'wp_ajax_get_gistpens',
+			'method' => 'get_gistpens',
+		),
+		array(
+			'hook' => 'wp_ajax_get_gistpen',
+			'method' => 'get_gistpen',
+		),
+		array(
+			'hook' => 'wp_ajax_create_gistpen',
+			'method' => 'create_gistpen',
+		),
+		array(
+			'hook' => 'wp_ajax_save_gistpen',
+			'method' => 'save_gistpen',
+		),
+		array(
+			'hook' => 'wp_ajax_save_ace_theme',
+			'method' => 'save_ace_theme',
+		),
+		array(
+			'hook' => 'wp_ajax_get_ace_theme',
+			'method' => 'get_ace_theme',
+		),
+		array(
+			'hook' => 'wp_ajax_get_gistpens_missing_gist_id',
+			'method' => 'get_gistpens_missing_gist_id',
+		),
+		array(
+			'hook' => 'wp_ajax_create_gist_from_gistpen_id',
+			'method' => 'create_gist_from_gistpen_id',
+		),
+		array(
+			'hook' => 'wp_ajax_get_new_user_gists',
+			'method' => 'get_new_user_gists',
+		),
+		array(
+			'hook' => 'wp_ajax_import_gist',
+			'method' => 'import_gist',
+		),
+	);
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    0.5.0
+     *
+     * @param Sync $sync
+     * @param Gist $gist
+     */
+    public function __construct(Sync $sync, Gist $gist)
+    {
 		$this->nonce_field = '_ajax_wp_gistpen';
 
-		$this->database = new Database( $plugin_name, $version );
-		$this->adapter = new Adapter( $plugin_name, $version );
+        $this->database = new Database();
+        $this->adapter = new Adapter();
 
-		$this->save = new Save( $plugin_name, $version );
-		$this->sync = new Sync( $plugin_name, $version );
-		$this->gist = new Gist( $plugin_name, $version );
-
-	}
+        $this->save = new Save();
+        $this->sync = $sync;
+        $this->gist = $gist;
+    }
 
 	/**
 	 * Embed the nonce in the head of the editor
@@ -110,7 +147,6 @@ class Ajax {
 	/**
 	 * Checks nonce and user permissions for AJAX reqs
 	 *
-	 * @return Sends error and halts execution if anything doesn't check out
 	 * @since  0.4.0
 	 */
 	private function check_security() {
@@ -118,7 +154,7 @@ class Ajax {
 		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'Nonce check failed.', $this->plugin_name ),
+				'message' => __( 'Nonce check failed.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -126,7 +162,7 @@ class Ajax {
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( "User doesn't have proper permisissions.", $this->plugin_name ),
+				'message' => __( "User doesn't have proper permisissions.", 'wp-gistpen' ),
 			) );
 		}
 	}
@@ -134,8 +170,7 @@ class Ajax {
 	/**
 	 * Checks if the result is a WP_Error object
 	 *
-	 * @param  $result Result to check
-	 * @return Sends error and halts execution if anything doesn't check out
+	 * @param  mixed|\WP_Error $result
 	 * @since  0.5.0
 	 */
 	private function check_error( $result ) {
@@ -183,7 +218,7 @@ class Ajax {
 		if ( ! array_key_exists( 'post_id', $_POST ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'No Gistpen ID sent', $this->plugin_name ),
+				'message' => __( 'No Gistpen ID sent', 'wp-gistpen' ),
 			) );
 		}
 
@@ -210,7 +245,7 @@ class Ajax {
 			'description' => $_POST['wp-gistfile-description'],
 			'status'      => $_POST['post_status'],
 		);
-		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
+        $zip = new Zip($zip_data);
 
 		$file_data = array(
 			'slug' => $_POST['wp-gistpenfile-slug'],
@@ -247,7 +282,7 @@ class Ajax {
 
 		wp_send_json_success( array(
 			'code'    => 'updated',
-			'message' => __( 'Successfully updated Gistpen ', $this->plugin_name ) . $result,
+			'message' => __( 'Successfully updated Gistpen ', 'wp-gistpen' ) . $result,
 		) );
 	}
 
@@ -275,7 +310,7 @@ class Ajax {
 		if ( ! $result ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'Failed to update Ace theme.', $this->plugin_name ),
+				'message' => __( 'Failed to update Ace theme.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -299,7 +334,7 @@ class Ajax {
 		if ( empty( $result ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'No Gistpens to export.', $this->plugin_name ),
+				'message' => __( 'No Gistpens to export.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -319,7 +354,7 @@ class Ajax {
 		if ( 0 === $id ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'Invalid Gistpen ID.', $this->plugin_name ),
+				'message' => __( 'Invalid Gistpen ID.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -339,7 +374,7 @@ class Ajax {
 
 		wp_send_json_success( array(
 			'code'    => 'success',
-			'message' => __( 'Successfully exported Gistpen #', $this->plugin_name ) . $result,
+			'message' => __( 'Successfully exported Gistpen #', 'wp-gistpen' ) . $result,
 		) );
 	}
 
@@ -352,7 +387,7 @@ class Ajax {
 	public function get_new_user_gists() {
 		$this->check_security();
 
-		$gists = $this->gist->get_gists();
+		$gists = $this->gist->all();
 
 		$this->check_error( $gists );
 
@@ -369,7 +404,7 @@ class Ajax {
 		if( empty( $new_user_gists ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
-				'message' => __( 'No Gists to import.', $this->plugin_name ),
+				'message' => __( 'No Gists to import.', 'wp-gistpen' ),
 			) );
 		}
 
@@ -393,7 +428,7 @@ class Ajax {
 
 		wp_send_json_success( array(
 			'code'    => 'success',
-			'message' => __( 'Successfully imported Gist #', $this->plugin_name ) . $gist_id,
+			'message' => __( 'Successfully imported Gist #', 'wp-gistpen' ) . $gist_id,
 		) );
 	}
 }

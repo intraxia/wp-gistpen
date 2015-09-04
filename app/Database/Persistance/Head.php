@@ -1,18 +1,16 @@
 <?php
-namespace WP_Gistpen\Database\Persistance;
+namespace Intraxia\Gistpen\Database\Persistance;
 /**
- * @package   WP_Gistpen
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Commit as CommitModel;
-use WP_Gistpen\Model\File;
-use WP_Gistpen\Model\Language;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\File;
 
 
 /**
@@ -25,36 +23,18 @@ use WP_Gistpen\Model\Language;
 class Head {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Adapter facade
 	 *
 	 * @var Adapter
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Database object for querying Head
 	 *
 	 * @var HeadQuery
 	 */
-	private $head_query;
+	protected $head_query;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -63,21 +43,15 @@ class Head {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $plugin_name, $version );
-		$this->head_query = new HeadQuery( $plugin_name, $version );
-
-
+	public function __construct() {
+		$this->adapter = new Adapter();
+		$this->head_query = new HeadQuery();
 	}
 
 	/**
 	 * Save the Zip to the database
 	 *
-	 * @param  Zip $post
+	 * @param  \Gistpen\Model\Zip $zip
 	 * @return int|\WP_Error    post_id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
@@ -184,7 +158,7 @@ class Head {
 	 *
 	 * @param  File $file File model object
 	 * @param  int $zip_id ID of the zip parent
-	 * @return int|WP_Error   post_id on success, WP_Error on failure
+	 * @return int|\WP_Error   post_id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
 	public function by_file_and_zip_id( $file, $zip_id ) {
@@ -219,15 +193,14 @@ class Head {
 	 * Save a Gistpen by array
 	 *
 	 * @param  array $data Array of Gistpen data
-	 * @return int|WP_Error       Saved Gistpen's ID or WP_Error on failure
+	 * @return int|\WP_Error       Saved Gistpen's ID or WP_Error on failure
 	 * @since  0.5.0
 	 */
 	public function by_array( $data ) {
-		$defaults = array(
+		$data = wp_parse_args($data, array(
 			'post_type'   => 'gistpen',
 			'post_status' => 'auto-draft',
-		);
-		$data = array_merge( $defaults, $data );
+		) );
 
 		return wp_insert_post( $data, true );
 	}
@@ -237,6 +210,7 @@ class Head {
 	 *
 	 * @param  int    $zip_id  post ID of zip to update
 	 * @param  string $gist_id Gist ID to save
+	 * @return bool
 	 * @since  0.5.0
 	 */
 	public function set_gist_id( $zip_id, $gist_id ) {
@@ -247,7 +221,8 @@ class Head {
 	 * Save the sync status to the Zip
 	 *
 	 * @param  int    $zip_id  post ID of zip to update
-	 * @param  string $gist_id Gist ID to save
+	 * @param  string $sync Gist ID to save
+	 * @return bool
 	 * @since  0.5.0
 	 */
 	public function set_sync( $zip_id, $sync ) {
