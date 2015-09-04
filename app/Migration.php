@@ -10,6 +10,7 @@ namespace Intraxia\Gistpen;
 
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Zip;
 use WP_Query;
 
 /**
@@ -235,7 +236,7 @@ class Migration {
 			// Update post type to remove the 's'
 			$post->post_type = 'gistpen';
 
-			$zip = $this->adapter->build( 'zip' )->by_post( $post );
+            $zip = new Zip($post);
 			$file = $this->adapter->build( 'file' )->blank();
 
 			// Migrate title to file's name

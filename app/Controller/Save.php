@@ -7,15 +7,15 @@ use Intraxia\Gistpen\Model\File;
 use Intraxia\Gistpen\Model\Zip;
 
 /**
- * This is the functionality for the save_post hook
+ * This is the functionality for the save_post hook.
  *
  * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Save {
-
+class Save
+{
 	/**
 	 * Action hooks for the Save controller.
 	 *
@@ -96,8 +96,7 @@ class Save {
 			$zip_data['status'] = 'draft';
 		}
 
-		/** @var Zip $zip */
-		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
+        $zip = new Zip($zip_data);
 
 		// Check user permissions
 		if ( $zip->get_ID() ) {

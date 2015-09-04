@@ -10,6 +10,7 @@ namespace Intraxia\Gistpen\Database\Query;
  */
 
 use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\Zip;
 use \WP_Query;
 use \WP_Error;
 
@@ -136,9 +137,7 @@ class Head {
 			$post->gist_id = $this->gist_id_by_post_id( $post->ID );
 			$post->sync = $this->sync_by_post_id( $post->ID );
 
-			$result = $this->adapter
-				->build( 'zip' )
-				->by_post( $post );
+            $result = new Zip($post);
 
 			$result->set_gist_id( $this->gist_id_by_post_id( $post->ID ) );
 			$result->add_files( $this->files_by_post( $post ) );

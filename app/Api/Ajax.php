@@ -6,6 +6,7 @@ use Intraxia\Gistpen\Controller\Save;
 use Intraxia\Gistpen\Controller\Sync;
 use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\Zip;
 
 /**
  * This class handles all of the AJAX responses
@@ -244,7 +245,7 @@ class Ajax {
 			'description' => $_POST['wp-gistfile-description'],
 			'status'      => $_POST['post_status'],
 		);
-		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
+        $zip = new Zip($zip_data);
 
 		$file_data = array(
 			'slug' => $_POST['wp-gistpenfile-slug'],
