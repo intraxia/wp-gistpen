@@ -1,72 +1,83 @@
-module.exports = Backbone.Model.extend({
-	initialize: function(opts) {
-		this.startBtn = jQuery('#import-gists');
-		this.wrap = jQuery('.wpgp-wrap');
-		this.templates = {};
-		this.templates.header = jQuery("script#importHeaderTemplate");
-		this.templates.status = jQuery("script#statusTemplate");
-	},
+module.exports =(function($) {
+	var startBtn;
+	var wrap;
+	var templates = {};
+	var gistIDs;
+	var header;
+	var backLink;
+	var $progress;
+	var $progressLabel;
+	var $status;
+	var result;
 
-	setClickHandlers: function () {
-		var that = this;
+	return {
+		init: init
+	};
 
-		if(!this.startBtn.length) {
+	function init() {
+		startBtn = jQuery('#import-gists');
+		wrap = jQuery('.wpgp-wrap');
+
+		templates.header = jQuery("script#importHeaderTemplate");
+		templates.status = jQuery("script#statusTemplate");
+
+		setClickHandlers();
+	}
+
+	function setClickHandlers() {
+		if(!startBtn.length) {
 			return;
 		}
 
-		this.startBtn.prop("disabled", true);
+		startBtn.prop("disabled", true);
 
-		this.getGistIDs();
+		getGistIDs();
 
-		this.startBtn.click(function(e) {
-				e.preventDefault();
+		startBtn.click(function(e) {
+			e.preventDefault();
 
-				that.wrap.html('');
+			wrap.html('');
 
-				that.appendHeader();
+			appendHeader();
 
-				that.gistIDs.forEach(function(id) {
-					that.importID(id);
-				});
+			gistIDs.forEach(function(id) {
+				importID(id);
+			});
 		});
-	},
+	}
 
-	getGistIDs: function() {
-		var that = this;
-		jQuery.post(ajaxurl, {
+	function getGistIDs() {
+		$.post(ajaxurl, {
 			action: 'get_new_user_gists',
-			nonce: jQuery('#_ajax_wp_gistpen').val()
+			nonce: $('#_ajax_wp_gistpen').val()
 		}, function(response) {
 			if(false === response.success) {
-				that.startBtn.val(response.data.message);
+				startBtn.val(response.data.message);
 			} else {
-				that.gistIDs = response.data.gist_ids;
-				that.startBtn.prop("disabled", false);
+				gistIDs = response.data.gist_ids;
+				startBtn.prop("disabled", false);
 			}
 		});
-	},
+	}
 
-	appendHeader: function() {
-		var that = this;
-		var template = _.template(this.templates.header.html());
+	function appendHeader() {
+		var template = _.template(templates.header.html());
 
-		this.header = jQuery(template({}).trim()).appendTo(this.wrap);
-		this.backLink = this.header.find("a");
-		this.$progress = this.header.find("#progressbar");
-		this.$progressLabel = this.header.find(".progress-label");
-		this.$status = jQuery('#import-status');
+		header = jQuery(template({}).trim()).appendTo(wrap);
+		backLink = header.find("a");
+		$progress = header.find("#progressbar");
+		$progressLabel = header.find(".progress-label");
+		$status = jQuery('#import-status');
 
-		var result = this.$progress.progressbar({
-			max: that.gistIDs.length,
+		result = $progress.progressbar({
+			max: gistIDs.length,
 			value: 0,
 			enable: true
 		});
-	},
+	}
 
-	importID: function(id) {
-		var that = this;
-
-		jQuery.ajaxq('import', {
+	function importID(id) {
+		$.ajaxq('import', {
 			url: ajaxurl,
 			type: 'POST',
 			data: {
@@ -76,23 +87,23 @@ module.exports = Backbone.Model.extend({
 				gist_id: id
 			},
 			success: function(response) {
-				that.updateProgress(response);
+				updateProgress(response);
 			},
 			error: function(response) {
-				jQuery.ajaxq.abort('import');
-				that.updateProgress(response);
-			},
+				$.ajaxq.abort('import');
+				updateProgress(response);
+			}
 		});
-	},
+	}
 
-	updateProgress: function(response) {
-		var template = _.template(this.templates.status.html());
+	function updateProgress(response) {
+		var template = _.template(templates.status.html());
 
-		this.$progress.progressbar( 'value', this.$progress.progressbar("value") + 1);
+		$progress.progressbar( 'value', $progress.progressbar("value") + 1);
 
-		this.$status.append(template({
+		$status.append(template({
 			status_code: response.data.code,
 			status_message: response.data.message
 		}).trim());
 	}
-});
+})(window.jQuery);

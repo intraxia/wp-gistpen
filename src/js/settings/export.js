@@ -1,98 +1,116 @@
-module.exports = Backbone.Model.extend({
-	initialize: function(opts) {
-		this.startBtn = jQuery('#export-gistpens');
-		this.wrap = jQuery('.wpgp-wrap');
-		this.templates = {};
-		this.templates.header = jQuery("script#exportHeaderTemplate");
-		this.templates.status = jQuery("script#statusTemplate");
-	},
+module.exports = (function($) {
+	var templates = {};
+	var startBtn;
+	var wrap;
+	var gistpenIDs;
+	var header;
+	var backLink;
+	var $progress;
+	var $progressLabel;
+	var $status;
+	var result;
 
-	setClickHandlers: function () {
-		var that = this;
+	return {
+		init: init
+	};
 
-		if(!this.startBtn.length) {
+	function init() {
+		queryDOM();
+		fetchTemplates();
+		setClickHandlers();
+	}
+
+	function queryDOM() {
+		startBtn = $('#export-gistpens');
+		wrap = $('.wpgp-wrap');
+	}
+
+	function fetchTemplates() {
+		templates.header = $("script#exportHeaderTemplate");
+		templates.status = $("script#statusTemplate");
+	}
+
+	function setClickHandlers() {
+		if(!startBtn.length) {
 			return;
 		}
 
-		this.startBtn.prop("disabled", true);
+		startBtn.prop("disabled", true);
 
-		this.getGistpenIDs();
+		getGistpenIDs();
 
-		this.startBtn.click(function(e) {
-				e.preventDefault();
+		startBtn.click(function(e) {
+			e.preventDefault();
 
-				that.wrap.html('');
+			wrap.html('');
 
-				that.appendHeader();
+			appendHeader();
 
-				that.gistpenIDs.forEach(function(id) {
-					that.exportID(id);
-				});
+			gistpenIDs.forEach(function(id) {
+				exportID(id);
+			});
 		});
-	},
+	}
 
-	getGistpenIDs: function() {
-		var that = this;
-		jQuery.post(ajaxurl, {
+	function getGistpenIDs() {
+		$.post(window.ajaxurl, {
 			action: 'get_gistpens_missing_gist_id',
-			nonce: jQuery('#_ajax_wp_gistpen').val()
+			nonce: $('#_ajax_wp_gistpen').val()
 		}, function(response) {
 			if(false === response.success) {
-				that.startBtn.val(response.data.message);
+				startBtn.val(response.data.message);
 			} else {
-				that.gistpenIDs = response.data.ids;
-				that.startBtn.prop("disabled", false);
+				gistpenIDs = response.data.ids;
+				startBtn.prop("disabled", false);
 			}
 		});
-	},
+	}
 
-	appendHeader: function() {
-		var that = this;
-		var template = _.template(this.templates.header.html());
+	function appendHeader() {
+		var template = _.template(templates.header.html());
 
-		this.header = jQuery(template({}).trim()).appendTo(this.wrap);
-		this.backLink = this.header.find("a");
-		this.$progress = this.header.find("#progressbar");
-		this.$progressLabel = this.header.find(".progress-label");
-		this.$status = jQuery('#export-status');
+		header = $(template({}).trim()).appendTo(wrap);
+		backLink = header.find("a");
+		$progress = header.find("#progressbar");
+		$progressLabel = header.find(".progress-label");
+		$status = $('#export-status');
 
-		var result = this.$progress.progressbar({
-			max: that.gistpenIDs.length,
+		result = $progress.progressbar({
+			max: gistpenIDs.length,
 			value: 0,
 			enable: true
 		});
-	},
+	}
 
-	exportID: function(id) {
-		var that = this;
-
-		jQuery.ajaxq('export', {
+	function exportID(id) {
+		$.ajaxq('export', {
 			url: ajaxurl,
 			type: 'POST',
 			data: {
 				action: 'create_gist_from_gistpen_id',
-				nonce: jQuery('#_ajax_wp_gistpen').val(),
+				nonce: $('#_ajax_wp_gistpen').val(),
 
 				gistpen_id: id
 			},
 			success: function(response) {
-				that.updateProgress(response);
+				updateProgress(response);
 			},
 			error: function(response) {
-				jQuery.ajaxq.abort('export');
-				that.updateProgress(response);
-			},
+				$.ajaxq.abort('export');
+				updateProgress(response);
+			}
 		});
-	},
+	}
 
-	updateProgress: function(response) {
-		var template = _.template(this.templates.status.html());
+	function updateProgress(response) {
+		var template = _.template(templates.status.html());
 
-		this.$progress.progressbar( 'value', this.$progress.progressbar("value") + 1);
+		$progress.progressbar( 'value', $progress.progressbar("value") + 1);
 
-		this.$status.append(template({
+		$status.append(template({
 			status_code: response.data.code,
 			status_message: response.data.message
 		}).trim());
 	}
-});
+
+})(window.jQuery);
