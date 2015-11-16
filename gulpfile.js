@@ -8,15 +8,18 @@ var gulp = require('gulp'),
 	minify = require('gulp-minify-css'),
 	sass = require('gulp-sass'),
 	extrep = require('gulp-ext-replace');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
 gulp.task('watch', function () {
 	gulp.watch(
-		'assets/src/js/**/*.js',
+		'src/js/**/*.js',
 		['scripts']);
 		gulp.watch(
-		'assets/src/scss/**/*.scss',
+		'src/scss/**/*.scss',
 		['styles']);
 });
 
@@ -25,11 +28,15 @@ gulp.task('build', ['scripts', 'styles', 'packages']);
 gulp.task('scripts', function() {
 	var promises = [];
 
-	glob.sync('assets/src/js/!(js)').forEach(function(filePath) {
+	glob.sync('src/js/!(js)').forEach(function(filePath) {
 		if (fs.statSync(filePath).isDirectory()) {
 			var defer = Q.defer();
-			var pipeline = gulp.src(filePath + '/**/*.js')
-				.pipe(concat(path.basename(filePath) + '.js'))
+			var pipeline = browserify({
+				entries: filePath + '/start.js'
+			})
+				.bundle()
+				.pipe(source(path.basename(filePath) + '.js'))
+				.pipe(buffer())
 				.pipe(gulp.dest('assets/js'))
 				.pipe(uglify())
 				.pipe(concat(path.basename(filePath) + '.min.js'))
@@ -45,7 +52,7 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('styles', function() {
-	return gulp.src('assets/src/scss/*.scss')
+	return gulp.src('src/scss/*.scss')
 		.pipe(sass())
 		.pipe(gulp.dest('assets/css'))
 		.pipe(minify())

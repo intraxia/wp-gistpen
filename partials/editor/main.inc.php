@@ -8,7 +8,7 @@
 	<?php endforeach; ?>
 	</select>
 	<input type="submit" name="wpgp-update" id="wpgp-update" class="button button-primary" value="Update Gistpen">
-	<span class="spinner" style="display: none;"></span>
+	<span class="spinner"></span>
 </div>
 
 <input type="submit" name="wpgp-addfile" id="wpgp-addfile" class="button button-primary" value="Add Gistfile">

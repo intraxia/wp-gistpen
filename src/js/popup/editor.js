@@ -181,3 +181,5 @@ TinyMCEFileEditor.prototype  = {
 		this.languageSelect.val(this.fileLanguage);
 	}
 };
+
+module.exports = TinyMCEFileEditor;
