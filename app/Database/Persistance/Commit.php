@@ -115,6 +115,10 @@ class Commit {
 	 * @since  0.5.0
 	 */
 	public function by_ids( $ids ) {
+		if ( ! cmb2_get_option( $this->plugin_name, '_wpgp_revisions_enabled' ) ) {
+			return $ids;
+		}
+
 		// reset object defaults
 		$this->changed = false;
 		$this->commit_meta = array( 'state_ids' => array() );

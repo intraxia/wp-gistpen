@@ -32,6 +32,12 @@
 					'type' => 'text',
 				),
 				array(
+					'name' => __( 'Enable revision saving', $this->plugin_name ),
+					'desc' => __( "WP-Gistpen saves revisions for the main Gistpen as well as its children.<br> If you don't want to bloat your database, disable this option,<br> but you won't save revisions like Gist does.", $this->plugin_name ),
+					'id'   => $prefix . 'revisions_enabled',
+					'type' => 'checkbox'
+				),
+				array(
 					'name' => __( 'Highlighter Theme', $this->plugin_name ),
 					'desc' => __( 'This is the theme PrismJS highlights your code with. See how it works below.', $this->plugin_name ),
 					'id'   => $prefix . 'gistpen_highlighter_theme',
