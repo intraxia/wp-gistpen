@@ -43,3 +43,7 @@ bower_components
 # Generated files
 assets/js/**
 assets/css/**
+
+# Local phpunit config
+phpunit.xml
+build
