@@ -17,5 +17,3 @@ require $_tests_dir . '/includes/bootstrap.php';
 require_once dirname( __FILE__ ) . '/factory.php';
 
 require_once dirname( __FILE__ ) . '/testcase.php';
-
-WP_Gistpen\Activator::activate();
