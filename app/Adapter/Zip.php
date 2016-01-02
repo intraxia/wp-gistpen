@@ -1,7 +1,7 @@
 <?php
-namespace WP_Gistpen\Adapter;
+namespace Intraxia\Gistpen\Adapter;
 
-use WP_Gistpen\Model\Zip as ZipModel;
+use Intraxia\Gistpen\Model\Zip as ZipModel;
 
 /**
  * Builds zip models based on various data inputs

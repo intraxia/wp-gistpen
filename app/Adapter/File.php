@@ -1,7 +1,7 @@
 <?php
-namespace WP_Gistpen\Adapter;
+namespace Intraxia\Gistpen\Adapter;
 
-use WP_Gistpen\Model\File as FileModel;
+use Intraxia\Gistpen\Model\File as FileModel;
 
 /**
  * Builds file models based on various data inputs
@@ -37,7 +37,7 @@ class File {
 	 * Build a File model by $post data
 	 *
 	 * @param  \WP_Post $post zip's post data
-	 * @return \WP_Gistpen\Model\File
+	 * @return \Intraxia\Gistpen\Model\File
 	 * @since 0.5.0
 	 */
 	public function by_post( $post ) {
@@ -76,7 +76,7 @@ class File {
 	/**
 	 * Builds a blank file model
 	 *
-	 * @return \WP_Gistpen\Model\File
+	 * @return \Intraxia\Gistpen\Model\File
 	 * @since 0.5.0
 	 */
 	public function blank() {

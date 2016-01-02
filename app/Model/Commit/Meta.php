@@ -1,15 +1,17 @@
 <?php
-namespace WP_Gistpen\Model\Commit;
+namespace Intraxia\Gistpen\Model\Commit;
+
+use Intraxia\Gistpen\Model\Zip;
 
 /**
  * Data object for an individual Commit
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Meta extends \WP_Gistpen\Model\Zip {
+class Meta extends Zip {
 
 	/**
 	 * Head ID

@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Providers;
 
+use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Register\Data;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
@@ -18,6 +19,8 @@ class CoreServiceProvider implements ServiceProvider {
 	 * @param Container $container
 	 */
 	public function register( Container $container ) {
-		$container->define( 'register.data', new Data );
+		$container
+			->define( 'register.data', new Data )
+			->define( 'adapter', new Adapter );
 	}
 }
