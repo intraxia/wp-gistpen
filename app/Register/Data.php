@@ -11,6 +11,7 @@ use Intraxia\Jaxion\Contract\Core\HasActions;
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
+ * @todo       Push this class into Jaxion.
  */
 class Data implements HasActions {
 	/**
