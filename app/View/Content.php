@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
 /**
  * Registers the front-end content output
@@ -9,8 +9,9 @@ namespace WP_Gistpen\View;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 /**
  * This class manipulates the Gistpen post content.
@@ -18,7 +19,7 @@ use WP_Gistpen\Facade\Database;
  * @package Content
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Content {
+class Content implements HasActions, HasFilters {
 
 	/**
 	 * Database Facade object
@@ -32,16 +33,18 @@ class Content {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 *
+	 * @param Database $database
 	 */
-	public function __construct() {
-		$this->database = new Database();
+	public function __construct( Database $database ) {
+		$this->database = $database;
 	}
 
 	/**
 	 * Remove extra filters from the Gistpen content
 	 *
+	 * @param string $content
+	 * @return string
 	 * @since    0.1.0
 	 */
 	public function remove_filters( $content ) {
@@ -71,7 +74,7 @@ class Content {
 
 			if ( is_wp_error( $zip ) ) {
 				// @todo handle each error
-				return;
+				return '';
 			}
 
 			$content .= $zip->get_post_content();
@@ -143,12 +146,43 @@ class Content {
 
 		if ( is_wp_error( $zip ) ) {
 			// @todo each error
-			return;
+			return '';
 		}
 
 		return $zip->get_shortcode_content( $args['highlight'] );
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return  array(
+			array(
+				'hook' => 'the_content',
+				'method' => 'remove_filters',
+			),
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function filter_hooks() {
+		return array(
+			array(
+				'hook' => 'the_content',
+				'method' => 'post_content',
+			),
+			array(
+				'hook' => 'pre_get_posts',
+				'method' => 'pre_get_posts',
+			),
+		);
+	}
 }
 
