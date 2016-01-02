@@ -142,4 +142,23 @@ class Api {
 
 		return json_encode( $api );
 	}
+
+	/**
+	 * Transforms a FileModel or ZipModel into an API response.
+	 *
+	 * @param mixed $model
+	 *
+	 * @return array
+	 */
+	public function by_model( $model ) {
+		if ( $model instanceof FileModel ) {
+			return $this->by_file( $model );
+		}
+
+		if ( $model instanceof ZipModel ) {
+			return $this->by_zip( $model );
+		}
+
+		return new \WP_Error( 'wrong_type', 'Model passed to Api Adapter was not correct.' );
+	}
 }
