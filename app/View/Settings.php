@@ -1,7 +1,9 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
-use WP_Gistpen\Account\Gist;
+use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 /**
  * This class registers all of the settings page views
@@ -11,23 +13,42 @@ use WP_Gistpen\Account\Gist;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Settings {
-
+class Settings implements HasActions, HasFilters {
 	/**
 	 * Gist account object
 	 *
 	 * @var Gist
 	 * @since 0.5.0
 	 */
-	public $client;
+	protected $client;
+
+	/**
+	 * Plugin basename
+	 *
+	 * @var string
+	 */
+	protected $basename;
+
+	/**
+	 * Plugin path
+	 *
+	 * @var string
+	 */
+	protected $path;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param Gist   $client
+	 * @param string $basename
+	 * @param string $path
+	 *
 	 * @since    0.5.0
 	 */
-	public function __construct() {
-		$this->client = new Gist();
+	public function __construct( Gist $client, $basename, $path ) {
+		$this->client = $client;
+		$this->basename = $basename;
+		$this->path = $path;
 	}
 
 	/**
@@ -36,15 +57,13 @@ class Settings {
 	 * @since    0.1.0
 	 */
 	public function add_plugin_admin_menu() {
-
 		add_options_page(
-			__( 'WP-Gistpen Settings', \WP_Gistpen::$plugin_name ),
-			__( 'Gistpens', \WP_Gistpen::$plugin_name ),
+			__( 'WP-Gistpen Settings', 'wp-gistpen' ),
+			__( 'Gistpens', 'wp-gistpen' ),
 			'edit_posts',
-			\WP_Gistpen::$plugin_name,
+			'wp-gistpen',
 			array( $this, 'display_plugin_admin_page' )
 		);
-
 	}
 
 	/**
@@ -53,9 +72,7 @@ class Settings {
 	 * @since    0.1.0
 	 */
 	public function display_plugin_admin_page() {
-
-		include_once( WP_GISTPEN_DIR . 'partials/settings/page.php' );
-
+		include_once( $this->path . 'partials/settings/page.php' );
 	}
 
 	/**
@@ -64,7 +81,7 @@ class Settings {
 	 * @since 0.5.0
 	 */
 	public function github_user_layout() {
-		$token = cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' );
+		$token = cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' );
 
 		if ( false === $token ) {
 			return;
@@ -77,7 +94,7 @@ class Settings {
 
 			if ( is_wp_error( $error = $this->client->check_token() ) ) {
 				// If this token doesn't validate, clear it and bail.
-				cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token', '' );
+				cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '' );
 				delete_transient( '_wpgp_github_token_user_info' );
 				return;
 			}
@@ -92,19 +109,19 @@ class Settings {
 
 		?><h3>Authorized User</h3>
 
-		<strong><?php _e( 'Username: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $login ); ?><br>
-		<strong><?php _e( 'Email: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $email ); ?><br>
-		<strong><?php _e( 'Public Gists: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
-		<strong><?php _e( 'Private Gists: ', \WP_Gistpen::$plugin_name ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
+		<strong><?php _e( 'Username: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $login ); ?><br>
+		<strong><?php _e( 'Email: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $email ); ?><br>
+		<strong><?php _e( 'Public Gists: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
+		<strong><?php _e( 'Private Gists: ', 'wp-gistpen' ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
 
 		<p class="cmb2-metabox-description">
 			<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?>
-			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", \WP_Gistpen::$plugin_name ); ?>
+			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", 'wp-gistpen' ); ?>
 		</p>
 
 		<p class="cmb2-metabox-description">
 			<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
-			<?php _e( "When you import Gists, only Gists not previously imported will be added.", \WP_Gistpen::$plugin_name ); ?>
+			<?php _e( "When you import Gists, only Gists not previously imported will be added.", 'wp-gistpen' ); ?>
 		</p>
 		<?php
 	}
@@ -133,7 +150,7 @@ class Settings {
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . \WP_Gistpen::$plugin_name ) . '">' . __( 'Settings', \WP_Gistpen::$plugin_name ) . '</a>'
+				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . 'wp-gistpen' ) . '">' . __( 'Settings', 'wp-gistpen' ) . '</a>'
 			),
 			$links
 		);
@@ -164,7 +181,7 @@ class Settings {
 			<div class="error">
 				<p>
 					<?php
-						_e( 'Gist token failed to validate. Error message: ', \WP_Gistpen::$plugin_name );
+						_e( 'Gist token failed to validate. Error message: ', 'wp-gistpen' );
 						echo esc_html( $error->get_error_message() );
 					?>
 				</p>
@@ -182,7 +199,52 @@ class Settings {
 	 * @since 0.3.0
 	 */
 	public function register_setting() {
-		register_setting( \WP_Gistpen::$plugin_name, \WP_Gistpen::$plugin_name );
+		register_setting( 'wp-gistpen', 'wp-gistpen' );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook' => 'admin_menu',
+				'method' => 'add_plugin_admin_menu',
+			),
+			array(
+				'hook' => 'admin_init',
+				'method' => 'register_setting',
+			),
+			array(
+				'hook' => 'cmb2_before_options-page_form_wpgp_option_metabox',
+				'method' => 'github_user_layout',
+			),
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function filter_hooks() {
+		return array(
+			array(
+				'hook' => 'cmb2_validate_text',
+				'method' => 'validate_gist_token',
+				'args' => 5,
+			),
+			array(
+				'hook' => 'cmb2_get_metabox_form_format',
+				'method' => 'modify_form_output',
+				'args' => 3,
+			),
+			array(
+				'hook' => 'plugin_action_links_' . $this->basename,
+				'method' => 'add_action_links',
+			)
+		);
+	}
 }

@@ -1,9 +1,9 @@
 <?php
-namespace WP_Gistpen\Account;
+namespace Intraxia\Gistpen\Account;
 
-use WP_Gistpen\Facade\Adapter;
 use Github\Client;
 use Github\ResultPager;
+use Intraxia\Gistpen\Facade\Adapter;
 
 /**
  * This is the class description.
@@ -35,11 +35,11 @@ class Gist {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 *
+	 * @param Adapter $adapter
 	 */
-	public function __construct() {
-		$this->adapter = new Adapter();
+	public function __construct( Adapter $adapter ) {
+		$this->adapter = $adapter;
 		$this->client = new Client();
 	}
 

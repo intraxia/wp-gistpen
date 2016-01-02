@@ -22,36 +22,36 @@
 
 		cmb2_metabox_form( array(
 			'id'         => 'wpgp_option_metabox',
-			'show_on'    => array( 'key' => 'options-page', 'value' => array( \WP_Gistpen::$plugin_name ) ),
+			'show_on'    => array( 'key' => 'options-page', 'value' => array( 'wp-gistpen' ) ),
 			'show_names' => true,
 			'fields'     => array(
 				array(
-					'name' => __( 'Add your GitHub token', \WP_Gistpen::$plugin_name ),
-					'desc' => '<a href="https://github.com/settings/tokens/new">' . __( 'Create a GitHub token', \WP_Gistpen::$plugin_name ) . '</a>',
+					'name' => __( 'Add your GitHub token', 'wp-gistpen' ),
+					'desc' => '<a href="https://github.com/settings/tokens/new">' . __( 'Create a GitHub token', 'wp-gistpen' ) . '</a>',
 					'id'   => $prefix . 'gist_token',
 					'type' => 'text',
 				),
 				array(
-					'name' => __( 'Highlighter Theme', \WP_Gistpen::$plugin_name ),
-					'desc' => __( 'This is the theme PrismJS highlights your code with. See how it works below.', \WP_Gistpen::$plugin_name ),
+					'name' => __( 'Highlighter Theme', 'wp-gistpen' ),
+					'desc' => __( 'This is the theme PrismJS highlights your code with. See how it works below.', 'wp-gistpen' ),
 					'id'   => $prefix . 'gistpen_highlighter_theme',
 					'type' => 'select',
 					'options' => array(
-						'default' => __( 'Default', \WP_Gistpen::$plugin_name ),
-						'dark' => __( 'Dark', \WP_Gistpen::$plugin_name ),
-						'funky' => __( 'Funky', \WP_Gistpen::$plugin_name ),
-						'okaidia' => __( 'Okaidia', \WP_Gistpen::$plugin_name ),
-						'twilight' => __( 'Twilight', \WP_Gistpen::$plugin_name ),
-						'coy' => __( 'Coy', \WP_Gistpen::$plugin_name ),
+						'default' => __( 'Default', 'wp-gistpen' ),
+						'dark' => __( 'Dark', 'wp-gistpen' ),
+						'funky' => __( 'Funky', 'wp-gistpen' ),
+						'okaidia' => __( 'Okaidia', 'wp-gistpen' ),
+						'twilight' => __( 'Twilight', 'wp-gistpen' ),
+						'coy' => __( 'Coy', 'wp-gistpen' ),
 					),
 				),
 				array(
-					'name' => __( 'Enable line numbers', \WP_Gistpen::$plugin_name ),
+					'name' => __( 'Enable line numbers', 'wp-gistpen' ),
 					'id'   => $prefix . 'gistpen_line_numbers',
 					'type' => 'checkbox',
 				),
 			)
-		), \WP_Gistpen::$plugin_name );
+		), 'wp-gistpen' );
 	?>
 
 	<pre class="gistpen line-numbers"><code class="language-ruby"># Simple for loop using a range.
