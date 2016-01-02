@@ -74,39 +74,6 @@ class Ajax {
 	}
 
 	/**
-	 * Embed the nonce in the head of the editor
-	 *
-	 * @return string    AJAX nonce
-	 * @since  0.2.0
-	 */
-	public function embed_nonce() {
-		wp_nonce_field( $this->nonce_field, $this->nonce_field, false );
-	}
-
-	/**
-	 * Checks nonce and user permissions for AJAX reqs
-	 *
-	 * @since  0.4.0
-	 */
-	private function check_security() {
-		// Check the nonce
-		if ( ! isset($_POST['nonce']) || ! wp_verify_nonce( $_POST['nonce'], $this->nonce_field ) ) {
-			wp_send_json_error( array(
-				'code'    => 'error',
-				'message' => __( 'Nonce check failed.', \WP_Gistpen::$plugin_name ),
-			) );
-		}
-
-		// Check if user has proper permisissions
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			wp_send_json_error( array(
-				'code'    => 'error',
-				'message' => __( "User doesn't have proper permisissions.", \WP_Gistpen::$plugin_name ),
-			) );
-		}
-	}
-
-	/**
 	 * Checks if the result is a WP_Error object
 	 *
 	 * @param  mixed|\WP_Error $result
@@ -122,38 +89,11 @@ class Ajax {
 	}
 
 	/**
-	 * Returns 5 most recent Gistpens
-	 * or Gistpens matching search term
-	 *
-	 * @return string JSON-encoded array of post objects
-	 * @since 0.4.0
-	 */
-	public function get_gistpens() {
-		$this->check_security();
-
-		if ( isset( $_POST['gistpen_search_term'] ) && ! empty( $_POST['gistpen_search_term'] ) ) {
-			$results = $this->database->query()->by_string( $_POST['gistpen_search_term'] );
-		} else {
-			$results = $this->database->query()->by_recent();
-		}
-
-		$this->check_error( $results );
-
-		$results = $this->adapter->build( 'api' )->by_array_of_models( $results );
-
-		wp_send_json_success( array(
-			'gistpens' => $results,
-		) );
-	}
-
-	/**
 	 * Returns the data for a single Gistpen
 	 *
 	 * @since 0.5.0
 	 */
 	public function get_gistpen() {
-		$this->check_security();
-
 		if ( ! array_key_exists( 'post_id', $_POST ) ) {
 			wp_send_json_error( array(
 				'code'    => 'error',
@@ -178,8 +118,6 @@ class Ajax {
 	 * @since  0.2.0
 	 */
 	public function create_gistpen() {
-		$this->check_security();
-
 		$zip_data = array(
 			'description' => $_POST['wp-gistfile-description'],
 			'status'      => $_POST['post_status'],
@@ -210,8 +148,6 @@ class Ajax {
 	 * @since 0.5.0
 	 */
 	public function save_gistpen() {
-		$this->check_security();
-
 		// @todo validate data
 		$zip_data = $_POST['zip'];
 
@@ -231,8 +167,6 @@ class Ajax {
 	 * @since 0.5.0
 	 */
 	public function get_ace_theme() {
-		$this->check_security();
-
 		wp_send_json_success( array( 'theme' => get_user_meta( get_current_user_id(), '_wpgp_ace_theme', true ) ) );
 	}
 
@@ -242,8 +176,6 @@ class Ajax {
 	 * @since     0.4.0
 	 */
 	public function save_ace_theme() {
-		$this->check_security();
-
 		$result = update_user_meta( get_current_user_id(), '_wpgp_ace_theme', $_POST['theme'] );
 
 		if ( ! $result ) {
@@ -262,8 +194,6 @@ class Ajax {
 	 * @since 0.5.0
 	 */
 	public function get_gistpens_missing_gist_id() {
-		$this->check_security();
-
 		$result = $this->database->query( 'head' )->missing_gist_id();
 
 		if ( is_wp_error( $result ) ) {
@@ -286,8 +216,6 @@ class Ajax {
 	 * @since 0.5.0
 	 */
 	public function create_gist_from_gistpen_id() {
-		$this->check_security();
-
 		$id = intval( $_POST['gistpen_id'] );
 
 		if ( 0 === $id ) {
@@ -324,8 +252,6 @@ class Ajax {
 	 * @since 0.5.0
 	 */
 	public function get_new_user_gists() {
-		$this->check_security();
-
 		$gists = $this->gist->get_gists();
 
 		$this->check_error( $gists );
@@ -356,8 +282,6 @@ class Ajax {
 	 * @since 0.5.0
 	 */
 	public function import_gist() {
-		$this->check_security();
-
 		// @todo validate gist ID
 		$gist_id = $_POST['gist_id'];
 
