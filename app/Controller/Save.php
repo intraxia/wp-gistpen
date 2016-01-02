@@ -43,65 +43,6 @@ class Save {
 	}
 
 	/**
-	 * Update a Zip and save a new revision
-	 *
-	 * @param  array  $zip_data  Array of zip data
-	 * @return int|\WP_Error      Zip ID on success, WP_Error on failure
-	 * @since  0.5.0
-	 */
-	public function update( $zip_data ) {
-		if ( 'auto-draft' === $zip_data['status'] ) {
-			$zip_data['status'] = 'draft';
-		}
-
-		$zip = $this->adapter->build( 'zip' )->by_array( $zip_data );
-
-		// Check user permissions
-		if ($zip->get_ID()) {
-			if ( ! current_user_can( 'edit_post', $zip->get_ID() ) ) {
-				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
-			}
-		} else {
-			if ( ! current_user_can( 'edit_posts' ) ) {
-				return new \WP_Error( 'no_perms', __( 'User does not have permission to edit post ', \WP_Gistpen::$plugin_name ) . $zip->get_ID() );
-			}
-		}
-
-		foreach ( $zip_data['files'] as $file_data ) {
-			$file = $this->adapter->build( 'file' )->by_array( $file_data );
-			$file->set_language( $this->adapter->build( 'language' )->by_slug( $file_data['language'] ) );
-
-			$zip->add_file( $file );
-			unset( $file );
-		}
-
-		$results = $this->database->persist( 'head' )->by_zip( $zip );
-
-		if ( is_wp_error( $results ) ) {
-			return $results;
-		}
-
-		$result = $this->database->persist( 'commit' )->by_ids( $results );
-
-		if ( is_wp_error( $result ) ) {
-			return $result;
-		}
-
-		/**
-		 * After Update filter hook.
-		 *
-		 * Can hook in and return WP_Error objects
-		 * if something happens that results in an error.
-		 * This response is important when communicating
-		 * with GitHub's API. If something goes wrong,
-		 * we want to return that error to the user
-		 * so they can go fix it. This response is returned
-		 * by the Ajax API.
-		 */
-		return apply_filters( 'wpgp_after_update', $results['zip'] );
-	}
-
-	/**
 	 * Remove the action hook to save a post revision
 	 *
 	 * We're going to be handling this ourselves
