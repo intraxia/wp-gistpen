@@ -1,15 +1,15 @@
 <?php
-namespace WP_Gistpen\Database\Query;
+namespace Intraxia\Gistpen\Database\Query;
 
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
+ * @package    Intraxia\Gistpen
+ * @subpackage Database\Query
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @license    GPL-2.0+
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @copyright  2014 James DiGioia
  */
 
-use WP_Gistpen\Facade\Adapter;
 use \WP_Query;
 use \WP_Error;
 
@@ -44,8 +44,8 @@ class Head {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct() {
-		$this->adapter = new Adapter();
+	public function __construct( $adapter ) {
+		$this->adapter = $adapter;
 
 		// Default query args
 		$this->args = array(
@@ -168,7 +168,7 @@ class Head {
 	 * @since  0.4.0
 	 */
 	public function language_by_post_id( $post_id ) {
-		$terms = get_the_terms( $post_id, 'wpgp_language' );
+		$terms = wp_get_post_terms( $post_id, 'wpgp_language' );
 
 		if ( empty( $terms ) ) {
 			return $this->adapter->build( 'language' )->blank();

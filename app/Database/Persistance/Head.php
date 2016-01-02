@@ -1,16 +1,17 @@
 <?php
-namespace WP_Gistpen\Database\Persistance;
+namespace Intraxia\Gistpen\Database\Persistance;
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
+ * @package    Intraxia\Gistpen
+ * @subpackage Database\Persistance
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @license    GPL-2.0+
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @copyright  2014 James DiGioia
  */
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\File;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Model\File;
 
 
 /**
@@ -43,9 +44,9 @@ class Head {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct() {
-		$this->adapter = new Adapter();
-		$this->head_query = new HeadQuery();
+	public function __construct( $adapter ) {
+		$this->adapter = $adapter;
+		$this->head_query = new HeadQuery( $adapter );
 	}
 
 	/**
