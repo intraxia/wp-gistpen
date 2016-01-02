@@ -11,7 +11,7 @@ use Intraxia\Jaxion\Assets\ServiceProvider;
  * @package    Intraxia\Gistpen
  * @subpackage Providers
  */
-class AssetServiceProvider extends ServiceProvider {
+class AssetsServiceProvider extends ServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 *

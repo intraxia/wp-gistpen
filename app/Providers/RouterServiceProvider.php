@@ -5,7 +5,7 @@ use Intraxia\Gistpen\Http\ZipFilter;
 use Intraxia\Jaxion\Http\Filter;
 use Intraxia\Jaxion\Http\Guard;
 use Intraxia\Jaxion\Http\Router;
-use Intraxia\Jaxion\Http\RouterServiceProvider as ServiceProvider;
+use Intraxia\Jaxion\Http\ServiceProvider as ServiceProvider;
 
 /**
  * Class RouterServiceProvider
