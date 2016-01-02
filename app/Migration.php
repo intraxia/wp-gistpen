@@ -1,16 +1,20 @@
 <?php
-namespace WP_Gistpen;
+namespace Intraxia\Gistpen;
+
 /**
- * @package   WP_Gistpen
+ * Class Migration
+ *
+ * @package   Intraxia\Gistpen
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
  * @copyright 2014 James DiGioia
  */
 
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Facade\Database;
-use \WP_Query;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use WP_Query;
 
 /**
  * This class checks the current version and runs any updates necessary.
@@ -18,8 +22,7 @@ use \WP_Query;
  * @package Migration
  * @author  James DiGioia <jamesorodig@gmail.com>
  */
-class Migration {
-
+class Migration implements HasActions {
 	/**
 	 * Languages removed from version 0.3.0
 	 * Support for these languages needs to be readded in the future
@@ -62,7 +65,7 @@ class Migration {
 	/**
 	 * Database Facade object
 	 *
-	 * @var Facade\Database
+	 * @var Database
 	 * @since 0.5.0
 	 */
 	protected $database;
@@ -70,21 +73,31 @@ class Migration {
 	/**
 	 * Adapter Facade object
 	 *
-	 * @var Facade\Adapter
+	 * @var Adapter
 	 * @since  0.5.0
 	 */
 	protected $adapter;
 
 	/**
+	 * Plugin version number.
+	 *
+	 * @var string
+	 */
+	protected $version;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 *
+	 * @param Database $database
+	 * @param Adapter  $adapter
+	 * @param string   $version
 	 */
-	public function __construct() {
-		$this->database = new Database();
-		$this->adapter = new Adapter();
+	public function __construct( Database $database, Adapter $adapter, $version ) {
+		$this->database = $database;
+		$this->adapter = $adapter;
+		$this->version = $version;
 	}
 
 	/**
@@ -96,9 +109,9 @@ class Migration {
 		// Check if plugin needs to be upgraded
 		$version = get_option( 'wp_gistpen_version', '0.0.0' );
 
-		if ( $version !== \WP_Gistpen::$version ) {
+		if ( $version !== $this->version ) {
 			$this->update( $version );
-			update_option( 'wp_gistpen_version', \WP_Gistpen::$version );
+			update_option( 'wp_gistpen_version', $this->version );
 		}
 	}
 
@@ -144,11 +157,10 @@ class Migration {
 
 		foreach ( $this->removed_langs_0_3_0 as $lang => $slug ) {
 			// check if there are any gistpens in the db for this language
-			$query = new WP_Query(
-				array(
-					'language' => $slug,
-					'post_type' => 'gistpens',
-				));
+			$query = new WP_Query( array(
+				'language' => $slug,
+				'post_type' => 'gistpens',
+			));
 
 			if ( ! $query->have_posts() ) {
 				// only delete language if it's got no Gistpens
@@ -373,4 +385,17 @@ class Migration {
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook' => 'admin_init',
+				'method' => 'run',
+			),
+		);
+	}
 }

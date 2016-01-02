@@ -4,6 +4,7 @@ namespace Intraxia\Gistpen\Providers;
 use Intraxia\Gistpen\Account\Gist;
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Migration;
 use Intraxia\Gistpen\Register\Data;
 use Intraxia\Gistpen\View\Content;
 use Intraxia\Gistpen\View\Editor;
@@ -31,6 +32,7 @@ class CoreServiceProvider implements ServiceProvider {
 			->define( 'database', new Database( $container->fetch( 'adapter' ) ) )
 			->define( 'view.editor', new Editor( $container->fetch( 'database' ), $container->fetch( 'adapter' ), $container->fetch( 'path' ) ) )
 			->define( 'view.settings', new Settings( $container->fetch( 'account.gist' ), $container->fetch( 'basename' ), $container->fetch( 'path' ) ) )
-			->define( 'view.content', new Content( $container->fetch( 'database' ) ) );
+			->define( 'view.content', new Content( $container->fetch( 'database' ) ) )
+			->define( 'migration', new Migration( $container->fetch( 'database' ), $container->fetch( 'adapter' ), $container->fetch( 'version' ) ) );
 	}
 }
