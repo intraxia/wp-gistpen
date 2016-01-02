@@ -28,7 +28,9 @@ class App extends Application {
 	 *
 	 * @var string[]
 	 */
-	protected $providers = array();
+	protected $providers = array(
+		'Intraxia\Gistpen\Providers\CoreServiceProvider',
+	);
 
 	/**
 	 * {@inheritdoc}

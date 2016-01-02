@@ -1,16 +1,18 @@
 <?php
-namespace WP_Gistpen\Register;
+namespace Intraxia\Gistpen\Register;
+
+use Intraxia\Jaxion\Contract\Core\HasActions;
 
 /**
  * Registers the data types in WordPress
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Jaxion
+ * @subpackage Register
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Data {
-
+class Data implements HasActions {
 	/**
 	 * Register the gistpen post_type
 	 *
@@ -18,23 +20,23 @@ class Data {
 	 */
 	public function post_type_gistpen() {
 		$labels = array(
-			'name'                => _x( 'Gistpens', 'Post Type General Name', \WP_Gistpen::$plugin_name ),
-			'singular_name'       => _x( 'Gistpen', 'Post Type Singular Name', \WP_Gistpen::$plugin_name ),
-			'menu_name'           => __( 'Gistpens', \WP_Gistpen::$plugin_name ),
-			'parent_item_colon'   => __( 'Parent Gistpen:', \WP_Gistpen::$plugin_name ),
-			'all_items'           => __( 'All Gistpens', \WP_Gistpen::$plugin_name ),
-			'view_item'           => __( 'View Gistpen', \WP_Gistpen::$plugin_name ),
-			'add_new_item'        => __( 'Add New Gistpen', \WP_Gistpen::$plugin_name ),
-			'add_new'             => __( 'Add New', \WP_Gistpen::$plugin_name ),
-			'edit_item'           => __( 'Edit Gistpen', \WP_Gistpen::$plugin_name ),
-			'update_item'         => __( 'Update Gistpen', \WP_Gistpen::$plugin_name ),
-			'search_items'        => __( 'Search Gistpens', \WP_Gistpen::$plugin_name ),
-			'not_found'           => __( 'Gistpen not found', \WP_Gistpen::$plugin_name ),
-			'not_found_in_trash'  => __( 'No Gistpens found in Trash', \WP_Gistpen::$plugin_name ),
+			'name'                => _x( 'Gistpens', 'Post Type General Name', 'wp-gistpen' ),
+			'singular_name'       => _x( 'Gistpen', 'Post Type Singular Name', 'wp-gistpen' ),
+			'menu_name'           => __( 'Gistpens', 'wp-gistpen' ),
+			'parent_item_colon'   => __( 'Parent Gistpen:', 'wp-gistpen' ),
+			'all_items'           => __( 'All Gistpens', 'wp-gistpen' ),
+			'view_item'           => __( 'View Gistpen', 'wp-gistpen' ),
+			'add_new_item'        => __( 'Add New Gistpen', 'wp-gistpen' ),
+			'add_new'             => __( 'Add New', 'wp-gistpen' ),
+			'edit_item'           => __( 'Edit Gistpen', 'wp-gistpen' ),
+			'update_item'         => __( 'Update Gistpen', 'wp-gistpen' ),
+			'search_items'        => __( 'Search Gistpens', 'wp-gistpen' ),
+			'not_found'           => __( 'Gistpen not found', 'wp-gistpen' ),
+			'not_found_in_trash'  => __( 'No Gistpens found in Trash', 'wp-gistpen' ),
 		);
 		$args = array(
-			'label'                => __( 'gistpens', \WP_Gistpen::$plugin_name ),
-			'description'          => __( 'A collection of code snippets.', \WP_Gistpen::$plugin_name ),
+			'label'                => __( 'gistpens', 'wp-gistpen' ),
+			'description'          => __( 'A collection of code snippets.', 'wp-gistpen' ),
 			'labels'               => $labels,
 			'supports'             => array( 'author', 'comments', 'revisions' ),
 			'taxonomies'           => array( 'post_tag', 'wpgp_language' ),
@@ -54,8 +56,9 @@ class Data {
 			'rewrite'              => array(
 				'slug'               => 'gistpens',
 				'with_front'         => true,
-			)
+			),
 		);
+
 		register_post_type( 'gistpen', $args );
 	}
 
@@ -67,21 +70,21 @@ class Data {
 	public function taxonomy_language() {
 
 		$labels = array(
-			'name'                       => _x( 'Languages', 'Taxonomy General Name', \WP_Gistpen::$plugin_name ),
-			'singular_name'              => _x( 'Language', 'Taxonomy Singular Name', \WP_Gistpen::$plugin_name ),
-			'menu_name'                  => __( 'Language', \WP_Gistpen::$plugin_name ),
-			'all_items'                  => __( 'All Languages', \WP_Gistpen::$plugin_name ),
-			'parent_item'                => __( 'Parent Language', \WP_Gistpen::$plugin_name ),
-			'parent_item_colon'          => __( 'Parent Language:', \WP_Gistpen::$plugin_name ),
-			'new_item_name'              => __( 'New Language', \WP_Gistpen::$plugin_name ),
-			'add_new_item'               => __( 'Add New Language', \WP_Gistpen::$plugin_name ),
-			'edit_item'                  => __( 'Edit Language', \WP_Gistpen::$plugin_name ),
-			'update_item'                => __( 'Update Language', \WP_Gistpen::$plugin_name ),
-			'separate_items_with_commas' => __( 'Separate language with commas', \WP_Gistpen::$plugin_name ),
-			'search_items'               => __( 'Search languages', \WP_Gistpen::$plugin_name ),
-			'add_or_remove_items'        => __( 'Add or remove language', \WP_Gistpen::$plugin_name ),
-			'choose_from_most_used'      => __( 'Choose from the most used languages', \WP_Gistpen::$plugin_name ),
-			'not_found'                  => __( 'Not Found', \WP_Gistpen::$plugin_name ),
+			'name'                       => _x( 'Languages', 'Taxonomy General Name', 'wp-gistpen' ),
+			'singular_name'              => _x( 'Language', 'Taxonomy Singular Name', 'wp-gistpen' ),
+			'menu_name'                  => __( 'Language', 'wp-gistpen' ),
+			'all_items'                  => __( 'All Languages', 'wp-gistpen' ),
+			'parent_item'                => __( 'Parent Language', 'wp-gistpen' ),
+			'parent_item_colon'          => __( 'Parent Language:', 'wp-gistpen' ),
+			'new_item_name'              => __( 'New Language', 'wp-gistpen' ),
+			'add_new_item'               => __( 'Add New Language', 'wp-gistpen' ),
+			'edit_item'                  => __( 'Edit Language', 'wp-gistpen' ),
+			'update_item'                => __( 'Update Language', 'wp-gistpen' ),
+			'separate_items_with_commas' => __( 'Separate language with commas', 'wp-gistpen' ),
+			'search_items'               => __( 'Search languages', 'wp-gistpen' ),
+			'add_or_remove_items'        => __( 'Add or remove language', 'wp-gistpen' ),
+			'choose_from_most_used'      => __( 'Choose from the most used languages', 'wp-gistpen' ),
+			'not_found'                  => __( 'Not Found', 'wp-gistpen' ),
 		);
 		$capabilities = array(
 			'manage_terms'               => 'noone',
@@ -102,6 +105,23 @@ class Data {
 		);
 
 		register_taxonomy( 'wpgp_language', array( 'gistpen' ), $args );
+	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook' => 'init',
+				'method' => 'post_type_gistpen',
+			),
+			array(
+				'hook' => 'init',
+				'method' => 'taxonomy_language',
+			),
+		);
 	}
 }
