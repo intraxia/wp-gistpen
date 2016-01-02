@@ -3,9 +3,9 @@
 <div class="wp-editor-tools hide-if-no-js">
 
 	<div class="wp-media-buttons">
-		<input type="text" size="20" class="wpgp-file-slug" placeholder="<?php _e( 'Filename', \WP_Gistpen::$plugin_name ); ?>" autocomplete="off" value="<%- slug %>" />
+		<input type="text" size="20" class="wpgp-file-slug" placeholder="<?php _e( 'Filename', 'wp-gistpen' ); ?>" autocomplete="off" value="<%- slug %>" />
 		<select class="wpgp-file-lang">
-			<?php foreach ( WP_Gistpen\Model\Language::$supported as $lang => $slug ) : ?>
+			<?php foreach ( \Intraxia\Gistpen\Model\Language::$supported as $lang => $slug ) : ?>
 				<option value="<?php echo $slug; ?>">
 					<?php echo $lang; ?>
 				</option>

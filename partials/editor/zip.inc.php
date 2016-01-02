@@ -2,7 +2,7 @@
 
 <div id="titlediv">
 	<div id="titlewrap">
-		<label id="title-prompt-text" for="title"><?php _e( 'Gistpen description...', \WP_Gistpen::$plugin_name ); ?></label>
+		<label id="title-prompt-text" for="title"><?php _e( 'Gistpen description...', 'wp-gistpen' ); ?></label>
 		<input type="text" name="post_title" size="30" value="<%- description %>" id="title" spellcheck="true" autocomplete="off">
 	</div>
 </div>
@@ -10,7 +10,7 @@
 <div class="wpgp-zip-settings">
 
 	<div class="wpgp-status">
-		<label for="wpgp-zip-status" id="zip-status-text"><?php _e( 'Post Status:', \WP_Gistpen::$plugin_name ); ?></label>
+		<label for="wpgp-zip-status" id="zip-status-text"><?php _e( 'Post Status:', 'wp-gistpen' ); ?></label>
 		<select id="wpgp-zip-status">
 			<?php foreach ( get_post_statuses() as $slug => $status ) : ?>
 				<option value="<?php echo $slug; ?>">
@@ -22,7 +22,7 @@
 
 	<div class="wpgp-sync">
 		<input type="checkbox" name="wpgp-zip-sync" id="wpgp-zip-sync">
-		<label for="wpgp-zip-sync" id="zip-sync-text"><?php _e( 'Sync Gistpen with Gist?', \WP_Gistpen::$plugin_name ); ?></label>
+		<label for="wpgp-zip-sync" id="zip-sync-text"><?php _e( 'Sync Gistpen with Gist?', 'wp-gistpen' ); ?></label>
 	</div>
 
 </div>

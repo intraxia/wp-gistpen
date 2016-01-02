@@ -1,9 +1,10 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Language;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 /**
  * This class registers all of the settings page views
@@ -13,8 +14,7 @@ use WP_Gistpen\Model\Language;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Editor {
-
+class Editor implements HasActions, HasFilters {
 	/**
 	 * All the Ace themes for select box
 	 *
@@ -61,15 +61,26 @@ class Editor {
 	protected $adapter;
 
 	/**
+	 * Plugin path string.
+	 *
+	 * @var string
+	 * @since 0.6.0
+	 */
+	protected $path;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 *
+	 * @param Database $database
+	 * @param Adapter  $adapter
+	 * @param string   $path
 	 */
-	public function __construct() {
-		$this->database = new Database();
-		$this->adapter = new Adapter();
+	public function __construct( Database $database, Adapter $adapter, $path ) {
+		$this->database = $database;
+		$this->adapter = $adapter;
+		$this->path = $path;
 	}
 
 	/**
@@ -79,9 +90,9 @@ class Editor {
 	 */
 	public function render_editor_div() {
 		if ( 'gistpen' == get_current_screen()->id ) {
-			include_once( WP_GISTPEN_DIR . 'partials/editor/main.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/zip.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/file.inc.php' );
+			include_once( $this->path . 'partials/editor/main.inc.php' );
+			include_once( $this->path . 'partials/editor/zip.inc.php' );
+			include_once( $this->path . 'partials/editor/file.inc.php' );
 		}
 	}
 
@@ -122,21 +133,21 @@ class Editor {
 	/**
 	 * Adds the file column to the Gistpen edit screen
 	 *
-	 * @param  array $columns Array of the columns
+	 * @param  array $columns Array of the columns.
 	 * @return array          Array with new column added
 	 * @since  0.4.0
 	 */
 	public function manage_posts_columns( $columns ) {
 		return array_merge( $columns, array(
-			'gistpen_files' => __( 'Files', \WP_Gistpen::$plugin_name )
+			'gistpen_files' => __( 'Files', 'wp-gistpen' ),
 		) );
 	}
 
 	/**
 	 * Render the file column on the Gistpen edit screen
 	 *
-	 * @param  string $column_name the custom column name
-	 * @param  int    $post_id     the ID of the current post
+	 * @param  string $column_name the custom column name.
+	 * @param  int    $post_id     the ID of the current post.
 	 * @since  0.4.0
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
@@ -153,8 +164,8 @@ class Editor {
 	/**
 	 * Reorders in reverse chron on the Gistpen edit screen
 	 *
-	 * @param  string   $orderby  the query's orderby statement
-	 * @param  WP_Query $query    current query obj
+	 * @param  string   $orderby the query's orderby statement.
+	 * @param  WP_Query $query   current query obj.
 	 * @return string          new orderby statement
 	 * @since  0.4.0
 	 */
@@ -167,4 +178,52 @@ class Editor {
 		return $orderby;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook' => 'edit_form_after_title',
+				'method' => 'render_editor_div',
+			),
+			array(
+				'hook' => 'add_meta_boxes',
+				'method' => 'remove_meta_boxes',
+			),
+			array(
+				'hook' => 'manage_gistpen_posts_custom_column',
+				'method' => 'manage_posts_custom_column',
+			),
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function filter_hooks() {
+		return array(
+			array(
+				'hook' => 'screen_layout_columns',
+				'method' => 'screen_layout_columns',
+			),
+			array(
+				'hook' => 'get_user_option_screen_layout_gistpen',
+				'method' => 'screen_layout_gistpen',
+			),
+			array(
+				'hook' => 'manage_gistpen_posts_columns',
+				'method' => 'manage_posts_columns',
+			),
+			array(
+				'hook' => 'posts_orderby',
+				'method' => 'edit_screen_orderby',
+				'args' => 2,
+			),
+		);
+	}
 }

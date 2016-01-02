@@ -4,6 +4,7 @@ namespace Intraxia\Gistpen\Providers;
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\Register\Data;
+use Intraxia\Gistpen\View\Editor;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 
@@ -23,6 +24,7 @@ class CoreServiceProvider implements ServiceProvider {
 		$container
 			->define( 'register.data', new Data )
 			->define( 'adapter', new Adapter )
-			->define( 'database', new Database( $container->fetch( 'adapter' ) ) );
+			->define( 'database', new Database( $container->fetch( 'adapter' ) ) )
+			->define( 'view.editor', new Editor( $container->fetch( 'database' ), $container->fetch( 'adapter' ), $container->fetch( 'path' ) ) );
 	}
 }
