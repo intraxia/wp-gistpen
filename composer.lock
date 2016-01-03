@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0f7680d4bfb57cf64f764acb51db9e2d",
+    "hash": "e50b35d3f9dce1bb979db5cf29fa30b0",
     "content-hash": "2af2a53713c85a6be899f32678a5d7f1",
     "packages": [
         {
@@ -192,12 +192,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "380773b9d29000446448523ce26af1710f14f376"
+                "reference": "c1393ae968cb008a18ee1b42b224f1389b615e8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/380773b9d29000446448523ce26af1710f14f376",
-                "reference": "380773b9d29000446448523ce26af1710f14f376",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/c1393ae968cb008a18ee1b42b224f1389b615e8e",
+                "reference": "c1393ae968cb008a18ee1b42b224f1389b615e8e",
                 "shasum": ""
             },
             "require": {
@@ -227,7 +227,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2016-01-01 19:54:15"
+            "time": "2016-01-03 06:04:48"
         },
         {
             "name": "knplabs/github-api",
