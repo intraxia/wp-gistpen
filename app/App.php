@@ -32,6 +32,7 @@ class App extends Application {
 		'Intraxia\Gistpen\Providers\AssetsServiceProvider',
 		'Intraxia\Gistpen\Providers\ControllerServiceProvider',
 		'Intraxia\Gistpen\Providers\CoreServiceProvider',
+		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
 		'Intraxia\Gistpen\Providers\RouterServiceProvider',
 	);
 

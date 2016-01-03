@@ -2,9 +2,9 @@
 namespace Intraxia\Gistpen\Test;
 
 use Intraxia\Gistpen\App;
-use PHPUnit_Framework_TestCase;
+use WP_UnitTestCase;
 
-class AppTest extends PHPUnit_Framework_TestCase {
+class AppTest extends WP_UnitTestCase {
 	public function test_should_update_version_on_activation() {
 		$app = App::instance();
 
@@ -22,6 +22,7 @@ class AppTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function test_should_fully_boot_all_providers() {
+		// @todo add to jaxion-bootstrap
 		App::shutdown();
 		$app = new App( __FILE__ );
 

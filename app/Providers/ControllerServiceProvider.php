@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Http\SearchController;
+use Intraxia\Gistpen\Http\UserController;
 use Intraxia\Gistpen\Http\ZipController;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
@@ -25,6 +26,10 @@ class ControllerServiceProvider implements ServiceProvider {
 
 		$container->share( array( 'controller.zip' => 'Intraxia\Http\Http\ZipController' ), function ( $app ) {
 			return new ZipController( $app->fetch( 'facade.database' ), $app->fetch( 'facade.adapter' ) );
+		} );
+
+		$container->share( array( 'controller.user' => 'Intraxia\Gistpen\Http\UserController' ), function ( $app ) {
+			return new UserController( $app->fetch( 'options.user' ) );
 		} );
 	}
 }

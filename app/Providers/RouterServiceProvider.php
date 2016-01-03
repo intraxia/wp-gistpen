@@ -24,6 +24,7 @@ class RouterServiceProvider extends ServiceProvider {
 		$controllers = array( // @todo this sucks, pass controller into router? how does router access the controllers?
 			'search' => $this->container->fetch( 'controller.search' ),
 			'zip'    => $this->container->fetch( 'controller.zip' ),
+			'user'   => $this->container->fetch( 'controller.user' ),
 		);
 
 		$router->group( array( 'prefix' => '/gistpen' ), function ( Router $router ) use ( $controllers ) {
@@ -35,9 +36,12 @@ class RouterServiceProvider extends ServiceProvider {
 			) );
 			$router->post( '/zip', array( $controllers['zip'], 'create' ), array(
 				'filter' => new ZipFilter,
-				'guard' => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
+				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
+			/**
+			 * /search endpoint
+			 */
 			$router->get(
 				'/search',
 				array( $controllers['search'], 'get' ),
@@ -48,6 +52,17 @@ class RouterServiceProvider extends ServiceProvider {
 					) ),
 				)
 			);
+
+			/**
+			 * /me endpoint
+			 */
+			$router->get( '/me', array( $controllers['user'], 'view' ), array(
+				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
+			) );
+			$router->patch( '/me', array( $controllers['user'], 'update' ), array(
+				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
+				'filter' => new Filter( array( 'ace_theme' => 'default' ) ),
+			) );
 		} );
 	}
 }
