@@ -20,4 +20,11 @@ class AppTest extends PHPUnit_Framework_TestCase {
 
 		$this->assertEquals( 'done', get_option( '_wpgp_activated' ) );
 	}
+
+	public function test_should_fully_boot_all_providers() {
+		App::shutdown();
+		$app = new App( __FILE__ );
+
+		$app->boot();
+	}
 }
