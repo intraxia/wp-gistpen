@@ -1,22 +1,22 @@
 <?php
-namespace WP_Gistpen\Controller;
+namespace Intraxia\Gistpen;
 
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Model\Zip;
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
-use \WP_CLI;
+use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Zip;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use WP_REST_Response;
 
 /**
  * Manages the data to keep the database in sync with Gist.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Sync {
-
+class Sync implements HasActions {
 	/**
 	 * Database Facade object
 	 *
@@ -45,14 +45,15 @@ class Sync {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 *
+	 * @param Database $database
+	 * @param Adapter  $adapter
 	 */
-	public function __construct() {
-		$this->database = new Database();
-		$this->adapter = new Adapter();
+	public function __construct( Database $database, Adapter $adapter ) {
+		$this->database = $database;
+		$this->adapter  = $adapter;
 
-		$this->gist = new Gist();
+		$this->gist = new Gist( $adapter );
 	}
 
 	/**
@@ -61,18 +62,25 @@ class Sync {
 	 * If the Zip doesn't have a Gist ID, create a new Gist,
 	 * or update an existing Gist if it does.
 	 *
-	 * @param  int              $zip_id   Zip ID of exporting Gistpen
-	 * @return string|\WP_Error           Zip ID on success, WP_Error on failure
+	 * @param WP_REST_Response $response
+	 *
+	 * @return WP_REST_Response
+	 * @throws \Exception
 	 */
-	public function export_gistpen( $zip_id ) {
-		if ( false === cmb2_get_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token' ) ) {
-			return $zip_id;
+	public function export_gistpen( WP_REST_Response $response ) {
+		if ( false === cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' ) ) {
+			return $response;
 		}
 
-		$commit = $this->database->query( 'commit' )->latest_by_head_id( $zip_id );
+		/** @var array $data */
+		$data = $response->get_data();
+		/** @var Zip $zip */
+		$zip = $data['zip'];
+
+		$commit = $this->database->query( 'commit' )->latest_by_head_id( $zip->get_ID() );
 
 		if ( 'on' !== $commit->get_sync() || 'none' !== $commit->get_gist_id() ) {
-			return $zip_id;
+			return $response;
 		}
 
 		if ( 'none' === $commit->get_head_gist_id() ) {
@@ -81,17 +89,19 @@ class Sync {
 			$result = $this->update_gist( $commit );
 		}
 
-		if ( is_wp_error( $result ) ){
-			return $result;
+		if ( is_wp_error( $result ) ) {
+			$data['sync'] = $result;
+			$response->set_data( $data );
 		}
 
-		return $zip_id;
+		return $response;
 	}
 
 	/**
 	 * Creates a new Gistpen on Gist
 	 *
-	 * @param \WP_Gistpen\Model\Commit\Meta $commit
+	 * @param \Intraxia\Gistpen\Model\Commit\Meta $commit
+	 *
 	 * @return string|\WP_Error
 	 * @since 0.5.0
 	 */
@@ -120,7 +130,8 @@ class Sync {
 	/**
 	 * Updates an existing Gistpen on Gist
 	 *
-	 * @param \WP_Gistpen\Model\Commit\Meta $commit
+	 * @param \Intraxia\Gistpen\Model\Commit\Meta $commit
+	 *
 	 * @return string|\WP_Error Gist ID on success, WP_Error on failure
 	 * @since 0.5.0
 	 */
@@ -143,7 +154,8 @@ class Sync {
 	/**
 	 * Imports a Gist into Gistpen by ID
 	 *
-	 * @param  string             $gist_id    Gist ID
+	 * @param  string $gist_id Gist ID
+	 *
 	 * @return string|\WP_Error               Gist ID on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
@@ -161,7 +173,7 @@ class Sync {
 			return $response;
 		}
 
-		$zip = $response['zip'];
+		$zip     = $response['zip'];
 		$version = $response['version'];
 		unset( $response );
 
@@ -187,5 +199,19 @@ class Sync {
 		}
 
 		return $ids['zip'];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook'   => 'wpgp_zip_created',
+				'method' => 'export_gistpen',
+			),
+		);
 	}
 }
