@@ -1,7 +1,7 @@
 <?php
-namespace WP_Gistpen\Collection;
+namespace Intraxia\Gistpen\Collection;
 
-use WP_Gistpen\Model\Commit\Meta as Commit;
+use Intraxia\Gistpen\Model\Commit\Meta as Commit;
 
 /**
  * Collection object that holds the commit history
@@ -24,7 +24,7 @@ class History implements \Countable {
 	/**
 	 * Array of Commits in the History
 	 *
-	 * @var   \WP_Gistpen\Model\Commit\Meta[]
+	 * @var   Commit[]
 	 * @since 0.5.0
 	 */
 	protected $commits = array();
@@ -53,7 +53,7 @@ class History implements \Countable {
 	/**
 	 * Validate & set the History's Head ID
 	 *
-	 * @param int $head_id History's Head ID
+	 * @param int $head_id History's Head ID.
 	 */
 	public function set_head_id( $head_id ) {
 		$this->head_id = (int) $head_id;
@@ -62,7 +62,7 @@ class History implements \Countable {
 	/**
 	 * Get the History's array of Commits
 	 *
-	 * @return \WP_Gistpen\Model\Commit\Meta[]
+	 * @return Commit[]
 	 * @since  0.5.0
 	 */
 	public function get_commits() {
@@ -72,7 +72,7 @@ class History implements \Countable {
 	/**
 	 * Set the array of commits in the History
 	 *
-	 * @param \WP_Gistpen\Model\Commit\Meta[] $commits
+	 * @param Commit[] $commits
 	 * @since 0.5.0
 	 */
 	public function set_commits( $commits ) {
