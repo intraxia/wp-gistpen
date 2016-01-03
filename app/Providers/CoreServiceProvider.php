@@ -7,6 +7,7 @@ use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\Migration;
 use Intraxia\Gistpen\Register\Button;
 use Intraxia\Gistpen\Register\Data;
+use Intraxia\Gistpen\Save;
 use Intraxia\Gistpen\Sync;
 use Intraxia\Gistpen\View\Content;
 use Intraxia\Gistpen\View\Editor;
@@ -37,6 +38,7 @@ class CoreServiceProvider implements ServiceProvider {
 			->define( 'view.content', new Content( $container->fetch( 'database' ) ) )
 			->define( 'migration', new Migration( $container->fetch( 'database' ), $container->fetch( 'adapter' ), $container->fetch( 'version' ) ) )
 			->define( 'register.button', new Button( $container->fetch( 'url' ) ) )
-			->define( 'sync', new Sync( $container->fetch( 'database' ), $container->fetch( 'adapter' ) ) );
+			->define( 'sync', new Sync( $container->fetch( 'database' ), $container->fetch( 'adapter' ) ) )
+			->define( 'save', new Save( $container->fetch( 'database' ), $container->fetch( 'adapter' ) ) );
 	}
 }

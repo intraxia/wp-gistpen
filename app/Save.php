@@ -1,19 +1,20 @@
 <?php
-namespace WP_Gistpen\Controller;
+namespace Intraxia\Gistpen;
 
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 /**
  * This is the functionality for the save_post hook
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Save {
-
+class Save implements HasActions, HasFilters {
 	/**
 	 * Database Facade object
 	 *
@@ -34,12 +35,13 @@ class Save {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
+	 *
+	 * @param Database $database
+	 * @param Adapter  $adapter
 	 */
-	public function __construct() {
-		$this->database = new Database();
-		$this->adapter = new Adapter();
+	public function __construct( Database $database, Adapter $adapter ) {
+		$this->database = $database;
+		$this->adapter  = $adapter;
 	}
 
 	/**
@@ -48,6 +50,7 @@ class Save {
 	 * We're going to be handling this ourselves
 	 *
 	 * @param  int $post_id
+	 *
 	 * @since  0.5.0
 	 */
 	public function remove_revision_save( $post_id ) {
@@ -60,9 +63,10 @@ class Save {
 	 * Keeps the File's post_status in sync with
 	 * the Zip's post_status
 	 *
-	 * @param  string $old_status
-	 * @param  string $new_status
-	 * @param  \WP_Post    $post       WP_Post object for zip
+	 * @param  string   $old_status
+	 * @param  string   $new_status
+	 * @param  \WP_Post $post WP_Post object for zip
+	 *
 	 * @since  0.5.0
 	 */
 	public function sync_post_status( $new_status, $old_status, $post ) {
@@ -74,7 +78,7 @@ class Save {
 
 			foreach ( $files as $file ) {
 				wp_update_post( array(
-					'ID' => $file->get_ID(),
+					'ID'          => $file->get_ID(),
 					'post_status' => $new_status,
 				), true );
 			}
@@ -87,6 +91,7 @@ class Save {
 	 * Deletes the files when a zip gets deleted
 	 *
 	 * @param  int $post_id post ID of the zip being deleted
+	 *
 	 * @since  0.5.0
 	 */
 	public function delete_files( $post_id ) {
@@ -109,8 +114,9 @@ class Save {
 	 * Disables checking for changes when we save a post revision
 	 *
 	 * @param  bool     $check_for_changes whether we check for changes
-	 * @param  \WP_Post $last_revision     previous revision object
-	 * @param  \WP_Post $post              current revision
+	 * @param  \WP_Post $last_revision previous revision object
+	 * @param  \WP_Post $post current revision
+	 *
 	 * @return bool                        whether we check for changes
 	 * @since  0.5.0
 	 */
@@ -125,8 +131,9 @@ class Save {
 	/**
 	 * Allows empty zip to save
 	 *
-	 * @param  bool   $maybe_empty Whether post should be considered empty
-	 * @param  array  $postarr     Array of post data
+	 * @param  bool  $maybe_empty Whether post should be considered empty.
+	 * @param  array $postarr Array of post data.
+	 *
 	 * @return bool                Result of empty check
 	 * @since  0.5.0
 	 */
@@ -136,5 +143,49 @@ class Save {
 		}
 
 		return $maybe_empty;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook'     => 'post_updated',
+				'method'   => 'remove_revision_save',
+				'priority' => 9,
+			),
+			array(
+				'hook'   => 'transition_post_status',
+				'method' => 'sync_post_status',
+				'args'   => 3,
+			),
+			array(
+				'hook'   => 'before_delete_post',
+				'method' => 'delete_files',
+			),
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function filter_hooks() {
+		return array(
+			array(
+				'hook'   => 'wp_insert_post_empty_content',
+				'method' => 'allow_empty_zip',
+				'args'   => 2,
+			),
+			array(
+				'hook'   => 'wp_save_post_revision_check_for_changes',
+				'method' => 'disable_check_for_change',
+				'args'   => 3,
+			),
+		);
 	}
 }
