@@ -18,8 +18,12 @@
     "intraxia/jaxion": "dev-master"
   },
   "require-dev": {
-    "mockery/mockery": "0.9.2"
     "phpunit/phpunit": "4.7.*",
+    "mockery/mockery": "0.9.2",
+    "10up/wp_mock": "0.1.*",
+    "scrutinizer/ocular": "~1.1",
+    "squizlabs/php_codesniffer": "~2.3",
+    "intraxia/codestyle": "dev-master"
   },
   "minimum-stability": "dev",
   "autoload": {
@@ -41,6 +45,9 @@
     }
   },
   "scripts": {
-    "test": "phpunit"
+    "test": "phpunit",
+    "sniff": "phpcs -s --runtime-set installed_paths vendor/wp-coding-standards/wpcs  -p src/ --standard=vendor/intraxia/codestyle/ruleset.xml --report=full",
+    "clean": "phpcbf --runtime-set installed_paths vendor/wp-coding-standards/wpcs -p src/ --standard=vendor/intraxia/codestyle/ruleset.xml --report=full",
+    "upload": "ocular code-coverage:upload --format=php-clover build/logs/clover.xml"
   }
 }
