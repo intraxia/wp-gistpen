@@ -20,11 +20,11 @@ class ControllerServiceProvider implements ServiceProvider {
 	 */
 	public function register( Container $container ) {
 		$container->share( array( 'controller.search' => 'Intraxia\Gistpen\Http\SearchController' ), function ( $app ) {
-			return new SearchController( $app->fetch( 'database' ), $app->fetch( 'adapter' ) );
+			return new SearchController( $app->fetch( 'facade.database' ), $app->fetch( 'facade.adapter' ) );
 		} );
 
 		$container->share( array( 'controller.zip' => 'Intraxia\Http\Http\ZipController' ), function ( $app ) {
-			return new ZipController( $app->fetch( 'database' ), $app->fetch( 'adapter' ) );
+			return new ZipController( $app->fetch( 'facade.database' ), $app->fetch( 'facade.adapter' ) );
 		} );
 	}
 }

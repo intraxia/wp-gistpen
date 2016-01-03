@@ -30,15 +30,15 @@ class CoreServiceProvider implements ServiceProvider {
 	public function register( Container $container ) {
 		$container
 			->define( 'register.data', new Data )
-			->define( 'adapter', new Adapter )
-			->define( 'account.gist', new Gist( $container->fetch( 'adapter' ) ) )
-			->define( 'database', new Database( $container->fetch( 'adapter' ) ) )
-			->define( 'view.editor', new Editor( $container->fetch( 'database' ), $container->fetch( 'adapter' ), $container->fetch( 'path' ) ) )
+			->define( 'facade.adapter', new Adapter )
+			->define( 'account.gist', new Gist( $container->fetch( 'facade.adapter' ) ) )
+			->define( 'facade.database', new Database( $container->fetch( 'facade.adapter' ) ) )
+			->define( 'view.editor', new Editor( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'path' ) ) )
 			->define( 'view.settings', new Settings( $container->fetch( 'account.gist' ), $container->fetch( 'basename' ), $container->fetch( 'path' ) ) )
-			->define( 'view.content', new Content( $container->fetch( 'database' ) ) )
-			->define( 'migration', new Migration( $container->fetch( 'database' ), $container->fetch( 'adapter' ), $container->fetch( 'version' ) ) )
+			->define( 'view.content', new Content( $container->fetch( 'facade.database' ) ) )
+			->define( 'migration', new Migration( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'version' ) ) )
 			->define( 'register.button', new Button( $container->fetch( 'url' ) ) )
-			->define( 'sync', new Sync( $container->fetch( 'database' ), $container->fetch( 'adapter' ) ) )
-			->define( 'save', new Save( $container->fetch( 'database' ), $container->fetch( 'adapter' ) ) );
+			->define( 'sync', new Sync( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) )
+			->define( 'save', new Save( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) );
 	}
 }
