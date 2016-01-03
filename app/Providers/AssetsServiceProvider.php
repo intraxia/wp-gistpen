@@ -2,7 +2,7 @@
 namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Model\Language;
-use Intraxia\Jaxion\Assets\Register;
+use Intraxia\Jaxion\Assets\Register as Assets;
 use Intraxia\Jaxion\Assets\ServiceProvider;
 
 /**
@@ -15,9 +15,13 @@ class AssetsServiceProvider extends ServiceProvider {
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @param Register $register
+	 * @param Assets $assets
 	 */
-	protected function add_assets( Register $register ) {
+	protected function add_assets( Assets $assets ) {
+		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+			$assets->set_debug( true );
+		}
+
 		$slug     = $this->container->fetch( 'slug' );
 		$url = $this->container->fetch( 'url' );
 		$localize = function() use ( $url ) {
@@ -50,7 +54,7 @@ class AssetsServiceProvider extends ServiceProvider {
 		/**
 		 * Shared Libraries
 		 */
-		$register->register_script( array(
+		$assets->register_script( array(
 			'type'      => 'admin',
 			'condition' => function () use ( $settings_condition, $editor_condition ) {
 				return $settings_condition() || $editor_condition();
@@ -60,7 +64,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			'deps'      => array( 'jquery' ),
 			'footer'    => true,
 		) );
-		$register->register_script( array(
+		$assets->register_script( array(
 			'type'      => 'admin',
 			'condition' => function () use ( $popup_condition, $editor_condition ) {
 				return $popup_condition() || $editor_condition();
@@ -72,13 +76,13 @@ class AssetsServiceProvider extends ServiceProvider {
 		/**
 		 * Settings Page Assets
 		 */
-		$register->register_style( array(
+		$assets->register_style( array(
 			'type'      => 'admin',
 			'condition' => $settings_condition,
 			'handle'    => $slug . '-settings-styles',
 			'src'       => 'assets/css/settings',
 		) );
-		$register->register_script( array(
+		$assets->register_script( array(
 			'type'      => 'admin',
 			'condition' => $settings_condition,
 			'handle'    => $slug . '-settings-script',
@@ -98,13 +102,13 @@ class AssetsServiceProvider extends ServiceProvider {
 		/**
 		 * TinyMCE Popup Assets
 		 */
-		$register->register_style( array(
+		$assets->register_style( array(
 			'type'      => 'admin',
 			'condition' => $popup_condition,
 			'handle'    => $slug . '-popup-styles',
 			'src'       => 'assets/css/popup',
 		) );
-		$register->register_script( array(
+		$assets->register_script( array(
 			'type'      => 'admin',
 			'condition' => $popup_condition,
 			'handle'    => $slug . '-popups-script',
@@ -116,13 +120,13 @@ class AssetsServiceProvider extends ServiceProvider {
 		/**
 		 * Gistpen Editor Assets
 		 */
-		$register->register_style( array(
+		$assets->register_style( array(
 			'type'      => 'admin',
 			'condition' => $editor_condition,
 			'handle'    => $slug . '-editor-styles',
 			'src'       => 'assets/css/editor',
 		) );
-		$register->register_script( array(
+		$assets->register_script( array(
 			'type'      => 'admin',
 			'condition' => $editor_condition,
 			'handle'    => $slug . '-editor-script',
@@ -147,20 +151,20 @@ class AssetsServiceProvider extends ServiceProvider {
 
 			return false;
 		};
-		$register->register_style( array(
+		$assets->register_style( array(
 			'type'      => 'shared',
 			'condition' => $prism_condition,
 			'handle'    => $slug . '-prism-theme',
 			'src'       => 'assets/css/prism/themes/prism', // @todo . $this->get_prism_theme(),
 		) );
-		$register->register_style( array(
+		$assets->register_style( array(
 			'type'      => 'shared',
 			'condition' => $prism_condition,
 			'handle'    => $slug . '-prism-line-highlight',
 			'src'       => 'assets/css/prism/plugins/line-highlight/prism-line-highlight',
 			'deps'      => array( $slug . '-prism-theme' ),
 		) );
-		$register->register_style( array(
+		$assets->register_style( array(
 			'type'      => 'shared',
 			'condition' => function () use ( $prism_condition, $slug ) {
 				return $prism_condition() && (
@@ -172,7 +176,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/css/prism/plugins/line-numbers/prism-line-numbers',
 			'deps'      => array( $slug . '-prism-theme' ),
 		) );
-		$register->register_script( array(
+		$assets->register_script( array(
 			'type'      => 'shared',
 			'condition' => $prism_condition,
 			'handle'    => $slug . '-prism',
@@ -183,7 +187,7 @@ class AssetsServiceProvider extends ServiceProvider {
 		/**
 		 * Web Assets
 		 */
-		$register->register_style( array(
+		$assets->register_style( array(
 			'type'      => 'web',
 			'condition' => function () {
 				return true;
