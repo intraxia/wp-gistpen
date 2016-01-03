@@ -1,3 +1,5 @@
+var TinyMCEFileEditor = require('./editor');
+
 var InsertGistpenDialog = {
 
 	appendDialog: function() {
@@ -129,3 +131,5 @@ var InsertGistpenDialog = {
 		}
 	}
 };
+
+module.exports = InsertGistpenDialog;

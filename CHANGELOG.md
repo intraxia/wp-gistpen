@@ -2,6 +2,20 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [Unreleased] ###
+
+#### Changed ####
+* Improve JavaScript architecture.
+	* Reduced number of dependencies for some of the scripts.
+
+#### Fixed ####
+* Spinner display fixed on edit page.
+* Fixed code sample display on mobile.
+
+#### In Progress ####
+* Back-end is being rewritten to use the WP-API.
+	* Revamped architecture and improved UI.
+
 ### [0.5.8] - 2015-07-26 ###
 
 #### Fixed ####
