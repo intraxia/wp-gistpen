@@ -20,6 +20,7 @@ Thumbs.db
 *.esproj
 nbproject
 *.sublime-*
+.idea
 
 # Dreamweaver added files
 _notes
@@ -34,7 +35,6 @@ dwsync.xml
 .svn
 .CVS
 intermediate
-.idea
 cache
 lib
 node_modules
