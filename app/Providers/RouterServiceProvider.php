@@ -38,6 +38,10 @@ class RouterServiceProvider extends ServiceProvider {
 				'filter' => new ZipFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
+			$router->put( '/zip/(?P<id>\d+)', array( $controllers['zip'], 'update' ), array(
+				'filter' => new ZipFilter,
+				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
+			) );
 
 			/**
 			 * /search endpoint

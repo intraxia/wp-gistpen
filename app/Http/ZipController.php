@@ -118,4 +118,16 @@ class ZipController {
 
 		return $response;
 	}
+
+	/**
+	 * @param WP_REST_Request $request
+	 *
+	 * @return \WP_Error|array
+	 *
+	 * @throws \Exception
+	 */
+	public function update( WP_REST_Request $request ) {
+		// @todo defer to self::create for now, we'll switch this up once we have a database implementation in the framework
+		return $this->create( $request );
+	}
 }
