@@ -21,7 +21,7 @@ class Editor implements HasActions, HasFilters {
 	 * @var array
 	 * @since    0.4.0
 	 */
-	public $ace_themes = array(
+	public static $ace_themes = array(
 		'ambiance' => 'Ambiance',
 		'chaos' => 'Chaos',
 		'chrome' => 'Chrome',
