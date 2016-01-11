@@ -81,11 +81,11 @@ class ZipFilter implements FilterContract {
 	private function invalid_file( array $file ) {
 		foreach ( static::$file_keys as $key ) {
 			if ( ! isset( $file[ $key ] ) ) {
-				return false;
+				return true;
 			}
 		}
 
-		return true;
+		return false;
 	}
 
 	/**
@@ -115,7 +115,7 @@ class ZipFilter implements FilterContract {
 	private function sanitize_file( array $file ) {
 		$result = array();
 
-		foreach ( static::$file_keys as $key ) {
+		foreach ( array_merge( static::$file_keys, array( 'ID' ) ) as $key ) {
 			$result[ $key ] = $file[ $key ];
 		}
 
