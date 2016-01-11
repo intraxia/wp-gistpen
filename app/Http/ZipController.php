@@ -79,10 +79,7 @@ class ZipController {
 	 */
 	public function create( WP_REST_Request $request ) {
 		/** @var Zip $zip */
-		$zip = $this->adapter->build( 'zip' )->by_array( array(
-			'description' => $request->get_param( 'description' ),
-			'status'      => $request->get_param( 'status' ),
-		) );
+		$zip = $this->adapter->build( 'zip' )->by_array( $request->get_params() );
 
 		foreach ( $request->get_param( 'files' ) as $file_data ) {
 			/** @var File $file */
