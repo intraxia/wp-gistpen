@@ -59,16 +59,6 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => function () use ( $settings_condition, $editor_condition ) {
-				return $settings_condition() || $editor_condition();
-			},
-			'handle'    => 'ajaxq',
-			'src'       => 'assets/js/ajaxq',
-			'deps'      => array( 'jquery' ),
-			'footer'    => true,
-		) );
-		$assets->register_script( array(
-			'type'      => 'admin',
 			'condition' => function () use ( $popup_condition, $editor_condition ) {
 				return $popup_condition() || $editor_condition();
 			},
@@ -93,7 +83,6 @@ class AssetsServiceProvider extends ServiceProvider {
 			'deps'      => array(
 				'jquery',
 				'jquery-ui-progressbar',
-				'ajaxq',
 				'backbone',
 				'underscore',
 				$slug . '-prism'
@@ -135,7 +124,6 @@ class AssetsServiceProvider extends ServiceProvider {
 			'handle'    => $slug . '-editor-script',
 			'src'       => 'assets/js/editor',
 			'deps'      => array(
-				'ajaxq',
 				'backbone',
 				'underscore',
 				$slug . '-ace-script',

@@ -19,7 +19,6 @@
   ],
   "devDependencies": {
     "prism": "git@github.com:mAAdhaTTah/prism.git#3fb3c14d4bff64adf36ac6aa26576b9d77698915",
-    "ace-builds": "~1.1.5",
-    "ajaxq": "~0.0.2"
+    "ace-builds": "~1.1.5"
   }
 }
