@@ -67,20 +67,15 @@ class Sync implements HasActions {
 	 * @return WP_REST_Response
 	 * @throws \Exception
 	 */
-	public function export_gistpen( WP_REST_Response $response ) {
+	public function export_gistpen( $zip ) {
 		if ( false === cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' ) ) {
-			return $response;
+			return $zip;
 		}
-
-		/** @var array $data */
-		$data = $response->get_data();
-		/** @var Zip $zip */
-		$zip = $data['zip'];
 
 		$commit = $this->database->query( 'commit' )->latest_by_head_id( $zip->get_ID() );
 
 		if ( 'on' !== $commit->get_sync() || 'none' !== $commit->get_gist_id() ) {
-			return $response;
+			return $zip;
 		}
 
 		if ( 'none' === $commit->get_head_gist_id() ) {
@@ -89,12 +84,9 @@ class Sync implements HasActions {
 			$result = $this->update_gist( $commit );
 		}
 
-		if ( is_wp_error( $result ) ) {
-			$data['sync'] = $result;
-			$response->set_data( $data );
-		}
+		// @todo handle error
 
-		return $response;
+		return $zip;
 	}
 
 	/**
