@@ -196,6 +196,7 @@ class Editor implements HasActions, HasFilters {
 			array(
 				'hook' => 'manage_gistpen_posts_custom_column',
 				'method' => 'manage_posts_custom_column',
+				'args' => 2,
 			),
 		);
 	}
