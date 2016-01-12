@@ -154,7 +154,9 @@ class Zip {
 	 * @since  0.5.0
 	 */
 	public function set_ID( $ID ) {
-		$this->ID = (int) $ID;
+		if ( $ID ) {
+			$this->ID = (int) $ID;
+		}
 	}
 
 	/**

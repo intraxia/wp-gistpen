@@ -107,7 +107,9 @@ class File {
 	 * @param  int $ID DB id
 	 */
 	public function set_ID( $ID ) {
-		$this->ID = (int) $ID;
+		if ( $ID ) {
+			$this->ID = (int) $ID;
+		}
 	}
 
 	/**
