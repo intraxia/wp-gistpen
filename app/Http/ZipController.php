@@ -102,7 +102,7 @@ class ZipController {
 			return $result;
 		}
 
-		$zip->set_ID( $results['zip'] );
+		$zip = $this->database->query( 'head' )->by_id( $results['zip'] );
 
 		/**
 		 * After update action hook.
