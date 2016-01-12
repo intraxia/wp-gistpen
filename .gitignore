@@ -41,8 +41,7 @@ node_modules
 bower_components
 
 # Generated files
-assets/js/**
-assets/css/**
+assets/
 
 # Local phpunit config
 phpunit.xml
