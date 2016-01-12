@@ -17,12 +17,8 @@ var sort = require('gulp-sort');
 gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
 gulp.task('watch', function () {
-	gulp.watch(
-		'src/js/**/*.js',
-		['scripts']);
-		gulp.watch(
-		'src/scss/**/*.scss',
-		['styles']);
+	gulp.watch('src/js/**/*.js', ['scripts']);
+    gulp.watch('src/scss/**/*.scss', ['styles']);
 });
 
 gulp.task('build', ['scripts', 'styles', 'packages']);
@@ -36,6 +32,7 @@ gulp.task('scripts', function() {
 			var pipeline = browserify({
 				entries: filePath + '/start.js'
 			})
+                .transform('hbsfy', {traverse: true})
 				.bundle()
 				.pipe(source(path.basename(filePath) + '.js'))
 				.pipe(buffer())
