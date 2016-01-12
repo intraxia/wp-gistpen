@@ -20,7 +20,7 @@ trim_trailing_whitespace = false
 indent_style = space
 indent_size = 2
 
-[*.yml]
+[*.{yml,apib,js,hbs}]
 indent_style = space
 indent_size = 4
 

@@ -123,12 +123,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			'condition' => $editor_condition,
 			'handle'    => $slug . '-editor-script',
 			'src'       => 'assets/js/editor',
-			'deps'      => array(
-				'backbone',
-				'underscore',
-				$slug . '-ace-script',
-				'wp-api', // @todo remove? this only comes from the plugin currently
-			),
+			'deps'      => array( $slug . '-ace-script' ), // @todo bundle Ace into the editor build
 			'localize'  => $localize,
 		) );
 

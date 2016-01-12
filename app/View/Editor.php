@@ -84,19 +84,6 @@ class Editor implements HasActions, HasFilters {
 	}
 
 	/**
-	 * Manage rendering of repeatable Gistfile editor
-	 *
-	 * @since     0.4.0
-	 */
-	public function render_editor_div() {
-		if ( 'gistpen' == get_current_screen()->id ) {
-			include_once( $this->path . 'partials/editor/main.inc.php' );
-			include_once( $this->path . 'partials/editor/zip.inc.php' );
-			include_once( $this->path . 'partials/editor/file.inc.php' );
-		}
-	}
-
-	/**
 	 * Force the Gistpen layout to one column
 	 *
 	 * @since  0.4.0
@@ -185,10 +172,6 @@ class Editor implements HasActions, HasFilters {
 	 */
 	public function action_hooks() {
 		return array(
-			array(
-				'hook' => 'edit_form_after_title',
-				'method' => 'render_editor_div',
-			),
 			array(
 				'hook' => 'add_meta_boxes',
 				'method' => 'remove_meta_boxes',

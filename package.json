@@ -1,7 +1,7 @@
 {
   "name": "wp-gistpen",
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
-  "author": "James DiGioia <jamesorodig@gmail.com>",
+  "author": "maadhattah",
   "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
   "main": "gulpfile.js",
   "license": "GPL-2.0+",
@@ -23,6 +23,8 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
-  "author": "maadhattah",
-  "license": "GPL-2.0+"
+  "dependencies": {
+    "backbone": "1.2.3",
+    "jquery": "2.1.4"
+  }
 }
