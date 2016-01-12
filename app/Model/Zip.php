@@ -113,14 +113,9 @@ class Zip {
 	 * Validate and add a file to the zip
 	 *
 	 * @param File $file File model object
-	 * @throws \Exception If not a File model object
 	 * @since 0.5.0
 	 */
-	public function add_file( $file ) {
-		if ( ! $file instanceof File ) {
-			throw new \Exception( 'File objects only added to files' );
-		}
-
+	public function add_file( File $file ) {
 		$file_id = $file->get_ID();
 
 		if ( null !== $file_id ) {

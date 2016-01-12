@@ -162,7 +162,7 @@ class Head {
 	 * @return int|\WP_Error   post_id on success, WP_Error on failure
 	 * @since  0.5.0
 	 */
-	public function by_file_and_zip_id( $file, $zip_id ) {
+	public function by_file_and_zip_id( File $file, $zip_id ) {
 		$data = array(
 			'post_title'    => $file->get_slug(),
 			'post_content'  => $file->get_code(),
