@@ -24,7 +24,6 @@ module.exports = Backbone.View.extend({
         var data = _.extend({}, this.model.user.toJSON(), Gistpen_Settings);
         this.setElement($(this.template(data)));
 
-        // @todo push this step into the template
         this.$('[data-wpgp-theme]').val(this.model.user.get('ace_theme'));
 
         this.$spinner = this.$('[data-wpgp-spinner]');
