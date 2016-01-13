@@ -63,7 +63,8 @@ class ZipFilter implements FilterContract {
 					sprintf(
 						__( 'File %d is invalid', 'wp-gistpen' ),
 						$index
-					)
+					),
+					array( 'status' => 400 )
 				);
 			}
 		}
