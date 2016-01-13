@@ -6,7 +6,11 @@ module.exports = Backbone.View.extend({
      * Backbone view events.
      */
     events: {
-        'change [data-wpgp-description]': 'handleDescriptionChange'
+        'click [data-wpgp-description-label]': 'handleLabelClick',
+        'blur [data-wpgp-description-input]': 'handleInputBlur',
+        'focus [data-wpgp-description-input]': 'handleInputFocus',
+        'keydown [data-wpgp-description-input]': 'handleInputKeydown',
+        'change [data-wpgp-description-input]': 'handleDescriptionChange'
     },
 
     /**
@@ -18,36 +22,47 @@ module.exports = Backbone.View.extend({
      * Render the description view to the DOM.
      */
     render: function () {
-        var that = this;
-
         this.setElement($(this.template(this.model.zip.toJSON())));
 
-        this.$label = this.$('#title-prompt-text');
-        this.$input = this.$('#title');
+        this.$label = this.$('[data-wpgp-description-label]');
+        this.$input = this.$('[data-wpgp-description-input]');
 
         if (this.model.zip.get('description')) {
             this.$label.addClass('screen-reader-text');
         }
 
-        this.$label.click(function(){
-            that.$label.addClass('screen-reader-text');
-            that.$input.focus();
-        });
-
-        // @todo all these bindings should be done on the events hash
-        // then we can remove the view properties and switch to
-        // event.target instead.
-        this.$input.blur(function(){
-            if ( '' === this.value ) {
-                that.$label.removeClass('screen-reader-text');
-            }
-        }).focus(function(){
-            that.$label.addClass('screen-reader-text');
-        }).keydown(function(e){
-            that.$label.addClass('screen-reader-text');
-        });
-
         return this;
+    },
+
+    /**
+     * Place the description input in focus when the label is clicked.
+     */
+    handleLabelClick: function () {
+        this.$label.addClass('screen-reader-text');
+        this.$input.focus();
+    },
+
+    /**
+     * Display the placeholder when the input is blurred.
+     */
+    handleInputBlur: function () {
+        if ('' === this.$input.val()) {
+            this.$label.removeClass('screen-reader-text');
+        }
+    },
+
+    /**
+     * Hide the placeholder when the input is focused.
+     */
+    handleInputFocus: function () {
+        this.$label.addClass('screen-reader-text');
+    },
+
+    /**
+     * Hide the placeholder when the input is keyed down.
+     */
+    handleInputKeydown: function () {
+        this.$label.addClass('screen-reader-text');
     },
 
     /**
