@@ -1,7 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\View;
 
-use Intraxia\Gistpen\Account\Gist;
+use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 

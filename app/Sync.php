@@ -1,12 +1,13 @@
 <?php
 namespace Intraxia\Gistpen;
 
-use Intraxia\Gistpen\Account\Gist;
+use Github\Client;
+use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Commit\Meta;
 use Intraxia\Gistpen\Model\Zip;
 use Intraxia\Jaxion\Contract\Core\HasActions;
-use WP_REST_Response;
 
 /**
  * Manages the data to keep the database in sync with Gist.
@@ -53,7 +54,7 @@ class Sync implements HasActions {
 		$this->database = $database;
 		$this->adapter  = $adapter;
 
-		$this->gist = new Gist( $adapter );
+		$this->gist = new Gist( $adapter, new Client );
 	}
 
 	/**
@@ -62,16 +63,17 @@ class Sync implements HasActions {
 	 * If the Zip doesn't have a Gist ID, create a new Gist,
 	 * or update an existing Gist if it does.
 	 *
-	 * @param WP_REST_Response $response
+	 * @param Zip $zip
 	 *
-	 * @return WP_REST_Response
-	 * @throws \Exception
+	 * @return Zip
+	 *
 	 */
 	public function export_gistpen( $zip ) {
 		if ( false === cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' ) ) {
 			return $zip;
 		}
 
+		/** @var Meta $commit */
 		$commit = $this->database->query( 'commit' )->latest_by_head_id( $zip->get_ID() );
 
 		if ( 'on' !== $commit->get_sync() || 'none' !== $commit->get_gist_id() ) {
@@ -98,7 +100,7 @@ class Sync implements HasActions {
 	 * @since 0.5.0
 	 */
 	protected function create_gist( $commit ) {
-		$response = $this->gist->create_gist( $commit );
+		$response = $this->gist->create( $commit );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -128,7 +130,7 @@ class Sync implements HasActions {
 	 * @since 0.5.0
 	 */
 	protected function update_gist( $commit ) {
-		$response = $this->gist->update_gist( $commit );
+		$response = $this->gist->update( $commit );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
@@ -159,7 +161,7 @@ class Sync implements HasActions {
 			return $query;
 		}
 
-		$response = $this->gist->get_gist( $gist_id );
+		$response = $this->gist->get( $gist_id );
 
 		if ( is_wp_error( $response ) ) {
 			return $response;
