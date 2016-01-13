@@ -31,8 +31,6 @@ module.exports = Backbone.View.extend({
      * @returns {this}
      */
     render: function () {
-        var that = this;
-
         var data = _.extend({}, this.model.file.toJSON(), Gistpen_Settings);
         this.$el.append($(this.template(data)));
 
@@ -46,9 +44,7 @@ module.exports = Backbone.View.extend({
         // Activate Ace editor
         this.aceEditor = ace.edit(this.aceDiv);
 
-        this.aceEditor.getSession().on('change', function (event) {
-            that.updateTextContent();
-        });
+        this.aceEditor.getSession().on('change', this.updateTextContent.bind(this));
 
         if ("" === this.model.file.get('language')) {
             this.model.file.set('language', 'plaintext');
