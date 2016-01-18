@@ -24,8 +24,8 @@ class AssetsServiceProvider extends ServiceProvider {
 		}
 
 		$slug     = $this->container->fetch( 'slug' );
-		$url = $this->container->fetch( 'url' );
-		$localize = function() use ( $url ) {
+		$url      = $this->container->fetch( 'url' );
+		$localize = function () use ( $url ) {
 			return array(
 				'name' => 'Gistpen_Settings',
 				'data' => array(
@@ -39,13 +39,13 @@ class AssetsServiceProvider extends ServiceProvider {
 			);
 		};
 
-		$settings_condition = function () {
+		$should_enqueue_settings = function () {
 			return 'settings_page_wp-gistpen' === get_current_screen()->id;
 		};
-		$popup_condition    = function () {
+		$should_enqueue_tinymce  = function () {
 			return 'post' === get_current_screen()->id || 'page' === get_current_screen()->id;
 		};
-		$editor_condition   = function () {
+		$should_enqueue_editor   = function () {
 			if ( 'gistpen' === get_current_screen()->id ) {
 				wp_dequeue_script( 'autosave' ); // @todo
 				return true;
@@ -55,15 +55,33 @@ class AssetsServiceProvider extends ServiceProvider {
 		};
 
 		/**
-		 * Shared Libraries
+		 * Ace Editor Scripts
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => function () use ( $popup_condition, $editor_condition ) {
-				return $popup_condition() || $editor_condition();
+			'condition' => function () use ( $should_enqueue_tinymce, $should_enqueue_editor ) {
+				return $should_enqueue_tinymce() || $should_enqueue_editor();
 			},
 			'handle'    => $slug . '-ace-script',
 			'src'       => 'assets/js/ace/ace',
+		) );
+
+		/**
+		 * Post Editor Assets
+		 */
+		$assets->register_style( array(
+			'type'      => 'admin',
+			'condition' => $should_enqueue_editor,
+			'handle'    => $slug . '-editor-styles',
+			'src'       => 'assets/css/post',
+		) );
+		$assets->register_script( array(
+			'type'      => 'admin',
+			'condition' => $should_enqueue_editor,
+			'handle'    => $slug . '-editor-script',
+			'src'       => 'assets/js/post',
+			'deps'      => array( $slug . '-ace-script' ), // @todo bundle Ace into the editor build
+			'localize'  => $localize,
 		) );
 
 		/**
@@ -71,13 +89,13 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_style( array(
 			'type'      => 'admin',
-			'condition' => $settings_condition,
+			'condition' => $should_enqueue_settings,
 			'handle'    => $slug . '-settings-styles',
 			'src'       => 'assets/css/settings',
 		) );
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => $settings_condition,
+			'condition' => $should_enqueue_settings,
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
 			'deps'      => array(
@@ -96,34 +114,16 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_style( array(
 			'type'      => 'admin',
-			'condition' => $popup_condition,
+			'condition' => $should_enqueue_tinymce,
 			'handle'    => $slug . '-popup-styles',
 			'src'       => 'assets/css/popup',
 		) );
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => $popup_condition,
+			'condition' => $should_enqueue_tinymce,
 			'handle'    => $slug . '-popups-script',
 			'src'       => 'assets/js/popup',
 			'deps'      => array( 'jquery', $slug . '-ace-script' ),
-			'localize'  => $localize,
-		) );
-
-		/**
-		 * Gistpen Editor Assets
-		 */
-		$assets->register_style( array(
-			'type'      => 'admin',
-			'condition' => $editor_condition,
-			'handle'    => $slug . '-editor-styles',
-			'src'       => 'assets/css/editor',
-		) );
-		$assets->register_script( array(
-			'type'      => 'admin',
-			'condition' => $editor_condition,
-			'handle'    => $slug . '-editor-script',
-			'src'       => 'assets/js/editor',
-			'deps'      => array( $slug . '-ace-script' ), // @todo bundle Ace into the editor build
 			'localize'  => $localize,
 		) );
 

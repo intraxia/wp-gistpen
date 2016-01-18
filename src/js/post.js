@@ -1,7 +1,7 @@
 var $ = require('jquery');
-var Zip = require('./gistpen/zip');
-var User = require('./user');
-var Controller = require('./controller');
+var Zip = require('./editor/gistpen/zip');
+var User = require('./editor/user');
+var Controller = require('./editor/controller');
 
 $.ajaxSetup({
     beforeSend: function(xhr) {

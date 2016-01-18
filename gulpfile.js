@@ -1,62 +1,60 @@
-var gulp = require('gulp'),
-	glob = require('glob'),
-	fs = require('fs'),
-	Q = require('Q'),
-	path = require('path'),
-	concat = require('gulp-concat'),
-	uglify = require('gulp-uglify'),
-	minify = require('gulp-minify-css'),
-	sass = require('gulp-sass'),
-	extrep = require('gulp-ext-replace');
+var gulp = require('gulp');
+var glob = require('glob');
+var fs = require('fs');
+var Q = require('Q');
+var path = require('path');
+var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var minify = require('gulp-minify-css');
+var sass = require('gulp-sass');
+var extrep = require('gulp-ext-replace');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var wpPot = require('gulp-wp-pot');
+var pot = require('gulp-wp-pot');
 var sort = require('gulp-sort');
 
 gulp.task('default', ['scripts', 'styles', 'packages', 'watch']);
 
 gulp.task('watch', function () {
-	gulp.watch('src/js/**/*.js', ['scripts']);
+    gulp.watch('src/js/**/*.js', ['scripts']);
     gulp.watch('src/scss/**/*.scss', ['styles']);
 });
 
 gulp.task('build', ['scripts', 'styles', 'packages']);
 
-gulp.task('scripts', function() {
-	var promises = [];
+gulp.task('scripts',function () {
+    var promises = [];
 
-	glob.sync('src/js/!(js)').forEach(function(filePath) {
-		if (fs.statSync(filePath).isDirectory()) {
-			var defer = Q.defer();
-			var pipeline = browserify({
-				entries: filePath + '/start.js'
-			})
-                .transform('hbsfy', {traverse: true})
-				.bundle()
-				.pipe(source(path.basename(filePath) + '.js'))
-				.pipe(buffer())
-				.pipe(gulp.dest('assets/js'))
-				.pipe(uglify())
-				.pipe(concat(path.basename(filePath) + '.min.js'))
-				.pipe(gulp.dest('assets/js'));
-			pipeline.on('end', function() {
-				defer.resolve();
-			});
-			promises.push(defer.promise);
-		}
-	});
+    ['post'].forEach(function (file) {
+        var defer = Q.defer();
+        var pipeline = browserify({
+            entries: 'src/js/' + file + '.js'
+        })
+            .transform('hbsfy', {traverse: true})
+            .bundle()
+            .pipe(source(file + '.js'))
+            .pipe(buffer())
+            .pipe(gulp.dest('assets/js'))
+            .pipe(uglify())
+            .pipe(concat(file + '.min.js'))
+            .pipe(gulp.dest('assets/js'));
+        pipeline.on('end', function () {
+            defer.resolve();
+        });
+        promises.push(defer.promise);
+    });
 
-	return Q.all(promises);
+    return Q.all(promises);
 });
 
-gulp.task('styles', function() {
-	return gulp.src('src/scss/*.scss')
-		.pipe(sass())
-		.pipe(gulp.dest('assets/css'))
-		.pipe(minify())
-		.pipe(extrep('.min.css'))
-		.pipe(gulp.dest('assets/css'));
+gulp.task('styles', function () {
+    return gulp.src('src/scss/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('assets/css'))
+        .pipe(minify())
+        .pipe(extrep('.min.css'))
+        .pipe(gulp.dest('assets/css'));
 });
 
 gulp.task('packages', ['prism', 'ace']);
@@ -145,14 +143,14 @@ gulp.task('ace', function() {
 		.pipe(gulp.dest('assets/js/ace'));
 });
 
-gulp.task('translation', function() {
-	return gulp.src('app/**/*.php')
-		.pipe(sort())
-		.pipe(wpPot( {
-			domain: 'wp-gistpen',
-			destFile:'wp-gistpen.pot',
-			package: 'wp-gistpen',
-			bugReport: 'http://github.com/mAAdhaTTah/WP-Gistpen'
-		} ))
-		.pipe(gulp.dest('languages/'));
+gulp.task('translation', function () {
+    return gulp.src('app/**/*.php')
+        .pipe(sort())
+        .pipe(pot({
+            domain: 'wp-gistpen',
+            destFile: 'wp-gistpen.pot',
+            package: 'wp-gistpen',
+            bugReport: 'http://github.com/mAAdhaTTah/WP-Gistpen'
+        }))
+        .pipe(gulp.dest('languages/'));
 });
