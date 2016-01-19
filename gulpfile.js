@@ -26,7 +26,7 @@ gulp.task('build', ['scripts', 'styles', 'packages']);
 gulp.task('scripts',function () {
     var promises = [];
 
-    ['post', 'tinymce'].forEach(function (file) {
+    ['post', 'tinymce', 'settings'].forEach(function (file) {
         var defer = Q.defer();
         var pipeline = browserify({
             entries: 'src/js/' + file + '.js'
