@@ -90,9 +90,9 @@ class Settings implements HasActions, HasFilters {
 		$user = get_transient( '_wpgp_github_token_user_info' );
 
 		if ( false === $user ) {
-			$this->client->authenticate( $token );
+			$this->client->set_token( $token );
 
-			if ( is_wp_error( $error = $this->client->check_token() ) ) {
+			if ( ! $this->client->is_token_valid() ) {
 				// If this token doesn't validate, clear it and bail.
 				cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '' );
 				delete_transient( '_wpgp_github_token_user_info' );
