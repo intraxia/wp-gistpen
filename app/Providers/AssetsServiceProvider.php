@@ -25,7 +25,10 @@ class AssetsServiceProvider extends ServiceProvider {
 
 		$slug     = $this->container->fetch( 'slug' );
 		$url      = $this->container->fetch( 'url' );
-		$localize = function () use ( $url ) {
+
+		$localize = function () use ( $url, $slug ) {
+			$theme = cmb2_get_option( $slug, '_wpgp_gistpen_highlighter_theme' );
+
 			return array(
 				'name' => 'Gistpen_Settings',
 				'data' => array(
@@ -35,6 +38,10 @@ class AssetsServiceProvider extends ServiceProvider {
 					'url'        => $url,
 					'ace_themes' => Editor::$ace_themes,
 					'statuses'   => get_post_statuses(),
+					'prism'      => array(
+						'theme'   => $theme ? : 'default',
+						'plugins' => array(),
+					),
 				),
 			);
 		};
@@ -174,23 +181,5 @@ class AssetsServiceProvider extends ServiceProvider {
 			'handle'    => $slug . '-web-styles',
 			'src'       => 'assets/css/web',
 		) );
-	}
-
-	/**
-	 * Retrieve the Prism theme
-	 *
-	 * @return string Prism theme
-	 * @since    0.5.0
-	 */
-	private function get_prism_theme( $slug ) {
-		$theme = cmb2_get_option( $slug, '_wpgp_gistpen_highlighter_theme' );
-
-		if ( '' === $theme || 'default' === $theme ) {
-			$theme = '';
-		} else {
-			$theme = '-' . $theme;
-		}
-
-		return $theme;
 	}
 }
