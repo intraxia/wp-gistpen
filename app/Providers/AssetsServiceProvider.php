@@ -43,7 +43,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			return 'settings_page_wp-gistpen' === get_current_screen()->id;
 		};
 		$should_enqueue_tinymce  = function () {
-			return 'post' === get_current_screen()->id || 'page' === get_current_screen()->id;
+			return 'gistpen' !== get_current_screen()->id;
 		};
 		$should_enqueue_editor   = function () {
 			if ( 'gistpen' === get_current_screen()->id ) {
