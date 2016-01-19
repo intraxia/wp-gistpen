@@ -1,1 +1,0 @@
-window.InsertGistpenDialog = require('./dialog');

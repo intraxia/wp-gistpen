@@ -1,0 +1,128 @@
+i.mce-i-icons {
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  font: normal 20px/1 'dashicons';
+  vertical-align: top;
+}
+
+#wpgp-insert-dialog {
+  background: #EEE;
+
+  .loading {
+    text-align: center;
+    margin: 10px 160px;
+    width: 130px;
+  }
+
+  .posting {
+    text-align: left;
+    margin: 10px 0 0 300px;
+    width: 150px;
+  }
+
+  .search-field {
+    padding: 5px;
+    margin-right: 10px;
+    width: 33%;
+  }
+
+}
+
+#wpgp-insert-dialog-body {
+  overflow: auto;
+  padding: 10px;
+
+  #wpgp-insert-wrap {
+    padding: 0 16px;
+
+    .gistpen-search-wrap {
+      margin: 5px 0 9px;
+      display: block;
+      overflow: hidden;
+
+      span {
+        float: left
+      }
+
+      .search-label {
+        display: inline-block;
+        text-align: right;
+        padding-right: 5px;
+      }
+
+      .gistpen-search-field {
+        float: left;
+        width: 250px;
+        max-width: 70%;
+        height: auto;
+      }
+    }
+  }
+
+  input[type="radio"]:checked:before {
+    margin: 5px;
+  }
+
+}
+
+#insert-existing {
+
+  .query-notice, p {
+    margin: 5px 0;
+  }
+
+  .query-results {
+
+    ul {
+      li {
+
+        &:after {
+          content: "";
+          display: table;
+          clear: both;
+        }
+
+        div.gistpen-title {
+          float: left;
+          margin-left: 15px;
+        }
+
+        div.gistpen-radio {
+          float: left;
+        }
+
+      }
+    }
+  }
+}
+
+.create_new_gistpen {
+  ul {
+
+    li {
+      border: none;
+
+      &.create_new_gistpen {
+        padding: 5px;
+      }
+
+      textarea, select, input {
+        margin: 0 10px 10px 0;
+        padding: 5px;
+        background-color: #FFF !important;
+
+        &.wp-gistfile-description {
+          margin-top: 5px;
+          width: 100%;
+        }
+      }
+
+    }
+  }
+}
+
+.clearfix {
+  content: "";
+  display: table;
+  clear: both;
+}
