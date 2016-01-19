@@ -64,6 +64,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			},
 			'handle'    => $slug . '-ace-script',
 			'src'       => 'assets/js/ace/ace',
+			'localize'  => $localize,
 		) );
 
 		/**
