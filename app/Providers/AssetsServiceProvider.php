@@ -116,15 +116,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			'type'      => 'admin',
 			'condition' => $should_enqueue_tinymce,
 			'handle'    => $slug . '-popup-styles',
-			'src'       => 'assets/css/popup',
-		) );
-		$assets->register_script( array(
-			'type'      => 'admin',
-			'condition' => $should_enqueue_tinymce,
-			'handle'    => $slug . '-popups-script',
-			'src'       => 'assets/js/popup',
-			'deps'      => array( 'jquery', $slug . '-ace-script' ),
-			'localize'  => $localize,
+			'src'       => 'assets/css/tinymce',
 		) );
 
 		/**
