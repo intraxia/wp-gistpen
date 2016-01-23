@@ -173,16 +173,16 @@ class Settings implements HasActions, HasFilters {
 			return $value;
 		}
 
-		$this->client->authenticate( $value );
+		$this->client->set_token( $value );
 
-		if ( is_wp_error( $error = $this->client->check_token() ) ) {
+		if ( ! $this->client->is_token_valid() ) {
 			delete_transient( '_wpgp_github_token_user_info' ); ?>
 
 			<div class="error">
 				<p>
 					<?php
 						_e( 'Gist token failed to validate. Error message: ', 'wp-gistpen' );
-						echo esc_html( $error->get_error_message() );
+						echo esc_html( $this->client->get_error()->get_error_message() );
 					?>
 				</p>
 			</div><?php
