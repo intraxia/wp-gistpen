@@ -168,13 +168,14 @@ class AssetsServiceProvider extends ServiceProvider {
 		/**
 		 * Web Assets
 		 */
-		$assets->register_style( array(
+		$assets->register_script( array(
 			'type'      => 'web',
 			'condition' => function () {
 				return true;
 			},
-			'handle'    => $slug . '-web-styles',
-			'src'       => 'assets/css/web',
+			'handle'    => $slug . '-web-script',
+			'src'       => 'assets/js/web',
+			'localize'  => $localize,
 		) );
 	}
 }

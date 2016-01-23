@@ -26,7 +26,7 @@ gulp.task('build', ['scripts', 'styles', 'packages']);
 gulp.task('scripts',function () {
     var promises = [];
 
-    ['post', 'tinymce', 'settings'].forEach(function (file) {
+    ['post', 'tinymce', 'settings', 'web'].forEach(function (file) {
         var defer = Q.defer();
         var pipeline = browserify({
             entries: 'src/js/' + file + '.js'
@@ -49,7 +49,11 @@ gulp.task('scripts',function () {
 });
 
 gulp.task('styles', function () {
-    return gulp.src('src/scss/*.scss')
+    return gulp.src([
+        'src/scss/*.scss',
+        'node_modules/prismjs/themes/*.css',
+        'node_modules/prismjs/plugins/line-numbers/*.css'
+    ])
         .pipe(sass())
         .pipe(gulp.dest('assets/css'))
         .pipe(minify())
