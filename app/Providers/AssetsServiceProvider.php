@@ -19,19 +19,22 @@ class AssetsServiceProvider extends ServiceProvider {
 	 * @param Assets $assets
 	 */
 	protected function add_assets( Assets $assets ) {
-		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+		$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+
+		if ( $debug ) {
 			$assets->set_debug( true );
 		}
 
 		$slug     = $this->container->fetch( 'slug' );
 		$url      = $this->container->fetch( 'url' );
 
-		$localize = function () use ( $url, $slug ) {
+		$localize = function () use ( $url, $slug, $debug ) {
 			$theme = cmb2_get_option( $slug, '_wpgp_gistpen_highlighter_theme' );
 
 			return array(
 				'name' => 'Gistpen_Settings',
 				'data' => array(
+					'debug'      => $debug,
 					'languages'  => Language::$supported,
 					'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
 					'nonce'      => wp_create_nonce( 'wp_rest' ),
