@@ -80,13 +80,11 @@ class Sync implements HasActions {
 			return $zip;
 		}
 
-		if ( 'none' === $commit->get_head_gist_id() ) {
-			$result = $this->create_gist( $commit );
-		} else {
-			$result = $this->update_gist( $commit );
-		}
+		$result = 'none' === $commit->get_head_gist_id() ? $this->create_gist( $commit ) : $this->update_gist( $commit );
 
-		// @todo handle error
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
 
 		return $zip;
 	}
@@ -94,12 +92,12 @@ class Sync implements HasActions {
 	/**
 	 * Creates a new Gistpen on Gist
 	 *
-	 * @param \Intraxia\Gistpen\Model\Commit\Meta $commit
+	 * @param Meta $commit
 	 *
 	 * @return string|\WP_Error
 	 * @since 0.5.0
 	 */
-	protected function create_gist( $commit ) {
+	protected function create_gist( Meta $commit ) {
 		$response = $this->gist->create( $commit );
 
 		if ( is_wp_error( $response ) ) {
@@ -124,25 +122,25 @@ class Sync implements HasActions {
 	/**
 	 * Updates an existing Gistpen on Gist
 	 *
-	 * @param \Intraxia\Gistpen\Model\Commit\Meta $commit
+	 * @param Meta $commit
 	 *
 	 * @return string|\WP_Error Gist ID on success, WP_Error on failure
 	 * @since 0.5.0
 	 */
-	protected function update_gist( $commit ) {
-		$response = $this->gist->update( $commit );
+	protected function update_gist( Meta $commit ) {
+		$result = $this->gist->update( $commit );
 
-		if ( is_wp_error( $response ) ) {
-			return $response;
+		if ( ! $result ) {
+			return $this->gist->get_error();
 		}
 
-		$result = $this->database->persist( 'commit' )->set_gist_id( $commit->get_ID(), $response['history'][0]['version'] );
+		$result = $this->database->persist( 'commit' )->set_gist_id( $commit->get_ID(), $result['history'][0]['version'] );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
 		}
 
-		return $response;
+		return $result;
 	}
 
 	/**
