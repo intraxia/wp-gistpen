@@ -108,13 +108,6 @@ class AssetsServiceProvider extends ServiceProvider {
 			'condition' => $should_enqueue_settings,
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
-			'deps'      => array(
-				'jquery',
-				'jquery-ui-progressbar',
-				'backbone',
-				'underscore',
-				$slug . '-prism'
-			),
 			'footer'    => true,
 			'localize'  => $localize,
 		) );
