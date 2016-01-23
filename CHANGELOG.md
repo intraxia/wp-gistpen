@@ -4,17 +4,23 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 
 ### [Unreleased] ###
 
+#### Added ####
+* WP-API integration
+	* This requires an upgrade to WordPress 4.4+ or installation of rest-api plugin
+* Plugin architecture now built on [Jaxion] framework
+
 #### Changed ####
-* Improve JavaScript architecture.
-	* Reduced number of dependencies for some of the scripts.
+* Improve JavaScript architecture
+	* Reduced number of dependencies for some of the scripts
+	* JavaScript now uses WP-API endpoints
+* Asynchronously load all the CSS files before highlighting
+	* Improves page load time
 
 #### Fixed ####
-* Spinner display fixed on edit page.
-* Fixed code sample display on mobile.
-
-#### In Progress ####
-* Back-end is being rewritten to use the WP-API.
-	* Revamped architecture and improved UI.
+* Spinner display fixed on edit page
+* Fixed code sample display on mobile
+* Fixed display on custom post type pages
+* Fixed bug where adding two files would only save one at a time
 
 ### [0.5.8] - 2015-07-26 ###
 
@@ -194,6 +200,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * Embeddable in posts via shortcode
 * Use SyntaxHighlighter to display
 
+[Jaxion]: https://github.com/intraxia/jaxion
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
 [0.5.8]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.8
 [0.5.7]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.7
