@@ -25,6 +25,7 @@ class RouterServiceProvider extends ServiceProvider {
 			'search' => $this->container->fetch( 'controller.search' ),
 			'zip'    => $this->container->fetch( 'controller.zip' ),
 			'user'   => $this->container->fetch( 'controller.user' ),
+			'job'    => $this->container->fetch( 'controller.job' ),
 		);
 
 		$router->group( array( 'prefix' => '/gistpen' ), function ( Router $router ) use ( $controllers ) {
@@ -67,6 +68,40 @@ class RouterServiceProvider extends ServiceProvider {
 				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
 				'filter' => new Filter( array( 'ace_theme' => 'default' ) ),
 			) );
+
+			/**
+			 * /jobs endpoint
+			 */
+			$router->get(
+				'/jobs',
+				array( $controllers['job'], 'registered' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
+			$router->post(
+				'/jobs',
+				array( $controllers['job'], 'dispatch' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
+			$router->get(
+				'/jobs/(?P<name>\w+)',
+				array( $controllers['job'], 'status' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
+			$router->post(
+				'/jobs/(?P<name>\w+)',
+				array( $controllers['job'], 'dispatch' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
+			$router->post(
+				'/jobs/(?P<name>\w+)/next',
+				array( $controllers['job'], 'next' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
+			$router->post(
+				'/jobs/(?P<name>\w+)/(?P<timestamp>\w+)',
+				array( $controllers['job'], 'console' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
 		} );
 	}
 }
