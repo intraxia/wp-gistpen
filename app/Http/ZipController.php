@@ -114,7 +114,7 @@ class ZipController {
 		 * we want to return that error to the user
 		 * so they can go fix it.
 		 */
-		do_action( 'wpgp_zip_created', $zip );
+		// do_action( 'wpgp_zip_created', $zip );
 
 		return new WP_REST_Response( $this->adapter->build( 'api' )->by_zip( $zip ) );
 	}
