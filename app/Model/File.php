@@ -135,7 +135,7 @@ class File {
 	public function set_language( $language ) {
 
 		if ( ! $language instanceof Language ) {
-			throw new \Exception( __( 'set_language requires a Model\Language object', \WP_Gistpen::$plugin_name ), 1 );
+			throw new \Exception( __( 'set_language requires a Model\Language object', 'wp-gistpen' ), 1 );
 		}
 
 		$this->language = $language;

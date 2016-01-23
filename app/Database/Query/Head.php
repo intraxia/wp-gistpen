@@ -123,7 +123,7 @@ class Head {
 	 */
 	public function by_post( $post ) {
 		if ( $post->post_type !== 'gistpen' ) {
-			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", \WP_Gistpen::$plugin_name ) );
+			return new WP_Error( 'wrong_post_type', __( "WP_Gistpen_Query::get() didn't get a Gistpen", 'wp-gistpen' ) );
 		}
 
 		if ( 0 !== $post->post_parent ) {
@@ -268,7 +268,7 @@ class Head {
 		}
 
 		if ( 1 !== count( $posts ) ) {
-			return new WP_Error( 'multiple_gistpens_found', __( "Multiple Gistpens with Gist ID {$gist_id} found.", \WP_Gistpen::$plugin_name ) );
+			return new WP_Error( 'multiple_gistpens_found', __( "Multiple Gistpens with Gist ID {$gist_id} found.", 'wp-gistpen' ) );
 		}
 
 		$post = array_pop( $posts );
