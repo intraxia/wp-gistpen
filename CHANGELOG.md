@@ -4,6 +4,15 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 
 ### [Unreleased] ###
 
+#### Removed ####
+* These features will be returning before the next release, but are in transition and being rewritten:
+	* Import/export from the settings page
+	* Keeping a Gistpen in sync with a Gist
+		* However, an export from WP-CLI appears to be working, but that only handles initial export
+		* Future is to build WP-CLI commands that match the API endpoints
+		* All of this will be written into asynchronous background tasks
+	* Most of the unit tests
+
 #### Added ####
 * WP-API integration
 	* This requires an upgrade to WordPress 4.4+ or installation of rest-api plugin
