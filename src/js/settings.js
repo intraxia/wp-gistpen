@@ -1,14 +1,8 @@
-var Prism = require('prismjs/components/prism-core');
-require('prismjs/components/prism-clike');
-require('prismjs/components/prism-ruby');
-require('prismjs/plugins/line-numbers/prism-line-numbers');
-document.removeEventListener('DOMContentLoaded', Prism.highlightAll);
-
+var Prism = require('./prism');
 var $ = require('jquery');
 var _ = require('underscore');
 
 $(document).ready(function () {
-    var cssLink;
     var themeSelect;
     var lnSelect;
     var pre;
@@ -19,16 +13,11 @@ $(document).ready(function () {
     Prism.highlightAll();
 
     queryDOM();
-    setTheme(Gistpen_Settings.prism.theme);
+    Prism.loadTheme(Gistpen_Settings.prism.theme);
     toggleLineNumbers(Gistpen_Settings.prism.plugins['line-numbers'].enabled);
     setClickHandlers();
 
     function queryDOM() {
-        cssLink = $("<link>", {
-            rel: "stylesheet",
-            type: "text/css"
-        });
-        cssLink.appendTo('head');
         themeSelect = $('#_wpgp_gistpen_highlighter_theme');
         lnSelect = $('#_wpgp_gistpen_line_numbers');
         pre = $('pre.gistpen');
@@ -38,19 +27,9 @@ $(document).ready(function () {
         importBtn = $('#import-gists');
     }
 
-    function setTheme(theme) {
-        if (theme == 'default') {
-            theme = '';
-        } else {
-            theme = '-' + theme;
-        }
-
-        cssLink.attr('href', Gistpen_Settings.url + 'assets/css/prism/themes/prism' + theme + '.css');
-    }
-
     function setClickHandlers() {
         themeSelect.change(function () {
-            setTheme(themeSelect.val());
+            Prism.loadTheme(themeSelect.val());
         });
         lnSelect.click(function () {
             toggleLineNumbers(lnSelect.is(':checked'))
