@@ -40,7 +40,9 @@ class AssetsServiceProvider extends ServiceProvider {
 					'statuses'   => get_post_statuses(),
 					'prism'      => array(
 						'theme'   => $theme ? : 'default',
-						'plugins' => array(),
+						'plugins' => array(
+							'line-numbers' => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' ) ),
+						),
 					),
 				),
 			);
