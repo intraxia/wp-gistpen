@@ -123,49 +123,6 @@ class AssetsServiceProvider extends ServiceProvider {
 		) );
 
 		/**
-		 * Prism Assets
-		 */
-		$prism_condition = function () {
-			if ( ! is_admin() || 'settings_page_wp-gistpen' === get_current_screen()->id ) {
-				return true;
-			}
-
-			return false;
-		};
-		$assets->register_style( array(
-			'type'      => 'shared',
-			'condition' => $prism_condition,
-			'handle'    => $slug . '-prism-theme',
-			'src'       => 'assets/css/prism/themes/prism', // @todo . $this->get_prism_theme(),
-		) );
-		$assets->register_style( array(
-			'type'      => 'shared',
-			'condition' => $prism_condition,
-			'handle'    => $slug . '-prism-line-highlight',
-			'src'       => 'assets/css/prism/plugins/line-highlight/prism-line-highlight',
-			'deps'      => array( $slug . '-prism-theme' ),
-		) );
-		$assets->register_style( array(
-			'type'      => 'shared',
-			'condition' => function () use ( $prism_condition, $slug ) {
-				return $prism_condition() && (
-					is_admin() ||
-					'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' )
-				);
-			},
-			'handle'    => $slug . '-prism-line-numbers',
-			'src'       => 'assets/css/prism/plugins/line-numbers/prism-line-numbers',
-			'deps'      => array( $slug . '-prism-theme' ),
-		) );
-		$assets->register_script( array(
-			'type'      => 'shared',
-			'condition' => $prism_condition,
-			'handle'    => $slug . '-prism',
-			'src'       => 'assets/js/prism',
-			'deps'      => array( 'jquery' ),
-		) );
-
-		/**
 		 * Web Assets
 		 */
 		$assets->register_script( array(
