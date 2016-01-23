@@ -80,7 +80,7 @@ module.exports = Backbone.View.extend({
      * @param {Object} gistpen - Gistpen result.
      */
     appendResult: function(gistpen) {
-        this.$results.append('<li><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="' + gistpen.ID + '"></div><div class="gistpen-title">' + (gistpen.slug || gistpen.description) + '</div></li>');
+        this.$results.append('<li><div class="gistpen-radio"><input type="radio" name="gistpen_id" value="' + gistpen.ID + '"></div><div class="gistpen-title">' + (gistpen.slug || gistpen.description || '') + '</div></li>');
     },
 
     /**
