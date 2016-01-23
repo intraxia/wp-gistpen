@@ -68,7 +68,7 @@ class Sync implements HasActions {
 	 * @return Zip
 	 *
 	 */
-	public function export_gistpen( $zip ) {
+	public function export_gistpen( Zip $zip ) {
 		if ( false === cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' ) ) {
 			return $zip;
 		}
