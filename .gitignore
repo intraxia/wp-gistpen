@@ -20,6 +20,7 @@ Thumbs.db
 *.esproj
 nbproject
 *.sublime-*
+.idea
 
 # Dreamweaver added files
 _notes
@@ -34,12 +35,14 @@ dwsync.xml
 .svn
 .CVS
 intermediate
-.idea
 cache
 lib
 node_modules
 bower_components
 
 # Generated files
-assets/js/**
-assets/css/**
+assets/
+
+# Local phpunit config
+phpunit.xml
+build

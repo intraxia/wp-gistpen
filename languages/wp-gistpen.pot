@@ -1,31 +1,283 @@
-# Copyright (C) 2013 TODO
-# This file is distributed under the same license as the TODO package.
+# Copyright (C) 2015 wp-gistpen
+# This file is distributed under the same license as the wp-gistpen package.
 msgid ""
 msgstr ""
-"Project-Id-Version: TODO 1.0.0\n"
-"Report-Msgid-Bugs-To: http://wordpress.org/plugins/plugin-name\n"
-"POT-Creation-Date: 2013-05-10 11:23:19+00:00\n"
-"PO-Revision-Date: 2013-05-10 10:37-0500\n"
-"Last-Translator: FULL NAME <email@example.com>\n"
-"Language-Team: LANGUAGE <translations@example.com >\n"
+"Project-Id-Version: wp-gistpen\n"
+"Report-Msgid-Bugs-To: http://github.com/mAAdhaTTah/WP-Gistpen\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
-"X-Poedit-KeywordsList: __;_e;_n;_x;esc_html_e;esc_html__;esc_attr_e;"
-"esc_attr__;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_x:1,2c;_n:1,2\n"
-"X-Poedit-Basepath: ../\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Poedit-SearchPath-0: .\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
 
-#: class-plugin-name-admin.php:170
-msgid "Page Title"
+#: app/Api/Ajax.php:152
+msgid "Nonce check failed."
 msgstr ""
 
-#: class-plugin-name-admin.php:171
-msgid "Menu Text"
+#: app/Api/Ajax.php:160
+msgid "User doesn't have proper permisissions."
 msgstr ""
 
-#: class-plugin-name-admin.php:197
+#: app/Api/Ajax.php:216
+msgid "No Gistpen ID sent"
+msgstr ""
+
+#: app/Api/Ajax.php:280
+msgid "Successfully updated Gistpen "
+msgstr ""
+
+#: app/Api/Ajax.php:308
+msgid "Failed to update Ace theme."
+msgstr ""
+
+#: app/Api/Ajax.php:332
+msgid "No Gistpens to export."
+msgstr ""
+
+#: app/Api/Ajax.php:352
+msgid "Invalid Gistpen ID."
+msgstr ""
+
+#: app/Api/Ajax.php:372, app/CLI/Command.php:154
+msgid "Successfully exported Gistpen #"
+msgstr ""
+
+#: app/Api/Ajax.php:402
+msgid "No Gists to import."
+msgstr ""
+
+#: app/Api/Ajax.php:426, app/CLI/Command.php:193
+msgid "Successfully imported Gist #"
+msgstr ""
+
+#: app/CLI/Command.php:81
+msgid "Successfully added example for language {$lang}"
+msgstr ""
+
+#: app/CLI/Command.php:112
+msgid "Gist token failed to authenticate. Error: "
+msgstr ""
+
+#: app/CLI/Command.php:118
+msgid "Gist token update failed."
+msgstr ""
+
+#: app/CLI/Command.php:121
+msgid "Gist token updated."
+msgstr ""
+
+#: app/CLI/Command.php:139
+msgid "Failed to get post IDs missing Gist IDs. Error: "
+msgstr ""
+
+#: app/CLI/Command.php:143
+msgid "No Gistpens missing Gist IDs."
+msgstr ""
+
+#: app/CLI/Command.php:151
+msgid "Failed to create Gist. Error: "
+msgstr ""
+
+#: app/CLI/Command.php:175
+msgid "Failed to get Gist IDs for your account. Error: "
+msgstr ""
+
+#: app/CLI/Command.php:179
+msgid "No Gists retrieved."
+msgstr ""
+
+#: app/CLI/Command.php:190
+msgid "Failed to import Gist. Error: "
+msgstr ""
+
+#: app/Migration.php:153
+msgid "Failed to successfully insert {$slug}. Error: .$result->get_error_message()"
+msgstr ""
+
+#: app/Migration.php:172
+msgid "Failed to successfully delete {$slug}. Error: .$result->get_error_message()"
+msgstr ""
+
+#: app/Migration.php:207
+msgid "Failed to successfully set holdover for language {$term->slug}. Error: .$result->get_error_message()"
+msgstr ""
+
+#: app/Migration.php:219
+msgid "Failed to successfully insert language {$term->slug}. Error: .$result->get_error_message()"
+msgstr ""
+
+#: app/Migration.php:252
+msgid "Failed to successfully delete description meta from {$post->ID}. Error: .$result->get_error_message()"
+msgstr ""
+
+#: app/Migration.php:276
+msgid "Failed to successfully delete language from {$post->ID}. Error: .$result->get_error_message()"
+msgstr ""
+
+#: app/Migration.php:287
+msgid "Failed to successfully save {$post->ID} in new format. Error: .$result->get_error_message()"
+msgstr ""
+
+#: app/Register/Data.php:37
+msgctxt "Post Type General Name"
+msgid "Gistpens"
+msgstr ""
+
+#: app/Register/Data.php:38
+msgctxt "Post Type Singular Name"
+msgid "Gistpen"
+msgstr ""
+
+#: app/Register/Data.php:39, app/View/Settings.php:86
+msgid "Gistpens"
+msgstr ""
+
+#: app/Register/Data.php:40
+msgid "Parent Gistpen:"
+msgstr ""
+
+#: app/Register/Data.php:41
+msgid "All Gistpens"
+msgstr ""
+
+#: app/Register/Data.php:42
+msgid "View Gistpen"
+msgstr ""
+
+#: app/Register/Data.php:43
+msgid "Add New Gistpen"
+msgstr ""
+
+#: app/Register/Data.php:44
+msgid "Add New"
+msgstr ""
+
+#: app/Register/Data.php:45
+msgid "Edit Gistpen"
+msgstr ""
+
+#: app/Register/Data.php:46
+msgid "Update Gistpen"
+msgstr ""
+
+#: app/Register/Data.php:47
+msgid "Search Gistpens"
+msgstr ""
+
+#: app/Register/Data.php:48
+msgid "Gistpen not found"
+msgstr ""
+
+#: app/Register/Data.php:49
+msgid "No Gistpens found in Trash"
+msgstr ""
+
+#: app/Register/Data.php:52
+msgid "gistpens"
+msgstr ""
+
+#: app/Register/Data.php:53
+msgid "A collection of code snippets."
+msgstr ""
+
+#: app/Register/Data.php:86
+msgctxt "Taxonomy General Name"
+msgid "Languages"
+msgstr ""
+
+#: app/Register/Data.php:87
+msgctxt "Taxonomy Singular Name"
+msgid "Language"
+msgstr ""
+
+#: app/Register/Data.php:88
+msgid "Language"
+msgstr ""
+
+#: app/Register/Data.php:89
+msgid "All Languages"
+msgstr ""
+
+#: app/Register/Data.php:90
+msgid "Parent Language"
+msgstr ""
+
+#: app/Register/Data.php:91
+msgid "Parent Language:"
+msgstr ""
+
+#: app/Register/Data.php:92
+msgid "New Language"
+msgstr ""
+
+#: app/Register/Data.php:93
+msgid "Add New Language"
+msgstr ""
+
+#: app/Register/Data.php:94
+msgid "Edit Language"
+msgstr ""
+
+#: app/Register/Data.php:95
+msgid "Update Language"
+msgstr ""
+
+#: app/Register/Data.php:96
+msgid "Separate language with commas"
+msgstr ""
+
+#: app/Register/Data.php:97
+msgid "Search languages"
+msgstr ""
+
+#: app/Register/Data.php:98
+msgid "Add or remove language"
+msgstr ""
+
+#: app/Register/Data.php:99
+msgid "Choose from the most used languages"
+msgstr ""
+
+#: app/Register/Data.php:100
+msgid "Not Found"
+msgstr ""
+
+#: app/View/Editor.php:175
+msgid "Files"
+msgstr ""
+
+#: app/View/Settings.php:85
+msgid "WP-Gistpen Settings"
+msgstr ""
+
+#: app/View/Settings.php:139
+msgid "Username: "
+msgstr ""
+
+#: app/View/Settings.php:140
+msgid "Email: "
+msgstr ""
+
+#: app/View/Settings.php:141
+msgid "Public Gists: "
+msgstr ""
+
+#: app/View/Settings.php:142
+msgid "Private Gists: "
+msgstr ""
+
+#: app/View/Settings.php:146
+msgid "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually."
+msgstr ""
+
+#: app/View/Settings.php:151
+msgid "When you import Gists, only Gists not previously imported will be added."
+msgstr ""
+
+#: app/View/Settings.php:180
 msgid "Settings"
+msgstr ""
+
+#: app/View/Settings.php:211
+msgid "Gist token failed to validate. Error message: "
 msgstr ""

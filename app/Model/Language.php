@@ -1,10 +1,10 @@
 <?php
-namespace WP_Gistpen\Model;
+namespace Intraxia\Gistpen\Model;
 
 /**
  * Manages the Gistpen's file language data
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -65,24 +65,6 @@ class Language {
 	);
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	protected $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   protected
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	protected $version;
-
-	/**
 	 * The language slug.
 	 *
 	 * @since    0.5.0
@@ -91,15 +73,9 @@ class Language {
 	 */
 	protected $slug;
 
-	public function __construct( $plugin_name, $version, $slug = '' ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
+	public function __construct( $slug = '' ) {
 		$this->validate_slug( $slug );
-
 		$this->slug = $slug;
-
 	}
 
 	/**
@@ -129,7 +105,7 @@ class Language {
 	 * Validates the language slug
 	 *
 	 * @param string $slug  Language slug to validate
-	 * @throws Exception If invalid slug
+	 * @throws \Exception If invalid slug
 	 */
 	public function validate_slug( $slug ) {
 		// empty slug is allowed
@@ -144,7 +120,7 @@ class Language {
 
 		// otherwise, the slug needs ot match a supported slug
 		if ( ! array_search( $slug, self::$supported ) ) {
-			throw new \Exception( __( "Invalid language slug: {$slug}", $this->plugin_name ), 1 );
+			throw new \Exception( __( "Invalid language slug: {$slug}", 'wp-gistpen' ), 1 );
 		}
 	}
 
@@ -179,7 +155,7 @@ class Language {
 	 * @return string The file extension slug
 	 */
 	public function get_file_ext() {
-		$map = 	array(
+		$map = array(
 			'sass' => 'scss',
 			'bash' => 'sh',
 			'ruby' => 'rb',

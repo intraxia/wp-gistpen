@@ -1,13 +1,16 @@
 <?php
-namespace WP_Gistpen\CLI;
+namespace Intraxia\Gistpen\CLI;
 
-use \WP_CLI;
-use WP_Gistpen\Account\Gist;
-use WP_Gistpen\Controller\Save;
-use WP_Gistpen\Controller\Sync;
-use WP_Gistpen\Model\Language;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Facade\Database;
+use Intraxia\Gistpen\App;
+use Intraxia\Gistpen\Client\Gist;
+use Intraxia\Gistpen\Http\ZipController;
+use Intraxia\Gistpen\Save;
+use Intraxia\Gistpen\Sync;
+use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use WP_CLI;
+use WP_REST_Request;
 
 /**
  * Registers the CLI commands for WP-Gistpen
@@ -17,14 +20,59 @@ use WP_Gistpen\Facade\Database;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Command extends \WP_CLI_Command {
+class Command {
+	/**
+	 * Database facade
+	 *
+	 * @var Database
+	 */
+	protected $database;
 
+	/**
+	 * Adapter facade
+	 *
+	 * @var Adapter
+	 */
+	protected $adapter;
+
+	/**
+	 * Gist client
+	 *
+	 * @var Gist
+	 */
+	protected $gist;
+
+	/**
+	 * Save controller
+	 *
+	 * @var ZipController
+	 */
+	protected $zip;
+
+	/**
+	 * Sync controller
+	 *
+	 * @var Sync
+	 */
+	protected $sync;
+
+	/**
+	 * Plugin path
+	 *
+	 * @var string
+	 */
+	protected $path;
+
+	/**
+	 * Command constructor.
+	 */
 	public function __construct() {
-		$this->database = new Database( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->adapter = new Adapter( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->gist = new Gist( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->save = new Save( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
-		$this->sync = new Sync( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+		$this->database = App::instance()->fetch( 'facade.database' );
+		$this->adapter  = App::instance()->fetch( 'facade.adapter' );
+		$this->gist     = App::instance()->fetch( 'account.gist' );
+		$this->zip      = App::instance()->fetch( 'controller.zip' );
+		$this->sync     = App::instance()->fetch( 'sync' );
+		$this->path     = App::instance()->fetch( 'path' );
 	}
 
 	/**
@@ -53,11 +101,11 @@ class Command extends \WP_CLI_Command {
 		remove_filter( 'content_filtered_save_pre', 'wp_filter_post_kses' );
 
 		foreach ( Language::$supported as $lang => $slug ) {
-			$lang_model = new Language( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version, $slug );
+			$lang_model = new Language( $slug );
 			// Code snippets sourced from: https://highlightjs.org/static/demo/
 			$code = '';
 
-			$fh = fopen( WP_GISTPEN_DIR . 'test/data/' . $slug,'r' );
+			$fh = fopen( $this->path . 'test/data/' . $slug, 'r' );
 			while ( $line = fgets( $fh ) ) {
 				$code .= $line;
 			}
@@ -65,20 +113,34 @@ class Command extends \WP_CLI_Command {
 
 			$zip_data = array();
 
-			$zip_data['status'] = 'publish';
+			$zip_data['status']      = 'publish';
 			$zip_data['description'] = $lang . ' Example';
-			$zip_data['files'] = array();
+			$zip_data['files']       = array();
 
-			$file = array();
-			$file['code'] = trim( $code );
-			$file['slug'] = $slug . '-file.' . $lang_model->get_file_ext();
+			$file             = array();
+			$file['code']     = trim( $code );
+			$file['slug']     = $slug . '-file.' . $lang_model->get_file_ext();
 			$file['language'] = $slug;
 
 			$zip_data['files'][] = $file;
 
-			$this->save->update( $zip_data );
+			$request = new WP_REST_Request( 'POST', rest_url() . 'intraxia/v1/gistpen/zip', $zip_data );
+			$request->set_body_params( $zip_data );
 
-			WP_CLI::success( __( "Successfully added example for language {$lang}", \WP_Gistpen::$plugin_name ) );
+			$response = $this->zip->create( $request );
+
+			if ( is_wp_error( $response ) ) {
+				WP_CLI::error( __( "Failed to add example for language {$lang}", 'wp-gistpen' ) );
+			}
+
+			$data = $response->get_data();
+			$result = $this->database->persist( 'head' )->set_gist_id( $data->ID, 'none' );
+
+			if ( is_wp_error( $result ) ) {
+				WP_CLI::error( __( "Failed to add gist id for language {$lang}", 'wp-gistpen' ) );
+			}
+
+			WP_CLI::success( __( "Successfully added example for language {$lang}", 'wp-gistpen' ) );
 			sleep( 1 );
 		}
 	}
@@ -104,21 +166,19 @@ class Command extends \WP_CLI_Command {
 	function set_token( $args, $assoc_args ) {
 		list( $token ) = $args;
 
-		$client = new Gist( \WP_Gistpen::$plugin_name, \WP_Gistpen::$version );
+		$this->gist->set_token( $token );
 
-		$client->authenticate( $token );
-
-		if ( is_wp_error( $error = $client->check_token() ) ) {
-			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', \WP_Gistpen::$plugin_name ) . $error->get_error_message() );
+		if ( ! $this->gist->is_token_valid() ) {
+			WP_CLI::error( __( 'Gist token failed to authenticate. Error: ', 'wp-gistpen' ) . $this->gist->get_error()->get_error_message() );
 		}
 
-		$success = cmb2_update_option( \WP_Gistpen::$plugin_name, '_wpgp_gist_token', $token );
+		$success = cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', $token );
 
 		if ( ! $success ) {
-			WP_CLI::error( __( 'Gist token update failed.', \WP_Gistpen::$plugin_name ) );
+			WP_CLI::error( __( 'Gist token update failed.', 'wp-gistpen' ) );
 		}
 
-		WP_CLI::success( __( 'Gist token updated.', \WP_Gistpen::$plugin_name ) );
+		WP_CLI::success( __( 'Gist token updated.', 'wp-gistpen' ) );
 	}
 
 	/**
@@ -136,22 +196,23 @@ class Command extends \WP_CLI_Command {
 		$ids = $this->database->query( 'head' )->missing_gist_id();
 
 		if ( is_wp_error( $ids ) ) {
-			WP_CLI::error( __( 'Failed to get post IDs missing Gist IDs. Error: ', $this->plugin_name ) . $ids->get_error_message() );
+			WP_CLI::error( __( 'Failed to get post IDs missing Gist IDs. Error: ', 'wp-gistpen' ) . $ids->get_error_message() );
 		}
 
-		if ( empty( $ids ) ) {
-			WP_CLI::error( __( 'No Gistpens missing Gist IDs.', \WP_Gistpen::$plugin_name ) );
+		if ( ! $ids ) {
+			WP_CLI::error( __( 'No Gistpens missing Gist IDs.', 'wp-gistpen' ) );
 		}
 
 		foreach ( $ids as $id ) {
 			$this->database->persist( 'head' )->set_sync( $id, 'on' );
-			$result = $this->sync->export_gistpen( $id );
+			$zip    = $this->database->query( 'head' )->by_id( $id );
+			$result = $this->sync->export_gistpen( $zip );
 
-			if ( is_wp_error( $result ) ){
-				WP_CLI::error( __( 'Failed to create Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
+			if ( is_wp_error( $result ) ) {
+				WP_CLI::error( __( 'Failed to create Gist. Error: ', 'wp-gistpen' ) . $result->get_error_message() );
 			}
 
-			WP_CLI::success( __( 'Successfully exported Gistpen #', \WP_Gistpen::$plugin_name ) . $result );
+			WP_CLI::success( __( 'Successfully exported Gistpen #', 'wp-gistpen' ) . $result->get_ID() );
 
 			sleep( 1 );
 		}
@@ -169,28 +230,29 @@ class Command extends \WP_CLI_Command {
 	 *
 	 */
 	function import_gists( $args, $assoc_args ) {
-		$gists = $this->gist->get_gists();
+		$gists = $this->gist->all();
 
-		if ( is_wp_error( $gists ) ) {
-			WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ', $this->plugin_name ) . $gists->get_error_message() );
-		}
+		if ( ! $gists ) {
+			if ( is_wp_error( $error = $this->gist->get_error() ) ) {
+				WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ',
+						'wp-gistpen' ) . $gists->get_error_message() );
+			}
 
-		if ( empty( $gists ) ) {
-			WP_CLI::error( __( 'No Gists retrieved.', \WP_Gistpen::$plugin_name ) );
+			WP_CLI::error( __( 'No Gists retrieved.', 'wp-gistpen' ) );
 		}
 
 		foreach ( $gists as $gist ) {
 			$result = $this->sync->import_gist( $gist );
 
-			if ( $result instanceof \WP_Gistpen\Model\Zip ) {
+			if ( $result instanceof \Intraxia\Gistpen\Model\Zip ) {
 				continue;
 			}
 
-			if ( is_wp_error( $result ) ){
-				WP_CLI::error( __( 'Failed to import Gist. Error: ', \WP_Gistpen::$plugin_name ) . $result->get_error_message() );
+			if ( is_wp_error( $result ) ) {
+				WP_CLI::error( __( 'Failed to import Gist. Error: ', 'wp-gistpen' ) . $result->get_error_message() );
 			}
 
-			WP_CLI::success( __( 'Successfully imported Gist #', \WP_Gistpen::$plugin_name ) . $gist );
+			WP_CLI::success( __( 'Successfully imported Gist #', 'wp-gistpen' ) . $gist );
 		}
 	}
 }

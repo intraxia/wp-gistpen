@@ -1,9 +1,10 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
-use WP_Gistpen\Facade\Database;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Language;
+use Intraxia\Gistpen\Facade\Adapter;
+use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 /**
  * This class registers all of the settings page views
@@ -13,15 +14,14 @@ use WP_Gistpen\Model\Language;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Editor {
-
+class Editor implements HasActions, HasFilters {
 	/**
 	 * All the Ace themes for select box
 	 *
 	 * @var array
 	 * @since    0.4.0
 	 */
-	public $ace_themes = array(
+	public static $ace_themes = array(
 		'ambiance' => 'Ambiance',
 		'chaos' => 'Chaos',
 		'chrome' => 'Chrome',
@@ -45,30 +45,12 @@ class Editor {
 	);
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Database Facade object
 	 *
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	private $database;
+	protected $database;
 
 	/**
 	 * Adapter Facade object
@@ -76,36 +58,29 @@ class Editor {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
+
+	/**
+	 * Plugin path string.
+	 *
+	 * @var string
+	 * @since 0.6.0
+	 */
+	protected $path;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
-	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->database = new Database( $this->plugin_name, $this->version );
-		$this->adapter = new Adapter( $this->plugin_name, $this->version );
-
-	}
-
-	/**
-	 * Manage rendering of repeatable Gistfile editor
 	 *
-	 * @since     0.4.0
+	 * @param Database $database
+	 * @param Adapter  $adapter
+	 * @param string   $path
 	 */
-	public function render_editor_div() {
-		if ( 'gistpen' == get_current_screen()->id ) {
-			include_once( WP_GISTPEN_DIR . 'partials/editor/main.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/zip.inc.php' );
-			include_once( WP_GISTPEN_DIR . 'partials/editor/file.inc.php' );
-		}
+	public function __construct( Database $database, Adapter $adapter, $path ) {
+		$this->database = $database;
+		$this->adapter = $adapter;
+		$this->path = $path;
 	}
 
 	/**
@@ -145,21 +120,21 @@ class Editor {
 	/**
 	 * Adds the file column to the Gistpen edit screen
 	 *
-	 * @param  array $columns Array of the columns
+	 * @param  array $columns Array of the columns.
 	 * @return array          Array with new column added
 	 * @since  0.4.0
 	 */
 	public function manage_posts_columns( $columns ) {
 		return array_merge( $columns, array(
-			'gistpen_files' => __( 'Files', $this->plugin_name )
+			'gistpen_files' => __( 'Files', 'wp-gistpen' ),
 		) );
 	}
 
 	/**
 	 * Render the file column on the Gistpen edit screen
 	 *
-	 * @param  string $column_name the custom column name
-	 * @param  int    $post_id     the ID of the current post
+	 * @param  string $column_name the custom column name.
+	 * @param  int    $post_id     the ID of the current post.
 	 * @since  0.4.0
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
@@ -176,8 +151,8 @@ class Editor {
 	/**
 	 * Reorders in reverse chron on the Gistpen edit screen
 	 *
-	 * @param  string   $orderby  the query's orderby statement
-	 * @param  WP_Query $query    current query obj
+	 * @param  string   $orderby the query's orderby statement.
+	 * @param  WP_Query $query   current query obj.
 	 * @return string          new orderby statement
 	 * @since  0.4.0
 	 */
@@ -190,4 +165,49 @@ class Editor {
 		return $orderby;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook' => 'add_meta_boxes',
+				'method' => 'remove_meta_boxes',
+			),
+			array(
+				'hook' => 'manage_gistpen_posts_custom_column',
+				'method' => 'manage_posts_custom_column',
+				'args' => 2,
+			),
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function filter_hooks() {
+		return array(
+			array(
+				'hook' => 'screen_layout_columns',
+				'method' => 'screen_layout_columns',
+			),
+			array(
+				'hook' => 'get_user_option_screen_layout_gistpen',
+				'method' => 'screen_layout_gistpen',
+			),
+			array(
+				'hook' => 'manage_gistpen_posts_columns',
+				'method' => 'manage_posts_columns',
+			),
+			array(
+				'hook' => 'posts_orderby',
+				'method' => 'edit_screen_orderby',
+				'args' => 2,
+			),
+		);
+	}
 }

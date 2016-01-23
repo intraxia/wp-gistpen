@@ -10,7 +10,7 @@ class WP_Gistpen_Collection_History_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->history = new HistoryCollection( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->history = new HistoryCollection();
 
 		$this->mock_commit
 			->shouldReceive( 'get_ID' )
@@ -47,7 +47,7 @@ class WP_Gistpen_Collection_History_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_first_commit() {
-		$commit = new Commit( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$commit = new Commit();
 		$commit->set_ID( 2 );
 
 		$this->mock_commit
@@ -61,7 +61,7 @@ class WP_Gistpen_Collection_History_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_get_last_commit() {
-		$commit = new Commit( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$commit = new Commit();
 		$commit->set_ID( 1 );
 
 		$this->mock_commit

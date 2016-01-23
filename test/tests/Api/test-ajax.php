@@ -34,7 +34,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 		parent::setUp();
 		$this->create_post_and_children();
 
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->database = new Database();
 	}
 
 	function test_failed_no_nonce() {
@@ -259,7 +259,7 @@ class WP_Gistpen_Api_Ajax_Test extends WP_Gistpen_UnitTestCase {
 	function tearDown() {
 		parent::tearDown();
 
-		App::get('ajax')->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		App::get('ajax')->sync = new Sync( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		App::get('ajax')->database = new Database();
+		App::get('ajax')->sync = new Sync();
 	}
 }

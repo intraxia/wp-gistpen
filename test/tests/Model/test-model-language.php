@@ -14,13 +14,13 @@ class WP_Gistpen_Model_Language_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->language = new Language( WP_Gistpen::$plugin_name, WP_Gistpen::$version, 'php' );
+		$this->language = new Language( 'php' );
 	}
 
 	function test_inst_fail_non_existant_language_slug() {
 		$this->setExpectedException('Exception');
 
-		$language = new Language( WP_Gistpen::$plugin_name, WP_Gistpen::$version, 'slug' );
+		$language = new Language( 'slug' );
 	}
 
 	function test_get_slug() {
@@ -32,13 +32,13 @@ class WP_Gistpen_Model_Language_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_fix_prism_slug_javascript() {
-		$language = new Language( WP_Gistpen::$plugin_name, WP_Gistpen::$version,'js' );
+		$language = new Language( 'js' );
 
 		$this->assertEquals( 'javascript', $language->get_prism_slug() );
 	}
 
 	function test_fix_prism_slug_sass() {
-		$language = new Language( WP_Gistpen::$plugin_name, WP_Gistpen::$version,'sass' );
+		$language = new Language( 'sass' );
 
 		$this->assertEquals( 'scss', $language->get_prism_slug() );
 	}
@@ -48,13 +48,13 @@ class WP_Gistpen_Model_Language_Test extends WP_Gistpen_UnitTestCase {
 	}
 
 	function test_fix_file_ext_bash() {
-		$language = new Language( WP_Gistpen::$plugin_name, WP_Gistpen::$version,'bash' );
+		$language = new Language( 'bash' );
 
 		$this->assertEquals( 'sh', $language->get_file_ext() );
 	}
 
 	function test_fix_file_ext_sass() {
-		$language = new Language( WP_Gistpen::$plugin_name, WP_Gistpen::$version,'sass' );
+		$language = new Language( 'sass' );
 
 		$this->assertEquals( 'scss', $language->get_file_ext() );
 	}

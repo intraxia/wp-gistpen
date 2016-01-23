@@ -1,15 +1,15 @@
 <?php
-namespace WP_Gistpen\Facade;
+namespace Intraxia\Gistpen\Facade;
 
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Database\Query\Commit as CommitQuery;
-use WP_Gistpen\Database\Persistance\Head as HeadPersistance;
-use WP_Gistpen\Database\Persistance\Commit as CommitPersistance;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
+use Intraxia\Gistpen\Database\Query\Commit as CommitQuery;
+use Intraxia\Gistpen\Database\Persistance\Head as HeadPersistance;
+use Intraxia\Gistpen\Database\Persistance\Commit as CommitPersistance;
 
 /**
  * This class handles all of the AJAX responses
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
@@ -17,38 +17,20 @@ use WP_Gistpen\Database\Persistance\Commit as CommitPersistance;
 class Database {
 
 	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
-
-	/**
 	 * Array containing all query objects
 	 *
 	 * @var array
 	 * @since 0.5.0
 	 */
-	private $query = array();
+	protected $query = array();
 
 	/**
-	 * Array containing all persistance objects
+	 * Array containing all persistence objects
 	 *
 	 * @var array
 	 * @since 0.5.0
 	 */
-	private $persistance = array();
+	protected $persistence = array();
 
 	/**
 	 * Initialize the class and set its properties.
@@ -57,23 +39,20 @@ class Database {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct( $adapter ) {
+		$this->query['head'] = new HeadQuery( $adapter );
+		$this->query['commit'] = new CommitQuery( $adapter );
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->query['head'] = new HeadQuery( $this->plugin_name, $this->version );
-		$this->query['commit'] = new CommitQuery( $this->plugin_name, $this->version );
-
-		$this->persistance['head'] = new HeadPersistance( $this->plugin_name, $this->version );
-		$this->persistance['commit'] = new CommitPersistance( $this->plugin_name, $this->version );
-
+		$this->persistence['head'] = new HeadPersistance( $adapter );
+		$this->persistence['commit'] = new CommitPersistance( $adapter );
 	}
 
 	/**
 	 * Query the database
 	 *
-	 * @return Query query object
+	 * @param string $type
+	 * @return mixed
+	 * @throws \Exception
 	 * @since 0.5.0
 	 */
 	public function query( $type = 'head' ) {
@@ -85,16 +64,18 @@ class Database {
 	}
 
 	/**
-	 * Persist to database
+	 * Persist to database.
 	 *
-	 * @return Persistance persistance object
+	 * @param string $type
+	 * @return mixed persistence object
+	 * @throws \Exception
 	 * @since 0.5.0
 	 */
 	public function persist( $type = 'head' ) {
-		if ( ! array_key_exists( $type, $this->persistance ) ) {
+		if ( ! array_key_exists( $type, $this->persistence ) ) {
 			throw new \Exception( "Can't persist on type {$type}" );
 		}
 
-		return $this->persistance[ $type ];
+		return $this->persistence[ $type ];
 	}
 }

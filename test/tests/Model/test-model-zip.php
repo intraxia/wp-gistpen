@@ -12,7 +12,7 @@ class WP_Gistpen_Model_Zip_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->zip = new Zip( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->zip = new Zip();
 	}
 
 	function test_get_set_description() {

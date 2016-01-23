@@ -15,7 +15,7 @@ class WP_Gistpen_Model_File_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->file = new File( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->file = new File();
 	}
 
 	function test_get_set_slug() {

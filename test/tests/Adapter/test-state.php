@@ -7,7 +7,7 @@ class WP_Gistpen_Adapter_State_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->adapter = new StateAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new StateAdapter();
 	}
 
 	function test_build_blank() {

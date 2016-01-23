@@ -15,8 +15,8 @@ class WP_Gistpen_Migration_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->migration = new Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->migration = new Migration();
+		$this->database = new Database();
 	}
 
 	function set_up_0_4_0_test_posts() {

@@ -1,18 +1,16 @@
 <?php
-namespace WP_Gistpen\Database\Query;
+namespace Intraxia\Gistpen\Database\Query;
 
 /**
- * @package   WP_Gistpen
- * @author    James DiGioia <jamesorodig@gmail.com>
- * @license   GPL-2.0+
- * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
+ * @package    Intraxia\Gistpen
+ * @subpackage Database\Query
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @license    GPL-2.0+
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @copyright  2014 James DiGioia
  */
 
-use WP_Gistpen\Collection\History;
-use WP_Gistpen\Database\Query\Head as HeadQuery;
-use WP_Gistpen\Facade\Adapter;
-use WP_Gistpen\Model\Commit as CommitModel;
+use Intraxia\Gistpen\Database\Query\Head as HeadQuery;
 
 /**
  * This class saves and gets Gistpen commits from the database
@@ -29,7 +27,7 @@ class Commit {
 	 * @access   private
 	 * @var      string    $plugin_name    The ID of this plugin.
 	 */
-	private $plugin_name;
+	protected $plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -38,7 +36,7 @@ class Commit {
 	 * @access   private
 	 * @var      string    $version    The current version of this plugin.
 	 */
-	private $version;
+	protected $version;
 
 	/**
 	 * Adapter Facade object
@@ -46,7 +44,7 @@ class Commit {
 	 * @var Adapter
 	 * @since  0.5.0
 	 */
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * HeadQuery object
@@ -63,21 +61,16 @@ class Commit {
 	 * @var      string    $plugin_name       The name of this plugin.
 	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->adapter = new Adapter( $plugin_name, $version );
-		$this->head_query = new HeadQuery( $plugin_name, $version );
-
+	public function __construct( $adapter ) {
+		$this->adapter = $adapter;
+		$this->head_query = new HeadQuery( $adapter );
 	}
 
 	/**
 	 * Gets and builds a History Collection for a given post ID
 	 *
-	 * @param  int     $post_id model's post ID
-	 * @return History          WP_Gistpen model object
+	 * @param  int     $head_id model's post ID
+	 * @return \Intraxia\Gistpen\Collection\History          WP_Gistpen model object
 	 * @since 0.5.0
 	 */
 	public function history_by_head_id( $head_id ) {
@@ -109,7 +102,7 @@ class Commit {
 	/**
 	 * Gets and builds a Commit model based on a WP_Post object
 	 *
-	 * @param  WP_Post $post model's WP_Post object
+	 * @param  \WP_Post $post model's WP_Post object
 	 * @return object       Commit model object
 	 * @since 0.5.0
 	 */
@@ -153,7 +146,6 @@ class Commit {
 	 * Get a State object by the State's ID and its Commit ID
 	 *
 	 * @param  int    $state_id  ID of the State
-	 * @param  int    $commit_id ID of the State's Commit
 	 * @return State             State object
 	 * @since  0.5.0
 	 */
@@ -181,8 +173,8 @@ class Commit {
 	/**
 	 * Retrieves the Language object for a given State ID
 	 *
-	 * @param  int $post_id
-	 * @return Language
+	 * @param  int $state_id
+	 * @return \WP_Gistpen\Model\Language
 	 * @since  0.4.0
 	 */
 	public function language_by_state_id( $state_id ) {

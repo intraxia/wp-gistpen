@@ -8,7 +8,7 @@ class WP_Gistpen_Facade_Adapter_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->adapter = new Adapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new Adapter();
 	}
 
 	function test_get_file_adapter() {

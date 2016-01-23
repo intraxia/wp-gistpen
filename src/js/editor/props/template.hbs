@@ -1,0 +1,15 @@
+<div class="wpgp-zip-props">
+    <div class="wpgp-status">
+        <label for="wpgp-zip-status" id="zip-status-text">Post Status:</label>
+        <select id="wpgp-zip-status" data-wpgp-zip-status>
+            {{#each statuses as |display slug|}}
+                <option value="{{slug}}">{{display}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="wpgp-sync">
+        <input type="checkbox" name="wpgp-zip-sync" id="wpgp-zip-sync" {{#if checked}}checked {{/if}}data-wpgp-sync>
+        <label for="wpgp-zip-sync" id="zip-sync-text">Sync Gistpen with Gist?</label>
+    </div>
+</div>

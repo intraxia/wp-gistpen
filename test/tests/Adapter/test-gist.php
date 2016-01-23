@@ -9,7 +9,7 @@ class WP_Gistpen_Adapter_Gist_Test extends WP_Gistpen_UnitTestCase {
 	function setUp() {
 		parent::setUp();
 
-		$this->adapter = new GistAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new GistAdapter();
 
 		$this->mock_commit
 			->shouldReceive( 'get_description' )

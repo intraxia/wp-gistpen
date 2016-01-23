@@ -8,7 +8,7 @@ class WP_Gistpen_Facade_Database_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->database = new Database( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->database = new Database();
 	}
 
 	function test_get_head_query() {

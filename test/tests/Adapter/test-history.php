@@ -7,7 +7,7 @@ class WP_Gistpen_Adapter_History_Test extends WP_Gistpen_UnitTestCase {
 
 	function setUp() {
 		parent::setUp();
-		$this->adapter = new HistoryAdapter( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->adapter = new HistoryAdapter();
 	}
 
 	function test_build_blank() {

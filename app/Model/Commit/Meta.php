@@ -1,17 +1,17 @@
 <?php
-namespace WP_Gistpen\Model\Commit;
+namespace Intraxia\Gistpen\Model\Commit;
 
-use WP_Gistpen\Model\Commit\State;
+use Intraxia\Gistpen\Model\Zip;
 
 /**
  * Data object for an individual Commit
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Meta extends \WP_Gistpen\Model\Zip {
+class Meta extends Zip {
 
 	/**
 	 * Head ID
@@ -32,7 +32,7 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	/**
 	 * Array of File States
 	 *
-	 * @var array
+	 * @var State[]
 	 * @since 0.5.0
 	 */
 	protected $states = array();
@@ -80,7 +80,7 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	/**
 	 * Get the Array of States
 	 *
-	 * @return array Array of states
+	 * @return State[]
 	 * @since  0.5.0
 	 */
 	public function get_states() {
@@ -91,14 +91,10 @@ class Meta extends \WP_Gistpen\Model\Zip {
 	 * Validate and add a State to the Commit
 	 *
 	 * @param State $state State model object
-	 * @throws Exception If not a State model object
+	 * @throws \Exception If not a State model object
 	 * @since 0.5.0
 	 */
-	public function add_state( $state ) {
-		if ( ! $state instanceof State ) {
-			throw new Exception( 'State objects only added to states array' );
-		}
-
+	public function add_state( State $state ) {
 		$state_id = $state->get_ID();
 
 		if ( null !== $state_id ) {

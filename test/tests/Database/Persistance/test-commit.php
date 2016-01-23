@@ -16,8 +16,8 @@ class WP_Gistpen_Persistance_Commit_Test extends WP_Gistpen_UnitTestCase {
 		$this->_setRole( 'administrator' );
 		$this->create_post_and_children();
 
-		$this->persistance = new Persistance( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
-		$this->head_query = new HeadQuery( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->persistance = new Persistance();
+		$this->head_query = new HeadQuery();
 
 		$this->zip = $this->head_query->by_id( $this->gistpen->ID );
 	}

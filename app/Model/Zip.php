@@ -1,5 +1,5 @@
 <?php
-namespace WP_Gistpen\Model;
+namespace Intraxia\Gistpen\Model;
 
 /**
  * Manages the Gistpen's zip data
@@ -8,30 +8,12 @@ namespace WP_Gistpen\Model;
  * individual Gistpen can hold, as well as metadata
  * about the Gistpen.
  *
- * @package    WP_Gistpen
+ * @package    Intraxia\Gistpen
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
 class Zip {
-
-	/**
-	 * The ID of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
-	 */
-	private $plugin_name;
-
-	/**
-	 * The version of this plugin.
-	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
-	 */
-	private $version;
 
 	/**
 	 * Zip description
@@ -44,10 +26,10 @@ class Zip {
 	/**
 	 * Files contained by the Zip
 	 *
-	 * @var array
+	 * @var File[]
 	 * @since 0.4.0
 	 */
-	protected $files;
+	protected $files = array();
 
 	/**
 	 * Post's ID
@@ -90,20 +72,12 @@ class Zip {
 	protected $sync = 'off';
 
 	/**
-	 * Date craeted in GMT
+	 * Date created in GMT
 	 *
 	 * @var string
 	 * @since    0.5.0
 	 */
 	protected $create_date = '';
-
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		$this->files = array();
-
-	}
 
 	/**
 	 * Get the zip's description
@@ -128,7 +102,7 @@ class Zip {
 	/**
 	 * Get the zip's files
 	 *
-	 * @return string
+	 * @return File[]
 	 * @since 0.5.0
 	 */
 	public function get_files() {
@@ -139,14 +113,9 @@ class Zip {
 	 * Validate and add a file to the zip
 	 *
 	 * @param File $file File model object
-	 * @throws Exception If not a File model object
 	 * @since 0.5.0
 	 */
-	public function add_file( $file ) {
-		if ( ! $file instanceof File ) {
-			throw new Exception( 'File objects only added to files' );
-		}
-
+	public function add_file( File $file ) {
 		$file_id = $file->get_ID();
 
 		if ( null !== $file_id ) {
@@ -185,7 +154,9 @@ class Zip {
 	 * @since  0.5.0
 	 */
 	public function set_ID( $ID ) {
-		$this->ID = (int) $ID;
+		if ( $ID ) {
+			$this->ID = (int) $ID;
+		}
 	}
 
 	/**

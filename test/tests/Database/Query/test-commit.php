@@ -15,9 +15,9 @@ class WP_Gistpen_Database_Query_Commit_Test extends WP_Gistpen_UnitTestCase {
 
 		$this->create_post_and_children();
 
-		$this->query = new Query( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$this->query = new Query();
 
-		$migration = new WP_Gistpen\Migration( WP_Gistpen::$plugin_name, WP_Gistpen::$version );
+		$migration = new WP_Gistpen\Migration();
 		delete_post_meta( $this->gistpen->ID, 'wpgp_revisions' );
 		$migration->update_to_0_5_0();
 	}
