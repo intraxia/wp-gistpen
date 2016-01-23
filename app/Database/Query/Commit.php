@@ -146,7 +146,7 @@ class Commit {
 	 * Get a State object by the State's ID and its Commit ID
 	 *
 	 * @param  int    $state_id  ID of the State
-	 * @return \WP_Gistpen\Model\Commit\State             State object
+	 * @return State             State object
 	 * @since  0.5.0
 	 */
 	public function state_by_id( $state_id ) {
