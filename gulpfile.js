@@ -1,6 +1,4 @@
 var gulp = require('gulp');
-var glob = require('glob');
-var fs = require('fs');
 var Q = require('Q');
 var path = require('path');
 var concat = require('gulp-concat');
