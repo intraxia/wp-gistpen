@@ -1,0 +1,91 @@
+FORMAT: 1A
+HOST: http://jamesdigioia.ngrok.com/wp-json/intraxia/v1/gistpen
+
+# WP-Gistpen
+
+The WP-Gistpen API is built into the WP-API for client-side Gistpen manipulation.
+
+## Zip Collection [/zip]
+
+### List Zip Resources [GET]
+
+You can retrieve the most recent Zip resources.
+
++ Response 200
+    [
+        {
+            "description": "Zip description"
+        }
+    ]
+
+### Create Zip Resource [POST]
+
+You can create a new Zip resource.
+
+// @todo params and response
+
+### Update Zip Resource [PUT]
+
+You can update a currently existing Zip resource at the provided id.
+
+// @todo params and response
+
+## Search Endpoint [/search]
+
+### Search Gistpen [GET]
+
+You can search Gistpen for both Zip and File resources using a number of provided url parameters.
+
++ Paramters
+    + s: `composer.json` - Term to search by
+        + Default: ""
+    + type: `both` (enum[string]) - Type to search by
+
+        Should be either Zip, File, or both.
+
+        + Members
+            + `zip`
+            + `file`
+            + `both`
+
++ Response 200
+
+        [
+            {
+                "description": "Zip description"
+            }
+        ]
+
+## User Collection [/me]
+
+### List User Settings [GET]
+
+You can retrieve the user's current settings with this endpoint. It returns an object with key:value pairs with all of the user's settings.
+
++ Response 200 (application/json)
+
+        {
+            "ace_theme": "ambiance"
+        }
+
+### Update User Settings [PATCH]
+
+You can update a user's settings with this endpoint. It also returns an object with the user's settings, in addition to an error array for any keys that weren't updated.
+
++ Request (application/json)
+
+        {
+            "ace_theme": "chaos",
+            "unknown_key": "random-value"
+        }
+
++ Response 201 (application/json)
+
+        {
+            "ace_theme": "chaos",
+            "errors": [{
+                "code": "invalid_key",
+                "message": "Invalid option key",
+                "data": "unknown_key"
+            }]
+        }
