@@ -80,7 +80,7 @@ class Meta extends Zip {
 	/**
 	 * Get the Array of States
 	 *
-	 * @return \WP_Gistpen\Model\Commit\State[]
+	 * @return State[]
 	 * @since  0.5.0
 	 */
 	public function get_states() {
@@ -94,11 +94,7 @@ class Meta extends Zip {
 	 * @throws \Exception If not a State model object
 	 * @since 0.5.0
 	 */
-	public function add_state( $state ) {
-		if ( ! $state instanceof State ) {
-			throw new \Exception( 'State objects only added to states array' );
-		}
-
+	public function add_state( State $state ) {
 		$state_id = $state->get_ID();
 
 		if ( null !== $state_id ) {
