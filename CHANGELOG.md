@@ -17,6 +17,15 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * WP-API integration
 	* This requires an upgrade to WordPress 4.4+ or installation of rest-api plugin
 * Plugin architecture now built on [Jaxion] framework
+* New Prism themes:
+	* Tomorrow
+	* CB
+	* GHColors
+	* Projoaque
+	* Xonokai
+	* Ateliersulphurpool-Light
+	* Hopscotch
+	* Atom Dark
 
 #### Changed ####
 * Improve JavaScript architecture
