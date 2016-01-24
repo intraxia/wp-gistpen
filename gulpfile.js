@@ -52,7 +52,9 @@ gulp.task('styles', function () {
         'src/scss/*.scss',
         'node_modules/prismjs/themes/*.css',
         'node_modules/prism-themes/themes/*.css',
-        'node_modules/prismjs/plugins/line-numbers/*.css'
+        'node_modules/prismjs/plugins/line-numbers/*.css',
+        'node_modules/prismjs/plugins/show-invisibles/*.css',
+        'node_modules/prismjs/plugins/show-language/*.css'
     ])
         .pipe(sass())
         .pipe(gulp.dest('assets/css'))

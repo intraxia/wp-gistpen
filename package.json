@@ -27,6 +27,7 @@
     "clipboard": "^1.5.5",
     "jquery": "2.2.0",
     "lodash.assign": "^4.0.0",
+    "lodash.forown": "^4.0.0",
     "plite": "0.0.3",
     "prism-themes": "git+https://github.com/mAAdhaTTah/prism-themes.git",
     "prismjs": "1.3.0"

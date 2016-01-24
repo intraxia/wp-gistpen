@@ -9,17 +9,20 @@ $(document).ready(function () {
     var lineNumbers;
     var exportBtn;
     var importBtn;
+    var siSelect;
 
     Prism.highlightAll();
 
     queryDOM();
     Prism.loadTheme(Gistpen_Settings.prism.theme);
     toggleLineNumbers(Gistpen_Settings.prism.plugins['line-numbers'].enabled);
+    toggleInvisibles(Gistpen_Settings.prism.plugins['show-invisibles'].enabled);
     setClickHandlers();
 
     function queryDOM() {
         themeSelect = $('#_wpgp_gistpen_highlighter_theme');
         lnSelect = $('#_wpgp_gistpen_line_numbers');
+        siSelect = $('#_wpgp_show_invisibles');
         pre = $('pre.gistpen');
         code = pre.find('code');
         lineNumbers = $('span.line-numbers-rows');
@@ -46,5 +49,9 @@ $(document).ready(function () {
             pre.removeClass('line-numbers');
             lineNumbers.remove();
         }
+    }
+
+    function toggleInvisibles(enable) {
+
     }
 });
