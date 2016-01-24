@@ -50,7 +50,8 @@ gulp.task('styles', function () {
     return gulp.src([
         'src/scss/*.scss',
         'node_modules/prismjs/themes/*.css',
-        'node_modules/prismjs/plugins/line-numbers/*.css'
+        'node_modules/prismjs/plugins/line-numbers/*.css',
+        'node_modules/prismjs/plugins/show-invisibles/*.css'
     ])
         .pipe(sass())
         .pipe(gulp.dest('assets/css'))

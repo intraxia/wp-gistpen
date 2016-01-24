@@ -50,6 +50,11 @@
 					'id'   => $prefix . 'gistpen_line_numbers',
 					'type' => 'checkbox',
 				),
+				array(
+					'name' => __( 'Enable show invisibles', 'wp-gistpen' ),
+					'id'   => $prefix . 'show_invisibles',
+					'type' => 'checkbox',
+				),
 			)
 		), 'wp-gistpen' );
 	?>
