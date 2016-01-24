@@ -63,7 +63,7 @@ class UserControllerTest extends TestCase {
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
 		$this->assertSame( $this->data, $response->get_data() );
 		$this->assertSame( 200, $response->get_status() );
-		$this->assertSame( array( 'X-Invalid-Keys' => array() ), $response->get_headers() );
+		$this->assertSame( array( 'X-Invalid-Keys' => '' ), $response->get_headers() );
 	}
 
 	public function test_should_return_invalid_key_when_update_fails() {
@@ -80,7 +80,7 @@ class UserControllerTest extends TestCase {
 			->shouldReceive( 'all' )
 			->once()
 			->andReturn( $this->data );
-		$invalid = array( 'ace_theme' );
+		$invalid = 'ace_theme';
 
 		$response = $this->controller->update( $this->request );
 

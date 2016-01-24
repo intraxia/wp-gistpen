@@ -59,6 +59,6 @@ class UserController {
 			}
 		}
 
-		return new WP_REST_Response( $this->user->all(), 200, array( 'X-Invalid-Keys' => $invalid ) );
+		return new WP_REST_Response( $this->user->all(), 200, array( 'X-Invalid-Keys' => implode(', ', $invalid ) ) );
 	}
 }
