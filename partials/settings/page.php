@@ -58,6 +58,16 @@
 					'id'   => $prefix . 'gistpen_line_numbers',
 					'type' => 'checkbox',
 				),
+				array(
+					'name' => __( 'Enable show invisibles', 'wp-gistpen' ),
+					'id'   => $prefix . 'show_invisibles',
+					'type' => 'checkbox',
+				),
+				array(
+					'name' => __( 'Enable show language', 'wp-gistpen' ),
+					'id'   => $prefix . 'show_language',
+					'type' => 'checkbox',
+				),
 			)
 		), 'wp-gistpen' );
 	?>
@@ -86,7 +96,3 @@ for i in (0...items.length)
 end</code></pre>
 
 </div>
-
-<?php include_once( 'export.inc.php' ); ?>
-<?php include_once( 'import.inc.php' ); ?>
-<?php include_once( 'status.inc.php' ); ?>

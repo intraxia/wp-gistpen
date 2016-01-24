@@ -45,7 +45,9 @@ class AssetsServiceProvider extends ServiceProvider {
 					'prism'      => array(
 						'theme'   => $theme ? : 'default',
 						'plugins' => array(
-							'line-numbers' => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' ) ),
+							'line-numbers'    => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' ) ),
+							'show-invisibles' => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_show_invisibles' ) ),
+							'show-language'   => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_show_language' ) ),
 						),
 					),
 				),
