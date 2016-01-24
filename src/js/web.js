@@ -1,5 +1,6 @@
 var Prism = require('./prism');
 var Plite = require('plite');
+var toolbar = require('./prism/toolbar');
 var forOwn = require('lodash.forown');
 
 var promises = [];
@@ -10,6 +11,10 @@ forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
         promises.push(Prism.loadPlugin(plugin));
     }
 });
+
+promises.push(Prism.loadPlugin('toolbar'));
+
+Prism.hooks.add('after-highlight', toolbar.hook);
 
 Plite.all(promises)
     .then(Prism.highlightAll)
