@@ -50,13 +50,20 @@ module.exports = Backbone.View.extend({
             this.model.file.set('language', 'plaintext');
         }
 
+        this.updateTheme(this.model.user);
+        this.toggleInvisibles(this.model.user);
+        this.toggleTabs(this.model.user);
+        this.updateWidth(this.model.user);
+
         this.$langSelect.val(this.model.file.get('language'));
-        this.aceEditor.setTheme('ace/theme/' + this.model.user.get('ace_theme'));
         this.updateLanguage();
 
         this.switchToAce();
 
         this.listenTo(this.model.user, 'change:ace_theme', this.updateTheme);
+        this.listenTo(this.model.user, 'change:ace_invisibles', this.toggleInvisibles);
+        this.listenTo(this.model.user, 'change:ace_tabs', this.toggleTabs);
+        this.listenTo(this.model.user, 'change:ace_width', this.updateWidth);
 
         return this;
     },
@@ -125,7 +132,7 @@ module.exports = Backbone.View.extend({
             this.aceEditor.getSession().setMode('ace/mode/javascript');
         } else if ('bash' === modelLang) {
             this.aceEditor.getSession().setMode('ace/mode/sh');
-        } else if ('c' === modelLang || 'cpp' === modelLang || 'swift' === modelLang) {
+        } else if ('c' === modelLang || 'cpp' === modelLang) {
             this.aceEditor.getSession().setMode('ace/mode/c_cpp');
         } else if ('coffeescript' === modelLang) {
             this.aceEditor.getSession().setMode('ace/mode/coffee');
@@ -167,5 +174,34 @@ module.exports = Backbone.View.extend({
      */
     updateTheme: function (user) {
         this.aceEditor.setTheme('ace/theme/' + user.get('ace_theme'));
+    },
+
+    /**
+     * Update whether Ace editor displays invisibles (spaces/tabs/hard returns.
+     *
+     * @param user
+     */
+    toggleInvisibles: function (user) {
+        this.aceEditor.setShowInvisibles('on' === user.get('ace_invisibles'));
+    },
+
+    /**
+     * Update whether the Ace editor uses tabs.
+     *
+     * @param user
+     */
+    toggleTabs: function (user) {
+        this.aceEditor.getSession()
+            .setUseSoftTabs('on' !== user.get('ace_tabs'));
+    },
+
+    /**
+     * Update the Ace editor's indentation.
+     *
+     * @param user
+     */
+    updateWidth: function (user) {
+        this.aceEditor.getSession()
+            .setTabSize(parseInt(user.get('ace_width'), 10));
     }
 });

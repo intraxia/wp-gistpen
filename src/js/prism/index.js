@@ -1,20 +1,20 @@
 var Plite = require('plite');
 var Prism = require('./compiled');
+var extend = require('lodash.assign');
 
 var css = document.createElement("link");
 css.type = "text/css";
 css.rel = "stylesheet";
 document.getElementsByTagName("head")[0].appendChild(css);
 
-module.exports = {
-    highlightAll: highlightAll,
+var api = {
     loadTheme: loadTheme,
     loadPlugin: loadPlugin
 };
 
-function highlightAll() {
-    Prism.highlightAll();
-}
+extend(api, Prism);
+module.exports = api;
+
 
 function loadTheme(theme) {
     return Plite(function(resolve, reject) {

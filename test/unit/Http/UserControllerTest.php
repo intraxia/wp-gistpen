@@ -1,13 +1,14 @@
 <?php
-namespace Intraxia\Jaxion\Test\Http;
+namespace Intraxia\Gistpen\Test\Http;
 
 use Intraxia\Gistpen\Http\UserController;
+use Intraxia\Gistpen\Test\TestCase;
 use InvalidArgumentException;
 use Mockery;
 use WP_Error;
 use WP_UnitTestCase;
 
-class UserControllerTest extends WP_UnitTestCase {
+class UserControllerTest extends TestCase {
 	/**
 	 * @var UserController
 	 */
@@ -27,9 +28,8 @@ class UserControllerTest extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->user       = Mockery::mock( 'Intraxia\Gistpen\Options\User' );
-		$this->controller = new UserController( $this->user );
-		$this->request    = Mockery::mock( 'WP_REST_Request' );
+		$this->controller = new UserController( $this->user = $this->mock( 'options.user' ) );
+		$this->request    = $this->mock( 'WP_REST_Request' );
 	}
 
 	public function test_should_return_all_options_in_response() {
@@ -41,7 +41,7 @@ class UserControllerTest extends WP_UnitTestCase {
 		$response = $this->controller->view();
 
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
-		$this->assertEquals( $this->data, $response->get_data() );
+		$this->assertSame( $this->data, $response->get_data() );
 	}
 
 	public function test_should_update_option_and_return_all() {
@@ -61,10 +61,12 @@ class UserControllerTest extends WP_UnitTestCase {
 		$response = $this->controller->update( $this->request );
 
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
-		$this->assertEquals( array_merge( array( 'errors' => array() ), $this->data ), $response->get_data() );
+		$this->assertSame( $this->data, $response->get_data() );
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertSame( array( 'X-Invalid-Keys' => '' ), $response->get_headers() );
 	}
 
-	public function test_should_return_error_when_update_fails() {
+	public function test_should_return_invalid_key_when_update_fails() {
 		$this->request
 			->shouldReceive( 'get_params' )
 			->once()
@@ -78,12 +80,14 @@ class UserControllerTest extends WP_UnitTestCase {
 			->shouldReceive( 'all' )
 			->once()
 			->andReturn( $this->data );
-		$errors = array( new WP_Error( 'invalid_key', __( 'Invalid key', 'wp-gistpen' ), 'ace_theme' ) );
+		$invalid = 'ace_theme';
 
 		$response = $this->controller->update( $this->request );
 
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
-		$this->assertEquals( array_merge( array( 'errors' => $errors ), $this->data ), $response->get_data() );
+		$this->assertSame( $this->data, $response->get_data() );
+		$this->assertSame( 200, $response->get_status() );
+		$this->assertSame( array( 'X-Invalid-Keys' => $invalid ), $response->get_headers() );
 	}
 
 	public function tearDown() {

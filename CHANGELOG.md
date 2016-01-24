@@ -17,6 +17,23 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * WP-API integration
 	* This requires an upgrade to WordPress 4.4+ or installation of rest-api plugin
 * Plugin architecture now built on [Jaxion] framework
+* New Prism plugins:
+	* Show invisibles: Display tabs and line returns as characters
+	* Show language: Display the language in the embed
+	* Add copy-to-clipboard button
+* New Prism themes:
+	* Tomorrow
+	* CB
+	* GHColors
+	* Projoaque
+	* Xonokai
+	* Ateliersulphurpool-Light
+	* Hopscotch
+	* Atom Dark
+* Additional Ace editor options
+	* Enable/disable tabs
+	* Set indentation width
+	* Show/hide invisibles
 
 #### Changed ####
 * Improve JavaScript architecture
