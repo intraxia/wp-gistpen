@@ -28,6 +28,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 	* Atom Dark
 * Additional Ace editor options
 	* Enable/disable tabs
+	* Set indentation width
 	* Show/hide invisibles
 
 #### Changed ####
