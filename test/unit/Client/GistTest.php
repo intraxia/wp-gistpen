@@ -4,23 +4,62 @@ namespace Intraxia\Gistpen\Test\Client;
 use Github\Client;
 use Github\Exception\RuntimeException;
 use Intraxia\Gistpen\Client\Gist;
+use Intraxia\Gistpen\Test\TestCase;
 use Mockery;
 
 /**
  * @group clients
  */
-class GistTest extends \WP_Gistpen_UnitTestCase {
+class GistTest extends TestCase {
 	/**
 	 * @var Gist
 	 */
-	public $gist;
+	protected $gist;
+
+	/**
+	 * @var Mockery\MockInterface
+	 */
+	protected $adapter;
+
+	/**
+	 * @var Mockery\MockInterface
+	 */
+	protected $client;
+
+	/**
+	 * @var Mockery\MockInterface
+	 */
+	protected $commit;
+
+	/**
+	 * @var Mockery\MockInterface
+	 */
+	protected $zip;
+
+	/**
+	 * @var Mockery\MockInterface
+	 */
+	protected $file;
+
+	/**
+	 * @var Mockery\MockInterface
+	 */
+	protected $lang;
 
 	public function setUp() {
 		parent::setUp();
-		$this->gist = new Gist( $this->mock_adapter, $this->mock_github_client );
-		$this->mock_github_client
+		$this->gist = new Gist(
+			$this->adapter = $this->mock( 'facade.adapter' ),
+			$this->client = $this->mock( 'Github\Client')
+		);
+		$this->commit = $this->mock( 'Intraxia\Gistpen\Model\Commit\Meta' );
+		$this->zip = $this->mock( 'Intraxia\Gistpen\Model\Zip' );
+		$this->file = $this->mock( 'Intraxia\Gistpen\Model\File' );
+		$this->lang = $this->mock( 'Intraxia\Gistpen\Model\Language' );
+
+		$this->client
 			->shouldReceive( 'api' )
-			->andReturn( $this->mock_github_client )
+			->andReturn( $this->client )
 			->byDefault();
 	}
 
@@ -39,11 +78,11 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 			'username' => 'mAAdhaTTah',
 			'email'    => 'jamesorodig@gmail.com',
 		);
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->with( '1234', null, Client::AUTH_HTTP_TOKEN )
 			->once();
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'show' )
 			->once()
 			->andReturn( $response );
@@ -59,11 +98,11 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 
 	public function test_should_fail_if_token_invalid() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->with( '1234', null, Client::AUTH_HTTP_TOKEN )
 			->once();
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'show' )
 			->once()
 			->andThrow( new RuntimeException );
@@ -74,7 +113,7 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 	}
 
 	public function test_create_should_fail_if_not_ready() {
-		$result = $this->gist->create( $this->mock_commit );
+		$result = $this->gist->create( $this->commit );
 
 		$this->assertFalse( $result );
 		$this->assertEquals( 'noToken', $this->gist->get_error()
@@ -84,26 +123,26 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 	public function test_create_should_set_error_and_return_false_on_api_failure() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
 
-		$this->mock_adapter
+		$this->adapter
 			->shouldReceive( 'build' )
 			->with( 'gist' )
 			->once()
-			->andReturn( $this->mock_gist_adapter );
-		$this->mock_gist_adapter
+			->andReturn( $this->adapter );
+		$this->adapter
 			->shouldReceive( 'create_by_commit' )
-			->with( $this->mock_commit )
+			->with( $this->commit )
 			->once()
 			->andReturn( array() );
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once();
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'create' )
 			->with( array() )
 			->once()
 			->andThrow( new RuntimeException( 'Some Error Occurred', 1234 ) );
 
-		$result = $this->gist->create( $this->mock_commit );
+		$result = $this->gist->create( $this->commit );
 
 		$this->assertFalse( $result );
 		$this->assertEquals( 'Some Error Occurred', $this->gist->get_error()
@@ -113,31 +152,31 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 	public function test_should_return_new_gist_data() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
 
-		$this->mock_adapter
+		$this->adapter
 			->shouldReceive( 'build' )
 			->with( 'gist' )
 			->once()
-			->andReturn( $this->mock_gist_adapter );
-		$this->mock_gist_adapter
+			->andReturn( $this->adapter );
+		$this->adapter
 			->shouldReceive( 'create_by_commit' )
 			->once()
 			->andReturn( array() );
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once();
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'create' )
 			->once()
 			->andReturn( array( 'id' => '1234' ) );
 
-		$result = $this->gist->create( $this->mock_commit );
+		$result = $this->gist->create( $this->commit );
 
 		$this->assertInternalType( 'array', $result );
 		$this->assertEquals( '1234', $result['id'] );
 	}
 
 	public function test_update_should_fail_if_not_ready() {
-		$result = $this->gist->update( $this->mock_commit );
+		$result = $this->gist->update( $this->commit );
 
 		$this->assertFalse( $result );
 		$this->assertEquals( 'noToken', $this->gist->get_error()
@@ -147,57 +186,57 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 	public function test_update_should_fail_on_api_failure() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
 
-		$this->mock_adapter
+		$this->adapter
 			->shouldReceive( 'build' )
 			->with( 'gist' )
 			->once()
-			->andReturn( $this->mock_gist_adapter );
-		$this->mock_gist_adapter
+			->andReturn( $this->adapter );
+		$this->adapter
 			->shouldReceive( 'update_by_commit' )
 			->once()
 			->andReturn( array() );
-		$this->mock_commit
+		$this->commit
 			->shouldReceive( 'get_head_gist_id' )
 			->once()
 			->andReturn( 'gist_id' );
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once();
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'update' )
 			->once()
 			->withArgs( array( 'gist_id', array() ) )
 			->andThrow( new RuntimeException );
 
-		$this->assertFalse( $this->gist->update( $this->mock_commit ) );
+		$this->assertFalse( $this->gist->update( $this->commit ) );
 		$this->assertInstanceOf( 'WP_Error', $this->gist->get_error() );
 	}
 
 	public function test_update_should_return_updated_gist_data() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
 
-		$this->mock_adapter
+		$this->adapter
 			->shouldReceive( 'build' )
 			->with( 'gist' )
 			->once()
-			->andReturn( $this->mock_gist_adapter );
-		$this->mock_gist_adapter
+			->andReturn( $this->adapter );
+		$this->adapter
 			->shouldReceive( 'update_by_commit' )
 			->once()
 			->andReturn( array() );
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once()
 			->shouldReceive( 'update' )
 			->once()
 			->withArgs( array( 'gist_id', array() ) )
 			->andReturn( array( 'id' => '1234' ) );
-		$this->mock_commit
+		$this->commit
 			->shouldReceive( 'get_head_gist_id' )
 			->once()
 			->andReturn( 'gist_id' );
 
-		$result = $this->gist->update( $this->mock_commit );
+		$result = $this->gist->update( $this->commit );
 
 		$this->assertEquals( array( 'id' => '1234' ), $result );
 	}
@@ -211,12 +250,12 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 	public function test_all_should_fail_on_api_failure() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
 
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once();
-		$pager = Mockery::mock( 'overload:Github\ResultPager' );
+		$pager = $this->mock( 'overload:Github\ResultPager' );
 		$pager->shouldReceive( 'fetchAll' )
-			->with( $this->mock_github_client, 'all' )
+			->with( $this->client, 'all' )
 			->andThrow( new RuntimeException( 'Some Error Occurred', 1234 ) );
 
 		$this->assertFalse( $this->gist->all() );
@@ -227,12 +266,12 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 	public function test_all_should_return_array_of_IDs() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
 
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once();
-		$pager = Mockery::mock( 'overload:Github\ResultPager' );
+		$pager = $this->mock( 'overload:Github\ResultPager' );
 		$pager->shouldReceive( 'fetchAll' )
-			->with( $this->mock_github_client, 'all' )
+			->with( $this->client, 'all' )
 			->andReturn( array(
 				array( 'id' => 'first', 'code' => 'echo $truth;' ),
 				array( 'id' => 'second', 'code' => 'echo $lies;' )
@@ -254,10 +293,10 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 	public function test_get_should_fail_on_api_failure() {
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
 
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once();
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'show' )
 			->with( '1234' )
 			->andThrow( new RuntimeException( 'Some Error Occurred', 1234 ) );
@@ -280,39 +319,39 @@ class GistTest extends \WP_Gistpen_UnitTestCase {
 		);
 
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', '1234' );
-		$this->mock_github_client
+		$this->client
 			->shouldReceive( 'authenticate' )
 			->once()
 			->shouldReceive( 'show' )
 			->with( '1234' )
 			->once()
 			->andReturn( $response );
-		$this->mock_adapter
+		$this->adapter
 			->shouldReceive( 'build' )
 			->times( 3 )
-			->andReturn( $this->mock_adapter );
-		$this->mock_adapter
+			->andReturn( $this->adapter );
+		$this->adapter
 			->shouldReceive( 'by_gist' )
 			->with( $response )
-			->andReturn( $this->mock_zip );
-		$this->mock_adapter
+			->andReturn( $this->zip );
+		$this->adapter
 			->shouldReceive( 'by_gist' )
 			->with( $response['files']['test.php'] )
-			->andReturn( $this->mock_file );
-		$this->mock_adapter
+			->andReturn( $this->file );
+		$this->adapter
 			->shouldReceive( 'by_gist' )
 			->with( $response['files']['test.php']['language'] )
-			->andReturn( $this->mock_lang );
-		$this->mock_zip
+			->andReturn( $this->lang );
+		$this->zip
 			->shouldReceive( 'add_file' )
-			->with( $this->mock_file );
-		$this->mock_file
+			->with( $this->file );
+		$this->file
 			->shouldReceive( 'set_language' )
-			->with( $this->mock_lang );
+			->with( $this->lang );
 
 		$gist = $this->gist->get( '1234' );
 
-		$this->assertSame( $this->mock_zip, $gist['zip'] );
+		$this->assertSame( $this->zip, $gist['zip'] );
 		$this->assertEquals( '1234', $gist['version'] );
 	}
 
