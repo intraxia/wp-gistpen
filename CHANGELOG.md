@@ -20,6 +20,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * New Prism plugins:
 	* Show invisibles: Display tabs and line returns as characters
 	* Show language: Display the language in the embed
+	* Add copy-to-clipboard button
 * New Prism themes:
 	* Tomorrow
 	* CB
