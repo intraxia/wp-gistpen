@@ -10,6 +10,12 @@ class UserTest extends TestCase {
 	 */
 	protected $user;
 
+	protected $dummy = array(
+		'ace_theme'      => 'test',
+		'ace_invisibles' => 'on',
+		'ace_tabs'       => 'off',
+	);
+
 	public function setUp() {
 		parent::setUp();
 		$this->user = new User;
@@ -17,15 +23,17 @@ class UserTest extends TestCase {
 		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );
 
-		update_user_meta( get_current_user_id(), '_wpgp_ace_theme', 'test' );
+		foreach ( $this->dummy as $key => $value ) {
+			update_user_meta( get_current_user_id(), "_wpgp_{$key}", $value );
+		}
 	}
 
 	public function test_should_retrieve_all_users_options() {
-		$this->assertSame( array( 'ace_theme' => 'test' ), $this->user->all() );
+		$this->assertSame( $this->dummy, $this->user->all() );
 	}
 
 	public function test_should_retrieve_ace_theme() {
-		$this->assertSame( 'test', $this->user->get( 'ace_theme' ) );
+		$this->assertSame( $this->dummy['ace_theme'], $this->user->get( 'ace_theme' ) );
 	}
 
 	public function test_should_update_ace_theme() {
@@ -34,6 +42,30 @@ class UserTest extends TestCase {
 		$this->user->set( 'ace_theme', $value );
 
 		$this->assertSame( $value, $this->user->get( 'ace_theme' ) );
+	}
+
+	public function test_should_retrieve_ace_tabs() {
+		$this->assertSame( $this->dummy['ace_tabs'], $this->user->get( 'ace_tabs' ) );
+	}
+
+	public function test_should_update_ace_tabs() {
+		$value = 'on';
+
+		$this->user->set( 'ace_tabs', $value );
+
+		$this->assertSame( $value, $this->user->get( 'ace_tabs' ) );
+	}
+
+	public function test_should_retrieve_ace_invisibles() {
+		$this->assertSame( $this->dummy['ace_invisibles'], $this->user->get( 'ace_invisibles' ) );
+	}
+
+	public function test_should_update_ace_invisibles() {
+		$value = 'off';
+
+		$this->user->set( 'ace_invisibles', $value );
+
+		$this->assertSame( $value, $this->user->get( 'ace_invisibles' ) );
 	}
 
 	public function test_should_throw_exception_getting_unknown_option() {

@@ -9,7 +9,7 @@ class User {
 	 *
 	 * @var array
 	 */
-	protected $options = array( 'ace_theme' );
+	protected $options = array( 'ace_theme', 'ace_invisibles', 'ace_tabs' );
 
 	/**
 	 * Options prefix.

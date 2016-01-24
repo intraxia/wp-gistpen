@@ -57,6 +57,8 @@ module.exports = Backbone.View.extend({
         this.switchToAce();
 
         this.listenTo(this.model.user, 'change:ace_theme', this.updateTheme);
+        this.listenTo(this.model.user, 'change:ace_invisibles', this.toggleInvisibles);
+        this.listenTo(this.model.user, 'change:ace_tabs', this.toggleTabs);
 
         return this;
     },
@@ -167,5 +169,24 @@ module.exports = Backbone.View.extend({
      */
     updateTheme: function (user) {
         this.aceEditor.setTheme('ace/theme/' + user.get('ace_theme'));
+    },
+
+    /**
+     * Update whether Ace editor displays invisibles (spaces/tabs/hard returns.
+     *
+     * @param user
+     */
+    toggleInvisibles: function (user) {
+        this.aceEditor.setShowInvisibles('on' === user.get('ace_invisibles'));
+    },
+
+    /**
+     * Update whether the Ace editor uses tabs.
+     *
+     * @param user
+     */
+    toggleTabs: function (user) {
+        this.aceEditor.getSession()
+            .setUseSoftTabs('on' !== user.get('ace_tabs'));
     }
 });
