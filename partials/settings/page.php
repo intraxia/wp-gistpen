@@ -78,7 +78,3 @@ for i in (0...items.length)
 end</code></pre>
 
 </div>
-
-<?php include_once( 'export.inc.php' ); ?>
-<?php include_once( 'import.inc.php' ); ?>
-<?php include_once( 'status.inc.php' ); ?>
