@@ -24,7 +24,13 @@ module.exports = Backbone.View.extend({
         var data = _.extend({}, this.model.user.toJSON(), Gistpen_Settings);
         this.setElement($(this.template(data)));
 
-        this.$('[data-wpgp-theme]').val(this.model.user.get('ace_theme'));
+        var theme = this.model.user.get('ace_theme');
+
+        if (theme) {
+            this.$('[data-wpgp-theme]').val(theme);
+        } else {
+            this.model.user.save({'ace_theme': this.$('[data-wpgp-theme]').val()}, {patch: true});
+        }
 
         this.$spinner = this.$('[data-wpgp-spinner]');
 
@@ -35,7 +41,7 @@ module.exports = Backbone.View.extend({
      * Updates the user's theme when the input value changes.
      */
     handleThemeChange: function (event) {
-        this.model.user.set('ace_theme', event.target.value);
+        this.model.user.save({'ace_theme': event.target.value}, {patch: true});
     },
 
     /**
