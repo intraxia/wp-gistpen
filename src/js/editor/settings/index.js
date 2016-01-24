@@ -11,7 +11,8 @@ module.exports = Backbone.View.extend({
         'click [data-wpgp-add]': 'handleAddClick',
         'click [data-wpgp-update]': 'handleUpdateClick',
         'change [data-wpgp-invisibles]': 'handleInvisiblesChange',
-        'change [data-wpgp-tabs]': 'handleTabsChange'
+        'change [data-wpgp-tabs]': 'handleTabsChange',
+        'change [data-wpgp-width]': 'handleWidthChange'
     },
 
     /**
@@ -34,6 +35,14 @@ module.exports = Backbone.View.extend({
             this.$('[data-wpgp-theme]').val(theme);
         } else {
             this.model.user.save({'ace_theme': this.$('[data-wpgp-theme]').val()}, {patch: true});
+        }
+
+        var width = this.model.user.get('ace_width');
+
+        if (width) {
+            this.$('[data-wpgp-width]').val(width);
+        } else {
+            this.model.user.save({'ace_width': this.$('[data-wpgp-width]').val()}, {patch: true});
         }
 
         this.$spinner = this.$('[data-wpgp-spinner]');
@@ -78,6 +87,13 @@ module.exports = Backbone.View.extend({
      */
     handleTabsChange: function (event) {
         this.model.user.save({'ace_tabs': event.target.checked ? 'on' : 'off'}, {patch: true});
+    },
+
+    /**
+     * Update the ace editor's tab state.
+     */
+    handleWidthChange: function (event) {
+        this.model.user.save({'ace_width': parseInt(event.target.value, 10)}, {patch: true});
     },
 
     /**

@@ -50,8 +50,12 @@ module.exports = Backbone.View.extend({
             this.model.file.set('language', 'plaintext');
         }
 
+        this.updateTheme(this.model.user);
+        this.toggleInvisibles(this.model.user);
+        this.toggleTabs(this.model.user);
+        this.updateWidth(this.model.user);
+
         this.$langSelect.val(this.model.file.get('language'));
-        this.aceEditor.setTheme('ace/theme/' + this.model.user.get('ace_theme'));
         this.updateLanguage();
 
         this.switchToAce();
@@ -59,6 +63,7 @@ module.exports = Backbone.View.extend({
         this.listenTo(this.model.user, 'change:ace_theme', this.updateTheme);
         this.listenTo(this.model.user, 'change:ace_invisibles', this.toggleInvisibles);
         this.listenTo(this.model.user, 'change:ace_tabs', this.toggleTabs);
+        this.listenTo(this.model.user, 'change:ace_width', this.updateWidth);
 
         return this;
     },
@@ -188,5 +193,15 @@ module.exports = Backbone.View.extend({
     toggleTabs: function (user) {
         this.aceEditor.getSession()
             .setUseSoftTabs('on' !== user.get('ace_tabs'));
+    },
+
+    /**
+     * Update the Ace editor's indentation.
+     *
+     * @param user
+     */
+    updateWidth: function (user) {
+        this.aceEditor.getSession()
+            .setTabSize(parseInt(user.get('ace_width'), 10));
     }
 });

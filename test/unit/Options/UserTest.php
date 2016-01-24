@@ -14,6 +14,7 @@ class UserTest extends TestCase {
 		'ace_theme'      => 'test',
 		'ace_invisibles' => 'on',
 		'ace_tabs'       => 'off',
+		'ace_width'      => '1',
 	);
 
 	public function setUp() {
@@ -66,6 +67,18 @@ class UserTest extends TestCase {
 		$this->user->set( 'ace_invisibles', $value );
 
 		$this->assertSame( $value, $this->user->get( 'ace_invisibles' ) );
+	}
+
+	public function test_should_retrieve_ace_width() {
+		$this->assertSame( $this->dummy['ace_width'], $this->user->get( 'ace_width' ) );
+	}
+
+	public function test_should_update_ace_width() {
+		$value = '8';
+
+		$this->user->set( 'ace_width', $value );
+
+		$this->assertSame( $value, $this->user->get( 'ace_width' ) );
 	}
 
 	public function test_should_throw_exception_getting_unknown_option() {

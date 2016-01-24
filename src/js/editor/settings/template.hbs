@@ -1,7 +1,7 @@
 <div class="wpgp-settings">
     <div class="wpgp-theme-select-row clearfix">
         <label id="ace-theme-label" for="ace-theme-select">Ace Editor Theme</label>
-        <select name="ace-theme-select" data-wpgp-theme>
+        <select class="wpgp-select" name="ace-theme-select" data-wpgp-theme>
             {{#each ace_themes as |display slug|}}
                 <option value="{{slug}}">{{display}}</option>
             {{/each}}
@@ -10,6 +10,12 @@
     <div class="wpgp-spacing-select-row clearfix">
         <input type="checkbox" name="wpgp-enable-tabs" id="wpgp-enable-tabs" {{#if tabs}}checked {{/if}}data-wpgp-tabs>
         <label for="wpgp-enable-tabs">Enable Tabs</label>
+        <select class="wpgp-select" name="ace-width-select" data-wpgp-width>
+            {{#each ace_widths}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <label id="ace-width-label" for="ace-width-select">Indentation width (in spaces)</label>
     </div>
     <div class="wpgp-invisibles-select-row clearfix">
         <input type="checkbox" name="wpgp-enable-invisibles" id="wpgp-enable-invisibles" {{#if invisibles}}checked {{/if}}data-wpgp-invisibles>
