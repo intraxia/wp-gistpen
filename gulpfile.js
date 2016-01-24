@@ -16,6 +16,7 @@ gulp.task('default', ['scripts', 'styles', 'ace', 'watch']);
 
 gulp.task('watch', function () {
     gulp.watch('src/js/**/*.js', ['scripts']);
+    gulp.watch('src/js/**/*.hbs', ['scripts']);
     gulp.watch('src/scss/**/*.scss', ['styles']);
 });
 
