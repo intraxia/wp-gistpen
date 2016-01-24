@@ -1,6 +1,11 @@
 <?php
+namespace Intraxia\Gistpen\Test;
 
-class WP_Gistpen_UnitTest_Factory extends WP_UnitTest_Factory {
+use WP_UnitTest_Factory;
+use WP_UnitTest_Factory_For_Post;
+use WP_UnitTest_Generator_Sequence;
+
+class Factory extends WP_UnitTest_Factory {
 	/**
 	 * @var WP_UnitTest_Factory_For_Gistpen
 	 */

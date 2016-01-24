@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Http;
 
 use Exception;
 use Intraxia\Gistpen\Options\User;
+use InvalidArgumentException;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -47,20 +48,17 @@ class UserController {
 	 * @return WP_REST_Response
 	 */
 	public function update( WP_REST_Request $request ) {
-		$params = $request->get_params();
-		$errors = array();
+		$params  = $request->get_params();
+		$invalid = array();
 
 		foreach ( $params as $key => $value ) {
 			try {
 				$this->user->set( $key, $value );
-			} catch ( Exception $e ) {
-				$errors[] = new WP_Error( 'invalid_key', __( 'Invalid key', 'wp-gistpen' ), $key );
+			} catch ( InvalidArgumentException $e ) {
+				$invalid[] = $key;
 			}
 		}
 
-		$data = $this->user->all();
-		$data['errors'] = $errors;
-
-		return new WP_REST_Response( $data );
+		return new WP_REST_Response( $this->user->all(), 200, array( 'X-Invalid-Keys' => $invalid ) );
 	}
 }

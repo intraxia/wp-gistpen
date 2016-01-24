@@ -1,10 +1,10 @@
 <?php
-namespace Intraxia\GIstpen\Test\Options;
+namespace Intraxia\Gistpen\Test\Options;
 
 use Intraxia\Gistpen\Options\User;
-use WP_UnitTestCase;
+use Intraxia\Gistpen\Test\TestCase;
 
-class UserTest extends WP_UnitTestCase {
+class UserTest extends TestCase {
 	/**
 	 * @var User
 	 */
