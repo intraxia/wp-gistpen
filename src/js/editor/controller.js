@@ -20,14 +20,21 @@ module.exports = Backbone.View.extend({
     render: function () {
         var views = [];
 
-        views.push(new DescriptionView({model: this.model}));
+        var description = new DescriptionView({model: this.model});
+        var $row = description.render().$('[data-wpgp-row]');
 
         var settings = new SettingsView({model: this.model});
         this.listenTo(settings, 'click:add', this.handleSettingsClickAdd);
         this.listenTo(settings, 'click:update', this.handleSettingsClickUpdate);
-        views.push(settings);
 
-        views.push(new PropsView({model: this.model}));
+        $row.append(settings.render().el);
+
+        var props = new PropsView({model: this.model});
+        $row.append(props.render().el);
+
+        var fragment = document.createDocumentFragment();
+
+        fragment.appendChild(description.el);
 
         this.model.zip.get('files').each(function (file) {
             views.push(new CodeView({
@@ -37,8 +44,6 @@ module.exports = Backbone.View.extend({
                 }
             }));
         }, this);
-
-        var fragment = document.createDocumentFragment();
 
         _.each(views, function (view) {
             fragment.appendChild(view.render().el);

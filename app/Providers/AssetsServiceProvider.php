@@ -40,6 +40,7 @@ class AssetsServiceProvider extends ServiceProvider {
 					'nonce'      => wp_create_nonce( 'wp_rest' ),
 					'url'        => $url,
 					'ace_themes' => Editor::$ace_themes,
+					'ace_widths' => array( 1, 2, 4, 8 ),
 					'statuses'   => get_post_statuses(),
 					'prism'      => array(
 						'theme'   => $theme ? : 'default',

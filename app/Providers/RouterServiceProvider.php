@@ -66,7 +66,6 @@ class RouterServiceProvider extends ServiceProvider {
 			) );
 			$router->patch( '/me', array( $controllers['user'], 'update' ), array(
 				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
-				'filter' => new Filter( array( 'ace_theme' => 'default' ) ),
 			) );
 
 			/**

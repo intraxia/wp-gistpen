@@ -26,6 +26,9 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 	* Ateliersulphurpool-Light
 	* Hopscotch
 	* Atom Dark
+* Additional Ace editor options
+	* Enable/disable tabs
+	* Show/hide invisibles
 
 #### Changed ####
 * Improve JavaScript architecture

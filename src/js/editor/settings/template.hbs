@@ -1,11 +1,29 @@
 <div class="wpgp-settings">
-    <label id="ace-theme-label" for="ace-theme-select">Ace Editor Theme</label>
-    <select name="ace-theme-select" data-wpgp-theme>
-        {{#each ace_themes as |display slug|}}
-            <option value="{{slug}}">{{display}}</option>
-        {{/each}}
-    </select>
-    <button name="wpgp-update" id="wpgp-update" class="button button-primary" data-wpgp-update>Update Gistpen</button>
-    <button data-wpgp-add-file class="button button-primary" data-wpgp-add>Add File</button>
-    <span class="spinner" data-wpgp-spinner></span>
+    <div class="wpgp-theme-select-row clearfix">
+        <label id="ace-theme-label" for="ace-theme-select">Ace Editor Theme</label>
+        <select class="wpgp-select" name="ace-theme-select" data-wpgp-theme>
+            {{#each ace_themes as |display slug|}}
+                <option value="{{slug}}">{{display}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div class="wpgp-spacing-select-row clearfix">
+        <input type="checkbox" name="wpgp-enable-tabs" id="wpgp-enable-tabs" {{#if tabs}}checked {{/if}}data-wpgp-tabs>
+        <label for="wpgp-enable-tabs">Enable Tabs</label>
+        <select class="wpgp-select" name="ace-width-select" data-wpgp-width>
+            {{#each ace_widths}}
+                <option value="{{this}}">{{this}}</option>
+            {{/each}}
+        </select>
+        <label id="ace-width-label" for="ace-width-select">Indentation width (in spaces)</label>
+    </div>
+    <div class="wpgp-invisibles-select-row clearfix">
+        <input type="checkbox" name="wpgp-enable-invisibles" id="wpgp-enable-invisibles" {{#if invisibles}}checked {{/if}}data-wpgp-invisibles>
+        <label for="wpgp-enable-invisibles">Enable Invisibles</label>
+    </div>
+    <div class="wpgp-button-row clearfix">
+        <button name="wpgp-update" id="wpgp-update" class="button button-primary" data-wpgp-update>Update Gistpen</button>
+        <button data-wpgp-add-file class="button button-primary" data-wpgp-add>Add File</button>
+        <span class="spinner" data-wpgp-spinner></span>
+    </div>
 </div>
