@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Test;
 
 use Intraxia\Gistpen\App;
+use Intraxia\Jaxion\Core\UndefinedAliasException;
 use Mockery;
 use SimpleXMLElement;
 use WP_UnitTestCase;
@@ -28,6 +29,16 @@ abstract class TestCase extends WP_UnitTestCase {
 
 		Mockery::close();
 		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', false );
+	}
+
+	public function mock( $alias ) {
+		try {
+			$to_mock = $this->app->fetch( $alias );
+
+			return Mockery::mock( get_class( $to_mock ) );
+		} catch ( UndefinedAliasException $e ) {
+			return Mockery::mock( $alias );
+		}
 	}
 
 	function create_post_and_children() {
