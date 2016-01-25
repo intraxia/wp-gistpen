@@ -1,4 +1,4 @@
-var Clipboard = require('clipboard');
+var callbacks = [];
 
 /**
  * Post-highlight Prism hook callback.
@@ -19,34 +19,24 @@ exports.hook = function hook(env) {
     var toolbar = document.createElement('div');
     toolbar.classList.add('toolbar');
 
-    var linkCopy = document.createElement('a');
-    linkCopy.innerHTML = 'Copy to clipboard';
+    callbacks.forEach(function(callback) {
+        var element = callback(env);
+        var item = document.createElement('div');
+        item.classList.add('toolbar-item');
 
-    var clip = new Clipboard(linkCopy, {
-        'text': function () {
-            return env.code;
-        }
+        item.appendChild(element);
+        toolbar.appendChild(item);
     });
-
-    clip.on('success', function() {
-        linkCopy.innerHTML = 'Copied!';
-
-        resetText();
-    });
-    clip.on('error', function () {
-        linkCopy.innerHTML = 'Press Ctrl+C to copy';
-
-        resetText();
-    });
-
-    toolbar.appendChild(linkCopy);
 
     // Add our toolbar to the <pre> tag
     pre.appendChild(toolbar);
+};
 
-    function resetText() {
-        setTimeout(function () {
-            linkCopy.innerHTML = 'Copy to clipboard';
-        }, 10000);
-    }
+/**
+ * Register a button callback with the toolbar.
+ *
+ * @param callback
+ */
+exports.registerButton = function registerButton(callback) {
+    callbacks.push(callback);
 };
