@@ -26,6 +26,6 @@ exports.button = function button(env) {
     function resetText() {
         setTimeout(function () {
             linkCopy.innerHTML = 'Copy';
-        }, 7000);
+        }, 5000);
     }
 };
