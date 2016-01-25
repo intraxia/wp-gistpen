@@ -1,88 +1,9 @@
 FORMAT: 1A
-HOST: http://jamesdigioia.ngrok.com/wp-json/intraxia/v1/gistpen
+HOST: http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen
 
 # WP-Gistpen
 
 The WP-Gistpen API is built into the WP-API for client-side Gistpen manipulation.
-
-## Zip Collection [/zip]
-
-### List Zip Resources [GET]
-
-You can retrieve the most recent Zips or search Gistpen for Zips using a number of provided url parameters.
-
-+ Paramters
-    + s: `composer.json` - Term to search by
-        + Default: ""
-    + type: `both` (enum[string]) - Type to search by
-
-        Should be either Zip, File, or both.
-
-        + Members
-            + `zip`
-            + `file`
-            + `both`
-
-+ Response 200
-
-        [
-            {
-                "description": "Zip description" // @todo define object
-            }
-        ]
-
-### Create Zip Resource [POST]
-
-You can create a new Zip resource.
-
-+ Request (application/json)
-
-                {
-                    "description": ""
-                }
-
-+ Response 201 (application/json)
-
-    + Headers
-
-            Location: /todo/1
-
-    + Body
-
-                {
-                    "description": ""
-                }
-
-## Zip Resource [/zip/{zip_id}]
-
-+ Parameters
-    + zip_id (number) - ID of the Zip
-
-### Get individual Zip resource [GET]
-
-You can get the information for an individual zip resource.
-
-+ Response 200
-
-            {
-                "description": "Zip description"
-            }
-
-### Update Zip Resource [PUT]
-
-You can update a currently existing Zip resource at the provided id.
-
-+ Request (application/json)
-
-            {
-                "description": ""
-            }
-
-+ Response 200
-
-            {
-                "description": "Zip description"
-            }
 
 ## User Collection [/me]
 
