@@ -41,13 +41,31 @@
 						'dark' => __( 'Dark', 'wp-gistpen' ),
 						'funky' => __( 'Funky', 'wp-gistpen' ),
 						'okaidia' => __( 'Okaidia', 'wp-gistpen' ),
+						'tomorrow' => __( 'Tomorrow', 'wp-gistpen' ),
 						'twilight' => __( 'Twilight', 'wp-gistpen' ),
 						'coy' => __( 'Coy', 'wp-gistpen' ),
+						'cb' => __( 'CB', 'wp-gistpen' ),
+						'ghcolors' => __( 'GHColors', 'wp-gistpen' ),
+						'pojoaque' => __( 'Projoaque', 'wp-gistpen' ),
+						'xonokai' => __( 'Xonokai', 'wp-gistpen' ),
+						'base16-ateliersulphurpool.light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
+						'hopscotch' => __( 'Hopscotch', 'wp-gistpen' ),
+						'atom-dark' =>__( 'Atom Dark', 'wp-gistpen' ),
 					),
 				),
 				array(
 					'name' => __( 'Enable line numbers', 'wp-gistpen' ),
 					'id'   => $prefix . 'gistpen_line_numbers',
+					'type' => 'checkbox',
+				),
+				array(
+					'name' => __( 'Enable show invisibles', 'wp-gistpen' ),
+					'id'   => $prefix . 'show_invisibles',
+					'type' => 'checkbox',
+				),
+				array(
+					'name' => __( 'Enable show language', 'wp-gistpen' ),
+					'id'   => $prefix . 'show_language',
 					'type' => 'checkbox',
 				),
 			)
@@ -78,7 +96,3 @@ for i in (0...items.length)
 end</code></pre>
 
 </div>
-
-<?php include_once( 'export.inc.php' ); ?>
-<?php include_once( 'import.inc.php' ); ?>
-<?php include_once( 'status.inc.php' ); ?>

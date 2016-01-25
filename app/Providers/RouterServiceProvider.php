@@ -66,7 +66,6 @@ class RouterServiceProvider extends ServiceProvider {
 			) );
 			$router->patch( '/me', array( $controllers['user'], 'update' ), array(
 				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
-				'filter' => new Filter( array( 'ace_theme' => 'default' ) ),
 			) );
 
 			/**
@@ -75,11 +74,6 @@ class RouterServiceProvider extends ServiceProvider {
 			$router->get(
 				'/jobs',
 				array( $controllers['job'], 'registered' ),
-				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
-			);
-			$router->post(
-				'/jobs',
-				array( $controllers['job'], 'dispatch' ),
 				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
 			);
 			$router->get(
@@ -97,8 +91,13 @@ class RouterServiceProvider extends ServiceProvider {
 				array( $controllers['job'], 'next' ),
 				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
 			);
-			$router->post(
+			$router->get(
 				'/jobs/(?P<name>\w+)/(?P<timestamp>\w+)',
+				array( $controllers['job'], 'status' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
+			$router->get(
+				'/jobs/(?P<name>\w+)/(?P<timestamp>\w+)/console',
 				array( $controllers['job'], 'console' ),
 				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
 			);

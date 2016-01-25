@@ -7,9 +7,14 @@ module.exports = Backbone.Model.extend({
     url: Gistpen_Settings.root + 'me',
 
     /**
-     * Backbone model defaults.
+     * All updates should be PATCH requests to `/me`.
+     * This ensures the model is never "new" and does a POST.
+     *
+     * @todo overwrite Backbone.sync instead to always PATCH
+     *
+     * @returns {boolean}
      */
-    defaults: {
-        ace_theme: ''
+    isNew: function () {
+        return false;
     }
 });

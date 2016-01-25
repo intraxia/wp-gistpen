@@ -40,11 +40,14 @@ class AssetsServiceProvider extends ServiceProvider {
 					'nonce'      => wp_create_nonce( 'wp_rest' ),
 					'url'        => $url,
 					'ace_themes' => Editor::$ace_themes,
+					'ace_widths' => array( 1, 2, 4, 8 ),
 					'statuses'   => get_post_statuses(),
 					'prism'      => array(
 						'theme'   => $theme ? : 'default',
 						'plugins' => array(
-							'line-numbers' => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' ) ),
+							'line-numbers'    => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' ) ),
+							'show-invisibles' => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_show_invisibles' ) ),
+							'show-language'   => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_show_language' ) ),
 						),
 					),
 				),

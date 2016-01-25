@@ -9,7 +9,7 @@ class User {
 	 *
 	 * @var array
 	 */
-	protected $options = array( 'ace_theme' );
+	protected $options = array( 'ace_theme', 'ace_invisibles', 'ace_tabs', 'ace_width' );
 
 	/**
 	 * Options prefix.
@@ -42,7 +42,7 @@ class User {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	function get( $name ) {
+	public function get( $name ) {
 		if ( ! in_array( $name, $this->options, true ) ) {
 			throw new InvalidArgumentException( $name );
 		}
@@ -58,7 +58,7 @@ class User {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	function set( $name, $value ) {
+	public function set( $name, $value ) {
 		if ( ! in_array( $name, $this->options, true ) ) {
 			throw new InvalidArgumentException( $name );
 		}

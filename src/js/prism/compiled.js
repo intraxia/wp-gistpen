@@ -45,8 +45,11 @@ require('prismjs/components/prism-r');
 require('prismjs/components/prism-rust');
 require('prismjs/components/prism-scheme');
 require('prismjs/components/prism-smarty');
+// Plugins
 require('prismjs/plugins/line-highlight/prism-line-highlight');
 require('prismjs/plugins/line-numbers/prism-line-numbers');
+require('prismjs/plugins/show-invisibles/prism-show-invisibles');
+require('prismjs/plugins/show-language/prism-show-language');
 
 document.removeEventListener('DOMContentLoaded', Prism.highlightAll);
 

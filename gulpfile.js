@@ -16,6 +16,7 @@ gulp.task('default', ['scripts', 'styles', 'ace', 'watch']);
 
 gulp.task('watch', function () {
     gulp.watch('src/js/**/*.js', ['scripts']);
+    gulp.watch('src/js/**/*.hbs', ['scripts']);
     gulp.watch('src/scss/**/*.scss', ['styles']);
 });
 
@@ -50,7 +51,10 @@ gulp.task('styles', function () {
     return gulp.src([
         'src/scss/*.scss',
         'node_modules/prismjs/themes/*.css',
-        'node_modules/prismjs/plugins/line-numbers/*.css'
+        'node_modules/prism-themes/themes/*.css',
+        'node_modules/prismjs/plugins/line-numbers/*.css',
+        'node_modules/prismjs/plugins/show-invisibles/*.css',
+        'node_modules/prismjs/plugins/show-language/*.css'
     ])
         .pipe(sass())
         .pipe(gulp.dest('assets/css'))
