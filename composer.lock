@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e71ddd55d3eebda31bf8fb41604af08a",
-    "content-hash": "5d92710ee09490f7905124225866bcc7",
+    "hash": "ad9db8695a116578b28110f90c431329",
+    "content-hash": "099555facd5bc68ad6c480fa34ae3505",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "dev-master",
+            "version": "v1.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "b1a938a75dbbd5bed80e62bb67c6f63969d67996"
+                "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/b1a938a75dbbd5bed80e62bb67c6f63969d67996",
-                "reference": "b1a938a75dbbd5bed80e62bb67c6f63969d67996",
+                "url": "https://api.github.com/repos/composer/installers/zipball/bd9b14f094c89c8b5804a4e41edeb7853bb85046",
+                "reference": "bd9b14f094c89c8b5804a4e41edeb7853bb85046",
                 "shasum": ""
             },
             "require": {
@@ -103,7 +103,7 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2016-01-07 09:11:10"
+            "time": "2015-10-29 23:28:48"
         },
         {
             "name": "guzzle/guzzle",
@@ -311,12 +311,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
-                "reference": "ee278f7c851533e58ca307f66305ccb9188aceda"
+                "reference": "74d5175d715e9b5752021566d35d6938e1feb153"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/ee278f7c851533e58ca307f66305ccb9188aceda",
-                "reference": "ee278f7c851533e58ca307f66305ccb9188aceda",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/74d5175d715e9b5752021566d35d6938e1feb153",
+                "reference": "74d5175d715e9b5752021566d35d6938e1feb153",
                 "shasum": ""
             },
             "require": {
@@ -363,7 +363,7 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-13 10:28:07"
+            "time": "2016-01-25 09:45:09"
         },
         {
             "name": "webdevstudios/cmb2",
@@ -1861,12 +1861,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "1710486b6038c47b252630b0f4c220faf90e7f96"
+                "reference": "d09af8f0c981dd381b30522e0939ad7f08c580c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/1710486b6038c47b252630b0f4c220faf90e7f96",
-                "reference": "1710486b6038c47b252630b0f4c220faf90e7f96",
+                "url": "https://api.github.com/repos/symfony/console/zipball/d09af8f0c981dd381b30522e0939ad7f08c580c0",
+                "reference": "d09af8f0c981dd381b30522e0939ad7f08c580c0",
                 "shasum": ""
             },
             "require": {
@@ -1913,7 +1913,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-21 10:01:50"
+            "time": "2016-01-25 12:26:46"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1921,12 +1921,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "d7f01c96a4dde264682cf36c28e62086c77a09d4"
+                "reference": "1289d16209491b584839022f29257ad859b8532d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/d7f01c96a4dde264682cf36c28e62086c77a09d4",
-                "reference": "d7f01c96a4dde264682cf36c28e62086c77a09d4",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
+                "reference": "1289d16209491b584839022f29257ad859b8532d",
                 "shasum": ""
             },
             "require": {
@@ -1938,7 +1938,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -1972,7 +1972,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2016-01-13 07:16:33"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/process",
@@ -1980,12 +1980,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "840aa10881f01df6e1ae3368d6b31d5dba9c47df"
+                "reference": "374a3566a718236bac2f009f6305016d644f86b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/840aa10881f01df6e1ae3368d6b31d5dba9c47df",
-                "reference": "840aa10881f01df6e1ae3368d6b31d5dba9c47df",
+                "url": "https://api.github.com/repos/symfony/process/zipball/374a3566a718236bac2f009f6305016d644f86b8",
+                "reference": "374a3566a718236bac2f009f6305016d644f86b8",
                 "shasum": ""
             },
             "require": {
@@ -2021,7 +2021,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-21 10:01:50"
+            "time": "2016-01-25 11:11:57"
         },
         {
             "name": "symfony/yaml",
@@ -2029,12 +2029,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "1548a0a971b0cc13eadab85fa7a9b1b2ee12715e"
+                "reference": "ccbaef96e6595df28d040f6bb18d946e574badf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/1548a0a971b0cc13eadab85fa7a9b1b2ee12715e",
-                "reference": "1548a0a971b0cc13eadab85fa7a9b1b2ee12715e",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/ccbaef96e6595df28d040f6bb18d946e574badf8",
+                "reference": "ccbaef96e6595df28d040f6bb18d946e574badf8",
                 "shasum": ""
             },
             "require": {
@@ -2070,7 +2070,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-01-21 09:24:53"
+            "time": "2016-01-24 11:06:16"
         },
         {
             "name": "wp-coding-standards/wpcs",
