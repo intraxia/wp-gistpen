@@ -12,6 +12,14 @@ promises.push(Prism.loadPlugin('toolbar'));
 forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
     if (props.enabled) {
         promises.push(Prism.loadPlugin(plugin));
+
+        if ('show-language' === plugin) {
+            toolbar.registerButton(function(env) {
+                var langCopy = document.createElement('span');
+                langCopy.innerHTML = env.language;
+                return langCopy;
+            });
+        }
     }
 });
 
