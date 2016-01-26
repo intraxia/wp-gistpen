@@ -23,6 +23,23 @@ forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
     }
 });
 
+toolbar.registerButton(function(env) {
+    var pre = env.element.parentElement;
+
+    if (!pre.hasAttribute('data-edit-url')) {
+        return;
+    }
+
+    var url = pre.getAttribute('data-edit-url');
+
+    var editBtn = document.createElement('a');
+    editBtn.innerHTML = 'Edit';
+    editBtn.href = url;
+    editBtn.setAttribute('target', '_blank');
+
+    return editBtn;
+});
+
 toolbar.registerButton(clipboard.button);
 
 Prism.hooks.add('after-highlight', toolbar.hook);

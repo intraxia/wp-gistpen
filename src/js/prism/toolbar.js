@@ -21,6 +21,11 @@ exports.hook = function hook(env) {
 
     callbacks.forEach(function(callback) {
         var element = callback(env);
+
+        if (!element) {
+            return;
+        }
+
         var item = document.createElement('div');
         item.classList.add('toolbar-item');
 
