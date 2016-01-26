@@ -112,7 +112,7 @@ class Embed implements HasFilters {
 			array(
 				'hook'   => 'embed_footer',
 				'method' => 'enqueue_embed_scripts',
-			)
+			),
 		);
 	}
 }

@@ -54,8 +54,6 @@ class AssetsServiceProvider extends ServiceProvider {
 			);
 		};
 
-		$assets->localize = $localize; // @todo this blooooows
-
 		$should_enqueue_settings = function () {
 			return 'settings_page_wp-gistpen' === get_current_screen()->id;
 		};
