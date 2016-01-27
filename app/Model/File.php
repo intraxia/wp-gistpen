@@ -37,7 +37,7 @@ class File {
 	/**
 	 * File's language object
 	 *
-	 * @var \WP_Gistpen\Model\Language
+	 * @var Language
 	 * @since 0.4.0
 	 */
 	protected $language;
@@ -130,14 +130,9 @@ class File {
 	 * Set the file's slug
 	 *
 	 * @since  0.5.0
-	 * @param string $language File language
+	 * @param Language $language File language
 	 */
-	public function set_language( $language ) {
-
-		if ( ! $language instanceof Language ) {
-			throw new \Exception( __( 'set_language requires a Model\Language object', 'wp-gistpen' ), 1 );
-		}
-
+	public function set_language( Language $language ) {
 		$this->language = $language;
 	}
 
