@@ -165,7 +165,13 @@ class File {
 
 		// Line highlighting and offset will go here
 		if ( $this->highlight !== null ) {
-			$post_content .= 'data-line="' . $this->highlight . '"';
+			$post_content .= ' data-line="' . $this->highlight . '"';
+		}
+
+		$file_post = get_post( $this->get_ID() );
+
+		if ( $edit_url = get_edit_post_link( $file_post->post_parent, '' ) ) {
+			$post_content .= ' data-edit-url="' . $edit_url . '"';
 		}
 
 		$post_content .= '>';
