@@ -4,6 +4,8 @@ var toolbar = require('./prism/toolbar');
 var clipboard =require('./prism/clipboard');
 var forOwn = require('lodash.forown');
 
+var secret, secretTimeout;
+
 var promises = [];
 
 promises.push(Prism.loadTheme(Gistpen_Settings.prism.theme));
@@ -34,8 +36,10 @@ toolbar.registerButton(function(env) {
 
     var editBtn = document.createElement('a');
     editBtn.innerHTML = 'Edit';
-    editBtn.href = url;
-    editBtn.setAttribute('target', '_blank');
+
+    editBtn.addEventListener('click', function () {
+        sendEmbedMessage('link', url);
+    });
 
     return editBtn;
 });
@@ -44,8 +48,51 @@ toolbar.registerButton(clipboard.button);
 
 Prism.hooks.add('after-highlight', toolbar.hook);
 
+getSecret();
+
 Plite.all(promises)
     .then(Prism.highlightAll)
     .catch(function(err) {
         console.error(err);
     });
+
+/**
+ * WordPress-borrowed functions.
+ *
+ * @todo Is there a better way to hook into this?
+ * The link tag doesn't exist on page load for us,
+ * so the WP oembed script doesn't grab it and add
+ * the click handler for us. We're simply copying
+ * functions for reuse.
+ */
+
+/**
+ * Sends a formatted message to the parent window.
+ *
+ * @param {string} message - Message name.
+ * @param {mixed} value - Data to send.
+ */
+function sendEmbedMessage(message, value) {
+    window.parent.postMessage({
+        message: message,
+        value: value,
+        secret: secret
+    }, '*');
+}
+
+/**
+ * Re-get the secret when it was added later on.
+ */
+function getSecret() {
+    if (window.self === window.top || !!secret) {
+        return;
+    }
+
+    secret = window.location.hash.replace(/.*secret=([\d\w]{10}).*/, '$1');
+
+    clearTimeout(secretTimeout);
+
+    secretTimeout = setTimeout(function () {
+        getSecret();
+    }, 100);
+}
