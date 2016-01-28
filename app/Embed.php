@@ -99,6 +99,28 @@ class Embed implements HasFilters {
 	}
 
 	/**
+	 * Remove the title from the Gistpen oembed.
+	 *
+	 * @param string $title Post title.
+	 * @param int    $id Post ID.
+	 *
+	 * @return string
+	 */
+	public function remove_embed_title( $title, $id ) {
+		$post = get_post( $id );
+
+		if (
+			is_embed() &&
+			'gistpen' === $post->post_type &&
+			0 !== $post->post_parent // only remove the title from `File` embeds
+		) {
+			return '';
+		}
+
+		return $title;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
 	 * @return array[]
@@ -112,6 +134,11 @@ class Embed implements HasFilters {
 			array(
 				'hook'   => 'embed_footer',
 				'method' => 'enqueue_embed_scripts',
+			),
+			array(
+				'hook'   => 'the_title',
+				'method' => 'remove_embed_title',
+				'args'   => 2,
 			),
 		);
 	}
