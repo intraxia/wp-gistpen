@@ -11,20 +11,6 @@ var promises = [];
 promises.push(Prism.loadTheme(Gistpen_Settings.prism.theme));
 promises.push(Prism.loadPlugin('toolbar'));
 
-forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
-    if (props.enabled) {
-        promises.push(Prism.loadPlugin(plugin));
-
-        if ('show-language' === plugin) {
-            toolbar.registerButton(function(env) {
-                var langCopy = document.createElement('span');
-                langCopy.innerHTML = env.language;
-                return langCopy;
-            });
-        }
-    }
-});
-
 toolbar.registerButton(function(env) {
     var pre = env.element.parentElement;
 
@@ -45,6 +31,25 @@ toolbar.registerButton(function(env) {
 });
 
 toolbar.registerButton(clipboard.button);
+
+forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
+    if (props.enabled) {
+        promises.push(Prism.loadPlugin(plugin));
+    }
+});
+
+toolbar.registerButton(function(env) {
+    var filename = document.createElement('span');
+    var pre = env.element.parentElement;
+
+    if (!pre.hasAttribute('data-filename')) {
+        return;
+    }
+
+    filename.innerHTML = pre.getAttribute('data-filename');
+
+    return filename;
+});
 
 Prism.hooks.add('after-highlight', toolbar.hook);
 

@@ -63,11 +63,6 @@
 					'id'   => $prefix . 'show_invisibles',
 					'type' => 'checkbox',
 				),
-				array(
-					'name' => __( 'Enable show language', 'wp-gistpen' ),
-					'id'   => $prefix . 'show_language',
-					'type' => 'checkbox',
-				),
 			)
 		), 'wp-gistpen' );
 	?>
