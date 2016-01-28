@@ -73,10 +73,6 @@ class Embed implements HasFilters {
 		$query = $this->database->query( 'head' );
 		$model = $query->by_post( $post );
 
-		if ( is_wp_error( $model ) ) {
-			return $output;
-		}
-
 		// @todo implement against contract
 		if ( $model instanceof Zip || $model instanceof File ) {
 			return $model->get_shortcode_content();
