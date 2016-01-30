@@ -157,7 +157,13 @@ class File {
 	 * @since 0.4.0
 	 */
 	public function get_post_content() {
-		$post_content = '<pre class="gistpen line-numbers"';
+		$post_content = '<pre class="gistpen';
+
+		if ( 'on' === cmb2_get_option( 'wp-gistpen', '_wpgp_gistpen_line_numbers' ) ) {
+			$post_content .= ' line-numbers';
+		}
+
+		$post_content .= '"';
 
 		// Line highlighting and offset will go here
 		if ( $this->highlight !== null ) {

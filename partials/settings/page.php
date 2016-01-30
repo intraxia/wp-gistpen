@@ -67,7 +67,7 @@
 		), 'wp-gistpen' );
 	?>
 
-	<pre class="gistpen line-numbers" data-edit-url="#" data-filename="demo.rb"><code class="language-ruby"># Simple for loop using a range.
+	<pre class="gistpen <?php echo 'on' === cmb2_get_option( 'wp-gistpen', '_wpgp_gistpen_line_numbers' ) ? 'line-numbers' : ''; ?>" data-edit-url="#" data-filename="demo.rb"><code class="language-ruby"># Simple for loop using a range.
 for i in (1..4)
     print i," "
 end

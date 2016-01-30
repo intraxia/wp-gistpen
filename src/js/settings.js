@@ -37,7 +37,13 @@ document.addEventListener('DOMContentLoaded', function () {
      * Update whether line numbers are enabled and reinject the iframe.
      */
     function updateLineNumbers() {
-        Gistpen_Settings.prism.plugins['line-numbers'].enabled = lineNumbersCheckbox.checked;
+        var enabled = Gistpen_Settings.prism.plugins['line-numbers'].enabled = lineNumbersCheckbox.checked;
+
+        if (enabled) {
+            source.classList.add('line-numbers');
+        } else {
+            source.classList.remove('line-numbers');
+        }
 
         inject();
     }
