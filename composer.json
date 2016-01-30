@@ -15,7 +15,7 @@
     "webdevstudios/cmb2": "2.0.0.9",
     "knplabs/github-api": "~1.4",
     "wpupdatephp/wp-update-php": "~1.0",
-    "intraxia/jaxion": "dev-master"
+    "intraxia/jaxion": "0.0.1"
   },
   "require-dev": {
     "phpunit/phpunit": "4.3.*",
@@ -25,7 +25,6 @@
     "squizlabs/php_codesniffer": "~2.3",
     "intraxia/codestyle": "dev-master"
   },
-  "minimum-stability": "dev",
   "autoload": {
     "psr-4": {
       "Intraxia\\Gistpen\\": "app/"
