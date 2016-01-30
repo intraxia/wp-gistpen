@@ -157,8 +157,7 @@ class File {
 	 * @since 0.4.0
 	 */
 	public function get_post_content() {
-		$post_content = '<div id="wp-gistpenfile-' . $this->slug . '">';
-		$post_content .= '<pre class="gistpen line-numbers"';
+		$post_content = '<pre class="gistpen line-numbers"';
 
 		// Line highlighting and offset will go here
 		if ( $this->highlight !== null ) {
@@ -174,8 +173,6 @@ class File {
 		$post_content .= ' data-filename="' . $this->get_filename() . '">';
 		$post_content .= '<code class="language-' . $this->language->get_prism_slug() . '">' . htmlentities( $this->code );
 		$post_content .= '</code></pre>';
-
-		$post_content .= '</div>';
 
 		return $post_content;
 
