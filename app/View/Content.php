@@ -11,6 +11,7 @@ namespace Intraxia\Gistpen\View;
  */
 
 use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Zip;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 use Intraxia\Jaxion\Contract\Core\HasShortcode;
@@ -148,7 +149,6 @@ class Content implements HasActions, HasFilters, HasShortcode {
 		$args = shortcode_atts(
 			array(
 				'id'        => null,
-				'highlight' => null,
 			), $atts,
 			'gistpen'
 		);
@@ -158,14 +158,14 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
+		/** @var Zip|\WP_Error $zip */
 		$zip = $this->database->query()->by_id( $args['id'] );
 
 		if ( is_wp_error( $zip ) ) {
-			// @todo each error
-			return '';
+			return '<div class="wp-gistpen-error">Error: ' . $zip->get_error_message() .'.</div>';
 		}
 
-		return $zip->get_shortcode_content( $args['highlight'] );
+		return get_post_embed_html( 600, 600, $args['id'] );
 	}
 
 	/**
