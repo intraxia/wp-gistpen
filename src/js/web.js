@@ -16,11 +16,28 @@ promises.push(Prism.loadTheme(Gistpen_Settings.prism.theme));
 forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
     if (props.enabled) {
         promises.push(Prism.loadPlugin(plugin));
+        if ('show-invisibles' === plugin) {
+            showInvisibles = true;
+        }
     }
 });
 
 Plite.all(promises)
-    .then(Prism.highlightAll)
+    .then(function() {
+        if (showInvisibles) {
+            // @todo https://github.com/PrismJS/prism/pull/874
+            Prism.hooks.add('before-highlight', function(env) {
+                var tokens = env.grammar;
+
+                tokens.tab = /\t/g;
+                tokens.crlf = /\r\n/g;
+                tokens.lf = /\n/g;
+                tokens.cr = /\r/g;
+            });
+        }
+
+        Prism.highlightAll();
+    })
     .catch(function(err) {
         console.error(err);
     });
