@@ -12,6 +12,7 @@ var showInvisibles = false;
 var promises = [];
 
 promises.push(Prism.loadTheme(Gistpen_Settings.prism.theme));
+promises.push(Prism.loadCSS('toolbar'));
 
 forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
     if (props.enabled) {
