@@ -28,7 +28,7 @@ toolbar.registerButton(filename.button);
 /**
  * Register the toolbar with Prism.
  */
-Prism.hooks.add('after-highlight', toolbar.hook);
+Prism.hooks.add('complete', toolbar.hook);
 
 var api = {};
 
