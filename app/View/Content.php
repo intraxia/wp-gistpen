@@ -165,7 +165,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">Error: ' . $zip->get_error_message() .'.</div>';
 		}
 
-		return get_post_embed_html ( 600, 600, $args['id'] );
+		return get_post_embed_html( 600, 600, $args['id'] );
 	}
 
 	/**
