@@ -67,7 +67,7 @@
 		), 'wp-gistpen' );
 	?>
 
-	<pre class="gistpen line-numbers"><code class="language-ruby"># Simple for loop using a range.
+	<pre class="gistpen line-numbers" data-edit-url="#" data-filename="demo.rb"><code class="language-ruby"># Simple for loop using a range.
 for i in (1..4)
     print i," "
 end
