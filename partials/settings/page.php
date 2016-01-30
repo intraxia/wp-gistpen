@@ -63,16 +63,11 @@
 					'id'   => $prefix . 'show_invisibles',
 					'type' => 'checkbox',
 				),
-				array(
-					'name' => __( 'Enable show language', 'wp-gistpen' ),
-					'id'   => $prefix . 'show_language',
-					'type' => 'checkbox',
-				),
 			)
 		), 'wp-gistpen' );
 	?>
 
-	<pre class="gistpen line-numbers"><code class="language-ruby"># Simple for loop using a range.
+	<pre class="gistpen <?php echo 'on' === cmb2_get_option( 'wp-gistpen', '_wpgp_gistpen_line_numbers' ) ? 'line-numbers' : ''; ?>" data-edit-url="#" data-filename="demo.rb"><code class="language-ruby"># Simple for loop using a range.
 for i in (1..4)
     print i," "
 end

@@ -12,7 +12,7 @@ var buffer = require('vinyl-buffer');
 var pot = require('gulp-wp-pot');
 var sort = require('gulp-sort');
 
-gulp.task('default', ['scripts', 'styles', 'ace', 'watch']);
+gulp.task('default', ['scripts', 'styles', 'ace', 'prism-components', 'watch']);
 
 gulp.task('watch', function () {
     gulp.watch('src/js/**/*.js', ['scripts']);
@@ -22,7 +22,7 @@ gulp.task('watch', function () {
 
 gulp.task('build', ['scripts', 'styles', 'ace']);
 
-gulp.task('scripts',function () {
+gulp.task('scripts', function () {
     var promises = [];
 
     ['post', 'tinymce', 'settings', 'web'].forEach(function (file) {
@@ -47,14 +47,22 @@ gulp.task('scripts',function () {
     return Q.all(promises);
 });
 
+gulp.task('prism-components', function() {
+    return gulp.src([
+        'node_modules/prismjs/components/*.js',
+        'node_modules/prismjs/plugins/line-numbers/*.js',
+        'node_modules/prismjs/plugins/show-invisibles/*.js'
+    ])
+        .pipe(gulp.dest('assets/js/'));
+});
+
 gulp.task('styles', function () {
     return gulp.src([
         'src/scss/*.scss',
         'node_modules/prismjs/themes/*.css',
         'node_modules/prism-themes/themes/*.css',
         'node_modules/prismjs/plugins/line-numbers/*.css',
-        'node_modules/prismjs/plugins/show-invisibles/*.css',
-        'node_modules/prismjs/plugins/show-language/*.css'
+        'node_modules/prismjs/plugins/show-invisibles/*.css'
     ])
         .pipe(sass())
         .pipe(gulp.dest('assets/css'))
