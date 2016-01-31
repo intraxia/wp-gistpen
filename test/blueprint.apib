@@ -119,6 +119,51 @@ You can update a user's settings with this endpoint. It also returns an object w
                 "ace_theme": "chaos"
             }
 
+## Site Options Collection [/site]
+
+### List Site Options [GET]
+
+You can retrieve the site's current settings with this endpoint.
+
++ Response 200 (application/json)
+
+            {
+                "prism_theme": "default",
+                "prism_plugins": [
+                    "line-numbers",
+                    "show-invisibles"
+                ],
+                "gist_token": "abcdefghijk0123456789"
+            }
+
+### Update Site Options [PATCH]
+
+You can update any of the site's settings with this endpoint. Just send the data in the location in the structure that needs to be updataed. The endpoint will return the updated settings for the site.
+
++ Request (application/json)
+
+        {
+            "prism_theme": "xonokai",
+            "random": "value"
+        }
+
++ Response 201 (application/json)
+
+    + Header
+
+            X-Invalid-Keys: random
+
+    + Body
+
+            {
+                "prism_theme": "xonokai",
+                "prism_plugins": [
+                    "line-numbers",
+                    "show-invisibles"
+                ],
+                "gist_token": "abcdefghijk0123456789"
+            }
+
 ## Jobs Collection [/jobs]
 
 The Jobs Collection endpoints provides client access to the jobs system.
