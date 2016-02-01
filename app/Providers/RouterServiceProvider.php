@@ -26,6 +26,7 @@ class RouterServiceProvider extends ServiceProvider {
 			'zip'    => $this->container->fetch( 'controller.zip' ),
 			'user'   => $this->container->fetch( 'controller.user' ),
 			'job'    => $this->container->fetch( 'controller.job' ),
+			'site'   => $this->container->fetch( 'controller.site' ),
 		);
 
 		$router->group( array( 'prefix' => '/gistpen' ), function ( Router $router ) use ( $controllers ) {
@@ -65,6 +66,16 @@ class RouterServiceProvider extends ServiceProvider {
 				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
 			) );
 			$router->patch( '/me', array( $controllers['user'], 'update' ), array(
+				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
+			) );
+
+			/**
+			 * /site endpoint
+			 */
+			$router->get( '/site', array( $controllers['site'], 'view' ), array(
+				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
+			) );
+			$router->patch( '/site', array( $controllers['site'], 'update' ), array(
 				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
 			) );
 

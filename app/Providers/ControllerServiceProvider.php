@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Http\JobController;
 use Intraxia\Gistpen\Http\SearchController;
+use Intraxia\Gistpen\Http\SiteController;
 use Intraxia\Gistpen\Http\UserController;
 use Intraxia\Gistpen\Http\ZipController;
 use Intraxia\Jaxion\Contract\Core\Container;
@@ -31,6 +32,10 @@ class ControllerServiceProvider implements ServiceProvider {
 
 		$container->share( array( 'controller.user' => 'Intraxia\Gistpen\Http\UserController' ), function ( $app ) {
 			return new UserController( $app->fetch( 'options.user' ) );
+		} );
+
+		$container->share( array( 'controller.site' => 'Intraxia\Gistpen\Http\SiteController' ), function ( $app ) {
+			return new SiteController( $app->fetch( 'options.site' ) );
 		} );
 
 		$container->share( array( 'controller.job' => 'Intraxia\Gistpen\Http\JobController' ), function ( $app ) {
