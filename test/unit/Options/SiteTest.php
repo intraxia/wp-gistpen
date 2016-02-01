@@ -14,9 +14,9 @@ class SiteTest extends WP_UnitTestCase {
 	 * @var array
 	 */
 	protected $dummy = array(
-		'gist_token'                => 'token_value',
-		'gistpen_highlighter_theme' => 'highlighter_theme',
-		'gistpen_line_number'       => 'on',
+		'prism_theme'   => 'default',
+		'prism_plugins' => array( 'line-numbers' ),
+		'gist_token'    => 'token_value',
 	);
 
 	public function setUp() {
@@ -48,27 +48,27 @@ class SiteTest extends WP_UnitTestCase {
 	}
 
 	public function test_should_retrieve_gistpen_highlighter_theme() {
-		$this->assertSame( $this->dummy['gistpen_highlighter_theme'], $this->site->get( 'gistpen_highlighter_theme' ) );
+		$this->assertSame( $this->dummy['prism_theme'], $this->site->get( 'prism_theme' ) );
 	}
 
 	public function test_should_update_gistpen_highlighter_theme() {
 		$value = 'newtest';
 
-		$this->site->set( 'gistpen_highlighter_theme', $value );
+		$this->site->set( 'prism_theme', $value );
 
-		$this->assertSame( $value, $this->site->get( 'gistpen_highlighter_theme' ) );
+		$this->assertSame( $value, $this->site->get( 'prism_theme' ) );
 	}
 
 	public function test_should_retrieve_gistpen_line_number() {
-		$this->assertSame( $this->dummy['gistpen_line_number'], $this->site->get( 'gistpen_line_number' ) );
+		$this->assertSame( $this->dummy['prism_plugins'], $this->site->get( 'prism_plugins' ) );
 	}
 
 	public function test_should_update_gistpen_line_number() {
-		$value = 'newtest';
+		$value = array( 'line-numbers', 'show-invisibles' );
 
-		$this->site->set( 'gistpen_line_number', $value );
+		$this->site->set( 'prism_plugins', $value );
 
-		$this->assertSame( $value, $this->site->get( 'gistpen_line_number' ) );
+		$this->assertSame( $value, $this->site->get( 'prism_plugins' ) );
 	}
 
 	public function test_should_throw_exception_getting_unknown_option() {

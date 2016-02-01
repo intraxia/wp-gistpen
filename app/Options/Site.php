@@ -9,7 +9,7 @@ class Site {
 	 *
 	 * @var array
 	 */
-	protected $options = array( 'gist_token', 'gistpen_highlighter_theme', 'gistpen_line_number' );
+	protected $options = array( 'prism_theme', 'prism_plugins', 'gist_token' );
 
 	/**
 	 * Options prefix.
