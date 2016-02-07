@@ -16,8 +16,8 @@ class OptionsServiceProvider implements ServiceProvider {
 		$container->define( 'options.user', function() {
 			return new User;
 		} );
-		$container->define( 'options.site', function() {
-			return new Site;
+		$container->define( 'options.site', function( Container $c ) {
+			return new Site( $c->fetch( 'slug' ) );
 		} );
 	}
 }
