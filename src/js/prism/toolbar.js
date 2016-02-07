@@ -1,4 +1,5 @@
 var callbacks = [];
+var initialized = false;
 
 /**
  * Post-highlight Prism hook callback.
@@ -6,6 +7,11 @@ var callbacks = [];
  * @param env
  */
 exports.hook = function hook(env) {
+    if (initialized) {
+        return;
+    }
+
+    initialized = true;
 
     // Check if inline or actual code block (credit to line-numbers plugin)
     var pre = env.element.parentNode;

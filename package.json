@@ -26,9 +26,9 @@
     "ace-builds": "1.2.2",
     "backbone": "1.2.3",
     "clipboard": "^1.5.5",
+    "es6-promise": "3.0.2",
     "jquery": "2.2.0",
     "lodash.assign": "^4.0.0",
-    "plite": "0.0.3",
     "prism-themes": "git+https://github.com/PrismJS/prism-themes.git",
     "prismjs": "1.4.1"
   },

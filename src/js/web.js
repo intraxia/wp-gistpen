@@ -1,5 +1,11 @@
+/**
+ * Load our dependencies.
+ */
 var Prism = require('./prism');
-var Plite = require('plite');
+
+if (!window.Promise) {
+    require('es6-promise').polyfill();
+}
 
 /**
  * Configure Prism.
@@ -20,6 +26,6 @@ if (Gistpen_Settings.site.prism['show-invisibles']) {
     promises.push(Prism.loadPlugin('show-invisibles'));
 }
 
-window.PrismPromise = Plite.all(promises)
+window.PrismPromise = Promise.all(promises)
     .then(Prism.highlightAll)
     .catch(console.error.bind(console));

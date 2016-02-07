@@ -1,5 +1,4 @@
 var extend = require('lodash.assign');
-var Plite = require('plite');
 var debug = require('./debug');
 
 var css = document.createElement("link");
@@ -14,7 +13,7 @@ document.getElementsByTagName("head")[0].appendChild(css);
  * @returns {Promise}
  */
 exports.loadTheme = function loadTheme(theme) {
-    return Plite(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
         if (!theme) {
             theme = 'default';
         }

@@ -1,5 +1,4 @@
 var extend = require('lodash.assign');
-var Plite = require('plite');
 var debug = require('./debug');
 
 /**
@@ -39,18 +38,19 @@ exports.loadScript = function loadScript(plugin) {
  * @returns {Promise} - Promise that resolved when script and style promises resolve.
  */
 exports.loadPlugin = function loadPlugin(plugin) {
-    return Plite.all([exports.loadScript(plugin), exports.loadCSS(plugin)]);
+    return Promise.all([exports.loadScript(plugin), exports.loadCSS(plugin)]);
 };
 
 extend(exports, debug);
 
 /**
- * Returns a promise that resolves on the loading of the elment.
+ * Returns a promise that resolves on the loading of the element.
  *
  * @param {Element} element
+ * @param {Object} opts
  */
 function makePromise(element, opts) {
-    return Plite(function(resolve, reject) {
+    return new Promise(function(resolve, reject) {
         element.onload = resolve;
         element.onerror = reject;
 
