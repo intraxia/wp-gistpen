@@ -25,12 +25,11 @@ class AssetsServiceProvider extends ServiceProvider {
 			$assets->set_debug( true );
 		}
 
-		$slug     = $this->container->fetch( 'slug' );
-		$url      = $this->container->fetch( 'url' );
+		$slug = $this->container->fetch( 'slug' );
+		$url  = $this->container->fetch( 'url' );
+		$site = $this->container->fetch( 'options.site' );
 
-		$localize = function () use ( $url, $slug, $debug ) {
-			$theme = cmb2_get_option( $slug, '_wpgp_gistpen_highlighter_theme' );
-
+		$localize = function () use ( $url, $slug, $debug, $site ) {
 			return array(
 				'name' => 'Gistpen_Settings',
 				'data' => array(
@@ -42,12 +41,22 @@ class AssetsServiceProvider extends ServiceProvider {
 					'ace_themes' => Editor::$ace_themes,
 					'ace_widths' => array( 1, 2, 4, 8 ),
 					'statuses'   => get_post_statuses(),
-					'prism'      => array(
-						'theme'   => $theme ? : 'default',
-						'plugins' => array(
-							'line-numbers'    => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' ) ),
-							'show-invisibles' => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_show_invisibles' ) ),
-						),
+					'site'       => $site->all(),
+					'themes'     => array(
+						'default'                         => __( 'Default', 'wp-gistpen' ),
+						'dark'                            => __( 'Dark', 'wp-gistpen' ),
+						'funky'                           => __( 'Funky', 'wp-gistpen' ),
+						'okaidia'                         => __( 'Okaidia', 'wp-gistpen' ),
+						'tomorrow'                        => __( 'Tomorrow', 'wp-gistpen' ),
+						'twilight'                        => __( 'Twilight', 'wp-gistpen' ),
+						'coy'                             => __( 'Coy', 'wp-gistpen' ),
+						'cb'                              => __( 'CB', 'wp-gistpen' ),
+						'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
+						'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
+						'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
+						'base16-ateliersulphurpool.light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
+						'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
+						'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
 					),
 				),
 			);

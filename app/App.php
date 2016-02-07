@@ -29,11 +29,11 @@ class App extends Application {
 	 * @var string[]
 	 */
 	protected $providers = array(
+		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
 		'Intraxia\Gistpen\Providers\AssetsServiceProvider',
 		'Intraxia\Gistpen\Providers\ControllerServiceProvider',
 		'Intraxia\Gistpen\Providers\CoreServiceProvider',
 		'Intraxia\Gistpen\Providers\EmbedServiceProvider',
-		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
 		'Intraxia\Gistpen\Providers\RouterServiceProvider',
 	);
 
