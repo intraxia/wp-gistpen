@@ -3,6 +3,14 @@ namespace Intraxia\Gistpen\Options;
 
 use InvalidArgumentException;
 
+/**
+ * Provides a simplified interface for
+ * interacting with the site's plugin options.
+ *
+ * @package Intraxia\Gistpen
+ * @subpackage Options
+ * @since 1.0.0
+ */
 class Site {
 	/**
 	 * Registered options.
@@ -19,7 +27,9 @@ class Site {
 	protected $slug;
 
 	/**
-	 * @inheritDoc
+	 * Constructor.
+	 *
+	 * @param string $slug
 	 */
 	public function __construct( $slug ) {
 		$this->slug = $slug;
@@ -31,32 +41,7 @@ class Site {
 	 * @return array
 	 */
 	public function all() {
-		$option = get_option( $this->slug . '_no_priv' );
-
-		if ( ! $option ) {
-			$option = array(
-				'prism' => array(
-					'theme'           => 'default',
-					'line-numbers'    => false,
-					'show-invisibles' => false,
-				),
-			);
-		} else {
-			$option['prism']['line-numbers']    = isset( $option['line-numbers'] ) && 'on' === $option['line-numbers'] ? true : false;
-			$option['prism']['show-invisibles'] = isset( $option['show-invisibles'] ) && 'on' === $option['show-invisibles'] ? true : false;
-		}
-
-		if ( current_user_can( 'manage_options' ) ) {
-			$priv = get_option( $this->slug . '_priv' );
-
-			if ( ! $priv ) {
-				$priv = array( 'gist' => array( 'token' => '' ) );
-			}
-
-			$option = array_merge( $option, $priv );
-		}
-
-		return $option;
+		return array_merge( $this->fetch_no_priv(), $this->fetch_priv() );
 	}
 
 	/**
@@ -92,23 +77,24 @@ class Site {
 			return;
 		}
 		if ( isset( $patch['prism'] ) ) {
-			$option = get_option( $this->slug . '_no_priv' );
+			$option = $this->fetch_no_priv();
 
 			foreach ( $patch['prism'] as $key => $value ) {
-				if ( in_array( $key, array( 'line-numbers', 'show-invisibles' ) ) ) {
-					$option['prism'][ $key ] = $value ? 'on' : 'off';
-				}
-
-				if ( 'theme' === $key ) {
+				if ( in_array( $key, array( 'theme', 'line-numbers', 'show-invisibles' ) ) ) {
 					$option['prism'][ $key ] = $value;
 				}
 			}
 
-			update_option( $this->slug . '_no_priv', $option );
+			$this->save_no_priv( $option );
 		}
 
 		if ( isset( $patch['gist'] ) ) {
-			$option = get_option( $this->slug . '_priv' );
+			$option = $this->fetch_priv();
+
+			// If you don't have access, we're done here.
+			if ( ! $option ) {
+				return;
+			}
 
 			foreach ( $patch['gist'] as $key => $value ) {
 				if ( 'token' === $key ) {
@@ -116,7 +102,70 @@ class Site {
 				}
 			}
 
-			update_option( $this->slug . '_priv', $option );
+			$this->save_priv( $option );
 		}
+	}
+
+	/**
+	 * @return array
+	 */
+	protected function fetch_no_priv() {
+		$option = get_option( $this->slug . '_no_priv' );
+
+		if ( ! $option ) {
+			$option = array(
+				'prism' => array(
+					'theme'           => 'default',
+					'line-numbers'    => false,
+					'show-invisibles' => false,
+				),
+			);
+		} else {
+			if ( ! is_array( $option ) || ! isset( $option['prism'] ) ) {
+				$option = array( 'prism' => array() );
+			}
+
+			$option['prism']['theme'] = isset( $option['prism']['theme'] ) ? $option['prism']['theme'] : 'default';
+			$option['prism']['line-numbers']    = isset( $option['prism']['line-numbers'] ) && 'on' === $option['prism']['line-numbers'] ? true : false;
+			$option['prism']['show-invisibles'] = isset( $option['prism']['show-invisibles'] ) && 'on' === $option['prism']['show-invisibles'] ? true : false;
+		}
+
+		return $option;
+	}
+
+	protected function fetch_priv() {
+		$option = array();
+
+		if ( current_user_can( 'manage_options' ) ) {
+			$option = get_option( $this->slug . '_priv' );
+
+			if ( ! $option ) {
+				$option = array( 'gist' => array( 'token' => '' ) );
+			}
+		}
+
+		return $option;
+	}
+
+	/**
+	 * @param array $option
+	 */
+	protected function save_no_priv( array $option ) {
+		if ( ! isset( $option['prism'] ) ) {
+			$option['prism'] = array();
+		}
+
+		$option['prism']['theme']           = ! empty( $option['prism']['theme'] ) ? $option['prism']['theme'] : 'default';
+		$option['prism']['line-numbers']    = ! empty( $option['prism']['line-numbers'] ) ? 'on' : 'off';
+		$option['prism']['show-invisibles'] = ! empty( $option['prism']['show-invisibles'] ) ? 'on' : 'off';
+
+		update_option( $this->slug . '_no_priv', array( 'prism' => $option['prism'] ) );
+	}
+
+	/**
+	 * @param array $option
+	 */
+	protected function save_priv( array $option ) {
+		update_option( $this->slug . '_priv', $option );
 	}
 }

@@ -109,6 +109,15 @@ class SiteTest extends TestCase {
 		$this->assertSame( 'xonokai', $site['prism']['theme'] );
 	}
 
+	public function test_should_update_boolean_prism_key() {
+		$this->set_role( 'administrator' );
+
+		$this->site->patch( array( 'prism' => array( 'line-numbers' => true ) ) );
+
+		$site = $this->site->all();
+		$this->assertSame( true, $site['prism']['line-numbers'] );
+	}
+
 	public function test_should_ignore_invalid_prism_key() {
 		$this->set_role( 'administrator' );
 

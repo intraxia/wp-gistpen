@@ -40,17 +40,7 @@ class SiteController {
 	 * @return WP_REST_Response
 	 */
 	public function update( WP_REST_Request $request ) {
-		$params  = $request->get_params();
-		$invalid = array();
-
-		foreach ( $params as $key => $value ) {
-			try {
-				$this->site->set( $key, $value );
-			} catch ( InvalidArgumentException $e ) {
-				$invalid[] = $key;
-			}
-		}
-
-		return new WP_REST_Response( $this->site->all(), 200, array( 'X-Invalid-Keys' => implode( ', ', $invalid ) ) );
+		$this->site->patch( $request->get_params() );
+		return new WP_REST_Response( $this->site->all(), 200 );
 	}
 }

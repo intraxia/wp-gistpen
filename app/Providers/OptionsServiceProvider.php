@@ -6,6 +6,13 @@ use Intraxia\Gistpen\Options\User;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 
+/**
+ * Class OptionsServiceProvider
+ *
+ * @package Intraxia\Gistpen
+ * @subpackage Providers
+ * @since 1.0.0
+ */
 class OptionsServiceProvider implements ServiceProvider {
 	/**
 	 * {@inheritDoc}
