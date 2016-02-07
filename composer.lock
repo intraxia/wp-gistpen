@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "96e229a4eeff676c10643d650d874c75",
-    "content-hash": "ea47cbbfce2ef77b176e6267d732eab1",
+    "hash": "7d3255af5d65a58ba74daea253e93029",
+    "content-hash": "11f5d455bdfc4137173d5d3f551a10f7",
     "packages": [
         {
             "name": "composer/installers",
@@ -363,51 +363,6 @@
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
             "time": "2016-01-13 10:28:07"
-        },
-        {
-            "name": "webdevstudios/cmb2",
-            "version": "v2.0.0.9",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/WebDevStudios/CMB2.git",
-                "reference": "5086e3a42183cf335b440e3f5758625d5e8635cf"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/WebDevStudios/CMB2/zipball/5086e3a42183cf335b440e3f5758625d5e8635cf",
-                "reference": "5086e3a42183cf335b440e3f5758625d5e8635cf",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">5.2.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "suggest": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "WebDevStudios",
-                    "email": "contact@webdevstudios.com",
-                    "homepage": "https://github.com/WebDevStudios",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Custom Metaboxes and Fields (CMB) will create metaboxes and forms with custom fields that will blow your mind.",
-            "homepage": "https://github.com/WebDevStudios/CMB2",
-            "keywords": [
-                "metabox",
-                "plugin",
-                "wordpress"
-            ],
-            "time": "2015-01-15 21:50:48"
         },
         {
             "name": "wpupdatephp/wp-update-php",

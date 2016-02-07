@@ -99,8 +99,10 @@ class Gist {
 	 * @return bool
 	 */
 	public function is_ready() {
-		if ( ! $this->ready && $token = (string) cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' ) ) {
-			$this->set_token( $token );
+		if ( ! $this->ready
+			// @todo && $token = (string) cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' )
+		) {
+			$this->set_token( '' );
 		}
 
 		return $this->ready;

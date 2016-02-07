@@ -31,9 +31,7 @@ abstract class TestCase extends WP_UnitTestCase {
 
 	function tearDown() {
 		parent::tearDown();
-
 		Mockery::close();
-		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', false );
 	}
 
 	public function mock( $alias ) {
