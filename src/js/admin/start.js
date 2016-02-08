@@ -1,0 +1,79 @@
+import React from 'react';
+import { observableDiff } from 'deep-diff';
+import Highlighting from './highlighting';
+import { Container, Actions } from '../wordpress';
+import {
+    handlePrismThemeChange,
+    handleLineNumbersChange,
+    handleShowInvisiblesChange,
+    handleServerUpdate
+} from './dispatches';
+
+const { AJAX } = Actions;
+
+const tabs = ['Highlighting'];
+
+const Start = React.createClass({
+    render: function() {
+        const props = Object.assign({}, this.props, {
+            handlePrismThemeChange,
+            handleLineNumbersChange,
+            handleShowInvisiblesChange
+        });
+
+        return (
+            <Container
+                l10n={{
+                    updating: "Updating Settings...",
+                    success: "Successfully Updated Settings",
+                    error: "Error Updating Settings"
+                }}
+                ajax={props.ajax}
+                title="Gistpen Settings"
+                tabs={tabs}>
+                <Highlighting {...props} />
+            </Container>
+        );
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        // If we aren't idle or props haven't changed, bail.
+        if (nextProps.ajax === AJAX.UPDATING || this.props === nextProps) {
+            return;
+        }
+
+        let patch = {};
+
+        observableDiff(this.props.site, nextProps.site, (delta) => {
+            if ('E' !== delta.kind) {
+                return;
+            }
+
+            const { path, rhs } = delta;
+
+            switch(path.length) {
+                case 1:
+                    patch[path[0]] = rhs;
+                    break;
+                case 2:
+                    patch[path[0]] = {};
+                    patch[path[0]][path[1]] = rhs;
+                    break;
+                case 3:
+                    patch[path[0]] = {};
+                    patch[path[0]][path[1]] = {};
+                    patch[path[0]][path[1]][path[2]] = rhs;
+                    break;
+            }
+        });
+
+        // Sanity check to ensure we got a delta.
+        if ('{}' === JSON.stringify(patch)) {
+            return;
+        }
+
+        handleServerUpdate(patch);
+    }
+});
+
+export default Start;
