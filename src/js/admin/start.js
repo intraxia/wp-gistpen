@@ -2,6 +2,7 @@ import React from 'react';
 import { observableDiff } from 'deep-diff';
 import Highlighting from './highlighting';
 import Accounts from './accounts';
+import Stub from './stub';
 import { Container, Actions } from '../wordpress';
 import {
     handlePrismThemeChange,
@@ -21,6 +22,14 @@ const tabs = [
     {
         slug: 'accounts',
         display: 'Accounts'
+    },
+    {
+        slug: 'import',
+        display: 'Import'
+    },
+    {
+        slug: 'export',
+        display: 'Export'
     }
 ];
 
@@ -44,6 +53,10 @@ const Start = React.createClass({
         let Child;
 
         switch (this.state.route) {
+            case '/import':
+            case '/export':
+                Child = Stub;
+                break;
             case '/accounts':
                 Child = Accounts;
                 break;
