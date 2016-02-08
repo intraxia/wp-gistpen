@@ -1,11 +1,13 @@
 import React from 'react';
 import { observableDiff } from 'deep-diff';
 import Highlighting from './highlighting';
+import Accounts from './accounts';
 import { Container, Actions } from '../wordpress';
 import {
     handlePrismThemeChange,
     handleLineNumbersChange,
     handleShowInvisiblesChange,
+    handleGistTokenChange,
     handleServerUpdate
 } from './dispatches';
 
@@ -15,6 +17,10 @@ const tabs = [
     {
         slug: 'highlighting',
         display: 'Highlighting'
+    },
+    {
+        slug: 'accounts',
+        display: 'Accounts'
     }
 ];
 
@@ -31,12 +37,16 @@ const Start = React.createClass({
         const props = Object.assign({}, this.props, {
             handlePrismThemeChange,
             handleLineNumbersChange,
-            handleShowInvisiblesChange
+            handleShowInvisiblesChange,
+            handleGistTokenChange
         });
 
         let Child;
 
         switch (this.state.route) {
+            case '/accounts':
+                Child = Accounts;
+                break;
             case '/highlighting':
             default:
                 Child = Highlighting;

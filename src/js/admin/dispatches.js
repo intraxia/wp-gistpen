@@ -5,6 +5,7 @@ import {
     updatePrismTheme,
     toggleLineNumbers,
     toggleShowInvisibles,
+    updateGistToken,
     resetSiteState
 } from './actions';
 import { dispatch } from './store';
@@ -38,11 +39,17 @@ export function handleShowInvisiblesChange(event) {
     );
 }
 
+export function handleGistTokenChange(event) {
+    return dispatch(
+        updateGistToken(event.target.value)
+    );
+}
+
 let timeout;
 
 export function handleServerUpdate(patch) {
     if (timeout) {
-        clearTimeout(timeout);
+        return;
     }
 
     dispatch(setAjaxStatus(AJAX.UPDATING));
