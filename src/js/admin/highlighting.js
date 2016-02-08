@@ -1,4 +1,5 @@
 import React from 'react';
+import equal from 'deep-equal';
 import { findDOMNode, render, unmountComponentAtNode } from 'react-dom';
 import { Checkbox, Dropdown } from '../wordpress';
 
@@ -87,6 +88,12 @@ const Highlighting = React.createClass({
         };
 
         const oldIframe = node.querySelector('.gistpen');
+
+        if (oldIframe && equal(oldIframe.contentWindow.Gistpen_Settings.site, this.props.site)) {
+            Highlighting.rendering = false;
+            return;
+        }
+
         const newIframe = document.createElement('iframe');
 
         newIframe.classList.add('gistpen', 'hidden');

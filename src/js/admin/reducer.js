@@ -1,3 +1,5 @@
+import assignDeep from 'object-assign-deep';
+import equal from 'deep-equal';
 import { SET_AJAX_STATUS } from '../wordpress/actions';
 import {
     UPDATE_PRISM_THEME,
@@ -8,7 +10,7 @@ import {
 } from './actions';
 
 export default function(event, state) {
-    let newState = JSON.parse(JSON.stringify(state));
+    let newState = assignDeep({}, state);
 
     switch (event.type) {
         case UPDATE_PRISM_THEME:
@@ -24,7 +26,11 @@ export default function(event, state) {
             newState.site.gist.token = event.token;
             break;
         case RESET_SITE_STATE:
-            newState.site = event.site;
+            if (!equal(newState.site, event.site)) {
+                newState.site = event.site;
+            } else {
+                newState = state;
+            }
             break;
         case SET_AJAX_STATUS:
             newState.ajax = event.status;
