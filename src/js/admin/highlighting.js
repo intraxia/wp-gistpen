@@ -8,7 +8,7 @@ const Highlighting = React.createClass({
     },
 
     shouldComponentUpdate: function(nextProps) {
-        return this.props.prism !== nextProps.prism;
+        return this.props.site.prism !== nextProps.site.prism;
     },
 
     render: function() {
