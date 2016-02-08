@@ -1,6 +1,8 @@
 <?php
 namespace Intraxia\Gistpen\Model;
 
+use Intraxia\Gistpen\App;
+
 /**
  * Manages the Gistpen's file data
  *
@@ -159,7 +161,9 @@ class File {
 	public function get_post_content() {
 		$post_content = '<pre class="gistpen';
 
-		if ( 'on' === cmb2_get_option( 'wp-gistpen', '_wpgp_gistpen_line_numbers' ) ) {
+		$prism = App::instance()->fetch( 'options.site' )->get( 'prism' ); // @todo this whole section should be in a view
+
+		if ( $prism['line-numbers'] ) {
 			$post_content .= ' line-numbers';
 		}
 
