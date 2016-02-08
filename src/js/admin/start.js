@@ -11,7 +11,12 @@ import {
 
 const { AJAX } = Actions;
 
-const tabs = ['Highlighting'];
+const tabs = [
+    {
+        slug: 'highlighting',
+        display: 'Highlighting'
+    }
+];
 
 const Start = React.createClass({
     render: function() {

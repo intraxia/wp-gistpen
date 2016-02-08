@@ -7,7 +7,7 @@ const Header = React.createClass({
                 <h1>{this.props.title}</h1>
                 {this.props.children}
                 <h2 className="nav-tab-wrapper">
-                    {this.props.tabs.map((tab, i) => <a href="#" className="nav-tab" key={i}>{tab}</a>)}
+                    {this.props.tabs.map((tab, i) => <a href={`#/${tab.slug}`} className="nav-tab" key={i}>{tab.display}</a>)}
                 </h2>
             </div>
         );
