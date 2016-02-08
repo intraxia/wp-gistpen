@@ -19,12 +19,28 @@ const tabs = [
 ];
 
 const Start = React.createClass({
-    render: function() {
+    getInitialState: function () {
+        return {route: window.location.hash.substr(1)};
+    },
+
+    componentDidMount: function () {
+        window.addEventListener('hashchange', () => this.setState({route: window.location.hash.substr(1)}));
+    },
+
+    render: function () {
         const props = Object.assign({}, this.props, {
             handlePrismThemeChange,
             handleLineNumbersChange,
             handleShowInvisiblesChange
         });
+
+        let Child;
+
+        switch (this.state.route) {
+            case '/highlighting':
+            default:
+                Child = Highlighting;
+        }
 
         return (
             <Container
@@ -36,12 +52,12 @@ const Start = React.createClass({
                 ajax={props.ajax}
                 title="Gistpen Settings"
                 tabs={tabs}>
-                <Highlighting {...props} />
+                <Child {...props} />
             </Container>
         );
     },
 
-    componentWillReceiveProps: function(nextProps) {
+    componentWillReceiveProps: function (nextProps) {
         // If we aren't idle or props haven't changed, bail.
         if (nextProps.ajax === AJAX.UPDATING || this.props === nextProps) {
             return;
@@ -56,7 +72,7 @@ const Start = React.createClass({
 
             const { path, rhs } = delta;
 
-            switch(path.length) {
+            switch (path.length) {
                 case 1:
                     patch[path[0]] = rhs;
                     break;
