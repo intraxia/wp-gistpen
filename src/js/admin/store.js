@@ -1,35 +1,23 @@
-const data = {};
-let store = Symbol('store');
-let reducer = Symbol('reducer');
-let initialized = false;
+import { BehaviorSubject } from 'rx';
+import assignDeep from 'object-assign-deep';
 
-export function initialize(callback, initialState = {}) {
-    if (initialized) {
-        throw new Error('Store was reinitialized');
-    }
+/**
+ * Create a store subject with the provided default value.
+ *
+ * @param {Object} initial
+ * @returns {BehaviorSubject}
+ */
+export function create(initial) {
+    const store = new BehaviorSubject(initial);
 
-    data[store] = initialState;
-    data[reducer] = callback;
+    /**
+     * Subscribe to a patch stream to update store subject.
+     *
+     * @param {Object} patch - Patch data
+     */
+    store.patch = (patch) => store.onNext(
+        assignDeep({}, store.getValue(), patch)
+    );
 
-    update();
-}
-
-export function fetch() {
-    return data[store];
-}
-
-export function dispatch(event) {
-    data[store] = data[reducer](event, data[store]);
-
-    update();
-}
-
-const callbacks = [];
-
-export function subscribe(callback) {
-    callbacks.push(callback);
-}
-
-function update() {
-    callbacks.forEach((cb) => cb(fetch()));
+    return store;
 }

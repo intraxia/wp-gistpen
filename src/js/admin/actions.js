@@ -4,7 +4,6 @@ export const TOGGLE_SHOW_INVISIBLES = 'TOGGLE_SHOW_INVISIBLES';
 export const UPDATE_GIST_TOKEN = 'UPDATE_GIST_TOKEN';
 export const RESET_SITE_STATE = 'RESET_SITE_STATE';
 
-
 export function updatePrismTheme(theme) {
     return {
         type: UPDATE_PRISM_THEME,

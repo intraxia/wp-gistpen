@@ -36,7 +36,9 @@
     "prism-themes": "git+https://github.com/PrismJS/prism-themes.git",
     "prismjs": "1.4.1",
     "react": "0.14.7",
-    "react-dom": "0.14.7"
+    "react-dom": "0.14.7",
+    "rx": "4.0.7",
+    "rx-react": "0.3.0"
   },
   "babel": {
     "presets": [
