@@ -1,18 +1,10 @@
-import React from 'react';
-import { render } from 'react-dom';
-import { Start, reducer, store } from './admin';
-import { Actions } from './wordpress';
+import { bootstrap } from './admin';
 
-const { AJAX } = Actions;
-
-store.subscribe((props) => render(
-    <Start {...props} />,
+/**
+ * Kick off the Settings page application
+ * with the contextual requirements.
+ */
+bootstrap(
+    Object.assign({}, window.Gistpen_Settings),
     document.getElementById('wpgp-wrap')
-));
-
-store.initialize(
-    reducer,
-    Object.assign({}, window.Gistpen_Settings, {
-        ajax: AJAX.IDLE
-    })
 );
