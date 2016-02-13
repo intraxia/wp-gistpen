@@ -1,7 +1,7 @@
 /**
  * Load our dependencies.
  */
-var Prism = require('./prism');
+const Prism = require('./prism');
 
 if (!window.Promise) {
     require('es6-promise').polyfill();
@@ -13,21 +13,31 @@ if (!window.Promise) {
 Prism.plugins.autoloader.languages_path = Gistpen_Settings.url + 'assets/js/';
 Prism.setDebug("1" === Gistpen_Settings.debug);
 
-document.addEventListener('DOMContentLoaded', () => {
-    var promises = [];
+/**
+ * Begin loading out dependencies.
+ */
 
-    promises.push(Prism.loadTheme(Gistpen_Settings.site.prism.theme));
-    promises.push(Prism.loadCSS('toolbar'));
+const promises = [];
 
-    if (Gistpen_Settings.site.prism['line-numbers']) {
-        promises.push(Prism.loadPlugin('line-numbers'));
-    }
+promises.push(Prism.loadTheme(Gistpen_Settings.site.prism.theme));
+promises.push(Prism.loadCSS('toolbar'));
 
-    if (Gistpen_Settings.site.prism['show-invisibles']) {
-        promises.push(Prism.loadPlugin('show-invisibles'));
-    }
+if (Gistpen_Settings.site.prism['line-numbers']) {
+    promises.push(Prism.loadPlugin('line-numbers'));
+}
 
-    window.PrismPromise = Promise.all(promises)
+if (Gistpen_Settings.site.prism['show-invisibles']) {
+    promises.push(Prism.loadPlugin('show-invisibles'));
+}
+
+const chain = window.PrismPromise = Promise.all(promises);
+const finish = () => chain
         .then(Prism.highlightAll)
         .catch(console.error.bind(console));
-});
+
+if (document.readyState === "complete" || document.readyState === "loaded") {
+    finish();
+} else {
+    document.addEventListener('DOMContentLoaded', finish);
+}
+
