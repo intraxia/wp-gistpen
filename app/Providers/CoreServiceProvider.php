@@ -39,7 +39,7 @@ class CoreServiceProvider implements ServiceProvider {
 			->define( 'view.editor', new Editor( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'path' ) ) )
 			->define( 'view.settings', new Settings( $container->fetch( 'basename' ) ) )
 			->define( 'view.content', new Content( $container->fetch( 'facade.database' ) ) )
-			->define( 'migration', new Migration( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'version' ) ) )
+			->define( 'migration', new Migration( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'slug' ), $container->fetch( 'version' ) ) )
 			->define( 'register.button', new Button( $container->fetch( 'url' ) ) )
 			->define( 'sync', new Sync( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) )
 			->define( 'save', new Save( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) )
