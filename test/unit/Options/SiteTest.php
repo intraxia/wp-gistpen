@@ -46,6 +46,17 @@ class SiteTest extends TestCase {
 		$this->assertSame( $this->unprotected, $this->site->all() );
 	}
 
+	public function test_should_reset_mangled_options() {
+		$this->set_role( 'subscriber' );
+		update_option( 'wp-gistpen_no_priv', 'something went wrong' );
+
+		$this->assertSame( $this->unprotected, $this->site->all() );
+
+		update_option( 'wp-gistpen_no_priv', array() );
+
+		$this->assertSame( $this->unprotected, $this->site->all() );
+	}
+
 	public function test_should_retrieve_protected_options() {
 		$this->set_role( 'administrator' );
 
@@ -124,6 +135,15 @@ class SiteTest extends TestCase {
 		$this->site->patch( array( 'prism' => array( 'key' => 'value' ) ) );
 
 		$this->assertSame( $this->protected, $this->site->all() );
+	}
+
+	public function test_should_update_valid_gist_key() {
+		$this->set_role( 'administrator' );
+
+		$this->site->patch( array( 'gist' => array( 'token' => '123456789asghskdjfhka' ) ) );
+
+		$site = $this->site->all();
+		$this->assertSame( '123456789asghskdjfhka', $site['gist']['token'] );
 	}
 
 	function tearDown() {

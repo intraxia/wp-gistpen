@@ -76,6 +76,7 @@ class Site {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return;
 		}
+
 		if ( isset( $patch['prism'] ) ) {
 			$option = $this->fetch_no_priv();
 
@@ -91,11 +92,6 @@ class Site {
 		if ( isset( $patch['gist'] ) ) {
 			$option = $this->fetch_priv();
 
-			// If you don't have access, we're done here.
-			if ( ! $option ) {
-				return;
-			}
-
 			foreach ( $patch['gist'] as $key => $value ) {
 				if ( 'token' === $key ) {
 					$option['gist'][ $key ] = $value;
@@ -107,6 +103,8 @@ class Site {
 	}
 
 	/**
+	 * Retrieves all the unprivileged information from the options.
+	 *
 	 * @return array
 	 */
 	protected function fetch_no_priv() {
@@ -133,6 +131,11 @@ class Site {
 		return $option;
 	}
 
+	/**
+	 * Returns the privileged options.
+	 *
+	 * @return array
+	 */
 	protected function fetch_priv() {
 		$option = array();
 
@@ -148,12 +151,21 @@ class Site {
 	}
 
 	/**
+	 * Saves the unprivileged options.
+	 *
 	 * @param array $option
 	 */
 	protected function save_no_priv( array $option ) {
+		/**
+		 * This actually never runs, given the flow
+		 * in which this method is normally called,
+		 * but it's kept here for ideological purity.
+		 */
+		// @codeCoverageIgnoreStart
 		if ( ! isset( $option['prism'] ) ) {
 			$option['prism'] = array();
 		}
+		// @codeCoverageIgnoreEnd
 
 		$option['prism']['theme']           = ! empty( $option['prism']['theme'] ) ? $option['prism']['theme'] : 'default';
 		$option['prism']['line-numbers']    = ! empty( $option['prism']['line-numbers'] ) ? 'on' : 'off';
@@ -163,6 +175,8 @@ class Site {
 	}
 
 	/**
+	 * Saves the privileged options.
+	 *
 	 * @param array $option
 	 */
 	protected function save_priv( array $option ) {
