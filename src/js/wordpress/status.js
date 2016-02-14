@@ -1,4 +1,5 @@
-import React from 'react';
+import React  from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 export const STATUS_SUCCESS = 'STATUS_SUCCESS';
 export const STATUS_NOTICE = 'STATUS_NOTICE';
@@ -6,54 +7,34 @@ export const STATUS_ERROR = 'STATUS_ERROR';
 
 const Status = React.createClass({
     render: function() {
-        const { status, text } = this.props.message;
-        let DOM;
+        let { status, text } = this.props.message;
+        let className;
 
         switch(status) {
             case STATUS_SUCCESS:
-                DOM = this.renderSuccessDOM(text);
+                className = 'updated';
                 break;
             case STATUS_ERROR:
-                DOM = this.renderErrorDOM(text);
+                className = 'error';
                 break;
             case STATUS_NOTICE:
-                DOM = this.renderNoticeDOM(text);
+                className = 'notice';
                 break;
             default:
-                DOM = this.renderIdleDOM(text);
+                className = 'wpr-status-placeholder';
+                text = '';
                 break;
         }
 
-        return DOM;
-    },
-
-    renderSuccessDOM: function(text) {
         return (
-            <div className="updated">
-                <p>{text}</p>
-            </div>
-        );
-    },
-
-    renderErrorDOM: function(text) {
-        return (
-            <div className="error">
-                <p>{text}</p>
-            </div>
-        );
-    },
-
-    renderNoticeDOM: function(text) {
-        return (
-            <div className="notice">
-                <p>{text}</p>
-            </div>
-        );
-    },
-
-    renderIdleDOM: function() {
-        return (
-            <div style={{height: '58px'}}></div>
+            <ReactCSSTransitionGroup
+                    transitionName="wpr-fade"
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}>
+                <div className={className} key={text}>
+                    <p>{text}</p>
+                </div>
+            </ReactCSSTransitionGroup>
         );
     }
 });

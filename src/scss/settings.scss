@@ -7,3 +7,48 @@ iframe.gistpen {
     display: none;
   }
 }
+
+.wpr-status-placeholder {
+  height: 45px;
+
+  .wpr-fade-enter {
+    display: none;
+    height: 0;
+    width: 0;
+
+    &.wpr-fade-enter-active {
+      height: 58px;
+    }
+  }
+
+  .wpr-fade-leave {
+    display: none;
+    height: 0;
+    width: 0;
+    opacity: 1.0;
+
+    &.wpr-fade-leave-active {
+      opacity: 0;
+    }
+  }
+}
+
+.wpr-fade-enter {
+  opacity: 0.01;
+
+  &.wpr-fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+}
+
+.wpr-fade-leave {
+  display: none;
+  height: 0;
+  width: 0;
+  opacity: 1.0;
+
+  &.wpr-fade-leave-active {
+    opacity: 0;
+  }
+}
