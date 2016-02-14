@@ -1,6 +1,5 @@
 import assignDeep from 'object-assign-deep';
 import equal from 'deep-equal';
-import { SET_AJAX_STATUS } from '../wordpress/actions';
 import {
     UPDATE_PRISM_THEME,
     TOGGLE_LINE_NUMBERS,

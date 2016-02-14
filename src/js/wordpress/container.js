@@ -7,11 +7,7 @@ const Container = React.createClass({
         return (
             <div className="wpr-app">
                 <Header {...this.props} >
-                    <Status
-                        updating={this.props.l10n.updating}
-                        success={this.props.l10n.success}
-                        error={this.props.l10n.error}
-                        ajax={this.props.ajax} />
+                    <Status message={this.props.message || {}} />
                 </Header>
                 {this.props.children}
             </div>

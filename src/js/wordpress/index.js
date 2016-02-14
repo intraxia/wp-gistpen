@@ -1,4 +1,3 @@
-export * as Actions from './actions';
 export { default as Checkbox } from './checkbox';
 export { default as Container } from './container';
 export { default as Dropdown } from './dropdown';

@@ -1,54 +1,52 @@
 import React from 'react';
-import { AJAX } from './actions';
+
+export const STATUS_SUCCESS = 'STATUS_SUCCESS';
+export const STATUS_NOTICE = 'STATUS_NOTICE';
+export const STATUS_ERROR = 'STATUS_ERROR';
 
 const Status = React.createClass({
     render: function() {
+        const { status, text } = this.props.message;
         let DOM;
 
-        switch(this.props.ajax) {
-            case AJAX.UPDATING:
-                DOM = this.renderUpdatingDOM();
+        switch(status) {
+            case STATUS_SUCCESS:
+                DOM = this.renderSuccessDOM(text);
                 break;
-            case AJAX.SUCCESS:
-                DOM = this.renderSuccessDOM();
+            case STATUS_ERROR:
+                DOM = this.renderErrorDOM(text);
                 break;
-            case AJAX.ERROR:
-                DOM = this.renderErrorDOM();
+            case STATUS_NOTICE:
+                DOM = this.renderNoticeDOM(text);
                 break;
-            case AJAX.IDLE:
             default:
-                DOM = this.renderIdleDOM();
+                DOM = this.renderIdleDOM(text);
                 break;
         }
 
         return DOM;
     },
 
-    renderUpdatingDOM: function() {
-        return (
-           <div className="notice">
-               <p>
-                   <span
-                       className="left spinner is-active"
-                       style={{float: 'none', marginTop: '-4px'}}/>
-                   {this.props.updating}
-               </p>
-           </div>
-        );
-    },
-
-    renderSuccessDOM: function() {
+    renderSuccessDOM: function(text) {
         return (
             <div className="updated">
-                <p>{this.props.success}</p>
+                <p>{text}</p>
             </div>
         );
     },
 
-    renderErrorDOM: function() {
+    renderErrorDOM: function(text) {
         return (
             <div className="error">
-                <p>{this.props.error}</p>
+                <p>{text}</p>
+            </div>
+        );
+    },
+
+    renderNoticeDOM: function(text) {
+        return (
+            <div className="notice">
+                <p>{text}</p>
             </div>
         );
     },
