@@ -1,5 +1,6 @@
 import assignDeep from 'object-assign-deep';
 import equal from 'deep-equal';
+import { STATUS_ERROR, STATUS_SUCCESS } from '../wordpress/status';
 import {
     UPDATE_PRISM_THEME,
     TOGGLE_LINE_NUMBERS,
@@ -24,6 +25,12 @@ export default function (event) {
             return {site: {prism: {'show-invisibles': event.enabled}}};
         case UPDATE_GIST_TOKEN:
             return {site: {gist: {token: event.token}}};
+        case STATUS_ERROR:
+        case STATUS_SUCCESS:
+            return {message: {
+                status: event.type,
+                text: event.text
+            }};
     }
 
     return {};

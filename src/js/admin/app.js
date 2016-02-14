@@ -68,12 +68,7 @@ const App = React.createClass({
 
         return (
             <Container
-                l10n={{
-                    updating: "Updating Settings...",
-                    success: "Successfully Updated Settings",
-                    error: "Error Updating Settings"
-                }}
-                ajax={this.props.ajax}
+                message={this.props.message}
                 title="Gistpen Settings"
                 tabs={tabs}>
                 {Child}

@@ -1,3 +1,5 @@
+import { STATUS_ERROR, STATUS_SUCCESS } from '../wordpress/status';
+
 export const UPDATE_PRISM_THEME = 'UPDATE_PRISM_THEME';
 export const TOGGLE_LINE_NUMBERS = 'TOGGLE_LINE_NUMBERS';
 export const TOGGLE_SHOW_INVISIBLES = 'TOGGLE_SHOW_INVISIBLES';
@@ -36,5 +38,19 @@ export function resetSiteState(site) {
     return {
         type: RESET_SITE_STATE,
         site
+    }
+}
+
+export function displayApiError(error) {
+    return {
+        type: STATUS_ERROR,
+        text: error
+    }
+}
+
+export function displayApiSuccess() {
+    return {
+        type: STATUS_SUCCESS,
+        text: 'Settings successfully updated'
     }
 }
