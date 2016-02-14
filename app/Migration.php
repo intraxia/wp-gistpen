@@ -413,7 +413,7 @@ class Migration implements HasActions {
 				'show-invisibles' => 'off',
 			)
 		));
-		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ));
+		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ) );
 	}
 
 	/**

@@ -234,8 +234,7 @@ class Command {
 
 		if ( ! $gists ) {
 			if ( is_wp_error( $error = $this->gist->get_error() ) ) {
-				WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ',
-						'wp-gistpen' ) . $gists->get_error_message() );
+				WP_CLI::error( __( 'Failed to get Gist IDs for your account. Error: ', 'wp-gistpen' ) . $gists->get_error_message() );
 			}
 
 			WP_CLI::error( __( 'No Gists retrieved.', 'wp-gistpen' ) );
