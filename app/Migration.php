@@ -13,6 +13,7 @@ namespace Intraxia\Gistpen;
 
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use WP_Query;
 
@@ -79,6 +80,13 @@ class Migration implements HasActions {
 	protected $adapter;
 
 	/**
+	 * Plugin slug.
+	 *
+	 * @var string
+	 */
+	protected $slug;
+
+	/**
 	 * Plugin version number.
 	 *
 	 * @var string
@@ -91,12 +99,14 @@ class Migration implements HasActions {
 	 * @since    0.5.0
 	 *
 	 * @param Database $database
-	 * @param Adapter  $adapter
-	 * @param string   $version
+	 * @param Adapter $adapter
+	 * @param string $slug
+	 * @param string $version
 	 */
-	public function __construct( Database $database, Adapter $adapter, $version ) {
+	public function __construct( Database $database, Adapter $adapter, $slug, $version ) {
 		$this->database = $database;
 		$this->adapter = $adapter;
+		$this->slug = $slug;
 		$this->version = $version;
 	}
 
@@ -122,7 +132,6 @@ class Migration implements HasActions {
 	 * @since  0.3.0
 	 */
 	public function update( $version ) {
-
 		if ( version_compare( $version, '0.3.0', '<' ) ) {
 			$this->update_to_0_3_0();
 		}
@@ -136,6 +145,9 @@ class Migration implements HasActions {
 			$this->update_to_0_5_1();
 		}
 
+		if ( version_compare( $version, '1.0.0', '<' ) ) {
+			$this->update_to_1_0_0();
+		}
 	}
 
 	/**
@@ -383,6 +395,25 @@ class Migration implements HasActions {
 				) );
 			}
 		}
+	}
+
+	/**
+	 * Update Database options to new format.
+	 *
+	 * @since 1.0.0
+	 */
+	public function update_to_1_0_0() {
+		$old_opts = get_option( 'wp-gistpen' );
+		delete_option( 'wp-gistpen' );
+
+		update_option( $this->slug . '_no_priv', array(
+			'prism' => array(
+				'theme'           => $old_opts['_wpgp_gistpen_highlighter_theme'],
+				'line-numbers'    => $old_opts['_wpgp_gistpen_line_numbers'],
+				'show-invisibles' => 'off',
+			)
+		));
+		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ) );
 	}
 
 	/**

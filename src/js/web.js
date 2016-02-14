@@ -1,6 +1,11 @@
-var Prism = require('./prism');
-var Plite = require('plite');
-var forOwn = require('lodash.forown');
+/**
+ * Load our dependencies.
+ */
+const Prism = require('./prism');
+
+if (!window.Promise) {
+    require('es6-promise').polyfill();
+}
 
 /**
  * Configure Prism.
@@ -8,36 +13,31 @@ var forOwn = require('lodash.forown');
 Prism.plugins.autoloader.languages_path = Gistpen_Settings.url + 'assets/js/';
 Prism.setDebug("1" === Gistpen_Settings.debug);
 
-var showInvisibles = false;
-var promises = [];
+/**
+ * Begin loading out dependencies.
+ */
 
-promises.push(Prism.loadTheme(Gistpen_Settings.prism.theme));
+const promises = [];
 
-forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
-    if (props.enabled) {
-        promises.push(Prism.loadPlugin(plugin));
-        if ('show-invisibles' === plugin) {
-            showInvisibles = true;
-        }
-    }
-});
+promises.push(Prism.loadTheme(Gistpen_Settings.site.prism.theme));
+promises.push(Prism.loadCSS('toolbar'));
 
-Plite.all(promises)
-    .then(function() {
-        if (showInvisibles) {
-            // @todo https://github.com/PrismJS/prism/pull/874
-            Prism.hooks.add('before-highlight', function(env) {
-                var tokens = env.grammar;
+if (Gistpen_Settings.site.prism['line-numbers']) {
+    promises.push(Prism.loadPlugin('line-numbers'));
+}
 
-                tokens.tab = /\t/g;
-                tokens.crlf = /\r\n/g;
-                tokens.lf = /\n/g;
-                tokens.cr = /\r/g;
-            });
-        }
+if (Gistpen_Settings.site.prism['show-invisibles']) {
+    promises.push(Prism.loadPlugin('show-invisibles'));
+}
 
-        Prism.highlightAll();
-    })
-    .catch(function(err) {
-        console.error(err);
-    });
+const chain = window.PrismPromise = Promise.all(promises);
+const finish = () => chain
+        .then(Prism.highlightAll)
+        .catch(console.error.bind(console));
+
+if (document.readyState === "complete" || document.readyState === "loaded") {
+    finish();
+} else {
+    document.addEventListener('DOMContentLoaded', finish);
+}
+

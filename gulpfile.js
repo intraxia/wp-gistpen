@@ -1,53 +1,81 @@
 var gulp = require('gulp');
-var Q = require('Q');
+var gutil = require('gulp-util');
 var path = require('path');
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var minify = require('gulp-minify-css');
 var sass = require('gulp-sass');
+var cssnano = require('gulp-cssnano');
 var extrep = require('gulp-ext-replace');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
 var pot = require('gulp-wp-pot');
 var sort = require('gulp-sort');
 
-gulp.task('default', ['scripts', 'styles', 'ace', 'prism-components', 'watch']);
+var webpack = require("webpack");
+var webpackConfig = require("./webpack.config.js");
 
-gulp.task('watch', function () {
-    gulp.watch('src/js/**/*.js', ['scripts']);
-    gulp.watch('src/js/**/*.hbs', ['scripts']);
+gulp.task('default', ['develop']);
+
+gulp.task('develop', ['webpack:dev', 'styles', 'copy', 'translation'], function () {
+    gulp.watch('src/js/**/*.js', ['webpack:dev']);
+    gulp.watch('src/js/**/*.hbs', ['webpack:dev']);
     gulp.watch('src/scss/**/*.scss', ['styles']);
+    gulp.watch('app/**/*.php', ['translation']);
 });
 
-gulp.task('build', ['scripts', 'styles', 'ace']);
+// modify webpack config options for development
+var webpackDevConfig = Object.create(webpackConfig);
+webpackDevConfig.devtool = "sourcemap";
+webpackDevConfig.debug = true;
+webpackDevConfig.output.filename = '[name].js';
+var devCompiler = webpack(webpackDevConfig);
 
-gulp.task('scripts', function () {
-    var promises = [];
-
-    ['post', 'tinymce', 'settings', 'web'].forEach(function (file) {
-        var defer = Q.defer();
-        var pipeline = browserify({
-            entries: 'src/js/' + file + '.js'
-        })
-            .transform('hbsfy', {traverse: true})
-            .bundle()
-            .pipe(source(file + '.js'))
-            .pipe(buffer())
-            .pipe(gulp.dest('assets/js'))
-            .pipe(uglify())
-            .pipe(concat(file + '.min.js'))
-            .pipe(gulp.dest('assets/js'));
-        pipeline.on('end', function () {
-            defer.resolve();
-        });
-        promises.push(defer.promise);
+gulp.task('webpack:dev', function (callback) {
+    // run webpack
+    devCompiler.run(function(err, stats) {
+        if(err) throw new gutil.PluginError('webpack:dev', err);
+        gutil.log('[webpack:dev]', stats.toString({
+            colors: true
+        }));
+        callback();
     });
-
-    return Q.all(promises);
 });
 
-gulp.task('prism-components', function() {
+gulp.task('build', ['webpack:build', 'styles', 'prism', 'ace']);
+
+// modify some webpack config options
+var webpackBuildConfig = Object.create(webpackConfig);
+webpackBuildConfig.plugins = webpackBuildConfig.plugins.concat(
+    new webpack.DefinePlugin({
+        "process.env": {
+            // This has effect on the react lib size
+            "NODE_ENV": JSON.stringify('production')
+        }
+    }),
+    new webpack.optimize.UglifyJsPlugin({minimize: true})
+);
+
+gulp.task('webpack:build', ['webpack:dev'], function(callback) {
+    // run webpack
+    webpack(webpackBuildConfig, function(err, stats) {
+        if(err) throw new gutil.PluginError('webpack:build', err);
+        gutil.log('[webpack:build]', stats.toString({
+            colors: true
+        }));
+        callback();
+    });
+});
+
+gulp.task('styles', function () {
+    return gulp.src('src/scss/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest('assets/css'))
+        .pipe(cssnano())
+        .pipe(extrep('.min.css'))
+        .pipe(gulp.dest('assets/css'));
+});
+
+gulp.task('copy', ['prism', 'ace']);
+
+gulp.task('prism', ['prism:scripts', 'prism:styles']);
+
+gulp.task('prism:scripts', function() {
     return gulp.src([
         'node_modules/prismjs/components/*.js',
         'node_modules/prismjs/plugins/line-numbers/*.js',
@@ -56,17 +84,15 @@ gulp.task('prism-components', function() {
         .pipe(gulp.dest('assets/js/'));
 });
 
-gulp.task('styles', function () {
+gulp.task('prism:styles', function () {
     return gulp.src([
-        'src/scss/*.scss',
-        'node_modules/prismjs/themes/*.css',
-        'node_modules/prism-themes/themes/*.css',
-        'node_modules/prismjs/plugins/line-numbers/*.css',
-        'node_modules/prismjs/plugins/show-invisibles/*.css'
-    ])
-        .pipe(sass())
+            'node_modules/prismjs/themes/*.css',
+            'node_modules/prism-themes/themes/*.css',
+            'node_modules/prismjs/plugins/line-numbers/*.css',
+            'node_modules/prismjs/plugins/show-invisibles/*.css'
+        ])
         .pipe(gulp.dest('assets/css'))
-        .pipe(minify())
+        .pipe(cssnano())
         .pipe(extrep('.min.css'))
         .pipe(gulp.dest('assets/css'));
 });

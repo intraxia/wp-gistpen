@@ -18,6 +18,11 @@ abstract class TestCase extends WP_UnitTestCase {
 	 */
 	protected $app;
 
+	/**
+	 * @var int
+	 */
+	protected $user_id;
+
 	function setUp() {
 		parent::setUp();
 		$this->factory = new Factory;
@@ -26,9 +31,7 @@ abstract class TestCase extends WP_UnitTestCase {
 
 	function tearDown() {
 		parent::tearDown();
-
 		Mockery::close();
-		cmb2_update_option( 'wp-gistpen', '_wpgp_gist_token', false );
 	}
 
 	public function mock( $alias ) {
@@ -41,7 +44,12 @@ abstract class TestCase extends WP_UnitTestCase {
 		}
 	}
 
-	function create_post_and_children() {
+	public function set_role( $role ) {
+		$this->user_id = $this->factory->user->create( array( 'role' => $role ) );
+		wp_set_current_user( $this->user_id );
+	}
+
+	public function create_post_and_children() {
 		$this->gistpen = $this->factory->gistpen->create_and_get();
 
 		$this->files = $this->factory->gistpen->create_many( 3, array(

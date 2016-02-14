@@ -32,7 +32,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 // Autoload Classes & CMB2.
 require_once 'lib/autoload.php';
-require_once 'lib/cmb2/init.php'; // @todo can this go in the autoloader and have ocular/phpunit work?
 
 // Validate PHP Version.
 $update_php = new WPUpdatePhp( '5.3.0' );

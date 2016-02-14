@@ -1,5 +1,5 @@
 {
-  "name": "maadhattah/wp-gistpen",
+  "name": "intraxia/gistpen",
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
   "license": "GPL-2.0+",
   "homepage": "http://jamesdigioia.com/wp-gistpen/",
@@ -12,7 +12,6 @@
   "require": {
     "php": ">=5.3.0",
     "composer/installers": "1.0.22",
-    "webdevstudios/cmb2": "2.0.0.9",
     "knplabs/github-api": "~1.4",
     "wpupdatephp/wp-update-php": "~1.0",
     "intraxia/jaxion": "0.0.1"
@@ -38,15 +37,10 @@
   "config": {
     "vendor-dir": "lib"
   },
-  "extra": {
-    "installer-paths": {
-      "lib/{$name}/": ["webdevstudios/cmb2"]
-    }
-  },
   "scripts": {
     "test": "phpunit",
-    "sniff": "phpcs -s --runtime-set installed_paths vendor/wp-coding-standards/wpcs  -p src/ --standard=vendor/intraxia/codestyle/ruleset.xml --report=full",
-    "clean": "phpcbf --runtime-set installed_paths vendor/wp-coding-standards/wpcs -p src/ --standard=vendor/intraxia/codestyle/ruleset.xml --report=full",
+    "sniff": "phpcs -s --runtime-set installed_paths lib/wp-coding-standards/wpcs  -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=full",
+    "clean": "phpcbf --runtime-set installed_paths lib/wp-coding-standards/wpcs -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=full",
     "upload": "ocular code-coverage:upload --format=php-clover build/logs/clover.xml"
   }
 }
