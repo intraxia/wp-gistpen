@@ -26,11 +26,18 @@ class RouterServiceProvider extends ServiceProvider {
 			'zip'    => $this->container->fetch( 'controller.zip' ),
 			'user'   => $this->container->fetch( 'controller.user' ),
 			'job'    => $this->container->fetch( 'controller.job' ),
+			'repo'   => $this->container->fetch( 'controller.repo' ),
 		);
 
 		$router->group( array( 'prefix' => '/gistpen' ), function ( Router $router ) use ( $controllers ) {
 			/**
+			 * /repo/{repo_id} endpoints
+			 */
+			$router->get( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'view' ) );
+
+			/**
 			 * /zip endpoint
+			 * @deprecated
 			 */
 			$router->get( '/zip/(?P<id>\d+)', array( $controllers['zip'], 'view' ), array(
 				'filter' => new Filter( array( 'id' => 'required|integer' ) ),

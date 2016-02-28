@@ -30,6 +30,7 @@ class App extends Application {
 	 */
 	protected $providers = array(
 		'Intraxia\Gistpen\Providers\AssetsServiceProvider',
+		'Intraxia\Gistpen\Providers\DatabaseServiceProvider',
 		'Intraxia\Gistpen\Providers\ControllerServiceProvider',
 		'Intraxia\Gistpen\Providers\CoreServiceProvider',
 		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
