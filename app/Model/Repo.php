@@ -1,16 +1,37 @@
 <?php
 namespace Intraxia\Gistpen\Model;
 
+use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
+use Intraxia\Jaxion\Axolotl\Relationship\HasMany;
+use Intraxia\Jaxion\Contract\Axolotl\HasEagerRelationships;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
 
 /**
  * Class Repo
  *
- * @package Intraxia\Gistpen
+ * @package    Intraxia\Gistpen
  * @subpackage Model
+ *
+ * @property int        $ID
+ * @property string     $description
+ * @property string     $status
+ * @property string     $password
+ * @property string     $gist_id
+ * @property string     $sync
+ * @property Collection $blobs
+ * @property string     $rest_url
+ * @property string     $commits_url
+ * @property string     $html_url
+ * @property string     $created_at
+ * @property string     $updated_at
  */
-class Repo extends Model implements UsesWordPressPost {
+class Repo extends Model implements UsesWordPressPost, HasEagerRelationships {
+	/**
+	 * Class name for Blob related class.
+	 */
+	const BLOB_CLASS = 'Intraxia\Gistpen\Model\Blob';
+
 	/**
 	 * {@inheritdoc}
 	 *
@@ -46,7 +67,7 @@ class Repo extends Model implements UsesWordPressPost {
 		'password',
 		'gist_id',
 		'sync',
-//		'blobs',
+		'blobs',
 		'rest_url',
 		'commits_url',
 		'html_url',
@@ -61,6 +82,15 @@ class Repo extends Model implements UsesWordPressPost {
 	 */
 	public static function get_post_type() {
 		return 'gistpen';
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array
+	 */
+	public static function get_eager_relationships() {
+		return array( 'blobs' );
 	}
 
 	/**
@@ -118,12 +148,28 @@ class Repo extends Model implements UsesWordPressPost {
 	}
 
 	/**
+	 * Relates the Repo to its many Blobs.
+	 *
+	 * @return HasMany
+	 */
+	public function related_blobs() {
+		return $this->has_many(
+			self::BLOB_CLASS,
+			'object',
+			'post_parent'
+		);
+	}
+
+	/**
 	 * Computes the Repo's rest_url.
 	 *
 	 * @return string
 	 */
 	protected function compute_rest_url() {
-		return rest_url( 'intraxia/v1/gistpen/repos/' . $this->get_attribute( 'ID' ) );
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/repos/%s',
+			$this->ID
+		) );
 	}
 
 	/**
@@ -132,7 +178,10 @@ class Repo extends Model implements UsesWordPressPost {
 	 * @return string
 	 */
 	protected function compute_commits_url() {
-		return rest_url( 'intraxia/v1/gistpen/repos/' . $this->get_attribute( 'ID' ) . '/commits' );
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/repos/%s/commits',
+			$this->ID
+		) );
 	}
 
 	/**
@@ -140,7 +189,7 @@ class Repo extends Model implements UsesWordPressPost {
 	 *
 	 * @return string
 	 */
-	public function compute_html_url() {
-		return get_permalink( $this->get_attribute( 'ID' ) );
+	protected function compute_html_url() {
+		return get_permalink( $this->ID );
 	}
 }
