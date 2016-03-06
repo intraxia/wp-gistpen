@@ -29,7 +29,49 @@ class RepoControllerTest extends TestCase {
 		$this->request    = Mockery::mock( 'WP_REST_Request' );
 	}
 
-	public function test_should_return_error_from_database() {
+	public function test_should_return_collection_error_from_database() {
+		$error = new \WP_Error;
+		$this->request
+			->shouldReceive( 'get_params' )
+			->once()
+			->withNoArgs()
+			->andReturn( array() );
+		$this->database
+			->shouldReceive( 'find_by' )
+			->with( 'Intraxia\Jaxion\Model\Repo' )
+			->once()
+			->with( RepoController::MODEL_CLASS, array() )
+			->andReturn( $error );
+
+		$this->assertSame( $error, $this->controller->index( $this->request ) );
+		$this->assertEquals( array( 'status' => 500 ), $error->get_error_data() );
+	}
+
+	public function test_should_return_collection_in_response() {
+		$collection = Mockery::mock( 'Intraxia\Jaxion\Axolotl\Collection' );
+		$attrs = array( array( 'description' => 'Repo description' ) );
+		$this->request
+			->shouldReceive( 'get_params' )
+			->once()
+			->withNoArgs()
+			->andReturn( array() );
+		$this->database
+			->shouldReceive( 'find_by' )
+			->with( 'Intraxia\Gistpen\Model\Repo', array() )
+			->once()
+			->andReturn( $collection );
+		$collection
+			->shouldReceive( 'serialize' )
+			->once()
+			->andReturn( $attrs );
+
+		$response = $this->controller->index( $this->request );
+
+		$this->assertInstanceOf( 'WP_REST_Response', $response );
+		$this->assertSame( $attrs, $response->get_data() );
+	}
+
+	public function test_should_return_model_error_from_database() {
 		$error = new \WP_Error;
 		$this->request
 			->shouldReceive( 'get_param' )

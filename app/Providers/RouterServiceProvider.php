@@ -31,6 +31,11 @@ class RouterServiceProvider extends ServiceProvider {
 
 		$router->group( array( 'prefix' => '/gistpen' ), function ( Router $router ) use ( $controllers ) {
 			/**
+			 * /repo endpoints
+			 */
+			$router->get( '/repos', array( $controllers['repo'], 'index' ) );
+
+			/**
 			 * /repos/{repo_id} endpoints
 			 */
 			$router->get( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'view' ) );

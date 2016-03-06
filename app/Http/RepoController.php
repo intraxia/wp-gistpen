@@ -36,6 +36,25 @@ class RepoController {
 	}
 
 	/**
+	 * Retrieves a collection of Repos based on the provided params.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function index( WP_REST_Request $request ) {
+		$collection = $this->database->find_by( static::MODEL_CLASS, $request->get_params() );
+
+		if ( is_wp_error( $collection ) ) {
+			$collection->add_data( array( 'status' => 500 ) );
+
+			return $collection;
+		}
+
+		return new WP_REST_Response( $collection->serialize(), 200 );
+	}
+
+	/**
 	 * Retrieves a Repo for the provided id.
 	 *
 	 * @param WP_REST_Request $request
