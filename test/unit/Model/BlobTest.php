@@ -37,6 +37,7 @@ class BlobTest extends TestCase {
 		/** @var Blob $blob */
 		$blob = $this->database->find( 'Intraxia\Gistpen\Model\Blob', $this->blob->ID );
 
+		$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Blob', $blob );
 		$this->assertSame( $this->blob->ID, $blob->ID );
 		$this->assertSame( $this->blob->post_title, $blob->filename );
 		$this->assertSame( $this->blob->post_content, $blob->code );

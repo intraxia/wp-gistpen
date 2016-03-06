@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Model;
 
+use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm;
 
@@ -12,10 +13,19 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  *
- * @property int    $ID
- * @property string $slug
+ * @property int        $ID
+ * @property string     $slug
+ * @property string     $prism_slug
+ * @property string     $file_ext
+ * @property string     $display_name
+ * @property Collection $blobs
  */
 class Language extends Model implements UsesWordPressTerm {
+	/**
+	 * Related Blob class for the Language.
+	 */
+	const BLOB_CLASS = 'Intraxia\Gistpen\Model\Blob';
+
 	/**
 	 * Languages currently supported
 	 *
@@ -187,6 +197,8 @@ class Language extends Model implements UsesWordPressTerm {
 	}
 
 	/**
+	 * Computes the Language's prism_slug property.
+	 *
 	 * @return string
 	 */
 	public function compute_prism_slug() {
