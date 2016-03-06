@@ -12,19 +12,24 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @package    Intraxia\Gistpen
  * @subpackage Model
  *
- * @property int    $ID
- * @property int    $size
- * @property string $raw_url
- * @property string $filename
- * @property string $code
- * @property string $language
- * @property Repo   $repo
+ * @property int      $ID
+ * @property int      $size
+ * @property string   $raw_url
+ * @property string   $filename
+ * @property string   $code
+ * @property Language $language
+ * @property Repo     $repo
  */
 class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
 	/**
 	 * Class name for Repo related class.
 	 */
 	const REPO_CLASS = 'Intraxia\Gistpen\Model\Repo';
+
+	/**
+	 * Class name for Language related class.
+	 */
+	const LANGUAGE_CLASS = 'Intraxia\Gistpen\Model\Language';
 
 	/**
 	 * {@inheritDoc}
@@ -64,7 +69,7 @@ class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
 	 * @return array
 	 */
 	public static function get_eager_relationships() {
-		return array( 'repo' );
+		return array( 'repo', 'language' );
 	}
 
 	/**
@@ -137,5 +142,27 @@ class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
 			'object',
 			'post_parent'
 		);
+	}
+
+	/**
+	 * Retlates the Blob to its Language.
+	 *
+	 * @return HasMany
+	 */
+	public function related_language() {
+		return $this->belongs_to_one( self::LANGUAGE_CLASS, 'object' );
+	}
+
+	/**
+	 * Set the language access
+	 *
+	 * @param string $slug
+	 */
+	public function set_language_attribute( $slug ) {
+		if ( $slug instanceof Language ) {
+			$this->language = $slug;
+		} elseif ( is_string( $slug ) ) {
+			$this->language->slug = $slug;
+		}
 	}
 }

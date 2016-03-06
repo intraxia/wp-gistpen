@@ -29,6 +29,8 @@ class BlobTest extends TestCase {
 		$this->repo     = $this->factory->gistpen->create_and_get();
 		$this->blob     = $this->factory->gistpen->create_and_get( array( 'post_parent' => $this->repo->ID ) );
 		$this->database = new EntityManager( new WP_Query, 'wpgp' );
+
+		wp_set_post_terms( $this->blob->ID, 'php', 'wpgp_language' );
 	}
 
 	public function test_repo_should_have_correct_properties() {
@@ -38,6 +40,7 @@ class BlobTest extends TestCase {
 		$this->assertSame( $this->blob->ID, $blob->ID );
 		$this->assertSame( $this->blob->post_title, $blob->filename );
 		$this->assertSame( $this->blob->post_content, $blob->code );
+		$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Language', $blob->language );
 		$this->assertSame( strlen( $this->blob->post_content ), $blob->size );
 		$this->assertSame( rest_url( sprintf(
 			'intraxia/v1/gistpen/repos/%s/%s/%s',
@@ -46,5 +49,9 @@ class BlobTest extends TestCase {
 			$blob->filename
 		) ), $blob->raw_url );
 		$this->assertInstanceOf( 'Intraxia\Gistpen\Model\Repo', $blob->repo );
+
+		$json = $blob->serialize();
+
+		$this->assertSame( 'php', $json['language'] );
 	}
 }
