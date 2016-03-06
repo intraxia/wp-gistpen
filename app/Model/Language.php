@@ -102,7 +102,7 @@ class Language extends Model implements UsesWordPressTerm {
 			parent::__construct( $attributes );
 		} else {
 			$this->validate_slug( $attributes );
-			$this->set_attribute( 'slug', $attributes );
+			parent::__construct( array( 'slug' => $attributes ) );
 		}
 	}
 
