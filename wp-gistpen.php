@@ -31,7 +31,10 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Autoload Classes & CMB2.
-require_once 'lib/autoload.php';
+$autoload = 'lib/autoload.php';
+if ( file_exists( $autoload ) ) {
+	require_once $autoload;
+}
 
 // Validate PHP Version.
 $update_php = new WPUpdatePhp( '5.3.0' );
