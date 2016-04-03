@@ -3,6 +3,7 @@
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
   "license": "GPL-2.0+",
   "homepage": "http://jamesdigioia.com/wp-gistpen/",
+  "type": "wordpress-plugin",
   "authors": [
     {
       "name": "James DiGioia",
