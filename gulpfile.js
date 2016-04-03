@@ -20,9 +20,10 @@ gulp.task('develop', ['webpack:dev', 'styles', 'copy', 'translation'], function 
 });
 
 // modify webpack config options for development
-var webpackDevConfig = Object.create(webpackConfig);
+var webpackDevConfig = Object.assign({}, webpackConfig);
 webpackDevConfig.devtool = "sourcemap";
 webpackDevConfig.debug = true;
+webpackDevConfig.output = Object.assign({}, webpackDevConfig.output);
 webpackDevConfig.output.filename = '[name].js';
 var devCompiler = webpack(webpackDevConfig);
 
@@ -40,7 +41,7 @@ gulp.task('webpack:dev', function (callback) {
 gulp.task('build', ['webpack:build', 'styles', 'prism', 'ace']);
 
 // modify some webpack config options
-var webpackBuildConfig = Object.create(webpackConfig);
+var webpackBuildConfig = Object.assign({}, webpackConfig);
 webpackBuildConfig.plugins = webpackBuildConfig.plugins.concat(
     new webpack.DefinePlugin({
         "process.env": {
