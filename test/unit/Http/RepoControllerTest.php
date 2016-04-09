@@ -154,4 +154,89 @@ class RepoControllerTest extends TestCase {
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
 		$this->assertSame( $attrs, $response->get_data() );
 	}
+
+	public function test_should_return_error_if_cant_find_model() {
+		$error = new WP_Error;
+		$this->request
+			->shouldReceive( 'get_param' )
+			->once()
+			->with( 'id' )
+			->andReturn( 1 );
+		$this->database
+			->shouldReceive( 'find' )
+			->once()
+			->with( RepoController::MODEL_CLASS, 1 )
+			->andReturn( $error );
+
+		$this->assertSame( $error, $this->controller->update( $this->request ) );
+		$this->assertEquals( array( 'status' => 404 ), $error->get_error_data() );
+	}
+
+	public function test_should_return_error_if_cant_update_model() {
+		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$attrs = array( 'description' => 'Repo Description' );
+		$error = new WP_Error;
+		$this->request
+			->shouldReceive( 'get_param' )
+			->once()
+			->with( 'id' )
+			->andReturn( 1 );
+		$this->database
+			->shouldReceive( 'find' )
+			->once()
+			->with( RepoController::MODEL_CLASS, 1 )
+			->andReturn( $repo );
+		$this->request
+			->shouldReceive( 'get_json_params' )
+			->once()
+			->andReturn( $attrs );
+		$repo->shouldReceive( 'refresh' )
+			->once()
+			->with( $attrs );
+		$this->database
+			->shouldReceive( 'persist' )
+			->once()
+			->with( $repo )
+			->andReturn( $error );
+
+
+		$this->assertSame( $error, $this->controller->update( $this->request ) );
+		$this->assertEquals( array( 'status' => 500 ), $error->get_error_data() );
+	}
+
+	public function test_should_return_updated_model() {
+		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$attrs = array( 'description' => 'Repo Description' );
+		$this->request
+			->shouldReceive( 'get_param' )
+			->once()
+			->with( 'id' )
+			->andReturn( 1 );
+		$this->database
+			->shouldReceive( 'find' )
+			->once()
+			->with( RepoController::MODEL_CLASS, 1 )
+			->andReturn( $repo );
+		$this->request
+			->shouldReceive( 'get_json_params' )
+			->once()
+			->andReturn( $attrs );
+		$repo->shouldReceive( 'refresh' )
+		     ->once()
+		     ->with( $attrs );
+		$this->database
+			->shouldReceive( 'persist' )
+			->once()
+			->with( $repo )
+			->andReturn( $repo );
+		$repo->shouldReceive( 'serialize' )
+			->once()
+			->andReturn( $attrs );
+
+
+		$response = $this->controller->update( $this->request );
+
+		$this->assertInstanceOf( 'WP_REST_Response', $response );
+		$this->assertSame( $attrs, $response->get_data() );
+	}
 }

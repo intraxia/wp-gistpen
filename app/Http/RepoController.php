@@ -91,4 +91,33 @@ class RepoController {
 
 		return new WP_REST_Response( $model->serialize(), 200 );
 	}
+
+	/**
+	 * Updates all of the model's properties with the request params.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function update( WP_REST_Request $request ) {
+		$model = $this->database->find( static::MODEL_CLASS, $request->get_param( 'id' ) );
+
+		if ( is_wp_error( $model ) ) {
+			$model->add_data( array( 'status' => 404 ) );
+
+			return $model;
+		}
+
+		$model->refresh( $request->get_json_params() );
+
+		$model = $this->database->persist( $model );
+
+		if ( is_wp_error( $model ) ) {
+			$model->add_data( array( 'status' => 500 ) );
+
+			return $model;
+		}
+
+		return new WP_REST_Response( $model->serialize(), 200 );
+	}
 }
