@@ -149,4 +149,31 @@ class RepoController {
 
 		return new WP_REST_Response( $model->serialize(), 200 );
 	}
+
+	/**
+	 * Sends the model to the trash or deletes it from the database.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Request|WP_Error
+	 */
+	public function trash( WP_REST_Request $request ) {
+		$model = $this->database->find( static::MODEL_CLASS, $request->get_param( 'id' ) );
+
+		if ( is_wp_error( $model ) ) {
+			$model->add_data( array( 'status' => 404 ) );
+
+			return $model;
+		}
+
+		$result = $this->database->delete( $model, false );
+
+		if ( is_wp_error( $result ) ) {
+			$result->add_data( array( 'status' => 500 ) );
+
+			return $result;
+		}
+
+		return new WP_REST_Response( null, 204 );
+	}
 }

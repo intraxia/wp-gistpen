@@ -315,13 +315,78 @@ class RepoControllerTest extends TestCase {
 			->with( $repo )
 			->andReturn( $repo );
 		$repo->shouldReceive( 'serialize' )
-		     ->once()
-		     ->andReturn( $attrs );
+			->once()
+			->andReturn( $attrs );
 
 
 		$response = $this->controller->apply( $this->request );
 
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
 		$this->assertSame( $attrs, $response->get_data() );
+	}
+
+	public function test_should_return_error_if_delete_cant_find_model() {
+		$error = new WP_Error;
+		$this->request
+			->shouldReceive( 'get_param' )
+			->once()
+			->with( 'id' )
+			->andReturn( 1 );
+		$this->database
+			->shouldReceive( 'find' )
+			->once()
+			->with( RepoController::MODEL_CLASS, 1 )
+			->andReturn( $error );
+
+		$this->assertSame( $error, $this->controller->trash( $this->request ) );
+		$this->assertEquals( array( 'status' => 404 ), $error->get_error_data() );
+	}
+
+	public function test_should_return_error_if_delete_cant_delete_model() {
+		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$error = new WP_Error;
+		$this->request
+			->shouldReceive( 'get_param' )
+			->once()
+			->with( 'id' )
+			->andReturn( 1 );
+		$this->database
+			->shouldReceive( 'find' )
+			->once()
+			->with( RepoController::MODEL_CLASS, 1 )
+			->andReturn( $repo );
+		$this->database
+			->shouldReceive( 'delete' )
+			->once()
+			->with( $repo, false )
+			->andReturn( $error );
+
+		$this->assertSame( $error, $this->controller->trash( $this->request ) );
+		$this->assertEquals( array( 'status' => 500 ), $error->get_error_data() );
+	}
+
+	public function test_should_return_delete_response() {
+		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$this->request
+			->shouldReceive( 'get_param' )
+			->once()
+			->with( 'id' )
+			->andReturn( 1 );
+		$this->database
+			->shouldReceive( 'find' )
+			->once()
+			->with( RepoController::MODEL_CLASS, 1 )
+			->andReturn( $repo );
+		$this->database
+			->shouldReceive( 'delete' )
+			->once()
+			->with( $repo, false )
+			->andReturn( true );
+
+		$response = $this->controller->trash( $this->request );
+
+		$this->assertInstanceOf( 'WP_REST_Response', $response );
+		$this->assertSame( null, $response->get_data() );
+		$this->assertSame( 204, $response->get_status() );
 	}
 }

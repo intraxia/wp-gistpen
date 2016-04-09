@@ -51,6 +51,10 @@ class RouterServiceProvider extends ServiceProvider {
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
+			$router->delete( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
+//				'filter' => new RepoFilter,
+				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
+			) );
 
 			/**
 			 * /zip endpoint
