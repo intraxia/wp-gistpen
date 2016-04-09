@@ -39,6 +39,10 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos/{repo_id} endpoints
 			 */
 			$router->get( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'view' ) );
+			$router->post( '/repo', array( $controllers['repo'], 'create' ), array(
+//				'filter' => new RepoFilter,
+				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
+			) );
 
 			/**
 			 * /zip endpoint

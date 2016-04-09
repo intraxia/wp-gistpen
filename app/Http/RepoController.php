@@ -55,6 +55,25 @@ class RepoController {
 	}
 
 	/**
+	 * Creates a new Repo based on the provided params and returns it.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function create( WP_REST_Request $request ) {
+		$model = $this->database->create( static::MODEL_CLASS, $request->get_params() );
+
+		if ( is_wp_error( $model ) ) {
+			$model->add_data( array( 'status' => 500 ) );
+
+			return $model;
+		}
+
+		return new WP_REST_Response( $model->serialize(), 201 );
+	}
+
+	/**
 	 * Retrieves a Repo for the provided id.
 	 *
 	 * @param WP_REST_Request $request
