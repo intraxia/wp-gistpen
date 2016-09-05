@@ -407,14 +407,20 @@ class EntityManager implements EntityManagerContract {
 			'model' => self::BLOB_CLASS,
 		) );
 
+		/**
+		 * Set aside the `blobs` key for use.
+		 */
+		$blobs_data = array();
+		if ( isset( $data['blobs'] ) ) {
+			if ( is_array( $data['blobs'] ) ) {
+				$blobs_data = $data['blobs'];
+			}
+
+			unset( $data['blobs'] );
+		}
+
 		foreach ( $data as $key => $value ) {
 			switch ( $key ) {
-				case 'blobs':
-					foreach ( $value as $blob ) {
-						$blob = new Blob( $blob );
-						$blobs->add( $blob );
-					}
-					break;
 				default:
 					try {
 						$model->set_attribute( $key, $value );
@@ -441,20 +447,118 @@ class EntityManager implements EntityManagerContract {
 			);
 		}
 
-		/** @var Blob $blob */
-		foreach ( $blobs as $blob ) {
-			$blob->get_underlying_wp_object()->post_parent = $model->ID;
+		foreach ( $blobs_data as $blob_data ) {
+			$blob_data['post_parent'] = $model->get_primary_id();
+			$blob = $this->create_blob( $blob_data );
+
+			if ( ! is_wp_error( $blob ) ) {
+				$blobs->add( $blob );
+			}
 		}
+
+		$model->set_attribute( 'blobs', $blobs );
 
 		return $model;
 	}
 
-	protected function create_blob( $data ) {
-		return new WP_Error( 'not implemented' );
+	/**
+	 * Creates a new blob with the provided data.
+	 *
+	 * @param array $data Blob data.
+	 *
+	 * @return Blob|WP_Error
+	 */
+	protected function create_blob( array $data ) {
+		$model = new Blob;
+
+		/**
+		 * Set aside the `language` key for use.
+		 */
+		$language_data = array();
+		if ( isset( $data['language'] ) ) {
+			if ( is_array( $data['language'] ) ) {
+				$language_data = $data['language'];
+			}
+
+			unset( $data['language'] );
+		}
+
+		foreach ( $data as $key => $value ) {
+			try {
+				$model->set_attribute( $key, $value );
+			} catch ( GuardedPropertyException $exception ) {
+				// @todo Ignore the value?
+			}
+		}
+
+		$result = wp_insert_post( (array) $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
+
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
+			update_post_meta(
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		$language = $this->find_languages_by( array( 'slug' => $language_data['slug'] ) );
+
+		if ( count( $language ) === 0 ) {
+			$language = $this->create_language( $language_data );
+
+			if ( is_wp_error( $language ) ) {
+				return $language;
+			}
+		} else {
+			$language = $language->at( 0 );
+		}
+
+		$model->set_attribute( 'language', $language );
+
+		return $model;
 	}
 
-	protected function create_language( $data ) {
-		return new WP_Error( 'not implemented' );
+	/**
+	 * Creates a new Language with the provided data.
+	 *
+	 * @param array $data Data to create language.
+	 *
+	 * @return Language|WP_Error
+	 */
+	protected function create_language( array $data ) {
+		$model = new Language;
+
+		foreach ( $data as $key => $value ) {
+			try {
+				$model->set_attribute( $key, $value );
+			} catch ( GuardedPropertyException $exception ) {
+				// @todo Ignore the value?
+			}
+		}
+
+		$result = wp_insert_term( $model->get_underlying_wp_object()->slug, 'wpgp_language' );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_term( $result['term_id'] ) );
+
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
+			update_post_meta(
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		return $model;
 	}
 
 	protected function persist_repo( Repo $model ) {

@@ -40,6 +40,7 @@ class Repo extends Model implements UsesWordPressPost {
 		'status',
 		'password',
 		'sync',
+		'blobs',
 	);
 
 	/**
@@ -48,7 +49,6 @@ class Repo extends Model implements UsesWordPressPost {
 	 * @var array
 	 */
 	protected $guarded = array(
-		'blobs',
 		'gist_id',
 		'created_at',
 		'updated_at',

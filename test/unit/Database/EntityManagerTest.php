@@ -22,6 +22,8 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_return_error_for_non_gistpen_class() {
 		$this->assertInstanceOf( 'WP_Error', $this->em->find( 'WP_Post', 1 ) );
+		$this->assertInstanceOf( 'WP_Error', $this->em->find_by( 'WP_Post' ) );
+		$this->assertInstanceOf( 'WP_Error', $this->em->create( 'WP_Post' ) );
 	}
 
 	public function test_should_return_error_for_non_gistpen_repo() {
@@ -68,5 +70,74 @@ class EntityManagerTest extends TestCase {
 
 		$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model );
 		$this->assertSame( 'php', $model->slug );
+	}
+
+	public function test_should_return_all_repos_in_collection() {
+		$repos = $this->em->find_by( EntityManager::REPO_CLASS );
+
+		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $repos );
+		$this->assertCount( 1, $repos );
+	}
+
+	public function test_should_return_all_blobs_in_collection() {
+		$blobs = $this->em->find_by( EntityManager::BLOB_CLASS );
+
+		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $blobs );
+		$this->assertCount( 3, $blobs );
+	}
+
+	public function test_should_return_all_languages_in_collection() {
+		$languages = $this->em->find_by( EntityManager::LANGUAGE_CLASS );
+
+		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $languages );
+		$this->assertCount( 1, $languages );
+	}
+
+	public function test_should_create_new_repo_with_blobs_and_languages() {
+		$language = array(
+			'slug' => 'php'
+		);
+		$blobs    = array(
+			array(
+				'filename' => 'new-file.txt',
+				'code'     => 'Some code goes here',
+			)
+		);
+		$repo     = array(
+			'description' => 'New Repo',
+			'status' => 'draft',
+			'password' => '',
+			'sync' => 'off',
+		);
+
+		$data = $repo;
+		$data['blobs'] = $blobs;
+		$data['blobs'][0]['language'] = $language;
+
+		/** @var Repo $model */
+		$model = $this->em->create( EntityManager::REPO_CLASS, $data );
+
+		$this->assertInstanceOf( EntityManager::REPO_CLASS, $model );
+		$this->assertEquals(
+			get_post( $model->get_primary_id() ),
+			$model->get_underlying_wp_object()
+		);
+
+		foreach ( $repo as $key =>$value ) {
+			$this->assertSame( $value, $model->get_attribute( $key ) );
+		}
+
+		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $model->blobs );
+		$this->assertCount( 1, $model->blobs );
+
+		$blob = $model->blobs->at( 0 );
+
+		foreach ( $blobs[0] as $key => $value ) {
+			$this->assertSame( $value, $blob->get_attribute( $key ) );
+		}
+
+		foreach ( $language as $key => $value ) {
+			$this->assertSame( $value, $blob->language->get_attribute( $key ) );
+		}
 	}
 }

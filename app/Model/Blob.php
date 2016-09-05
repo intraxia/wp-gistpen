@@ -27,6 +27,8 @@ class Blob extends Model implements UsesWordPressPost {
 	protected $fillable = array(
 		'slug',
 		'code',
+		'filename',
+		'language',
 	);
 
 	/**
@@ -37,7 +39,6 @@ class Blob extends Model implements UsesWordPressPost {
 	protected $guarded = array(
 		'ID',
 		'repo',
-		'language',
 	);
 
 	/**
