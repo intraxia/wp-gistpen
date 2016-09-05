@@ -28,7 +28,7 @@ class BlobTest extends TestCase {
 
 		$this->repo     = $this->factory->gistpen->create_and_get();
 		$this->blob     = $this->factory->gistpen->create_and_get( array( 'post_parent' => $this->repo->ID ) );
-		$this->database = new EntityManager( new WP_Query, 'wpgp' );
+		$this->database = new EntityManager( 'wpgp' );
 
 		wp_set_post_terms( $this->blob->ID, 'php', 'wpgp_language' );
 	}

@@ -29,11 +29,32 @@ class EntityManager implements EntityManagerContract {
 	 */
 	const LANGUAGE_CLASS = 'Intraxia\Gistpen\Model\Language';
 
+	/**
+	 * Meta prefix.
+	 *
+	 * @var string
+	 */
+	protected $prefix;
+
+	/**
+	 * Internal Model cache.
+	 *
+	 * @var array
+	 */
 	private $cache = array(
 		self::REPO_CLASS     => array(),
 		self::BLOB_CLASS     => array(),
 		self::LANGUAGE_CLASS => array(),
 	);
+
+	/**
+	 * EntityManager constructor.
+	 *
+	 * @param string $prefix Meta prefix for entities.
+	 */
+	public function __construct( $prefix ) {
+		$this->prefix = $prefix;
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -61,6 +82,11 @@ class EntityManager implements EntityManagerContract {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @param string $class  Fully qualified class name of models to find.
+	 * @param array  $params Params to constrain the find.
+	 *
+	 * @return Collection|WP_Error
 	 */
 	public function find_by( $class, $params = array() ) {
 		if ( static::REPO_CLASS === $class ) {
@@ -182,7 +208,10 @@ class EntityManager implements EntityManagerContract {
 				continue;
 			}
 
-			$model->set_attribute( $key, get_post_meta( $id, "_wpgp_{$key}", true ) );
+			$model->set_attribute(
+				$key,
+				get_post_meta( $id, $this->make_meta_key( $key ), true )
+			);
 		}
 
 		$model->reguard();
@@ -234,7 +263,10 @@ class EntityManager implements EntityManagerContract {
 					);
 					break;
 				default:
-					$model->set_attribute( $key, get_post_meta( $post->ID, "_wpgp_{$key}", true ) );
+					$model->set_attribute(
+						$key,
+						get_post_meta( $post->ID, $this->make_meta_key( $key ), true )
+					);
 					break;
 			}
 		}
@@ -265,7 +297,10 @@ class EntityManager implements EntityManagerContract {
 		foreach ( $model->get_table_keys() as $key ) {
 			switch ( $key ) {
 				default:
-					$model->set_attribute( $key, get_term_meta( $term->term_id, "_wpgp_{$key}", true ) );
+					$model->set_attribute(
+						$key,
+						get_term_meta( $term->term_id, $this->make_meta_key( $key ), true )
+					);
 					break;
 			}
 		}
@@ -352,7 +387,14 @@ class EntityManager implements EntityManagerContract {
 		return $collection;
 	}
 
-	protected function create_repo( $data ) {
+	/**
+	 * Persist a new Repo
+	 *
+	 * @param array $data
+	 *
+	 * @return Repo|WP_Error
+	 */
+	protected function create_repo( array $data ) {
 		$model = new Repo();
 
 		$blobs = new Collection( array(), array(
@@ -385,11 +427,11 @@ class EntityManager implements EntityManagerContract {
 
 		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
 
-		foreach ( $model->get_table_keys() as $key ) {
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
 			update_post_meta(
-				$model->ID,
-				"_wpgp_{$key}",
-				$model->get_attribute( $key )
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
 			);
 		}
 
@@ -431,5 +473,16 @@ class EntityManager implements EntityManagerContract {
 
 	protected function delete_language( Language $model, $force ) {
 		return new WP_Error( 'not implemented' );
+	}
+
+	/**
+	 * Wraps the given key with the string required to make it a meta key.
+	 *
+	 * @param {string} $key Key to turn into meta key.
+	 *
+	 * @return string Generated meta key.
+	 */
+	protected function make_meta_key( $key ) {
+		return "_{$this->prefix}_{$key}";
 	}
 }

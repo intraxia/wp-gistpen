@@ -28,7 +28,7 @@ class RepoTest extends TestCase {
 
 		$this->repo     = $this->factory->gistpen->create_and_get();
 		$this->blob     = $this->factory->gistpen->create_and_get( array( 'post_parent' => $this->repo->ID ) );
-		$this->database = new EntityManager( new WP_Query, 'wpgp' );
+		$this->database = new EntityManager( 'wpgp' );
 
 		update_post_meta( $this->repo->ID, '_wpgp_gist_id', 'this_gist_id' );
 		update_post_meta( $this->repo->ID, '_wpgp_sync', 'off' );

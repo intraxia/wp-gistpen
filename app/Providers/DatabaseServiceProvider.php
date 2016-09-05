@@ -14,7 +14,7 @@ class DatabaseServiceProvider implements ServiceProvider {
 	 */
 	public function register( Container $container ) {
 		$container->define( 'database', function () {
-			return new EntityManager( new WP_Query, 'wpgp' );
+			return new EntityManager( 'wpgp' );
 		} );
 	}
 }
