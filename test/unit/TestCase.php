@@ -17,6 +17,21 @@ abstract class TestCase extends WP_UnitTestCase {
 	 */
 	protected $app;
 
+	/**
+	 * @var \WP_Post
+	 */
+	protected $repo;
+
+	/**
+	 * @var int[]
+	 */
+	protected $blobs;
+
+	/**
+	 * @var \WP_Term
+	 */
+	protected $language;
+
 	public function setUp() {
 		parent::setUp();
 		$this->factory = new Factory;
@@ -41,17 +56,19 @@ abstract class TestCase extends WP_UnitTestCase {
 	}
 
 	public function create_post_and_children() {
-		$this->gistpen = $this->factory->gistpen->create_and_get();
+		$this->repo = $this->factory->gistpen->create_and_get();
 
-		$this->files = $this->factory->gistpen->create_many( 3, array(
-			'post_parent' => $this->gistpen->ID
+		$this->blobs = $this->factory->gistpen->create_many( 3, array(
+			'post_parent' => $this->repo->ID
 		) );
 
-		foreach ( $this->files as $file ) {
-			wp_set_object_terms( $file, 'php', 'wpgp_language', false );
+		foreach ( $this->blobs as $blob ) {
+			wp_set_object_terms( $blob, 'php', 'wpgp_language', false );
 		}
 
-		update_post_meta( $this->gistpen->ID, '_wpgp_gist_id', 'none' );
+		$this->language = get_term_by( 'slug', 'php', 'wpgp_language' );
+
+		update_post_meta( $this->repo->ID, '_wpgp_gist_id', 'none' );
 	}
 
 }

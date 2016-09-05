@@ -184,11 +184,13 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		$post  = get_post( $id );
-		$model = new Repo( array( Model::OBJECT_KEY => $post ) );
+		$model = new Repo;
 
 		if ( $post->post_type !== $model::get_post_type() ) {
 			return new WP_Error( 'Invalid id' );
 		}
+
+		$model->set_attribute( Model::OBJECT_KEY, $post );
 
 		$this->cache[ self::REPO_CLASS ][ $id ] = $model;
 
@@ -230,8 +232,8 @@ class EntityManager implements EntityManagerContract {
 		$post  = get_post( $id );
 		$model = new Blob;
 
-		if ( $post->post_type !== $model::get_post_type() &&
-		     $post->post_parent !== 0
+		if ( $post->post_type !== $model::get_post_type() ||
+		     $post->post_parent === 0
 		) {
 			return new WP_Error( 'Invalid id' );
 		}
@@ -286,6 +288,10 @@ class EntityManager implements EntityManagerContract {
 	protected function find_language( $id ) {
 		$model = new Language;
 		$term  = get_term( $id, $model::get_taxonomy() );
+
+		if ( ! $term ) {
+			$term = new WP_Error( 'Error getting term' );
+		}
 
 		if ( is_wp_error( $term ) ) {
 			return $term;
