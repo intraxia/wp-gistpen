@@ -2,8 +2,6 @@
 namespace Intraxia\Gistpen\Model;
 
 use Intraxia\Jaxion\Axolotl\Model;
-use Intraxia\Jaxion\Axolotl\Relationship\HasMany;
-use Intraxia\Jaxion\Contract\Axolotl\HasEagerRelationships;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
 
 /**
@@ -20,17 +18,7 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property Language $language
  * @property Repo     $repo
  */
-class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
-	/**
-	 * Class name for Repo related class.
-	 */
-	const REPO_CLASS = 'Intraxia\Gistpen\Model\Repo';
-
-	/**
-	 * Class name for Language related class.
-	 */
-	const LANGUAGE_CLASS = 'Intraxia\Gistpen\Model\Language';
-
+class Blob extends Model implements UsesWordPressPost {
 	/**
 	 * {@inheritDoc}
 	 *
@@ -39,7 +27,6 @@ class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
 	protected $fillable = array(
 		'slug',
 		'code',
-		'language',
 	);
 
 	/**
@@ -47,7 +34,11 @@ class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
 	 *
 	 * @var array
 	 */
-	protected $guarded = array( 'ID' );
+	protected $guarded = array(
+		'ID',
+		'repo',
+		'language',
+	);
 
 	/**
 	 * {@inheritDoc}
@@ -62,15 +53,6 @@ class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
 		'code',
 		'language',
 	);
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @return array
-	 */
-	public static function get_eager_relationships() {
-		return array( 'repo', 'language' );
-	}
 
 	/**
 	 * {@inheritDoc}
@@ -129,28 +111,6 @@ class Blob extends Model implements UsesWordPressPost, HasEagerRelationships {
 			$this->ID,
 			$this->filename
 		) );
-	}
-
-	/**
-	 * Relates the Blob to its owning Repo.
-	 *
-	 * @return HasMany
-	 */
-	public function related_repo() {
-		return $this->belongs_to_one(
-			self::REPO_CLASS,
-			'object',
-			'post_parent'
-		);
-	}
-
-	/**
-	 * Retlates the Blob to its Language.
-	 *
-	 * @return HasMany
-	 */
-	public function related_language() {
-		return $this->belongs_to_one( self::LANGUAGE_CLASS, 'object' );
 	}
 
 	/**

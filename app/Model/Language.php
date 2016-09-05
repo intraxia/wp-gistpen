@@ -96,6 +96,17 @@ class Language extends Model implements UsesWordPressTerm {
 	/**
 	 * {@inheritDoc}
 	 *
+	 * @var array
+	 */
+	protected $visible = array(
+		'ID',
+		'display_name',
+		'slug',
+	);
+
+	/**
+	 * {@inheritDoc}
+	 *
 	 * @return string
 	 */
 	public static function get_taxonomy() {
@@ -277,28 +288,10 @@ class Language extends Model implements UsesWordPressTerm {
 		return $this->get_attribute( 'display_name' );
 	}
 
-	public function related_blobs() {
-		return $this->has_many(
-			self::BLOB_CLASS,
-			'object',
-			'post_id'
-		);
-	}
-
 	/**
 	 * @return string
 	 */
 	public function compute_display_name() {
-		return array_search( $this->get_attribute( 'slug' ), self::$supported );
-	}
-
-	/**
-	 * Override the built-in serialize method so a string is output
-	 * when the Blob serializes into an array.
-	 *
-	 * @return string
-	 */
-	public function serialize() {
-		return $this->get_attribute( 'slug' );
+		return array_search( $this->get_attribute( 'slug' ), self::$supported, true );
 	}
 }

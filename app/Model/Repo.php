@@ -3,8 +3,6 @@ namespace Intraxia\Gistpen\Model;
 
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
-use Intraxia\Jaxion\Axolotl\Relationship\HasMany;
-use Intraxia\Jaxion\Contract\Axolotl\HasEagerRelationships;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
 
 /**
@@ -26,7 +24,7 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property string     $created_at
  * @property string     $updated_at
  */
-class Repo extends Model implements UsesWordPressPost, HasEagerRelationships {
+class Repo extends Model implements UsesWordPressPost {
 	/**
 	 * Class name for Blob related class.
 	 */
@@ -50,6 +48,7 @@ class Repo extends Model implements UsesWordPressPost, HasEagerRelationships {
 	 * @var array
 	 */
 	protected $guarded = array(
+		'blobs',
 		'gist_id',
 		'created_at',
 		'updated_at',
@@ -82,15 +81,6 @@ class Repo extends Model implements UsesWordPressPost, HasEagerRelationships {
 	 */
 	public static function get_post_type() {
 		return 'gistpen';
-	}
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @return array
-	 */
-	public static function get_eager_relationships() {
-		return array( 'blobs' );
 	}
 
 	/**
@@ -145,19 +135,6 @@ class Repo extends Model implements UsesWordPressPost, HasEagerRelationships {
 	 */
 	protected function map_updated_at() {
 		return 'post_modified';
-	}
-
-	/**
-	 * Relates the Repo to its many Blobs.
-	 *
-	 * @return HasMany
-	 */
-	public function related_blobs() {
-		return $this->has_many(
-			self::BLOB_CLASS,
-			'object',
-			'post_parent'
-		);
 	}
 
 	/**
