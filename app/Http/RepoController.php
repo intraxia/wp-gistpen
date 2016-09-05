@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Http;
 
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager as Database;
 use WP_Error;
 use WP_REST_Request;
@@ -14,11 +15,6 @@ use WP_REST_Response;
  * @since 1.0.0
  */
 class RepoController {
-	/**
-	 * Model class for the controller.
-	 */
-	const MODEL_CLASS = 'Intraxia\Gistpen\Model\Repo';
-
 	/**
 	 * Database interface service.
 	 *
@@ -43,7 +39,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
-		$collection = $this->database->find_by( static::MODEL_CLASS, $request->get_params() );
+		$collection = $this->database->find_by( EntityManager::REPO_CLASS, $request->get_params() );
 
 		if ( is_wp_error( $collection ) ) {
 			$collection->add_data( array( 'status' => 500 ) );
@@ -62,7 +58,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create( WP_REST_Request $request ) {
-		$model = $this->database->create( static::MODEL_CLASS, $request->get_params() );
+		$model = $this->database->create( EntityManager::REPO_CLASS, $request->get_params() );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );
@@ -81,7 +77,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function view( WP_REST_Request $request ) {
-		$model = $this->database->find( static::MODEL_CLASS, $request->get_param( 'id' ) );
+		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -100,7 +96,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function update( WP_REST_Request $request ) {
-		$model = $this->database->find( static::MODEL_CLASS, $request->get_param( 'id' ) );
+		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -129,7 +125,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function apply( WP_REST_Request $request ) {
-		$model = $this->database->find( static::MODEL_CLASS, $request->get_param( 'id' ) );
+		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -155,10 +151,10 @@ class RepoController {
 	 *
 	 * @param WP_REST_Request $request
 	 *
-	 * @return WP_REST_Request|WP_Error
+	 * @return WP_REST_Response|WP_Error
 	 */
 	public function trash( WP_REST_Request $request ) {
-		$model = $this->database->find( static::MODEL_CLASS, $request->get_param( 'id' ) );
+		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );

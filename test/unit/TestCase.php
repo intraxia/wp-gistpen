@@ -4,7 +4,6 @@ namespace Intraxia\Gistpen\Test;
 use Intraxia\Gistpen\App;
 use Intraxia\Jaxion\Core\UndefinedAliasException;
 use Mockery;
-use SimpleXMLElement;
 use WP_UnitTestCase;
 
 abstract class TestCase extends WP_UnitTestCase {
@@ -18,13 +17,13 @@ abstract class TestCase extends WP_UnitTestCase {
 	 */
 	protected $app;
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 		$this->factory = new Factory;
 		$this->app     = App::instance();
 	}
 
-	function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 
 		Mockery::close();
@@ -41,7 +40,7 @@ abstract class TestCase extends WP_UnitTestCase {
 		}
 	}
 
-	function create_post_and_children() {
+	public function create_post_and_children() {
 		$this->gistpen = $this->factory->gistpen->create_and_get();
 
 		$this->files = $this->factory->gistpen->create_many( 3, array(

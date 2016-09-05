@@ -1,9 +1,9 @@
 <?php
 namespace Intraxia\Jaxion\Test\Model;
 
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Test\TestCase;
-use Intraxia\Jaxion\Axolotl\EntityManager;
 use WP_Post;
 use WP_Query;
 

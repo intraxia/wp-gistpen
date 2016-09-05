@@ -3,7 +3,7 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
-use Intraxia\Jaxion\Axolotl\EntityManager;
+use Intraxia\Gistpen\Database\EntityManager;
 use WP_Query;
 
 class DatabaseServiceProvider implements ServiceProvider {

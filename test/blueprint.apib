@@ -32,7 +32,9 @@ You can retrieve the most recently created Repos with this endpoint.
                             "slug": "file.txt",
                             "code": "Some code goes here",
                             "ID": 2,
-                            "language": "plaintext"
+                            "language": {
+                                "slug": "plaintext"
+                            }
                         }
                     ],
                     "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
@@ -60,7 +62,9 @@ You can create a new Repo with this endpoint.
                     {
                         "filename": "new-file.txt",
                         "code": "Some code goes here",
-                        "language": "plaintext"
+                        "language": {
+                            "slug": "plaintext"
+                        }
                     }
                 ]
             }
@@ -87,7 +91,9 @@ You can create a new Repo with this endpoint.
                         "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/new-file.txt",
                         "filename": "new-file.txt",
                         "code": "Some code goes here",
-                        "language": "plaintext"
+                        "language": {
+                            "slug": "plaintext"
+                        }
                     }
                 ],
                 "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
@@ -127,7 +133,9 @@ You can retrieve the information for an individual Repo resource.
                         "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
                         "slug": "file.txt",
                         "code": "Some code goes here",
-                        "language": "plaintext"
+                        "language": {
+                            "slug": "plaintext"
+                        }
                     }
                 ],
                 "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
@@ -155,7 +163,9 @@ You can update an individual Repo resource. If no
                         "ID": 2
                         "filename": "new-file.txt",
                         "code": "Updated code goes here",
-                        "language": "plaintext"
+                        "language": {
+                            "slug": "plaintext"
+                        }
                     }
                 ]
             }
@@ -178,7 +188,9 @@ You can update an individual Repo resource. If no
                         "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/new-file.txt",
                         "filename": "new-file.txt",
                         "code": "Updated code goes here",
-                        "language": "plaintext"
+                        "language": {
+                            "slug": "plaintext"
+                        }
                     }
                 ],
                 "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
@@ -224,7 +236,9 @@ You can just send the changes you would like to make to the Repo resource.
                         "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
                         "slug": "file.txt",
                         "code": "Updated code goes here",
-                        "language": "plaintext"
+                        "language": {
+                            "slug": "plaintext"
+                        }
                     }
                 ],
                 "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
@@ -295,7 +309,9 @@ You can retrieve the information for an individual Commit for a given Repo.
                         "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3/4/file.txt",
                         "slug": "file.txt",
                         "code": "Some code goes here",
-                        "language": "plaintext"
+                        "language": {
+                            "slug": "plaintext"
+                        }
                     }
                 ],
                 "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3",

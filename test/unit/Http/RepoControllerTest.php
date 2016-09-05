@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Jaxion\Test\Http;
 
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Http\RepoController;
 use Intraxia\Gistpen\Test\TestCase;
 use Mockery;
@@ -41,7 +42,7 @@ class RepoControllerTest extends TestCase {
 			->shouldReceive( 'find_by' )
 			->with( 'Intraxia\Jaxion\Model\Repo' )
 			->once()
-			->with( RepoController::MODEL_CLASS, array() )
+			->with( EntityManager::REPO_CLASS, array() )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->index( $this->request ) );
@@ -58,7 +59,7 @@ class RepoControllerTest extends TestCase {
 			->andReturn( array() );
 		$this->database
 			->shouldReceive( 'find_by' )
-			->with( RepoController::MODEL_CLASS, array() )
+			->with( EntityManager::REPO_CLASS, array() )
 			->once()
 			->andReturn( $collection );
 		$collection
@@ -83,7 +84,7 @@ class RepoControllerTest extends TestCase {
 			->andReturn( $attrs );
 		$this->database
 			->shouldReceive( 'create' )
-			->with( RepoController::MODEL_CLASS, $attrs )
+			->with( EntityManager::REPO_CLASS, $attrs )
 			->once()
 			->andReturn( $error );
 
@@ -92,7 +93,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_created_repo_in_response() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$attrs = array( 'description' => 'Repo description' );
 		$this->request
 			->shouldReceive( 'get_params' )
@@ -101,7 +102,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'create' )
 			->once()
-			->with( RepoController::MODEL_CLASS, $attrs )
+			->with( EntityManager::REPO_CLASS, $attrs )
 			->andReturn( $repo );
 		$repo
 			->shouldReceive( 'serialize' )
@@ -123,7 +124,7 @@ class RepoControllerTest extends TestCase {
 			->andReturn( 1 );
 		$this->database
 			->shouldReceive( 'find' )
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->once()
 			->andReturn( $error );
 
@@ -132,7 +133,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_repo_in_response() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$attrs = array( 'description' => 'Repo description' );
 		$this->request
 			->shouldReceive( 'get_param' )
@@ -141,7 +142,7 @@ class RepoControllerTest extends TestCase {
 			->andReturn( 1 );
 		$this->database
 			->shouldReceive( 'find' )
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->once()
 			->andReturn( $repo );
 		$repo
@@ -165,7 +166,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->update( $this->request ) );
@@ -173,7 +174,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_error_if_cant_update_model() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$attrs = array( 'description' => 'Repo Description' );
 		$error = new WP_Error;
 		$this->request
@@ -184,7 +185,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
@@ -205,7 +206,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_updated_model() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$attrs = array( 'description' => 'Repo Description' );
 		$this->request
 			->shouldReceive( 'get_param' )
@@ -215,7 +216,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
@@ -250,7 +251,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->apply( $this->request ) );
@@ -258,7 +259,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_error_if_cant_apply_model() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$attrs = array( 'description' => 'Repo Description' );
 		$error = new WP_Error;
 		$this->request
@@ -269,7 +270,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
@@ -290,7 +291,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_applied_model() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$attrs = array( 'description' => 'Repo Description' );
 		$this->request
 			->shouldReceive( 'get_param' )
@@ -300,7 +301,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
@@ -335,7 +336,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->trash( $this->request ) );
@@ -343,7 +344,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_error_if_delete_cant_delete_model() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$error = new WP_Error;
 		$this->request
 			->shouldReceive( 'get_param' )
@@ -353,7 +354,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $repo );
 		$this->database
 			->shouldReceive( 'delete' )
@@ -366,7 +367,7 @@ class RepoControllerTest extends TestCase {
 	}
 
 	public function test_should_return_delete_response() {
-		$repo = Mockery::mock( RepoController::MODEL_CLASS );
+		$repo = Mockery::mock( EntityManager::REPO_CLASS );
 		$this->request
 			->shouldReceive( 'get_param' )
 			->once()
@@ -375,7 +376,7 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( RepoController::MODEL_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1 )
 			->andReturn( $repo );
 		$this->database
 			->shouldReceive( 'delete' )
