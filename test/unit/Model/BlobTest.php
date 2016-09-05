@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Jaxion\Test\Model;
+namespace Intraxia\Gistpen\Test\Model;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
