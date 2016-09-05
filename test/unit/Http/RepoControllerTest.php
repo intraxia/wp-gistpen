@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Jaxion\Test\Http;
+namespace Intraxia\Gistpen\Test\Http;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Http\RepoController;
@@ -108,11 +108,18 @@ class RepoControllerTest extends TestCase {
 			->shouldReceive( 'serialize' )
 			->once()
 			->andReturn( $attrs );
+		$repo
+			->shouldReceive( 'get_attribute' )
+			->with( 'rest_url' )
+			->once()
+			->andReturn( 'repo_rest_url' );
 
 		$response = $this->controller->create( $this->request );
 
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
 		$this->assertSame( $attrs, $response->get_data() );
+		$headers = $response->get_headers();
+		$this->assertSame( 'repo_rest_url', $headers['Location'] );
 	}
 
 	public function test_should_return_model_error_from_database() {

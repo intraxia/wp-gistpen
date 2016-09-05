@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Http;
 
 use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager as Database;
 use WP_Error;
 use WP_REST_Request;
@@ -58,6 +59,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create( WP_REST_Request $request ) {
+		/** @var Repo|WP_Error $model */
 		$model = $this->database->create( EntityManager::REPO_CLASS, $request->get_params() );
 
 		if ( is_wp_error( $model ) ) {
@@ -66,7 +68,10 @@ class RepoController {
 			return $model;
 		}
 
-		return new WP_REST_Response( $model->serialize(), 201 );
+		$response = new WP_REST_Response( $model->serialize(), 201 );
+		$response->header( 'Location', $model->rest_url );
+
+		return $response;
 	}
 
 	/**
