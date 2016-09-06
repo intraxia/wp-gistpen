@@ -31,7 +31,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Autoload Classes & CMB2.
-$autoload = 'lib/autoload.php';
+$autoload = __DIR__ . '/lib/autoload.php';
 if ( file_exists( $autoload ) ) {
 	require_once $autoload;
 }
