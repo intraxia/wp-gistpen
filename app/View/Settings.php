@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\View;
 
 use Intraxia\Gistpen\Client\Gist;
+use Intraxia\Gistpen\Contract\Templating;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
@@ -15,12 +16,11 @@ use Intraxia\Jaxion\Contract\Core\HasFilters;
  */
 class Settings implements HasActions, HasFilters {
 	/**
-	 * Gist account object
+	 * Templating service.
 	 *
-	 * @var Gist
-	 * @since 0.5.0
+	 * @var Templating
 	 */
-	protected $client;
+	private $template;
 
 	/**
 	 * Plugin basename
@@ -32,11 +32,13 @@ class Settings implements HasActions, HasFilters {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $basename
+	 * @param Templating $template
+	 * @param string     $basename
 	 *
 	 * @since    0.5.0
 	 */
-	public function __construct( $basename ) {
+	public function __construct( Templating $template, $basename ) {
+		$this->template = $template;
 		$this->basename = $basename;
 	}
 
@@ -61,7 +63,7 @@ class Settings implements HasActions, HasFilters {
 	 * @since    0.1.0
 	 */
 	public function display_plugin_admin_page() {
-		echo '<div class="wrap" id="wpgp-wrap"></div>';
+		echo $this->template->render( 'settings/index', array() );
 	}
 
 	/**
