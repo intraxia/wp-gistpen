@@ -2,6 +2,8 @@ const webpack = require('webpack');
 const src = __dirname + '/src/js/';
 
 module.exports = {
+    debug: true,
+    devtool: 'sourcemap',
     entry: {
         settings: src + 'settings.js',
         web: src + 'web.js',
@@ -10,7 +12,7 @@ module.exports = {
     },
     output: {
         path: 'assets/js/',
-        filename: '[name].min.js'
+        filename: '[name].js'
     },
     module: {
         loaders: [
@@ -21,9 +23,9 @@ module.exports = {
             },
             {
                 test: /\.hbs/,
-                loader: "handlebars-loader"
+                loader: 'handlebars'
             }
         ]
     },
-    plugins: [new webpack.optimize.DedupePlugin()]
+    plugins: []
 };
