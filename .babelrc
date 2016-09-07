@@ -5,6 +5,6 @@
     "transform-object-assign"
   ],
   "presets": [
-    ["latest", { "loose": false, "modules": false }]
+    ["es2015", { "loose": false, "modules": false }]
   ]
 }
