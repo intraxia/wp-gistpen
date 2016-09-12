@@ -6,7 +6,7 @@ import delta from '../delta';
 import middleware from '../middleware';
 import reducer from '../reducer';
 
-const { __GISTPEN_STATE__ } = global;
+const { __GISTPEN_SETTINGS__ } = global;
 
 let enhancer = R.pipe(delta, middleware);
 
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 document.addEventListener('DOMContentLoaded', () => {
     const element = document.querySelector('[data-brk-container="settings"]');
-    const store = createStore(reducer, __GISTPEN_STATE__, enhancer);
+    const store = createStore(reducer, __GISTPEN_SETTINGS__, enhancer);
     const state$ = fromESObservable(store).toProperty(store.getState);
 
     const app$ = root(element, state$);
