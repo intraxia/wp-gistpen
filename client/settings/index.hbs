@@ -1,1 +1,7 @@
-<div class="wrap" data-brk-container="settings"></div>
+<div class="wrap" data-brk-container="settings">
+    {{> settings/header}}
+
+    {{#compare route "highlighting"}}
+        {{> settings/highlighting}}
+    {{/compare}}
+</div>

@@ -63,7 +63,9 @@ class Settings implements HasActions, HasFilters {
 	 * @since    0.1.0
 	 */
 	public function display_plugin_admin_page() {
-		echo $this->template->render( 'settings/index', array() );
+		echo $this->template->render( 'settings/index', array(
+			'route' => 'highlighting',
+		) );
 	}
 
 	/**
