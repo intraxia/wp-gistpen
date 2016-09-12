@@ -32,7 +32,12 @@ module.exports = {
             },
             {
                 test: /\.hbs/,
-                loader: 'handlebars'
+                loader: 'handlebars',
+                query: {
+                    helperDirs: [client + 'helpers'],
+                    partialDirs: [client],
+                    compat: true
+                }
             }
         ]
     },
