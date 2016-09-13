@@ -16,12 +16,11 @@ if (process.env.NODE_ENV !== 'production') {
     enhancer = R.pipe(global.devToolsExtension ? global.devToolsExtension() : R.identity, enhancer);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const element = document.querySelector('[data-brk-container="settings"]');
-    const store = createStore(reducer, __GISTPEN_SETTINGS__, enhancer);
-    const state$ = fromESObservable(store).toProperty(store.getState);
+const store = createStore(reducer, __GISTPEN_SETTINGS__, enhancer);
+const state$ = fromESObservable(store).toProperty(store.getState);
 
-    const app$ = root(element, state$);
+document.addEventListener('DOMContentLoaded', () => {
+    const app$ = root(document.querySelector('[data-brk-container="settings"]'), state$);
 
     if (process.env.NODE_ENV !== 'production') {
         app$.log('app$');
