@@ -27,7 +27,7 @@
     "ace-builds": "1.2.2",
     "array-from": "^2.1.1",
     "backbone": "1.2.3",
-    "brookjs": "github:valtech-nyc/brookjs#a03bdb800b25429415438ad85a953f95c0192199",
+    "brookjs": "github:valtech-nyc/brookjs#28ba5ae2191dfebed908526f7901c7ff45ee1d31",
     "clipboard": "1.5.5",
     "deep-diff": "0.3.3",
     "deep-equal": "1.0.1",
