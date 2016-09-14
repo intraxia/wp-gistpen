@@ -1,13 +1,18 @@
 import R from 'ramda';
 import { stream } from 'kefir';
 import hash from 'sheet-router/hash';
-import router from '../settings/router'
+import router from '../settings/router';
 
 const getAction = R.pipe(
     R.replace('#', '/'),
     router
 );
 
+/**
+ * Creates the router stream.
+ *
+ * @returns {Observable<T, S>} Stream of routing actions.
+ */
 export default function routerDelta() {
     return stream(emitter => {
         // Emit current route.

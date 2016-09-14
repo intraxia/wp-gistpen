@@ -16,6 +16,13 @@ module.exports = {
         filename: '[name].js'
     },
     module: {
+        preLoaders: [
+            {
+                test: /\.js$/,
+                loader: 'eslint',
+                exclude: /(node_modules)/
+            }
+        ],
         loaders: [
             {
                 test: /\.js$/,

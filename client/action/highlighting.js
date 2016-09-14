@@ -15,7 +15,7 @@ export function themeChangeAction(value) {
     return {
         type: THEME_CHANGE,
         payload: { value }
-    }
+    };
 }
 
 /**
@@ -35,7 +35,7 @@ export function lineNumbersChangeAction(value) {
     return {
         type: LINE_NUMBERS_CHANGE,
         payload: { value }
-    }
+    };
 }
 
 /**
@@ -55,5 +55,5 @@ export function showInvisiblesChangeAction(value) {
     return {
         type: SHOW_INVISIBLES_CHANGE,
         payload: { value }
-    }
+    };
 }

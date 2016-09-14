@@ -1,5 +1,4 @@
 const gulp = require('gulp');
-const path = require('path');
 const sass = require('gulp-sass');
 const cssnano = require('gulp-cssnano');
 const extrep = require('gulp-ext-replace');

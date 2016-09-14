@@ -5,7 +5,7 @@ import { ROUTE_CHANGE } from '../action';
  *
  * @param {string} state - Current route.
  * @param {string} type - Action type.
- * @param {Object] payload - Action payload.
+ * @param {Object} payload - Action payload.
  * @returns {string} New route.
  */
 export default function routeReducer(state = '', { type, payload }) {
