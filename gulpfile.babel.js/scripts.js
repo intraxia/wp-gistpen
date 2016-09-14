@@ -8,7 +8,7 @@ const webpackConfig = require('../webpack.config.js');
 gulp.task('scripts', ['scripts:dev', 'scripts:build']);
 
 gulp.task('scripts:dev', callback => {
-    webpack(webpackConfig, function(err, stats) {
+    webpack(webpackConfig, (err, stats) => {
         if (err) {
             throw new gutil.PluginError('webpack:dev', err);
         }
@@ -22,6 +22,9 @@ gulp.task('scripts:dev', callback => {
 
 gulp.task('scripts:build', callback => {
     const webpackBuildConfig = R.clone(webpackConfig);
+    delete webpackBuildConfig.debug;
+    delete webpackBuildConfig.devtool;
+    webpackBuildConfig.output.filename = '[name].min.js';
     webpackBuildConfig.plugins = webpackBuildConfig.plugins.concat(
         new webpack.DefinePlugin({
             'process.env': {
@@ -32,7 +35,7 @@ gulp.task('scripts:build', callback => {
         new webpack.optimize.DedupePlugin()
     );
 
-    webpack(webpackBuildConfig, function(err, stats) {
+    webpack(webpackBuildConfig, (err, stats) => {
         if (err) {
             throw new gutil.PluginError('webpack:build', err);
         }
