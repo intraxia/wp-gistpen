@@ -1,4 +1,4 @@
-const webpack = require('webpack');
+const WebpackNotifierPlugin = require('webpack-notifier');
 const src = __dirname + '/src/js/';
 const client = __dirname + '/client/';
 
@@ -55,5 +55,7 @@ module.exports = {
         },
         mainFields: ['jsnext:main', 'browser', 'main']
     },
-    plugins: []
+    plugins: [
+        new WebpackNotifierPlugin({ alwaysNotify: true })
+    ]
 };

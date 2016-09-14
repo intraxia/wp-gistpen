@@ -5,6 +5,7 @@ const extrep = require('gulp-ext-replace');
 const pot = require('gulp-wp-pot');
 const sort = require('gulp-sort');
 
+require('./dev');
 require('./scripts');
 
 gulp.task('styles', function () {

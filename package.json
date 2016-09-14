@@ -24,7 +24,8 @@
     "gulp-wp-pot": "1.0.1",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.1.4",
-    "webpack": "^2.1.0-beta.21"
+    "webpack": "^2.1.0-beta.21",
+    "webpack-notifier": "^1.4.1"
   },
   "dependencies": {
     "ace-builds": "1.2.2",
