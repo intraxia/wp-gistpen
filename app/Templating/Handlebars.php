@@ -1,7 +1,8 @@
 <?php
 namespace Intraxia\Gistpen\Templating;
 
-use Handlebars\Handlebars as Hbs;
+use Exception;
+use LightnCandy\LightnCandy;
 use Intraxia\Gistpen\Contract\Templating;
 
 /**
@@ -14,30 +15,60 @@ use Intraxia\Gistpen\Contract\Templating;
  */
 class Handlebars implements Templating {
 	/**
-	 * Handlebars PHP implementation.
+	 * Client path.
 	 *
-	 * @var Hbs
+	 * @var string
 	 */
-	protected $hbs;
+	protected $client;
 
 	/**
 	 * Handlebars constructor.
 	 *
-	 * @param Hbs $hbs
+	 * @param string $client
 	 */
-	public function __construct( Hbs $hbs ) {
-		$this->hbs = $hbs;
+	public function __construct( $client ) {
+		$this->client = $client;
 	}
 
 	/**
 	 * Generates a string from the handlebars partials and provided data.
 	 *
 	 * @param string $partial
-	 * @param array $data
+	 * @param array  $data
 	 *
 	 * @return string
+	 * @throws \Exception
 	 */
 	public function render( $partial, array $data ) {
-		return $this->hbs->render( $partial, $data );
+		$phpStr = LightnCandy::compile( file_get_contents( $this->client . $partial . '.hbs' ), array(
+			'flags'           => LightnCandy::FLAG_HANDLEBARSJS_FULL | LightnCandy::FLAG_RUNTIMEPARTIAL,
+			'partialresolver' => function ( $cx, $name ) {
+				$filename = $this->client . $name . '.hbs';
+
+				if ( file_exists( $filename ) ) {
+					return file_get_contents( $filename );
+				}
+
+				return "[partial (file:$filename) not found]";
+			},
+			'helpers'         => array(
+				'compare' => function ( $first, $second, $options ) {
+					if ( $first === $second ) {
+						return $options['fn']( $options['data'] );
+					} else {
+						return $options['inverse']( $options['data'] );
+					}
+				}
+			)
+		) );
+
+		// @todo swap out deprecated prepare for custom solution (eval? write to filesystem?).
+		$render = LightnCandy::prepare( $phpStr );
+
+		if ( ! ( $render instanceof \Closure ) ) {
+			throw new Exception('Invalid PHP generated. Check Handlebars template for invalid syntax.');
+		}
+
+		return $render( $data );
 	}
 }

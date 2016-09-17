@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ca3caa9eec6ab3b5357acfe77c5ffe74",
-    "content-hash": "60bf78265a6246f0432b55ea9695648b",
+    "hash": "749d5fd8442537b4a9218c779a090da9",
+    "content-hash": "b26d48bcc6f009c55d333df6198e1f28",
     "packages": [
         {
             "name": "composer/installers",
@@ -317,7 +317,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.10",
+            "version": "v2.8.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -406,27 +406,34 @@
             "time": "2016-07-04 07:19:50"
         },
         {
-            "name": "xamin/handlebars.php",
-            "version": "v0.10.3",
+            "name": "zordius/lightncandy",
+            "version": "v0.95",
             "source": {
                 "type": "git",
-                "url": "https://github.com/XaminProject/handlebars.php.git",
-                "reference": "5e1db1d1c7969fae32eab331a3b4d9b93257a709"
+                "url": "https://github.com/zordius/lightncandy.git",
+                "reference": "748cd17b2d496dbc7657b9390d918cf7dcd0101e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/XaminProject/handlebars.php/zipball/5e1db1d1c7969fae32eab331a3b4d9b93257a709",
-                "reference": "5e1db1d1c7969fae32eab331a3b4d9b93257a709",
+                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/748cd17b2d496dbc7657b9390d918cf7dcd0101e",
+                "reference": "748cd17b2d496dbc7657b9390d918cf7dcd0101e",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.4.0"
+            },
             "require-dev": {
-                "phpunit/phpunit": "~4.4",
-                "squizlabs/php_codesniffer": "~1.5"
+                "phpunit/phpunit": "4.0.17"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "v0.95-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Handlebars": "src/"
+                "psr-4": {
+                    "LightnCandy\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -435,17 +442,20 @@
             ],
             "authors": [
                 {
-                    "name": "fzerorubigd",
-                    "email": "fzerorubigd@gmail.com"
-                },
-                {
-                    "name": "Behrooz Shabani (everplays)",
-                    "email": "everplays@gmail.com"
+                    "name": "Zordius Chen",
+                    "email": "zordius@yahoo-inc.com"
                 }
             ],
-            "description": "Handlebars processor for php",
-            "homepage": "https://github.com/XaminProject/handlebars.php",
-            "time": "2015-08-06 22:16:36"
+            "description": "An extremely fast PHP implementation of handlebars ( http://handlebarsjs.com/ ) and mustache ( http://mustache.github.io/ ).",
+            "homepage": "https://github.com/zordius/lightncandy",
+            "keywords": [
+                "handlebars",
+                "logicless",
+                "mustache",
+                "php",
+                "template"
+            ],
+            "time": "2016-08-23 07:07:34"
         }
     ],
     "packages-dev": [
@@ -702,6 +712,98 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
+        },
+        {
+            "name": "guzzlehttp/guzzle",
+            "version": "v3.8.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "reference": "4de0618a01b34aa1c8c33a3f13f396dcd3882eba",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.3.3",
+                "symfony/event-dispatcher": ">=2.1"
+            },
+            "replace": {
+                "guzzle/batch": "self.version",
+                "guzzle/cache": "self.version",
+                "guzzle/common": "self.version",
+                "guzzle/http": "self.version",
+                "guzzle/inflection": "self.version",
+                "guzzle/iterator": "self.version",
+                "guzzle/log": "self.version",
+                "guzzle/parser": "self.version",
+                "guzzle/plugin": "self.version",
+                "guzzle/plugin-async": "self.version",
+                "guzzle/plugin-backoff": "self.version",
+                "guzzle/plugin-cache": "self.version",
+                "guzzle/plugin-cookie": "self.version",
+                "guzzle/plugin-curlauth": "self.version",
+                "guzzle/plugin-error-response": "self.version",
+                "guzzle/plugin-history": "self.version",
+                "guzzle/plugin-log": "self.version",
+                "guzzle/plugin-md5": "self.version",
+                "guzzle/plugin-mock": "self.version",
+                "guzzle/plugin-oauth": "self.version",
+                "guzzle/service": "self.version",
+                "guzzle/stream": "self.version"
+            },
+            "require-dev": {
+                "doctrine/cache": "*",
+                "monolog/monolog": "1.*",
+                "phpunit/phpunit": "3.7.*",
+                "psr/log": "1.0.*",
+                "symfony/class-loader": "*",
+                "zendframework/zend-cache": "<2.3",
+                "zendframework/zend-log": "<2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Guzzle": "src/",
+                    "Guzzle\\Tests": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                },
+                {
+                    "name": "Guzzle Community",
+                    "homepage": "https://github.com/guzzle/guzzle/contributors"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library and framework for building RESTful web service clients",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2014-01-28 22:29:15"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -1685,23 +1787,23 @@
         },
         {
             "name": "scrutinizer/ocular",
-            "version": "1.3.0",
+            "version": "1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/scrutinizer-ci/ocular.git",
-                "reference": "72dcffcd4fbafeff41bf51da349df33170f487e5"
+                "reference": "b87630fa5a872283319a84133bb610163fe509b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/scrutinizer-ci/ocular/zipball/72dcffcd4fbafeff41bf51da349df33170f487e5",
-                "reference": "72dcffcd4fbafeff41bf51da349df33170f487e5",
+                "url": "https://api.github.com/repos/scrutinizer-ci/ocular/zipball/b87630fa5a872283319a84133bb610163fe509b1",
+                "reference": "b87630fa5a872283319a84133bb610163fe509b1",
                 "shasum": ""
             },
             "require": {
-                "guzzle/guzzle": "~3.0",
+                "guzzlehttp/guzzle": "~3.0",
                 "jms/serializer": "^1.0.0",
                 "phpoption/phpoption": "~1.0",
-                "symfony/console": "~2.0|~3.0",
+                "symfony/console": "^2.0.5|~3.0",
                 "symfony/process": "~2.3|~3.0"
             },
             "require-dev": {
@@ -1718,7 +1820,7 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2015-12-16 14:33:15"
+            "time": "2016-09-09 08:07:18"
         },
         {
             "name": "sebastian/comparator",
@@ -2483,7 +2585,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.0"
+        "php": ">=5.4.0"
     },
     "platform-dev": []
 }

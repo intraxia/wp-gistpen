@@ -37,7 +37,7 @@ if ( file_exists( $autoload ) ) {
 }
 
 // Validate PHP Version.
-$update_php = new WPUpdatePhp( '5.3.0' );
+$update_php = new WPUpdatePhp( '5.4.0' );
 
 if ( ! $update_php->does_it_meet_required_php_version( PHP_VERSION ) ) {
 	return;
