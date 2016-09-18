@@ -21,7 +21,6 @@
     "phpunit/phpunit": "~4.3",
     "mockery/mockery": "~0.9",
     "10up/wp_mock": "0.1.*",
-    "scrutinizer/ocular": "~1.1",
     "squizlabs/php_codesniffer": "~2.3",
     "intraxia/codestyle": "dev-master"
   },
@@ -42,6 +41,6 @@
     "test": "phpunit",
     "sniff": "phpcs -s --runtime-set installed_paths lib/wp-coding-standards/wpcs  -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=full",
     "clean": "phpcbf --runtime-set installed_paths lib/wp-coding-standards/wpcs -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=full",
-    "upload": "ocular code-coverage:upload --format=php-clover build/logs/clover.xml"
+    "upload": "wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml"
   }
 }
