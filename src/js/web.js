@@ -1,23 +1,37 @@
-var Prism = require('./prism');
-var Plite = require('plite');
-var toolbar = require('./prism/toolbar');
-var forOwn = require('lodash.forown');
+/**
+ * Load our dependencies.
+ */
+const Prism = require('./prism');
 
-var promises = [];
-promises.push(Prism.loadTheme(Gistpen_Settings.prism.theme));
+if (!window.Promise) {
+    require('es6-promise').polyfill();
+}
 
-forOwn(Gistpen_Settings.prism.plugins, function(props, plugin) {
-    if (props.enabled) {
-        promises.push(Prism.loadPlugin(plugin));
+document.addEventListener('DOMContentLoaded', () => {
+    /**
+     * Configure Prism.
+     */
+    Prism.plugins.autoloader.languages_path = Gistpen_Settings.url + 'assets/js/';
+    Prism.setDebug("1" === Gistpen_Settings.debug);
+
+    /**
+     * Begin loading out dependencies.
+     */
+
+    const promises = [];
+
+    promises.push(Prism.loadTheme(Gistpen_Settings.site.prism.theme));
+    promises.push(Prism.loadCSS('toolbar'));
+
+    if (Gistpen_Settings.site.prism['line-numbers']) {
+        promises.push(Prism.loadPlugin('line-numbers'));
     }
+
+    if (Gistpen_Settings.site.prism['show-invisibles']) {
+        promises.push(Prism.loadPlugin('show-invisibles'));
+    }
+
+    window.PrismPromise = Promise.all(promises)
+            .then(Prism.highlightAll)
+            .catch(console.error.bind(console));
 });
-
-promises.push(Prism.loadPlugin('toolbar'));
-
-Prism.hooks.add('after-highlight', toolbar.hook);
-
-Plite.all(promises)
-    .then(Prism.highlightAll)
-    .catch(function(err) {
-        console.error(err);
-    });

@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    "ramda",
+    "transform-array-from",
+    "transform-object-assign"
+  ],
+  "presets": [
+    ["es2015", { "loose": false, "modules": false }]
+  ]
+}

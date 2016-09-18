@@ -1,20 +1,54 @@
-@import "../../node_modules/prismjs/plugins/line-numbers/prism-line-numbers";
-@import "../../node_modules/prismjs/plugins/line-highlight/prism-line-highlight";
-@import "../../node_modules/prismjs/plugins/show-invisibles/prism-show-invisibles";
-@import "../../node_modules/prismjs/plugins/show-language/prism-show-language";
+iframe.gistpen {
+  width: 100%;
+  height: 420px;
+  max-width: 700px;
 
-.clearfix {
-	content: "";
-	display: table;
-	clear: both;
+  &.hidden {
+    display: none;
+  }
 }
 
-pre.gistpen {
-	width: 100%;
-	max-width: 500px;
-	word-wrap: normal;
+.wpr-status-placeholder {
+  height: 45px;
 
-  &.line-numbers {
-    padding-left: 3.8em;
+  .wpr-fade-enter {
+    display: none;
+    height: 0;
+    width: 0;
+
+    &.wpr-fade-enter-active {
+      height: 58px;
+    }
+  }
+
+  .wpr-fade-leave {
+    display: none;
+    height: 0;
+    width: 0;
+    opacity: 1.0;
+
+    &.wpr-fade-leave-active {
+      opacity: 0;
+    }
+  }
+}
+
+.wpr-fade-enter {
+  opacity: 0.01;
+
+  &.wpr-fade-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+}
+
+.wpr-fade-leave {
+  display: none;
+  height: 0;
+  width: 0;
+  opacity: 1.0;
+
+  &.wpr-fade-leave-active {
+    opacity: 0;
   }
 }

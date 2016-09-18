@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\View\Editor;
+use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Assets\Register as Assets;
 use Intraxia\Jaxion\Assets\ServiceProvider;
 
@@ -25,32 +26,15 @@ class AssetsServiceProvider extends ServiceProvider {
 			$assets->set_debug( true );
 		}
 
-		$slug     = $this->container->fetch( 'slug' );
-		$url      = $this->container->fetch( 'url' );
+		$slug = $this->container->fetch( 'slug' );
 
-		$localize = function () use ( $url, $slug, $debug ) {
-			$theme = cmb2_get_option( $slug, '_wpgp_gistpen_highlighter_theme' );
+		$localize = function () {
+			/** @var Settings $settings */
+			$settings = $this->container->fetch( 'view.settings' );
 
 			return array(
 				'name' => 'Gistpen_Settings',
-				'data' => array(
-					'debug'      => $debug,
-					'languages'  => Language::$supported,
-					'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
-					'nonce'      => wp_create_nonce( 'wp_rest' ),
-					'url'        => $url,
-					'ace_themes' => Editor::$ace_themes,
-					'ace_widths' => array( 1, 2, 4, 8 ),
-					'statuses'   => get_post_statuses(),
-					'prism'      => array(
-						'theme'   => $theme ? : 'default',
-						'plugins' => array(
-							'line-numbers'    => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_gistpen_line_numbers' ) ),
-							'show-invisibles' => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_show_invisibles' ) ),
-							'show-language'   => array( 'enabled' => 'on' === cmb2_get_option( $slug, '_wpgp_show_language' ) ),
-						),
-					),
-				),
+				'data' => $settings->get_initial_state(),
 			);
 		};
 
@@ -115,7 +99,15 @@ class AssetsServiceProvider extends ServiceProvider {
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
 			'footer'    => true,
-			'localize'  => $localize,
+			'localize'  => function () {
+				/** @var Settings $settings */
+				$settings = $this->container->fetch( 'view.settings' );
+
+				return array(
+					'name' => '__GISTPEN_SETTINGS__',
+					'data' => $settings->get_initial_state(),
+				);
+			},
 		) );
 
 		/**

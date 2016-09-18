@@ -1,5 +1,5 @@
 var $ = require('jquery');
-var Backbone = require('backbone');
+var Backbone = require('backbone').noConflict();
 
 module.exports = Backbone.View.extend({
     events: {

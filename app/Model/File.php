@@ -1,6 +1,8 @@
 <?php
 namespace Intraxia\Gistpen\Model;
 
+use Intraxia\Gistpen\App;
+
 /**
  * Manages the Gistpen's file data
  *
@@ -37,7 +39,7 @@ class File {
 	/**
 	 * File's language object
 	 *
-	 * @var \WP_Gistpen\Model\Language
+	 * @var Language
 	 * @since 0.4.0
 	 */
 	protected $language;
@@ -130,14 +132,9 @@ class File {
 	 * Set the file's slug
 	 *
 	 * @since  0.5.0
-	 * @param string $language File language
+	 * @param Language $language File language
 	 */
-	public function set_language( $language ) {
-
-		if ( ! $language instanceof Language ) {
-			throw new \Exception( __( 'set_language requires a Model\Language object', 'wp-gistpen' ), 1 );
-		}
-
+	public function set_language( Language $language ) {
 		$this->language = $language;
 	}
 
@@ -162,23 +159,30 @@ class File {
 	 * @since 0.4.0
 	 */
 	public function get_post_content() {
-		$post_content = '<div id="wp-gistpenfile-' . $this->slug . '">';
+		$post_content = '<pre class="gistpen';
 
-		$post_content .= '<h3 class="wp-gistpenfile-title">' . $this->get_filename() . '</h3>';
+		$prism = App::instance()->fetch( 'options.site' )->get( 'prism' ); // @todo this whole section should be in a view
 
-		$post_content .= '<pre class="gistpen line-numbers"';
+		if ( $prism['line-numbers'] ) {
+			$post_content .= ' line-numbers';
+		}
+
+		$post_content .= '"';
 
 		// Line highlighting and offset will go here
 		if ( $this->highlight !== null ) {
-			$post_content .= 'data-line="' . $this->highlight . '"';
+			$post_content .= ' data-line="' . $this->highlight . '"';
 		}
 
-		$post_content .= '>';
+		$file_post = get_post( $this->get_ID() );
 
+		if ( $edit_url = get_edit_post_link( $file_post->post_parent, '' ) ) {
+			$post_content .= ' data-edit-url="' . $edit_url . '"';
+		}
+
+		$post_content .= ' data-filename="' . $this->get_filename() . '">';
 		$post_content .= '<code class="language-' . $this->language->get_prism_slug() . '">' . htmlentities( $this->code );
 		$post_content .= '</code></pre>';
-
-		$post_content .= '</div>';
 
 		return $post_content;
 
