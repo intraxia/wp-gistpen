@@ -1,14 +1,15 @@
 import R from 'ramda';
 import { createStore } from 'redux';
 import { fromESObservable } from 'kefir';
+import { observeDelta } from 'brookjs';
 import root from './root';
-import delta from '../delta';
-import middleware from '../middleware';
+import router from './router';
+import { createRouterDelta, siteDelta } from '../delta';
 import reducer from '../reducer';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
-let enhancer = R.pipe(delta, middleware);
+let enhancer = observeDelta(createRouterDelta(router), siteDelta);
 
 if (process.env.NODE_ENV !== 'production') {
     // To use devtools, install Chrome extension:
