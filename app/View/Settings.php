@@ -22,22 +22,28 @@ class Settings implements HasActions, HasFilters {
 	 *
 	 * @var Templating
 	 */
-	private $template;
+	protected $template;
 
 	/**
-	 * Plugin basename
+	 * Site options.
+	 *
+	 * @var Site
+	 */
+	protected $site;
+
+	/**
+	 * Plugin basename.
 	 *
 	 * @var string
 	 */
 	protected $basename;
+
 	/**
-	 * @var Site
+	 * Site URL.
+	 *
+	 * @var string
 	 */
-	private $site;
-	/**
-	 * @var
-	 */
-	private $url;
+	protected $url;
 
 	/**
 	 * Initialize the class and set its properties.
