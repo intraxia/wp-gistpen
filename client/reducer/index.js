@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { combineReducers } from 'redux';
+import gist from './gist';
 import prism from './prism';
 import route from './route';
 
@@ -9,5 +10,5 @@ export default combineReducers({
     const: defaultReducer,
     route,
     prism,
-    gist: defaultReducer
+    gist
 });
