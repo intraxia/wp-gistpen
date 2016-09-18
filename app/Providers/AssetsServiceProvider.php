@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\View\Editor;
+use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Assets\Register as Assets;
 use Intraxia\Jaxion\Assets\ServiceProvider;
 
@@ -26,39 +27,14 @@ class AssetsServiceProvider extends ServiceProvider {
 		}
 
 		$slug = $this->container->fetch( 'slug' );
-		$url  = $this->container->fetch( 'url' );
-		$site = $this->container->fetch( 'options.site' );
 
-		$localize = function () use ( $url, $slug, $debug, $site ) {
+		$localize = function () {
+			/** @var Settings $settings */
+			$settings = $this->container->fetch( 'view.settings' );
+
 			return array(
 				'name' => 'Gistpen_Settings',
-				'data' => array(
-					'debug'      => $debug,
-					'languages'  => Language::$supported,
-					'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
-					'nonce'      => wp_create_nonce( 'wp_rest' ),
-					'url'        => $url,
-					'ace_themes' => Editor::$ace_themes,
-					'ace_widths' => array( 1, 2, 4, 8 ),
-					'statuses'   => get_post_statuses(),
-					'site'       => $site->all(),
-					'themes'     => array(
-						'default'                         => __( 'Default', 'wp-gistpen' ),
-						'dark'                            => __( 'Dark', 'wp-gistpen' ),
-						'funky'                           => __( 'Funky', 'wp-gistpen' ),
-						'okaidia'                         => __( 'Okaidia', 'wp-gistpen' ),
-						'tomorrow'                        => __( 'Tomorrow', 'wp-gistpen' ),
-						'twilight'                        => __( 'Twilight', 'wp-gistpen' ),
-						'coy'                             => __( 'Coy', 'wp-gistpen' ),
-						'cb'                              => __( 'CB', 'wp-gistpen' ),
-						'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
-						'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
-						'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
-						'base16-ateliersulphurpool.light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
-						'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
-						'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
-					),
-				),
+				'data' => $settings->get_initial_state(),
 			);
 		};
 
@@ -123,7 +99,15 @@ class AssetsServiceProvider extends ServiceProvider {
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
 			'footer'    => true,
-			'localize'  => $localize,
+			'localize'  => function () {
+				/** @var Settings $settings */
+				$settings = $this->container->fetch( 'view.settings' );
+
+				return array(
+					'name' => '__GISTPEN_SETTINGS__',
+					'data' => $settings->get_initial_state(),
+				);
+			},
 		) );
 
 		/**

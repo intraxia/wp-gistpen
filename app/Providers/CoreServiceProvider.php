@@ -37,7 +37,14 @@ class CoreServiceProvider implements ServiceProvider {
 			->define( 'account.gist', new Gist( $container->fetch( 'facade.adapter' ), new Client ) )
 			->define( 'facade.database', new Database( $container->fetch( 'facade.adapter' ) ) )
 			->define( 'view.editor', new Editor( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'path' ) ) )
-			->define( 'view.settings', new Settings( $container->fetch( 'basename' ) ) )
+			->define( 'view.settings', function( Container $container) {
+				return new Settings(
+					$container->fetch( 'templating' ),
+					$container->fetch( 'options.site' ),
+					$container->fetch( 'basename' ),
+					$container->fetch( 'url' )
+				);
+			} )
 			->define( 'view.content', new Content( $container->fetch( 'facade.database' ) ) )
 			->define( 'migration', new Migration( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'slug' ), $container->fetch( 'version' ) ) )
 			->define( 'register.button', new Button( $container->fetch( 'url' ) ) )

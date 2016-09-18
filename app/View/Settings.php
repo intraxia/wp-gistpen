@@ -2,6 +2,9 @@
 namespace Intraxia\Gistpen\View;
 
 use Intraxia\Gistpen\Client\Gist;
+use Intraxia\Gistpen\Contract\Templating;
+use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
@@ -15,29 +18,48 @@ use Intraxia\Jaxion\Contract\Core\HasFilters;
  */
 class Settings implements HasActions, HasFilters {
 	/**
-	 * Gist account object
+	 * Templating service.
 	 *
-	 * @var Gist
-	 * @since 0.5.0
+	 * @var Templating
 	 */
-	protected $client;
+	protected $template;
 
 	/**
-	 * Plugin basename
+	 * Site options.
+	 *
+	 * @var Site
+	 */
+	protected $site;
+
+	/**
+	 * Plugin basename.
 	 *
 	 * @var string
 	 */
 	protected $basename;
 
 	/**
+	 * Site URL.
+	 *
+	 * @var string
+	 */
+	protected $url;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param string $basename
+	 * @param Templating $template
+	 * @param Site       $site
+	 * @param string     $basename
+	 * @param string     $url
 	 *
 	 * @since    0.5.0
 	 */
-	public function __construct( $basename ) {
+	public function __construct( Templating $template, Site $site, $basename, $url ) {
+		$this->template = $template;
+		$this->site     = $site;
 		$this->basename = $basename;
+		$this->url      = $url;
 	}
 
 	/**
@@ -61,7 +83,45 @@ class Settings implements HasActions, HasFilters {
 	 * @since    0.1.0
 	 */
 	public function display_plugin_admin_page() {
-		echo '<div class="wrap" id="wpgp-wrap"></div>';
+		echo $this->template->render( 'settings/index', $this->get_initial_state() );
+	}
+
+	/**
+	 * Generates the initial state for the page.
+	 *
+	 * @return array
+	 */
+	public function get_initial_state() {
+		return array(
+			'route' => 'bootstrap',
+			'prism' => $this->site->get( 'prism' ),
+			'gist'  => $this->site->get( 'gist' ),
+			'const' => array(
+				'languages'  => Language::$supported,
+				'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
+				'nonce'      => wp_create_nonce( 'wp_rest' ),
+				'url'        => $this->url,
+				'ace_themes' => Editor::$ace_themes,
+				'ace_widths' => array( 1, 2, 4, 8 ),
+				'statuses'   => get_post_statuses(),
+				'themes'     => array(
+					'default'                         => __( 'Default', 'wp-gistpen' ),
+					'dark'                            => __( 'Dark', 'wp-gistpen' ),
+					'funky'                           => __( 'Funky', 'wp-gistpen' ),
+					'okaidia'                         => __( 'Okaidia', 'wp-gistpen' ),
+					'tomorrow'                        => __( 'Tomorrow', 'wp-gistpen' ),
+					'twilight'                        => __( 'Twilight', 'wp-gistpen' ),
+					'coy'                             => __( 'Coy', 'wp-gistpen' ),
+					'cb'                              => __( 'CB', 'wp-gistpen' ),
+					'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
+					'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
+					'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
+					'base16-ateliersulphurpool.light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
+					'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
+					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
+				),
+			),
+		);
 	}
 
 	/**
@@ -95,11 +155,11 @@ class Settings implements HasActions, HasFilters {
 	public function action_hooks() {
 		return array(
 			array(
-				'hook' => 'admin_menu',
+				'hook'   => 'admin_menu',
 				'method' => 'add_plugin_admin_menu',
 			),
 			array(
-				'hook' => 'admin_init',
+				'hook'   => 'admin_init',
 				'method' => 'register_setting',
 			),
 		);
@@ -113,7 +173,7 @@ class Settings implements HasActions, HasFilters {
 	public function filter_hooks() {
 		return array(
 			array(
-				'hook' => 'plugin_action_links_' . $this->basename,
+				'hook'   => 'plugin_action_links_' . $this->basename,
 				'method' => 'add_action_links',
 			)
 		);
