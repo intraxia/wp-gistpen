@@ -26,15 +26,14 @@ class AssetsServiceProvider extends ServiceProvider {
 			$assets->set_debug( true );
 		}
 
-		$container = $this->container;
 		$slug = $this->container->fetch( 'slug' );
 
-		$localize = function () use ( $container) {
+		$localize = function () {
 			/** @var Settings $settings */
-			$settings = $container->fetch( 'view.settings' );
+			$settings = $this->container->fetch( 'view.settings' );
 
 			return array(
-				'name' => '__GISTPEN_SETTINGS__',
+				'name' => 'Gistpen_Settings',
 				'data' => $settings->get_initial_state(),
 			);
 		};
@@ -100,7 +99,15 @@ class AssetsServiceProvider extends ServiceProvider {
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
 			'footer'    => true,
-			'localize'  => $localize,
+			'localize'  => function () {
+				/** @var Settings $settings */
+				$settings = $this->container->fetch( 'view.settings' );
+
+				return array(
+					'name' => '__GISTPEN_SETTINGS__',
+					'data' => $settings->get_initial_state(),
+				);
+			},
 		) );
 
 		/**
