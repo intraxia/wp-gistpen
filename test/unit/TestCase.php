@@ -77,6 +77,7 @@ abstract class TestCase extends WP_UnitTestCase {
 		$this->language = get_term_by( 'slug', 'php', 'wpgp_language' );
 
 		update_post_meta( $this->repo->ID, '_wpgp_gist_id', 'none' );
+		update_post_meta( $this->repo->ID, '_wpgp_sync', 'off' );
 	}
 
 }
