@@ -217,6 +217,9 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		$model->reguard();
+		$model->sync_original();
+
+		unset( $this->cache[ self::REPO_CLASS ][ $id ] );
 
 		return $model;
 	}
@@ -274,6 +277,7 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		$model->reguard();
+		$model->sync_original();
 
 		return $model;
 	}
@@ -312,6 +316,7 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		$model->reguard();
+		$model->sync_original();
 
 		return $model;
 	}
@@ -561,8 +566,31 @@ class EntityManager implements EntityManagerContract {
 		return $model;
 	}
 
+	/**
+	 * Updates a Repo to sync with the database.
+	 *
+	 * @param Repo $model
+	 *
+	 * @return Repo|WP_Error
+	 */
 	protected function persist_repo( Repo $model ) {
-		return new WP_Error( 'not implemented' );
+		$result  = wp_update_post( $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		foreach ( $model->get_changed_table_attributes() as $key => $value ) {
+			update_post_meta( $model->get_primary_id() , "_{$this->prefix}_{$key}", $value );
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $model->get_primary_id() ) );
+
+		foreach ( $model->blobs as $blob ) {
+			$this->persist_blob( $blob );
+		}
+
+		return $model;
 	}
 
 	protected function persist_blob( Blob $model ) {

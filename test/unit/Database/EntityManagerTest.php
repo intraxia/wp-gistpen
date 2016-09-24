@@ -140,4 +140,23 @@ class EntityManagerTest extends TestCase {
 			$this->assertSame( $value, $blob->language->get_attribute( $key ) );
 		}
 	}
+
+	public function test_should_update_existing_repo() {
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+
+		$description = $repo->description = 'Updated Description';
+		$status = $repo->status = 'draft';
+		$password = $repo->password = 'password';
+		$sync = $repo->sync = 'on';
+
+		$this->em->persist( $repo );
+
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+
+		$this->assertSame( $description, $repo->description );
+		$this->assertSame( $status, $repo->status );
+		$this->assertSame( $password, $repo->password );
+		$this->assertSame( $sync, $repo->sync );
+	}
 }
