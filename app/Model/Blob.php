@@ -51,6 +51,7 @@ class Blob extends Model implements UsesWordPressPost {
 		'ID',
 		'size',
 		'raw_url',
+		'edit_url',
 		'filename',
 		'code',
 		'language',
@@ -122,6 +123,15 @@ class Blob extends Model implements UsesWordPressPost {
 			$this->ID,
 			$this->filename
 		) );
+	}
+
+	/**
+	 * Computes the edit url of the Blob.
+	 *
+	 * @return string
+	 */
+	protected function compute_edit_url() {
+		return get_edit_post_link( $this->repo_id );
 	}
 
 	/**

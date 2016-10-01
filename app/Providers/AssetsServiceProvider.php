@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\View\Content;
 use Intraxia\Gistpen\View\Editor;
 use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Assets\Register as Assets;
@@ -128,9 +129,18 @@ class AssetsServiceProvider extends ServiceProvider {
 			'condition' => function () {
 				return true;
 			},
-			'handle'    => $slug . '-web-script',
-			'src'       => 'assets/js/web',
-			'localize'  => $localize,
+			'handle'    => $slug . '-content-script',
+			'src'       => 'assets/js/content',
+			'footer'    => false,
+			'localize'  => function() {
+				/** @var Content $content */
+				$content = $this->container->fetch( 'view.content' );
+
+				return array(
+					'name' => '__GISTPEN_CONTENT__',
+					'data' => $content->get_initial_state(),
+				);
+			},
 		) );
 	}
 }

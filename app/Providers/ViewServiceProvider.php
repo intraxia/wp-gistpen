@@ -15,7 +15,12 @@ class ViewServiceProvider implements ServiceProvider {
 	public function register( Container $container ) {
 		$container
 			->define( 'view.content', function ( Container $container ) {
-				return new Content( $container->fetch( 'facade.database' ) );
+				return new Content(
+					$container->fetch( 'database' ),
+					$container->fetch( 'options.site' ),
+					$container->fetch( 'templating' ),
+					$container->fetch( 'url' )
+				);
 			} )
 			->define( 'view.editor', function ( Container $container ) {
 				return new Editor(

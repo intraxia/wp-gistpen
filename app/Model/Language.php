@@ -102,6 +102,7 @@ class Language extends Model implements UsesWordPressTerm {
 		'ID',
 		'display_name',
 		'slug',
+		'prism_slug',
 	);
 
 	/**
