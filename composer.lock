@@ -109,12 +109,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "f8fd124afacd5c94e8a40e2ba327379ba2437b54"
+                "reference": "f064aac2394b3769afcc39df726a5e1b78e2a21a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/f8fd124afacd5c94e8a40e2ba327379ba2437b54",
-                "reference": "f8fd124afacd5c94e8a40e2ba327379ba2437b54",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/f064aac2394b3769afcc39df726a5e1b78e2a21a",
+                "reference": "f064aac2394b3769afcc39df726a5e1b78e2a21a",
                 "shasum": ""
             },
             "require": {
@@ -144,7 +144,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2016-09-06 12:22:34"
+            "time": "2016-10-01 20:02:11"
         },
         {
             "name": "knplabs/github-api",
@@ -535,12 +535,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/codestyle.git",
-                "reference": "f5b46b0e7c23c11a6e0d7a25c4ed52542511d4bf"
+                "reference": "76b4cdd70645073baa5ee86cb317c00fc6bea0ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/codestyle/zipball/f5b46b0e7c23c11a6e0d7a25c4ed52542511d4bf",
-                "reference": "f5b46b0e7c23c11a6e0d7a25c4ed52542511d4bf",
+                "url": "https://api.github.com/repos/intraxia/codestyle/zipball/76b4cdd70645073baa5ee86cb317c00fc6bea0ca",
+                "reference": "76b4cdd70645073baa5ee86cb317c00fc6bea0ca",
                 "shasum": ""
             },
             "require": {
@@ -559,7 +559,7 @@
                 }
             ],
             "description": "The Intraxia PHP Coding Standards.",
-            "time": "2016-02-26 06:09:32"
+            "time": "2016-10-01 19:46:52"
         },
         {
             "name": "mockery/mockery",
