@@ -547,7 +547,7 @@ class EntityManager implements EntityManagerContract {
 			}
 		}
 
-		$result = wp_insert_term( $model->get_underlying_wp_object()->slug, 'wpgp_language' );
+		$result = wp_insert_term( $model->slug, "{$this->prefix}_language" );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
@@ -586,15 +586,64 @@ class EntityManager implements EntityManagerContract {
 
 		$model->set_attribute( Model::OBJECT_KEY, get_post( $model->get_primary_id() ) );
 
+		$deleted_blobs = $model->get_original_attribute( 'blobs' )
+			->filter(function( Blob $original_blob ) use ( &$model ) {
+				/** @var Blob $blob */
+				foreach ( $model->blobs as $blob ) {
+					if ( $blob->get_primary_id() === $original_blob->get_primary_id() ) {
+						return false;
+					}
+				}
+
+				return true;
+			});
+
+		/** @var Blob $blob */
 		foreach ( $model->blobs as $blob ) {
+			$blob->unguard();
+			$blob->repo_id = $model->get_primary_id();
+			$blob->reguard();
+
 			$this->persist_blob( $blob );
+		}
+
+		/** @var Blob $deleted_blob */
+		foreach ( $deleted_blobs as $deleted_blob ) {
+			wp_trash_post( $deleted_blob->get_primary_id() );
 		}
 
 		return $model;
 	}
 
+	/**
+	 * Updates a Blob to sync with the database.
+	 *
+	 * @param Repo $model
+	 *
+	 * @return Repo|WP_Error
+	 */
 	protected function persist_blob( Blob $model ) {
-		return new WP_Error( 'not implemented' );
+		$result  = $model->get_primary_id() ?
+			wp_update_post( $model->get_underlying_wp_object(), true ) :
+			wp_insert_post( (array) $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
+
+		foreach ( $model->get_changed_table_attributes() as $key => $value ) {
+			update_post_meta( $model->get_primary_id(), $key, $value );
+		}
+
+		try {
+			wp_set_object_terms( $model->get_primary_id(), $model->language->slug, Language::get_taxonomy(), false );
+		} catch ( \Exception $exception ) {
+			// @todo what to do?
+		}
+
+		return $model;
 	}
 
 	protected function persist_language( Language $model ) {

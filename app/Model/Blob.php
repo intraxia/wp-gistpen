@@ -11,12 +11,13 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @subpackage Model
  *
  * @property int      $ID
- * @property int      $size
- * @property string   $raw_url
  * @property string   $filename
  * @property string   $code
  * @property Language $language
+ * @property int      $repo_id
  * @property Repo     $repo
+ * @property int      $size
+ * @property string   $raw_url
  */
 class Blob extends Model implements UsesWordPressPost {
 	/**
@@ -25,7 +26,6 @@ class Blob extends Model implements UsesWordPressPost {
 	 * @var array
 	 */
 	protected $fillable = array(
-		'slug',
 		'code',
 		'filename',
 		'language',
@@ -39,6 +39,7 @@ class Blob extends Model implements UsesWordPressPost {
 	protected $guarded = array(
 		'ID',
 		'repo',
+		'repo_id',
 	);
 
 	/**
@@ -89,6 +90,15 @@ class Blob extends Model implements UsesWordPressPost {
 	 */
 	protected function map_code() {
 		return 'post_content';
+	}
+
+	/**
+	 * Maps the Blob's repo_id to the WP_Post post_parent.
+	 *
+	 * @return string
+	 */
+	protected function map_repo_id() {
+		return 'post_parent';
 	}
 
 	/**

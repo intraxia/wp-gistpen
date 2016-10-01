@@ -105,13 +105,13 @@ class EntityManagerTest extends TestCase {
 		);
 		$repo     = array(
 			'description' => 'New Repo',
-			'status' => 'draft',
-			'password' => '',
-			'sync' => 'off',
+			'status'      => 'draft',
+			'password'    => '',
+			'sync'        => 'off',
 		);
 
-		$data = $repo;
-		$data['blobs'] = $blobs;
+		$data                         = $repo;
+		$data['blobs']                = $blobs;
 		$data['blobs'][0]['language'] = $language;
 
 		/** @var Repo $model */
@@ -123,7 +123,7 @@ class EntityManagerTest extends TestCase {
 			$model->get_underlying_wp_object()
 		);
 
-		foreach ( $repo as $key =>$value ) {
+		foreach ( $repo as $key => $value ) {
 			$this->assertSame( $value, $model->get_attribute( $key ) );
 		}
 
@@ -146,9 +146,9 @@ class EntityManagerTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
 
 		$description = $repo->description = 'Updated Description';
-		$status = $repo->status = 'draft';
-		$password = $repo->password = 'password';
-		$sync = $repo->sync = 'on';
+		$status      = $repo->status = 'draft';
+		$password    = $repo->password = 'password';
+		$sync        = $repo->sync = 'on';
 
 		$this->em->persist( $repo );
 
@@ -158,5 +158,68 @@ class EntityManagerTest extends TestCase {
 		$this->assertSame( $status, $repo->status );
 		$this->assertSame( $password, $repo->password );
 		$this->assertSame( $sync, $repo->sync );
+	}
+
+	public function test_should_update_blob() {
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		/** @var Blob $blob */
+		$blob = $repo->blobs->at( 0 );
+
+		$code     = $blob->code = 'some new javascript code';
+		$filename = $blob->filename = 'new-slug.js';
+		$language = $blob->language = $this->em->create( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'js' ) );
+
+		$this->em->persist( $repo );
+
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$blob = $repo->blobs->at( 0 );
+
+		$this->assertSame( $code, $blob->code );
+		$this->assertSame( $filename, $blob->filename );
+		$this->assertSame( $language->slug, $blob->language->slug );
+	}
+
+	public function test_should_add_new_blob() {
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$blob = new Blob;
+
+		$code     = $blob->code = 'some new php code';
+		$filename = $blob->filename = 'new-slug.php';
+		$language = $blob->language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )->at( 0 );
+
+		$repo->blobs->add( $blob );
+
+		$this->em->persist( $repo );
+
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+
+		$this->assertCount( 4, $repo->blobs );
+
+		$blob = $repo->blobs->at( 3 );
+
+		$this->assertSame( $code, $blob->code );
+		$this->assertSame( $filename, $blob->filename );
+		$this->assertSame( $language->slug, $blob->language->slug );
+	}
+
+	public function test_should_remove_missing_blob() {
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		/** @var Blob $removed_blob */
+		$removed_blob = $repo->blobs->at( 0 );
+		$repo->blobs->remove( 0 );
+
+		$this->em->persist( $repo );
+
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+
+		$this->assertCount( 2, $repo->blobs );
+
+		/** @var Blob $blob */
+		foreach ( $repo->blobs as $blob ) {
+			$this->assertNotSame( $removed_blob->get_primary_id(), $blob->get_primary_id() );
+		}
 	}
 }
