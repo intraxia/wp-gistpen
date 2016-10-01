@@ -453,7 +453,7 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		foreach ( $blobs_data as $blob_data ) {
-			$blob_data['post_parent'] = $model->get_primary_id();
+			$blob_data['repo_id'] = $model->get_primary_id();
 			$blob = $this->create_blob( $blob_data );
 
 			if ( ! is_wp_error( $blob ) ) {
@@ -646,8 +646,37 @@ class EntityManager implements EntityManagerContract {
 		return $model;
 	}
 
+	/**
+	 * Updates a Language to sync with the database.
+	 *
+	 * @param Language $model
+	 *
+	 * @return Language|WP_Error
+	 */
 	protected function persist_language( Language $model ) {
-		return new WP_Error( 'not implemented' );
+		$result  = $model->get_primary_id() ?
+			wp_update_term(
+				$model->get_primary_id(),
+				"{$this->prefix}_language",
+				(array) $model->get_underlying_wp_object()
+			) :
+			wp_insert_term( $model->slug, "{$this->prefix}_language" );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_term( $result['term_id'] ) );
+
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
+			update_post_meta(
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		return $model;
 	}
 
 	protected function delete_repo( Repo $model, $force ) {

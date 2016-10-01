@@ -222,4 +222,17 @@ class EntityManagerTest extends TestCase {
 			$this->assertNotSame( $removed_blob->get_primary_id(), $blob->get_primary_id() );
 		}
 	}
+
+	public function test_should_update_language() {
+		/** @var Language $language */
+		$language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )->at( 0 );
+
+		$slug = $language->slug = 'js';
+
+		$this->em->persist( $language );
+
+		$language = $this->em->find( EntityManager::LANGUAGE_CLASS, $language->get_primary_id() );
+
+		$this->assertSame( $slug, $language->slug );
+	}
 }
