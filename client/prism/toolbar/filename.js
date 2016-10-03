@@ -1,4 +1,10 @@
-exports.button = function(env) {
+/**
+ * Create a filename label for the provided environment.
+ *
+ * @param {Object} env - Prism environment.
+ * @returns {Element} Edit button element.
+ */
+export default function(env) {
     var filename = document.createElement('span');
     var pre = env.element.parentElement;
 

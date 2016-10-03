@@ -7,6 +7,9 @@ module.exports = {
             impliedStrict: true
         }
     },
+    globals: {
+        '__webpack_public_path__': true
+    },
     env: {
         es6: true,
         node: true,

@@ -12,6 +12,7 @@
     "babel-plugin-transform-array-from": "^1.0.0",
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-preset-es2015": "^6.14.0",
+    "css-loader": "^0.25.0",
     "eslint": "^3.5.0",
     "eslint-config-valtech": "github:valtech-nyc/eslint-config-valtech",
     "eslint-loader": "^1.5.0",
@@ -24,6 +25,8 @@
     "gulp-wp-pot": "1.0.1",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.1.4",
+    "sass-loader": "^4.0.2",
+    "style-loader": "^0.13.1",
     "webpack": "^2.1.0-beta.21",
     "webpack-notifier": "^1.4.1"
   },

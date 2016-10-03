@@ -1,18 +1,19 @@
+const path = require('path');
 const WebpackNotifierPlugin = require('webpack-notifier');
-const src = __dirname + '/src/js/';
-const client = __dirname + '/client/';
+const src = path.join(__dirname, 'src', 'js');
+const client = path.join(__dirname, 'client');
 
 module.exports = {
     debug: true,
     devtool: 'sourcemap',
     entry: {
-        settings: client + 'settings/index.js',
-        web: src + 'web.js',
-        post: src + 'post.js',
-        tinymce: src + 'tinymce.js'
+        settings: path.join(client, 'settings'),
+        content: path.join(client, 'content'),
+        post: path.join(src, 'post'),
+        tinymce: path.join(src, 'tinymce')
     },
     output: {
-        path: 'assets/js/',
+        path: path.join(__dirname, 'assets', 'js'),
         filename: '[name].js'
     },
     module: {
@@ -27,7 +28,7 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel',
-                include: src
+                include: [src, client]
             },
             {
                 test: /\.js$/,
@@ -41,10 +42,14 @@ module.exports = {
                 test: /\.hbs/,
                 loader: 'handlebars',
                 query: {
-                    helperDirs: [client + 'helpers'],
+                    helperDirs: [path.join(client, 'helpers')],
                     partialDirs: [client],
                     compat: true
                 }
+            },
+            {
+                test: /\.(scss|css)$/,
+                loaders: ['style', 'css', 'sass']
             }
         ]
     },
@@ -53,7 +58,8 @@ module.exports = {
             kefir: 'kefir/src',
             redux: 'redux/es'
         },
-        mainFields: ['jsnext:main', 'browser', 'main']
+        mainFields: ['jsnext:main', 'browser', 'main'],
+        modulesDirectories: ['node_modules']
     },
     plugins: [
         new WebpackNotifierPlugin({ alwaysNotify: true })

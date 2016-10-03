@@ -1,19 +1,19 @@
-var callbacks = [];
-var initialized = false;
+import './styles.scss';
+
+import clipboard from './clipboard';
+import edit from './edit';
+import filename from './filename';
+
+const callbacks = [clipboard, edit, filename];
 
 /**
  * Post-highlight Prism hook callback.
  *
- * @param env
+ * @param {Object} env - Prism environment.
  */
-exports.hook = function hook(env) {
-    if (initialized) {
-        return;
-    }
-
-    initialized = true;
-
-    // Check if inline or actual code block (credit to line-numbers plugin)
+export default function hook(env) {
+    // Check if inline or actual code block,
+    // credit to line-numbers plugin.
     var pre = env.element.parentNode;
     if (!pre || !/pre/i.test(pre.nodeName)) {
         return;
@@ -25,14 +25,14 @@ exports.hook = function hook(env) {
     var toolbar = document.createElement('div');
     toolbar.classList.add('toolbar');
 
-    callbacks.forEach(function(callback) {
-        var element = callback(env);
+    callbacks.forEach(callback => {
+        const element = callback(env);
 
         if (!element) {
             return;
         }
 
-        var item = document.createElement('div');
+        const item = document.createElement('div');
         item.classList.add('toolbar-item');
 
         item.appendChild(element);
@@ -41,13 +41,4 @@ exports.hook = function hook(env) {
 
     // Add our toolbar to the <pre> tag
     pre.appendChild(toolbar);
-};
-
-/**
- * Register a button callback with the toolbar.
- *
- * @param callback
- */
-exports.registerButton = function registerButton(callback) {
-    callbacks.push(callback);
-};
+}
