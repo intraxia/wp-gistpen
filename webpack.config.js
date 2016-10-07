@@ -44,6 +44,7 @@ module.exports = {
                 query: {
                     helperDirs: [path.join(client, 'helpers')],
                     partialDirs: [client],
+                    preventIndent: true,
                     compat: true
                 }
             },
