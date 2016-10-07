@@ -9,6 +9,9 @@ import reducer from '../reducer';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
+// eslint-disable-next-line camelcase
+__webpack_public_path__ = __GISTPEN_SETTINGS__.const.url + 'assets/js/';
+
 let enhancer = applyMiddleware(observeDelta(createRouterDelta(router), siteDelta));
 
 if (process.env.NODE_ENV !== 'production') {
