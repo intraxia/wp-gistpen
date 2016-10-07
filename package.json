@@ -27,14 +27,14 @@
     "handlebars-loader": "^1.1.4",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
-    "webpack": "^2.1.0-beta.21",
+    "webpack": "2.1.0-beta.22",
     "webpack-notifier": "^1.4.1"
   },
   "dependencies": {
     "ace-builds": "1.2.2",
     "array-from": "^2.1.1",
     "backbone": "1.2.3",
-    "brookjs": "github:valtech-nyc/brookjs#707941b4e2a53193fdf18d083713c41cdf703b41",
+    "brookjs": "github:valtech-nyc/brookjs#e8607771a4fb18ab2735930af731631aa465f67e",
     "clipboard": "1.5.5",
     "es6-promise": "3.0.2",
     "jquery": "2.2.0",
