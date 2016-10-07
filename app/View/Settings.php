@@ -120,6 +120,35 @@ class Settings implements HasActions, HasFilters {
 					'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
 					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
 				),
+				'repo'       => array(
+					'blobs' => array(
+						array(
+							'filename' => 'dummy.js',
+							'language' => array(
+								'prism_slug' => 'javascript'
+							),
+							'edit_url' => '#highlighting',
+							'code'     => /** @lang javascript */<<<JS
+function initHighlight(block, flags) {
+    try {
+        if (block.className.search(/\bno\-highlight\b/) != -1)
+            return processBlock(block.function, true, 0x0F) + ' class=""';
+    } catch (e) {
+        /* handle exception */
+        var e4x =
+                `<div>Example
+                        <p>1234</p></div>`;
+    }
+    for (var i = 0 / 2; i < classes.length; i++) { // "0 / 2" should not be parsed as regexp
+        if (checkCondition(classes[i]) === undefined)
+            return /\d+[\s/]/g;
+    }
+    console.log(Array.every(classes, Boolean));
+}
+JS
+						)
+					)
+				),
 			),
 		);
 	}
