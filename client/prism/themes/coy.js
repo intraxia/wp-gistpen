@@ -1,1 +1,1 @@
-import 'prismjs/themes/prism-coy.css';
+export { default as theme } from 'prismjs/themes/prism-coy.css';

@@ -1,1 +1,1 @@
-import 'prismjs/themes/prism-twilight.css';
+export { default as theme } from 'prismjs/themes/prism-twilight.css';

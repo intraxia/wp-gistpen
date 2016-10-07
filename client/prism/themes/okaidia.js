@@ -1,1 +1,1 @@
-import 'prismjs/themes/prism-okaidia.css';
+export { default as theme } from 'prismjs/themes/prism-okaidia.css';

@@ -1,10 +1,12 @@
-import './styles.scss';
+import styles from './styles.scss';
 
 import clipboard from './clipboard';
 import edit from './edit';
 import filename from './filename';
 
 const callbacks = [clipboard, edit, filename];
+
+styles.use();
 
 /**
  * Post-highlight Prism hook callback.

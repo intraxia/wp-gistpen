@@ -1,1 +1,1 @@
-import 'prismjs/themes/prism-tomorrow.css';
+export { default as theme } from 'prismjs/themes/prism-tomorrow.css';

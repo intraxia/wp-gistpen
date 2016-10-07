@@ -1,1 +1,1 @@
-import 'prism-themes/themes/prism-cb.css';
+export { default as theme } from 'prism-themes/themes/prism-cb.css';
