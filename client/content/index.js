@@ -7,16 +7,28 @@ if (!window.Promise) {
 const { __GISTPEN_CONTENT__ } = global;
 
 // eslint-disable-next-line camelcase
-__webpack_public_path__ = __GISTPEN_CONTENT__.url + 'assets/js/';
+Prism.setAutoloaderPath(__webpack_public_path__ = __GISTPEN_CONTENT__.url + 'assets/js/');
 
-Prism(__GISTPEN_CONTENT__).then(prism => {
+const promises = [];
+
+promises.push(Prism.setTheme(__GISTPEN_CONTENT__.prism.theme));
+
+if (__GISTPEN_CONTENT__.prism['line-numbers']) {
+    promises.push(Prism.togglePlugin('line-numbers', true));
+}
+
+if (__GISTPEN_CONTENT__.prism['show-invisibles']) {
+    promises.push(Prism.togglePlugin('show-invisibles', true));
+}
+
+Promise.all(promises).then(() => {
     if (document.readyState !== 'loading') {
         if (window.requestAnimationFrame) {
-            window.requestAnimationFrame(prism.highlightAll);
+            window.requestAnimationFrame(Prism.highlightAll);
         } else {
-            window.setTimeout(prism.highlightAll, 16);
+            window.setTimeout(Prism.highlightAll, 16);
         }
     } else {
-        document.addEventListener('DOMContentLoaded', prism.highlightAll);
+        document.addEventListener('DOMContentLoaded', Prism.highlightAll);
     }
 });

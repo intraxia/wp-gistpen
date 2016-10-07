@@ -122,7 +122,7 @@ class AssetsServiceProvider extends ServiceProvider {
 		) );
 
 		/**
-		 * Web Assets
+		 * Content Assets
 		 */
 		$assets->register_script( array(
 			'type'      => 'web',

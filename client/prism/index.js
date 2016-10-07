@@ -6,27 +6,53 @@ import toolbar from './toolbar';
 document.removeEventListener('DOMContentLoaded', Prism.highlightAll);
 Prism.hooks.add('complete', toolbar);
 
-export default function prism(config) {
-    // eslint-disable-next-line camelcase
-    Prism.plugins.autoloader.languages_path = __webpack_public_path__;
+// eslint-disable-next-line camelcase
+Prism.plugins.autoloader.languages_path = __webpack_public_path__;
 
-    const promises = [];
+let currentTheme;
 
-    promises.push(System.import(
-        `./themes/${config.prism.theme}.js`
-    ));
+let plugins = {};
 
-    if (config.prism['line-numbers']) {
-        promises.push(System.import(
-            './plugins/line-numbers.js'
-        ));
-    }
+const extension = {
+    setAutoloaderPath: path => Prism.plugins.autoloader.languages_path = path,
+    setTheme: theme => System.import(
+        `./themes/${theme}.js`
+    )
+        .then(({ theme }) =>
+            new Promise(resolve => requestAnimationFrame(() => {
+                if (currentTheme) {
+                    currentTheme.unuse();
+                }
 
-    if (config.prism['show-invisibles']) {
-        promises.push(System.import(
-            './plugins/show-invisibles.js'
-        ));
-    }
+                theme.use();
 
-    return Promise.all(promises).then(() => Prism);
-}
+                currentTheme = theme;
+
+                resolve(currentTheme);
+            }))
+        ),
+    togglePlugin: (pluginKey, toggle) => System.import(
+        `./plugins/${pluginKey}.js`
+    )
+        .then(({ plugin }) =>
+            new Promise(resolve => requestAnimationFrame(() => {
+                if (toggle) {
+                    if (plugins[pluginKey]) {
+                        plugin.unuse();
+                    }
+
+                    plugin.use();
+                    plugins[pluginKey] = true;
+                }
+
+                if (!toggle && plugins[pluginKey]) {
+                    plugin.unuse();
+                    plugins[pluginKey] = false;
+                }
+
+                resolve();
+            }))
+        )
+};
+
+export default Object.assign({}, Prism, extension);
