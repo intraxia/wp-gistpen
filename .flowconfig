@@ -1,0 +1,9 @@
+[ignore]
+.*/__tests__/.*
+
+[include]
+
+[libs]
+
+[options]
+module.use_strict=true

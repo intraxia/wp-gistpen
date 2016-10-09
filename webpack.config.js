@@ -1,5 +1,9 @@
 const path = require('path');
 const WebpackNotifierPlugin = require('webpack-notifier');
+const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+const gutil = require('gulp-util');
+const notifier = require('node-notifier');
+
 const src = path.join(__dirname, 'src', 'js');
 const client = path.join(__dirname, 'client');
 
@@ -63,6 +67,18 @@ module.exports = {
         modulesDirectories: ['node_modules']
     },
     plugins: [
+        new FlowStatusWebpackPlugin({
+            onSuccess: stdout => {
+                gutil.log('[webpack:flow]', stdout);
+
+                notifier.notify({ title: 'Flow', message: 'Flow passed' });
+            },
+            onError: stdout => {
+                gutil.log('[webpack:flow]', stdout);
+
+                notifier.notify({ title: 'Flow', message: 'Flow failed' });
+            }
+        }),
         new WebpackNotifierPlugin({ alwaysNotify: true })
     ]
 };

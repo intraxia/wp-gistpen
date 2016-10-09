@@ -1,6 +1,8 @@
+// @flow
+import type { PrismState, Action } from '../type';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE } from '../action';
 
-const defaults = {
+const defaults : PrismState = {
     theme: 'default',
     'line-numbers': false,
     'show-invisibles': false
@@ -14,7 +16,7 @@ const defaults = {
  * @param {Object} payload - Action payload.
  * @returns {Object} New state.
  */
-export default function prismReducer(state = defaults, { type, payload = {} }) {
+export default function prismReducer(state : PrismState = defaults, { type, payload = {} } : Action) : PrismState {
     const { value } = payload;
 
     switch (type) {

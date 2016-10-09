@@ -1,9 +1,13 @@
+// @flow
+import type { ThemeChangeAction, LineNumbersChangeAction,
+    ShowInvisiblesChangeAction } from '../type';
+
 /**
  * Dispatched when theme changes.
  *
  * @type {string}
  */
-export const THEME_CHANGE = 'THEME_CHANGE';
+export const THEME_CHANGE : string = 'THEME_CHANGE';
 
 /**
  * Creates a theme change action.
@@ -11,7 +15,7 @@ export const THEME_CHANGE = 'THEME_CHANGE';
  * @param {string} value - Theme value.
  * @returns {Action} Theme change action.
  */
-export function themeChangeAction(value) {
+export function themeChangeAction(value : string) : ThemeChangeAction {
     return {
         type: THEME_CHANGE,
         payload: { value }
@@ -23,7 +27,7 @@ export function themeChangeAction(value) {
  *
  * @type {string}
  */
-export const LINE_NUMBERS_CHANGE = 'LINE_NUMBERS_CHANGE';
+export const LINE_NUMBERS_CHANGE : string = 'LINE_NUMBERS_CHANGE';
 
 /**
  * Creates a line numbers change action.
@@ -31,7 +35,7 @@ export const LINE_NUMBERS_CHANGE = 'LINE_NUMBERS_CHANGE';
  * @param {boolean} value - Whether line numbers is enabled.
  * @returns {Action} Line numbers action.
  */
-export function lineNumbersChangeAction(value) {
+export function lineNumbersChangeAction(value : boolean) : LineNumbersChangeAction {
     return {
         type: LINE_NUMBERS_CHANGE,
         payload: { value }
@@ -43,7 +47,7 @@ export function lineNumbersChangeAction(value) {
  *
  * @type {string}
  */
-export const SHOW_INVISIBLES_CHANGE = 'SHOW_INVISIBLES_CHANGE';
+export const SHOW_INVISIBLES_CHANGE : string = 'SHOW_INVISIBLES_CHANGE';
 
 /**
  * Create a show invisibles change action.
@@ -51,7 +55,7 @@ export const SHOW_INVISIBLES_CHANGE = 'SHOW_INVISIBLES_CHANGE';
  * @param {boolean} value - Whether show invisibles is enabled.
  * @returns {Action} Show invisibles action.
  */
-export function showInvisiblesChangeAction(value) {
+export function showInvisiblesChangeAction(value : boolean) : ShowInvisiblesChangeAction {
     return {
         type: SHOW_INVISIBLES_CHANGE,
         payload: { value }
