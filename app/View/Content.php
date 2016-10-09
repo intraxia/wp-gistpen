@@ -73,7 +73,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * @param EntityManager $em
 	 * @param Site          $site
 	 * @param Templating    $templating
-	 * @param               $url
+	 * @param string        $url
 	 */
 	public function __construct( EntityManager $em, Site $site, Templating $templating, $url ) {
 		$this->em = $em;
