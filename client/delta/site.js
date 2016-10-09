@@ -1,11 +1,14 @@
+// @flow
+import type { Observable } from 'kefir';
+import type { Action, SettingsState } from '../type';
 import R from 'ramda';
 import ajax$ from '../ajax';
 import { ajaxFailedAction, ajaxFinishedAction } from '../action';
 
 const makeBody = R.pipe(R.pick(['gist', 'prism']), JSON.stringify);
-const optionsAjax$ = R.converge(ajax$, [
-    state => state.const.root + 'site',
-    state => ({
+const optionsAjax$ : (state : SettingsState) => Observable<Action> = R.converge(ajax$, [
+    (state : SettingsState) : string => state.const.root + 'site',
+    (state : SettingsState) : Object => ({
         method: 'PATCH',
         body: makeBody(state),
         credentials: 'include',
@@ -23,13 +26,12 @@ const optionsAjax$ = R.converge(ajax$, [
  * @param {Observable<T,U>} state$ - Stream of states.
  * @returns {Observable<T, U>} Options API stream.
  */
-export default function siteDelta(action$, state$) {
+export default function siteDelta(action$ : Observable<Action>, state$ : Observable<SettingsState>) : Observable<Action> {
     return state$
-        .slidingWindow(2, 2)
-        .filter(([prev, next]) =>
-            prev.gist !== next.gist || prev.prism !== next.prism)
+        .skipDuplicates(
+            (prev : SettingsState, next : SettingsState) : boolean =>
+                prev.gist === next.gist && prev.prism === next.prism)
         .debounce(1000)
-        .map(R.last)
         .flatMapLatest(optionsAjax$)
         .map(R.pipe(JSON.parse, ajaxFinishedAction))
         .mapErrors(ajaxFailedAction);
