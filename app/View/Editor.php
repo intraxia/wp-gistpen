@@ -73,17 +73,27 @@ class Editor implements HasActions, HasFilters {
 	protected $path;
 
 	/**
+	 * Plugin url string.
+	 *
+	 * @var string
+	 */
+	protected $url;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
 	 *
 	 * @param EntityManager $em
+	 * @param Templating    $templating
 	 * @param string        $path
+	 * @param string        $url
 	 */
-	public function __construct( EntityManager $em, Templating $templating, $path ) {
+	public function __construct( EntityManager $em, Templating $templating, $path, $url ) {
 		$this->em   = $em;
 		$this->templating = $templating;
 		$this->path = $path;
+		$this->url = $url;
 	}
 
 	/**
@@ -108,6 +118,9 @@ class Editor implements HasActions, HasFilters {
 
 		return array(
 			'repo' => $repo->serialize(),
+			'globals' => array(
+				'url' => $this->url,
+			)
 		);
 	}
 

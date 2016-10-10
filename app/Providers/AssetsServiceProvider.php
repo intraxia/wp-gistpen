@@ -51,7 +51,7 @@ class AssetsServiceProvider extends ServiceProvider {
 				$editor = $this->container->fetch( 'view.editor' );
 
 				return array(
-					'name' => '__GISTPEN_SETTINGS__',
+					'name' => '__GISTPEN_EDITOR__',
 					'data' => $editor->get_initial_state(),
 				);
 			},

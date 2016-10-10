@@ -7,3 +7,4 @@ export { default as route } from './route';
 const defaultReducer = R.pipe(R.defaultTo({}), R.identity);
 
 export const globals = defaultReducer;
+export const repo = defaultReducer;

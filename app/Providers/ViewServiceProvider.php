@@ -26,7 +26,8 @@ class ViewServiceProvider implements ServiceProvider {
 				return new Editor(
 					$container->fetch( 'database' ),
 					$container->fetch( 'templating' ),
-					$container->fetch( 'path' )
+					$container->fetch( 'path' ),
+					$container->fetch( 'url' )
 				);
 			} )
 			->define( 'view.settings', function ( Container $container ) {
