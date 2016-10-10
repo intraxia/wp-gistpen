@@ -1,10 +1,15 @@
 <?php
 namespace Intraxia\Gistpen\View;
 
+use Intraxia\Gistpen\Contract\Templating;
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Blob;
+use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
+use WP_Query;
 
 /**
  * This class registers all of the settings page views
@@ -50,15 +55,14 @@ class Editor implements HasActions, HasFilters {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	protected $database;
+	protected $em;
 
 	/**
-	 * Adapter Facade object
+	 * Templating service.
 	 *
-	 * @var Adapter
-	 * @since  0.5.0
+	 * @var Templating
 	 */
-	protected $adapter;
+	protected $templating;
 
 	/**
 	 * Plugin path string.
@@ -73,14 +77,38 @@ class Editor implements HasActions, HasFilters {
 	 *
 	 * @since    0.5.0
 	 *
-	 * @param Database $database
-	 * @param Adapter  $adapter
-	 * @param string   $path
+	 * @param EntityManager $em
+	 * @param string        $path
 	 */
-	public function __construct( Database $database, Adapter $adapter, $path ) {
-		$this->database = $database;
-		$this->adapter = $adapter;
+	public function __construct( EntityManager $em, Templating $templating, $path ) {
+		$this->em   = $em;
+		$this->templating = $templating;
 		$this->path = $path;
+	}
+
+	/**
+	 * Echoes the editor on the gistpen editor page.
+	 */
+	public function display_editor() {
+		$post = get_post();
+
+		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
+			echo $this->templating->render( 'editor/index', $this->get_initial_state() );
+		}
+	}
+
+	/**
+	 * Returns the initial state for the editor page.
+	 *
+	 * @return array
+	 */
+	public function get_initial_state() {
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID() );
+
+		return array(
+			'repo' => $repo->serialize(),
+		);
 	}
 
 	/**
@@ -97,7 +125,7 @@ class Editor implements HasActions, HasFilters {
 	}
 
 	/**
-	 * Remove unessary metaboxes from Gistpens
+	 * Remove unnecessary metaboxes from Gistpens
 	 *
 	 * @since  0.4.0
 	 */
@@ -139,10 +167,12 @@ class Editor implements HasActions, HasFilters {
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'gistpen_files' === $column_name ) {
-			$zip = $this->database->query()->by_id( $post_id );
+			/** @var Repo $repo */
+			$repo = $this->em->find( EntityManager::REPO_CLASS,  $post_id );
 
-			foreach ( $zip->get_files() as $file ) {
-				echo $file->get_filename();
+			/** @var Blob $blob */
+			foreach ( $repo->blobs as $blob ) {
+				echo $blob->filename;
 				echo '<br>';
 			}
 		}
@@ -172,6 +202,10 @@ class Editor implements HasActions, HasFilters {
 	 */
 	public function action_hooks() {
 		return array(
+			array(
+				'hook' => 'edit_form_top',
+				'method' => 'display_editor',
+			),
 			array(
 				'hook' => 'add_meta_boxes',
 				'method' => 'remove_meta_boxes',

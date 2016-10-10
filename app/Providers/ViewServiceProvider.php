@@ -24,8 +24,8 @@ class ViewServiceProvider implements ServiceProvider {
 			} )
 			->define( 'view.editor', function ( Container $container ) {
 				return new Editor(
-					$container->fetch( 'facade.database' ),
-					$container->fetch( 'facade.adapter' ),
+					$container->fetch( 'database' ),
+					$container->fetch( 'templating' ),
 					$container->fetch( 'path' )
 				);
 			} )
