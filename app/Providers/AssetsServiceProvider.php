@@ -29,71 +29,37 @@ class AssetsServiceProvider extends ServiceProvider {
 
 		$slug = $this->container->fetch( 'slug' );
 
-		$localize = function () {
-			/** @var Settings $settings */
-			$settings = $this->container->fetch( 'view.settings' );
-
-			return array(
-				'name' => 'Gistpen_Settings',
-				'data' => $settings->get_initial_state(),
-			);
-		};
-
 		$should_enqueue_settings = function () {
 			return 'settings_page_wp-gistpen' === get_current_screen()->id;
 		};
 		$should_enqueue_tinymce  = function () {
 			return 'gistpen' !== get_current_screen()->id;
 		};
-		$should_enqueue_editor   = function () {
-			if ( 'gistpen' === get_current_screen()->id ) {
-				wp_dequeue_script( 'autosave' ); // @todo
-				return true;
-			}
-
-			return false;
-		};
 
 		/**
-		 * Ace Editor Scripts
+		 * Editor Assets
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => function () use ( $should_enqueue_tinymce, $should_enqueue_editor ) {
-				return $should_enqueue_tinymce() || $should_enqueue_editor();
+			'condition' => function () {
+				return 'gistpen' === get_current_screen()->id;
 			},
-			'handle'    => $slug . '-ace-script',
-			'src'       => 'assets/js/ace/ace',
-			'localize'  => $localize,
-		) );
-
-		/**
-		 * Post Editor Assets
-		 */
-		$assets->register_style( array(
-			'type'      => 'admin',
-			'condition' => $should_enqueue_editor,
-			'handle'    => $slug . '-editor-styles',
-			'src'       => 'assets/css/post',
-		) );
-		$assets->register_script( array(
-			'type'      => 'admin',
-			'condition' => $should_enqueue_editor,
 			'handle'    => $slug . '-editor-script',
-			'src'       => 'assets/js/post',
-			'deps'      => array( $slug . '-ace-script' ), // @todo bundle Ace into the editor build
-			'localize'  => $localize,
+			'src'       => 'assets/js/editor',
+			'localize'  => function () {
+				/** @var Editor $editor */
+				$editor = $this->container->fetch( 'view.editor' );
+
+				return array(
+					'name' => '__GISTPEN_SETTINGS__',
+					'data' => $editor->get_initial_state(),
+				);
+			},
 		) );
 
 		/**
 		 * Settings Page Assets
 		 */
-		$assets->register_style( array(
-			'type'      => 'admin',
-			'condition' => $should_enqueue_settings,
-			'handle'    => $slug . '-settings-styles',
-			'src'       => 'assets/css/settings',
-		) );
 		$assets->register_script( array(
 			'type'      => 'admin',
 			'condition' => $should_enqueue_settings,

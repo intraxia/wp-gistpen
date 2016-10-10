@@ -9,7 +9,7 @@ module.exports = {
     entry: {
         settings: path.join(client, 'settings'),
         content: path.join(client, 'content'),
-        post: path.join(src, 'post'),
+        editor: path.join(client, 'editor'),
         tinymce: path.join(src, 'tinymce')
     },
     output: {
