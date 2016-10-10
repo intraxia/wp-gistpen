@@ -2,8 +2,8 @@
 namespace Intraxia\Gistpen\Http;
 
 use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Jaxion\Contract\Axolotl\EntityManager as Database;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -19,17 +19,17 @@ class RepoController {
 	/**
 	 * Database interface service.
 	 *
-	 * @var Database
+	 * @var EntityManager
 	 */
-	protected $database;
+	protected $em;
 
 	/**
 	 * RepoController constructor.
 	 *
-	 * @param Database $database
+	 * @param EntityManager $database
 	 */
-	public function __construct( Database $database ) {
-		$this->database = $database;
+	public function __construct( EntityManager $em ) {
+		$this->em = $em;
 	}
 
 	/**
@@ -40,7 +40,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
-		$collection = $this->database->find_by( EntityManager::REPO_CLASS, $request->get_params() );
+		$collection = $this->em->find_by( EntityManager::REPO_CLASS, $request->get_params() );
 
 		if ( is_wp_error( $collection ) ) {
 			$collection->add_data( array( 'status' => 500 ) );
@@ -60,7 +60,7 @@ class RepoController {
 	 */
 	public function create( WP_REST_Request $request ) {
 		/** @var Repo|WP_Error $model */
-		$model = $this->database->create( EntityManager::REPO_CLASS, $request->get_params() );
+		$model = $this->em->create( EntityManager::REPO_CLASS, $request->get_params() );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );
@@ -82,7 +82,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function view( WP_REST_Request $request ) {
-		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -101,7 +101,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function update( WP_REST_Request $request ) {
-		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -109,9 +109,32 @@ class RepoController {
 			return $model;
 		}
 
-		$model->refresh( $request->get_json_params() );
+		$params = $request->get_json_params();
 
-		$model = $this->database->persist( $model );
+		if ( isset( $params['blobs'] ) ) {
+			foreach ( $params['blobs'] as $blob_data ) {
+				$matched = false;
+
+				/** @var Blob $blob */
+				foreach ( $model->blobs as $blob ) {
+					if ( $blob->ID === $blob_data['ID'] ) {
+						$blob->refresh( $blob_data );
+						$matched = true;
+						break;
+					}
+				}
+
+				if ( ! $matched ) {
+					$model->blobs->add( new Blob( $blob_data ) );
+				}
+			}
+
+			unset( $params['blobs'] );
+		}
+
+		$model->refresh( $params );
+
+		$model = $this->em->persist( $model );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );
@@ -130,7 +153,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function apply( WP_REST_Request $request ) {
-		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -138,9 +161,32 @@ class RepoController {
 			return $model;
 		}
 
-		$model->merge( $request->get_json_params() );
+		$params = $request->get_json_params();
 
-		$model = $this->database->persist( $model );
+		if ( isset( $params['blobs'] ) ) {
+			foreach ( $params['blobs'] as $blob_data ) {
+				$matched = false;
+
+				/** @var Blob $blob */
+				foreach ( $model->blobs as $blob ) {
+					if ( $blob->ID === $blob_data['ID'] ) {
+						$blob->merge( $blob_data );
+						$matched = true;
+						break;
+					}
+				}
+
+				if ( ! $matched ) {
+					$model->blobs->add( new Blob( $blob_data ) );
+				}
+			}
+
+			unset( $params['blobs'] );
+		}
+
+		$model->merge( $params );
+
+		$model = $this->em->persist( $model );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );
@@ -159,7 +205,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function trash( WP_REST_Request $request ) {
-		$model = $this->database->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -167,7 +213,7 @@ class RepoController {
 			return $model;
 		}
 
-		$result = $this->database->delete( $model, false );
+		$result = $this->em->delete( $model, false );
 
 		if ( is_wp_error( $result ) ) {
 			$result->add_data( array( 'status' => 500 ) );
