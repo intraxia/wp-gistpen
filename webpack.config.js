@@ -50,6 +50,16 @@ module.exports = {
             },
             {
                 test: /\.(scss|css)$/,
+                include: path.join(client, 'editor'),
+                loaders: ['style', 'css', 'sass']
+            },
+            {
+                test: /\.(scss|css)$/,
+                include: [
+                    path.join(client, 'settings'),
+                    path.join(client, 'prism'),
+                    /node_modules/
+                ],
                 loaders: ['style/useable', 'css', 'sass']
             }
         ]

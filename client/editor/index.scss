@@ -1,5 +1,5 @@
 // Some styles for the Gistpen editor
-#wpgp-editor {
+.wpgp-editor {
 
   .ace-editor {
     height: 360px;
@@ -40,7 +40,7 @@
   float: left;
 }
 
-.wpgp-header, .wpgp-header-row {
+.wpgp-editor-header, .wpgp-header-row {
   width: 100%;
 }
 
