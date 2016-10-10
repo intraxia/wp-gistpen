@@ -207,6 +207,12 @@ class EntityManager implements EntityManagerContract {
 						'orderby'     => 'date',
 					) )
 				);
+
+				foreach ( $blobs as $blob ) {
+					$blob->unguard();
+					$blob->set_attribute( 'repo', $model );
+					$blob->reguard();
+				}
 				continue;
 			}
 
@@ -247,10 +253,8 @@ class EntityManager implements EntityManagerContract {
 		foreach ( $model->get_table_keys() as $key ) {
 			switch ( $key ) {
 				case 'repo':
-					$model->set_attribute(
-						'repo',
-						$this->find_repo( $post->post_parent )
-					);
+					// shouldn't pre-query repo
+					// @todo mark as relationship key
 					break;
 				case 'language':
 					$terms = get_the_terms( $post->ID, 'wpgp_language' );

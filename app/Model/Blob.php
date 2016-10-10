@@ -119,7 +119,7 @@ class Blob extends Model implements UsesWordPressPost {
 	protected function compute_raw_url() {
 		return rest_url( sprintf(
 			'intraxia/v1/gistpen/repos/%s/%s/%s',
-			$this->repo->ID,
+			$this->repo_id,
 			$this->ID,
 			$this->filename
 		) );
