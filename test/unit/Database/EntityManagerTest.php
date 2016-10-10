@@ -235,4 +235,36 @@ class EntityManagerTest extends TestCase {
 
 		$this->assertSame( $slug, $language->slug );
 	}
+
+	public function test_should_delete_repo_and_all_blobs() {
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+
+		$this->em->delete( $repo, true );
+
+		$this->assertNull( get_post( ( $repo->ID ) ) );
+
+		foreach ( $repo->blobs as $blob ) {
+			$this->assertNull( get_post( $blob->ID ) );
+		}
+
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+
+		$this->assertInstanceOf( 'WP_Error', $repo );
+	}
+
+	public function test_should_delete_blob() {
+		/** @var Blob $blob */
+		$blob = $this->em->find( EntityManager::BLOB_CLASS, $this->blobs[0] );
+
+		$this->em->delete( $blob, true );
+
+		$this->assertNull( get_post( ( $blob->ID ) ) );
+
+		/** @var Blob $blob */
+		$blob = $this->em->find( EntityManager::BLOB_CLASS, $this->blobs[0] );
+
+		$this->assertInstanceOf( 'WP_Error', $blob );
+	}
 }

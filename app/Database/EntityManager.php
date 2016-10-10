@@ -186,7 +186,7 @@ class EntityManager implements EntityManagerContract {
 		$post  = get_post( $id );
 		$model = new Repo;
 
-		if ( $post->post_type !== $model::get_post_type() ) {
+		if ( ! $post || $post->post_type !== $model::get_post_type() ) {
 			return new WP_Error( 'Invalid id' );
 		}
 
@@ -241,7 +241,8 @@ class EntityManager implements EntityManagerContract {
 		$post  = get_post( $id );
 		$model = new Blob;
 
-		if ( $post->post_type !== $model::get_post_type() ||
+		if ( ! $post ||
+		     $post->post_type !== $model::get_post_type() ||
 		     $post->post_parent === 0
 		) {
 			return new WP_Error( 'Invalid id' );
@@ -683,12 +684,56 @@ class EntityManager implements EntityManagerContract {
 		return $model;
 	}
 
+	/**
+	 * Deletes the Repo and all its associated Blobs.
+	 *
+	 * @param Repo $model
+	 * @param bool $force
+	 *
+	 * @return Repo|WP_Error
+	 */
 	protected function delete_repo( Repo $model, $force ) {
-		return new WP_Error( 'not implemented' );
+		$id = $model->get_primary_id();
+
+		if ( ! $id ) {
+			return new WP_Error( __( 'Repo does not exist in the database.' ) );
+		}
+
+		$result = wp_delete_post( $id, $force );
+
+		if ( ! $result ) {
+			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
+		}
+
+		foreach ( $model->blobs as $blob ) {
+			$this->delete_blob( $blob, $force );
+		}
+
+		return $model;
 	}
 
+	/**
+	 * Delete a Blob from the database.
+	 *
+	 * @param Blob $model
+	 * @param bool $force
+	 *
+	 * @return Blob|WP_Error
+	 */
 	protected function delete_blob( Blob $model, $force ) {
-		return new WP_Error( 'not implemented' );
+		$id = $model->get_primary_id();
+
+		if ( ! $id ) {
+			return new WP_Error( __( 'Repo does not exist in the database.' ) );
+		}
+
+		$result = wp_delete_post( $id, $force );
+
+		if ( ! $result ) {
+			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
+		}
+
+		return $model;
 	}
 
 	protected function delete_language( Language $model, $force ) {
