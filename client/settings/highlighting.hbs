@@ -8,7 +8,7 @@
             </th>
             <td>
                 <select name="wpgp-theme" id="wpgp-theme" data-brk-onchange="onThemeChange">
-                    {{#each const.themes}}
+                    {{#each globals.themes}}
                         <option value="{{@key}}" {{#compare prism.theme @key}}selected{{/compare}}>
                             {{this}}
                         </option>
@@ -40,5 +40,5 @@
         </tr>
         </tbody>
     </table>
-    {{> component/repo/index repo=const.repo}}
+    {{> component/repo/index repo=globals.repo}}
 </div>
