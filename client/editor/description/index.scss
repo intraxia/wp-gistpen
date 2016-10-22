@@ -1,4 +1,6 @@
-.wpgp-editor-header-container{
+@import "../common";
+
+.wpgp-editor-header-container {
   display: table;
   width: 100%;
 }
@@ -33,8 +35,8 @@
   cursor: pointer;
 
   &:focus {
-    border: 1px solid #5b9dd9;
-    box-shadow: 0 0 2px rgba( 30, 140, 190, 0.8 );
+    border: 1px solid $light-blue;
+    @include focus-border();
   }
 
   &::before {

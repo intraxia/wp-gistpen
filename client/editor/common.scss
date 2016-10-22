@@ -1,0 +1,14 @@
+@import "~bourbon/app/assets/stylesheets/bourbon";
+@import "~bourbon-neat/app/assets/stylesheets/neat";
+
+// Variables
+
+// Colors
+$dark-blue: #1E8CBE;
+$light-blue: #5b9dd9;
+
+// Mixins
+
+@mixin focus-border {
+  box-shadow: 0 0 2px $dark-blue;
+}

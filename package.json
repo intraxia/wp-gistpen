@@ -34,6 +34,8 @@
     "ace-builds": "1.2.2",
     "array-from": "^2.1.1",
     "backbone": "1.2.3",
+    "bourbon": "^4.2.7",
+    "bourbon-neat": "^1.8.0",
     "brookjs": "github:valtech-nyc/brookjs#e8607771a4fb18ab2735930af731631aa465f67e",
     "clipboard": "1.5.5",
     "es6-promise": "3.0.2",
