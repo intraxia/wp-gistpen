@@ -16,11 +16,11 @@ indent_style = tab
 [*.md]
 trim_trailing_whitespace = false
 
-[*.{json,scss,babelrc}]
+[*.{json,babelrc}]
 indent_style = space
 indent_size = 2
 
-[*.{yml,apib,js,hbs}]
+[*.{yml,apib,js,hbs,scss}]
 indent_style = space
 indent_size = 4
 
