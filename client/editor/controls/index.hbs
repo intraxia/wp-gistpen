@@ -1,0 +1,57 @@
+<div class="wpgp-editor-controls-container" data-brk-container="controls">
+    <div class="wpgp-editor-control">
+        <label for="wpgp-repo-status">Post Status</label>
+        <select id="wpgp-repo-status" data-brk-onchange="onStatusChange">
+            {{#each editor.statuses}}
+                <option value="{{@key}}"
+                        {{#compare @key repo.status}}selected{{/compare}}>
+                    {{this}}
+                </option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <input type="checkbox" id="wpgp-repo-sync"
+               data-brk-onchange="onSyncToggle" />
+        <label for="wpgp-repo-sync">Sync Gistpen with Gist?</label>
+    </div>
+
+    <div class="wpgp-theme-select-row">
+        <label for="wpgp-editor-theme">Theme</label>
+        <select id="wpgp-editor-theme" data-brk-onchange="onThemeChange">
+            {{#each editor.themes}}
+                <option value="{{@key}}"
+                        {{#compare @key editor.theme}}selected{{/compare}}>
+                    {{this}}
+                </option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <input type="checkbox" id="wpgp-enable-tabs"
+                {{#if editor.tabs}}checked{{/if}}
+                data-brk-onchange="onTabsToggle">
+        <label for="wpgp-enable-tabs">Enable Tabs</label>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <select id="wpgp-editor-width" data-brk-onchange="onWidthChange">
+            {{#each editor.widths}}
+                <option value="{{this}}"
+                        {{#compare this editor.width}}selected{{/compare}}>
+                    {{this}}
+                </option>
+            {{/each}}
+        </select>
+        <label for="wpgp-editor-width">Indentation width (in spaces)</label>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <input type="checkbox" id="wpgp-enable-invisibles"
+                {{#if editor.invisibles}}checked{{/if}}
+                data-brk-onchange="onInvisiblesToggle">
+        <label for="wpgp-enable-invisibles">Enable Invisibles</label>
+    </div>
+</div>

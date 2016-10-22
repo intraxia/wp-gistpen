@@ -1,0 +1,7 @@
+@import "../common";
+
+.wpgp-editor-controls-container {
+  @include outer-container(100%);
+  border: 1px solid grey;
+  padding: 10px;
+}
