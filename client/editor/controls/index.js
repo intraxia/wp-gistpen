@@ -11,22 +11,25 @@ const mapCheckedToString = R.ifElse(
     R.always('on'),
     R.always('off')
 );
+
+const getTargetValue = R.path(['target', 'value']);
+
 export default component({
     events: events({
         onStatusChange: R.map(
-            R.pipe(R.path(['target', 'value']), repoStatusChangeAction)
+            R.pipe(getTargetValue, repoStatusChangeAction)
         ),
         onSyncToggle: R.map(
             R.pipe(mapCheckedToString, repoSyncToggleAction)
         ),
         onThemeChange: R.map(
-            R.pipe(R.path(['target', 'value']), editorThemeChangeAction)
+            R.pipe(getTargetValue, editorThemeChangeAction)
         ),
         onTabsToggle: R.map(
             R.pipe(mapCheckedToString, editorTabsToggleAction)
         ),
         onWidthChange: R.map(
-            R.pipe(R.path(['target', 'value']), editorWidthChangeAction)
+            R.pipe(getTargetValue, editorWidthChangeAction)
         ),
         onInvisiblesToggle: R.map(
             R.pipe(mapCheckedToString, editorInvisiblesToggleAction)
