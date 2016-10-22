@@ -29,13 +29,6 @@ class AssetsServiceProvider extends ServiceProvider {
 
 		$slug = $this->container->fetch( 'slug' );
 
-		$should_enqueue_settings = function () {
-			return 'settings_page_wp-gistpen' === get_current_screen()->id;
-		};
-		$should_enqueue_tinymce  = function () {
-			return 'gistpen' !== get_current_screen()->id;
-		};
-
 		/**
 		 * Editor Assets
 		 */
@@ -46,6 +39,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			},
 			'handle'    => $slug . '-editor-script',
 			'src'       => 'assets/js/editor',
+			'footer'    => false,
 			'localize'  => function () {
 				/** @var Editor $editor */
 				$editor = $this->container->fetch( 'view.editor' );
@@ -62,10 +56,12 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => $should_enqueue_settings,
+			'condition' => function () {
+				return 'settings_page_wp-gistpen' === get_current_screen()->id;
+			},
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
-			'footer'    => true,
+			'footer'    => false,
 			'localize'  => function () {
 				/** @var Settings $settings */
 				$settings = $this->container->fetch( 'view.settings' );
@@ -82,7 +78,9 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_style( array(
 			'type'      => 'admin',
-			'condition' => $should_enqueue_tinymce,
+			'condition' => function () {
+				return 'gistpen' !== get_current_screen()->id;
+			},
 			'handle'    => $slug . '-popup-styles',
 			'src'       => 'assets/css/tinymce',
 		) );
