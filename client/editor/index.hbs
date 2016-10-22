@@ -6,4 +6,10 @@
     <div class="wpgp-editor-row">
         {{> editor/controls/index}}
     </div>
+
+    {{#each repo.blobs as |blob|}}
+        <div class="wpgp-editor-row">
+            {{> editor/blob/index blob=blob}}
+        </div>
+    {{/each}}
 </div>
