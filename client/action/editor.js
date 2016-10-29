@@ -93,3 +93,122 @@ export const editorInvisiblesToggleAction = function editorInvisiblesToggleActio
         payload: { value }
     };
 };
+
+/**
+ * Emitted when the value in the editor changes.
+ *
+ * @type {string}
+ */
+export const EDITOR_VALUE_CHANGE = 'EDITOR_VALUE_CHANGE';
+
+/**
+ * Creates a new Editor Value Change Action.
+ *
+ * @param {string} value - New editor value.
+ * @param {string} add - Characters added.
+ * @param {string} del - Characters deleted.
+ * @param {Cursor} cursor - Selection of the cursor.
+ * @returns {Action} Editor Value Change Action.
+ */
+export const editorValueChangeAction = function editorValueChangeAction({ value, cursor, add = '', del = '' }) {
+    return {
+        type: EDITOR_VALUE_CHANGE,
+        payload: { value, cursor, add, del }
+    };
+};
+
+/**
+ * Emitted when the user indents in the editor.
+ *
+ * @type {string}
+ */
+export const EDITOR_INDENT = 'EDITOR_INDENT_ACTION';
+
+/**
+ * Creates a new Editor Indent Action.
+ *
+ * @param {string} value - Editor value.
+ * @param {Cursor} cursor - Cursor selection tuple.
+ * @param {bool} inverse - Whether the intentation is inverted.
+ * @returns {Action} Editor Indent Action.
+ */
+export const editorIndentAction = function editorIndentAction({ value, cursor, inverse }) {
+    return {
+        type: EDITOR_INDENT,
+        payload: { value, cursor, inverse }
+    };
+};
+
+/**
+ * Emitted when the editor transforms a comment.
+ *
+ * @type {string}
+ */
+export const EDITOR_MAKE_COMMENT = 'EDITOR_MAKE_COMMENT';
+
+/**
+ * Creates a new Editor Make Comment Action.
+ *
+ * @param {string} value - Editor value.
+ * @param {Cursor} cursor - Cursor selection tuple.
+ * @returns {Action} Editor Make Comment Action.
+ */
+export const editorMakeCommentAction = function editorMakeCommentAction({ value, cursor }) {
+    return {
+        type: EDITOR_MAKE_COMMENT,
+        payload: { value, cursor }
+    };
+};
+
+/**
+ * Emitted when the editor creates a new line.
+ *
+ * @type {string}
+ */
+export const EDITOR_MAKE_NEWLINE = 'EDITOR_MAKE_NEWLINE';
+
+/**
+ * Creates a new Editor Make Newline Action.
+ *
+ * @param {string} value - Current editor value.
+ * @param {Cursor} cursor - Cursor selection tuple.
+ * @returns {Action} Editor Make Newline Action.
+ */
+export const editorMakeNewlineAction = function editorMakeNewlineAction({ value, cursor }) {
+    return {
+        type: EDITOR_MAKE_NEWLINE,
+        payload: { value, cursor }
+    };
+};
+
+/**
+ * Emitted when the editor wants an undo.
+ *
+ * @type {string}
+ */
+export const EDITOR_REDO = 'EDITOR_REDO';
+
+/**
+ * Creates a new Editor Redo Action.
+ *
+ * @returns {Action} Editor Redo Action.
+ */
+export const editorRedoAction = function editorRedoAction() {
+    return { type: EDITOR_REDO };
+};
+
+/**
+ * Emitted when the editor wants a redo.
+ *
+ * @type {string}
+ */
+export const EDITOR_UNDO = 'EDITOR_UNDO';
+
+/**
+ * Creates a new Editor Undo Action.
+ *
+ * @returns {Action} Editor Undo Action.
+ */
+export const editorUndoAction = function editorUndoAction () {
+    return { type: EDITOR_UNDO };
+};
