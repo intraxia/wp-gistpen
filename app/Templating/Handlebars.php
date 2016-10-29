@@ -58,6 +58,21 @@ class Handlebars implements Templating {
 					} else {
 						return $options['inverse']( $options['data'] );
 					}
+				},
+				'prism_slug' => function ( $slug ) {
+					$map = array(
+						'js'   => 'javascript',
+						'sass' => 'scss',
+						'py'   => 'python',
+						'html' => 'markup',
+						'xml'  => 'markup',
+					);
+
+					if ( array_key_exists( $slug, $map ) ) {
+						$slug = $map[ $slug ];
+					}
+
+					return $slug;
 				}
 			)
 		) );

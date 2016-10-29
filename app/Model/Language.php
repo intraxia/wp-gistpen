@@ -212,6 +212,7 @@ class Language extends Model implements UsesWordPressTerm {
 	 * Computes the Language's prism_slug property.
 	 *
 	 * @return string
+	 * @deprecated
 	 */
 	public function compute_prism_slug() {
 		$map = array(
