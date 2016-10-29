@@ -4,15 +4,16 @@ import { component } from 'brookjs';
 import children from 'brookjs/children';
 import ControlsComponent from './controls';
 import DescriptionComponent from './description';
-import BlobComponent from './blob';
+import InstanceComponent from './instance';
 
 export default component({
     children: children({
         'controls': ControlsComponent,
         'description': DescriptionComponent,
-        'blobEditor': {
-            factory: BlobComponent,
-            modifyChildProps: R.map(props => props.repo.blobs.map(blob => Object.assign({}, blob, { editor: props.editor })))
+        'instance': {
+            factory: InstanceComponent,
+            key: 'key',
+            modifyChildProps: R.map(props => props.editor.instances.map(instance => Object.assign({}, instance, { editor: props.editor })))
         }
     })
 });

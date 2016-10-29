@@ -7,9 +7,9 @@
         {{> editor/controls/index}}
     </div>
 
-    {{#each repo.blobs as |blob|}}
+    {{#each editor.instances as |instance|}}
         <div class="wpgp-editor-row">
-            {{> editor/blob/index blob=blob}}
+            {{> editor/instance/index instance=instance}}
         </div>
     {{/each}}
 </div>

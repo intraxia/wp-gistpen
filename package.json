@@ -36,7 +36,7 @@
     "backbone": "1.2.3",
     "bourbon": "^4.2.7",
     "bourbon-neat": "^1.8.0",
-    "brookjs": "github:valtech-nyc/brookjs#e8607771a4fb18ab2735930af731631aa465f67e",
+    "brookjs": "github:valtech-nyc/brookjs#88f26782378788a524088fda41f8074f6107ac40",
     "clipboard": "1.5.5",
     "es6-promise": "3.0.2",
     "jquery": "2.2.0",

@@ -130,6 +130,13 @@ class Editor implements HasActions, HasFilters {
 		return array(
 			'repo'   => $repo->serialize(),
 			'editor' => array(
+				'instances'  => array_map( function ( Blob $blob ) {
+					return array(
+						'key'      => (string) $blob->ID,
+						'code'     => $blob->code,
+						'language' => $blob->language->slug,
+					);
+				}, iterator_to_array( $repo->blobs ) ),
 				'width'      => $this->user->get( 'ace_width' ),
 				'theme'      => $this->user->get( 'ace_theme' ),
 				'invisibles' => $this->user->get( 'ace_invisibles' ),

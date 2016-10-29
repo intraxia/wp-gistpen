@@ -1,6 +1,6 @@
-<section class="editor page" data-brk-container="blobEditor">
+<div class="editor page" data-brk-container="instance" data-brk-key="{{instance.key}}">
     <pre spellcheck="false"
-            class="language-{{blob.language.prism_slug}}"
+            class="language-{{instance.language}}"
             data-brk-onclick="onClick"
             data-brk-onfocus="onFocus"
             data-brk-oninput="onInput"
@@ -9,5 +9,5 @@
             data-brk-onkeypress="onKeypress"
             data-brk-oncut="onCut"
             data-brk-onpaste="onPaste"
-            contenteditable>{{blob.code}}</pre>
-</section>
+            contenteditable>{{instance.code}}</pre>
+</div>
