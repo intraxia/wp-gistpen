@@ -1,6 +1,8 @@
 import './index.scss';
 import R from 'ramda';
 import { fromPromise, merge, never, stream } from 'kefir';
+import { editorIndentAction, editorMakeCommentAction, editorMakeNewlineAction,
+    editorRedoAction, editorUndoAction, editorValueChangeAction } from '../../action';
 import Prism from '../../prism';
 import component from 'brookjs/component';
 import events from 'brookjs/events';
@@ -14,32 +16,6 @@ const keyupIgnore = [
     112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, // F[0-12]
     27 // Esc
 ];
-
-const changeAction = state => ({
-    type: 'CHANGE_ACTION',
-    payload: { state }
-});
-
-const commentAction = R.always({
-    type: 'COMMENT_ACTION'
-});
-
-const indentAction = inverse => ({
-    type: 'INDENT_ACTION',
-    payload: { inverse }
-});
-
-const newlineAction = R.always({
-    type: 'NEWLINE_ACTION'
-});
-
-const undoAction = R.always({
-    type: 'UNDO_ACTION'
-});
-
-const redoAction = R.always({
-    type: 'REDO_ACTION'
-});
 
 const updateLinenumber = pre => stream(emitter => {
     let content = pre.textContent;
@@ -74,6 +50,59 @@ const createSettingsRenderStream = (pre, props$) => props$.skipDuplicates((prev,
             return () => cancelAnimationFrame(loop);
         })));
 
+const mapKeydownToAction = evt => {
+    const { altKey, shiftKey: inverse, metaKey, ctrlKey } = evt;
+    const cmdOrCtrl = metaKey || ctrlKey;
+    const { selectionStart: ss, selectionEnd: se, textContent: value } = evt.target;
+    const length = ss === se ? 1 : Math.abs(se - ss);
+    const start = se - length;
+    const cursor = [ss, se];
+
+    switch (evt.keyCode) {
+        case 8: // Backspace
+            const del = value.slice(start, se);
+
+            return editorValueChangeAction({ value, cursor, del });
+        case 9: // Tab
+            if (!cmdOrCtrl) {
+                return editorIndentAction({ value, cursor, inverse });
+            }
+            break;
+        case 13:
+            return editorMakeNewlineAction({ value, cursor });
+        case 90:
+            if (cmdOrCtrl) {
+                return inverse ? editorRedoAction() : editorUndoAction();
+            }
+            break;
+        case 191:
+            if (cmdOrCtrl && !altKey) {
+                return editorMakeCommentAction({ value, cursor });
+            }
+            break;
+    }
+
+    return false;
+};
+
+const filterCutEvent = evt => {
+    const { selectionStart, selectionEnd } = evt.target;
+
+    return selectionStart !== selectionEnd;
+};
+
+const mapCutEventToAction = evt => {
+    const { selectionStart, selectionEnd, textContent } = evt.target;
+    const selection = textContent.slice(selectionStart, selectionEnd);
+
+    return editorValueChangeAction({
+        value: textContent,
+        add: '',
+        del: selection,
+        start: selectionStart
+    });
+};
+
 export default component({
     onMount: R.curry((el, props$) => {
         const pre = el.querySelector('pre');
@@ -86,45 +115,10 @@ export default component({
             R.prop('target'),
             updateLinenumber
         )),
-        onKeydown: event$ => event$.flatMap(evt => stream(emitter => {
-            let cmdOrCtrl = evt.metaKey || evt.ctrlKey;
-            let pre = evt.target;
-
-            switch (evt.keyCode) {
-                case 8: // Backspace
-                    let ss = pre.selectionStart;
-                    let se = pre.selectionEnd;
-                    let length = ss === se ? 1 : Math.abs(se - ss);
-                    let start = se - length;
-
-                    emitter.value(changeAction({
-                        add: '',
-                        del: pre.textContent.slice(start, se),
-                        start: start
-                    }));
-                    break;
-                case 9: // Tab
-                    if (!cmdOrCtrl) {
-                        emitter.value(indentAction(evt.shiftKey));
-                    }
-                    break;
-                case 13:
-                    emitter.value(newlineAction());
-                    break;
-                case 90:
-                    if (cmdOrCtrl) {
-                        emitter.value(evt.shiftKey ? redoAction() : undoAction());
-                    }
-                    break;
-                case 191:
-                    if (cmdOrCtrl && !evt.altKey) {
-                        emitter.value(commentAction());
-                    }
-                    break;
-            }
-
-            emitter.end();
-        })),
+        onKeydown: R.pipe(
+            R.map(mapKeydownToAction),
+            R.filter(R.identity)
+        ),
         onKeyup: event$ => event$.flatMap(evt => {
             let pre = evt.target;
             let keyCode = evt.keyCode || 0;
@@ -159,40 +153,23 @@ export default component({
                 emitter.end();
             }));
         }),
-        onKeypress: event$ => event$.flatMap(evt => stream(emitter => {
-            let pre = evt.target;
-            let cmdOrCtrl = evt.metaKey || evt.ctrlKey;
-            let code = evt.charCode;
-            let ss = pre.selectionStart;
-            let se = pre.selectionEnd;
+        onKeypress: event$ => event$
+            .filter(evt => evt.charCode && !(evt.metaKey || evt.ctrlKey))
+            .map(evt => {
+                const pre = evt.target;
+                const start = pre.selectionStart;
+                const end = pre.selectionEnd;
+                const add = String.fromCharCode(evt.charCode);
+                const value = pre.textContent;
+                const del = start === end ? '' : pre.textContent.slice(start, end);
+                const cursor = [start, end];
 
-            if (code && !cmdOrCtrl) {
-                var character = String.fromCharCode(code);
-
-                emitter.value(changeAction({
-                    add: character,
-                    del: ss === se ? '' : pre.textContent.slice(ss, se),
-                    start: ss
-                }));
-            }
-
-            emitter.end();
-        })),
-        onCut: event$ => event$.flatMap(evt => stream(emitter => {
-            let pre = evt.target;
-            let ss = pre.selectionStart;
-            let se = pre.selectionEnd;
-            let selection = ss === se ? '' : pre.textContent.slice(ss, se);
-
-            if (selection) {
-                emitter.value(changeAction({
-                    add: '',
-                    del: selection,
-                    start: ss
-                }));
-            }
-            emitter.end();
-        })),
+                return editorValueChangeAction({ value, cursor, add, del });
+            }),
+        onCut: R.pipe(
+            R.filter(filterCutEvent),
+            R.map(mapCutEventToAction)
+        ),
         onPaste: event$ => event$.flatMap(evt => stream(emitter => {
             let pre = evt.target;
             let ss = pre.selectionStart;
@@ -206,7 +183,8 @@ export default component({
 
                 document.execCommand('insertText', false, pasted);
 
-                emitter.value(changeAction({
+                emitter.value(editorValueChangeAction({
+                    value: pre.textContent,
                     add: pasted,
                     del: selection,
                     start: ss
@@ -225,7 +203,8 @@ export default component({
 
                     let pasted = pre.textContent.slice(ss, newse);
 
-                    emitter.value(changeAction({
+                    emitter.value(editorValueChangeAction({
+                        value: pre.textContent,
                         add: pasted,
                         del: selection,
                         start: ss
