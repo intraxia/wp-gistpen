@@ -2,7 +2,8 @@
   "plugins": [
     "ramda",
     "transform-array-from",
-    "transform-object-assign"
+    "transform-object-assign",
+    "transform-object-rest-spread"
   ],
   "presets": [
     ["es2015", { "loose": false, "modules": false }]
