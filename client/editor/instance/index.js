@@ -5,7 +5,9 @@ import { editorIndentAction, editorMakeCommentAction, editorMakeNewlineAction,
     editorRedoAction, editorUndoAction, editorValueChangeAction } from '../../action';
 import Prism from '../../prism';
 import component from 'brookjs/component';
+import render from 'brookjs/render';
 import events from 'brookjs/events';
+import template from './index.hbs';
 
 const CRLF = /\r?\n|\r/g;
 
@@ -33,22 +35,6 @@ const updateLinenumber = pre => stream(emitter => {
 
     emitter.end();
 });
-
-const createSettingsRenderStream = (pre, props$) => props$.skipDuplicates((prev, next) =>
-        prev.editor.theme === next.editor.theme && prev.editor.invisibles === next.editor.invisibles)
-    .flatMapLatest(props => fromPromise(Promise.all([
-        Prism.setTheme(props.editor.theme),
-        Prism.togglePlugin('line-highlight', true),
-        Prism.togglePlugin('show-invisibles', props.editor.invisibles === 'on')
-    ]))
-        .flatMapLatest(() => stream(emitter => {
-            let loop = requestAnimationFrame(() => {
-                Prism.highlightElement(pre);
-                emitter.end();
-            });
-
-            return () => cancelAnimationFrame(loop);
-        })));
 
 const mapKeydownToAction = evt => {
     const { altKey, shiftKey: inverse, metaKey, ctrlKey } = evt;
@@ -103,13 +89,29 @@ const mapCutEventToAction = evt => {
     });
 };
 
+const renderTemplate = render(template);
+
 export default component({
-    onMount: R.curry((el, props$) => {
-        const pre = el.querySelector('pre');
+    onMount: () => stream(emitter => {
         Prism.setAutoloaderPath(__webpack_public_path__);
 
-        return merge([updateLinenumber(pre), createSettingsRenderStream(pre, props$)]);
+        emitter.end();
     }),
+    render: R.curry((el, prev, next) => fromPromise(Promise.all([
+        Prism.setTheme(next.editor.theme),
+        Prism.togglePlugin('line-highlight', true),
+        Prism.togglePlugin('show-invisibles', next.editor.invisibles === 'on')
+    ]))
+        .ignoreValues()
+        .concat(merge([renderTemplate(el, prev, next), stream(emitter => {
+            let loop = requestAnimationFrame(() => {
+                Prism.highlightElement(el.querySelector('code'), false);
+                emitter.end();
+            });
+
+            return () => cancelAnimationFrame(loop);
+        })]))
+    ),
     events: events({
         onClick: event$ => event$.flatMap(R.pipe(
             R.prop('target'),
