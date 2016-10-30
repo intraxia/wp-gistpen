@@ -1,12 +1,18 @@
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
-    EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE } from '../action';
+    EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE } from '../action';
 
 const defaults = {
     optionsOpen: false,
     theme: 'default',
     tabs: 'off',
     width: '4',
-    invisibles: 'off'
+    invisibles: 'off',
+    code: '',
+    cursor: false,
+    history: {
+        undo: [],
+        redo: []
+    }
 };
 
 /**
@@ -29,6 +35,23 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
             return { ...state, width: payload.value };
         case EDITOR_INVISIBLES_TOGGLE:
             return { ...state, invisibles: payload.value };
+        case EDITOR_VALUE_CHANGE:
+            return { ...state, instances: state.instances.map(instance =>
+                instance.key !== payload.key ? instance : {
+                    ...instance,
+                    code: payload.value,
+                    cursor: payload.cursor,
+                    history: {
+                        ...instance.history,
+                        undo: instance.history.undo.concat({
+                            value: instance.code,
+                            cursor: instance.cursor,
+                            add: payload.add,
+                            del: payload.del
+                        })
+                    }
+                }
+            ) };
         default:
             return state;
     }

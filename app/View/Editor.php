@@ -135,6 +135,11 @@ class Editor implements HasActions, HasFilters {
 						'key'      => (string) $blob->ID,
 						'code'     => $blob->code,
 						'language' => $blob->language->slug,
+						'cursor'   => false,
+						'history'  => array(
+							'undo' => array(),
+							'redo' => array(),
+						),
 					);
 				}, iterator_to_array( $repo->blobs ) ),
 				'width'      => $this->user->get( 'ace_width' ),
