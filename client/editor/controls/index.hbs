@@ -31,7 +31,7 @@
 
     <div class="wpgp-editor-control">
         <input type="checkbox" id="wpgp-enable-tabs"
-                {{#if editor.tabs}}checked{{/if}}
+                {{#compare editor.tabs "on"}}checked{{/compare}}
                 data-brk-onchange="onTabsToggle">
         <label for="wpgp-enable-tabs">Enable Tabs</label>
     </div>
@@ -50,7 +50,7 @@
 
     <div class="wpgp-editor-control">
         <input type="checkbox" id="wpgp-enable-invisibles"
-                {{#if editor.invisibles}}checked{{/if}}
+                {{#compare editor.invisibles "on"}}checked{{/compare}}
                 data-brk-onchange="onInvisiblesToggle">
         <label for="wpgp-enable-invisibles">Enable Invisibles</label>
     </div>

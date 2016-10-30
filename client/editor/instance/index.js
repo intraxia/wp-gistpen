@@ -39,7 +39,7 @@ const createSettingsRenderStream = (pre, props$) => props$.skipDuplicates((prev,
     .flatMapLatest(props => fromPromise(Promise.all([
         Prism.setTheme(props.editor.theme),
         Prism.togglePlugin('line-highlight', true),
-        Prism.togglePlugin('show-invisibles', props.editor.invisibles)
+        Prism.togglePlugin('show-invisibles', props.editor.invisibles === 'on')
     ]))
         .flatMapLatest(() => stream(emitter => {
             let loop = requestAnimationFrame(() => {

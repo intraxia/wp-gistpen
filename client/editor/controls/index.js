@@ -2,9 +2,11 @@ import './index.scss';
 import R from 'ramda';
 import component from 'brookjs/component';
 import events from 'brookjs/events';
+import render from 'brookjs/render';
 import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
     editorWidthChangeAction, repoStatusChangeAction, repoSyncToggleAction
 } from '../../action';
+import template from './index.hbs';
 
 const mapCheckedToString = R.ifElse(
     R.path(['target', 'checked']),
@@ -15,6 +17,7 @@ const mapCheckedToString = R.ifElse(
 const getTargetValue = R.path(['target', 'value']);
 
 export default component({
+    render: render(template),
     events: events({
         onStatusChange: R.map(
             R.pipe(getTargetValue, repoStatusChangeAction)
