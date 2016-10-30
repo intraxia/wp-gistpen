@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const R = require('ramda');
 const webpack = require('webpack');
-const webpackConfig = require('../webpack.config');
+const webpackConfig = require('./webpack.config');
 const gutil = require('gulp-util');
 
 gulp.task('dev', ['dev:app']);

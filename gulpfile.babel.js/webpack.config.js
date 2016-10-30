@@ -1,10 +1,9 @@
 const path = require('path');
 const WebpackNotifierPlugin = require('webpack-notifier');
-const src = path.join(__dirname, 'src', 'js');
-const client = path.join(__dirname, 'client');
+const src = path.join(__dirname, '..', 'src', 'js');
+const client = path.join(__dirname, '..', 'client');
 
 module.exports = {
-    debug: true,
     devtool: 'sourcemap',
     entry: {
         settings: path.join(client, 'settings'),
@@ -13,18 +12,17 @@ module.exports = {
         tinymce: path.join(src, 'tinymce')
     },
     output: {
-        path: path.join(__dirname, 'assets', 'js'),
+        path: path.join(__dirname, '..', 'assets', 'js'),
         filename: '[name].js'
     },
     module: {
-        preLoaders: [
+        loaders: [
             {
                 test: /\.js$/,
                 loader: 'eslint',
-                exclude: /(node_modules)/
-            }
-        ],
-        loaders: [
+                exclude: /(node_modules)/,
+                enforce: 'pre'
+            },
             {
                 test: /\.js$/,
                 loader: 'babel',
@@ -69,8 +67,7 @@ module.exports = {
             kefir: 'kefir/src',
             redux: 'redux/es'
         },
-        mainFields: ['jsnext:main', 'browser', 'main'],
-        modulesDirectories: ['node_modules']
+        mainFields: ['jsnext:main', 'browser', 'main']
     },
     plugins: [
         new WebpackNotifierPlugin({ alwaysNotify: true })
