@@ -118,6 +118,7 @@ export default component({
             updateLinenumber
         )),
         onKeydown: R.pipe(
+            events$ => events$.debounce(0),
             R.map(mapKeydownToAction),
             R.filter(R.identity)
         ),
@@ -156,6 +157,7 @@ export default component({
             }));
         }),
         onKeypress: event$ => event$
+            .debounce(0)
             .filter(evt => evt.charCode && !(evt.metaKey || evt.ctrlKey))
             .map(evt => {
                 const pre = evt.target;
@@ -169,6 +171,7 @@ export default component({
                 return editorValueChangeAction({ value, cursor, add, del });
             }),
         onCut: R.pipe(
+            events$ => events$.debounce(0),
             R.filter(filterCutEvent),
             R.map(mapCutEventToAction)
         ),
