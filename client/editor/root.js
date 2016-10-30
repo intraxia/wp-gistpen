@@ -12,8 +12,8 @@ export default component({
         'description': DescriptionComponent,
         'instance': {
             factory: InstanceComponent,
-            key: 'key',
-            modifyChildProps: R.map(props => props.editor.instances.map(instance => Object.assign({}, instance, { editor: props.editor })))
+            key: 'instance.key',
+            modifyChildProps: R.map(props => props.editor.instances.map(instance => ({ ...props, instance })))
         }
     })
 });
