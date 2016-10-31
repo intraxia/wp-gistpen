@@ -7,5 +7,12 @@
   ],
   "presets": [
     ["es2015", { "loose": false, "modules": false }]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["es2015", { "loose": false, "modules": "commonjs" }]
+      ]
+    }
+  }
 }

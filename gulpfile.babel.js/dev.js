@@ -3,8 +3,9 @@ const R = require('ramda');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const gutil = require('gulp-util');
+const path = require('path');
 
-gulp.task('dev', ['dev:app']);
+gulp.task('dev', ['dev:app', 'dev:tdd']);
 
 gulp.task('dev:app', () => {
     const webpackWatchConfig = R.clone(webpackConfig);
@@ -20,4 +21,11 @@ gulp.task('dev:app', () => {
             chunkModules: false
         }));
     });
+});
+
+gulp.task('dev:tdd', ['test:unit'], () => {
+    gulp.watch([
+        path.join(__dirname, '..', '/client/**/*.js'),
+        path.join(__dirname, '..', '/client/**/__tests__/*.spec.js')
+    ], ['test:unit']);
 });
