@@ -8,12 +8,14 @@ const defaults = {
     tabs: 'off',
     width: '4',
     invisibles: 'off',
-    code: '',
-    cursor: false,
-    history: {
-        undo: [],
-        redo: []
-    }
+    instances: [{
+        code: '',
+        cursor: false,
+        history: {
+            undo: [],
+            redo: []
+        }
+    }]
 };
 
 /**
