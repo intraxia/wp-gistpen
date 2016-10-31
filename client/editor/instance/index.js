@@ -1,8 +1,9 @@
 import './index.scss';
 import R from 'ramda';
-import { fromPromise, merge, never, stream } from 'kefir';
-import { editorIndentAction, editorMakeCommentAction, editorMakeNewlineAction,
-    editorRedoAction, editorUndoAction, editorValueChangeAction } from '../../action';
+import { fromEvents, fromPromise, merge, never, stream } from 'kefir';
+import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
+    editorMakeNewlineAction, editorRedoAction, editorUndoAction,
+    editorValueChangeAction } from '../../action';
 import Prism from '../../prism';
 import component from 'brookjs/component';
 import render from 'brookjs/render';
@@ -12,7 +13,7 @@ import template from './index.hbs';
 
 // const CRLF = /\r?\n|\r/g;
 
-const updateLinenumber = (/* pre */) => stream(emitter => {
+const updateLinenumber = (pre, start, end) => stream(emitter => {
     // let content = pre.textContent;
     // let ss = pre.selectionStart;
     // let se = pre.selectionEnd;
@@ -32,25 +33,19 @@ const updateLinenumber = (/* pre */) => stream(emitter => {
 const mapKeydownToAction = evt => {
     const { altKey, shiftKey: inverse, metaKey, ctrlKey } = evt;
     const cmdOrCtrl = metaKey || ctrlKey;
-    const { textContent: value } = evt.target;
+    const { textContent: code } = evt.target;
     const ss = selectSelectionStart(evt.target);
     const se = selectSelectionEnd(evt.target);
-    const length = ss === se ? 1 : Math.abs(se - ss);
-    const start = se - length;
     const cursor = [ss, se];
 
     switch (evt.keyCode) {
-        case 8: // Backspace
-            const del = value.slice(start, se);
-
-            return editorValueChangeAction({ value, cursor, del });
         case 9: // Tab
             if (!cmdOrCtrl) {
-                return editorIndentAction({ value, cursor, inverse });
+                return editorIndentAction({ code, cursor, inverse });
             }
             break;
         case 13:
-            return editorMakeNewlineAction({ value, cursor });
+            return editorMakeNewlineAction({ code, cursor });
         case 90:
             if (cmdOrCtrl) {
                 return inverse ? editorRedoAction() : editorUndoAction();
@@ -58,30 +53,12 @@ const mapKeydownToAction = evt => {
             break;
         case 191:
             if (cmdOrCtrl && !altKey) {
-                return editorMakeCommentAction({ value, cursor });
+                return editorMakeCommentAction({ code, cursor });
             }
             break;
     }
 
     return false;
-};
-
-const filterCutEvent = evt => {
-    const { selectionStart, selectionEnd } = evt.target;
-
-    return selectionStart !== selectionEnd;
-};
-
-const mapCutEventToAction = evt => {
-    const { selectionStart, selectionEnd, textContent } = evt.target;
-    const selection = textContent.slice(selectionStart, selectionEnd);
-
-    return editorValueChangeAction({
-        value: textContent,
-        add: '',
-        del: selection,
-        start: selectionStart
-    });
 };
 
 const renderTemplate = render(template);
@@ -182,101 +159,47 @@ const highlightElement = el => stream(emitter => {
     return () => cancelAnimationFrame(loop);
 });
 
+const mapToTargetCursorAction = R.map(R.pipe(
+    R.prop('target'),
+    R.converge(
+        R.unapply(editorCursorMoveAction),
+        [selectSelectionStart, selectSelectionEnd]
+    )
+));
+
 export default component({
-    onMount: () => stream(emitter => {
+    onMount: (el, props$) => stream(emitter => {
         Prism.setAutoloaderPath(__webpack_public_path__);
 
         emitter.end();
-    }),
-    render: R.curry((el, prev, next) => fromPromise(Promise.all([
-        Prism.setTheme(next.editor.theme),
-        Prism.togglePlugin('show-invisibles', next.editor.invisibles === 'on')
-    ]))
-        .ignoreValues()
-        .concat(merge([
-            renderTemplate(el, prev, next),
-            highlightElement(el),
-            next.instance.cursor ? setSelectionRange(el.querySelector('code'), ...next.instance.cursor) : never(),
-            next.instance.cursor ? updateLinenumber(el.querySelector('pre')) : never()
-        ]))
+    })
+        .merge(props$.sampledBy(fromEvents(el, 'keyup').debounce(150))
+            .merge(props$.take(1))
+            .flatMapLatest(state => fromPromise(Promise.all([
+                Prism.setTheme(state.editor.theme),
+                Prism.togglePlugin('show-invisibles', state.editor.invisibles === 'on')
+            ]))
+                .ignoreValues()
+                .concat(merge([
+                    renderTemplate(el, state, state),
+                    highlightElement(el),
+                    state.instance.cursor ? setSelectionRange(el.querySelector('code'), ...state.instance.cursor) : never(),
+                    state.instance.cursor ? updateLinenumber(el.querySelector('pre'), ...state.instance.cursor) : never()
+                ])))
     ),
     events: events({
-        onClick: event$ => event$.flatMap(R.pipe(
-            R.prop('target'),
-            updateLinenumber
-        )),
+        onBlur: R.map(R.always(editorCursorMoveAction(false))),
+        onClick: mapToTargetCursorAction,
+        onFocus: mapToTargetCursorAction,
         onKeydown: R.pipe(
-            events$ => events$.debounce(0),
             R.map(mapKeydownToAction),
             R.filter(R.identity)
         ),
-        onKeypress: event$ => event$
-            .debounce(0)
-            .filter(evt => evt.charCode && !(evt.metaKey || evt.ctrlKey))
-            .map(evt => {
-                const pre = evt.target;
-                const start = selectSelectionStart(pre);
-                const end = selectSelectionEnd(pre);
-                const add = String.fromCharCode(evt.charCode);
-                const value = pre.textContent;
-                const del = start === end ? '' : pre.textContent.slice(start, end);
-                const cursor = [start, end];
-
-                return editorValueChangeAction({ value, cursor, add, del });
-            }),
-        onCut: R.pipe(
-            events$ => events$.debounce(0),
-            R.filter(filterCutEvent),
-            R.map(mapCutEventToAction)
-        ),
-        onPaste: event$ => event$.flatMap(evt => stream(emitter => {
-            const pre = evt.target;
-            let ss = selectSelectionStart(pre);
-            let se = selectSelectionEnd(pre);
-            const selection = ss === se ? '' : pre.textContent.slice(ss, se);
-
-            if (evt.clipboardData) {
-                evt.preventDefault();
-
-                let pasted = evt.clipboardData.getData('text/plain');
-
-                document.execCommand('insertText', false, pasted);
-
-                emitter.value(editorValueChangeAction({
-                    value: pre.textContent,
-                    add: pasted,
-                    del: selection,
-                    cursor: [ss, se]
-                }));
-
-                ss += pasted.length;
-
-                setSelectionRange(pre, ss, ss);
-
-                pre.onkeyup();
-
-                emitter.end();
-            } else {
-                setTimeout(function() {
-                    const newse = selectSelectionEnd(pre);
-                    let pasted = pre.textContent.slice(ss, newse);
-
-                    emitter.value(editorValueChangeAction({
-                        value: pre.textContent,
-                        add: pasted,
-                        del: selection,
-                        cursor: [ss, newse]
-                    }));
-
-                    ss += pasted.length;
-
-                    setSelectionRange(pre, ss, ss);
-
-                    pre.onkeyup();
-
-                    emitter.end();
-                }, 10);
-            }
-        }))
+        onInput: R.map(({ target }) =>
+            editorValueChangeAction({
+                code: target.textContent,
+                cursor: [selectSelectionStart(target), selectSelectionEnd(target)]
+            })
+        )
     })
 });
