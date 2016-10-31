@@ -39,12 +39,12 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
             return { ...state, instances: state.instances.map(instance =>
                 instance.key !== payload.key ? instance : {
                     ...instance,
-                    code: payload.value,
+                    code: payload.code,
                     cursor: payload.cursor,
                     history: {
                         ...instance.history,
                         undo: instance.history.undo.concat({
-                            value: instance.code,
+                            code: instance.code,
                             cursor: instance.cursor,
                             add: payload.add,
                             del: payload.del

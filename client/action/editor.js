@@ -104,16 +104,16 @@ export const EDITOR_VALUE_CHANGE = 'EDITOR_VALUE_CHANGE';
 /**
  * Creates a new Editor Value Change Action.
  *
- * @param {string} value - New editor value.
+ * @param {string} code - New editor value.
  * @param {string} add - Characters added.
  * @param {string} del - Characters deleted.
  * @param {Cursor} cursor - Selection of the cursor.
  * @returns {Action} Editor Value Change Action.
  */
-export const editorValueChangeAction = function editorValueChangeAction({ value, cursor, add = '', del = '' }) {
+export const editorValueChangeAction = function editorValueChangeAction({ code, cursor, add = '', del = '' }) {
     return {
         type: EDITOR_VALUE_CHANGE,
-        payload: { value, cursor, add, del }
+        payload: { code, cursor, add, del }
     };
 };
 
@@ -127,15 +127,15 @@ export const EDITOR_INDENT = 'EDITOR_INDENT_ACTION';
 /**
  * Creates a new Editor Indent Action.
  *
- * @param {string} value - Editor value.
+ * @param {string} code - Editor value.
  * @param {Cursor} cursor - Cursor selection tuple.
  * @param {bool} inverse - Whether the intentation is inverted.
  * @returns {Action} Editor Indent Action.
  */
-export const editorIndentAction = function editorIndentAction({ value, cursor, inverse }) {
+export const editorIndentAction = function editorIndentAction({ code, cursor, inverse }) {
     return {
         type: EDITOR_INDENT,
-        payload: { value, cursor, inverse }
+        payload: { code, cursor, inverse }
     };
 };
 
@@ -149,14 +149,14 @@ export const EDITOR_MAKE_COMMENT = 'EDITOR_MAKE_COMMENT';
 /**
  * Creates a new Editor Make Comment Action.
  *
- * @param {string} value - Editor value.
+ * @param {string} code - Editor value.
  * @param {Cursor} cursor - Cursor selection tuple.
  * @returns {Action} Editor Make Comment Action.
  */
-export const editorMakeCommentAction = function editorMakeCommentAction({ value, cursor }) {
+export const editorMakeCommentAction = function editorMakeCommentAction({ code, cursor }) {
     return {
         type: EDITOR_MAKE_COMMENT,
-        payload: { value, cursor }
+        payload: { code, cursor }
     };
 };
 
@@ -170,14 +170,14 @@ export const EDITOR_MAKE_NEWLINE = 'EDITOR_MAKE_NEWLINE';
 /**
  * Creates a new Editor Make Newline Action.
  *
- * @param {string} value - Current editor value.
+ * @param {string} code - Current editor value.
  * @param {Cursor} cursor - Cursor selection tuple.
  * @returns {Action} Editor Make Newline Action.
  */
-export const editorMakeNewlineAction = function editorMakeNewlineAction({ value, cursor }) {
+export const editorMakeNewlineAction = function editorMakeNewlineAction({ code, cursor }) {
     return {
         type: EDITOR_MAKE_NEWLINE,
-        payload: { value, cursor }
+        payload: { code, cursor }
     };
 };
 
