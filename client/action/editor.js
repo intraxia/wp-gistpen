@@ -212,3 +212,23 @@ export const EDITOR_UNDO = 'EDITOR_UNDO';
 export const editorUndoAction = function editorUndoAction () {
     return { type: EDITOR_UNDO };
 };
+
+/**
+ * Emitted when the editor's cursor moves.
+ *
+ * @type {string}
+ */
+export const EDITOR_CURSOR_MOVE = 'EDITOR_CURSOR_MOVE';
+
+/**
+ * Creates a new Editor Cursor Move Action.
+ *
+ * @param {false|Cursor} cursor - Cursor position.
+ * @returns {Action} Editor Cursor Move Action.
+ */
+export const editorCursorMoveAction = function editorCaretMoveAction(cursor) {
+    return {
+        type: EDITOR_CURSOR_MOVE,
+        payload: { cursor }
+    };
+};

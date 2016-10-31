@@ -1,5 +1,6 @@
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
-    EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE } from '../action';
+    EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE,
+    EDITOR_CURSOR_MOVE } from '../action';
 
 const defaults = {
     optionsOpen: false,
@@ -35,24 +36,38 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
             return { ...state, width: payload.value };
         case EDITOR_INVISIBLES_TOGGLE:
             return { ...state, invisibles: payload.value };
+        case EDITOR_CURSOR_MOVE:
+            return mapInstanceWithKey(state, payload.key, instance => ({ ...instance, cursor: payload.cursor }));
         case EDITOR_VALUE_CHANGE:
-            return { ...state, instances: state.instances.map(instance =>
-                instance.key !== payload.key ? instance : {
-                    ...instance,
-                    code: payload.code,
-                    cursor: payload.cursor,
-                    history: {
-                        ...instance.history,
-                        undo: instance.history.undo.concat({
-                            code: instance.code,
-                            cursor: instance.cursor,
-                            add: payload.add,
-                            del: payload.del
-                        })
-                    }
+            return mapInstanceWithKey(state, payload.key, instance => ({
+                ...instance,
+                code: payload.code,
+                cursor: payload.cursor,
+                history: {
+                    ...instance.history,
+                    undo: instance.history.undo.concat({
+                        code: instance.code,
+                        cursor: instance.cursor,
+                        add: payload.add,
+                        del: payload.del
+                    })
                 }
-            ) };
+            }));
         default:
             return state;
     }
 };
+
+/**
+ * Modify a single instance by key.
+ *
+ * @param {Object} state - Current state.
+ * @param {string} key - Instance key to modify.
+ * @param {Function} fn - Function to call
+ * @returns {Object} New State.
+ */
+function mapInstanceWithKey(state, key, fn) {
+    return { ...state, instances: state.instances.map(instance =>
+        instance.key !== key ? instance : fn(instance)
+    ) };
+}
