@@ -154,16 +154,6 @@ const highlightElement = function highlightElement(el) {
 };
 
 /**
- * Create a debounced keyup stream.
- *
- * @param {Element} el - Element to create stream for.
- * @returns {Observable} Observable of keyup events.
- */
-const createDebouncedKeyup = function createDebouncedKeyup(el) {
-    return fromEvents(el, 'keyup').debounce(150);
-};
-
-/**
  * Creates a stream to update Prism's setting and fetch any plugin scripts.
  *
  * @param {Object} state - Current page state.
@@ -190,7 +180,8 @@ const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, state) 
         highlightElement(el),
         state.instance.cursor ? setSelectionRange(el.querySelector('code'), ...state.instance.cursor) : never(),
         state.instance.cursor ? updateLinenumber(el.querySelector('pre'), ...state.instance.cursor) : never()
-    ]);
+    ])
+        .takeUntilBy(fromEvents(el, 'keydown'));
 });
 
 /**
@@ -223,7 +214,7 @@ export default R.curry(function onMount(el, props$) {
         emitter.end();
     });
 
-    const render$ = props$.sampledBy(createDebouncedKeyup(el))
+    const render$ = props$.sampledBy(fromEvents(el, 'keyup').debounce(10))
         .merge(props$.take(1))
         .flatMapLatest(createRenderStream(el));
 
