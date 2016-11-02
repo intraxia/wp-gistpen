@@ -68,6 +68,12 @@ export default events({
         R.map(mapKeydownToAction),
         R.filter(R.identity)
     ),
+    onKeyup: R.pipe(
+        R.filter(({ keyCode }) =>
+            keyCode < 9 || keyCode === 13 || keyCode > 32 && keyCode < 41
+        ),
+        mapToTargetCursorAction
+    ),
     onInput: R.map(({ target }) =>
         editorValueChangeAction({
             code: target.textContent,
