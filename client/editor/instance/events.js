@@ -40,6 +40,8 @@ const mapKeydownToAction = function mapKeydownToAction(evt) {
     switch (evt.keyCode) {
         case 9: // Tab
             if (!cmdOrCtrl) {
+                evt.preventDefault();
+
                 return editorIndentAction({ code, cursor, inverse });
             }
             break;

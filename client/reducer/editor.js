@@ -1,6 +1,6 @@
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE,
-    EDITOR_CURSOR_MOVE } from '../action';
+    EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE } from '../action';
 
 const defaults = {
     optionsOpen: false,
@@ -10,6 +10,7 @@ const defaults = {
     invisibles: 'off',
     instances: [{
         code: '',
+        language: 'plaintext',
         cursor: false,
         history: {
             undo: [],
@@ -40,6 +41,18 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
             return { ...state, invisibles: payload.value };
         case EDITOR_CURSOR_MOVE:
             return mapInstanceWithKey(state, payload.key, instance => ({ ...instance, cursor: payload.cursor }));
+        case EDITOR_INDENT:
+            return mapInstanceWithKey(state, payload.key, instance => ({
+                ...instance,
+                ...indent(payload, state),
+                history: {
+                    ...instance.history,
+                    undo: instance.history.undo.concat({
+                        code: instance.code,
+                        cursor: instance.cursor
+                    })
+                }
+            }));
         case EDITOR_VALUE_CHANGE:
             return mapInstanceWithKey(state, payload.key, instance => ({
                 ...instance,
@@ -49,9 +62,7 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                     ...instance.history,
                     undo: instance.history.undo.concat({
                         code: instance.code,
-                        cursor: instance.cursor,
-                        add: payload.add,
-                        del: payload.del
+                        cursor: instance.cursor
                     })
                 }
             }));
@@ -72,4 +83,78 @@ function mapInstanceWithKey(state, key, fn) {
     return { ...state, instances: state.instances.map(instance =>
         instance.key !== key ? instance : fn(instance)
     ) };
+}
+
+/**
+ * Update the code and cursor position for indentation.
+ *
+ * @param {string} code - Current code in the editor.
+ * @param {number} ss - Selection start.
+ * @param {number} se - Selection end.
+ * @param {boolean} inverse - Whether the indentation should be inverse.
+ * @param {string} tabs - Whether tabs are "on" or "off".
+ * @param {string} width - Width of tabs.
+ * @returns {{code: string, cursor: [number, number]}} New code and cursor position.
+ */
+function indent({ code, cursor: [ss,se], inverse }, { tabs, width }) {
+    let before = code.slice(0, ss);
+    let selection = code.slice(ss, se);
+    let after = code.slice(se);
+
+    if (inverse) {
+        if (tabs === 'on') {
+            if ('\t' === before.charAt(before.length - 1)) {
+                before = before.slice(0, -1);
+                ss--;
+            } else {
+                let befores = before.split('\n');
+
+                if ('\t' === befores[befores.length - 1].charAt(0)) {
+                    befores[befores.length - 1] = befores[befores.length - 1].slice(1);
+                    ss--;
+                }
+
+                before = befores.join('\n');
+            }
+        } else {
+            if (' ' === before.charAt(before.length - 1)) {
+                width = parseInt(width, 10);
+
+                while (width && ' ' === before.charAt(before.length - 1)) {
+                    before = before.slice(0, -1);
+                    width--;
+                    ss--;
+                }
+            } else {
+                let befores = before.split('\n');
+
+                while (width && ' ' === befores[befores.length - 1].charAt(0)) {
+                    befores[befores.length - 1] = befores[befores.length - 1].slice(1);
+                    width--;
+                    ss--;
+                }
+
+                before = befores.join('\n');
+            }
+        }
+    } else {
+        const append = tabs === 'on' ? '\t' : new Array(parseInt(width, 10) + 1).join(' ');
+
+        before += append;
+
+        ss += append.length;
+        se += append.length;
+
+        return {
+            code: before + selection + after,
+            cursor: [ss, se]
+        };
+    }
+
+    se = ss + selection.length;
+
+    return {
+        code: before + selection + after,
+        cursor: [ss, se]
+    };
 }
