@@ -1,7 +1,8 @@
 import R from 'ramda';
-import { concat, fromEvents, fromPromise, merge, never, stream } from 'kefir';
+import { concat, fromEvents, fromPromise, merge, stream } from 'kefir';
 import Prism from '../../prism';
-import render from 'brookjs/render';
+import render, { raf$ } from 'brookjs/render';
+import { editorOptionsIsEqual, lineNumberIsEqual, isSpecialEvent } from './util';
 import template from './index.hbs';
 
 const renderTemplate = render(template);
@@ -42,26 +43,22 @@ function updateLinenumber(/*pre, start, end*/) {
  */
 const setSelectionRange = R.curry(function setSelectionRange(node, ss, se) {
     return stream(emitter => {
-        const loop = requestAnimationFrame(() => {
-            let range = document.createRange();
-            let offset = findOffset(node, ss);
+        const range = document.createRange();
+        let offset = findOffset(node, ss);
 
-            range.setStart(offset.element, offset.offset);
+        range.setStart(offset.element, offset.offset);
 
-            if (se && se !== ss) {
-                offset = findOffset(node, se);
-            }
+        if (se && se !== ss) {
+            offset = findOffset(node, se);
+        }
 
-            range.setEnd(offset.element, offset.offset);
+        range.setEnd(offset.element, offset.offset);
 
-            let selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
 
-            emitter.end();
-        });
-
-        return () => cancelAnimationFrame(loop);
+        emitter.end();
     });
 });
 
@@ -144,12 +141,8 @@ function findOffset(root, ss) {
  */
 const highlightElement = function highlightElement(el) {
     return stream(emitter => {
-        const loop = requestAnimationFrame(() => {
-            Prism.highlightElement(el.querySelector('code'), false);
-            emitter.end();
-        });
-
-        return () => cancelAnimationFrame(loop);
+        Prism.highlightElement(el.querySelector('code'), false);
+        emitter.end();
     });
 };
 
@@ -171,28 +164,17 @@ const createPrismUpdateStream = function createPrismUpdateStream(state) {
  * Creates a stream to update the element after state updates.
  *
  * @param {Element} el - Element to render.
- * @param {Object} state - Updated state.
+ * @param {Object} props - Latest props.
  * @returns {Observable} Observable to update element.
  */
-const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, state) {
-    return merge([
-        renderTemplate(el, state, state),
-        highlightElement(el),
-        state.instance.cursor ? setSelectionRange(el.querySelector('code'), ...state.instance.cursor) : never(),
-        state.instance.cursor ? updateLinenumber(el.querySelector('pre'), ...state.instance.cursor) : never()
-    ])
-        .takeUntilBy(fromEvents(el, 'keydown'));
-});
+const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, props) {
+    let stream$ = renderTemplate(el, props, props).concat(highlightElement(el));
 
-/**
- * Creates a stream to update Prism's settings then update the DOM.
- *
- * @param {Element} el - Element to update.
- * @param {Element} state - Page state to update to.
- * @returns {Observable} Observable to render the element.
- */
-const createRenderStream = R.curry(function createRenderStream(el, state) {
-    return concat([createPrismUpdateStream(state), createDOMUpdateStream(el, state)]);
+    if (props.instance.cursor) {
+        stream$ = stream$.concat(setSelectionRange(el.querySelector('code'), ...props.instance.cursor));
+    }
+
+    return stream$;
 });
 
 /**
@@ -208,15 +190,82 @@ const createRenderStream = R.curry(function createRenderStream(el, state) {
  * @returns {Observable} - Stream of renders.
  */
 export default R.curry(function onMount(el, props$) {
+    const keyUp$ = fromEvents(el, 'keyup');
+    const keyDown$ = fromEvents(el, 'keydown');
+
+    // Ensure the autoload path is set correctly on startup.
+    // @todo move elsewhere?
     const setAutoloader$ = stream(emitter => {
         Prism.setAutoloaderPath(__webpack_public_path__);
 
         emitter.end();
     });
 
-    const render$ = props$.sampledBy(fromEvents(el, 'keyup').debounce(10))
-        .merge(props$.take(1))
-        .flatMapLatest(createRenderStream(el));
+    /**
+     * Create initial render stream.
+     *
+     * This handles the render on page load, making sure the editor
+     * gets highlighted immediately. `props$` is a Kefir.Property,
+     * so we get a value immediately.
+     */
+    const initial$ = props$.take(1)
+        .flatMapLatest(props => createDOMUpdateStream(el, props));
 
-    return merge([setAutoloader$, render$]);
+    /**
+     * Create options update & render stream.
+     *
+     * This stream covers options changes & rerenders the editor.
+     * There's no need to debounce or cancel because the user will
+     * either be interacting with the options panel, so there's no
+     * chance of messing up typing.
+     */
+    const options$ = props$.skipDuplicates(editorOptionsIsEqual)
+        .flatMapLatest(props => concat([
+            createPrismUpdateStream(props),
+            createDOMUpdateStream(el, props)
+        ]));
+
+    /**
+     * Create typing render stream.
+     *
+     * This stream ensures the rerenders don't take place while
+     * the user is typing. We use a debounced keyup to ensure
+     * the props
+     */
+    const typing$ = props$.sampledBy(keyUp$.debounce(10))
+        .flatMapLatest(props => createDOMUpdateStream(el, props).takeUntilBy(keyDown$));
+
+    /**
+     * Create special keys renders stream.
+     *
+     * There are a few keys that run through the reducer logic. These
+     * need to update the editor immediately, interrupting the user
+     * typing to update the code in the editor and the cursor location.
+     * The render is thus done synchronously.
+     */
+    const special$ = props$.sampledBy(keyDown$.filter(isSpecialEvent).delay(0))
+        .flatMapLatest(props => raf$.take(1).flatMap(() =>  {
+            const code = el.querySelector('code');
+
+            return stream(emitter => {
+                code.textContent = props.instance.code;
+                emitter.end();
+            })
+                .concat(highlightElement(el))
+                .concat(setSelectionRange(code, ...props.instance.cursor));
+        }));
+
+    /**
+     * Create line number render stream.
+     *
+     * Update the line numbers as soon as they change. This
+     * doesn't need to be affected by the typing, as this
+     * won't change anything in the DOM that the editor
+     * interacts with.
+     */
+    const lineNumber$ = props$.skipDuplicates(lineNumberIsEqual)
+        .filter(R.path(['instance', 'cursor']))
+        .flatMapLatest(props => updateLinenumber(el.querySelector('pre'), ...props.instance.cursor));
+
+    return merge([setAutoloader$, initial$, options$, typing$, special$, lineNumber$]);
 });
