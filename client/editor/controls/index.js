@@ -4,7 +4,7 @@ import component from 'brookjs/component';
 import events from 'brookjs/events';
 import render from 'brookjs/render';
 import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
-    editorWidthChangeAction, repoStatusChangeAction, repoSyncToggleAction
+    editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction
 } from '../../action';
 import template from './index.hbs';
 
@@ -20,10 +20,10 @@ export default component({
     render: render(template),
     events: events({
         onStatusChange: R.map(
-            R.pipe(getTargetValue, repoStatusChangeAction)
+            R.pipe(getTargetValue, editorStatusChangeAction)
         ),
         onSyncToggle: R.map(
-            R.pipe(mapCheckedToString, repoSyncToggleAction)
+            R.pipe(mapCheckedToString, editorSyncToggleAction)
         ),
         onThemeChange: R.map(
             R.pipe(getTargetValue, editorThemeChangeAction)

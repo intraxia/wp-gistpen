@@ -95,6 +95,83 @@ export const editorInvisiblesToggleAction = function editorInvisiblesToggleActio
 };
 
 /**
+ * Dispatched when the Editor update button is clicked.
+ *
+ * @type {string}
+ */
+export const EDITOR_UPDATE_CLICK = 'EDITOR_UPDATE_CLICK';
+
+/**
+ * Creates a new Editor Update Click Action.
+ *
+ * @returns {Action} Editor Update Click Action.
+ */
+export const editorUpdateClickAction = function editorUpdateClickAction() {
+    return { type: EDITOR_UPDATE_CLICK };
+};
+
+/**
+ * Dispatched when the Editor description changes.
+ *
+ * @type {string}
+ */
+export const EDITOR_DESCRIPTION_CHANGE = 'EDITOR_DESCRIPTION_CHANGE';
+
+/**
+ * Creates a new Editor Description Change Action.
+ *
+ * @param {string} value - Editor description.
+ * @returns {Action} Editor Description Change Action.
+ */
+export const editorDescriptionChangeAction = function editorDescriptionChangeAction(value) {
+    return {
+        type: EDITOR_DESCRIPTION_CHANGE,
+        payload: { value }
+    };
+};
+
+/**
+ * Dispatched when the Editor status changes.
+ *
+ * @type {string}
+ */
+export const EDITOR_STATUS_CHANGE = 'EDITOR_STATUS_CHANGE';
+
+/**
+ * Creates a new Editor Status Change Action.
+ *
+ * @param {string} value - Editor status..
+ * @returns {Action} Editor Status Change Action.
+ */
+export const editorStatusChangeAction = function editorStatusChangeAction(value) {
+    return {
+        type: EDITOR_STATUS_CHANGE,
+        payload: { value }
+    };
+};
+
+/**
+ * Dispatched when the Editor sync status changes.
+ *
+ * @type {string}
+ */
+export const EDITOR_SYNC_TOGGLE = 'EDITOR_SYNC_TOGGLE';
+
+/**
+ * Creates a new Editor Sync Change Action.
+ *
+ * @param {string} value - Editor sync status.
+ * @returns {Action} Editor Sync Change Action.
+ */
+export const editorSyncToggleAction = function editorSyncToggleAction(value) {
+    return {
+        type: EDITOR_SYNC_TOGGLE,
+        payload: { value }
+    };
+};
+
+
+/**
  * Emitted when the value in the editor changes.
  *
  * @type {string}
