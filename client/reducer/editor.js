@@ -1,6 +1,7 @@
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE,
-    EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE } from '../action';
+    EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE,
+    EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE } from '../action';
 
 const defaults = {
     optionsOpen: false,
@@ -45,7 +46,16 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
         case EDITOR_INVISIBLES_TOGGLE:
             return { ...state, invisibles: payload.value };
         case EDITOR_CURSOR_MOVE:
-            return mapInstanceWithKey(state, payload.key, instance => ({ ...instance, cursor: payload.cursor }));
+            return mapInstanceWithKey(state, payload.key, instance => ({
+                ...instance,
+                cursor: payload.cursor
+            }));
+        case EDITOR_DESCRIPTION_CHANGE:
+            return { ...state, description: payload.value };
+        case EDITOR_STATUS_CHANGE:
+            return { ...state, status: payload.value };
+        case EDITOR_SYNC_TOGGLE:
+            return { ...state, sync: payload.value };
         case EDITOR_INDENT:
             return mapInstanceWithKey(state, payload.key, instance => ({
                 ...instance,
