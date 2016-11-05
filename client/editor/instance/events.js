@@ -46,6 +46,8 @@ const mapKeydownToAction = function mapKeydownToAction(evt) {
             }
             break;
         case 13:
+            evt.preventDefault();
+
             return editorMakeNewlineAction({ code, cursor });
         case 90:
             if (cmdOrCtrl) {
@@ -72,7 +74,7 @@ export default events({
     ),
     onKeyup: R.pipe(
         R.filter(({ keyCode }) =>
-            keyCode < 9 || keyCode === 13 || keyCode > 32 && keyCode < 41
+            keyCode < 9 || keyCode > 32 && keyCode < 41
         ),
         mapToTargetCursorAction
     ),

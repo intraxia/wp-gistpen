@@ -1,5 +1,5 @@
 import test from 'ava';
-import { editorIndentAction } from '../../action';
+import { editorIndentAction, editorMakeNewlineAction } from '../../action';
 import editorReducer from '../editor';
 
 const initial = {
@@ -215,6 +215,43 @@ test('should delete spaces at start of line cursor is on if inverse', t => {
         instances: [{
             code: 'echo "Hello";\necho "world!";',
             cursor: [13, 13],
+            language: 'php',
+            history: {
+                undo: [{
+                    code: '    echo "Hello";\necho "world!";',
+                    cursor: [17, 17]
+                }],
+                redo: []
+            }
+        }]
+    };
+
+    t.deepEqual(editorReducer(before, action), after);
+});
+
+test('should add newline and indentation', t => {
+    const action = editorMakeNewlineAction({
+        code: '    echo "Hello";\necho "world!";',
+        cursor: [17, 17]
+    });
+    const before = {
+        ...initial,
+        tabs: 'off',
+        instances: [{
+            ...initial.instances[0],
+            code: '    echo "Hello";\necho "world!";',
+            cursor: [17, 17],
+        }]
+    };
+    const after = {
+        optionsOpen: false,
+        theme: 'default',
+        tabs: 'off',
+        width: '4',
+        invisibles: 'off',
+        instances: [{
+            code: '    echo "Hello";\n    \necho "world!";',
+            cursor: [22, 22],
             language: 'php',
             history: {
                 undo: [{

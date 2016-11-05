@@ -53,6 +53,18 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                     })
                 }
             }));
+        case EDITOR_MAKE_NEWLINE:
+            return mapInstanceWithKey(state, payload.key, instance => ({
+                ...instance,
+                ...makeNewline(payload),
+                history: {
+                    ...instance.history,
+                    undo: instance.history.undo.concat({
+                        code: instance.code,
+                        cursor: instance.cursor
+                    })
+                }
+            }));
         case EDITOR_VALUE_CHANGE:
             return mapInstanceWithKey(state, payload.key, instance => ({
                 ...instance,
@@ -86,6 +98,22 @@ function mapInstanceWithKey(state, key, fn) {
 }
 
 /**
+ * Extract code sections based on selection start & end.
+ *
+ * @param {string} code - Current code in editor.
+ * @param {number} ss - Selection start.
+ * @param {number} se - Selection end.s
+ * @returns {{before: string, selection: string, after: string}} Code section.
+ */
+function extractSections(code, ss, se) {
+    return {
+        before: code.slice(0, ss),
+        selection: code.slice(ss, se),
+        after: code.slice(se)
+    };
+}
+
+/**
  * Update the code and cursor position for indentation.
  *
  * @param {string} code - Current code in the editor.
@@ -97,9 +125,7 @@ function mapInstanceWithKey(state, key, fn) {
  * @returns {{code: string, cursor: [number, number]}} New code and cursor position.
  */
 function indent({ code, cursor: [ss,se], inverse }, { tabs, width }) {
-    let before = code.slice(0, ss);
-    let selection = code.slice(ss, se);
-    let after = code.slice(se);
+    let { before, selection, after } = extractSections(code, ss, se);
 
     if (inverse) {
         if (tabs === 'on') {
@@ -155,6 +181,31 @@ function indent({ code, cursor: [ss,se], inverse }, { tabs, width }) {
 
     return {
         code: before + selection + after,
+        cursor: [ss, se]
+    };
+}
+
+/**
+ * Update the code and cursor position for newline.
+ *
+ * @param {string} code - Current code in the editor.
+ * @param {number} ss - Selection start.
+ * @param {number} se - Selection end.
+ * @returns {{code: string, cursor: [number, number]}} New code and cursor position.
+ */
+function makeNewline({ code, cursor: [ss,se] }) {
+    let { before, after } = extractSections(code, ss, se);
+
+    let lf = before.lastIndexOf('\n') + 1;
+    let indent = (before.slice(lf).match(/^\s+/) || [''])[0];
+
+    before += '\n' + indent;
+
+    ss += indent.length + 1;
+    se = ss;
+
+    return {
+        code: before + after,
         cursor: [ss, se]
     };
 }
