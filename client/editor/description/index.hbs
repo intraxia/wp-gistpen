@@ -3,10 +3,10 @@
         <div id="titlewrap" class="wpgp-editor-description-container">
             <label id="title-prompt-text"
                    for="title"
-                    {{#if repo.description}} class="screen-reader-text"{{/if}}>
+                    {{#if editor.description}} class="screen-reader-text"{{/if}}>
                 Description...
             </label>
-            <input type="text" value="{{{repo.description}}}"
+            <input type="text" value="{{{editor.description}}}"
                    data-brk-oninput="oninput"
                    name="description" size="30"
                    id="title" spellcheck="true"

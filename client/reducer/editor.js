@@ -8,6 +8,11 @@ const defaults = {
     tabs: 'off',
     width: '4',
     invisibles: 'off',
+    description: '',
+    status: 'draft',
+    password: '',
+    gist_id: '',
+    sync: 'off',
     instances: [{
         code: '',
         language: 'plaintext',
