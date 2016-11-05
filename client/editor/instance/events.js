@@ -4,6 +4,7 @@ import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
     editorMakeNewlineAction, editorRedoAction, editorUndoAction,
     editorValueChangeAction } from '../../action';
 import { selectSelectionStart, selectSelectionEnd } from '../../selector';
+import { isSpecialEvent } from './util';
 
 /**
  * Maps an element's selection start/end to the Cursor Move Action.
@@ -32,36 +33,22 @@ const mapToTargetCursorAction = R.map(R.pipe(
  * @returns {Action|false} Action to emit, or false if no action.
  */
 const mapKeydownToAction = function mapKeydownToAction(evt) {
-    const { altKey, shiftKey: inverse, metaKey, ctrlKey } = evt;
-    const cmdOrCtrl = metaKey || ctrlKey;
+    const { shiftKey: inverse } = evt;
     const { textContent: code } = evt.target;
     const cursor = [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)];
 
+    evt.preventDefault();
+
     switch (evt.keyCode) {
         case 9: // Tab
-            if (!cmdOrCtrl) {
-                evt.preventDefault();
-
-                return editorIndentAction({ code, cursor, inverse });
-            }
-            break;
+            return editorIndentAction({ code, cursor, inverse });
         case 13:
-            evt.preventDefault();
-
             return editorMakeNewlineAction({ code, cursor });
         case 90:
-            if (cmdOrCtrl) {
-                return inverse ? editorRedoAction() : editorUndoAction();
-            }
-            break;
+            return inverse ? editorRedoAction() : editorUndoAction();
         case 191:
-            if (cmdOrCtrl && !altKey) {
-                return editorMakeCommentAction({ code, cursor });
-            }
-            break;
+            return editorMakeCommentAction({ code, cursor });
     }
-
-    return false;
 };
 
 export default events({
@@ -69,8 +56,8 @@ export default events({
     onClick: mapToTargetCursorAction,
     onFocus: mapToTargetCursorAction,
     onKeydown: R.pipe(
-        R.map(mapKeydownToAction),
-        R.filter(R.identity)
+        R.filter(isSpecialEvent),
+        R.map(mapKeydownToAction)
     ),
     onKeyup: R.pipe(
         R.filter(({ keyCode }) =>
