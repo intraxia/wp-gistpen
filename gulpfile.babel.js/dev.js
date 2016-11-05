@@ -1,11 +1,12 @@
 const gulp = require('gulp');
+const gulpMultiProcess = require('gulp-multi-process');
 const R = require('ramda');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const gutil = require('gulp-util');
 const path = require('path');
 
-gulp.task('dev', ['dev:app', 'dev:tdd']);
+gulp.task('dev', cb => gulpMultiProcess(['dev:app', 'dev:tdd'], cb));
 
 gulp.task('dev:app', () => {
     const webpackWatchConfig = R.clone(webpackConfig);
