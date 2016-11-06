@@ -46,7 +46,7 @@
     "jquery": "2.2.0",
     "kefir": "^3.6.0",
     "prism-themes": "git+https://github.com/PrismJS/prism-themes.git",
-    "prismjs": "1.4.1",
+    "prismjs": "github:mAAdhaTTah/prism#7a8e1c3ac001e9f9f294f2de697677f6573ad998",
     "ramda": "^0.22.1",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^1.0.0",
