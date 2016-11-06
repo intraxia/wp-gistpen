@@ -1,9 +1,12 @@
 import R from 'ramda';
 import { concat, fromEvents, fromPromise, merge, stream } from 'kefir';
 import Prism from '../../prism';
+import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import render, { raf$ } from 'brookjs/render';
 import { editorOptionsIsEqual, lineNumberIsEqual, isSpecialEvent } from './util';
 import template from './index.hbs';
+
+toolbarStyles.use();
 
 const renderTemplate = render(template);
 

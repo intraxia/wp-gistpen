@@ -2,7 +2,7 @@ import R from 'ramda';
 import events from 'brookjs/events';
 import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
     editorMakeNewlineAction, editorRedoAction, editorUndoAction,
-    editorValueChangeAction } from '../../action';
+    editorValueChangeAction, editorFilenameChangeAction } from '../../action';
 import { selectSelectionStart, selectSelectionEnd } from '../../selector';
 import { isSpecialEvent } from './util';
 
@@ -54,6 +54,10 @@ const mapKeydownToAction = function mapKeydownToAction(evt) {
 export default events({
     onBlur: R.map(R.always(editorCursorMoveAction(false))),
     onClick: mapToTargetCursorAction,
+    onFilename: R.map(R.pipe(
+        R.path(['target', 'textContent']),
+        editorFilenameChangeAction
+    )),
     onFocus: mapToTargetCursorAction,
     onKeydown: R.pipe(
         R.filter(isSpecialEvent),
