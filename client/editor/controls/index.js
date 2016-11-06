@@ -4,8 +4,8 @@ import component from 'brookjs/component';
 import events from 'brookjs/events';
 import render from 'brookjs/render';
 import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
-    editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction
-} from '../../action';
+    editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction,
+    editorUpdateClickAction, editorAddClickAction } from '../../action';
 import template from './index.hbs';
 
 const mapCheckedToString = R.ifElse(
@@ -37,5 +37,7 @@ export default component({
         onInvisiblesToggle: R.map(
             R.pipe(mapCheckedToString, editorInvisiblesToggleAction)
         ),
+        onUpdateClick: R.map(editorUpdateClickAction),
+        onAddClick: R.map(editorAddClickAction),
     })
 });

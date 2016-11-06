@@ -111,6 +111,22 @@ export const editorUpdateClickAction = function editorUpdateClickAction() {
 };
 
 /**
+ * Dispatched when the Editor add button is clicked.
+ *
+ * @type {string}
+ */
+export const EDITOR_ADD_CLICK = 'EDITOR_ADD_CLICK';
+
+/**
+ * Creates a new Editor Update Click Action.
+ *
+ * @returns {Action} Editor Update Click Action.
+ */
+export const editorAddClickAction = function editorAddClickAction() {
+    return { type: EDITOR_ADD_CLICK };
+};
+
+/**
  * Dispatched when the Editor description changes.
  *
  * @type {string}
