@@ -44,15 +44,15 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos/{repo_id} endpoints
 			 */
 			$router->get( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'view' ) );
-			$router->put( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'update' ), array(
+			$router->put( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'update' ), array(
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
-			$router->patch( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'apply' ), array(
+			$router->patch( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'apply' ), array(
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
-			$router->delete( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
+			$router->delete( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
