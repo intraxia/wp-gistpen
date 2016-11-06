@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Model;
 
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
@@ -168,5 +169,98 @@ class Repo extends Model implements UsesWordPressPost {
 	 */
 	protected function compute_html_url() {
 		return get_permalink( $this->ID );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function refresh( array $attributes ) {
+		try {
+			$blobs = $this->blobs;
+		} catch ( \Exception $exception ) {
+			$blobs = new Collection( array(), array(
+				'model' => EntityManager::BLOB_CLASS,
+			) );
+		}
+
+		if ( isset( $attributes['blobs'] ) ) {
+			if ( $attributes['blobs'] instanceof Collection ) {
+				$blobs = $attributes['blobs'];
+			} else {
+				foreach ( $attributes['blobs'] as $attribute ) {
+					$matched = false;
+
+					/** @var Blob $blob */
+					foreach ( $blobs as $blob ) {
+						if ( $blob->ID === $attribute['ID'] ) {
+							unset( $attribute['ID'] );
+							if ( isset( $attribute['language'] ) && is_string( $attribute['language'] ) ) {
+								$attribute['language'] = new Language( array( 'slug' => $attribute['language'] ) );
+							}
+							$blob->refresh( $attribute );
+							$matched = true;
+							break;
+						}
+					}
+
+					if ( ! $matched ) {
+						$blobs->add( new Blob( $attribute ) );
+					}
+				}
+			}
+
+
+			unset( $attributes['blobs'] );
+		}
+
+		parent::refresh( $attributes );
+
+		$this->blobs = $blobs;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function merge( array $attributes ) {
+		try {
+			$blobs = $this->blobs;
+		} catch ( \Exception $exception ) {
+			$blobs = new Collection( array(), array(
+				'model' => EntityManager::BLOB_CLASS,
+			) );
+		}
+
+		if ( isset( $attributes['blobs'] ) ) {
+			if ( $attributes['blobs'] instanceof Collection ) {
+				$blobs = $attributes['blobs'];
+			} else {
+				foreach ( $attributes['blobs'] as $attribute ) {
+					$matched = false;
+
+					/** @var Blob $blob */
+					foreach ( $blobs as $blob ) {
+						if ( $blob->ID === $attribute['ID'] ) {
+							unset( $attribute['ID'] );
+							if ( isset( $attribute['language'] ) && is_string( $attribute['language'] ) ) {
+								$attribute['language'] = new Language( array( 'slug' => $attribute['language'] ) );
+							}
+							$blob->merge( $attribute );
+							$matched = true;
+							break;
+						}
+					}
+
+					if ( ! $matched ) {
+						$blobs->add( new Blob( $attribute ) );
+					}
+				}
+			}
+
+			unset( $attributes['blobs'] );
+		}
+
+		parent::merge( $attributes );
+
+		$this->blobs = $blobs;
 	}
 }

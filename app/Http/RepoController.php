@@ -101,6 +101,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function update( WP_REST_Request $request ) {
+		/** @var Repo|WP_Error $model */
 		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
 
 		if ( is_wp_error( $model ) ) {
@@ -109,31 +110,7 @@ class RepoController {
 			return $model;
 		}
 
-		$params = $request->get_json_params();
-
-		if ( isset( $params['blobs'] ) ) {
-			foreach ( $params['blobs'] as $blob_data ) {
-				$matched = false;
-
-				/** @var Blob $blob */
-				foreach ( $model->blobs as $blob ) {
-					if ( $blob->ID === $blob_data['ID'] ) {
-						$blob->refresh( $blob_data );
-						$matched = true;
-						break;
-					}
-				}
-
-				if ( ! $matched ) {
-					$model->blobs->add( new Blob( $blob_data ) );
-				}
-			}
-
-			unset( $params['blobs'] );
-		}
-
-		$model->refresh( $params );
-
+		$model->refresh( $request->get_json_params() );
 		$model = $this->em->persist( $model );
 
 		if ( is_wp_error( $model ) ) {
@@ -161,31 +138,7 @@ class RepoController {
 			return $model;
 		}
 
-		$params = $request->get_json_params();
-
-		if ( isset( $params['blobs'] ) ) {
-			foreach ( $params['blobs'] as $blob_data ) {
-				$matched = false;
-
-				/** @var Blob $blob */
-				foreach ( $model->blobs as $blob ) {
-					if ( $blob->ID === $blob_data['ID'] ) {
-						$blob->merge( $blob_data );
-						$matched = true;
-						break;
-					}
-				}
-
-				if ( ! $matched ) {
-					$model->blobs->add( new Blob( $blob_data ) );
-				}
-			}
-
-			unset( $params['blobs'] );
-		}
-
-		$model->merge( $params );
-
+		$model->merge( $request->get_json_params() );
 		$model = $this->em->persist( $model );
 
 		if ( is_wp_error( $model ) ) {
