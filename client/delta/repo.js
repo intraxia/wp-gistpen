@@ -33,7 +33,7 @@ export default function siteDelta(action$, state$) {
             body: makeBody(state),
             credentials: 'include',
             headers: {
-                'X-WP-Nonce': state.globals.nonce,
+                'X-WP-Nonce': state.api.nonce,
                 'Content-Type': 'application/json'
             }
         }))
