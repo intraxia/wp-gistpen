@@ -618,7 +618,7 @@ class EntityManager implements EntityManagerContract {
 			wp_trash_post( $deleted_blob->get_primary_id() );
 		}
 
-		return $model;
+		return $this->find( static::REPO_CLASS, $model->get_primary_id() );
 	}
 
 	/**
@@ -649,7 +649,7 @@ class EntityManager implements EntityManagerContract {
 			// @todo what to do?
 		}
 
-		return $model;
+		return $this->find( static::BLOB_CLASS, $model->get_primary_id() );
 	}
 
 	/**
@@ -682,7 +682,7 @@ class EntityManager implements EntityManagerContract {
 			);
 		}
 
-		return $model;
+		return $this->find( static::LANGUAGE_CLASS, $model->get_primary_id() );
 	}
 
 	/**
