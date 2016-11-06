@@ -170,6 +170,26 @@ export const editorSyncToggleAction = function editorSyncToggleAction(value) {
     };
 };
 
+/**
+ * Emitted when the value of a filename changes.
+ *
+ * @type {string}
+ */
+export const EDITOR_FILENAME_CHANGE = 'EDITOR_FILENAME_CHANGE';
+
+/**
+ * Creates a new Editor Filename Change Action.
+ *
+ * @param {string} value - Editor filename.
+ * @returns {Action} Editor Filename Change Action.
+ */
+export const editorFilenameChangeAction = function editorFilenameChangeAction(value) {
+    return {
+        type: EDITOR_FILENAME_CHANGE,
+        payload: { value }
+    };
+};
+
 
 /**
  * Emitted when the value in the editor changes.
