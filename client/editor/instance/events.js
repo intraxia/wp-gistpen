@@ -2,7 +2,8 @@ import R from 'ramda';
 import events from 'brookjs/events';
 import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
     editorMakeNewlineAction, editorRedoAction, editorUndoAction,
-    editorValueChangeAction, editorFilenameChangeAction } from '../../action';
+    editorValueChangeAction, editorFilenameChangeAction,
+    editorLanguageChangeAction } from '../../action';
 import { selectSelectionStart, selectSelectionEnd } from '../../selector';
 import { isSpecialEvent } from './util';
 
@@ -74,5 +75,9 @@ export default events({
             code: target.textContent,
             cursor: [selectSelectionStart(target), selectSelectionEnd(target)]
         })
-    )
+    ),
+    onLanguage: R.map(R.pipe(
+        R.path(['target', 'value']),
+        editorLanguageChangeAction
+    ))
 });
