@@ -138,6 +138,7 @@ class Editor implements HasActions, HasFilters {
 				'instances'  => array_map( function ( Blob $blob ) {
 					return array(
 						'key'      => (string) $blob->ID,
+						'filename' => $blob->filename,
 						'code'     => $blob->code,
 						'language' => $blob->language->slug,
 						'cursor'   => false,

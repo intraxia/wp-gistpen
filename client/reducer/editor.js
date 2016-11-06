@@ -15,6 +15,7 @@ const defaults = {
     gist_id: '',
     sync: 'off',
     instances: [{
+        filename: '',
         code: '',
         language: 'plaintext',
         cursor: false,

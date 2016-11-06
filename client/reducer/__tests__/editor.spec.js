@@ -14,6 +14,7 @@ const initial = {
     gist_id: '',
     sync: 'off',
     instances: [{
+        filename: 'file.php',
         code: 'echo "Hello";\necho "world!";',
         cursor: [13, 13],
         language: 'php',
@@ -43,6 +44,7 @@ test('should tab indent line the cursor is on', t => {
         gist_id: '',
         sync: 'off',
         instances: [{
+            filename: 'file.php',
             code: 'echo "Hello";\t\necho "world!";',
             cursor: [14, 14],
             language: 'php',
@@ -78,6 +80,7 @@ test('should space indent by width line the cursor is on', t => {
         gist_id: '',
         sync: 'off',
         instances: [{
+            filename: 'file.php',
             code: 'echo "Hello";    \necho "world!";',
             cursor: [17, 17],
             language: 'php',
@@ -120,6 +123,7 @@ test('should delete tab next to cursor if inverse', t => {
         gist_id: '',
         sync: 'off',
         instances: [{
+            filename: 'file.php',
             code: 'echo "Hello";\necho "world!";',
             cursor: [13, 13],
             language: 'php',
@@ -162,6 +166,7 @@ test('should delete tab from line the cursor is on if inverse', t => {
         gist_id: '',
         sync: 'off',
         instances: [{
+            filename: 'file.php',
             code: 'echo "Hello";\necho "world!";',
             cursor: [13, 13],
             language: 'php',
@@ -205,6 +210,7 @@ test('should delete spaces before the cursor if inverse', t => {
         gist_id: '',
         sync: 'off',
         instances: [{
+            filename: 'file.php',
             code: 'echo "Hello";\necho "world!";',
             cursor: [13, 13],
             language: 'php',
@@ -248,6 +254,7 @@ test('should delete spaces at start of line cursor is on if inverse', t => {
         gist_id: '',
         sync: 'off',
         instances: [{
+            filename: 'file.php',
             code: 'echo "Hello";\necho "world!";',
             cursor: [13, 13],
             language: 'php',
@@ -290,6 +297,7 @@ test('should add newline and indentation', t => {
         gist_id: '',
         sync: 'off',
         instances: [{
+            filename: 'file.php',
             code: '    echo "Hello";\n    \necho "world!";',
             cursor: [22, 22],
             language: 'php',
