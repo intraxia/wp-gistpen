@@ -393,7 +393,8 @@ class EntityManager implements EntityManagerContract {
 		) );
 
 		$query = new \WP_Term_Query( array_merge( $params, array(
-			'taxonomy' => 'wpgp_language',
+			'taxonomy'   => 'wpgp_language',
+			'hide_empty' => false,
 		) ) );
 
 		foreach ( $query->get_terms() as $term ) {
