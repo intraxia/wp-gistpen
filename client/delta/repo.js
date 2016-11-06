@@ -4,15 +4,14 @@ import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction } from '../ac
 
 const repoProps = R.pick(['description', 'status', 'password', 'sync']);
 
-const makeBody = state => ({
+const makeBody = state => JSON.stringify({
     ...repoProps(state.editor),
     blobs: state.editor.instances.map((instance, i) => ({
         ID: state.repo.blobs[i].ID,
-        filename: state.repo.blobs[i].filename,
+        filename: instance.filename,
         code: instance.code,
-        language: state.repo.blobs[i].language
+        language: instance.language
     }))
-
 });
 
 const onlyUpdateClicks = R.filter(R.pipe(
