@@ -2,7 +2,7 @@ import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE,
     EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
-    EDITOR_FILENAME_CHANGE } from '../action';
+    EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE } from '../action';
 
 const defaults = {
     optionsOpen: false,
@@ -62,6 +62,11 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
             return mapInstanceWithKey(state, payload.key, instance => ({
                 ...instance,
                 filename: payload.value
+            }));
+        case EDITOR_LANGUAGE_CHANGE:
+            return mapInstanceWithKey(state, payload.key, instance => ({
+                ...instance,
+                language: payload.value
             }));
         case EDITOR_INDENT:
             return mapInstanceWithKey(state, payload.key, instance => ({

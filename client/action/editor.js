@@ -190,6 +190,25 @@ export const editorFilenameChangeAction = function editorFilenameChangeAction(va
     };
 };
 
+/**
+ * Emitted when the value of the language changes.
+ *
+ * @type {string}
+ */
+export const EDITOR_LANGUAGE_CHANGE = 'EDITOR_LANGUAGE_CHANGE';
+
+/**
+ * Creates a new Editor Language Change Action.
+ *
+ * @param {string} value - Editor language.
+ * @returns {Action} Editor Filename Change Action.
+ */
+export const editorLanguageChangeAction = function editorLanguageChangeAction(value) {
+    return {
+        type: EDITOR_LANGUAGE_CHANGE,
+        payload: { value }
+    };
+};
 
 /**
  * Emitted when the value in the editor changes.
