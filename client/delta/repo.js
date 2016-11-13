@@ -3,15 +3,19 @@ import ajax$ from '../ajax';
 import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction } from '../action';
 
 const repoProps = R.pick(['description', 'status', 'password', 'sync']);
+const blobProps = R.pick(['filename', 'code', 'language']);
 
 const makeBody = state => JSON.stringify({
     ...repoProps(state.editor),
-    blobs: state.editor.instances.map((instance, i) => ({
-        ID: state.repo.blobs[i].ID,
-        filename: instance.filename,
-        code: instance.code,
-        language: instance.language
-    }))
+    blobs: state.editor.instances.map(instance => {
+        const blob = blobProps(instance);
+
+        if (instance.key.indexOf('new') === -1) {
+            blob.ID = instance.key;
+        }
+
+        return blob;
+    })
 });
 
 const onlyUpdateClicks = R.filter(R.pipe(
