@@ -127,6 +127,11 @@ class Editor implements HasActions, HasFilters {
 		/** @var Repo $repo */
 		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID() );
 
+		$blobs = iterator_to_array( $repo->blobs );
+		usort( $blobs, function( $a, $b ) {
+			return (int) $a->ID - (int) $b->ID;
+		} );
+
 		return array(
 			'repo'   => $repo->serialize(),
 			'editor' => array(
@@ -147,7 +152,7 @@ class Editor implements HasActions, HasFilters {
 							'redo' => array(),
 						),
 					);
-				}, iterator_to_array( $repo->blobs ) ),
+				}, $blobs ),
 				'width'      => $this->user->get( 'ace_width' ),
 				'theme'      => $this->user->get( 'ace_theme' ),
 				'invisibles' => $this->user->get( 'ace_invisibles' ) ? : 'off',
