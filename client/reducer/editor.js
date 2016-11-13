@@ -1,6 +1,6 @@
 import R from 'ramda';
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
-    EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE,
+    EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_DELETE_CLICK,
     EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE, AJAX_FINISHED,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
     EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_ADD_CLICK } from '../action';
@@ -66,6 +66,8 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                 ...state.instances,
                 { ...R.clone(instance), key: createUniqueKey(state.instances) }
             ] };
+        case EDITOR_DELETE_CLICK:
+            return { ...state, instances: rejectWithKey(payload.key, state.instances) };
         case EDITOR_FILENAME_CHANGE:
             return mapInstanceWithKey(state, payload.key, instance => ({
                 ...instance,
@@ -134,6 +136,17 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
             return state;
     }
 };
+
+/**
+ * Returns an updated array with the instance matching the provided key removed.
+ *
+ * @param {string} key - Key to remove.
+ * @param {Instance[]} instances - Current instances
+ * @returns {Instance[]} Update instances.
+ */
+function rejectWithKey(key, instances) {
+    return R.reject(instance => key === instance.key, instances);
+}
 
 /**
  * Modify a single instance by key.

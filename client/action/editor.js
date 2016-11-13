@@ -127,6 +127,22 @@ export const editorAddClickAction = function editorAddClickAction() {
 };
 
 /**
+ * Dispatched when an editor instance delete button is clicked.
+ *
+ * @type {string}
+ */
+export const EDITOR_DELETE_CLICK = 'EDITOR_DELETE_CLICK';
+
+/**
+ * Creates a new Editor Instance Delete Click Action.
+ *
+ * @returns {Action} Editor Instance Delete Click Action.
+ */
+export const editorDeleteClickAction = function editorDeleteClickAction() {
+    return { type: EDITOR_DELETE_CLICK };
+};
+
+/**
  * Dispatched when the Editor description changes.
  *
  * @type {string}
