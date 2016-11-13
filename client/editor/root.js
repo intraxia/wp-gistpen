@@ -15,7 +15,13 @@ export default component({
         'instance': {
             factory: InstanceComponent,
             key: 'instance.key',
-            modifyChildProps: R.map(props => props.editor.instances.map(instance => ({ ...props, instance })))
+            modifyChildProps: R.map(props => props.editor.instances.map(instance => ({
+                ...props,
+                instance: {
+                    ...instance,
+                    code: !/\n$/.test(instance.code) ? instance.code + '\n' : instance.code
+                }
+            })))
         }
     }),
     render: render(template)
