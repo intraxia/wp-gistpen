@@ -192,7 +192,7 @@ class Repo extends Model implements UsesWordPressPost {
 
 					/** @var Blob $blob */
 					foreach ( $blobs as $blob ) {
-						if ( $blob->ID === $attribute['ID'] ) {
+						if ( (string) $blob->ID === (string) $attribute['ID'] ) {
 							unset( $attribute['ID'] );
 							if ( isset( $attribute['language'] ) && is_string( $attribute['language'] ) ) {
 								$attribute['language'] = new Language( array( 'slug' => $attribute['language'] ) );
