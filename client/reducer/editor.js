@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE,
-    EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE,
+    EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE, AJAX_FINISHED,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
     EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_ADD_CLICK } from '../action';
 
@@ -113,6 +113,23 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                     })
                 }
             }));
+        case AJAX_FINISHED:
+            const { response: repo } = payload;
+            return {
+                ...state,
+                description: repo.description,
+                status: repo.status,
+                password: repo.password,
+                gist_id: repo.gist_id,
+                sync: repo.sync,
+                instances: repo.blobs.map(blob => ({
+                    key: blob.ID + '',
+                    filename: blob.filename,
+                    code: blob.code,
+                    language: blob.language.slug,
+                    history: R.clone(instance.history)
+                }))
+            };
         default:
             return state;
     }
