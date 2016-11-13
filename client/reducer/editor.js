@@ -1,8 +1,20 @@
+import R from 'ramda';
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE,
     EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
-    EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE } from '../action';
+    EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_ADD_CLICK } from '../action';
+
+const instance = {
+    filename: '',
+    code: '\n',
+    language: 'plaintext',
+    cursor: false,
+    history: {
+        undo: [],
+        redo: []
+    }
+};
 
 const defaults = {
     optionsOpen: false,
@@ -15,16 +27,7 @@ const defaults = {
     password: '',
     gist_id: '',
     sync: 'off',
-    instances: [{
-        filename: '',
-        code: '',
-        language: 'plaintext',
-        cursor: false,
-        history: {
-            undo: [],
-            redo: []
-        }
-    }]
+    instances: [{ ...R.clone(instance), key: createUniqueKey([]) }]
 };
 
 /**
@@ -58,6 +61,11 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
             return { ...state, status: payload.value };
         case EDITOR_SYNC_TOGGLE:
             return { ...state, sync: payload.value };
+        case EDITOR_ADD_CLICK:
+            return { ...state, instances: [
+                ...state.instances,
+                { ...R.clone(instance), key: createUniqueKey(state.instances) }
+            ] };
         case EDITOR_FILENAME_CHANGE:
             return mapInstanceWithKey(state, payload.key, instance => ({
                 ...instance,
@@ -235,4 +243,26 @@ function makeNewline({ code, cursor: [ss,se] }) {
         code: before + after,
         cursor: [ss, se]
     };
+}
+
+/**
+ * Creates a new unique key for the set of instances.
+ *
+ * @param {Instance[]} instances - Array of instances.
+ * @returns {string} New unique key.
+ */
+function createUniqueKey(instances) {
+    const keys = instances.map(R.prop('key'));
+
+    let id = 0;
+
+    while (true) {
+        let key = 'new' + id;
+
+        if (keys.indexOf(key) === -1) {
+            return key;
+        }
+
+        id++;
+    }
 }
