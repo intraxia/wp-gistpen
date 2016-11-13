@@ -190,13 +190,14 @@ class Repo extends Model implements UsesWordPressPost {
 				foreach ( $attributes['blobs'] as $attribute ) {
 					$matched = false;
 
+					if ( isset( $attribute['language'] ) && is_string( $attribute['language'] ) ) {
+						$attribute['language'] = new Language( array( 'slug' => $attribute['language'] ) );
+					}
+
 					/** @var Blob $blob */
 					foreach ( $blobs as $blob ) {
 						if ( (string) $blob->ID === (string) $attribute['ID'] ) {
 							unset( $attribute['ID'] );
-							if ( isset( $attribute['language'] ) && is_string( $attribute['language'] ) ) {
-								$attribute['language'] = new Language( array( 'slug' => $attribute['language'] ) );
-							}
 							$blob->refresh( $attribute );
 							$matched = true;
 							break;
