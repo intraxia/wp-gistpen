@@ -19,26 +19,26 @@ module.exports = {
         loaders: [
             {
                 test: /\.js$/,
-                loader: 'eslint',
+                loader: 'eslint-loader',
                 exclude: /(node_modules)/,
                 enforce: 'pre'
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
+                loader: 'babel-loader',
                 include: [src, client]
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
-                include: /node_modules\/(redux|brookjs|kefir)/,
+                loader: 'babel-loader',
+                include: /node_modules\/(redux|brookjs|kefir|brookjs)/,
                 query: {
                     cacheDirectory: true
                 }
             },
             {
                 test: /\.hbs/,
-                loader: 'handlebars',
+                loader: 'handlebars-loader',
                 query: {
                     helperDirs: [path.join(client, 'helpers')],
                     partialDirs: [client],
@@ -49,7 +49,7 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 include: path.join(client, 'editor'),
-                loaders: ['style', 'css', 'sass']
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
                 test: /\.(scss|css)$/,
@@ -58,14 +58,15 @@ module.exports = {
                     path.join(client, 'prism'),
                     /node_modules/
                 ],
-                loaders: ['style/useable', 'css', 'sass']
+                loaders: ['style-loader/useable', 'css-loader', 'sass-loader']
             }
         ]
     },
     resolve: {
         alias: {
             kefir: 'kefir/src',
-            redux: 'redux/es'
+            redux: 'redux/es',
+            brookjs: 'brookjs/src',
         },
         mainFields: ['jsnext:main', 'browser', 'main']
     },

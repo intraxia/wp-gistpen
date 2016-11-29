@@ -2,13 +2,11 @@ import R from 'ramda';
 import { concat, fromEvents, fromPromise, merge, stream } from 'kefir';
 import Prism from '../../prism';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
-import render, { raf$ } from 'brookjs/render';
+import { renderFromHTML, raf$ } from 'brookjs/render';
 import { editorOptionsIsEqual, lineNumberIsEqual, isSpecialEvent } from './util';
 import template from './index.hbs';
 
 toolbarStyles.use();
-
-const renderTemplate = render(template);
 
 // const CRLF = /\r?\n|\r/g;
 
@@ -171,7 +169,7 @@ const createPrismUpdateStream = function createPrismUpdateStream(state) {
  * @returns {Observable} Observable to update element.
  */
 const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, props) {
-    let stream$ = renderTemplate(el, props, props).concat(highlightElement(el));
+    let stream$ = renderFromHTML(el, template(props)).concat(highlightElement(el));
 
     if (props.instance.cursor) {
         stream$ = stream$.concat(setSelectionRange(el.querySelector('code'), ...props.instance.cursor));
