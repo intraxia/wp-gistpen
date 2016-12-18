@@ -254,7 +254,7 @@ class EntityManager implements EntityManagerContract {
 		foreach ( $model->get_table_keys() as $key ) {
 			switch ( $key ) {
 				case 'language':
-					$terms = get_the_terms( $post->ID, 'wpgp_language' );
+					$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
 
 					if ( $terms ) {
 						$term = array_pop( $terms );
@@ -456,7 +456,11 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $blobs_data as $blob_data ) {
 			$blob_data['repo_id'] = $model->get_primary_id();
-			$blob = $this->create_blob( $blob_data );
+			$blob_data['status'] = $model->get_attribute( 'status' );
+
+			$blob = $this->create_blob( $blob_data, array(
+				'unguarded' => true,
+			) );
 
 			if ( ! is_wp_error( $blob ) ) {
 				$blobs->add( $blob );
@@ -472,11 +476,13 @@ class EntityManager implements EntityManagerContract {
 	 * Creates a new blob with the provided data.
 	 *
 	 * @param array $data Blob data.
+	 * @param array $options Options array.
 	 *
 	 * @return Blob|WP_Error
 	 */
-	protected function create_blob( array $data ) {
+	protected function create_blob( array $data, array $options = array() ) {
 		$model = new Blob;
+		$unguarded = isset( $options['unguarded'] ) && $options['unguarded'];
 
 		/**
 		 * Set aside the `language` key for use.
@@ -492,7 +498,15 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $data as $key => $value ) {
 			try {
+				if ( $unguarded ) {
+					$model->unguard();
+				}
+
 				$model->set_attribute( $key, $value );
+
+				if ( $unguarded ) {
+					$model->reguard();
+				}
 			} catch ( GuardedPropertyException $exception ) {
 				// @todo Ignore the value?
 			}
@@ -527,6 +541,8 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		$model->set_attribute( 'language', $language );
+
+		wp_set_object_terms( $model->get_primary_id(), $model->language->slug, Language::get_taxonomy(), false );
 
 		return $model;
 	}
@@ -604,6 +620,7 @@ class EntityManager implements EntityManagerContract {
 		foreach ( $model->blobs as $blob ) {
 			$blob->unguard();
 			$blob->repo_id = $model->get_primary_id();
+			$blob->status = $model->get_attribute( 'status' );
 			$blob->reguard();
 
 			$this->persist_blob( $blob );

@@ -116,6 +116,7 @@ class EntityManagerTest extends TestCase {
 
 		/** @var Repo $model */
 		$model = $this->em->create( EntityManager::REPO_CLASS, $data );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $model->ID );
 
 		$this->assertInstanceOf( EntityManager::REPO_CLASS, $model );
 		$this->assertEquals(

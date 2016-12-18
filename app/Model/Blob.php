@@ -38,6 +38,7 @@ class Blob extends Model implements UsesWordPressPost {
 	protected $guarded = array(
 		'ID',
 		'repo_id',
+		'status',
 	);
 
 	/**
@@ -89,6 +90,15 @@ class Blob extends Model implements UsesWordPressPost {
 	 */
 	protected function map_code() {
 		return 'post_content';
+	}
+
+	/**
+	 * Maps the Repo's status to WP_Posts's post_status.
+	 *
+	 * @return string
+	 */
+	protected function map_status() {
+		return 'post_status';
 	}
 
 	/**
