@@ -15,7 +15,6 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property string   $code
  * @property Language $language
  * @property int      $repo_id
- * @property Repo     $repo
  * @property int      $size
  * @property string   $raw_url
  */
@@ -38,7 +37,6 @@ class Blob extends Model implements UsesWordPressPost {
 	 */
 	protected $guarded = array(
 		'ID',
-		'repo',
 		'repo_id',
 	);
 

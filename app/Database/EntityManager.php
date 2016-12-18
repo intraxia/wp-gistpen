@@ -253,10 +253,6 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $model->get_table_keys() as $key ) {
 			switch ( $key ) {
-				case 'repo':
-					// shouldn't pre-query repo
-					// @todo mark as relationship key
-					break;
 				case 'language':
 					$terms = get_the_terms( $post->ID, 'wpgp_language' );
 
