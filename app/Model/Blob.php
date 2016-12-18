@@ -131,17 +131,4 @@ class Blob extends Model implements UsesWordPressPost {
 	protected function compute_edit_url() {
 		return get_edit_post_link( $this->repo_id );
 	}
-
-	/**
-	 * Set the language access
-	 *
-	 * @param string $slug
-	 */
-	public function set_language_attribute( $slug ) {
-		if ( $slug instanceof Language ) {
-			$this->language = $slug;
-		} elseif ( is_string( $slug ) ) {
-			$this->language->slug = $slug;
-		}
-	}
 }
