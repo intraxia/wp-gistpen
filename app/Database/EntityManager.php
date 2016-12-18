@@ -88,7 +88,7 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @return Collection|WP_Error
 	 */
-	public function find_by( $class, $params = array() ) {
+	public function find_by( $class, array $params = array() ) {
 		if ( static::REPO_CLASS === $class ) {
 			return $this->find_repos_by( $params );
 		}
@@ -112,7 +112,7 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @return Model|WP_Error
 	 */
-	public function create( $class, $data = array() ) {
+	public function create( $class, array $data = array() ) {
 		if ( static::REPO_CLASS === $class ) {
 			return $this->create_repo( $data );
 		}
