@@ -73,7 +73,7 @@ class ZipController {
 	 *
 	 * @param WP_REST_Request $request
 	 *
-	 * @return \WP_Error|array
+	 * @return \WP_Error|WP_REST_Response
 	 *
 	 * @throws \Exception
 	 */
