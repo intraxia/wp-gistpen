@@ -36,6 +36,21 @@ class Repo extends Model implements UsesWordPressPost {
 	 *
 	 * @var array
 	 */
+	protected $defaults = array(
+		'description' => '',
+		'status'      => 'draft',
+		'password'    => '',
+		'sync'        => 'off',
+		'gist_id'     => 'none',
+		'created_at'  => '',
+		'updated_at'  => '',
+	);
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @var array
+	 */
 	protected $fillable = array(
 		'description',
 		'status',
