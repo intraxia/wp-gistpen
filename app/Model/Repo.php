@@ -191,16 +191,20 @@ class Repo extends Model implements UsesWordPressPost {
 	 */
 	public function refresh( array $attributes ) {
 		try {
-			$blobs = $this->blobs;
+			$prev_blobs = $this->blobs;
 		} catch ( \Exception $exception ) {
-			$blobs = new Collection( array(), array(
+			$prev_blobs = new Collection( array(), array(
 				'model' => EntityManager::BLOB_CLASS,
 			) );
 		}
 
+		$new_blobs = new Collection( array(), array(
+			'model' => EntityManager::BLOB_CLASS,
+		) );
+
 		if ( isset( $attributes['blobs'] ) ) {
 			if ( $attributes['blobs'] instanceof Collection ) {
-				$blobs = $attributes['blobs'];
+				$new_blobs = $attributes['blobs'];
 			} else {
 				foreach ( $attributes['blobs'] as $attribute ) {
 					$matched = false;
@@ -210,7 +214,7 @@ class Repo extends Model implements UsesWordPressPost {
 					}
 
 					/** @var Blob $blob */
-					foreach ( $blobs as $blob ) {
+					foreach ( $prev_blobs as $blob ) {
 						if ( (string) $blob->ID === (string) $attribute['ID'] ) {
 							unset( $attribute['ID'] );
 							$blob->refresh( $attribute );
@@ -220,8 +224,10 @@ class Repo extends Model implements UsesWordPressPost {
 					}
 
 					if ( ! $matched ) {
-						$blobs->add( new Blob( $attribute ) );
+						$blob = new Blob( $attribute );
 					}
+
+					$new_blobs->add( $blob );
 				}
 			}
 
@@ -231,7 +237,7 @@ class Repo extends Model implements UsesWordPressPost {
 
 		parent::refresh( $attributes );
 
-		$this->blobs = $blobs;
+		$this->blobs = $new_blobs;
 	}
 
 	/**
