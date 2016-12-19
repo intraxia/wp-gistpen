@@ -23,7 +23,6 @@ class RouterServiceProvider extends ServiceProvider {
 		$router->set_vendor( 'intraxia' )->set_version( 1 );
 		$controllers = array( // @todo this sucks, pass controller into router? how does router access the controllers?
 			'search' => $this->container->fetch( 'controller.search' ),
-			'zip'    => $this->container->fetch( 'controller.zip' ),
 			'user'   => $this->container->fetch( 'controller.user' ),
 			'job'    => $this->container->fetch( 'controller.job' ),
 			'repo'   => $this->container->fetch( 'controller.repo' ),
@@ -54,22 +53,6 @@ class RouterServiceProvider extends ServiceProvider {
 			) );
 			$router->delete( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
 //				'filter' => new RepoFilter,
-				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
-			) );
-
-			/**
-			 * /zip endpoint
-			 * @deprecated
-			 */
-			$router->get( '/zip/(?P<id>\d+)', array( $controllers['zip'], 'view' ), array(
-				'filter' => new Filter( array( 'id' => 'required|integer' ) ),
-			) );
-			$router->post( '/zip', array( $controllers['zip'], 'create' ), array(
-				'filter' => new ZipFilter,
-				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
-			) );
-			$router->put( '/zip/(?P<id>\d+)', array( $controllers['zip'], 'update' ), array(
-				'filter' => new ZipFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 

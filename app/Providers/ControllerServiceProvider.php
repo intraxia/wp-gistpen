@@ -27,10 +27,6 @@ class ControllerServiceProvider implements ServiceProvider {
 			return new SearchController( $app->fetch( 'facade.database' ), $app->fetch( 'facade.adapter' ) );
 		} );
 
-		$container->share( array( 'controller.zip' => 'Intraxia\Http\Http\ZipController' ), function ( $app ) {
-			return new ZipController( $app->fetch( 'facade.database' ), $app->fetch( 'facade.adapter' ) );
-		} );
-
 		$container->share( array( 'controller.user' => 'Intraxia\Gistpen\Http\UserController' ), function ( $app ) {
 			return new UserController( $app->fetch( 'options.user' ) );
 		} );
