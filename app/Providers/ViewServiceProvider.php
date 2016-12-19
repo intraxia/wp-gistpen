@@ -19,6 +19,7 @@ class ViewServiceProvider implements ServiceProvider {
 					$container->fetch( 'database' ),
 					$container->fetch( 'options.site' ),
 					$container->fetch( 'templating' ),
+					$container->fetch( 'assets' ),
 					$container->fetch( 'url' )
 				);
 			} )

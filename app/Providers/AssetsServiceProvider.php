@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\View\Content;
 use Intraxia\Gistpen\View\Editor;
 use Intraxia\Gistpen\View\Settings;
@@ -91,7 +92,11 @@ class AssetsServiceProvider extends ServiceProvider {
 		$assets->register_script( array(
 			'type'      => 'web',
 			'condition' => function () {
-				return true;
+				if ( ! is_embed() ) {
+					return true;
+				}
+
+				return Repo::get_post_type() === get_post_type();
 			},
 			'handle'    => $slug . '-content-script',
 			'src'       => 'assets/js/content',
