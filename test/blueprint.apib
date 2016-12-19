@@ -1,87 +1,308 @@
 FORMAT: 1A
-HOST: http://jamesdigioia.ngrok.com/wp-json/intraxia/v1/gistpen
+HOST: http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen
 
 # WP-Gistpen
 
 The WP-Gistpen API is built into the WP-API for client-side Gistpen manipulation.
 
-## Zip Collection [/zip]
+## Repo Collection [/repos]
 
-### List Zip Resources [GET]
+You can interact with the collection of Repos.
 
-You can retrieve the most recent Zips or search Gistpen for Zips using a number of provided url parameters.
+### List Repo Resources [GET]
 
-+ Paramters
-    + s: `composer.json` - Term to search by
-        + Default: ""
-    + type: `both` (enum[string]) - Type to search by
-
-        Should be either Zip, File, or both.
-
-        + Members
-            + `zip`
-            + `file`
-            + `both`
+You can retrieve the most recently created Repos with this endpoint.
 
 + Response 200
 
-        [
-            {
-                "description": "Zip description" // @todo define object
-            }
-        ]
+    + Body
 
-### Create Zip Resource [POST]
+            [
+                {
+                    "ID": 1,
+                    "description": "Existing Repo",
+                    "status": "publish",
+                    "password": "",
+                    "gist_id": "none",
+                    "sync": "off",
+                    "blobs": [
+                        {
+                            "size": 19,
+                            "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
+                            "slug": "file.txt",
+                            "code": "Some code goes here",
+                            "ID": 2,
+                            "language": {
+                                "slug": "plaintext"
+                            }
+                        }
+                    ],
+                    "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                    "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                    "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                    "created_at": "2016-04-14T02:15:15Z",
+                    "updated_at": "2016-06-20T11:34:15Z"
+                }
+            ]
 
-You can create a new Zip resource.
+### Create Repo Resource [POST]
+
+You can create a new Repo with this endpoint.
 
 + Request (application/json)
 
-                {
-                    "description": ""
-                }
+    + Body
+
+            {
+                "description": "New Repo",
+                "status": "draft",
+                "password": "",
+                "sync": "on",
+                "blobs": [
+                    {
+                        "filename": "new-file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ]
+            }
 
 + Response 201 (application/json)
 
     + Headers
 
-            Location: /todo/1
+            Location: http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1
 
     + Body
 
-                {
-                    "description": ""
-                }
+            {
+                "ID": 1,
+                "description": "New Repo",
+                "status": "draft",
+                "password": "",
+                "gist_id": "pending",
+                "sync": "off",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/new-file.txt",
+                        "filename": "new-file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/new-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
+            }
 
-## Zip Resource [/zip/{zip_id}]
+## Repo Resouce [/repos/{repo_id}{?force}]
+
+You can also interact with individual Repos.
 
 + Parameters
-    + zip_id (number) - ID of the Zip
 
-### Get individual Zip resource [GET]
+    + repo_id (number) - ID of the Repo
 
-You can get the information for an individual zip resource.
+### Get Individual Repo Resource [GET]
+
+You can retrieve the information for an individual Repo resource.
 
 + Response 200
 
+    + Body
+
             {
-                "description": "Zip description"
+                "ID": 1,
+                "description": "Existing Repo",
+                "status": "publish",
+                "password": "",
+                "gist_id": "none",
+                "sync": "off",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
+                        "slug": "file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
             }
 
-### Update Zip Resource [PUT]
+### Update Individual Repo Resource [PUT]
 
-You can update a currently existing Zip resource at the provided id.
+You can update an individual Repo resource. If no
 
 + Request (application/json)
 
+    + Body
+
             {
-                "description": ""
+                "description": "New Repo Description",
+                "status": "draft",
+                "password": "",
+                "sync": "on",
+                "blobs": [
+                    {
+                        "ID": 2
+                        "filename": "new-file.txt",
+                        "code": "Updated code goes here",
+                        "language": "plaintext"
+                    }
+                ]
             }
 
 + Response 200
 
+    + Body
+
             {
-                "description": "Zip description"
+                "ID": 1,
+                "description": "New Repo Descrption",
+                "status": "draft",
+                "password": "",
+                "gist_id": "none",
+                "sync": "on",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/new-file.txt",
+                        "filename": "new-file.txt",
+                        "code": "Updated code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
+            }
+
+### Patch Update Individual Repo Resource [PATCH]
+
+You can just send the changes you would like to make to the Repo resource.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "description": "New Repo Description",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "code": "Updated code goes here"
+                    }
+                ]
+            }
+
++ Response 200
+
+    + Body
+
+            {
+                "ID": 1,
+                "description": "New Repo Description",
+                "status": "publish",
+                "password": "",
+                "gist_id": "none",
+                "sync": "off",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 23,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
+                        "slug": "file.txt",
+                        "code": "Updated code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
+            }
+
+### Delete Individual Repo Resource [DELETE]
+
+You can delete an individual Repo resource, along with a special flag to force delete the Repo rather than just moving the resource into the Trash.
+
++ Parameters
+
+    + force: false (boolean, optional) - Whether to force delete the resource
+        + Default: false
+
++ Response 204
+
+## Repo Commits Collection [/repos/{repo_id}/commits]
+
+You can view the collection of Commits for a given Repo. You cannot directly create a Commit. They are created everytime a Repo resource is updated.
+
++ Parameters
+
+    + repo_id (number) - ID of the Repo
+
+### List Repo Commits [GET]
+
+You can retrieve the collection of Commits for a given Repo.
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "ID": 3,
+                    "created_at": "2016-04-14T02:15:15Z",
+                    "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3"
+                }
+            ]
+
+## Repo Commit Resouce [/repos/{repo_id}/commits/{commit_id}]
+
+You can retrieve the information for an individual Commit for a given Repo.
+
++ Parameters
+
+    + repo_id (number) - ID of the Repo
+    + commit_id (number) - ID of the Commit
+
+### Get Commit Resouce [GET]
+
++ Response 200
+
+    + Body
+
+            {
+                "ID": 3,
+                "description": "Existing Repo",
+                "gist_id": "none",
+                "blobs": [
+                    {
+                        "ID": 4,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3/4/file.txt",
+                        "slug": "file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3",
+                "head_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "created_at": "2016-04-14T02:15:15Z"
             }
 
 ## User Collection [/me]

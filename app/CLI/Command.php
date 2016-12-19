@@ -43,13 +43,6 @@ class Command {
 	protected $gist;
 
 	/**
-	 * Save controller
-	 *
-	 * @var ZipController
-	 */
-	protected $zip;
-
-	/**
 	 * Sync controller
 	 *
 	 * @var Sync
@@ -70,7 +63,6 @@ class Command {
 		$this->database = App::instance()->fetch( 'facade.database' );
 		$this->adapter  = App::instance()->fetch( 'facade.adapter' );
 		$this->gist     = App::instance()->fetch( 'account.gist' );
-		$this->zip      = App::instance()->fetch( 'controller.zip' );
 		$this->sync     = App::instance()->fetch( 'sync' );
 		$this->path     = App::instance()->fetch( 'path' );
 	}

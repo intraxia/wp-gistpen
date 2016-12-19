@@ -1,0 +1,64 @@
+<div class="wpgp-editor-controls-container" data-brk-container="controls">
+    <div class="wpgp-editor-control">
+        <label for="wpgp-editor-status">Post Status</label>
+        <select id="wpgp-editor-status" data-brk-onchange="onStatusChange">
+            {{#each editor.statuses}}
+                <option value="{{@key}}"
+                        {{#compare @key editor.status}}selected{{/compare}}>
+                    {{this}}
+                </option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <input type="checkbox" id="wpgp-editor-sync"
+               {{#compare editor.sync "on"}}checked{{/compare}}
+               data-brk-onchange="onSyncToggle" />
+        <label for="wpgp-editor-sync">Sync Gistpen with Gist?</label>
+    </div>
+
+    <div class="wpgp-theme-select-row">
+        <label for="wpgp-editor-theme">Theme</label>
+        <select id="wpgp-editor-theme" data-brk-onchange="onThemeChange">
+            {{#each editor.themes}}
+                <option value="{{@key}}"
+                        {{#compare @key editor.theme}}selected{{/compare}}>
+                    {{this}}
+                </option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <input type="checkbox" id="wpgp-enable-tabs"
+                {{#compare editor.tabs "on"}}checked{{/compare}}
+                data-brk-onchange="onTabsToggle">
+        <label for="wpgp-enable-tabs">Enable Tabs</label>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <select id="wpgp-editor-width" data-brk-onchange="onWidthChange">
+            {{#each editor.widths}}
+                <option value="{{this}}"
+                        {{#compare this editor.width}}selected{{/compare}}>
+                    {{this}}
+                </option>
+            {{/each}}
+        </select>
+        <label for="wpgp-editor-width">Indentation width (in spaces)</label>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <input type="checkbox" id="wpgp-enable-invisibles"
+                {{#compare editor.invisibles "on"}}checked{{/compare}}
+                data-brk-onchange="onInvisiblesToggle">
+        <label for="wpgp-enable-invisibles">Enable Invisibles</label>
+    </div>
+
+    <div class="wpgp-editor-control">
+        <button type="button" class="button button-primary" data-brk-onclick="onUpdateClick">Update Gistpen</button>
+        <button type="button" class="button button-primary" data-brk-onclick="onAddClick">Add File</button>
+        {{!--<span class="spinner" data-wpgp-spinner></span>--}}
+    </div>
+</div>

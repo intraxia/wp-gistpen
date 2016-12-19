@@ -4,13 +4,20 @@ module.exports = {
         ecmaVersion: 6,
         sourceType: 'module',
         ecmaFeatures: {
-            impliedStrict: true
-        }
+            impliedStrict: true,
+            experimentalObjectRestSpread: true
+        },
+    },
+    globals: {
+        '__webpack_public_path__': true
     },
     env: {
         es6: true,
         node: true,
         browser: true
     },
-    extends: 'valtech'
+    extends: 'valtech',
+    rules: {
+        'rest-spread-spacing': [2, 'never']
+    }
 };

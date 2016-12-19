@@ -2,6 +2,8 @@
 namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Gistpen\View\Content;
 use Intraxia\Gistpen\View\Editor;
 use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Assets\Register as Assets;
@@ -28,77 +30,39 @@ class AssetsServiceProvider extends ServiceProvider {
 
 		$slug = $this->container->fetch( 'slug' );
 
-		$localize = function () {
-			/** @var Settings $settings */
-			$settings = $this->container->fetch( 'view.settings' );
-
-			return array(
-				'name' => 'Gistpen_Settings',
-				'data' => $settings->get_initial_state(),
-			);
-		};
-
-		$should_enqueue_settings = function () {
-			return 'settings_page_wp-gistpen' === get_current_screen()->id;
-		};
-		$should_enqueue_tinymce  = function () {
-			return 'gistpen' !== get_current_screen()->id;
-		};
-		$should_enqueue_editor   = function () {
-			if ( 'gistpen' === get_current_screen()->id ) {
-				wp_dequeue_script( 'autosave' ); // @todo
-				return true;
-			}
-
-			return false;
-		};
-
 		/**
-		 * Ace Editor Scripts
+		 * Editor Assets
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => function () use ( $should_enqueue_tinymce, $should_enqueue_editor ) {
-				return $should_enqueue_tinymce() || $should_enqueue_editor();
+			'condition' => function () {
+				return 'gistpen' === get_current_screen()->id;
 			},
-			'handle'    => $slug . '-ace-script',
-			'src'       => 'assets/js/ace/ace',
-			'localize'  => $localize,
-		) );
-
-		/**
-		 * Post Editor Assets
-		 */
-		$assets->register_style( array(
-			'type'      => 'admin',
-			'condition' => $should_enqueue_editor,
-			'handle'    => $slug . '-editor-styles',
-			'src'       => 'assets/css/post',
-		) );
-		$assets->register_script( array(
-			'type'      => 'admin',
-			'condition' => $should_enqueue_editor,
 			'handle'    => $slug . '-editor-script',
-			'src'       => 'assets/js/post',
-			'deps'      => array( $slug . '-ace-script' ), // @todo bundle Ace into the editor build
-			'localize'  => $localize,
+			'src'       => 'assets/js/editor',
+			'footer'    => false,
+			'localize'  => function () {
+				/** @var Editor $editor */
+				$editor = $this->container->fetch( 'view.editor' );
+
+				return array(
+					'name' => '__GISTPEN_EDITOR__',
+					'data' => $editor->get_initial_state(),
+				);
+			},
 		) );
 
 		/**
 		 * Settings Page Assets
 		 */
-		$assets->register_style( array(
-			'type'      => 'admin',
-			'condition' => $should_enqueue_settings,
-			'handle'    => $slug . '-settings-styles',
-			'src'       => 'assets/css/settings',
-		) );
 		$assets->register_script( array(
 			'type'      => 'admin',
-			'condition' => $should_enqueue_settings,
+			'condition' => function () {
+				return 'settings_page_wp-gistpen' === get_current_screen()->id;
+			},
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
-			'footer'    => true,
+			'footer'    => false,
 			'localize'  => function () {
 				/** @var Settings $settings */
 				$settings = $this->container->fetch( 'view.settings' );
@@ -115,22 +79,37 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_style( array(
 			'type'      => 'admin',
-			'condition' => $should_enqueue_tinymce,
+			'condition' => function () {
+				return 'gistpen' !== get_current_screen()->id;
+			},
 			'handle'    => $slug . '-popup-styles',
 			'src'       => 'assets/css/tinymce',
 		) );
 
 		/**
-		 * Web Assets
+		 * Content Assets
 		 */
 		$assets->register_script( array(
 			'type'      => 'web',
 			'condition' => function () {
-				return true;
+				if ( ! is_embed() ) {
+					return true;
+				}
+
+				return Repo::get_post_type() === get_post_type();
 			},
-			'handle'    => $slug . '-web-script',
-			'src'       => 'assets/js/web',
-			'localize'  => $localize,
+			'handle'    => $slug . '-content-script',
+			'src'       => 'assets/js/content',
+			'footer'    => false,
+			'localize'  => function() {
+				/** @var Content $content */
+				$content = $this->container->fetch( 'view.content' );
+
+				return array(
+					'name' => '__GISTPEN_CONTENT__',
+					'data' => $content->get_initial_state(),
+				);
+			},
 		) );
 	}
 }

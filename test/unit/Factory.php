@@ -11,7 +11,7 @@ class Factory extends WP_UnitTest_Factory {
 	 */
 	public $gistpen;
 
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		$this->gistpen = new WP_UnitTest_Factory_For_Gistpen( $this );
 	}
@@ -19,7 +19,7 @@ class Factory extends WP_UnitTest_Factory {
 
 class WP_UnitTest_Factory_For_Gistpen extends WP_UnitTest_Factory_For_Post {
 
-	function __construct( $factory = null ) {
+	public function __construct( $factory = null ) {
 		parent::__construct( $factory );
 		$this->default_generation_definitions = array(
 			'post_status' => 'publish',

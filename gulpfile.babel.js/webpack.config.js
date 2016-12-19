@@ -1,0 +1,76 @@
+const path = require('path');
+const WebpackNotifierPlugin = require('webpack-notifier');
+const src = path.join(__dirname, '..', 'src', 'js');
+const client = path.join(__dirname, '..', 'client');
+
+module.exports = {
+    devtool: 'sourcemap',
+    entry: {
+        settings: path.join(client, 'settings'),
+        content: path.join(client, 'content'),
+        editor: path.join(client, 'editor'),
+        tinymce: path.join(src, 'tinymce')
+    },
+    output: {
+        path: path.join(__dirname, '..', 'assets', 'js'),
+        filename: '[name].js'
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                loader: 'eslint-loader',
+                exclude: /(node_modules)/,
+                enforce: 'pre'
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                include: [src, client]
+            },
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                include: /node_modules\/(redux|brookjs|kefir|brookjs)/,
+                query: {
+                    cacheDirectory: true
+                }
+            },
+            {
+                test: /\.hbs/,
+                loader: 'handlebars-loader',
+                query: {
+                    helperDirs: [path.join(client, 'helpers')],
+                    partialDirs: [client],
+                    preventIndent: true,
+                    compat: true
+                }
+            },
+            {
+                test: /\.(scss|css)$/,
+                include: path.join(client, 'editor'),
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
+            },
+            {
+                test: /\.(scss|css)$/,
+                include: [
+                    path.join(client, 'settings'),
+                    path.join(client, 'prism'),
+                    /node_modules/
+                ],
+                loaders: ['style-loader/useable', 'css-loader', 'sass-loader']
+            }
+        ]
+    },
+    resolve: {
+        alias: {
+            kefir: 'kefir/src',
+            redux: 'redux/es',
+            brookjs: 'brookjs/src',
+        },
+        mainFields: ['jsnext:main', 'browser', 'main']
+    },
+    plugins: [
+        new WebpackNotifierPlugin({ alwaysNotify: true })
+    ]
+};

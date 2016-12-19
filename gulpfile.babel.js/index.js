@@ -5,8 +5,10 @@ const extrep = require('gulp-ext-replace');
 const pot = require('gulp-wp-pot');
 const sort = require('gulp-sort');
 
+require('./copy');
 require('./dev');
 require('./scripts');
+require('./test');
 
 gulp.task('styles', function () {
     return gulp.src('src/scss/*.scss')
@@ -17,38 +19,7 @@ gulp.task('styles', function () {
         .pipe(gulp.dest('assets/css'));
 });
 
-gulp.task('copy', ['prism', 'ace']);
-
-gulp.task('prism', ['prism:scripts', 'prism:styles']);
-
-gulp.task('prism:scripts', function() {
-    return gulp.src([
-        'node_modules/prismjs/components/*.js',
-        'node_modules/prismjs/plugins/line-numbers/*.js',
-        'node_modules/prismjs/plugins/show-invisibles/*.js'
-    ])
-        .pipe(gulp.dest('assets/js/'));
-});
-
-gulp.task('prism:styles', function () {
-    return gulp.src([
-        'node_modules/prismjs/themes/*.css',
-        'node_modules/prism-themes/themes/*.css',
-        'node_modules/prismjs/plugins/line-numbers/*.css',
-        'node_modules/prismjs/plugins/show-invisibles/*.css'
-    ])
-        .pipe(gulp.dest('assets/css'))
-        .pipe(cssnano())
-        .pipe(extrep('.min.css'))
-        .pipe(gulp.dest('assets/css'));
-});
-
-gulp.task('ace', function () {
-    return gulp.src('node_modules/ace-builds/src-min-noconflict/**')
-        .pipe(gulp.dest('assets/js/ace'));
-});
-
-gulp.task('translation', function () {
+gulp.task('translate', function () {
     return gulp.src('app/**/*.php')
         .pipe(sort())
         .pipe(pot({
@@ -60,5 +31,5 @@ gulp.task('translation', function () {
         .pipe(gulp.dest('languages/'));
 });
 
-gulp.task('default', ['scripts:dev']);
-gulp.task('build', ['scripts', 'styles', 'prism', 'ace']);
+gulp.task('default', ['scripts:dev', 'copy', 'translate']);
+gulp.task('build', ['scripts', 'styles', 'copy', 'translate']);

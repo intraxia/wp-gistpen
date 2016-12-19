@@ -3,7 +3,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 
 const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
+const webpackConfig = require('./webpack.config.js');
 
 gulp.task('scripts', ['scripts:dev', 'scripts:build']);
 

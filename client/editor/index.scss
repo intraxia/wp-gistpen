@@ -1,0 +1,6 @@
+@import "./common";
+
+.wpgp-editor-row {
+  width: 100%;
+  @include clearfix();
+}

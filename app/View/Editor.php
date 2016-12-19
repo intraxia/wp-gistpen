@@ -1,10 +1,17 @@
 <?php
 namespace Intraxia\Gistpen\View;
 
+use Intraxia\Gistpen\Contract\Templating;
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Model\Blob;
+use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Gistpen\Options\User;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
+use WP_Query;
 
 /**
  * This class registers all of the settings page views
@@ -50,15 +57,21 @@ class Editor implements HasActions, HasFilters {
 	 * @var Database
 	 * @since 0.5.0
 	 */
-	protected $database;
+	protected $em;
 
 	/**
-	 * Adapter Facade object
+	 * User options service.
 	 *
-	 * @var Adapter
-	 * @since  0.5.0
+	 * @var User
 	 */
-	protected $adapter;
+	protected $user;
+
+	/**
+	 * Templating service.
+	 *
+	 * @var Templating
+	 */
+	protected $templating;
 
 	/**
 	 * Plugin path string.
@@ -69,18 +82,107 @@ class Editor implements HasActions, HasFilters {
 	protected $path;
 
 	/**
+	 * Plugin url string.
+	 *
+	 * @var string
+	 */
+	protected $url;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
 	 *
-	 * @param Database $database
-	 * @param Adapter  $adapter
-	 * @param string   $path
+	 * @param EntityManager $em
+	 * @param User          $user
+	 * @param Templating    $templating
+	 * @param string        $path
+	 * @param string        $url
 	 */
-	public function __construct( Database $database, Adapter $adapter, $path ) {
-		$this->database = $database;
-		$this->adapter = $adapter;
-		$this->path = $path;
+	public function __construct( EntityManager $em, User $user, Templating $templating, $path, $url ) {
+		$this->em         = $em;
+		$this->user       = $user;
+		$this->templating = $templating;
+		$this->path       = $path;
+		$this->url        = $url;
+	}
+
+	/**
+	 * Echoes the editor on the gistpen editor page.
+	 */
+	public function display_editor() {
+		$post = get_post();
+
+		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
+			echo $this->templating->render( 'editor/index', $this->get_initial_state() );
+		}
+	}
+
+	/**
+	 * Returns the initial state for the editor page.
+	 *
+	 * @return array
+	 */
+	public function get_initial_state() {
+		/** @var Repo $repo */
+		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID() );
+
+		$blobs = iterator_to_array( $repo->blobs );
+		usort( $blobs, function( $a, $b ) {
+			return (int) $a->ID - (int) $b->ID;
+		} );
+
+		return array(
+			'repo'   => $repo->serialize(),
+			'editor' => array(
+				'description' => $repo->description,
+				'status' => $repo->status,
+				'password' => $repo->password,
+				'gist_id' => $repo->gist_id,
+				'sync' => $repo->sync,
+				'instances'  => array_map( function ( Blob $blob ) {
+					return array(
+						'key'      => (string) $blob->ID,
+						'filename' => $blob->filename,
+						'code'     => $blob->code,
+						'language' => $blob->language->slug,
+						'cursor'   => false,
+						'history'  => array(
+							'undo' => array(),
+							'redo' => array(),
+						),
+					);
+				}, $blobs ),
+				'width'      => $this->user->get( 'ace_width' ),
+				'theme'      => $this->user->get( 'ace_theme' ),
+				'invisibles' => $this->user->get( 'ace_invisibles' ) ? : 'off',
+				'tabs'       => $this->user->get( 'ace_tabs' ) ? : 'off',
+				'widths'     => array( '1', '2', '4', '8' ),
+				'themes'     => array(
+					'default'                         => __( 'Default', 'wp-gistpen' ),
+					'dark'                            => __( 'Dark', 'wp-gistpen' ),
+					'funky'                           => __( 'Funky', 'wp-gistpen' ),
+					'okaidia'                         => __( 'Okaidia', 'wp-gistpen' ),
+					'tomorrow'                        => __( 'Tomorrow', 'wp-gistpen' ),
+					'twilight'                        => __( 'Twilight', 'wp-gistpen' ),
+					'coy'                             => __( 'Coy', 'wp-gistpen' ),
+					'cb'                              => __( 'CB', 'wp-gistpen' ),
+					'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
+					'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
+					'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
+					'base16-ateliersulphurpool.light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
+					'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
+					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
+				),
+				'statuses'   => get_post_statuses(),
+				'languages'  => Language::$supported,
+			),
+			'api'    => array(
+				'root'  => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+				'url'   => $this->url,
+			),
+		);
 	}
 
 	/**
@@ -97,7 +199,7 @@ class Editor implements HasActions, HasFilters {
 	}
 
 	/**
-	 * Remove unessary metaboxes from Gistpens
+	 * Remove unnecessary metaboxes from Gistpens
 	 *
 	 * @since  0.4.0
 	 */
@@ -139,10 +241,12 @@ class Editor implements HasActions, HasFilters {
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'gistpen_files' === $column_name ) {
-			$zip = $this->database->query()->by_id( $post_id );
+			/** @var Repo $repo */
+			$repo = $this->em->find( EntityManager::REPO_CLASS,  $post_id );
 
-			foreach ( $zip->get_files() as $file ) {
-				echo $file->get_filename();
+			/** @var Blob $blob */
+			foreach ( $repo->blobs as $blob ) {
+				echo $blob->filename;
 				echo '<br>';
 			}
 		}
@@ -172,6 +276,10 @@ class Editor implements HasActions, HasFilters {
 	 */
 	public function action_hooks() {
 		return array(
+			array(
+				'hook' => 'edit_form_top',
+				'method' => 'display_editor',
+			),
 			array(
 				'hook' => 'add_meta_boxes',
 				'method' => 'remove_meta_boxes',
