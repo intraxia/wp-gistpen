@@ -5,8 +5,8 @@ use Intraxia\Gistpen\Http\JobController;
 use Intraxia\Gistpen\Http\SearchController;
 use Intraxia\Gistpen\Http\SiteController;
 use Intraxia\Gistpen\Http\UserController;
-use Intraxia\Gistpen\Http\ZipController;
 use Intraxia\Gistpen\Http\RepoController;
+use Intraxia\Gistpen\Http\BlobController;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 
@@ -42,5 +42,9 @@ class ControllerServiceProvider implements ServiceProvider {
 		$container->share( array( 'controller.repo' => 'Intraxia\Gistpen\Http\RepoController' ), function ( $app ) {
 			return new RepoController( $app->fetch( 'database' ) );
 		} );
+		$container->share( array( 'controller.blob' => 'Intraxia\Gistpen\Http\BlobController' ), function ( $app ) {
+			return new BlobController( $app->fetch( 'database' ) );
+		} );
+
 	}
 }
