@@ -26,6 +26,7 @@ class RouterServiceProvider extends ServiceProvider {
 			'user'   => $this->container->fetch( 'controller.user' ),
 			'job'    => $this->container->fetch( 'controller.job' ),
 			'repo'   => $this->container->fetch( 'controller.repo' ),
+			'blob'   => $this->container->fetch( 'controller.blob' ),
 			'site'   => $this->container->fetch( 'controller.site' ),
 		);
 
@@ -55,6 +56,11 @@ class RouterServiceProvider extends ServiceProvider {
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
+
+			/**
+			 * /repos/{repo_id}/blobs/{blob_id} endpoints
+			 */
+			$router->get( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)/raw', array( $controllers['blob'], 'raw' ) );
 
 			/**
 			 * /search endpoint
