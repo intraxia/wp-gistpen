@@ -52,7 +52,7 @@ class Handlebars implements Templating {
 				return "[partial (file:$filename) not found]";
 			},
 			'helpers'         => array(
-				'compare' => function ( $first, $second, $options ) {
+				'compare'    => function ( $first, $second, $options ) {
 					if ( $first === $second ) {
 						return $options['fn']( $options['data'] );
 					} else {
@@ -61,11 +61,12 @@ class Handlebars implements Templating {
 				},
 				'prism_slug' => function ( $slug ) {
 					$map = array(
-						'js'   => 'javascript',
-						'sass' => 'scss',
-						'py'   => 'python',
-						'html' => 'markup',
-						'xml'  => 'markup',
+						'js'        => 'javascript',
+						'sass'      => 'scss',
+						'py'        => 'python',
+						'html'      => 'markup',
+						'xml'       => 'markup',
+						'plaintext' => 'none',
 					);
 
 					if ( array_key_exists( $slug, $map ) ) {

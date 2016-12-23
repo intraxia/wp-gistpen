@@ -11,6 +11,7 @@ const map = {
     'py': 'python',
     'html': 'markup',
     'xml': 'markup',
+    'plaintext': 'none'
 };
 
 /**
