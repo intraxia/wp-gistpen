@@ -1,4 +1,8 @@
 // @flow
+export type Blob = {
+
+};
+
 export type PrismState = {
     theme : string;
     'line-numbers' : boolean;
@@ -11,17 +15,19 @@ export type GistState = {
 
 export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export';
 
-export type ConstState = {
-    languages : { [key : string] : string };
+export type ConstState = {|
+    languages : {[key : string] : string; };
     root : string;
     nonce : string;
     url : string;
-    ace_themes : { [key : string] : string };
+    ace_themes : { [key : string] : string; };
     ace_widths : Array<number>;
-    statuses : { [key : string] : string };
-    themes : { [key : string] : string };
-    repo? : Object;
-};
+    statuses : { [key : string] : string; };
+    themes : { [key : string] : string; };
+    repo? : {
+        blobs : Array<Blob>;
+    };
+|};
 
 export type SettingsState = {
     prism : PrismState;
