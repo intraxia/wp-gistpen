@@ -3,6 +3,8 @@
     "ramda",
     "transform-array-from",
     "transform-object-assign",
+    "syntax-flow",
+    "tcomb",
     "transform-flow-strip-types"
   ],
   "presets": [
