@@ -1,5 +1,12 @@
 import Prism from '../prism';
 
+import { plugin } from '../prism/plugins/toolbar';
+import '../prism/plugins/copy-to-clipboard';
+import '../prism/plugins/edit';
+import '../prism/plugins/filename';
+
+plugin.use();
+
 if (!window.Promise) {
     require('es6-promise').polyfill();
 }

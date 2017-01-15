@@ -1,0 +1,12 @@
+.editor.page {
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+.editor.page > pre > code {
+    padding: 0;
+    outline: none;
+    white-space: pre;
+    display: block;
+    font-size: 16px;
+}

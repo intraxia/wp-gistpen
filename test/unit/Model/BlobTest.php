@@ -43,12 +43,11 @@ class BlobTest extends TestCase {
 		$this->assertSame( $this->blob->post_content, $blob->code );
 		$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $blob->language );
 		$this->assertSame( strlen( $this->blob->post_content ), $blob->size );
-		$this->assertInstanceOf( EntityManager::REPO_CLASS, $blob->repo );
+		$this->assertSame( $this->repo->ID, $blob->repo_id );
 		$this->assertSame( rest_url( sprintf(
-			'intraxia/v1/gistpen/repos/%s/%s/%s',
+			'intraxia/v1/gistpen/repos/%s/blobs/%s/raw',
 			$this->repo->ID,
-			$this->blob->ID,
-			$blob->filename
+			$this->blob->ID
 		) ), $blob->raw_url );
 
 		$json = $blob->serialize();

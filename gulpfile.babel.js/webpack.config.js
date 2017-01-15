@@ -4,47 +4,37 @@ const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 const gutil = require('gulp-util');
 const notifier = require('node-notifier');
 
-const src = path.join(__dirname, 'src', 'js');
-const client = path.join(__dirname, 'client');
+const src = path.join(__dirname, '..', 'src', 'js');
+const client = path.join(__dirname, '..', 'client');
 
 module.exports = {
-    debug: true,
     devtool: 'sourcemap',
     entry: {
         settings: path.join(client, 'settings'),
         content: path.join(client, 'content'),
-        post: path.join(src, 'post'),
+        editor: path.join(client, 'editor'),
         tinymce: path.join(src, 'tinymce')
     },
     output: {
-        path: path.join(__dirname, 'assets', 'js'),
+        path: path.join(__dirname, '..', 'assets', 'js'),
         filename: '[name].js'
     },
     module: {
-        preLoaders: [
-            {
-                test: /\.js$/,
-                loader: 'eslint',
-                exclude: /(node_modules)/
-            }
-        ],
         loaders: [
             {
                 test: /\.js$/,
-                loader: 'babel',
-                include: [src, client]
+                loader: 'eslint-loader',
+                exclude: /(node_modules)/,
+                enforce: 'pre'
             },
             {
                 test: /\.js$/,
-                loader: 'babel',
-                include: /node_modules\/(redux|brookjs|kefir)/,
-                query: {
-                    cacheDirectory: true
-                }
+                loader: 'babel-loader',
+                include: [src, client]
             },
             {
                 test: /\.hbs/,
-                loader: 'handlebars',
+                loader: 'handlebars-loader',
                 query: {
                     helperDirs: [path.join(client, 'helpers')],
                     partialDirs: [client],
@@ -54,17 +44,27 @@ module.exports = {
             },
             {
                 test: /\.(scss|css)$/,
-                loaders: ['style/useable', 'css', 'sass']
+                include: path.join(client, 'editor'),
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
+            },
+            {
+                test: /\.(scss|css)$/,
+                include: [
+                    path.join(client, 'settings'),
+                    path.join(client, 'prism'),
+                    /node_modules/
+                ],
+                loaders: ['style-loader/useable', 'css-loader', 'sass-loader']
             }
         ]
     },
     resolve: {
         alias: {
             kefir: 'kefir/src',
-            redux: 'redux/es'
+            redux: 'redux/es',
+            brookjs: 'brookjs/es'
         },
-        mainFields: ['jsnext:main', 'browser', 'main'],
-        modulesDirectories: ['node_modules']
+        mainFields: ['jsnext:main', 'browser', 'main']
     },
     plugins: [
         new FlowStatusWebpackPlugin({

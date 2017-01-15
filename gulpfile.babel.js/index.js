@@ -8,6 +8,7 @@ const sort = require('gulp-sort');
 require('./copy');
 require('./dev');
 require('./scripts');
+require('./test');
 
 gulp.task('styles', function () {
     return gulp.src('src/scss/*.scss')

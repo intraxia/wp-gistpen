@@ -19,14 +19,17 @@ class ViewServiceProvider implements ServiceProvider {
 					$container->fetch( 'database' ),
 					$container->fetch( 'options.site' ),
 					$container->fetch( 'templating' ),
+					$container->fetch( 'assets' ),
 					$container->fetch( 'url' )
 				);
 			} )
 			->define( 'view.editor', function ( Container $container ) {
 				return new Editor(
-					$container->fetch( 'facade.database' ),
-					$container->fetch( 'facade.adapter' ),
-					$container->fetch( 'path' )
+					$container->fetch( 'database' ),
+					$container->fetch( 'options.user' ),
+					$container->fetch( 'templating' ),
+					$container->fetch( 'path' ),
+					$container->fetch( 'url' )
 				);
 			} )
 			->define( 'view.settings', function ( Container $container ) {

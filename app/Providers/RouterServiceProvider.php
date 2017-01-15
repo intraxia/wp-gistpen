@@ -23,10 +23,10 @@ class RouterServiceProvider extends ServiceProvider {
 		$router->set_vendor( 'intraxia' )->set_version( 1 );
 		$controllers = array( // @todo this sucks, pass controller into router? how does router access the controllers?
 			'search' => $this->container->fetch( 'controller.search' ),
-			'zip'    => $this->container->fetch( 'controller.zip' ),
 			'user'   => $this->container->fetch( 'controller.user' ),
 			'job'    => $this->container->fetch( 'controller.job' ),
 			'repo'   => $this->container->fetch( 'controller.repo' ),
+			'blob'   => $this->container->fetch( 'controller.blob' ),
 			'site'   => $this->container->fetch( 'controller.site' ),
 		);
 
@@ -35,7 +35,7 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos endpoints
 			 */
 			$router->get( '/repos', array( $controllers['repo'], 'index' ) );
-			$router->post( '/repo', array( $controllers['repo'], 'create' ), array(
+			$router->post( '/repos', array( $controllers['repo'], 'create' ), array(
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
@@ -44,34 +44,23 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos/{repo_id} endpoints
 			 */
 			$router->get( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'view' ) );
-			$router->put( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'update' ), array(
+			$router->put( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'update' ), array(
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
-			$router->patch( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'apply' ), array(
+			$router->patch( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'apply' ), array(
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
-			$router->delete( '/repo/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
+			$router->delete( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
 //				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
 			/**
-			 * /zip endpoint
-			 * @deprecated
+			 * /repos/{repo_id}/blobs/{blob_id} endpoints
 			 */
-			$router->get( '/zip/(?P<id>\d+)', array( $controllers['zip'], 'view' ), array(
-				'filter' => new Filter( array( 'id' => 'required|integer' ) ),
-			) );
-			$router->post( '/zip', array( $controllers['zip'], 'create' ), array(
-				'filter' => new ZipFilter,
-				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
-			) );
-			$router->put( '/zip/(?P<id>\d+)', array( $controllers['zip'], 'update' ), array(
-				'filter' => new ZipFilter,
-				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
-			) );
+			$router->get( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)/raw', array( $controllers['blob'], 'raw' ) );
 
 			/**
 			 * /search endpoint

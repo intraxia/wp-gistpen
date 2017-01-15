@@ -5,8 +5,9 @@ module.exports = {
         ecmaVersion: 6,
         sourceType: 'module',
         ecmaFeatures: {
-            impliedStrict: true
-        }
+            impliedStrict: true,
+            experimentalObjectRestSpread: true
+        },
     },
     globals: {
         '__webpack_public_path__': true
@@ -23,6 +24,7 @@ module.exports = {
         'valtech'
     ],
     rules: {
+        'rest-spread-spacing': [2, 'never'],
         'flowtype/boolean-style': ['error', 'boolean'],
         'flowtype/define-flow-type': 'error',
         'flowtype/delimiter-dangle': ['error', 'always'],

@@ -6,6 +6,7 @@
   "main": "gulpfile.js",
   "license": "GPL-2.0+",
   "devDependencies": {
+    "ava": "^0.16.0",
     "babel-core": "^6.4.5",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.1",
@@ -15,6 +16,7 @@
     "babel-plugin-transform-array-from": "^1.0.0",
     "babel-plugin-transform-flow-strip-types": "^6.14.0",
     "babel-plugin-transform-object-assign": "^6.8.0",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-es2015": "^6.14.0",
     "css-loader": "^0.25.0",
     "eslint": "^3.5.0",
@@ -24,8 +26,10 @@
     "flow-bin": "^0.37.4",
     "flow-status-webpack-plugin": "^0.1.7",
     "gulp": "3.9",
+    "gulp-ava": "^0.14.1",
     "gulp-cssnano": "2.1.0",
     "gulp-ext-replace": "0.2.0",
+    "gulp-multi-process": "0.0.3",
     "gulp-sass": "2.1.1",
     "gulp-sort": "1.1.1",
     "gulp-util": "3.0.7",
@@ -35,30 +39,35 @@
     "node-notifier": "^4.6.1",
     "sass-loader": "^4.0.2",
     "style-loader": "^0.13.1",
-    "webpack": "2.1.0-beta.22",
+    "webpack": "^2.1.0-beta.25",
     "webpack-notifier": "^1.4.1"
   },
   "dependencies": {
     "ace-builds": "1.2.2",
     "array-from": "^2.1.1",
     "backbone": "1.2.3",
-    "brookjs": "github:valtech-nyc/brookjs#e8607771a4fb18ab2735930af731631aa465f67e",
+    "bourbon": "^4.2.7",
+    "bourbon-neat": "^1.8.0",
+    "brookjs": "^0.2.1",
     "clipboard": "1.5.5",
     "es6-promise": "3.0.2",
     "jquery": "2.2.0",
-    "kefir": "^3.5.1",
+    "kefir": "^3.6.0",
     "prism-themes": "git+https://github.com/PrismJS/prism-themes.git",
-    "prismjs": "1.4.1",
+    "prismjs": "github:mAAdhaTTah/prism#7a8e1c3ac001e9f9f294f2de697677f6573ad998",
     "ramda": "^0.22.1",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^1.0.0",
     "sheet-router": "^4.0.0-0",
     "tcomb": "^3.2.16"
   },
-  "babel": {
-    "presets": [
-      "es2015",
-      "react",
-      "stage-0"
-    ]
+  "ava": {
+    "files": [
+      "./client/**/__tests__/*.spec.js"
+    ],
+    "source": [
+      "./client/**/*.js"
+    ],
+    "require": "babel-core/register"
   }
 }

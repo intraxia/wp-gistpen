@@ -1,0 +1,50 @@
+/**
+ * Get the selection start location for the given element.
+ *
+ * @param {Element} node - Element to check for selection start.
+ * @returns {number} Selection start.
+ */
+export function selectSelectionStart(node) {
+    const selection = getSelection();
+
+    if (selection.rangeCount) {
+        let range = selection.getRangeAt(0);
+        let element = range.startContainer;
+        let container = element;
+        let offset = range.startOffset;
+
+        if (!(node.compareDocumentPosition(element) & 0x10)) {
+            return 0;
+        }
+
+        do {
+            while (element = element.previousSibling) {
+                if (element.textContent) {
+                    offset += element.textContent.length;
+                }
+            }
+
+            element = container = container.parentNode;
+        } while (element && element !== node);
+
+        return offset;
+    } else {
+        return 0;
+    }
+}
+
+/**
+ * Get the selection end location for the given element.
+ *
+ * @param {Element} node - Element to check for selection start.
+ * @returns {number} Selection end.
+ */
+export function selectSelectionEnd(node) {
+    const selection = getSelection();
+
+    if (selection.rangeCount) {
+        return selectSelectionStart(node) + (selection.getRangeAt(0) + '').length;
+    } else {
+        return 0;
+    }
+}

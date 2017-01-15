@@ -7,13 +7,13 @@ import { ajaxFailedAction, ajaxFinishedAction } from '../action';
 
 const makeBody = R.pipe(R.pick(['gist', 'prism']), JSON.stringify);
 const optionsAjax$ : (state : SettingsState) => Observable<Action> = R.converge(ajax$, [
-    (state : SettingsState) : string => state.const.root + 'site',
+    (state : SettingsState) : string => state.globals.root + 'site',
     (state : SettingsState) : AjaxOptions => ({
         method: 'PATCH',
         body: makeBody(state),
         credentials: 'include',
         headers: {
-            'X-WP-Nonce': state.const.nonce,
+            'X-WP-Nonce': state.globals.nonce,
             'Content-Type': 'application/json'
         }
     })

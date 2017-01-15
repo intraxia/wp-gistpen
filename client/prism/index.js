@@ -1,10 +1,8 @@
 import Prism from 'prismjs/components/prism-core';
 import 'prismjs/plugins/autoloader/prism-autoloader';
-import toolbar from './toolbar';
 
 // Prism highlights automatically by default.
 document.removeEventListener('DOMContentLoaded', Prism.highlightAll);
-Prism.hooks.add('complete', toolbar);
 
 // eslint-disable-next-line camelcase
 Prism.plugins.autoloader.languages_path = __webpack_public_path__;

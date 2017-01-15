@@ -88,7 +88,7 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @return Collection|WP_Error
 	 */
-	public function find_by( $class, $params = array() ) {
+	public function find_by( $class, array $params = array() ) {
 		if ( static::REPO_CLASS === $class ) {
 			return $this->find_repos_by( $params );
 		}
@@ -112,7 +112,7 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @return Model|WP_Error
 	 */
-	public function create( $class, $data = array() ) {
+	public function create( $class, array $data = array() ) {
 		if ( static::REPO_CLASS === $class ) {
 			return $this->create_repo( $data );
 		}
@@ -186,7 +186,7 @@ class EntityManager implements EntityManagerContract {
 		$post  = get_post( $id );
 		$model = new Repo;
 
-		if ( $post->post_type !== $model::get_post_type() ) {
+		if ( ! $post || $post->post_type !== $model::get_post_type() ) {
 			return new WP_Error( 'Invalid id' );
 		}
 
@@ -207,6 +207,12 @@ class EntityManager implements EntityManagerContract {
 						'orderby'     => 'date',
 					) )
 				);
+
+				foreach ( $blobs as $blob ) {
+					$blob->unguard();
+					$blob->set_attribute( 'repo', $model );
+					$blob->reguard();
+				}
 				continue;
 			}
 
@@ -235,7 +241,8 @@ class EntityManager implements EntityManagerContract {
 		$post  = get_post( $id );
 		$model = new Blob;
 
-		if ( $post->post_type !== $model::get_post_type() ||
+		if ( ! $post ||
+		     $post->post_type !== $model::get_post_type() ||
 		     $post->post_parent === 0
 		) {
 			return new WP_Error( 'Invalid id' );
@@ -246,14 +253,8 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $model->get_table_keys() as $key ) {
 			switch ( $key ) {
-				case 'repo':
-					$model->set_attribute(
-						'repo',
-						$this->find_repo( $post->post_parent )
-					);
-					break;
 				case 'language':
-					$terms = get_the_terms( $post->ID, 'wpgp_language' );
+					$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
 
 					if ( $terms ) {
 						$term = array_pop( $terms );
@@ -388,7 +389,8 @@ class EntityManager implements EntityManagerContract {
 		) );
 
 		$query = new \WP_Term_Query( array_merge( $params, array(
-			'taxonomy' => 'wpgp_language',
+			'taxonomy'   => 'wpgp_language',
+			'hide_empty' => false,
 		) ) );
 
 		foreach ( $query->get_terms() as $term ) {
@@ -454,7 +456,11 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $blobs_data as $blob_data ) {
 			$blob_data['repo_id'] = $model->get_primary_id();
-			$blob = $this->create_blob( $blob_data );
+			$blob_data['status'] = $model->get_attribute( 'status' );
+
+			$blob = $this->create_blob( $blob_data, array(
+				'unguarded' => true,
+			) );
 
 			if ( ! is_wp_error( $blob ) ) {
 				$blobs->add( $blob );
@@ -470,11 +476,13 @@ class EntityManager implements EntityManagerContract {
 	 * Creates a new blob with the provided data.
 	 *
 	 * @param array $data Blob data.
+	 * @param array $options Options array.
 	 *
 	 * @return Blob|WP_Error
 	 */
-	protected function create_blob( array $data ) {
+	protected function create_blob( array $data, array $options = array() ) {
 		$model = new Blob;
+		$unguarded = isset( $options['unguarded'] ) && $options['unguarded'];
 
 		/**
 		 * Set aside the `language` key for use.
@@ -490,7 +498,15 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $data as $key => $value ) {
 			try {
+				if ( $unguarded ) {
+					$model->unguard();
+				}
+
 				$model->set_attribute( $key, $value );
+
+				if ( $unguarded ) {
+					$model->reguard();
+				}
 			} catch ( GuardedPropertyException $exception ) {
 				// @todo Ignore the value?
 			}
@@ -525,6 +541,8 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		$model->set_attribute( 'language', $language );
+
+		wp_set_object_terms( $model->get_primary_id(), $model->language->slug, Language::get_taxonomy(), false );
 
 		return $model;
 	}
@@ -602,6 +620,7 @@ class EntityManager implements EntityManagerContract {
 		foreach ( $model->blobs as $blob ) {
 			$blob->unguard();
 			$blob->repo_id = $model->get_primary_id();
+			$blob->status = $model->get_attribute( 'status' );
 			$blob->reguard();
 
 			$this->persist_blob( $blob );
@@ -612,7 +631,7 @@ class EntityManager implements EntityManagerContract {
 			wp_trash_post( $deleted_blob->get_primary_id() );
 		}
 
-		return $model;
+		return $this->find( static::REPO_CLASS, $model->get_primary_id() );
 	}
 
 	/**
@@ -643,7 +662,7 @@ class EntityManager implements EntityManagerContract {
 			// @todo what to do?
 		}
 
-		return $model;
+		return $this->find( static::BLOB_CLASS, $model->get_primary_id() );
 	}
 
 	/**
@@ -676,15 +695,59 @@ class EntityManager implements EntityManagerContract {
 			);
 		}
 
+		return $this->find( static::LANGUAGE_CLASS, $model->get_primary_id() );
+	}
+
+	/**
+	 * Deletes the Repo and all its associated Blobs.
+	 *
+	 * @param Repo $model
+	 * @param bool $force
+	 *
+	 * @return Repo|WP_Error
+	 */
+	protected function delete_repo( Repo $model, $force ) {
+		$id = $model->get_primary_id();
+
+		if ( ! $id ) {
+			return new WP_Error( __( 'Repo does not exist in the database.' ) );
+		}
+
+		$result = wp_delete_post( $id, $force );
+
+		if ( ! $result ) {
+			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
+		}
+
+		foreach ( $model->blobs as $blob ) {
+			$this->delete_blob( $blob, $force );
+		}
+
 		return $model;
 	}
 
-	protected function delete_repo( Repo $model, $force ) {
-		return new WP_Error( 'not implemented' );
-	}
-
+	/**
+	 * Delete a Blob from the database.
+	 *
+	 * @param Blob $model
+	 * @param bool $force
+	 *
+	 * @return Blob|WP_Error
+	 */
 	protected function delete_blob( Blob $model, $force ) {
-		return new WP_Error( 'not implemented' );
+		$id = $model->get_primary_id();
+
+		if ( ! $id ) {
+			return new WP_Error( __( 'Repo does not exist in the database.' ) );
+		}
+
+		$result = wp_delete_post( $id, $force );
+
+		if ( ! $result ) {
+			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
+		}
+
+		return $model;
 	}
 
 	protected function delete_language( Language $model, $force ) {

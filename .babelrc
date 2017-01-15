@@ -3,11 +3,19 @@
     "ramda",
     "transform-array-from",
     "transform-object-assign",
+    "transform-object-rest-spread",
     "syntax-flow",
     "tcomb",
     "transform-flow-strip-types"
   ],
   "presets": [
     ["es2015", { "loose": false, "modules": false }]
-  ]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["es2015", { "loose": false, "modules": "commonjs" }]
+      ]
+    }
+  }
 }

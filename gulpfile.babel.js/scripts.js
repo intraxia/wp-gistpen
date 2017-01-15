@@ -3,7 +3,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 
 const webpack = require('webpack');
-const webpackConfig = require('../webpack.config.js');
+const webpackConfig = require('./webpack.config.js');
 
 gulp.task('scripts', ['scripts:dev', 'scripts:build']);
 
@@ -22,9 +22,9 @@ gulp.task('scripts:dev', callback => {
 
 gulp.task('scripts:build', callback => {
     const webpackBuildConfig = R.clone(webpackConfig);
-    delete webpackBuildConfig.debug;
     delete webpackBuildConfig.devtool;
     webpackBuildConfig.output.filename = '[name].min.js';
+    webpackBuildConfig.output.chunkFilename = '[id].min.js';
     webpackBuildConfig.plugins = webpackBuildConfig.plugins.concat(
         new webpack.DefinePlugin({
             'process.env': {

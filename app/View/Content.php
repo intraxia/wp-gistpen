@@ -1,6 +1,8 @@
 <?php
 namespace Intraxia\Gistpen\View;
 
+use Intraxia\Jaxion\Assets\Register as Assets;
+
 /**
  * Registers the front-end content output
  *
@@ -12,10 +14,8 @@ namespace Intraxia\Gistpen\View;
 
 use Intraxia\Gistpen\Contract\Templating;
 use Intraxia\Gistpen\Database\EntityManager as EM;
-use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Gistpen\Model\Zip;
 use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Core\HasActions;
@@ -66,6 +66,13 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	protected $url;
 
 	/**
+	 * Assets service provider.
+	 *
+	 * @var Assets
+	 */
+	private $assets;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
@@ -73,12 +80,14 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * @param EntityManager $em
 	 * @param Site          $site
 	 * @param Templating    $templating
+	 * @param Assets        $assets
 	 * @param string        $url
 	 */
-	public function __construct( EntityManager $em, Site $site, Templating $templating, $url ) {
+	public function __construct( EntityManager $em, Site $site, Templating $templating, Assets $assets, $url ) {
 		$this->em = $em;
 		$this->site = $site;
 		$this->templating = $templating;
+		$this->assets = $assets;
 		$this->url = $url;
 	}
 
@@ -91,7 +100,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * @since    0.1.0
 	 */
 	public function remove_filters( $content ) {
-		if ( 'gistpen' === get_post_type() ) {
+		if ( Repo::get_post_type() === get_post_type() ) {
 			remove_filter( 'the_content', 'wpautop' );
 			remove_filter( 'the_content', 'wptexturize' );
 			remove_filter( 'the_content', 'capital_P_dangit' );
@@ -113,7 +122,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	public function post_content( $content = '' ) {
 		$post = get_post();
 
-		if ( 'gistpen' !== $post->post_type ) {
+		if ( Repo::get_post_type() !== $post->post_type ) {
 			return $content;
 		}
 
@@ -157,7 +166,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return $query;
 		}
 
-		if ( ! $query->is_post_type_archive( 'gistpen' ) ) {
+		if ( ! $query->is_post_type_archive( Repo::get_post_type() ) ) {
 			return $query;
 		}
 
@@ -196,7 +205,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 
 		$post = get_post( $args['id'] );
 
-		if ( 'gistpen' !== $post->post_type ) {
+		if ( Repo::get_post_type() !== $post->post_type ) {
 			return '<div class="wp-gistpen-error">ID provided is not a Gistpen repo.</div>';
 		}
 
@@ -212,7 +221,43 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">Error: ' . $model->get_error_message() .'.</div>';
 		}
 
-		return get_post_embed_html( 'auto', 'auto', $args['id'] );
+		// Remove the hard-coded with so the embed can scale with the width of the column.
+		return str_replace( 'width="200"', 'width="100%"', wp_oembed_get( get_post_embed_url( $post ) ) );
+	}
+
+	/**
+	 * Enqueues the js required to highlight the embed.
+	 */
+	public function enqueue_embed_scripts() {
+		$post = get_post();
+
+		if ( Repo::get_post_type() !== $post->post_type ) {
+			return;
+		}
+
+		$this->assets->enqueue_web_scripts();
+	}
+
+	/**
+	 * Remove the title from the Gistpen oembed.
+	 *
+	 * @param string $title Post title.
+	 * @param int    $id    Post ID.
+	 *
+	 * @return string
+	 */
+	public function remove_embed_title( $title, $id ) {
+		$post = get_post( $id );
+
+		if (
+			is_embed() &&
+			Repo::get_post_type() === $post->post_type &&
+			0 !== $post->post_parent // only remove the title from `Blob` embeds
+		) {
+			return '';
+		}
+
+		return $title;
 	}
 
 	/**
@@ -256,6 +301,19 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			array(
 				'hook'   => 'pre_get_posts',
 				'method' => 'pre_get_posts',
+			),
+			array(
+				'hook'   => 'the_excerpt_embed',
+				'method' => 'post_content',
+			),
+			array(
+				'hook'   => 'embed_footer',
+				'method' => 'enqueue_embed_scripts',
+			),
+			array(
+				'hook'   => 'the_title',
+				'method' => 'remove_embed_title',
+				'args'   => 2,
 			),
 		);
 	}

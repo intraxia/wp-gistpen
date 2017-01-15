@@ -15,7 +15,6 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property string   $code
  * @property Language $language
  * @property int      $repo_id
- * @property Repo     $repo
  * @property int      $size
  * @property string   $raw_url
  */
@@ -38,8 +37,8 @@ class Blob extends Model implements UsesWordPressPost {
 	 */
 	protected $guarded = array(
 		'ID',
-		'repo',
 		'repo_id',
+		'status',
 	);
 
 	/**
@@ -94,6 +93,15 @@ class Blob extends Model implements UsesWordPressPost {
 	}
 
 	/**
+	 * Maps the Repo's status to WP_Posts's post_status.
+	 *
+	 * @return string
+	 */
+	protected function map_status() {
+		return 'post_status';
+	}
+
+	/**
 	 * Maps the Blob's repo_id to the WP_Post post_parent.
 	 *
 	 * @return string
@@ -118,10 +126,9 @@ class Blob extends Model implements UsesWordPressPost {
 	 */
 	protected function compute_raw_url() {
 		return rest_url( sprintf(
-			'intraxia/v1/gistpen/repos/%s/%s/%s',
-			$this->repo->ID,
-			$this->ID,
-			$this->filename
+			'intraxia/v1/gistpen/repos/%s/blobs/%s/raw',
+			$this->repo_id,
+			$this->ID
 		) );
 	}
 
@@ -132,18 +139,5 @@ class Blob extends Model implements UsesWordPressPost {
 	 */
 	protected function compute_edit_url() {
 		return get_edit_post_link( $this->repo_id );
-	}
-
-	/**
-	 * Set the language access
-	 *
-	 * @param string $slug
-	 */
-	public function set_language_attribute( $slug ) {
-		if ( $slug instanceof Language ) {
-			$this->language = $slug;
-		} elseif ( is_string( $slug ) ) {
-			$this->language->slug = $slug;
-		}
 	}
 }

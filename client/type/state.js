@@ -15,7 +15,7 @@ export type GistState = {
 
 export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export';
 
-export type ConstState = {|
+export type GlobalsState = {|
     languages : {[key : string] : string; };
     root : string;
     nonce : string;
@@ -33,5 +33,5 @@ export type SettingsState = {
     prism : PrismState;
     gist : GistState;
     route : RouteState;
-    'const' : ConstState;
+    globals : GlobalsState;
 };

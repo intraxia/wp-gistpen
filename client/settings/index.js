@@ -1,26 +1,20 @@
-import R from 'ramda';
-import { applyMiddleware, createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import { fromESObservable } from 'kefir';
-import { observeDelta } from 'brookjs';
 import root from './root';
 import router from './router';
-import { createRouterDelta, siteDelta } from '../delta';
-import reducer from '../reducer';
+import { applyDelta, createRouterDelta, siteDelta } from '../delta';
+import { globals, route, prism, gist } from '../reducer';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
 // eslint-disable-next-line camelcase
-__webpack_public_path__ = __GISTPEN_SETTINGS__.const.url + 'assets/js/';
+__webpack_public_path__ = __GISTPEN_SETTINGS__.globals.url + 'assets/js/';
 
-let enhancer = applyMiddleware(observeDelta(createRouterDelta(router), siteDelta));
-
-if (process.env.NODE_ENV !== 'production') {
-    // To use devtools, install Chrome extension:
-    // https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd
-    enhancer = R.pipe(global.devToolsExtension ? global.devToolsExtension() : R.identity, enhancer);
-}
-
-const store = createStore(reducer, __GISTPEN_SETTINGS__, enhancer);
+const store = createStore(
+    combineReducers({ globals, route, prism, gist }),
+    __GISTPEN_SETTINGS__,
+    applyDelta(createRouterDelta(router), siteDelta)
+);
 const state$ = fromESObservable(store).toProperty(store.getState);
 
 document.addEventListener('DOMContentLoaded', () => {

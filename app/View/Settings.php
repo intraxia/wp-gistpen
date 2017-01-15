@@ -96,7 +96,7 @@ class Settings implements HasActions, HasFilters {
 			'route' => 'bootstrap',
 			'prism' => $this->site->get( 'prism' ),
 			'gist'  => $this->site->get( 'gist' ),
-			'const' => array(
+			'globals' => array(
 				'languages'  => Language::$supported,
 				'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
