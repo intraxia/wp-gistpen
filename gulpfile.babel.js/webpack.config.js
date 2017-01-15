@@ -29,14 +29,6 @@ module.exports = {
                 include: [src, client]
             },
             {
-                test: /\.js$/,
-                loader: 'babel-loader',
-                include: /node_modules\/(redux|brookjs|kefir|brookjs)/,
-                query: {
-                    cacheDirectory: true
-                }
-            },
-            {
                 test: /\.hbs/,
                 loader: 'handlebars-loader',
                 query: {
@@ -66,7 +58,7 @@ module.exports = {
         alias: {
             kefir: 'kefir/src',
             redux: 'redux/es',
-            brookjs: 'brookjs/src',
+            brookjs: 'brookjs/es'
         },
         mainFields: ['jsnext:main', 'browser', 'main']
     },
