@@ -125,7 +125,7 @@ class Settings implements HasActions, HasFilters {
 						array(
 							'filename' => 'dummy.js',
 							'language' => array(
-								'prism_slug' => 'javascript'
+								'slug' => 'javascript'
 							),
 							'edit_url' => '#highlighting',
 							'code'     => /** @lang javascript */<<<JS
