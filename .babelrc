@@ -5,7 +5,6 @@
     "transform-object-assign",
     "transform-object-rest-spread",
     "syntax-flow",
-    "tcomb",
     "transform-flow-strip-types"
   ],
   "presets": [
@@ -15,6 +14,11 @@
     "test": {
       "presets": [
         ["es2015", { "loose": false, "modules": "commonjs" }]
+      ]
+    },
+    "development": {
+      "plugins": [
+        "tcomb"
       ]
     }
   }
