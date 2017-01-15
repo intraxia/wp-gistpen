@@ -1,3 +1,6 @@
+// @flow
+import type { AjaxOptions } from '../type';
+import type { Emitter, Observable } from 'kefir';
 import R from 'ramda';
 import { stream } from 'kefir';
 
@@ -13,18 +16,18 @@ const makeOptions = R.merge({
  * @param {Object} opts - Request options.
  * @returns {Stream<T, S>} Ajax stream.
  */
-export default function ajax$(url, opts = {}) {
-    return stream(emitter => {
+export default function ajax$(url : string , opts : AjaxOptions) : Observable<string, TypeError> {
+    return stream((emitter : Emitter<string, TypeError>) : (() => void) => {
         const options = makeOptions(opts);
         let xhr = new XMLHttpRequest();
 
-        xhr.onload = () =>
+        xhr.onload = () : boolean =>
             emitter.value('response' in xhr ? xhr.response : xhr.responseText);
 
-        xhr.onerror = () =>
+        xhr.onerror = () : boolean =>
             emitter.error(new TypeError('Network request failed'));
 
-        xhr.ontimeout = () =>
+        xhr.ontimeout = () : boolean =>
             emitter.error(new TypeError('Network request failed'));
 
         xhr.open(options.method, url, true);
@@ -41,6 +44,6 @@ export default function ajax$(url, opts = {}) {
 
         xhr.send(typeof options.body !== 'undefined' ? options.body : null);
 
-        return () => xhr.abort();
-    }).take(1).takeErrors(1).setName('ajax$');
+        return () : void => xhr.abort();
+    }).take(1).takeErrors(1);
 }
