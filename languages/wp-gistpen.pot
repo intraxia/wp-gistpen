@@ -1,4 +1,4 @@
-# Copyright (C) 2016 wp-gistpen
+# Copyright (C) 2017 wp-gistpen
 # This file is distributed under the same license as the wp-gistpen package.
 msgid ""
 msgstr ""
@@ -7,58 +7,62 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n\n"
 
-#: app/CLI/Command.php:133
+#: app/CLI/Command.php:125
 msgid "Failed to add example for language {$lang}"
 msgstr ""
 
-#: app/CLI/Command.php:140
+#: app/CLI/Command.php:132
 msgid "Failed to add gist id for language {$lang}"
 msgstr ""
 
-#: app/CLI/Command.php:143
+#: app/CLI/Command.php:135
 msgid "Successfully added example for language {$lang}"
 msgstr ""
 
-#: app/CLI/Command.php:172
+#: app/CLI/Command.php:164
 msgid "Gist token failed to authenticate. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:178
+#: app/CLI/Command.php:170
 msgid "Gist token update failed."
 msgstr ""
 
-#: app/CLI/Command.php:181
+#: app/CLI/Command.php:173
 msgid "Gist token updated."
 msgstr ""
 
-#: app/CLI/Command.php:199
+#: app/CLI/Command.php:191
 msgid "Failed to get post IDs missing Gist IDs. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:203
+#: app/CLI/Command.php:195
 msgid "No Gistpens missing Gist IDs."
 msgstr ""
 
-#: app/CLI/Command.php:212
+#: app/CLI/Command.php:204
 msgid "Failed to create Gist. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:215
+#: app/CLI/Command.php:207
 msgid "Successfully exported Gistpen #"
 msgstr ""
 
-#: app/CLI/Command.php:241
+#: app/CLI/Command.php:229
+msgid "Failed to get Gist IDs for your account. Error: "
+msgstr ""
+
+#: app/CLI/Command.php:232
 msgid "No Gists retrieved."
 msgstr ""
 
-#: app/CLI/Command.php:252
+#: app/CLI/Command.php:243
 msgid "Failed to import Gist. Error: "
 msgstr ""
 
-#: app/CLI/Command.php:255
+#: app/CLI/Command.php:246
 msgid "Successfully imported Gist #"
 msgstr ""
 
@@ -74,72 +78,16 @@ msgstr ""
 msgid "Multiple Gistpens with Gist ID {$gist_id} found."
 msgstr ""
 
+#: app/Http/BlobController.php:62
+msgid "Invalid Blob ID"
+msgstr ""
+
 #: app/Http/JobController.php:62
 msgid "Background jobs have not been implemented"
 msgstr ""
 
-#: app/Http/ZipFilter.php:64
-msgid "File %d is invalid"
-msgstr ""
-
-#: app/Model/Language.php:123
+#: app/Model/Language.php:196
 msgid "Invalid language slug: {$slug}"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:46
-msgid "Default"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:47
-msgid "Dark"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:48
-msgid "Funky"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:49
-msgid "Okaidia"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:50
-msgid "Tomorrow"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:51
-msgid "Twilight"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:52
-msgid "Coy"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:53
-msgid "CB"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:54
-msgid "GHColors"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:55
-msgid "Projoaque"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:56
-msgid "Xonokai"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:57
-msgid "Ateliersulphurpool-Light"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:58
-msgid "Hopscotch"
-msgstr ""
-
-#: app/Providers/AssetsServiceProvider.php:59
-msgid "Atom Dark"
 msgstr ""
 
 #: app/Register/Data.php:24
@@ -152,7 +100,7 @@ msgctxt "Post Type Singular Name"
 msgid "Gistpen"
 msgstr ""
 
-#: app/Register/Data.php:26, app/View/Settings.php:51
+#: app/Register/Data.php:26, app/View/Settings.php:73
 msgid "Gistpens"
 msgstr ""
 
@@ -266,14 +214,70 @@ msgstr ""
 msgid "Not Found"
 msgstr ""
 
-#: app/View/Editor.php:129
+#: app/View/Editor.php:162, app/View/Settings.php:108
+msgid "Default"
+msgstr ""
+
+#: app/View/Editor.php:163, app/View/Settings.php:109
+msgid "Dark"
+msgstr ""
+
+#: app/View/Editor.php:164, app/View/Settings.php:110
+msgid "Funky"
+msgstr ""
+
+#: app/View/Editor.php:165, app/View/Settings.php:111
+msgid "Okaidia"
+msgstr ""
+
+#: app/View/Editor.php:166, app/View/Settings.php:112
+msgid "Tomorrow"
+msgstr ""
+
+#: app/View/Editor.php:167, app/View/Settings.php:113
+msgid "Twilight"
+msgstr ""
+
+#: app/View/Editor.php:168, app/View/Settings.php:114
+msgid "Coy"
+msgstr ""
+
+#: app/View/Editor.php:169, app/View/Settings.php:115
+msgid "CB"
+msgstr ""
+
+#: app/View/Editor.php:170, app/View/Settings.php:116
+msgid "GHColors"
+msgstr ""
+
+#: app/View/Editor.php:171, app/View/Settings.php:117
+msgid "Projoaque"
+msgstr ""
+
+#: app/View/Editor.php:172, app/View/Settings.php:118
+msgid "Xonokai"
+msgstr ""
+
+#: app/View/Editor.php:173, app/View/Settings.php:119
+msgid "Ateliersulphurpool-Light"
+msgstr ""
+
+#: app/View/Editor.php:174, app/View/Settings.php:120
+msgid "Hopscotch"
+msgstr ""
+
+#: app/View/Editor.php:175, app/View/Settings.php:121
+msgid "Atom Dark"
+msgstr ""
+
+#: app/View/Editor.php:231
 msgid "Files"
 msgstr ""
 
-#: app/View/Settings.php:50
+#: app/View/Settings.php:72
 msgid "WP-Gistpen Settings"
 msgstr ""
 
-#: app/View/Settings.php:75
+#: app/View/Settings.php:164
 msgid "Settings"
 msgstr ""
