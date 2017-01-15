@@ -1,3 +1,4 @@
+import '../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { fromESObservable } from 'kefir';
 import root from './root';
