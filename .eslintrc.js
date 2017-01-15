@@ -1,5 +1,6 @@
 module.exports = {
     root: true,
+    parser: 'babel-eslint',
     parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -16,8 +17,35 @@ module.exports = {
         node: true,
         browser: true
     },
-    extends: 'valtech',
+    plugins: [
+        'flowtype'
+    ],
+    extends: [
+        'valtech'
+    ],
     rules: {
-        'rest-spread-spacing': [2, 'never']
+        'rest-spread-spacing': [2, 'never'],
+        'flowtype/boolean-style': ['error', 'boolean'],
+        'flowtype/define-flow-type': 'error',
+        'flowtype/delimiter-dangle': ['error', 'always'],
+        'flowtype/generic-spacing': ['error', 'never'],
+        'flowtype/no-weak-types': 'warn',
+        'flowtype/require-parameter-type': 'error',
+        'flowtype/require-return-type': ['error', 'always', {
+            'annotateUndefined': 'never'
+        }],
+        'flowtype/require-valid-file-annotation': 'error',
+        'flowtype/semi': ['error', 'always'],
+        'flowtype/space-after-type-colon': ['error', 'always'],
+        'flowtype/space-before-generic-bracket': ['error', 'never'],
+        'flowtype/space-before-type-colon': ['error', 'always'],
+        'flowtype/union-intersection-spacing': ['error', 'always'],
+        'flowtype/use-flow-type': 'error',
+        'flowtype/valid-syntax': 'error'
+    },
+    settings: {
+        flowtype: {
+            'onlyFilesWithFlowAnnotation': true
+        }
     }
 };
