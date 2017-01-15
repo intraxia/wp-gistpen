@@ -1,6 +1,8 @@
 // @flow
-import type { PrismState, Action } from '../type';
+import type { PrismState, LineNumbersChangeAction, ShowInvisiblesChangeAction,
+    ThemeChangeAction } from '../type';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE } from '../action';
+import { combineActionReducers } from 'brookjs';
 
 const defaults : PrismState = {
     theme: 'default',
@@ -8,25 +10,30 @@ const defaults : PrismState = {
     'show-invisibles': false
 };
 
+const themeChangeReducer = (state : PrismState, action : ThemeChangeAction) : PrismState => ({
+    ...state,
+    theme: action.payload.value
+});
+
+const lineNumbersChangeReducer = (state : PrismState, action : LineNumbersChangeAction) : PrismState => ({
+    ...state,
+    'line-numbers': action.payload.value
+});
+
+const showInvisiblesChangeReducer = (state : PrismState, action : ShowInvisiblesChangeAction) : PrismState => ({
+    ...state,
+    'show-invisibles': action.payload.value
+});
+
 /**
  * Updates the prism state.
  *
- * @param {Object} state - Current state.
- * @param {string} type - Action type.
- * @param {Object} payload - Action payload.
- * @returns {Object} New state.
+ * @param {PrismState} state - Current state.
+ * @param {action} action - Dispatched action.
+ * @returns {PrismState} New state.
  */
-export default function prismReducer(state : PrismState = defaults, { type, payload = {} } : Action) : PrismState {
-    const { value } = payload;
-
-    switch (type) {
-        case THEME_CHANGE:
-            return Object.assign({}, state, { theme: value });
-        case LINE_NUMBERS_CHANGE:
-            return Object.assign({}, state, { 'line-numbers': value });
-        case SHOW_INVISIBLES_CHANGE:
-            return Object.assign({}, state, { 'show-invisibles': value });
-        default:
-            return state;
-    }
-}
+export default combineActionReducers([
+    [THEME_CHANGE, themeChangeReducer],
+    [LINE_NUMBERS_CHANGE, lineNumbersChangeReducer],
+    [SHOW_INVISIBLES_CHANGE, showInvisiblesChangeReducer]
+], defaults);
