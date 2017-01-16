@@ -2,6 +2,7 @@
 @import "~bourbon-neat/app/assets/stylesheets/neat";
 
 // Variables
+$monospace-font: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 
 // Colors
 $dark-blue: #1E8CBE;
@@ -11,4 +12,40 @@ $light-blue: #5b9dd9;
 
 @mixin focus-border {
   box-shadow: 0 0 2px $dark-blue;
+}
+
+@mixin editor-controls-theme(
+    $theme,
+    $background-color,
+    $primary-color,
+    $secondary-color,
+    $tertiary-color
+) {
+    &.wpgp-editor-controls-#{$theme} {
+
+        background-color: $background-color;
+        color: $primary-color;
+
+        .wpgp-editor-control {
+            background-color: $tertiary-color;
+        }
+
+        .wpgp-button {
+            background-color: $primary-color;
+        }
+
+        select {
+            color: $primary-color;
+            background: $secondary-color;
+            box-shadow-color: $secondary-color;
+        }
+
+        input[type="checkbox"] {
+            border-color: $primary-color;
+
+            &:checked {
+                background-color: $background-color;
+            }
+        }
+    }
 }

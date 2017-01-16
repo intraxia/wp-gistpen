@@ -1,7 +1,74 @@
 @import "../common";
 
-.wpgp-editor-controls-container {
-  @include outer-container(100%);
-  border: 1px solid grey;
-  padding: 10px;
+#wpbody .wpgp-editor-controls {
+    @include outer-container(100%);
+    border: 1px solid grey;
+    padding: 10px;
+    font-family: $monospace-font;
+
+    .wpgp-editor-control {
+        display: inline-block;
+        padding: .5em;
+        margin-bottom: 1em;
+        border-radius: .5em;
+        line-height: 1.5em
+    }
+
+    .wpgp-button {
+        height: 2em;
+        border-radius: .5em;
+        vertical-align: bottom;
+
+        &::before {
+            margin-right: .25em;
+            vertical-align: bottom;
+            height: 1em;
+            width: 1em;
+            font-size: 1.5em;
+        }
+    }
+
+    .wpgp-button-update {
+        &::before {
+            content: "\f317";
+        }
+    }
+
+    .wpgp-button-add {
+        &::before {
+            line-height: 1.15em;
+            content: "\f475";
+        }
+    }
+
+    input[type="checkbox"] {
+        height: 1em;
+        width: 1em;
+        border-radius: .25em;
+
+        &::before {
+            content: none;
+        }
+    }
+
+    select {
+        height: initial;
+        font-size: .8em;
+        padding: 0 .5em;
+        box-shadow: 0 1px 0 0;
+        border-radius: .5em;
+        border: none;
+    }
+
+    input[type=checkbox] {
+        border: 1px solid;
+    }
+
+    @include editor-controls-theme(
+        'twilight',
+        #141414,
+        #bbb,
+        rgba(224, 224, 224, 0.2),
+        #545454
+    );
 }
