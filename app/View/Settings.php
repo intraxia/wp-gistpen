@@ -116,7 +116,7 @@ class Settings implements HasActions, HasFilters {
 					'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
 					'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
 					'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
-					'base16-ateliersulphurpool.light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
+					'base16-ateliersulphurpool-light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
 					'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
 					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
 				),
