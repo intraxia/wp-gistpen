@@ -16,36 +16,52 @@ $light-blue: #5b9dd9;
 
 @mixin editor-controls-theme(
     $theme,
-    $background-color,
-    $primary-color,
-    $secondary-color,
-    $tertiary-color
+    $controls-background,
+    $controls-text,
+    $control-background,
+    $button-text,
+    $button-background,
+    $select-text,
+    $select-background,
+    $checkbox-border,
+    $checked-color,
+    $controls-border: false,
+    $controls-radius: true
 ) {
     &.wpgp-editor-controls-#{$theme} {
+        background-color: $controls-background;
+        color: $controls-text;
 
-        background-color: $background-color;
-        color: $primary-color;
+        @if $controls-border {
+            border: .3em solid $controls-border;
+
+            @if $controls-radius {
+                border-radius: .5em;
+            }
+        }
 
         .wpgp-editor-control {
-            background-color: $tertiary-color;
+            background-color: $control-background;
         }
 
         .wpgp-button {
-            background-color: $primary-color;
+            background-color: $button-background;
+            color: $button-text;
         }
 
         select {
-            color: $primary-color;
-            background: $secondary-color;
-            box-shadow-color: $secondary-color;
+            color: $select-text;
+            background: $select-background;
         }
 
         input[type="checkbox"] {
-            border-color: $primary-color;
+            border-color: $checkbox-border;
 
             &:checked {
-                background-color: $background-color;
+                background-color: $checked-color;
             }
         }
+
+        @content;
     }
 }
