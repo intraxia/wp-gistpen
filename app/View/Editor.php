@@ -153,10 +153,10 @@ class Editor implements HasActions, HasFilters {
 						),
 					);
 				}, $blobs ),
-				'width'      => $this->user->get( 'ace_width' ),
-				'theme'      => $this->user->get( 'ace_theme' ),
-				'invisibles' => $this->user->get( 'ace_invisibles' ) ? : 'off',
-				'tabs'       => $this->user->get( 'ace_tabs' ) ? : 'off',
+				'width'      => $this->user->get( 'editor.indent_width' ),
+				'theme'      => $this->user->get( 'editor.theme' ),
+				'invisibles' => $this->user->get( 'editor.invisibles_enabled' ) ? : 'off',
+				'tabs'       => $this->user->get( 'editor.tabs_enabled' ) ? : 'off',
 				'widths'     => array( '1', '2', '4', '8' ),
 				'themes'     => array(
 					'default'                         => __( 'Default', 'wp-gistpen' ),
