@@ -1,9 +1,9 @@
 // @flow
-import type { Action, Blob, EditorPageState, EditorInstance } from '../type';
+import type { Action, Blob, EditorPageState, EditorInstance, RepoApiResponse } from '../type';
 import type { Observable } from 'kefir';
 import R from 'ramda';
 import ajax$ from '../ajax';
-import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction } from '../action';
+import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../action';
 
 const repoProps = R.pick(['description', 'status', 'password', 'sync']);
 const blobProps = R.pick(['filename', 'code', 'language']);
@@ -43,6 +43,7 @@ export default function repoDelta(action$ : Observable<Action>, state$ : Observa
                 'Content-Type': 'application/json'
             }
         }))
-        .map(R.pipe(JSON.parse, ajaxFinishedAction))
+        .map(JSON.parse)
+        .flatten((response : RepoApiResponse) : Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
         .mapErrors(ajaxFailedAction);
 }

@@ -1,4 +1,4 @@
-import { AJAX_FINISHED } from '../action';
+import { REPO_SAVE_SUCCEEDED } from '../action';
 
 /**
  * Updates the repo state.
@@ -10,7 +10,7 @@ import { AJAX_FINISHED } from '../action';
  */
 export default function repoReducer(state = {}, { type, payload }) {
     switch (type) {
-        case AJAX_FINISHED:
+        case REPO_SAVE_SUCCEEDED:
             return payload.response;
         default:
             return state;

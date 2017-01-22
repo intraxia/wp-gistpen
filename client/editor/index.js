@@ -2,7 +2,7 @@ import '../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { fromESObservable } from 'kefir';
 import root from './root';
-import { applyDelta, repoDelta } from '../delta';
+import { applyDelta, repoDelta, userDelta } from '../delta';
 import { api, editor, repo } from '../reducer';
 
 const { __GISTPEN_EDITOR__ } = global;
@@ -13,7 +13,10 @@ __webpack_public_path__ = __GISTPEN_EDITOR__.api.url + 'assets/js/';
 const store = createStore(
     combineReducers({ api, editor, repo }),
     __GISTPEN_EDITOR__,
-    applyDelta(repoDelta)
+    applyDelta(
+        repoDelta,
+        userDelta
+    )
 );
 const state$ = fromESObservable(store).toProperty(store.getState);
 
