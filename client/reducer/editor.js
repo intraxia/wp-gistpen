@@ -1,7 +1,7 @@
 import R from 'ramda';
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_DELETE_CLICK,
-    EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE, AJAX_FINISHED,
+    EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE, REPO_SAVE_SUCCEEDED,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
     EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_ADD_CLICK } from '../action';
 
@@ -115,7 +115,7 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                     })
                 }
             }));
-        case AJAX_FINISHED:
+        case REPO_SAVE_SUCCEEDED:
             const { response: repo } = payload;
             return {
                 ...state,

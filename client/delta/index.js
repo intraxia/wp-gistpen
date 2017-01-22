@@ -6,5 +6,6 @@ import { observeDelta } from 'brookjs';
 export { default as repoDelta } from './repo';
 export { default as createRouterDelta } from './router';
 export { default as siteDelta } from './site';
+export { default as userDelta } from './user';
 
 export const applyDelta = R.pipe(observeDelta, applyMiddleware, composeWithDevTools);

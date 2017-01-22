@@ -50,11 +50,8 @@ class UserControllerTest extends TestCase {
 			->once()
 			->andReturn( $this->data );
 		$this->user
-			->shouldReceive( 'set' )
-			->with( 'ace_theme', 'test' )
-			->once();
-		$this->user
-			->shouldReceive( 'all' )
+			->shouldReceive( 'patch' )
+			->with( $this->data )
 			->once()
 			->andReturn( $this->data );
 
@@ -63,7 +60,6 @@ class UserControllerTest extends TestCase {
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
 		$this->assertSame( $this->data, $response->get_data() );
 		$this->assertSame( 200, $response->get_status() );
-		$this->assertSame( array( 'X-Invalid-Keys' => '' ), $response->get_headers() );
 	}
 
 	public function test_should_return_invalid_key_when_update_fails() {
@@ -72,22 +68,16 @@ class UserControllerTest extends TestCase {
 			->once()
 			->andReturn( $this->data );
 		$this->user
-			->shouldReceive( 'set' )
-			->with( 'ace_theme', 'test' )
+			->shouldReceive( 'patch' )
+			->with( $this->data )
 			->once()
 			->andThrow( new InvalidArgumentException );
-		$this->user
-			->shouldReceive( 'all' )
-			->once()
-			->andReturn( $this->data );
-		$invalid = 'ace_theme';
 
+		/** @var WP_Error $response */
 		$response = $this->controller->update( $this->request );
 
-		$this->assertInstanceOf( 'WP_REST_Response', $response );
-		$this->assertSame( $this->data, $response->get_data() );
-		$this->assertSame( 200, $response->get_status() );
-		$this->assertSame( array( 'X-Invalid-Keys' => $invalid ), $response->get_headers() );
+		$this->assertInstanceOf( 'WP_Error', $response );
+		$this->assertSame( array( 'status' => 400 ), $response->get_error_data() );
 	}
 
 	public function tearDown() {

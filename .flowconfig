@@ -7,3 +7,5 @@
 
 [options]
 module.use_strict=true
+module.name_mapper.extension='scss' -> '<PROJECT_ROOT>/client/type/css.js'
+module.name_mapper.extension='hbs' -> '<PROJECT_ROOT>/client/type/handlebars.js'

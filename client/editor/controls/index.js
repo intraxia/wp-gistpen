@@ -1,20 +1,20 @@
+// @flow
+import type { Toggle } from '../../type';
 import './index.scss';
 import R from 'ramda';
-import component from 'brookjs/component';
-import events from 'brookjs/events';
-import render from 'brookjs/render';
+import { component, events, render } from 'brookjs';
 import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
     editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction,
     editorUpdateClickAction, editorAddClickAction } from '../../action';
 import template from './index.hbs';
 
-const mapCheckedToString = R.ifElse(
+const mapCheckedToString : ((e : Event) => Toggle) = R.ifElse(
     R.path(['target', 'checked']),
     R.always('on'),
     R.always('off')
 );
 
-const getTargetValue = R.path(['target', 'value']);
+const getTargetValue : ((e : Event) => string) = R.path(['target', 'value']);
 
 export default component({
     render: render(template),
