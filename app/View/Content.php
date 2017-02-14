@@ -21,6 +21,7 @@ use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 use Intraxia\Jaxion\Contract\Core\HasShortcode;
+use WP_Post;
 
 /**
  * This class manipulates the Gistpen post content.
@@ -221,8 +222,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">Error: ' . $model->get_error_message() .'.</div>';
 		}
 
-		// Remove the hard-coded with so the embed can scale with the width of the column.
-		return str_replace( 'width="200"', 'width="100%"', wp_oembed_get( get_post_embed_url( $post ) ) );
+		return wp_oembed_get( get_post_embed_url( $post ) );
 	}
 
 	/**
@@ -258,6 +258,22 @@ class Content implements HasActions, HasFilters, HasShortcode {
 		}
 
 		return $title;
+	}
+
+	/**
+	 * Remove the hard-coded width so the embed can scale with the width of the column.
+	 *
+	 * @param string $output Embed html output.
+	 * @param WP_Post $post  Associated post.
+	 *
+	 * @return string New embed html output.
+	 */
+	public function remove_embed_width( $output, WP_Post $post ) {
+		if ( Repo::get_post_type() === $post->post_type ) {
+			return preg_replace('/width="\d+"/', 'width="100%"', $output );
+		}
+
+		return $output;
 	}
 
 	/**
@@ -315,6 +331,11 @@ class Content implements HasActions, HasFilters, HasShortcode {
 				'method' => 'remove_embed_title',
 				'args'   => 2,
 			),
+			array(
+				'hook'   => 'embed_html',
+				'method' => 'remove_embed_width',
+				'args'   => 2,
+			)
 		);
 	}
 
