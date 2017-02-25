@@ -1,8 +1,6 @@
 import './index.scss';
 import R from 'ramda';
-import component from 'brookjs/component';
-import events from 'brookjs/events';
-import render from 'brookjs/render';
+import { component, events, render } from 'brookjs';
 import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
     editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction,
     editorUpdateClickAction, editorAddClickAction } from '../../action';

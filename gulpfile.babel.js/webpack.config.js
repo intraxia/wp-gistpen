@@ -60,7 +60,6 @@ module.exports = {
     },
     resolve: {
         alias: {
-            kefir: 'kefir/src',
             redux: 'redux/es',
             brookjs: 'brookjs/es'
         },

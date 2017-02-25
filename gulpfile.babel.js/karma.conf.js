@@ -2,6 +2,7 @@
 const R = require('ramda');
 const webpackConfig = R.clone(require('./webpack.config'));
 webpackConfig.entry = {};
+webpackConfig.devtool = 'inline-source-map';
 delete webpackConfig.plugins;
 
 if (!process.env.NODE_ENV) {
@@ -35,7 +36,7 @@ module.exports = function (config) {
         webpack: webpackConfig,
 
         webpackMiddleware: {
-            noInfo: true
+            stats: 'errors-only'
         },
 
         // test results reporter to use
