@@ -12,9 +12,7 @@
     "babel-plugin-ramda": "^1.1.6",
     "babel-plugin-syntax-flow": "^6.18.0",
     "babel-plugin-tcomb": "^0.3.24",
-    "babel-plugin-transform-array-from": "^1.0.0",
     "babel-plugin-transform-flow-strip-types": "^6.14.0",
-    "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
     "babel-preset-es2015": "^6.14.0",
     "chai": "^3.5.0",
@@ -51,15 +49,12 @@
     "webpack-notifier": "^1.4.1"
   },
   "dependencies": {
-    "ace-builds": "1.2.2",
-    "array-from": "^2.1.1",
     "backbone": "1.2.3",
     "bourbon": "^4.2.7",
     "bourbon-neat": "^1.8.0",
     "brookjs": "^0.2.1",
     "clipboard": "^1.5.5",
-    "es6-promise": "^4.0.0",
-    "es6-weak-map": "^2.0.1",
+    "core-js": "^2.4.1",
     "jquery": "2.2.0",
     "kefir": "^3.6.0",
     "mutationobserver-shim": "^0.3.2",
@@ -69,6 +64,7 @@
     "redux": "^3.6.0",
     "redux-devtools-extension": "^1.0.0",
     "sheet-router": "^4.0.0-0",
-    "tcomb": "^3.2.16"
+    "tcomb": "^3.2.16",
+    "whatwg-fetch": "^2.0.2"
   }
 }

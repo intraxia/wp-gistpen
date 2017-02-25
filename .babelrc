@@ -2,8 +2,6 @@
   "plugins": [
     "tcomb",
     "ramda",
-    "transform-array-from",
-    "transform-object-assign",
     "transform-object-rest-spread",
     "syntax-flow",
     "transform-flow-strip-types"
