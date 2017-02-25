@@ -68,9 +68,7 @@ export default events({
         R.map(mapKeydownToAction)
     ),
     onKeyup: R.pipe(
-        R.filter(({ keyCode }) =>
-            keyCode < 9 || keyCode > 32 && keyCode < 41
-        ),
+        R.filter(R.pipe(isSpecialEvent, R.not)),
         mapToTargetCursorAction
     ),
     onInput: R.map(({ target }) =>
