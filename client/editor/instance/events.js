@@ -50,6 +50,8 @@ function mapKeydownToAction(evt) {
         case 191:
             return editorMakeCommentAction({ code, cursor });
     }
+
+    throw new Error('Keydown is missing matching action case', evt);
 }
 
 export default events({
