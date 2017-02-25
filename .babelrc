@@ -1,25 +1,12 @@
 {
   "plugins": [
+    "tcomb",
     "ramda",
-    "transform-array-from",
-    "transform-object-assign",
     "transform-object-rest-spread",
     "syntax-flow",
     "transform-flow-strip-types"
   ],
   "presets": [
     ["es2015", { "loose": false, "modules": false }]
-  ],
-  "env": {
-    "test": {
-      "presets": [
-        ["es2015", { "loose": false, "modules": "commonjs" }]
-      ]
-    },
-    "development": {
-      "plugins": [
-        "tcomb"
-      ]
-    }
-  }
+  ]
 }

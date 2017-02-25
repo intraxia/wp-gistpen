@@ -1,11 +1,18 @@
 const gulp = require('gulp');
-const ava = require('gulp-ava');
+const gutil = require('gulp-util');
+const { Server } = require('karma');
 
 gulp.task('test', ['test:unit']);
 
-gulp.task('test:unit', () => {
-    process.env.BABEL_ENV = 'test';
+gulp.task('test:unit', done => {
+    const server = new Server({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, () => {
+        gutil.log('Tests complete');
 
-    return gulp.src('../client/**/__tests__/*.spec.js')
-        .pipe(ava({ verbose: true }));
+        done();
+    });
+
+    server.start();
 });
