@@ -1,12 +1,11 @@
 const gulp = require('gulp');
-const gulpMultiProcess = require('gulp-multi-process');
 const R = require('ramda');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const gutil = require('gulp-util');
-const path = require('path');
+const { Server } = require('karma');
 
-gulp.task('dev', cb => gulpMultiProcess(['dev:app', 'dev:tdd'], cb));
+gulp.task('dev', ['dev:app', 'dev:tdd']);
 
 gulp.task('dev:app', () => {
     const webpackWatchConfig = R.clone(webpackConfig);
@@ -25,9 +24,14 @@ gulp.task('dev:app', () => {
     });
 });
 
-gulp.task('dev:tdd', ['test:unit'], () => {
-    gulp.watch([
-        path.join(__dirname, '..', '/client/**/*.js'),
-        path.join(__dirname, '..', '/client/**/__tests__/*.spec.js')
-    ], ['test:unit']);
+gulp.task('dev:tdd', done => {
+    const server = new Server({
+        configFile: __dirname + '/karma.conf.js'
+    }, () => {
+        gutil.log('Tests complete');
+
+        done();
+    });
+
+    server.start();
 });
