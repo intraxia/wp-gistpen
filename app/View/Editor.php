@@ -54,7 +54,7 @@ class Editor implements HasActions, HasFilters {
 	/**
 	 * Database Facade object
 	 *
-	 * @var Database
+	 * @var EntityManager
 	 * @since 0.5.0
 	 */
 	protected $em;
