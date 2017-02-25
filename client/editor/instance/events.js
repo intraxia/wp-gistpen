@@ -33,7 +33,7 @@ const mapToTargetCursorAction = R.map(R.pipe(
  * @param {Event} evt - DOM Event object.
  * @returns {Action|false} Action to emit, or false if no action.
  */
-const mapKeydownToAction = function mapKeydownToAction(evt) {
+function mapKeydownToAction(evt) {
     const { shiftKey: inverse } = evt;
     const { textContent: code } = evt.target;
     const cursor = [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)];
@@ -50,7 +50,9 @@ const mapKeydownToAction = function mapKeydownToAction(evt) {
         case 191:
             return editorMakeCommentAction({ code, cursor });
     }
-};
+
+    throw new Error('Keydown is missing matching action case', evt);
+}
 
 export default events({
     onBlur: R.map(R.always(editorCursorMoveAction(false))),
@@ -66,9 +68,7 @@ export default events({
         R.map(mapKeydownToAction)
     ),
     onKeyup: R.pipe(
-        R.filter(({ keyCode }) =>
-            keyCode < 9 || keyCode > 32 && keyCode < 41
-        ),
+        R.filter(R.pipe(isSpecialEvent, R.not)),
         mapToTargetCursorAction
     ),
     onInput: R.map(({ target }) =>
