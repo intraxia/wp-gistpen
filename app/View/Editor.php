@@ -127,6 +127,19 @@ class Editor implements HasActions, HasFilters {
 		/** @var Repo $repo */
 		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID() );
 
+		// @todo move to accessors?
+		if ( 'auto-draft' === $repo->status ) {
+			$repo->status = 'draft';
+			$repo->description = '';
+			$repo->sync = 'off';
+
+			$repo->blobs->add( new Blob( array(
+				'filename' => '',
+				'code' => '',
+				'language' => $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'plaintext' ) )->at( 0 ),
+			) ) );
+		}
+
 		$blobs = iterator_to_array( $repo->blobs );
 		usort( $blobs, function( $a, $b ) {
 			return (int) $a->ID - (int) $b->ID;
@@ -142,7 +155,7 @@ class Editor implements HasActions, HasFilters {
 				'sync' => $repo->sync,
 				'instances'  => array_map( function ( Blob $blob ) {
 					return array(
-						'key'      => (string) $blob->ID,
+						'key'      => (string) $blob->ID ? : 'new0',
 						'filename' => $blob->filename,
 						'code'     => $blob->code,
 						'language' => $blob->language->slug,
