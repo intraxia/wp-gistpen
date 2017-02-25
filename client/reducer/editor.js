@@ -5,7 +5,7 @@ import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
     EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_ADD_CLICK } from '../action';
 
-const instance = {
+const defaultInstance = {
     filename: '',
     code: '\n',
     language: 'plaintext',
@@ -27,7 +27,7 @@ const defaults = {
     password: '',
     gist_id: '',
     sync: 'off',
-    instances: [{ ...R.clone(instance), key: createUniqueKey([]) }]
+    instances: [{ ...defaultInstance, key: createUniqueKey([]) }]
 };
 
 /**
@@ -64,7 +64,7 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
         case EDITOR_ADD_CLICK:
             return { ...state, instances: [
                 ...state.instances,
-                { ...R.clone(instance), key: createUniqueKey(state.instances) }
+                { ...defaultInstance, key: createUniqueKey(state.instances) }
             ] };
         case EDITOR_DELETE_CLICK:
             return { ...state, instances: rejectWithKey(payload.key, state.instances) };
@@ -125,11 +125,11 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                 gist_id: repo.gist_id,
                 sync: repo.sync,
                 instances: repo.blobs.map(blob => ({
+                    ...defaultInstance,
                     key: blob.ID + '',
                     filename: blob.filename,
                     code: blob.code,
-                    language: blob.language.slug,
-                    history: R.clone(instance.history)
+                    language: blob.language.slug
                 }))
             };
         default:
