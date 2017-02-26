@@ -22,6 +22,7 @@
     "eslint-loader": "^1.5.0",
     "eslint-plugin-flowtype": "^2.20.0",
     "flow-bin": "^0.37.4",
+    "flow-reporter": "^0.1.0",
     "flow-status-webpack-plugin": "^0.1.7",
     "gulp": "3.9",
     "gulp-ava": "^0.15.0",
