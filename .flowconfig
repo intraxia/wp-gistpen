@@ -1,9 +1,9 @@
 [ignore]
-.*/__tests__/.*
 
 [include]
 
 [libs]
+./client/type/declare.js
 
 [options]
 module.use_strict=true
