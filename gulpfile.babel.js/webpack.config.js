@@ -14,7 +14,7 @@ module.exports = {
         settings: path.join(client, 'settings'),
         content: path.join(client, 'content'),
         editor: path.join(client, 'editor'),
-        tinymce: path.join(src, 'tinymce')
+        tinymce: path.join(client, 'tinymce')
     },
     output: {
         path: path.join(__dirname, '..', 'assets', 'js'),
