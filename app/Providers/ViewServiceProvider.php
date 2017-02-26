@@ -36,6 +36,7 @@ class ViewServiceProvider implements ServiceProvider {
 				return new Settings(
 					$container->fetch( 'templating' ),
 					$container->fetch( 'options.site' ),
+					$container->fetch( 'database' ),
 					$container->fetch( 'basename' ),
 					$container->fetch( 'url' )
 				);

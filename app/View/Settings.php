@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\View;
 
 use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Contract\Templating;
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Core\HasActions;
@@ -46,18 +47,27 @@ class Settings implements HasActions, HasFilters {
 	protected $url;
 
 	/**
+	 * EntityManger service.
+	 *
+	 * @var EntityManager
+	 */
+	private $em;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param Templating $template
-	 * @param Site       $site
-	 * @param string     $basename
-	 * @param string     $url
+	 * @param Templating    $template
+	 * @param Site          $site
+	 * @param EntityManager $em
+	 * @param string        $basename
+	 * @param string        $url
 	 *
 	 * @since    0.5.0
 	 */
-	public function __construct( Templating $template, Site $site, $basename, $url ) {
+	public function __construct( Templating $template, Site $site, EntityManager $em, $basename, $url ) {
 		$this->template = $template;
 		$this->site     = $site;
+		$this->em = $em;
 		$this->basename = $basename;
 		$this->url      = $url;
 	}
@@ -121,12 +131,23 @@ class Settings implements HasActions, HasFilters {
 					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
 				),
 				'repo'       => array(
-					'blobs' => array(
+					'description' => 'Dummy Repo',
+					'status'      => 'draft',
+					'password'    => '',
+					'gist_id'     => 'none',
+					'sync'        => 'off',
+					'rest_url'    => '',
+					'commits_url' => '',
+					'html_url'    => '',
+					'created_at'  => '',
+					'updated_at'  => '',
+					'blobs'       => array(
 						array(
 							'filename' => 'dummy.js',
-							'language' => array(
-								'slug' => 'javascript'
-							),
+							'language' => $this->em->find_by(
+								EntityManager::LANGUAGE_CLASS,
+								array( 'slug' => 'js' )
+							)->at( 0 )->serialize(),
 							'edit_url' => '#highlighting',
 							'code'     => /** @lang javascript */<<<JS
 function initHighlight(block, flags) {

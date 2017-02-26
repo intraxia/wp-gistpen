@@ -23,4 +23,15 @@ export type UserApiResponse = {
 
 export type RepoApiResponse = Repo;
 
-export type ApiResponse = RepoApiResponse | UserApiResponse;
+export type SiteApiResponse = {
+    gist : {
+        token : string;
+    };
+    prism : {
+        'line-numbers' : boolean;
+        'show-invisibles' : boolean;
+        theme : string;
+    };
+};
+
+export type ApiResponse = RepoApiResponse | UserApiResponse | SiteApiResponse;
