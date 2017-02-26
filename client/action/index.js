@@ -3,3 +3,4 @@ export * from './ajax';
 export * from './editor';
 export * from './highlighting';
 export * from './router';
+export * from './tinymce';
