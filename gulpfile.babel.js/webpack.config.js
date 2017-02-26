@@ -1,6 +1,7 @@
 const path = require('path');
-const WebpackNotifierPlugin = require('webpack-notifier');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
+const WebpackNotifierPlugin = require('webpack-notifier');
 const gutil = require('gulp-util');
 const notifier = require('node-notifier');
 const flowPath = require('flow-bin');
@@ -45,7 +46,7 @@ module.exports = {
             },
             {
                 test: /\.(scss|css)$/,
-                include: path.join(client, 'editor'),
+                include: [path.join(client, 'editor'), path.join(client, 'tinymce')],
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
@@ -79,6 +80,9 @@ module.exports = {
 
                 notifier.notify({ title: 'Flow', message: 'Flow failed' });
             }
+        }),
+        new StyleLintPlugin({
+            syntax: 'scss'
         }),
         new WebpackNotifierPlugin({ alwaysNotify: true })
     ]

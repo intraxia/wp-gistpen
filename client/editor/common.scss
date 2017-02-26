@@ -6,12 +6,12 @@ $monospace-font: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 
 // Colors
 $dark-blue: #1E8CBE;
-$light-blue: #5b9dd9;
+$light-blue: #5B9DD9;
 
 // Mixins
 
 @mixin focus-border {
-  box-shadow: 0 0 2px $dark-blue;
+    box-shadow: 0 0 2px $dark-blue;
 }
 
 @mixin editor-controls-theme(
@@ -33,10 +33,10 @@ $light-blue: #5b9dd9;
         color: $controls-text;
 
         @if $controls-border {
-            border: .3em solid $controls-border;
+            border: 0.3em solid $controls-border;
 
             @if $controls-radius {
-                border-radius: .5em;
+                border-radius: 0.5em;
             }
         }
 

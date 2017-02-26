@@ -1,4 +1,5 @@
 // @flow
+import './index.scss';
 import '../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { globals } from '../reducer';
