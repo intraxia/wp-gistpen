@@ -88,11 +88,14 @@ export type EditorState = {
     tabs : Toggle;
 };
 
-export type SettingsState = {
+export type HasGlobalsState = {
+    globals : GlobalsState;
+};
+
+export type SettingsState = HasGlobalsState & {
     prism : PrismState;
     gist : GistState;
     route : RouteState;
-    globals : GlobalsState;
 };
 
 export type EditorPageState = {

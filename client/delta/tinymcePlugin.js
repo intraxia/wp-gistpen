@@ -52,14 +52,13 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, vo
 
 const createTinyMCEWindow = (editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor));
 
-const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, editor : Editor) : Observable<Action> =>
-    merge([
-        createTinyMCEButton(editor),
-        actions$.filter(
-            R.pipe(R.prop('type'), R.equals(TINYMCE_BUTTON_CLICK))
-        )
-            .flatMap(() : Observable<Action> => createTinyMCEWindow(editor))
-    ]));
+const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, editor : Editor) : Observable<Action> => merge([
+    createTinyMCEButton(editor),
+    actions$.filter(
+        R.pipe(R.prop('type'), R.equals(TINYMCE_BUTTON_CLICK))
+    )
+        .flatMap(() : Observable<Action> => createTinyMCEWindow(editor))
+]));
 
 export default (actions$ : Observable<Action>) : Observable<Action> =>
     createTinyMCEPlugin().flatMapLatest(mergeTinyMCEButtonAndPopup(actions$));
