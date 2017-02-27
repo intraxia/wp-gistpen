@@ -32,6 +32,7 @@ module.exports = {
         'flowtype/no-weak-types': 'warn',
         'flowtype/require-parameter-type': 'error',
         'flowtype/require-return-type': ['error', 'always', {
+            'excludeArrowFunctions': 'expressionsOnly',
             'annotateUndefined': 'never'
         }],
         'flowtype/require-valid-file-annotation': 'error',

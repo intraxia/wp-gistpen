@@ -5,3 +5,5 @@ import type { TinyMCE } from './tinymce';
 declare var __webpack_public_path__ : string;
 
 declare var tinymce : TinyMCE;
+
+declare type Disposer = () => any;
