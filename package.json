@@ -48,6 +48,7 @@
     "simulant": "^0.2.2",
     "style-loader": "^0.13.1",
     "stylelint-webpack-plugin": "^0.7.0",
+    "symbol-observable": "^1.0.4",
     "webpack": "2.2.0-rc.3",
     "webpack-notifier": "^1.4.1"
   },
