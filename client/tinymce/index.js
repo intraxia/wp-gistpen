@@ -1,9 +1,12 @@
 // @flow
+import type { Action, Delta, TinyMCEState } from '../type';
 import './index.scss';
 import '../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { globals } from '../reducer';
-import { applyDelta, tinymcePluginDelta, webpackDelta } from '../delta';
+import { applyDelta, createViewDelta, tinymcePluginDelta, webpackDelta } from '../delta';
+import root from './root';
+import getElement from './getElement';
 
 const { __GISTPEN_TINYMCE__ = {
     globals: {
@@ -23,6 +26,7 @@ createStore(
     __GISTPEN_TINYMCE__,
     applyDelta(
         tinymcePluginDelta,
+        (createViewDelta({ root, getElement }) : Delta<TinyMCEState, Action>),
         webpackDelta
     )
 );

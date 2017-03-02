@@ -103,3 +103,7 @@ export type EditorPageState = {
     repo : Repo;
     editor : EditorState;
 };
+
+export type TinyMCEState = {
+
+};
