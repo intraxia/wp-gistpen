@@ -6,6 +6,7 @@ import R from 'ramda';
 import { merge, stream } from 'kefir';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
     TINYMCE_BUTTON_CLICK } from '../action';
+import template from '../component/search/index.hbs';
 
 const createTinyMCEPlugin = () : Observable<Editor> => stream((emitter : Emitter<Editor, void>) => {
     tinymce.PluginManager.add('wp_gistpen', emitter.value);
@@ -24,6 +25,7 @@ const createTinyMCEButton = (editor : Editor) : Observable<Action> => stream((em
 });
 
 const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, void>) : Disposer => {
+    const id = `wpgp-popup-${Math.round(Math.random() * 10000)}`;
     const e = editor.windowManager.open({
         // Modal settings
         title: 'Insert Gistpen',
@@ -31,21 +33,22 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, vo
         // minus head and foot of dialog box
         height: (300 - 36 - 50),
         inline: 1,
-        id: 'wpgp-insert-dialog',
+        id,
         buttons: [
             {
                 text: 'Insert',
-                id: 'wp-gistpen-button-insert',
-                class: 'insert',
+                id: 'wpgp-popup-insert',
                 onclick: R.pipe(tinymcePopupInsertClickAction, emitter.value)
             },
             {
                 text: 'Cancel',
-                id: 'wp-gistpen-button-cancel',
+                id: 'wpgp-popup-cancel',
                 onclick: R.pipe(tinymcePopupCloseClickAction, emitter.value)
             }
         ]
     });
+
+    e.$el.find(`#${id}-body`).append(template({}));
 
     return () : void => e.close();
 });
