@@ -104,6 +104,10 @@ export type EditorPageState = {
     editor : EditorState;
 };
 
-export type TinyMCEState = {
+export type SearchState = {
+    term : string;
+};
 
+export type TinyMCEState = HasGlobalsState & {
+    search : SearchState;
 };
