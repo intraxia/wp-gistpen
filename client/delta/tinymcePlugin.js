@@ -25,7 +25,7 @@ const createTinyMCEButton = (editor : Editor) : Observable<Action> => stream((em
 });
 
 const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, void>) : Disposer => {
-    const id = `wpgp-popup-${Math.round(Math.random() * 10000)}`;
+    const id = `wpgp-tinymce-popup-container`;
     const e = editor.windowManager.open({
         // Modal settings
         title: 'Insert Gistpen',

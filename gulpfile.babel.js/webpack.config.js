@@ -46,7 +46,11 @@ module.exports = {
             },
             {
                 test: /\.(scss|css)$/,
-                include: [path.join(client, 'editor'), path.join(client, 'tinymce')],
+                include: [
+                    path.join(client, 'editor'),
+                    path.join(client, 'tinymce'),
+                    path.join(client, 'component')
+                ],
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
             },
             {
