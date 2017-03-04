@@ -65,7 +65,7 @@ const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, edito
     actions$.filter(
         R.pipe(R.prop('type'), R.equals(TINYMCE_BUTTON_CLICK))
     )
-        .flatMap(() : Observable<Action> => createTinyMCEWindow(actions$, editor))
+        .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, editor))
 ]));
 
 export default (actions$ : Observable<Action>) : Observable<Action> =>
