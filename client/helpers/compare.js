@@ -6,7 +6,7 @@
  * @param {Object} options - Handlebars options.
  * @returns {string} Template chunk.
  */
-module.exports = function compare(first, second, options) {
+export default function compare(first, second, options) {
     if (first === second) {
         return options.fn(this);
     } else {
