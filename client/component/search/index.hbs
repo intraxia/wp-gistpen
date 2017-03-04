@@ -1,8 +1,10 @@
 <div class="wpgp-search-container" data-brk-container="search">
     <div class="wpgp-search-form">
         <label for="wpgp-search-field" class="wpgp-search-label">Search Gistpens</label>
-        <input type="search" id="gistpen-search-field" class="wpgp-search-field" placeholder="Search Gistpens" data-wpgp-search-input/>
-        <button class="button button-primary" role="button" data-wpgp-search-btn>Search</button>
+        <input type="search" id="gistpen-search-field"
+               class="wpgp-search-field"
+               placeholder="keywords"
+               {{event "input" "onSearchTyping"}} />
     </div>
 
     {{#if search.recent}}

@@ -1,15 +1,18 @@
 // @flow
-import type { Emitter, Observable } from 'kefir';
+import type { Observable } from 'kefir';
+import type { SearchInputAction } from '../../type';
 import './index.scss';
 import R from 'ramda';
-import { component } from 'brookjs';
-import { stream } from 'kefir';
+import { component, events } from 'brookjs';
+import { searchInputAction } from '../../action';
 
 export default component({
-    onMount: R.curryN(2, () : Observable<void> => {
-        return stream((emitter : Emitter<void, void>) => {
-            console.log('Hello');
-            emitter.end();
-        });
+    events: events({
+        onSearchTyping: (evt$ : Observable<Event>) : Observable<SearchInputAction> => evt$
+            .debounce(300)
+            .map((R.pipe(
+                R.path(['target', 'value']),
+                searchInputAction
+            ) : ((event : Event) => SearchInputAction)))
     })
 });
