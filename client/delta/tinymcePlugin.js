@@ -5,7 +5,7 @@ import type { TinyMCEAction as Action, TinyMCEEditor as Editor } from '../type';
 import R from 'ramda';
 import { merge, stream } from 'kefir';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
-    TINYMCE_BUTTON_CLICK } from '../action';
+    TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_CLOSE_CLICK } from '../action';
 import template from '../component/search/index.hbs';
 
 const createTinyMCEPlugin = () : Observable<Editor> => stream((emitter : Emitter<Editor, void>) => {
@@ -50,17 +50,22 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, vo
 
     e.$el.find(`#${id}-body`).append(template({}));
 
-    return () : void => e.close();
+    // void the return value for tcomb
+    return () : void => void e.close();
 });
 
-const createTinyMCEWindow = (editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor));
+const createTinyMCEWindow = (actions$ : Observable<Action>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
+    .takeUntilBy(actions$.filter(R.pipe(
+        R.prop('type'),
+        R.equals(TINYMCE_POPUP_CLOSE_CLICK)
+    )));
 
 const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, editor : Editor) : Observable<Action> => merge([
     createTinyMCEButton(editor),
     actions$.filter(
         R.pipe(R.prop('type'), R.equals(TINYMCE_BUTTON_CLICK))
     )
-        .flatMap(() : Observable<Action> => createTinyMCEWindow(editor))
+        .flatMap(() : Observable<Action> => createTinyMCEWindow(actions$, editor))
 ]));
 
 export default (actions$ : Observable<Action>) : Observable<Action> =>
