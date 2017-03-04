@@ -2,7 +2,8 @@
 import type { ApiResponse, RepoApiResponse, UserApiResponse } from './ajax';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     AJAX_FINISHED, AJAX_FAILED, REPO_SAVE_SUCCEEDED, USER_SAVE_SUCCEEDED,
-    TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_INSERT_CLICK, TINYMCE_POPUP_CLOSE_CLICK } from '../action';
+    TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_INSERT_CLICK, TINYMCE_POPUP_CLOSE_CLICK,
+    SEARCH_INPUT } from '../action';
 
 export type ThemeChangeAction = {
     type : typeof THEME_CHANGE;
@@ -66,10 +67,19 @@ export type TinyMCEPopupCloseClickAction = {
     type : typeof TINYMCE_POPUP_CLOSE_CLICK;
 };
 
+export type SearchInputAction = {
+    type : typeof SEARCH_INPUT;
+    payload : {
+        value : string;
+    };
+};
+
 export type HighlightingAction = ThemeChangeAction | LineNumbersChangeAction | ShowInvisiblesChangeAction;
 
 export type AjaxAction = AjaxFinishedAction | AjaxFailedAction | RepoSaveSucceededAction | UserSaveSucceededAction;
 
 export type TinyMCEAction = TinyMCEButtonClickAction | TinyMCEPopupInsertClickAction | TinyMCEPopupCloseClickAction;
 
-export type Action = HighlightingAction | AjaxAction | TinyMCEAction;
+export type SearchAction = SearchInputAction;
+
+export type Action = HighlightingAction | AjaxAction | TinyMCEAction | SearchAction;
