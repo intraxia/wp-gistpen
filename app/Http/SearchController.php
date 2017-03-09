@@ -1,9 +1,10 @@
 <?php
 namespace Intraxia\Gistpen\Http;
 
-use Intraxia\Gistpen\Facade\Adapter;
-use Intraxia\Gistpen\Facade\Database;
+use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Model\Blob;
 use WP_REST_Request;
+use WP_REST_Response;
 
 /**
  * Class Search
@@ -13,30 +14,20 @@ use WP_REST_Request;
  */
 class SearchController {
 	/**
-	 * Database Facade object
+	 * Database object
 	 *
-	 * @var Database
+	 * @var EntityManager
 	 * @since 0.6.0
 	 */
-	public $database;
-
-	/**
-	 * Adapter Facade object
-	 *
-	 * @var  Adapter
-	 * @since 0.6.0
-	 */
-	protected $adapter;
+	public $em;
 
 	/**
 	 * Instantiates a new Search controller.
 	 *
-	 * @param Database $database
-	 * @param Adapter  $adapter
+	 * @param EntityManager $em
 	 */
-	public function __construct( Database $database, Adapter $adapter ) {
-		$this->database = $database;
-		$this->adapter  = $adapter;
+	public function __construct( EntityManager $em ) {
+		$this->em = $em;
 	}
 
 	/**
@@ -48,12 +39,21 @@ class SearchController {
 	 * @throws \Exception
 	 */
 	public function get( WP_REST_Request $request ) {
-		$models = ( $term = $request->get_param( 's' ) ) ? $this->database->query()->by_string( $term ) : $this->database->query()->by_recent();
+		$args = array();
+		$search_term = $request->get_param( 's' );
 
-		if ( is_wp_error( $models ) ) {
-			return $models;
+		if ( $search_term ) {
+			$args['s'] = $search_term;
 		}
 
-		return $this->adapter->build( 'api' )->by_array_of_models( $models );
+		$blobs = $this->em->find_by( EntityManager::BLOB_CLASS, $args );
+
+		if ( is_wp_error( $blobs ) ) {
+			$blobs->add_data( array( 'status' => 500 ) );
+
+			return $blobs;
+		}
+
+		return new WP_REST_Response( $blobs->serialize() );
 	}
 }

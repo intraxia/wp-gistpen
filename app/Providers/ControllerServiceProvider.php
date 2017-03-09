@@ -24,7 +24,7 @@ class ControllerServiceProvider implements ServiceProvider {
 	 */
 	public function register( Container $container ) {
 		$container->share( array( 'controller.search' => 'Intraxia\Gistpen\Http\SearchController' ), function ( $app ) {
-			return new SearchController( $app->fetch( 'facade.database' ), $app->fetch( 'facade.adapter' ) );
+			return new SearchController( $app->fetch( 'database' ) );
 		} );
 
 		$container->share( array( 'controller.user' => 'Intraxia\Gistpen\Http\UserController' ), function ( $app ) {
