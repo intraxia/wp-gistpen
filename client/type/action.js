@@ -4,7 +4,7 @@ import type { Blob } from './state';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     AJAX_FINISHED, AJAX_FAILED, REPO_SAVE_SUCCEEDED, USER_SAVE_SUCCEEDED,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_INSERT_CLICK, TINYMCE_POPUP_CLOSE_CLICK,
-    SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED } from '../action';
+    SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED, SEARCH_RESULT_SELECTION_CHANGE } from '../action';
 
 export type ThemeChangeAction = {
     type : typeof THEME_CHANGE;
@@ -82,12 +82,19 @@ export type SearchResultsSucceededAction = {
     };
 };
 
+export type SearchResultSelectionChangeAction = {
+    type : typeof SEARCH_RESULT_SELECTION_CHANGE,
+    payload : {
+        selection : string;
+    };
+};
+
 export type HighlightingAction = ThemeChangeAction | LineNumbersChangeAction | ShowInvisiblesChangeAction;
 
 export type AjaxAction = AjaxFinishedAction | AjaxFailedAction | RepoSaveSucceededAction | UserSaveSucceededAction;
 
 export type TinyMCEAction = TinyMCEButtonClickAction | TinyMCEPopupInsertClickAction | TinyMCEPopupCloseClickAction;
 
-export type SearchAction = SearchInputAction;
+export type SearchAction = SearchInputAction | SearchResultSelectionChangeAction;
 
 export type Action = HighlightingAction | AjaxAction | TinyMCEAction | SearchAction;
