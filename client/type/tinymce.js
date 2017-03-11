@@ -27,6 +27,7 @@ interface WindowManager {
 export interface TinyMCEEditor {
     addCommand(name : string, config : CommandCallback) : void;
     addButton(name : string, config : TinyMCEButtonConfig) : void;
+    insertContent(content : string) : void;
     windowManager : WindowManager;
 }
 
