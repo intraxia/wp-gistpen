@@ -10,7 +10,6 @@ gulp.task('dev', ['dev:app', 'dev:tdd']);
 gulp.task('dev:app', () => {
     const webpackWatchConfig = R.clone(webpackConfig);
     webpackWatchConfig.watch = true;
-    process.env.BABEL_ENV = 'development';
 
     webpack(webpackWatchConfig, (err, stats) => {
         if (err) {

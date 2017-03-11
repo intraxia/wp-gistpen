@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Providers;
 
+use Intraxia\Gistpen\View\Button;
 use Intraxia\Gistpen\View\Content;
 use Intraxia\Gistpen\View\Editor;
 use Intraxia\Gistpen\View\Settings;
@@ -40,6 +41,9 @@ class ViewServiceProvider implements ServiceProvider {
 					$container->fetch( 'basename' ),
 					$container->fetch( 'url' )
 				);
+			} )
+			->define( 'view.button', function ( Container $container ) {
+				return new Button( $container->fetch('templating'), $container->fetch( 'url' ) );
 			} );
 	}
 }

@@ -1,6 +1,6 @@
 // @flow
 import type { Emitter, Observable } from 'kefir';
-import type { Action, SettingsState } from '../type';
+import type { Action, HasGlobalsState } from '../type';
 import { stream } from 'kefir';
 
 /**
@@ -11,8 +11,8 @@ import { stream } from 'kefir';
  * @param {Observable<SettingsState>} state$ - Observable of props.
  * @returns {Stream<U, V>} Observable of WebPack side effects.
  */
-export default function webpackDelta(actions$ : Observable<Action>, state$ : Observable<SettingsState>) : Observable<void> {
-    return state$.take(1).flatMap((props : SettingsState) : Observable<void> => stream((emitter : Emitter<void, void>) => {
+export default function webpackDelta(actions$ : Observable<Action>, state$ : Observable<HasGlobalsState>) : Observable<void> {
+    return state$.take(1).flatMap((props : HasGlobalsState) : Observable<void> => stream((emitter : Emitter<void, void>) => {
         // eslint-disable-next-line camelcase
         __webpack_public_path__ = props.globals.url + 'assets/js/';
 

@@ -4,6 +4,7 @@ namespace Intraxia\Gistpen\Templating;
 use Exception;
 use LightnCandy\LightnCandy;
 use Intraxia\Gistpen\Contract\Templating;
+use LightnCandy\SafeString;
 
 /**
  * Class Handlebars.
@@ -58,6 +59,9 @@ class Handlebars implements Templating {
 					} else {
 						return $options['inverse']( $options['data'] );
 					}
+				},
+				'json'       => function( $context ) {
+					return new SafeString( wp_json_encode( $context ) );
 				},
 				'prism_slug' => function ( $slug ) {
 					$map = array(

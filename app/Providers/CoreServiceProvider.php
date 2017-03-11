@@ -7,13 +7,9 @@ use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\Migration;
-use Intraxia\Gistpen\Register\Button;
 use Intraxia\Gistpen\Register\Data;
 use Intraxia\Gistpen\Save;
 use Intraxia\Gistpen\Sync;
-use Intraxia\Gistpen\View\Content;
-use Intraxia\Gistpen\View\Editor;
-use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 use WP_CLI;
@@ -37,7 +33,6 @@ class CoreServiceProvider implements ServiceProvider {
 			->define( 'account.gist', new Gist( $container->fetch( 'facade.adapter' ), new Client ) )
 			->define( 'facade.database', new Database( $container->fetch( 'facade.adapter' ) ) )
 			->define( 'migration', new Migration( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'slug' ), $container->fetch( 'version' ) ) )
-			->define( 'register.button', new Button( $container->fetch( 'url' ) ) )
 			->define( 'sync', new Sync( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) )
 			->define( 'save', new Save( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) )
 			->define( 'cli.command', function () {

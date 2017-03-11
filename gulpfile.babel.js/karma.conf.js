@@ -1,8 +1,8 @@
 // Karma configuration
 const R = require('ramda');
 const webpackConfig = R.clone(require('./webpack.config'));
-webpackConfig.entry = {};
 webpackConfig.devtool = 'inline-source-map';
+delete webpackConfig.entry;
 delete webpackConfig.plugins;
 
 if (!process.env.NODE_ENV) {

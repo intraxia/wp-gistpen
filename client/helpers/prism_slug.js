@@ -20,7 +20,7 @@ const map = {
  * @param {string} slug - Language slug.
  * @returns {string} Prism slug.
  */
-module.exports = function prismSlug(slug) {
+export default function prismSlug(slug) {
     return map[slug] || slug;
 
 };
