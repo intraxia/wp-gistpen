@@ -1,10 +1,10 @@
 // @flow
 import type { Observable } from 'kefir';
-import type { SearchInputAction } from '../../type';
+import type { SearchInputAction, SearchResultSelectionChangeAction } from '../../type';
 import './index.scss';
 import R from 'ramda';
 import { component, events, render } from 'brookjs';
-import { searchInputAction } from '../../action';
+import { searchInputAction, searchResultSelectionChangeAction } from '../../action';
 import template from './index.hbs';
 
 export default component({
@@ -14,7 +14,12 @@ export default component({
             .map((R.pipe(
                 R.path(['target', 'value']),
                 searchInputAction
-            ) : ((event : Event) => SearchInputAction)))
+            ) : ((event : Event) => SearchInputAction))),
+        onRadioChange: (evt$ : Observable<Event>) : Observable<SearchResultSelectionChangeAction> => evt$
+            .map(R.pipe(
+                R.path(['target', 'value']),
+                searchResultSelectionChangeAction
+            ))
     }),
     render: render(template)
 });
