@@ -1,15 +1,20 @@
 // @flow
-import type { SearchInputAction, SearchResultsSucceededAction, SearchState } from '../type';
+import type { SearchInputAction, SearchResultsSucceededAction, SearchResultSelectionChangeAction, SearchState } from '../type';
 import { combineActionReducers } from 'brookjs';
-import { SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED } from '../action';
+import { SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED, SEARCH_RESULT_SELECTION_CHANGE } from '../action';
 
 export default combineActionReducers([
-    [SEARCH_INPUT, (state : SearchState, action : SearchInputAction) => ({
+    [SEARCH_INPUT, (state : SearchState, action : SearchInputAction) : SearchState => ({
         ...state,
         term: action.payload.value
     })],
-    [SEARCH_RESULTS_SUCCEEDED, (state : SearchState, action : SearchResultsSucceededAction) => ({
+    [SEARCH_RESULTS_SUCCEEDED, (state : SearchState, action : SearchResultsSucceededAction) : SearchState  => ({
         ...state,
-        results: action.payload.response
+        results: action.payload.response,
+        selection: undefined
+    })],
+    [SEARCH_RESULT_SELECTION_CHANGE, (state : SearchState, action : SearchResultSelectionChangeAction) : SearchState  => ({
+        ...state,
+        selection: parseInt(action.payload.selection, 10)
     })]
 ], { term: '', results: false });

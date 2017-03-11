@@ -106,6 +106,7 @@ export type EditorPageState = {
 
 export type SearchState = {
     term : string;
+    selection? : number;
 };
 
 export type TinyMCEState = HasGlobalsState & {
