@@ -1,9 +1,10 @@
 // @flow
 import type { ApiResponse, RepoApiResponse, UserApiResponse } from './ajax';
+import type { Blob } from './state';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     AJAX_FINISHED, AJAX_FAILED, REPO_SAVE_SUCCEEDED, USER_SAVE_SUCCEEDED,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_INSERT_CLICK, TINYMCE_POPUP_CLOSE_CLICK,
-    SEARCH_INPUT } from '../action';
+    SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED } from '../action';
 
 export type ThemeChangeAction = {
     type : typeof THEME_CHANGE;
@@ -71,6 +72,13 @@ export type SearchInputAction = {
     type : typeof SEARCH_INPUT;
     payload : {
         value : string;
+    };
+};
+
+export type SearchResultsSucceededAction = {
+    type : typeof SEARCH_RESULTS_SUCCEEDED;
+    payload : {
+        response : Array<Blob>;
     };
 };
 

@@ -1,7 +1,7 @@
 // @flow
 import type { AjaxFinishedAction, AjaxFailedAction, ApiResponse,
     RepoApiResponse, RepoSaveSucceededAction, UserApiResponse,
-    UserSaveSucceededAction } from '../type';
+    UserSaveSucceededAction, SearchApiResponse, SearchResultsSucceededAction } from '../type';
 
 export const AJAX_FINISHED = 'AJAX_FINISHED';
 
@@ -48,6 +48,15 @@ export const USER_SAVE_SUCCEEDED = 'USER_SAVE_SUCCEEDED';
 export function userSaveSucceededAction(response : UserApiResponse) : UserSaveSucceededAction {
     return {
         type: USER_SAVE_SUCCEEDED,
+        payload: { response }
+    };
+}
+
+export const SEARCH_RESULTS_SUCCEEDED = 'SEARCH_RESULTS_SUCCEEDED';
+
+export function searchResultsSucceededAction(response : SearchApiResponse) : SearchResultsSucceededAction {
+    return {
+        type: SEARCH_RESULTS_SUCCEEDED,
         payload: { response }
     };
 }

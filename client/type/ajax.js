@@ -1,5 +1,5 @@
 // @flow
-import type { Toggle, Repo } from './state';
+import type { Toggle, Repo, Blob } from './state';
 
 export type AjaxOptions = {
     method : string;
@@ -33,5 +33,7 @@ export type SiteApiResponse = {
         theme : string;
     };
 };
+
+export type SearchApiResponse = Array<Blob>;
 
 export type ApiResponse = RepoApiResponse | UserApiResponse | SiteApiResponse;
