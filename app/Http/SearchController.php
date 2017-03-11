@@ -2,7 +2,6 @@
 namespace Intraxia\Gistpen\Http;
 
 use Intraxia\Gistpen\Database\EntityManager;
-use Intraxia\Gistpen\Model\Blob;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -39,7 +38,7 @@ class SearchController {
 	 * @throws \Exception
 	 */
 	public function get( WP_REST_Request $request ) {
-		$args = array();
+		$args = array( 'posts_per_page' => 5 );
 		$search_term = $request->get_param( 's' );
 
 		if ( $search_term ) {
