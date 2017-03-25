@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { concat, fromEvents, fromPromise, merge, stream } from 'kefir';
+import { concat, fromEvents, fromPromise, merge, never, stream } from 'kefir';
 import Prism from '../../../prism';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import { renderFromHTML, raf$ } from 'brookjs';
@@ -15,7 +15,7 @@ toolbarStyles.use();
  *
  * @returns {Observable} Observable to update the editor line numbers.
  */
-function updateLinenumber(/*pre, start, end*/) {
+function updateLineNumber(/*pre, start, end*/) {
     return stream(emitter => {
         // let content = pre.textContent;
         // let ss = pre.selectionStart;
@@ -31,7 +31,8 @@ function updateLinenumber(/*pre, start, end*/) {
         // pre.setAttribute('data-line', line + 1);
 
         emitter.end();
-    });
+    })
+        .setName('UpdateLineNumbers$');
 }
 
 /**
@@ -60,7 +61,8 @@ const setSelectionRange = R.curry(function setSelectionRange(node, ss, se) {
         selection.addRange(range);
 
         emitter.end();
-    });
+    })
+        .setName('SetSelectionRange$');
 });
 
 /**
@@ -144,7 +146,8 @@ const highlightElement = function highlightElement(el) {
     return stream(emitter => {
         Prism.highlightElement(el.querySelector('code'), false);
         emitter.end();
-    });
+    })
+        .setName('HighlightElement$');
 };
 
 /**
@@ -158,7 +161,8 @@ const createPrismUpdateStream = function createPrismUpdateStream(state) {
         Prism.setTheme(state.editor.theme),
         Prism.togglePlugin('show-invisibles', state.editor.invisibles === 'on')
     ]))
-        .ignoreValues();
+        .ignoreValues()
+        .setName('PrismUpdateStream');
 };
 
 /**
@@ -175,7 +179,7 @@ const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, props) 
         stream$ = stream$.concat(setSelectionRange(el.querySelector('code'), ...props.instance.cursor));
     }
 
-    return stream$;
+    return stream$.setName('DOMUpdateStream');
 });
 
 /**
@@ -191,8 +195,8 @@ const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, props) 
  * @returns {Observable} - Stream of renders.
  */
 export default R.curry(function onMount(el, props$) {
-    const keyUp$ = fromEvents(el, 'keyup');
-    const keyDown$ = fromEvents(el, 'keydown');
+    const keyUp$ = fromEvents(el, 'keyup').setName('KeyUp$');
+    const keyDown$ = fromEvents(el, 'keydown').setName('KeyDown$');
 
     // Ensure the autoload path is set correctly on startup.
     // @todo move elsewhere?
@@ -200,7 +204,8 @@ export default R.curry(function onMount(el, props$) {
         Prism.setAutoloaderPath(__webpack_public_path__);
 
         emitter.end();
-    });
+    })
+        .setName('SetAutoloader$');
 
     /**
      * Create initial render stream.
@@ -210,7 +215,8 @@ export default R.curry(function onMount(el, props$) {
      * so we get a value immediately.
      */
     const initial$ = props$.take(1)
-        .flatMapLatest(props => createDOMUpdateStream(el, props));
+        .flatMapLatest(props => createDOMUpdateStream(el, props))
+        .setName('Initial$');
 
     /**
      * Create options update & render stream.
@@ -224,7 +230,8 @@ export default R.curry(function onMount(el, props$) {
         .flatMapLatest(props => concat([
             createPrismUpdateStream(props),
             createDOMUpdateStream(el, props)
-        ]));
+        ]))
+        .setName('Options$');
 
     /**
      * Create typing render stream.
@@ -234,7 +241,8 @@ export default R.curry(function onMount(el, props$) {
      * the props
      */
     const typing$ = props$.sampledBy(keyUp$.debounce(10))
-        .flatMapLatest(props => createDOMUpdateStream(el, props).takeUntilBy(keyDown$));
+        .flatMapLatest(props => createDOMUpdateStream(el, props).takeUntilBy(keyDown$))
+        .setName('Typing$');
 
     /**
      * Create special keys renders stream.
@@ -253,8 +261,9 @@ export default R.curry(function onMount(el, props$) {
                 emitter.end();
             })
                 .concat(highlightElement(el))
-                .concat(setSelectionRange(code, ...props.instance.cursor));
-        }));
+                .concat(props.instance.cursor ? setSelectionRange(code, ...props.instance.cursor) : never());
+        }))
+        .setName('Special$');
 
     /**
      * Create line number render stream.
@@ -266,7 +275,16 @@ export default R.curry(function onMount(el, props$) {
      */
     const lineNumber$ = props$.skipDuplicates(lineNumberIsEqual)
         .filter(R.path(['instance', 'cursor']))
-        .flatMapLatest(props => updateLinenumber(el.querySelector('pre'), ...props.instance.cursor));
+        .flatMapLatest(props => updateLineNumber(el.querySelector('pre'), ...props.instance.cursor))
+        .setName('LineNumbers$');
 
-    return merge([setAutoloader$, initial$, options$, typing$, special$, lineNumber$]);
+    return merge([
+        setAutoloader$,
+        initial$,
+        options$,
+        typing$,
+        special$,
+        lineNumber$
+    ])
+        .setName('OnMount$');
 });
