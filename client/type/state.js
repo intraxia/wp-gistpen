@@ -92,8 +92,11 @@ export type HasGlobalsState = {
     globals : GlobalsState;
 };
 
-export type SettingsState = HasGlobalsState & {
+export type HasPrismState = {
     prism : PrismState;
+};
+
+export type SettingsState = HasGlobalsState & HasPrismState &  {
     gist : GistState;
     route : RouteState;
 };
