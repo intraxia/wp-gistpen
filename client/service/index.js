@@ -16,7 +16,7 @@ const makeOptions = R.merge({
  * @param {Object} opts - Request options.
  * @returns {Stream<T, S>} Ajax stream.
  */
-export default function ajax$(url : string , opts : AjaxOptions) : Observable<string, TypeError> {
+export function ajax$(url : string , opts : AjaxOptions) : Observable<string, TypeError> {
     return stream((emitter : Emitter<string, TypeError>) : (() => void) => {
         const options = makeOptions(opts);
         let xhr = new XMLHttpRequest();

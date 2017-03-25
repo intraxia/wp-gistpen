@@ -2,7 +2,7 @@
 import type { Action, Blob, EditorPageState, EditorInstance, RepoApiResponse } from '../type';
 import type { Observable } from 'kefir';
 import R from 'ramda';
-import ajax$ from '../ajax';
+import { ajax$ } from '../service';
 import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../action';
 
 const repoProps = R.pick(['description', 'status', 'password', 'sync']);
