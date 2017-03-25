@@ -1,11 +1,11 @@
 // @flow
-import type { Toggle } from '../../type';
+import type { Toggle } from '../../../type';
 import './index.scss';
 import R from 'ramda';
 import { component, events, render } from 'brookjs';
 import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
     editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction,
-    editorUpdateClickAction, editorAddClickAction } from '../../action';
+    editorUpdateClickAction, editorAddClickAction } from '../../../action';
 import template from './index.hbs';
 
 const mapCheckedToString : ((e : Event) => Toggle) = R.ifElse(

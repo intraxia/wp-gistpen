@@ -1,10 +1,10 @@
-import '../polyfills';
-import Prism from '../prism';
+import '../../polyfills';
+import Prism from '../../prism';
 
-import { plugin } from '../prism/plugins/toolbar';
-import '../prism/plugins/copy-to-clipboard';
-import '../prism/plugins/edit';
-import '../prism/plugins/filename';
+import { plugin } from '../../prism/plugins/toolbar';
+import '../../prism/plugins/copy-to-clipboard';
+import '../../prism/plugins/edit';
+import '../../prism/plugins/filename';
 
 plugin.use();
 

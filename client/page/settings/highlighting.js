@@ -1,11 +1,8 @@
 import R from 'ramda';
-import component from 'brookjs/component';
-import events from 'brookjs/events';
-import children from 'brookjs/children';
-import render from 'brookjs/render';
-import Repo from '../component/repo';
+import { component, events, children, render } from 'brookjs';
+import Repo from '../../component/repo';
 import { lineNumbersChangeAction, showInvisiblesChangeAction,
-    themeChangeAction } from '../action';
+    themeChangeAction } from '../../action';
 import template from './highlighting.hbs';
 
 export default component({

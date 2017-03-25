@@ -1,8 +1,7 @@
 import './index.scss';
 import R from 'ramda';
-import component from 'brookjs/component';
-import events from 'brookjs/events';
-import { editorOptionsClickAction, editorDescriptionChangeAction } from '../../action';
+import { component, events } from 'brookjs';
+import { editorOptionsClickAction, editorDescriptionChangeAction } from '../../../action';
 
 export default component({
     events: events({

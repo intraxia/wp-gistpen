@@ -1,8 +1,8 @@
 import R from 'ramda';
 import { concat, fromEvents, fromPromise, merge, stream } from 'kefir';
-import Prism from '../../prism';
+import Prism from '../../../prism';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
-import { renderFromHTML, raf$ } from 'brookjs/render';
+import { renderFromHTML, raf$ } from 'brookjs';
 import { editorOptionsIsEqual, lineNumberIsEqual, isSpecialEvent } from './util';
 import template from './index.hbs';
 

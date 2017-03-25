@@ -1,10 +1,10 @@
-import '../polyfills';
+import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { fromESObservable } from 'kefir';
 import root from './root';
 import router from './router';
-import { applyDelta, createRouterDelta, siteDelta, webpackDelta } from '../delta';
-import { globals, route, prism, gist } from '../reducer';
+import { applyDelta, createRouterDelta, siteDelta, webpackDelta } from '../../delta';
+import { globals, route, prism, gist } from '../../reducer';
 
 const { __GISTPEN_SETTINGS__ } = global;
 

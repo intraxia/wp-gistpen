@@ -8,14 +8,15 @@ const flowPath = require('flow-bin');
 
 const src = path.join(__dirname, '..', 'src', 'js');
 const client = path.join(__dirname, '..', 'client');
+const page = path.join(client, 'page');
 
 module.exports = {
     devtool: 'sourcemap',
     entry: {
-        settings: path.join(client, 'settings'),
-        content: path.join(client, 'content'),
-        editor: path.join(client, 'editor'),
-        tinymce: path.join(client, 'tinymce')
+        settings: path.join(page, 'settings'),
+        content: path.join(page, 'content'),
+        editor: path.join(page, 'editor'),
+        tinymce: path.join(page, 'tinymce')
     },
     output: {
         path: path.join(__dirname, '..', 'assets', 'js'),
@@ -47,8 +48,8 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 include: [
-                    path.join(client, 'editor'),
-                    path.join(client, 'tinymce'),
+                    path.join(page, 'editor'),
+                    path.join(page, 'tinymce'),
                     path.join(client, 'component')
                 ],
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
@@ -56,7 +57,7 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 include: [
-                    path.join(client, 'settings'),
+                    path.join(page, 'settings'),
                     path.join(client, 'prism'),
                     /node_modules/
                 ],

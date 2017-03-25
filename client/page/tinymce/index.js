@@ -1,10 +1,10 @@
 // @flow
-import type { Action, Delta, TinyMCEState } from '../type';
+import type { Action, Delta, TinyMCEState } from '../../type';
 import './index.scss';
-import '../polyfills';
+import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
-import { globals, search } from '../reducer';
-import { applyDelta, searchDelta, createViewDelta, tinymcePluginDelta, webpackDelta } from '../delta';
+import { globals, search } from '../../reducer';
+import { applyDelta, searchDelta, createViewDelta, tinymcePluginDelta, webpackDelta } from '../../delta';
 import root from './root';
 import getElement from './getElement';
 

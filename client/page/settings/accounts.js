@@ -1,9 +1,7 @@
 import R from 'ramda';
-import component from 'brookjs/component';
-import render from 'brookjs/render';
-import events from 'brookjs/events';
+import { component, events, render } from 'brookjs';
 import template from './accounts.hbs';
-import { gistTokenChangeAction } from '../action';
+import { gistTokenChangeAction } from '../../action';
 
 export default component({
     render: render(template),

@@ -1,6 +1,6 @@
 import R from 'ramda';
 import sheetRouter from 'sheet-router';
-import { routeChangeAction } from '../action';
+import { routeChangeAction } from '../../action';
 
 export default sheetRouter({ default: '/highlighting' }, [
     ['/highlighting', R.always(routeChangeAction('highlighting'))],

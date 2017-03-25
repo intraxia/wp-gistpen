@@ -1,9 +1,9 @@
-import '../polyfills';
+import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { fromESObservable } from 'kefir';
 import root from './root';
-import { applyDelta, repoDelta, userDelta } from '../delta';
-import { api, editor, repo } from '../reducer';
+import { applyDelta, repoDelta, userDelta } from '../../delta';
+import { api, editor, repo } from '../../reducer';
 
 const { __GISTPEN_EDITOR__ } = global;
 

@@ -114,7 +114,7 @@ class Editor implements HasActions, HasFilters {
 		$post = get_post();
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
-			echo $this->templating->render( 'editor/index', $this->get_initial_state() );
+			echo $this->templating->render( 'page/editor/index', $this->get_initial_state() );
 		}
 	}
 

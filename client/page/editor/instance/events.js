@@ -1,10 +1,10 @@
 import R from 'ramda';
-import events from 'brookjs/events';
+import { events } from 'brookjs';
 import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
     editorMakeNewlineAction, editorRedoAction, editorUndoAction,
     editorValueChangeAction, editorFilenameChangeAction, editorDeleteClickAction,
-    editorLanguageChangeAction } from '../../action';
-import { selectSelectionStart, selectSelectionEnd } from '../../selector';
+    editorLanguageChangeAction } from '../../../action';
+import { selectSelectionStart, selectSelectionEnd } from '../../../selector';
 import { isSpecialEvent } from './util';
 
 /**
