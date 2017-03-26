@@ -52,7 +52,7 @@
   "dependencies": {
     "bourbon": "^4.2.7",
     "bourbon-neat": "^1.8.0",
-    "brookjs": "^0.4.0",
+    "brookjs": "^0.5.0",
     "clipboard": "^1.5.5",
     "core-js": "^2.4.1",
     "kefir": "^3.6.0",

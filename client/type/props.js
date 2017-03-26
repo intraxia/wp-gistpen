@@ -7,4 +7,4 @@ export type EditorInstanceProps = {
     instance : EditorInstance;
     editor : EditorState;
 };
-export type TinyMCEProps = TinyMCEState;
+export type SearchProps = TinyMCEState;

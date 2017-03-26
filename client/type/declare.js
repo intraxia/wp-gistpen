@@ -11,3 +11,7 @@ declare type Disposer = () => any;
 declare interface ActionObservable<V, E=*> extends Observable<V, E> {
     ofType : (...types : Array<string>) => Observable<V, E>;
 }
+
+type jQueryObject = Array<Element>;
+
+declare var jQuery = (html : string) => jQueryObject;

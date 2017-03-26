@@ -1,16 +1,17 @@
 // @flow
 import type { Observable } from 'kefir';
 import type { EditorPageState, EditorPageProps, SettingsState, SettingsProps,
-    TinyMCEState, TinyMCEProps } from '../type';
+    TinyMCEState, SearchProps } from '../type';
+import R from 'ramda';
 
 export function selectSettingsProps(state$ : Observable<SettingsState>) : Observable<SettingsProps> {
-    return state$.map((state : SettingsState) => state);
+    return state$.map((state : SettingsState) => state).skipDuplicates(R.equals);
 }
 
 export function selectEditorProps(state$ : Observable<EditorPageState>) : Observable<EditorPageProps> {
     return state$;
 }
 
-export function selectTinyMCEProps(state$ : Observable<TinyMCEState>) : Observable<TinyMCEProps> {
+export function selectSearchProps(state$ : Observable<TinyMCEState>) : Observable<SearchProps> {
     return state$;
 }
