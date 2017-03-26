@@ -1,3 +1,4 @@
+// @flow
 import '../../polyfills';
 import Prism from '../../prism';
 
@@ -13,7 +14,7 @@ const { __GISTPEN_CONTENT__ } = global;
 // eslint-disable-next-line camelcase
 Prism.setAutoloaderPath(__webpack_public_path__ = __GISTPEN_CONTENT__.url + 'assets/js/');
 
-const promises = [];
+const promises : Array<Promise<void>> = [];
 
 promises.push(Prism.setTheme(__GISTPEN_CONTENT__.prism.theme));
 
