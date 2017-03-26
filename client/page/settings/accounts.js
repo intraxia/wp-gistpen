@@ -1,3 +1,4 @@
+// @flow
 import R from 'ramda';
 import { component, events, render } from 'brookjs';
 import template from './accounts.hbs';

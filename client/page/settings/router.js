@@ -1,3 +1,4 @@
+// @flow
 import R from 'ramda';
 import sheetRouter from 'sheet-router';
 import { routeChangeAction } from '../../action';

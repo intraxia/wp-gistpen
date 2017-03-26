@@ -1,5 +1,5 @@
-import component from 'brookjs/component';
-import render from 'brookjs/render';
+// @flow
+import { component, render } from 'brookjs';
 import template from './header.hbs';
 
 export default component({

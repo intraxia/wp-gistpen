@@ -1,10 +1,11 @@
+// @flow
 import R from 'ramda';
 import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { observeDelta } from 'brookjs';
 
 export { default as repoDelta } from './repo';
-export { default as createRouterDelta } from './router';
+export { default as routerDelta } from './router';
 export { default as searchDelta } from './search';
 export { default as siteDelta } from './site';
 export { default as tinymcePluginDelta } from './tinymcePlugin';

@@ -1,3 +1,4 @@
+// @flow
 import R from 'ramda';
 import { component, events, children, render } from 'brookjs';
 import Repo from '../../component/repo';
