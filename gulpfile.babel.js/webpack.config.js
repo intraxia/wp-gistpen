@@ -6,7 +6,6 @@ const gutil = require('gulp-util');
 const notifier = require('node-notifier');
 const flowPath = require('flow-bin');
 
-const src = path.join(__dirname, '..', 'src', 'js');
 const client = path.join(__dirname, '..', 'client');
 const page = path.join(client, 'page');
 
@@ -27,13 +26,13 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'eslint-loader',
-                exclude: /(node_modules)/,
+                include: client,
                 enforce: 'pre'
             },
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [src, client]
+                include: client
             },
             {
                 test: /\.hbs/,
