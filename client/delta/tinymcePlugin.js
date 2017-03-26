@@ -1,7 +1,7 @@
 // @flow
 /* global tinymce */
 import type { Emitter, Observable } from 'kefir';
-import type { TinyMCEAction as Action, TinyMCEEditor as Editor, TinyMCEState } from '../type';
+import type { ActionObservable, TinyMCEAction as Action, TinyMCEEditor as Editor, TinyMCEState } from '../type';
 import R from 'ramda';
 import { merge, stream } from 'kefir';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
@@ -12,7 +12,7 @@ const createTinyMCEPlugin = () : Observable<Editor> => stream((emitter : Emitter
     tinymce.PluginManager.add('wp_gistpen', emitter.value);
 });
 
-const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
+const createTinyMCEButton = (actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
     stream((emitter : Emitter<Action, void>) => {
         // Bind command to stream.
         editor.addCommand('wpgp_insert', R.pipe(tinymceButtonClickAction, emitter.value));
@@ -24,10 +24,7 @@ const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<
             cmd: 'wpgp_insert'
         });
     }),
-    state$.sampledBy(actions$.filter(R.pipe(
-        R.prop('type'),
-        R.equals(TINYMCE_POPUP_INSERT_CLICK)
-    )))
+    state$.sampledBy(actions$.ofType(TINYMCE_POPUP_INSERT_CLICK))
         .flatMap((state : TinyMCEState) => stream((emitter : Emitter<Action, void>) => {
             if (state.search.selection) {
                 editor.insertContent('[gistpen id="' + state.search.selection + '"]');
@@ -67,20 +64,12 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, vo
     return () : void => void e.close();
 });
 
-const createTinyMCEWindow = (actions$ : Observable<Action>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
-    .takeUntilBy(actions$.filter(R.pipe(
-        R.prop('type'),
-        R.converge(R.or, [
-            R.equals(TINYMCE_POPUP_CLOSE_CLICK),
-            R.equals(TINYMCE_POPUP_INSERT_CLICK)
-        ])
-    )));
+const createTinyMCEWindow = (actions$ : ActionObservable<Action>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
+    .takeUntilBy(actions$.ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK));
 
-const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
+const mergeTinyMCEButtonAndPopup = R.curry((actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
     createTinyMCEButton(actions$, state$, editor),
-    actions$.filter(
-        R.pipe(R.prop('type'), R.equals(TINYMCE_BUTTON_CLICK))
-    )
+    actions$.ofType(TINYMCE_BUTTON_CLICK)
         .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, editor))
 ]));
 
