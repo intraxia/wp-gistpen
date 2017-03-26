@@ -1,3 +1,10 @@
 #wpgp-tinymce-popup-container-body {
     padding: 10px 16px;
 }
+
+i.mce-i-icons {
+    display: inline-block;
+    -webkit-font-smoothing: antialiased;
+    font: normal 20px/1 'dashicons';
+    vertical-align: top;
+}

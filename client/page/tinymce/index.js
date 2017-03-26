@@ -1,12 +1,13 @@
 // @flow
-import type { Action, Delta, TinyMCEState } from '../../type';
 import './index.scss';
 import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
+import { domDelta } from 'brookjs';
 import { globals, search } from '../../reducer';
-import { applyDelta, searchDelta, createViewDelta, tinymcePluginDelta, webpackDelta } from '../../delta';
-import root from './root';
-import getElement from './getElement';
+import { applyDelta, searchDelta, tinymcePluginDelta, webpackDelta } from '../../delta';
+import component from './component';
+import el from './el';
+import { selectTinyMCEProps as selectProps } from '../../selector';
 
 const { __GISTPEN_TINYMCE__ } = global;
 
@@ -14,9 +15,9 @@ createStore(
     combineReducers({ globals, search }),
     __GISTPEN_TINYMCE__,
     applyDelta(
+        domDelta({ component, el, selectProps }),
         searchDelta,
         tinymcePluginDelta,
-        (createViewDelta({ root, getElement }) : Delta<TinyMCEState, Action>),
         webpackDelta
     )
 );

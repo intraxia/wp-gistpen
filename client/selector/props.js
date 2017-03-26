@@ -1,11 +1,16 @@
 // @flow
 import type { Observable } from 'kefir';
-import type { EditorPageState, EditorPageProps, SettingsState, SettingsProps } from '../type';
+import type { EditorPageState, EditorPageProps, SettingsState, SettingsProps,
+    TinyMCEState, TinyMCEProps } from '../type';
 
 export function selectSettingsProps(state$ : Observable<SettingsState>) : Observable<SettingsProps> {
     return state$.map((state : SettingsState) => state);
 }
 
 export function selectEditorProps(state$ : Observable<EditorPageState>) : Observable<EditorPageProps> {
+    return state$;
+}
+
+export function selectTinyMCEProps(state$ : Observable<TinyMCEState>) : Observable<TinyMCEProps> {
     return state$;
 }
