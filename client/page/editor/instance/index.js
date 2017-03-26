@@ -1,5 +1,6 @@
+// @flow
 import './index.scss';
-import component from 'brookjs/component';
+import { component } from 'brookjs';
 import events from './events';
 import onMount from './onMount';
 

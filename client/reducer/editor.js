@@ -38,7 +38,7 @@ const defaults = {
  * @param {Object} payload - Action payload.
  * @returns {Object} New editor state.
  */
-export default function editorReducer(state = defaults, { type, payload } = {}) {
+export default function editorReducer(state = defaults, { type, payload = {}, meta = {} } = {}) {
     switch (type) {
         case EDITOR_OPTIONS_CLICK:
             return { ...state, optionsOpen: !state.optionsOpen };
@@ -51,7 +51,7 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
         case EDITOR_INVISIBLES_TOGGLE:
             return { ...state, invisibles: payload.value };
         case EDITOR_CURSOR_MOVE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
+            return mapInstanceWithKey(state, meta.key, instance => ({
                 ...instance,
                 cursor: payload.cursor
             }));
@@ -67,19 +67,19 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                 { ...defaultInstance, key: createUniqueKey(state.instances) }
             ] };
         case EDITOR_DELETE_CLICK:
-            return { ...state, instances: rejectWithKey(payload.key, state.instances) };
+            return { ...state, instances: rejectWithKey(meta.key, state.instances) };
         case EDITOR_FILENAME_CHANGE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
+            return mapInstanceWithKey(state, meta.key, instance => ({
                 ...instance,
                 filename: payload.value
             }));
         case EDITOR_LANGUAGE_CHANGE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
+            return mapInstanceWithKey(state, meta.key, instance => ({
                 ...instance,
                 language: payload.value
             }));
         case EDITOR_INDENT:
-            return mapInstanceWithKey(state, payload.key, instance => ({
+            return mapInstanceWithKey(state, meta.key, instance => ({
                 ...instance,
                 ...indent(payload, state),
                 history: {
@@ -91,7 +91,7 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                 }
             }));
         case EDITOR_MAKE_NEWLINE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
+            return mapInstanceWithKey(state, meta.key, instance => ({
                 ...instance,
                 ...makeNewline(payload),
                 history: {
@@ -103,7 +103,7 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
                 }
             }));
         case EDITOR_VALUE_CHANGE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
+            return mapInstanceWithKey(state, meta.key, instance => ({
                 ...instance,
                 code: payload.code,
                 cursor: payload.cursor,

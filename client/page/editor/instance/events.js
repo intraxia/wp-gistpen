@@ -1,3 +1,5 @@
+// @flow
+import type { Action } from '../../../type';
 import R from 'ramda';
 import { events } from 'brookjs';
 import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
@@ -33,7 +35,7 @@ const mapToTargetCursorAction = R.map(R.pipe(
  * @param {Event} evt - DOM Event object.
  * @returns {Action|false} Action to emit, or false if no action.
  */
-function mapKeydownToAction(evt) {
+function mapKeydownToAction(evt : Event) : Action {
     const { shiftKey: inverse } = evt;
     const { textContent: code } = evt.target;
     const cursor = [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)];
@@ -71,10 +73,10 @@ export default events({
         R.filter(R.pipe(isSpecialEvent, R.not)),
         mapToTargetCursorAction
     ),
-    onInput: R.map(({ target }) =>
+    onInput: R.map((evt : Event) =>
         editorValueChangeAction({
-            code: target.textContent,
-            cursor: [selectSelectionStart(target), selectSelectionEnd(target)]
+            code: evt.target.textContent,
+            cursor: [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)]
         })
     ),
     onLanguage: R.map(R.pipe(

@@ -1,3 +1,6 @@
+// @flow
+import type { Emitter, Observable } from 'kefir';
+import type { EditorInstanceProps } from '../../../type';
 import R from 'ramda';
 import { concat, fromEvents, fromPromise, merge, never, stream } from 'kefir';
 import Prism from '../../../prism';
@@ -15,8 +18,8 @@ toolbarStyles.use();
  *
  * @returns {Observable} Observable to update the editor line numbers.
  */
-function updateLineNumber(/*pre, start, end*/) {
-    return stream(emitter => {
+function updateLineNumber(/*pre, start, end*/) : Observable<void> {
+    return stream((emitter : Emitter<void, void>) => {
         // let content = pre.textContent;
         // let ss = pre.selectionStart;
         // let se = pre.selectionEnd;
@@ -43,27 +46,32 @@ function updateLineNumber(/*pre, start, end*/) {
  * @param {number} se - Selection end.
  * @returns {Observable} Observable to update selection range.
  */
-const setSelectionRange = R.curry(function setSelectionRange(node, ss, se) {
-    return stream(emitter => {
+const setSelectionRange = R.curry(function setSelectionRange(node : Element, ss : number, se : number) : Observable<void> {
+    return stream((emitter : Emitter<void, void>) => {
         const range = document.createRange();
-        let offset = findOffset(node, ss);
-
-        range.setStart(offset.element, offset.offset);
+        const offsetStart = findOffset(node, ss);
+        let offsetEnd = offsetStart;
 
         if (se && se !== ss) {
-            offset = findOffset(node, se);
+            offsetEnd = findOffset(node, se);
         }
 
-        range.setEnd(offset.element, offset.offset);
+        if (!offsetStart.error && !offsetEnd.error) {
+            range.setStart(offsetStart.element, offsetStart.offset);
 
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
+            range.setEnd(offsetEnd.element, offsetEnd.offset);
+
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
 
         emitter.end();
     })
         .setName('SetSelectionRange$');
 });
+
+type Offset = { element : Node; offset : number; } | { element : null; offset : 0; error : true; };
 
 /**
  * Find the offset for a given selection start
@@ -72,13 +80,8 @@ const setSelectionRange = R.curry(function setSelectionRange(node, ss, se) {
  * @param {number} ss - Start point for offset.
  * @returns {Object} Offset information.
  */
-function findOffset(root, ss) {
+function findOffset(root : Element, ss : number) : Offset {
     let container;
-
-    if (!root) {
-        return null;
-    }
-
     let offset = 0;
     let element = root;
 
@@ -142,8 +145,8 @@ function findOffset(root, ss) {
  * @param {Element} el - Element to highlight.
  * @returns {Observable} Observable to highlight element.
  */
-const highlightElement = function highlightElement(el) {
-    return stream(emitter => {
+const highlightElement = function highlightElement(el : Element) : Observable<void> {
+    return stream((emitter : Emitter<void, void>) => {
         Prism.highlightElement(el.querySelector('code'), false);
         emitter.end();
     })
@@ -153,13 +156,13 @@ const highlightElement = function highlightElement(el) {
 /**
  * Creates a stream to update Prism's setting and fetch any plugin scripts.
  *
- * @param {Object} state - Current page state.
+ * @param {Object} props - Current page props.
  * @returns {Observable} Observable that ends after Prism is updated.
  */
-const createPrismUpdateStream = function createPrismUpdateStream(state) {
+const createPrismUpdateStream = function createPrismUpdateStream(props : EditorInstanceProps) : Observable<void> {
     return fromPromise(Promise.all([
-        Prism.setTheme(state.editor.theme),
-        Prism.togglePlugin('show-invisibles', state.editor.invisibles === 'on')
+        Prism.setTheme(props.editor.theme),
+        Prism.togglePlugin('show-invisibles', props.editor.invisibles === 'on')
     ]))
         .ignoreValues()
         .setName('PrismUpdateStream');
@@ -172,7 +175,7 @@ const createPrismUpdateStream = function createPrismUpdateStream(state) {
  * @param {Object} props - Latest props.
  * @returns {Observable} Observable to update element.
  */
-const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, props) {
+const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el : Element, props : EditorInstanceProps) : Observable<void> {
     let stream$ = renderFromHTML(el, template(props)).concat(highlightElement(el));
 
     if (props.instance.cursor) {
@@ -194,13 +197,13 @@ const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el, props) 
  * @param {Observable} props$ - Stream of editor props.
  * @returns {Observable} - Stream of renders.
  */
-export default R.curry(function onMount(el, props$) {
+export default R.curry(function onMount(el : Element, props$ : Observable<EditorInstanceProps>) : Observable<void> {
     const keyUp$ = fromEvents(el, 'keyup').setName('KeyUp$');
     const keyDown$ = fromEvents(el, 'keydown').setName('KeyDown$');
 
     // Ensure the autoload path is set correctly on startup.
     // @todo move elsewhere?
-    const setAutoloader$ = stream(emitter => {
+    const setAutoloader$ = stream((emitter : Emitter<void, void>) => {
         Prism.setAutoloaderPath(__webpack_public_path__);
 
         emitter.end();
@@ -215,7 +218,7 @@ export default R.curry(function onMount(el, props$) {
      * so we get a value immediately.
      */
     const initial$ = props$.take(1)
-        .flatMapLatest(props => createDOMUpdateStream(el, props))
+        .flatMapLatest((props : EditorInstanceProps) : Observable<void> => createDOMUpdateStream(el, props))
         .setName('Initial$');
 
     /**
@@ -227,7 +230,7 @@ export default R.curry(function onMount(el, props$) {
      * chance of messing up typing.
      */
     const options$ = props$.skipDuplicates(editorOptionsIsEqual)
-        .flatMapLatest(props => concat([
+        .flatMapLatest((props : EditorInstanceProps) : Observable<void> => concat([
             createPrismUpdateStream(props),
             createDOMUpdateStream(el, props)
         ]))
@@ -241,7 +244,7 @@ export default R.curry(function onMount(el, props$) {
      * the props
      */
     const typing$ = props$.sampledBy(keyUp$.debounce(10))
-        .flatMapLatest(props => createDOMUpdateStream(el, props).takeUntilBy(keyDown$))
+        .flatMapLatest((props : EditorInstanceProps) : Observable<void> => createDOMUpdateStream(el, props).takeUntilBy(keyDown$))
         .setName('Typing$');
 
     /**
@@ -253,10 +256,14 @@ export default R.curry(function onMount(el, props$) {
      * The render is thus done synchronously.
      */
     const special$ = props$.sampledBy(keyDown$.filter(isSpecialEvent).delay(0))
-        .flatMapLatest(props => raf$.take(1).flatMap(() =>  {
+        .flatMapLatest((props : EditorInstanceProps) => raf$.take(1).flatMap(() : Observable<void> =>  {
             const code = el.querySelector('code');
 
-            return stream(emitter => {
+            if (!code) {
+                return never();
+            }
+
+            return stream((emitter : Emitter<void, void>) => {
                 code.textContent = props.instance.code;
                 emitter.end();
             })
@@ -275,7 +282,8 @@ export default R.curry(function onMount(el, props$) {
      */
     const lineNumber$ = props$.skipDuplicates(lineNumberIsEqual)
         .filter(R.path(['instance', 'cursor']))
-        .flatMapLatest(props => updateLineNumber(el.querySelector('pre'), ...props.instance.cursor))
+        .flatMapLatest((props : EditorInstanceProps) : Observable<void> =>
+            updateLineNumber(el.querySelector('pre'), ...(props.instance.cursor || [])))
         .setName('LineNumbers$');
 
     return merge([

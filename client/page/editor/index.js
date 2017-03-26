@@ -1,9 +1,11 @@
+// @flow
 import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { fromESObservable } from 'kefir';
-import root from './root';
 import { applyDelta, repoDelta, userDelta } from '../../delta';
 import { api, editor, repo } from '../../reducer';
+import component from './component';
+import { selectEditorProps as selectProps } from '../../selector';
 
 const { __GISTPEN_EDITOR__ } = global;
 
@@ -18,10 +20,10 @@ const store = createStore(
         userDelta
     )
 );
-const state$ = fromESObservable(store).toProperty(store.getState);
+const state$ = selectProps(fromESObservable(store).toProperty(store.getState));
 
 document.addEventListener('DOMContentLoaded', () => {
-    const app$ = root(document.querySelector('[data-brk-container="editor"]'), state$);
+    const app$ = component(document.querySelector('[data-brk-container="editor"]'), state$);
 
     if (process.env.NODE_ENV !== 'production') {
         app$.spy('app$');

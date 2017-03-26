@@ -1,3 +1,6 @@
+// @flow
+import type { EditorInstanceProps } from '../../../type';
+
 /**
  * Returns whether any of the editor options have changed.
  *
@@ -5,7 +8,7 @@
  * @param {Object} next - Next props.
  * @returns {boolean} Whether any editor options have changed.
  */
-export function editorOptionsIsEqual(prev, next) {
+export function editorOptionsIsEqual(prev : EditorInstanceProps, next : EditorInstanceProps) : boolean {
     return prev.editor.theme === next.editor.theme &&
         prev.editor.invisibles === next.editor.invisibles;
 }
@@ -16,7 +19,7 @@ export function editorOptionsIsEqual(prev, next) {
  * @todo implement with line numbers.
  * @returns {boolean} Whether any the line numbers have changed.
  */
-export function lineNumberIsEqual(/* prev, next */) {
+export function lineNumberIsEqual(/* prev, next */) : boolean {
     return true;
 }
 
@@ -27,7 +30,7 @@ export function lineNumberIsEqual(/* prev, next */) {
  * @param {Event} evt - Event object.
  * @returns {boolean} Whether this is a special event.
  */
-export function isSpecialEvent(evt) {
+export function isSpecialEvent(evt : KeyboardEvent) : boolean {
     const { altKey, metaKey, ctrlKey } = evt;
     const cmdOrCtrl = metaKey || ctrlKey;
 
