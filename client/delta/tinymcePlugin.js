@@ -1,7 +1,7 @@
 // @flow
 /* global tinymce */
 import type { Emitter, Observable } from 'kefir';
-import type { ActionObservable, TinyMCEAction as Action, TinyMCEEditor as Editor, TinyMCEState } from '../type';
+import type { TinyMCEAction as Action, TinyMCEEditor as Editor, TinyMCEState } from '../type';
 import R from 'ramda';
 import { merge, stream } from 'kefir';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,

@@ -4,6 +4,9 @@
       "globals": [
         {
           "Disposer": true
+        },
+        {
+          "ActionObservable": true
         }
       ]
     }],

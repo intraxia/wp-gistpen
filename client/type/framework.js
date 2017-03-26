@@ -1,9 +1,5 @@
 // @flow
-import { Observable } from 'kefir';
-
-export class ActionObservable<V, E=*> extends Observable<V, E> {
-    ofType : (...types : Array<string>) => Observable<V, E>
-}
+import type { Observable } from 'kefir';
 
 export type Delta<A, S> = (actions$ : ActionObservable<A>, state$ : Observable<S>) => Observable<A>;
 
