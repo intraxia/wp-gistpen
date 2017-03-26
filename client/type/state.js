@@ -88,6 +88,11 @@ export type EditorState = {
     tabs : Toggle;
 };
 
+export type SearchState = {
+    term : string;
+    selection? : number;
+};
+
 export type HasGlobalsState = {
     globals : GlobalsState;
 };
@@ -96,22 +101,32 @@ export type HasPrismState = {
     prism : PrismState;
 };
 
-export type SettingsState = HasGlobalsState & HasPrismState &  {
+export type HasGistState = {
     gist : GistState;
+};
+
+export type HasRouteState = {
     route : RouteState;
 };
 
-export type EditorPageState = {
+export type HasApiConfig = {
     api : ApiConfig;
+};
+
+export type HasRepo = {
     repo : Repo;
+};
+
+export type HasEditorState = {
     editor : EditorState;
 };
 
-export type SearchState = {
-    term : string;
-    selection? : number;
-};
-
-export type TinyMCEState = HasGlobalsState & {
+export type HasSearchState = {
     search : SearchState;
 };
+
+export type SettingsState = HasGlobalsState & HasPrismState & HasGistState & HasRouteState;
+
+export type EditorPageState = HasApiConfig & HasRepo & HasEditorState;
+
+export type TinyMCEState = HasGlobalsState & HasSearchState;
