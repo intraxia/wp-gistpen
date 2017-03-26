@@ -7,7 +7,7 @@ const { Server } = require('karma');
 
 gulp.task('dev', ['dev:app', 'dev:tdd']);
 
-gulp.task('dev:app', () => {
+gulp.task('dev:app', ['copy'], () => {
     const webpackWatchConfig = R.clone(webpackConfig);
     webpackWatchConfig.watch = true;
 
