@@ -20,4 +20,4 @@ gulp.task('translate', function () {
 });
 
 gulp.task('default', ['scripts:dev', 'copy', 'translate']);
-gulp.task('build', ['scripts', 'styles', 'copy', 'translate']);
+gulp.task('build', ['scripts', 'copy', 'translate']);
