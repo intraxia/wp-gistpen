@@ -4,7 +4,15 @@ import type { Blob } from './state';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     AJAX_FINISHED, AJAX_FAILED, REPO_SAVE_SUCCEEDED, USER_SAVE_SUCCEEDED,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_INSERT_CLICK, TINYMCE_POPUP_CLOSE_CLICK,
-    SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED, SEARCH_RESULT_SELECTION_CHANGE } from '../action';
+    SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED, SEARCH_RESULT_SELECTION_CHANGE,
+    GIST_TOKEN_CHANGE } from '../action';
+
+export type GistTokenChangeAction = {
+    type : typeof GIST_TOKEN_CHANGE;
+    payload : {
+        value : string;
+    };
+};
 
 export type ThemeChangeAction = {
     type : typeof THEME_CHANGE;
@@ -88,6 +96,8 @@ export type SearchResultSelectionChangeAction = {
         selection : string;
     };
 };
+
+export type SettingsAction = GistTokenChangeAction;
 
 export type HighlightingAction = ThemeChangeAction | LineNumbersChangeAction | ShowInvisiblesChangeAction;
 
