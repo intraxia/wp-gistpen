@@ -3,7 +3,7 @@ import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { fromCallback } from 'kefir';
 import { domDelta } from 'brookjs';
-import component from './component';
+import view from './view';
 import { selectSettingsProps as selectProps } from '../../selector';
 import router from './router';
 import { applyDelta, routerDelta, siteDelta, webpackDelta } from '../../delta';
@@ -19,7 +19,7 @@ createStore(
     combineReducers({ globals, route, prism, gist }),
     __GISTPEN_SETTINGS__,
     applyDelta(
-        domDelta({ component, el, selectProps }),
+        domDelta({ el, selectProps, view }),
         routerDelta({ router }),
         siteDelta,
         webpackDelta

@@ -1,10 +1,11 @@
 // @flow
 import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
-import { fromESObservable } from 'kefir';
+import { fromCallback } from 'kefir';
+import { domDelta } from 'brookjs';
 import { applyDelta, repoDelta, userDelta } from '../../delta';
 import { api, editor, repo } from '../../reducer';
-import component from './component';
+import view from './view';
 import { selectEditorProps as selectProps } from '../../selector';
 
 const { __GISTPEN_EDITOR__ } = global;
@@ -12,22 +13,16 @@ const { __GISTPEN_EDITOR__ } = global;
 // eslint-disable-next-line camelcase
 __webpack_public_path__ = __GISTPEN_EDITOR__.api.url + 'assets/js/';
 
-const store = createStore(
+const el = (doc : Document) => fromCallback((callback : (value : null | HTMLElement) => void) => {
+    callback(doc.querySelector('[data-brk-container="editor"]'));
+});
+
+createStore(
     combineReducers({ api, editor, repo }),
     __GISTPEN_EDITOR__,
     applyDelta(
+        domDelta({ el, selectProps, view }),
         repoDelta,
         userDelta
     )
 );
-const state$ = selectProps(fromESObservable(store).toProperty(store.getState));
-
-document.addEventListener('DOMContentLoaded', () => {
-    const app$ = component(document.querySelector('[data-brk-container="editor"]'), state$);
-
-    if (process.env.NODE_ENV !== 'production') {
-        app$.spy('app$');
-    }
-
-    app$.observe({ value: store.dispatch });
-});

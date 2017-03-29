@@ -30,7 +30,7 @@ export function lineNumberIsEqual(/* prev, next */) : boolean {
  * @param {Event} evt - Event object.
  * @returns {boolean} Whether this is a special event.
  */
-export function isSpecialEvent(evt : KeyboardEvent) : boolean {
+export function isSpecialEvent(evt : ProxyEvent) : boolean {
     const { altKey, metaKey, ctrlKey } = evt;
     const cmdOrCtrl = metaKey || ctrlKey;
 

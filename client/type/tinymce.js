@@ -11,7 +11,7 @@ type WindowConfig = {
 };
 
 interface jQuery {
-    append(content : string | HTMLElement) : jQuery;
+    append(content : string | Element | Array<Element>) : jQuery;
     find(content : string) : jQuery;
 }
 

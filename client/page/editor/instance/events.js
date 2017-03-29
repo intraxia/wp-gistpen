@@ -35,7 +35,7 @@ const mapToTargetCursorAction = R.map(R.pipe(
  * @param {Event} evt - DOM Event object.
  * @returns {Action|false} Action to emit, or false if no action.
  */
-function mapKeydownToAction(evt : Event) : Action {
+function mapKeydownToAction(evt : ProxyEvent) : Action {
     const { shiftKey: inverse } = evt;
     const { textContent: code } = evt.target;
     const cursor = [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)];
@@ -73,7 +73,7 @@ export default events({
         R.filter(R.pipe(isSpecialEvent, R.not)),
         mapToTargetCursorAction
     ),
-    onInput: R.map((evt : Event) =>
+    onInput: R.map((evt : ProxyEvent) =>
         editorValueChangeAction({
             code: evt.target.textContent,
             cursor: [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)]
