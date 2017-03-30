@@ -1,3 +1,31 @@
+// @flow
+import type {
+    Cursor,
+    EditorAddClickAction,
+    EditorCursorMoveAction,
+    EditorDeleteClickAction,
+    EditorDescriptionChangeAction,
+    EditorFilenameChangeAction,
+    EditorIndentAction,
+    EditorIndentValue,
+    EditorInvisiblesToggleAction,
+    EditorLanguageChangeAction,
+    EditorMakeCommentAction,
+    EditorMakeNewLineAction,
+    EditorOptionsClickAction,
+    EditorRedoAction,
+    EditorStatusChangeAction,
+    EditorSyncChangeAction,
+    EditorTabsToggleAction,
+    EditorThemeChangeAction,
+    EditorUndoAction,
+    EditorUpdateClickAction,
+    EditorValue,
+    EditorValueChangeAction,
+    EditorWidthChangeAction,
+    Toggle
+} from '../type';
+
 /**
  * Dispatched when the editor options button is clicked.
  *
@@ -10,9 +38,9 @@ export const EDITOR_OPTIONS_CLICK = 'EDITOR_OPTIONS_CLICK';
  *
  * @returns {Action} Editor Options Click Action
  */
-export const editorOptionsClickAction = function editorOptionsClickAction() {
+export function editorOptionsClickAction() : EditorOptionsClickAction {
     return { type: EDITOR_OPTIONS_CLICK };
-};
+}
 
 /**
  * Dispatched when the Editor theme changes.
@@ -27,12 +55,12 @@ export const EDITOR_THEME_CHANGE = 'EDITOR_THEME_CHANGE';
  * @param {string} value - Editor theme.
  * @returns {Action} Editor Options Click Action
  */
-export const editorThemeChangeAction = function editorThemeChangeAction(value) {
+export function editorThemeChangeAction(value : string) : EditorThemeChangeAction {
     return {
         type: EDITOR_THEME_CHANGE,
         payload: { value }
     };
-};
+}
 
 /**
  * Dispatched when the Editor switches between tabs and spaces.
@@ -47,12 +75,12 @@ export const EDITOR_TABS_TOGGLE = 'EDITOR_TABS_TOGGLE';
  * @param {string} value - Editor tabs enabled status.
  * @returns {Action} Editor Options Click Action
  */
-export const editorTabsToggleAction = function editorTabsToggleAction(value) {
+export function editorTabsToggleAction(value : string) : EditorTabsToggleAction {
     return {
         type: EDITOR_TABS_TOGGLE,
         payload: { value }
     };
-};
+}
 
 /**
  * Dispatched when the Editor indentation width changes.
@@ -67,12 +95,12 @@ export const EDITOR_WIDTH_CHANGE = 'EDITOR_WIDTH_CHANGE';
  * @param {string} value - Editor indentation width.
  * @returns {Action} Editor Options Click Action
  */
-export const editorWidthChangeAction = function editorWidthChangeAction(value) {
+export function editorWidthChangeAction(value : string) : EditorWidthChangeAction {
     return {
         type: EDITOR_WIDTH_CHANGE,
         payload: { value }
     };
-};
+}
 
 /**
  * Dispatched when the Editor enables or disables invisibles.
@@ -84,15 +112,15 @@ export const EDITOR_INVISIBLES_TOGGLE = 'EDITOR_INVISIBLES_TOGGLE';
 /**
  * Creates a new Editor Invisibles Toggle Action.
  *
- * @param {string} value - Editor theme.
+ * @param {Toggle} value - Editor invisibles toggle.
  * @returns {Action} Editor Options Click Action
  */
-export const editorInvisiblesToggleAction = function editorInvisiblesToggleAction(value) {
+export function editorInvisiblesToggleAction(value : Toggle) : EditorInvisiblesToggleAction {
     return {
         type: EDITOR_INVISIBLES_TOGGLE,
         payload: { value }
     };
-};
+}
 
 /**
  * Dispatched when the Editor update button is clicked.
@@ -106,9 +134,9 @@ export const EDITOR_UPDATE_CLICK = 'EDITOR_UPDATE_CLICK';
  *
  * @returns {Action} Editor Update Click Action.
  */
-export const editorUpdateClickAction = function editorUpdateClickAction() {
+export function editorUpdateClickAction() : EditorUpdateClickAction {
     return { type: EDITOR_UPDATE_CLICK };
-};
+}
 
 /**
  * Dispatched when the Editor add button is clicked.
@@ -122,9 +150,9 @@ export const EDITOR_ADD_CLICK = 'EDITOR_ADD_CLICK';
  *
  * @returns {Action} Editor Update Click Action.
  */
-export const editorAddClickAction = function editorAddClickAction() {
+export function editorAddClickAction() : EditorAddClickAction {
     return { type: EDITOR_ADD_CLICK };
-};
+}
 
 /**
  * Dispatched when an editor instance delete button is clicked.
@@ -138,9 +166,9 @@ export const EDITOR_DELETE_CLICK = 'EDITOR_DELETE_CLICK';
  *
  * @returns {Action} Editor Instance Delete Click Action.
  */
-export const editorDeleteClickAction = function editorDeleteClickAction() {
+export function editorDeleteClickAction() : EditorDeleteClickAction {
     return { type: EDITOR_DELETE_CLICK };
-};
+}
 
 /**
  * Dispatched when the Editor description changes.
@@ -155,12 +183,12 @@ export const EDITOR_DESCRIPTION_CHANGE = 'EDITOR_DESCRIPTION_CHANGE';
  * @param {string} value - Editor description.
  * @returns {Action} Editor Description Change Action.
  */
-export const editorDescriptionChangeAction = function editorDescriptionChangeAction(value) {
+export function editorDescriptionChangeAction(value : string) : EditorDescriptionChangeAction {
     return {
         type: EDITOR_DESCRIPTION_CHANGE,
         payload: { value }
     };
-};
+}
 
 /**
  * Dispatched when the Editor status changes.
@@ -172,15 +200,15 @@ export const EDITOR_STATUS_CHANGE = 'EDITOR_STATUS_CHANGE';
 /**
  * Creates a new Editor Status Change Action.
  *
- * @param {string} value - Editor status..
+ * @param {string} value - Editor status.
  * @returns {Action} Editor Status Change Action.
  */
-export const editorStatusChangeAction = function editorStatusChangeAction(value) {
+export function editorStatusChangeAction(value : string) : EditorStatusChangeAction {
     return {
         type: EDITOR_STATUS_CHANGE,
         payload: { value }
     };
-};
+}
 
 /**
  * Dispatched when the Editor sync status changes.
@@ -195,12 +223,12 @@ export const EDITOR_SYNC_TOGGLE = 'EDITOR_SYNC_TOGGLE';
  * @param {string} value - Editor sync status.
  * @returns {Action} Editor Sync Change Action.
  */
-export const editorSyncToggleAction = function editorSyncToggleAction(value) {
+export function editorSyncToggleAction(value : Toggle) : EditorSyncChangeAction {
     return {
         type: EDITOR_SYNC_TOGGLE,
         payload: { value }
     };
-};
+}
 
 /**
  * Emitted when the value of a filename changes.
@@ -215,12 +243,12 @@ export const EDITOR_FILENAME_CHANGE = 'EDITOR_FILENAME_CHANGE';
  * @param {string} value - Editor filename.
  * @returns {Action} Editor Filename Change Action.
  */
-export const editorFilenameChangeAction = function editorFilenameChangeAction(value) {
+export function editorFilenameChangeAction(value : string) : EditorFilenameChangeAction {
     return {
         type: EDITOR_FILENAME_CHANGE,
         payload: { value }
     };
-};
+}
 
 /**
  * Emitted when the value of the language changes.
@@ -235,12 +263,12 @@ export const EDITOR_LANGUAGE_CHANGE = 'EDITOR_LANGUAGE_CHANGE';
  * @param {string} value - Editor language.
  * @returns {Action} Editor Filename Change Action.
  */
-export const editorLanguageChangeAction = function editorLanguageChangeAction(value) {
+export function editorLanguageChangeAction(value : string) : EditorLanguageChangeAction {
     return {
         type: EDITOR_LANGUAGE_CHANGE,
         payload: { value }
     };
-};
+}
 
 /**
  * Emitted when the value in the editor changes.
@@ -253,17 +281,15 @@ export const EDITOR_VALUE_CHANGE = 'EDITOR_VALUE_CHANGE';
  * Creates a new Editor Value Change Action.
  *
  * @param {string} code - New editor value.
- * @param {string} add - Characters added.
- * @param {string} del - Characters deleted.
  * @param {Cursor} cursor - Selection of the cursor.
  * @returns {Action} Editor Value Change Action.
  */
-export const editorValueChangeAction = function editorValueChangeAction({ code, cursor, add = '', del = '' }) {
+export function editorValueChangeAction({ code, cursor } : EditorValue) : EditorValueChangeAction {
     return {
         type: EDITOR_VALUE_CHANGE,
-        payload: { code, cursor, add, del }
+        payload: { code, cursor }
     };
-};
+}
 
 /**
  * Emitted when the user indents in the editor.
@@ -280,12 +306,12 @@ export const EDITOR_INDENT = 'EDITOR_INDENT_ACTION';
  * @param {bool} inverse - Whether the intentation is inverted.
  * @returns {Action} Editor Indent Action.
  */
-export const editorIndentAction = function editorIndentAction({ code, cursor, inverse }) {
+export function editorIndentAction({ code, cursor, inverse } : EditorIndentValue) : EditorIndentAction {
     return {
         type: EDITOR_INDENT,
         payload: { code, cursor, inverse }
     };
-};
+}
 
 /**
  * Emitted when the editor transforms a comment.
@@ -301,12 +327,12 @@ export const EDITOR_MAKE_COMMENT = 'EDITOR_MAKE_COMMENT';
  * @param {Cursor} cursor - Cursor selection tuple.
  * @returns {Action} Editor Make Comment Action.
  */
-export const editorMakeCommentAction = function editorMakeCommentAction({ code, cursor }) {
+export function editorMakeCommentAction({ code, cursor } : EditorValue) : EditorMakeCommentAction {
     return {
         type: EDITOR_MAKE_COMMENT,
         payload: { code, cursor }
     };
-};
+}
 
 /**
  * Emitted when the editor creates a new line.
@@ -322,12 +348,12 @@ export const EDITOR_MAKE_NEWLINE = 'EDITOR_MAKE_NEWLINE';
  * @param {Cursor} cursor - Cursor selection tuple.
  * @returns {Action} Editor Make Newline Action.
  */
-export const editorMakeNewlineAction = function editorMakeNewlineAction({ code, cursor }) {
+export function editorMakeNewlineAction({ code, cursor } : EditorValue) : EditorMakeNewLineAction {
     return {
         type: EDITOR_MAKE_NEWLINE,
         payload: { code, cursor }
     };
-};
+}
 
 /**
  * Emitted when the editor wants an undo.
@@ -341,9 +367,9 @@ export const EDITOR_REDO = 'EDITOR_REDO';
  *
  * @returns {Action} Editor Redo Action.
  */
-export const editorRedoAction = function editorRedoAction() {
+export function editorRedoAction() : EditorRedoAction {
     return { type: EDITOR_REDO };
-};
+}
 
 /**
  * Emitted when the editor wants a redo.
@@ -357,9 +383,9 @@ export const EDITOR_UNDO = 'EDITOR_UNDO';
  *
  * @returns {Action} Editor Undo Action.
  */
-export const editorUndoAction = function editorUndoAction () {
+export function editorUndoAction () : EditorUndoAction {
     return { type: EDITOR_UNDO };
-};
+}
 
 /**
  * Emitted when the editor's cursor moves.
@@ -371,12 +397,12 @@ export const EDITOR_CURSOR_MOVE = 'EDITOR_CURSOR_MOVE';
 /**
  * Creates a new Editor Cursor Move Action.
  *
- * @param {false|Cursor} cursor - Cursor position.
+ * @param {Cursor} cursor - Cursor position.
  * @returns {Action} Editor Cursor Move Action.
  */
-export const editorCursorMoveAction = function editorCaretMoveAction(cursor) {
+export function editorCursorMoveAction(cursor : Cursor) : EditorCursorMoveAction {
     return {
         type: EDITOR_CURSOR_MOVE,
         payload: { cursor }
     };
-};
+}
