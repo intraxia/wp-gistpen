@@ -1,5 +1,5 @@
 // @flow
-import type { Emitter } from 'kefir';
+import type { Emitter, Observable } from 'kefir';
 import type { Action, Delta, RouterDeltaOptions } from '../type';
 import R from 'ramda';
 import { stream } from 'kefir';

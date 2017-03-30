@@ -10,7 +10,7 @@ import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     EDITOR_UPDATE_CLICK, EDITOR_DELETE_CLICK, EDITOR_CURSOR_MOVE, EDITOR_MAKE_COMMENT,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
     EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_INDENT,
-    EDITOR_MAKE_NEWLINE, EDITOR_REDO, EDITOR_UNDO } from '../action';
+    EDITOR_MAKE_NEWLINE, EDITOR_REDO, EDITOR_UNDO, ROUTE_CHANGE } from '../action';
 
 export type EditorValue = {
     code : string;
@@ -143,6 +143,13 @@ export type GistTokenChangeAction = {
     };
 };
 
+export type RouteChangeAction = {
+    type : typeof ROUTE_CHANGE;
+    payload : {
+        route : string;
+    };
+};
+
 export type ThemeChangeAction = {
     type : typeof THEME_CHANGE;
     payload : {
@@ -226,7 +233,7 @@ export type SearchResultSelectionChangeAction = {
     };
 };
 
-export type SettingsAction = GistTokenChangeAction;
+export type SettingsAction = GistTokenChangeAction | RouteChangeAction;
 
 export type EditorAction = EditorAddClickAction | EditorCursorMoveAction
     | EditorFilenameChangeAction | EditorIndentAction | EditorInvisiblesToggleAction
