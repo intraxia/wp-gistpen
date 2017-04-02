@@ -1,4 +1,12 @@
+// @flow
+import type { HasMetaKey, EditorInstance, EditorValue, EditorIndentValue, EditorState,
+    EditorThemeChangeAction, EditorTabsToggleAction, EditorWidthChangeAction,
+    EditorInvisiblesToggleAction, EditorCursorMoveAction, EditorDescriptionChangeAction,
+    EditorStatusChangeAction, EditorSyncChangeAction, EditorDeleteClickAction,
+    EditorFilenameChangeAction, EditorLanguageChangeAction, EditorIndentAction,
+    EditorMakeNewLineAction, EditorValueChangeAction, RepoSaveSucceededAction, Blob } from '../type';
 import R from 'ramda';
+import { combineActionReducers } from 'brookjs';
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_DELETE_CLICK,
     EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE, REPO_SAVE_SUCCEEDED,
@@ -30,112 +38,119 @@ const defaults = {
     instances: [{ ...defaultInstance, key: createUniqueKey([]) }]
 };
 
-/**
- * Returns a new editor state for a given action.
- *
- * @param {Object} state - Current editor state.
- * @param {string} type - Action type.
- * @param {Object} payload - Action payload.
- * @returns {Object} New editor state.
- */
-export default function editorReducer(state = defaults, { type, payload } = {}) {
-    switch (type) {
-        case EDITOR_OPTIONS_CLICK:
-            return { ...state, optionsOpen: !state.optionsOpen };
-        case EDITOR_THEME_CHANGE:
-            return { ...state, theme: payload.value };
-        case EDITOR_TABS_TOGGLE:
-            return { ...state, tabs: payload.value };
-        case EDITOR_WIDTH_CHANGE:
-            return { ...state, width: payload.value };
-        case EDITOR_INVISIBLES_TOGGLE:
-            return { ...state, invisibles: payload.value };
-        case EDITOR_CURSOR_MOVE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
-                ...instance,
-                cursor: payload.cursor
-            }));
-        case EDITOR_DESCRIPTION_CHANGE:
-            return { ...state, description: payload.value };
-        case EDITOR_STATUS_CHANGE:
-            return { ...state, status: payload.value };
-        case EDITOR_SYNC_TOGGLE:
-            return { ...state, sync: payload.value };
-        case EDITOR_ADD_CLICK:
-            return { ...state, instances: [
-                ...state.instances,
-                { ...defaultInstance, key: createUniqueKey(state.instances) }
-            ] };
-        case EDITOR_DELETE_CLICK:
-            return { ...state, instances: rejectWithKey(payload.key, state.instances) };
-        case EDITOR_FILENAME_CHANGE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
-                ...instance,
-                filename: payload.value
-            }));
-        case EDITOR_LANGUAGE_CHANGE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
-                ...instance,
-                language: payload.value
-            }));
-        case EDITOR_INDENT:
-            return mapInstanceWithKey(state, payload.key, instance => ({
-                ...instance,
-                ...indent(payload, state),
-                history: {
-                    ...instance.history,
-                    undo: instance.history.undo.concat({
-                        code: instance.code,
-                        cursor: instance.cursor
-                    })
-                }
-            }));
-        case EDITOR_MAKE_NEWLINE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
-                ...instance,
-                ...makeNewline(payload),
-                history: {
-                    ...instance.history,
-                    undo: instance.history.undo.concat({
-                        code: instance.code,
-                        cursor: instance.cursor
-                    })
-                }
-            }));
-        case EDITOR_VALUE_CHANGE:
-            return mapInstanceWithKey(state, payload.key, instance => ({
-                ...instance,
-                code: payload.code,
-                cursor: payload.cursor,
-                history: {
-                    ...instance.history,
-                    undo: instance.history.undo.concat({
-                        code: instance.code,
-                        cursor: instance.cursor
-                    })
-                }
-            }));
-        case REPO_SAVE_SUCCEEDED:
-            const { response: repo } = payload;
-            return {
-                ...state,
-                description: repo.description,
-                status: repo.status,
-                password: repo.password,
-                gist_id: repo.gist_id,
-                sync: repo.sync,
-                instances: repo.blobs.map(blob => ({
-                    ...defaultInstance,
-                    key: blob.ID + '',
-                    filename: blob.filename,
-                    code: blob.code,
-                    language: blob.language.slug
-                }))
-            };
-        default:
-            return state;
-    }
-};
+export default combineActionReducers([
+    [EDITOR_OPTIONS_CLICK, (state : EditorState) => ({
+        ...state,
+        optionsOpen: !state.optionsOpen
+    })],
+    [EDITOR_THEME_CHANGE, (state : EditorState, { payload } : EditorThemeChangeAction) => ({
+        ...state,
+        theme: payload.value
+    })],
+    [EDITOR_TABS_TOGGLE, (state : EditorState, { payload } : EditorTabsToggleAction) => ({
+        ...state,
+        tabs: payload.value
+    })],
+    [EDITOR_WIDTH_CHANGE, (state : EditorState, { payload } : EditorWidthChangeAction) => ({
+        ...state,
+        width: payload.value
+    })],
+    [EDITOR_INVISIBLES_TOGGLE, (state : EditorState, { payload } : EditorInvisiblesToggleAction) => ({
+        ...state,
+        invisibles: payload.value
+    })],
+    [EDITOR_DESCRIPTION_CHANGE, (state : EditorState, { payload } : EditorDescriptionChangeAction) => ({
+        ...state,
+        description: payload.value
+    })],
+    [EDITOR_STATUS_CHANGE, (state : EditorState, { payload } : EditorStatusChangeAction) => ({
+        ...state,
+        status: payload.value
+    })],
+    [EDITOR_SYNC_TOGGLE, (state : EditorState, { payload } : EditorSyncChangeAction) => ({
+        ...state,
+        sync: payload.value
+    })],
+    [EDITOR_ADD_CLICK, (state : EditorState) => ({
+        ...state,
+        instances: [...state.instances, {
+            ...defaultInstance,
+            key: createUniqueKey(state.instances)
+        }]
+    })],
+    [EDITOR_DELETE_CLICK, (state : EditorState, { meta } : EditorDeleteClickAction & HasMetaKey) => ({
+        ...state,
+        instances: rejectWithKey(meta.key, state.instances)
+    })],
+    [EDITOR_CURSOR_MOVE, (state : EditorState, { payload, meta } : EditorCursorMoveAction & HasMetaKey) => mapInstanceWithKey(
+        state,
+        meta.key,
+        (instance : EditorInstance)=> ({
+            ...instance,
+            cursor: payload.cursor
+        })
+    )],
+    [EDITOR_FILENAME_CHANGE, (state : EditorState, { payload, meta } : EditorFilenameChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+        ...instance,
+        filename: payload.value
+    }))],
+    [EDITOR_LANGUAGE_CHANGE, (state : EditorState, { payload, meta } : EditorLanguageChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+        ...instance,
+        language: payload.value
+    }))],
+    [EDITOR_INDENT, (state : EditorState, { payload, meta } : EditorIndentAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+        ...instance,
+        ...indent(payload, { tabs: state.tabs, width: state.width }),
+        history: {
+            ...instance.history,
+            undo: instance.history.undo.concat({
+                code: instance.code,
+                cursor: instance.cursor
+            })
+        }
+    }))],
+    [EDITOR_MAKE_NEWLINE, (state : EditorState, { payload, meta } : EditorMakeNewLineAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+        ...instance,
+        ...makeNewline(payload),
+        history: {
+            ...instance.history,
+            undo: instance.history.undo.concat({
+                code: instance.code,
+                cursor: instance.cursor
+            })
+        }
+    }))],
+    [EDITOR_VALUE_CHANGE, (state : EditorState, { payload, meta } : EditorValueChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+        ...instance,
+        code: payload.code,
+        cursor: payload.cursor,
+        history: {
+            ...instance.history,
+            undo: instance.history.undo.concat({
+                code: instance.code,
+                cursor: instance.cursor
+            })
+        }
+    }))],
+    [REPO_SAVE_SUCCEEDED, (state : EditorState, { payload } : RepoSaveSucceededAction) : EditorState => {
+        const { response: repo } = payload;
+        return {
+            ...state,
+            description: repo.description,
+            status: repo.status,
+            password: repo.password,
+            gist_id: repo.gist_id,
+            sync: repo.sync,
+            instances: repo.blobs.map((blob : Blob) => ({
+                ...defaultInstance,
+                key: (blob.ID || '') + '',
+                filename: blob.filename,
+                code: blob.code,
+                language: typeof blob.language === 'string' ? blob.language : blob.language.slug
+            }))
+        };
+    }]
+], defaults);
 
 /**
  * Returns an updated array with the instance matching the provided key removed.
@@ -144,8 +159,8 @@ export default function editorReducer(state = defaults, { type, payload } = {}) 
  * @param {Instance[]} instances - Current instances
  * @returns {Instance[]} Update instances.
  */
-function rejectWithKey(key, instances) {
-    return R.reject(instance => key === instance.key, instances);
+function rejectWithKey(key : string, instances : Array<EditorInstance>) : Array<EditorInstance> {
+    return R.reject((instance : EditorInstance)=> key === instance.key, instances);
 }
 
 /**
@@ -156,11 +171,17 @@ function rejectWithKey(key, instances) {
  * @param {Function} fn - Function to call
  * @returns {Object} New State.
  */
-function mapInstanceWithKey(state, key, fn) {
-    return { ...state, instances: state.instances.map(instance =>
+function mapInstanceWithKey(state : EditorState, key : string, fn : (i : EditorInstance) => EditorInstance) : EditorState {
+    return { ...state, instances: state.instances.map((instance : EditorInstance) =>
         instance.key !== key ? instance : fn(instance)
     ) };
 }
+
+type Section = {
+    before : string;
+    selection : string;
+    after : string;
+};
 
 /**
  * Extract code sections based on selection start & end.
@@ -168,9 +189,9 @@ function mapInstanceWithKey(state, key, fn) {
  * @param {string} code - Current code in editor.
  * @param {number} ss - Selection start.
  * @param {number} se - Selection end.s
- * @returns {{before: string, selection: string, after: string}} Code section.
+ * @returns {Section} Code section.
  */
-function extractSections(code, ss, se) {
+function extractSections(code : string, ss : number, se : number) : Section {
     return {
         before: code.slice(0, ss),
         selection: code.slice(ss, se),
@@ -178,18 +199,27 @@ function extractSections(code, ss, se) {
     };
 }
 
+type Indentation = {
+    tabs : string;
+    width : string;
+};
+
 /**
  * Update the code and cursor position for indentation.
  *
  * @param {string} code - Current code in the editor.
- * @param {number} ss - Selection start.
- * @param {number} se - Selection end.
+ * @param {Cursor} cursor - Cursor position.
  * @param {boolean} inverse - Whether the indentation should be inverse.
  * @param {string} tabs - Whether tabs are "on" or "off".
  * @param {string} width - Width of tabs.
  * @returns {{code: string, cursor: [number, number]}} New code and cursor position.
  */
-function indent({ code, cursor: [ss,se], inverse }, { tabs, width }) {
+function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } : Indentation) : EditorValue {
+    if (!cursor) {
+        return { code, cursor, inverse };
+    }
+    let [ss,se] = cursor;
+    let w = parseInt(width, 10);
     let { before, selection, after } = extractSections(code, ss, se);
 
     if (inverse) {
@@ -209,19 +239,17 @@ function indent({ code, cursor: [ss,se], inverse }, { tabs, width }) {
             }
         } else {
             if (' ' === before.charAt(before.length - 1)) {
-                width = parseInt(width, 10);
-
-                while (width && ' ' === before.charAt(before.length - 1)) {
+                while (w && ' ' === before.charAt(before.length - 1)) {
                     before = before.slice(0, -1);
-                    width--;
+                    w--;
                     ss--;
                 }
             } else {
                 let befores = before.split('\n');
 
-                while (width && ' ' === befores[befores.length - 1].charAt(0)) {
+                while (w && ' ' === befores[befores.length - 1].charAt(0)) {
                     befores[befores.length - 1] = befores[befores.length - 1].slice(1);
-                    width--;
+                    w--;
                     ss--;
                 }
 
@@ -229,7 +257,7 @@ function indent({ code, cursor: [ss,se], inverse }, { tabs, width }) {
             }
         }
     } else {
-        const append = tabs === 'on' ? '\t' : new Array(parseInt(width, 10) + 1).join(' ');
+        const append = tabs === 'on' ? '\t' : new Array(w + 1).join(' ');
 
         before += append;
 
@@ -254,11 +282,15 @@ function indent({ code, cursor: [ss,se], inverse }, { tabs, width }) {
  * Update the code and cursor position for newline.
  *
  * @param {string} code - Current code in the editor.
- * @param {number} ss - Selection start.
- * @param {number} se - Selection end.
+ * @param {Cursor} cursor - Cursor definition.
  * @returns {{code: string, cursor: [number, number]}} New code and cursor position.
  */
-function makeNewline({ code, cursor: [ss,se] }) {
+function makeNewline({ code, cursor } : EditorValue) : EditorValue {
+    if (!cursor) {
+        return { code, cursor };
+    }
+
+    let [ss,se] = cursor;
     let { before, after } = extractSections(code, ss, se);
 
     let lf = before.lastIndexOf('\n') + 1;
@@ -281,7 +313,7 @@ function makeNewline({ code, cursor: [ss,se] }) {
  * @param {Instance[]} instances - Array of instances.
  * @returns {string} New unique key.
  */
-function createUniqueKey(instances) {
+function createUniqueKey(instances : Array<EditorInstance>) : string {
     const keys = instances.map(R.prop('key'));
 
     let id = 0;
@@ -295,4 +327,7 @@ function createUniqueKey(instances) {
 
         id++;
     }
+
+    // Fix Flow's implicitly-returned undefined.
+    return 'new-1';
 }

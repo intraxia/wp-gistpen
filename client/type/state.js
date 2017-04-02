@@ -60,12 +60,23 @@ export type GlobalsState = {|
 
 export type Cursor = false | [number, number,];
 
+export type EditorSnapshot = {
+    code : string;
+    cursor : Cursor;
+};
+
+export type EditorHistory = {
+    undo : Array<EditorSnapshot>;
+    redo : Array<EditorSnapshot>;
+};
+
 export type EditorInstance = {
     key : string;
     filename : string;
     code : string;
     language : string;
     cursor : Cursor;
+    history : EditorHistory;
 };
 
 export type ApiConfig = {
@@ -86,22 +97,7 @@ export type EditorState = {
     theme : string;
     invisibles : Toggle;
     tabs : Toggle;
-};
-
-export type HasGlobalsState = {
-    globals : GlobalsState;
-};
-
-export type SettingsState = HasGlobalsState & {
-    prism : PrismState;
-    gist : GistState;
-    route : RouteState;
-};
-
-export type EditorPageState = {
-    api : ApiConfig;
-    repo : Repo;
-    editor : EditorState;
+    optionsOpen : boolean;
 };
 
 export type SearchState = {
@@ -109,6 +105,40 @@ export type SearchState = {
     selection? : number;
 };
 
-export type TinyMCEState = HasGlobalsState & {
+export type HasGlobalsState = {
+    globals : GlobalsState;
+};
+
+export type HasPrismState = {
+    prism : PrismState;
+};
+
+export type HasGistState = {
+    gist : GistState;
+};
+
+export type HasRouteState = {
+    route : RouteState;
+};
+
+export type HasApiConfig = {
+    api : ApiConfig;
+};
+
+export type HasRepo = {
+    repo : Repo;
+};
+
+export type HasEditorState = {
+    editor : EditorState;
+};
+
+export type HasSearchState = {
     search : SearchState;
 };
+
+export type SettingsState = HasGlobalsState & HasPrismState & HasGistState & HasRouteState;
+
+export type EditorPageState = HasApiConfig & HasRepo & HasEditorState;
+
+export type TinyMCEState = HasGlobalsState & HasSearchState;

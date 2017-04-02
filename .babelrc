@@ -4,6 +4,12 @@
       "globals": [
         {
           "Disposer": true
+        },
+        {
+          "ActionObservable": true
+        },
+        {
+          "ProxyEvent": true
         }
       ]
     }],

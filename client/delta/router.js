@@ -1,3 +1,6 @@
+// @flow
+import type { Emitter, Observable } from 'kefir';
+import type { Action, Delta, RouterDeltaOptions } from '../type';
 import R from 'ramda';
 import { stream } from 'kefir';
 import hash from 'sheet-router/hash';
@@ -8,7 +11,7 @@ import hash from 'sheet-router/hash';
  * @param {sheetRouter} router - Sheet router.
  * @returns {Function} Router delta creating function.
  */
-export default function createRouterDelta(router) {
+export default function routerDelta({ router } : RouterDeltaOptions) : Delta<Action, void> {
     const getAction = R.pipe(
         R.replace('#', '/'),
         router
@@ -19,8 +22,8 @@ export default function createRouterDelta(router) {
      *
      * @returns {Observable<T, S>} Stream of routing actions.
      */
-    return function routerDelta() {
-        return stream(emitter => {
+    return () : Observable<Action> => {
+        return stream((emitter : Emitter<Action, void>) => {
             // Emit current route.
             emitter.value(getAction(window.location.hash));
             // Listen for hash changes.

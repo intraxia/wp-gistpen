@@ -1,18 +1,20 @@
 // @flow
-/* global tinymce */
+/* global jQuery, tinymce */
 import type { Emitter, Observable } from 'kefir';
 import type { TinyMCEAction as Action, TinyMCEEditor as Editor, TinyMCEState } from '../type';
 import R from 'ramda';
 import { merge, stream } from 'kefir';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK } from '../action';
+import { SearchComponent } from '../component';
+import { selectSearchProps as selectProps } from '../selector';
 import template from '../component/search/index.hbs';
 
 const createTinyMCEPlugin = () : Observable<Editor> => stream((emitter : Emitter<Editor, void>) => {
     tinymce.PluginManager.add('wp_gistpen', emitter.value);
 });
 
-const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
+const createTinyMCEButton = (actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
     stream((emitter : Emitter<Action, void>) => {
         // Bind command to stream.
         editor.addCommand('wpgp_insert', R.pipe(tinymceButtonClickAction, emitter.value));
@@ -24,10 +26,7 @@ const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<
             cmd: 'wpgp_insert'
         });
     }),
-    state$.sampledBy(actions$.filter(R.pipe(
-        R.prop('type'),
-        R.equals(TINYMCE_POPUP_INSERT_CLICK)
-    )))
+    state$.sampledBy(actions$.ofType(TINYMCE_POPUP_INSERT_CLICK))
         .flatMap((state : TinyMCEState) => stream((emitter : Emitter<Action, void>) => {
             if (state.search.selection) {
                 editor.insertContent('[gistpen id="' + state.search.selection + '"]');
@@ -37,7 +36,7 @@ const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<
         }))
 ]);
 
-const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, void>) : Disposer => {
+const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, Element>) : Disposer => {
     const id = `wpgp-tinymce-popup-container`;
     const e = editor.windowManager.open({
         // Modal settings
@@ -61,27 +60,25 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, vo
         ]
     });
 
-    e.$el.find(`#${id}-body`).append(template({}));
+    const $el = jQuery(template({}));
+
+    e.$el.find(`#${id}-body`).append($el);
+
+    emitter.error($el[0]);
 
     // void the return value for tcomb
     return () : void => void e.close();
 });
 
-const createTinyMCEWindow = (actions$ : Observable<Action>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
-    .takeUntilBy(actions$.filter(R.pipe(
-        R.prop('type'),
-        R.converge(R.or, [
-            R.equals(TINYMCE_POPUP_CLOSE_CLICK),
-            R.equals(TINYMCE_POPUP_INSERT_CLICK)
-        ])
-    )));
+const createTinyMCEWindow = (actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
+    // This is kind of abusive, b/c it's not an "error", but it's another channel to use...
+    .flatMapErrors((el : Element) => SearchComponent(el, selectProps(state$)))
+    .takeUntilBy(actions$.ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK));
 
-const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
+const mergeTinyMCEButtonAndPopup = R.curry((actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
     createTinyMCEButton(actions$, state$, editor),
-    actions$.filter(
-        R.pipe(R.prop('type'), R.equals(TINYMCE_BUTTON_CLICK))
-    )
-        .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, editor))
+    actions$.ofType(TINYMCE_BUTTON_CLICK)
+        .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, state$, editor))
 ]));
 
 export default (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>) : Observable<Action> =>

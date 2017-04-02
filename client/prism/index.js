@@ -7,6 +7,8 @@ document.removeEventListener('DOMContentLoaded', Prism.highlightAll);
 // eslint-disable-next-line camelcase
 Prism.plugins.autoloader.languages_path = __webpack_public_path__;
 
+Prism.languages.none = {};
+
 let currentTheme;
 
 let plugins = {};

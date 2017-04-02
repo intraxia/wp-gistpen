@@ -3,7 +3,7 @@ import type { Action, EditorPageState, UserApiResponse } from '../type';
 import type { Observable } from 'kefir';
 import R from 'ramda';
 import { merge } from 'kefir';
-import ajax$ from '../ajax';
+import { ajax$ } from '../service';
 import { ajaxFinishedAction, ajaxFailedAction, userSaveSucceededAction, EDITOR_WIDTH_CHANGE,
     EDITOR_INVISIBLES_TOGGLE, EDITOR_TABS_TOGGLE, EDITOR_THEME_CHANGE } from '../action';
 import { selectUserAjaxOpts } from '../selector';

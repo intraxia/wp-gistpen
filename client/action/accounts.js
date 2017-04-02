@@ -1,3 +1,6 @@
+// @flow
+import type { GistTokenChangeAction } from '../type';
+
 export const GIST_TOKEN_CHANGE = 'GIST_TOKEN_CHANGE';
 
 /**
@@ -6,7 +9,7 @@ export const GIST_TOKEN_CHANGE = 'GIST_TOKEN_CHANGE';
  * @param {string} value - Gist token value.
  * @returns {Action} Gist token change value.
  */
-export function gistTokenChangeAction(value) {
+export function gistTokenChange(value : string) : GistTokenChangeAction {
     return {
         type: GIST_TOKEN_CHANGE,
         payload: { value }

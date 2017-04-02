@@ -2,7 +2,7 @@
 import type { Observable } from 'kefir';
 import type { Action, SettingsState, AjaxOptions, } from '../type';
 import R from 'ramda';
-import ajax$ from '../ajax';
+import { ajax$ } from '../service';
 import { ajaxFailedAction, ajaxFinishedAction } from '../action';
 
 const makeBody = R.pipe(R.pick(['gist', 'prism']), JSON.stringify);

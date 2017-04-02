@@ -1,3 +1,4 @@
+// @flow
 import R from 'ramda';
 
 export { default as editor } from './editor';

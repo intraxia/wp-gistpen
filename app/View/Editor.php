@@ -114,7 +114,7 @@ class Editor implements HasActions, HasFilters {
 		$post = get_post();
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
-			echo $this->templating->render( 'editor/index', $this->get_initial_state() );
+			echo $this->templating->render( 'page/editor/index', $this->get_initial_state() );
 		}
 	}
 
@@ -189,6 +189,7 @@ class Editor implements HasActions, HasFilters {
 				),
 				'statuses'   => get_post_statuses(),
 				'languages'  => Language::$supported,
+				'optionsOpen' => true,
 			),
 			'api'    => array(
 				'root'  => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
