@@ -12,6 +12,12 @@ import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_INDENT,
     EDITOR_MAKE_NEWLINE, EDITOR_REDO, EDITOR_UNDO, ROUTE_CHANGE } from '../action';
 
+export type HasMetaKey = {
+    meta : {
+        key : string;
+    };
+};
+
 export type EditorValue = {
     code : string;
     cursor : Cursor;

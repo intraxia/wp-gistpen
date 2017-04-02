@@ -60,12 +60,23 @@ export type GlobalsState = {|
 
 export type Cursor = false | [number, number,];
 
+export type EditorSnapshot = {
+    code : string;
+    cursor : Cursor;
+};
+
+export type EditorHistory = {
+    undo : Array<EditorSnapshot>;
+    redo : Array<EditorSnapshot>;
+};
+
 export type EditorInstance = {
     key : string;
     filename : string;
     code : string;
     language : string;
     cursor : Cursor;
+    history : EditorHistory;
 };
 
 export type ApiConfig = {
@@ -86,6 +97,7 @@ export type EditorState = {
     theme : string;
     invisibles : Toggle;
     tabs : Toggle;
+    optionsOpen : boolean;
 };
 
 export type SearchState = {

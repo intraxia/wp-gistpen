@@ -189,6 +189,7 @@ class Editor implements HasActions, HasFilters {
 				),
 				'statuses'   => get_post_statuses(),
 				'languages'  => Language::$supported,
+				'optionsOpen' => true,
 			),
 			'api'    => array(
 				'root'  => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
