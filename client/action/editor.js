@@ -14,6 +14,7 @@ import type {
     EditorMakeNewLineAction,
     EditorOptionsClickAction,
     EditorRedoAction,
+    EditorRevisionClickAction,
     EditorStatusChangeAction,
     EditorSyncChangeAction,
     EditorTabsToggleAction,
@@ -405,4 +406,20 @@ export function editorCursorMoveAction(cursor : Cursor) : EditorCursorMoveAction
         type: EDITOR_CURSOR_MOVE,
         payload: { cursor }
     };
+}
+
+/**
+ * Emitted when the view revisions button is clicked.
+ *
+ * @type {string}
+ */
+export const EDITOR_REVISIONS_CLICK = 'EDITOR_REVISIONS_CLICK';
+
+/**
+ * Creates a new Editor Revision Click action.
+ *
+ * @returns {Action} Editor Revision Click action.
+ */
+export function editorRevisionsClick() : EditorRevisionClickAction {
+    return { type: EDITOR_REVISIONS_CLICK };
 }

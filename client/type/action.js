@@ -10,7 +10,7 @@ import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     EDITOR_UPDATE_CLICK, EDITOR_DELETE_CLICK, EDITOR_CURSOR_MOVE, EDITOR_MAKE_COMMENT,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
     EDITOR_FILENAME_CHANGE, EDITOR_LANGUAGE_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_INDENT,
-    EDITOR_MAKE_NEWLINE, EDITOR_REDO, EDITOR_UNDO, ROUTE_CHANGE } from '../action';
+    EDITOR_MAKE_NEWLINE, EDITOR_REDO, EDITOR_UNDO, ROUTE_CHANGE, EDITOR_REVISIONS_CLICK } from '../action';
 
 export type HasMetaKey = {
     meta : {
@@ -92,6 +92,10 @@ export type EditorOptionsClickAction = {
 
 export type EditorRedoAction = {
     type : typeof EDITOR_REDO;
+};
+
+export type EditorRevisionClickAction = {
+    type : typeof EDITOR_REVISIONS_CLICK;
 };
 
 export type EditorStatusChangeAction = {
