@@ -27,6 +27,7 @@ class RouterServiceProvider extends ServiceProvider {
 			'job'    => $this->container->fetch( 'controller.job' ),
 			'repo'   => $this->container->fetch( 'controller.repo' ),
 			'blob'   => $this->container->fetch( 'controller.blob' ),
+			'commit' => $this->container->fetch( 'controller.commit' ),
 			'site'   => $this->container->fetch( 'controller.site' ),
 		);
 
@@ -61,6 +62,11 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos/{repo_id}/blobs/{blob_id} endpoints
 			 */
 			$router->get( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)/raw', array( $controllers['blob'], 'raw' ) );
+
+			/**
+			 * /repos/{repo_id}/commits
+			 */
+			$router->get( '/repos/(?P<repo_id>\d+)/commits', array( $controllers['commit'], 'index' ) );
 
 			/**
 			 * /search endpoint
