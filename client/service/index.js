@@ -1,8 +1,8 @@
 // @flow
-import type { AjaxOptions } from '../type';
-import type { Emitter, Observable } from 'kefir';
+import type { AjaxFunction, AjaxOptions } from '../type';
+import type { Emitter } from 'kefir';
 import R from 'ramda';
-import { stream } from 'kefir';
+import Kefir from 'kefir';
 
 const makeOptions = R.merge({
     method: 'GET',
@@ -16,8 +16,8 @@ const makeOptions = R.merge({
  * @param {Object} opts - Request options.
  * @returns {Stream<T, S>} Ajax stream.
  */
-export function ajax$(url : string , opts : AjaxOptions) : Observable<string, TypeError> {
-    return stream((emitter : Emitter<string, TypeError>) : (() => void) => {
+export const ajax$ : AjaxFunction = function ajax$(url : string , opts : AjaxOptions) : Kefir.Observable<string, TypeError> {
+    return Kefir.stream((emitter : Emitter<string, TypeError>) : (() => void) => {
         const options = makeOptions(opts);
         let xhr = new XMLHttpRequest();
 
@@ -46,4 +46,4 @@ export function ajax$(url : string , opts : AjaxOptions) : Observable<string, Ty
 
         return () : void => xhr.abort();
     }).take(1).takeErrors(1);
-}
+};

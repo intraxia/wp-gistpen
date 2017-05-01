@@ -2,10 +2,11 @@
 import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { domDelta } from 'brookjs';
-import { applyDelta, repoDelta, userDelta } from '../../delta';
+import { applyDelta, repoDelta, revisionsDelta, userDelta } from '../../delta';
 import { api, editor, repo } from '../../reducer';
 import { el, view } from './dom';
 import { selectEditorProps as selectProps } from '../../selector';
+import { ajax$ } from '../../service';
 
 const { __GISTPEN_EDITOR__ } = global;
 
@@ -18,6 +19,7 @@ createStore(
     applyDelta(
         domDelta({ el, selectProps, view }),
         repoDelta,
+        revisionsDelta({ ajax$ }),
         userDelta
     )
 );
