@@ -1,11 +1,11 @@
 /* eslint-env mocha */
-import '../../../polyfills';
+import '../../../../polyfills';
 import { expect } from 'chai';
 import { constant } from 'kefir';
 import simulant from 'simulant';
-import { createInstance$, createEl$, createProps$ } from '../../../desalinate';
+import { createInstance$, createEl$, createProps$ } from '../../../../desalinate';
 
-import { EDITOR_UPDATE_CLICK } from '../../../action';
+import { EDITOR_UPDATE_CLICK } from '../../../../action';
 
 import ControlsComponent from '../';
 import template from '../index.hbs';
