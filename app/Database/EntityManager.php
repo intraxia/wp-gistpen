@@ -218,8 +218,13 @@ class EntityManager implements EntityManagerContract {
 
 			$model->set_attribute(
 				$key,
-				get_post_meta( $id, $this->make_meta_key( $key ), true )
+				$value = get_post_meta( $id, $this->make_meta_key( $key ), true )
 			);
+
+			// @todo enable custom getter/setter in models
+			if ( $key === 'sync' && ! $value ) {
+				$model->set_attribute( $key, 'off' );
+			}
 		}
 
 		$model->reguard();
