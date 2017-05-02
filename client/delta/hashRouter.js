@@ -6,7 +6,7 @@ import { stream } from 'kefir';
 import hash from 'sheet-router/hash';
 
 /**
- * Create a routerDelta function.
+ * Create a hashRouterDelta function.
  *
  * @param {sheetRouter} router - Sheet router.
  * @returns {Function} Router delta creating function.
