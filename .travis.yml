@@ -13,6 +13,7 @@ branches:
     only:
         - master
         - develop
+        - /^greenkeeper/.*$/
 
 env:
     - WP_VERSION=latest WP_MULTISITE=0
