@@ -10,7 +10,7 @@ export function selectSelectionStart(node : Element) : number {
     const selection = getSelection();
 
     if (selection && selection.rangeCount) {
-        let range = selection.getRangeAt(0);
+        const range = selection.getRangeAt(0);
         let element = range.startContainer;
         let container = element;
         let offset = range.startOffset;

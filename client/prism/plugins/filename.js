@@ -7,8 +7,8 @@ import Prism from '../';
  * @returns {Element} Edit button element.
  */
 Prism.plugins.toolbar.registerButton('filename', function filenameButton(env) {
-    var filename = document.createElement('span');
-    var pre = env.element.parentElement;
+    const filename = document.createElement('span');
+    const pre = env.element.parentElement;
 
     if (!pre.hasAttribute('data-filename')) {
         return;

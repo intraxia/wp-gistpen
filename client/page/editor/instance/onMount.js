@@ -91,7 +91,7 @@ function findOffset(root : Element, ss : number) : Offset {
 
         if (element) {
             do {
-                let len = element.textContent.length;
+                const len = element.textContent.length;
 
                 if (offset <= ss && offset + len > ss) {
                     break;

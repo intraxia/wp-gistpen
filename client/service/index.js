@@ -19,7 +19,7 @@ const makeOptions = R.merge({
 export const ajax$ : AjaxFunction = function ajax$(url : string , opts : AjaxOptions) : Kefir.Observable<string, TypeError> {
     return Kefir.stream((emitter : Emitter<string, TypeError>) : (() => void) => {
         const options = makeOptions(opts);
-        let xhr = new XMLHttpRequest();
+        const xhr = new XMLHttpRequest();
 
         xhr.onload = () : boolean =>
             emitter.value('response' in xhr ? xhr.response : xhr.responseText);
@@ -36,7 +36,7 @@ export const ajax$ : AjaxFunction = function ajax$(url : string , opts : AjaxOpt
             xhr.withCredentials = true;
         }
 
-        for (let name in options.headers) {
+        for (const name in options.headers) {
             if (options.headers.hasOwnProperty(name)) {
                 xhr.setRequestHeader(name, options.headers[name]);
             }
