@@ -103,7 +103,7 @@ class Settings implements HasActions, HasFilters {
 	 */
 	public function get_initial_state() {
 		return array(
-			'route' => 'bootstrap',
+			'route'  => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'highlighting',
 			'prism' => $this->site->get( 'prism' ),
 			'gist'  => $this->site->get( 'gist' ),
 			'globals' => array(

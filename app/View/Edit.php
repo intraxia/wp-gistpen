@@ -146,6 +146,7 @@ class Edit implements HasActions, HasFilters {
 		} );
 
 		return array(
+			'route'  => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor',
 			'repo'   => $repo->serialize(),
 			'editor' => array(
 				'description' => $repo->description,
