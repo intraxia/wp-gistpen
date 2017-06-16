@@ -3,17 +3,12 @@ import type { Observable } from 'kefir';
 import type { Action, EditorPageProps, EditorInstance, EditorInstanceProps } from '../../type';
 import './index.scss';
 import { component, children, render } from 'brookjs';
-import Kefir from 'kefir';
 import ControlsComponent from './controls';
 import DescriptionComponent from './description';
 import InstanceComponent from './instance';
 import template from './index.hbs';
 
-export const el = (doc : Document) => Kefir.fromCallback((callback : (value : null | HTMLElement) => void) => {
-    callback(doc.querySelector('[data-brk-container="editor"]'));
-});
-
-export const view = component({
+export default component({
     children: children({
         'controls': ControlsComponent,
         'description': DescriptionComponent,

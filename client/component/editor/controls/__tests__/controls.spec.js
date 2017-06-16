@@ -10,7 +10,7 @@ import { EDITOR_UPDATE_CLICK } from '../../../../action';
 import ControlsComponent from '../';
 import template from '../index.hbs';
 
-describe('Editor Controls Component', () => {
+describe('Edit Controls Component', () => {
     it('should emit an update click action', () => createInstance$(
         createEl$(template, {}, el => {
             simulant.fire(el.querySelector('[data-brk-onclick="onUpdateClick"]'), 'click');

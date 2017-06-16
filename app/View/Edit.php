@@ -21,7 +21,7 @@ use WP_Query;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Editor implements HasActions, HasFilters {
+class Edit implements HasActions, HasFilters {
 	/**
 	 * All the Ace themes for select box
 	 *
@@ -35,7 +35,7 @@ class Editor implements HasActions, HasFilters {
 		'clouds' => 'Clouds',
 		'clouds_midnight' => 'Clouds Midnight',
 		'cobalt' => 'Cobalt',
-		'crimson_editor' => 'Crimson Editor',
+		'crimson_editor' => 'Crimson Edit',
 		'dawn' => 'Dawn',
 		'dreamweaver' => 'Dreamweaver',
 		'eclipse' => 'Eclipse',
@@ -114,7 +114,7 @@ class Editor implements HasActions, HasFilters {
 		$post = get_post();
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
-			echo $this->templating->render( 'page/editor/index', $this->get_initial_state() );
+			echo $this->templating->render( 'page/edit/index', $this->get_initial_state() );
 		}
 	}
 

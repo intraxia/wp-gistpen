@@ -3,7 +3,7 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\View\Button;
 use Intraxia\Gistpen\View\Content;
-use Intraxia\Gistpen\View\Editor;
+use Intraxia\Gistpen\View\Edit;
 use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
@@ -25,7 +25,7 @@ class ViewServiceProvider implements ServiceProvider {
 				);
 			} )
 			->define( 'view.editor', function ( Container $container ) {
-				return new Editor(
+				return new Edit(
 					$container->fetch( 'database' ),
 					$container->fetch( 'options.user' ),
 					$container->fetch( 'templating' ),

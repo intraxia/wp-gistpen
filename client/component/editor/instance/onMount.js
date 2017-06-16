@@ -193,7 +193,7 @@ const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el : Elemen
  * allowing us to rerender the highlighting between typings, rather than interrupting
  * the user.
  *
- * @param {Element} el - Editor element.
+ * @param {Element} el - Edit element.
  * @param {Observable} props$ - Stream of editor props.
  * @returns {Observable} - Stream of renders.
  */

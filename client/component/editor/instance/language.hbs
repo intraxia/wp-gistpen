@@ -1,5 +1,5 @@
-{{#> "page/editor/instance/button"}}<select data-brk-onchange="onLanguage">
+{{#> "component/editor/instance/button"}}<select data-brk-onchange="onLanguage">
     {{#each editor.languages}}
         <option value="{{this}}" {{#compare instance.language this}}selected{{/compare}}>{{@key}}</option>
     {{/each}}
-</select>{{/"page/editor/instance/button"}}
+</select>{{/"component/editor/instance/button"}}

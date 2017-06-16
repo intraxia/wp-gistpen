@@ -88,7 +88,7 @@ class Button implements HasFilters {
 				'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
 				'nonce'      => wp_create_nonce( 'wp_rest' ),
 				'url'        => $this->url,
-				'ace_themes' => Editor::$ace_themes,
+				'ace_themes' => Edit::$ace_themes,
 				'ace_widths' => array( 1, 2, 4, 8 ),
 				'statuses'   => get_post_statuses(),
 				'themes'     => array(
