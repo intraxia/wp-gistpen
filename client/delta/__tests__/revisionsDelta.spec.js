@@ -1,11 +1,12 @@
 // @flow
 /* eslint-env mocha */
 import type { Action, AjaxOptions, HasRepo, HasApiConfig } from '../../type';
-import Kefir from 'kefir';
+import '../../polyfills';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import { editorRevisionsClick } from '../../action';
+import { Kefir } from 'brookjs';
+import { routeChangeAction } from '../../action';
 
 import revisionsDelta from '../revisionsDelta';
 
@@ -14,6 +15,10 @@ chai.use(sinonChai);
 const createServices = () => ({ ajax$: sinon.stub() });
 
 describe('revisionsDelta', () => {
+    before(() => {
+        Kefir.Observable.prototype.ofType = Kefir.ActionObservable.prototype.ofType;
+    });
+
     it('should be a function', () => {
         expect(revisionsDelta).to.be.a('function')
             .and.have.lengthOf(3);
@@ -24,7 +29,7 @@ describe('revisionsDelta', () => {
     });
 
     it('should return an Observable', () => {
-        expect(revisionsDelta(createServices(), Kefir.never(), Kefir.never())).to.be.an.instanceOf(Kefir.Observable);
+        expect(revisionsDelta(createServices(), Kefir.actions(), Kefir.never())).to.be.an.instanceOf(Kefir.Observable);
     });
 
     it('should not respond to random actions', (done : () => void) => {
@@ -52,14 +57,55 @@ describe('revisionsDelta', () => {
             }
         });
 
-        let calls = 0;
+        const value = sinon.spy();
+        const error = sinon.spy();
 
         revisionsDelta(services, actions$, state$).observe({
-            value() {
-                calls++;
-            },
+            value,
+            error,
             end() {
-                expect(calls).to.equal(0);
+                expect(value).to.have.callCount(0);
+                expect(error).to.have.callCount(0);
+                done();
+            }
+        });
+    });
+
+    it('should not respond to random routes', done => {
+        const services = createServices();
+        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('random'));
+        const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
+            api: {
+                nonce: 'asdf',
+                root: '',
+                url: ''
+            },
+            repo: {
+                ID: 1234,
+                blobs: [],
+                created_at: '',
+                description: '',
+                gist_id: '',
+                html_url: '',
+                password: '',
+                commits_url: 'http://testing.dev/api/commits/1234',
+                rest_url: '',
+                status: '',
+                sync: 'off',
+                updated_at: ''
+            }
+        });
+
+        const value = sinon.spy();
+        const error = sinon.spy();
+
+        revisionsDelta(services, actions$, state$).observe({
+            value,
+            error,
+            end() {
+                expect(error).to.have.callCount(0);
+                expect(value).to.have.callCount(0);
+
                 done();
             }
         });
@@ -67,7 +113,7 @@ describe('revisionsDelta', () => {
 
     it('should not respond to revisions click for new repo', (done : () => void) => {
         const services = createServices();
-        const actions$ : Kefir.Observable<Action> = Kefir.later(10, editorRevisionsClick());
+        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
         const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
             api: {
                 nonce: 'asdf',
@@ -113,7 +159,7 @@ describe('revisionsDelta', () => {
             }
         };
         const services = createServices();
-        const actions$ : Kefir.Observable<Action> = Kefir.later(10, editorRevisionsClick());
+        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
         const commitsUrl = 'http://testing.dev/api/commits/1234';
         const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
             api: {
@@ -180,7 +226,7 @@ describe('revisionsDelta', () => {
             }
         };
         const services = createServices();
-        const actions$ : Kefir.Observable<Action> = Kefir.later(10, editorRevisionsClick());
+        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
         const commitsUrl = 'http://testing.dev/api/commits/1234';
         const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
             api: {

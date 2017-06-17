@@ -32,7 +32,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: client
+                include: [
+                    client,
+                    path.join(__dirname, '..', 'node_modules', 'diffhtml')
+                ]
             },
             {
                 test: /\.hbs/,

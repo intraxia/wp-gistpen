@@ -1,8 +1,8 @@
 // @flow
-import type { Action, AjaxFunction, HasApiConfig, HasRepo } from '../type';
+import type { Action, AjaxFunction, HasApiConfig, HasRepo, RouteChangeAction } from '../type';
 import R from 'ramda';
 import Kefir from 'kefir';
-import { EDITOR_REVISIONS_CLICK } from '../action';
+import { ROUTE_CHANGE } from '../action';
 
 type RevisionsProps = HasRepo & HasApiConfig;
 type RevisionsServices = {
@@ -11,13 +11,11 @@ type RevisionsServices = {
 type Commit = {};
 type GetCommitsResponse = Array<Commit>;
 
-const ofRevisionsClickType = R.pipe(R.prop('type'), R.equals(EDITOR_REVISIONS_CLICK));
-
 export default R.curry((
     { ajax$ } : RevisionsServices,
-    actions$ : Kefir.Observable<Action>,
+    actions$ : ActionObservable<Action>,
     state$ : Kefir.Observable<RevisionsProps>
-) => state$.sampledBy(actions$.filter(ofRevisionsClickType))
+) => state$.sampledBy(actions$.ofType(ROUTE_CHANGE).filter((action : RouteChangeAction) => action.payload.route === 'revisions'))
     .filter((state : RevisionsProps) => state.repo.ID)
     .flatMapFirst((state : RevisionsProps) =>
         Kefir.concat([

@@ -5,7 +5,7 @@ import R from 'ramda';
 import { component, events, render } from 'brookjs';
 import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
     editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction,
-    editorUpdateClickAction, editorAddClickAction, editorRevisionsClick } from '../../../action';
+    editorUpdateClickAction, editorAddClickAction } from '../../../action';
 import template from './index.hbs';
 
 const mapCheckedToString : ((e : Event) => Toggle) = R.ifElse(
@@ -38,7 +38,6 @@ export default component({
             R.pipe(mapCheckedToString, editorInvisiblesToggleAction)
         ),
         onUpdateClick: R.map(editorUpdateClickAction),
-        onAddClick: R.map(editorAddClickAction),
-        onRevisionsClick: R.map(editorRevisionsClick)
+        onAddClick: R.map(editorAddClickAction)
     })
 });

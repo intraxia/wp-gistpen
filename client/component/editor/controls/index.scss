@@ -19,6 +19,14 @@
         border: none;
         border-radius: 0.5em;
         vertical-align: bottom;
+        text-decoration: none;
+        letter-spacing: normal;
+        word-spacing: normal;
+        display: inline-block;
+        text-align: start;
+        font-family: inherit;
+        font-size: inherit;
+        font-weight: inherit;
 
         &::before {
             margin-right: 0.25em;
