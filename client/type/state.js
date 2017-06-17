@@ -44,7 +44,7 @@ export type GistState = {
     token : string;
 };
 
-export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export';
+export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export' | 'editor' | 'revisions';
 
 export type GlobalsState = {|
     languages : {[key : string] : string; };
