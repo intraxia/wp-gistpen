@@ -79,6 +79,10 @@ export type EditorInstance = {
     history : EditorHistory;
 };
 
+export type RevisionInstance = {
+    date : string;
+};
+
 export type ApiConfig = {
     root : string;
     nonce : string;
@@ -98,6 +102,10 @@ export type EditorState = {
     invisibles : Toggle;
     tabs : Toggle;
     optionsOpen : boolean;
+};
+
+export type RevisionsState = {
+    instances : Array<RevisionInstance>;
 };
 
 export type SearchState = {
@@ -129,6 +137,10 @@ export type HasRepo = {
     repo : Repo;
 };
 
+export type HasRevisionsState = {
+    revisions : RevisionsState;
+};
+
 export type HasEditorState = {
     editor : EditorState;
 };
@@ -139,6 +151,6 @@ export type HasSearchState = {
 
 export type SettingsState = HasGlobalsState & HasPrismState & HasGistState & HasRouteState;
 
-export type EditorPageState = HasApiConfig & HasRepo & HasEditorState;
+export type EditorPageState = HasApiConfig & HasRepo & HasEditorState & HasRevisionsState & HasRouteState;
 
 export type TinyMCEState = HasGlobalsState & HasSearchState;
