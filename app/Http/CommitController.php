@@ -14,7 +14,9 @@ class CommitController {
 
 	public function index() {
 		return new WP_REST_Response(array(
-
+			array(
+				'date' => "Today's date",
+			)
 		));
 	}
 }

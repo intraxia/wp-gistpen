@@ -114,7 +114,13 @@ class Edit implements HasActions, HasFilters {
 		$post = get_post();
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
-			echo $this->templating->render( 'page/edit/index', $this->get_initial_state() );
+			echo $this->templating->render( 'page/edit/index', array_merge( $this->get_initial_state(), array(
+				'revisions' => array(
+					array(
+						'date' => "Today's date"
+					),
+				),
+			) ) );
 		}
 	}
 
@@ -145,8 +151,10 @@ class Edit implements HasActions, HasFilters {
 			return (int) $a->ID - (int) $b->ID;
 		} );
 
+		$route = ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor';
+
 		return array(
-			'route'  => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor',
+			'route'  => $route,
 			'repo'   => $repo->serialize(),
 			'editor' => array(
 				'description' => $repo->description,
@@ -191,6 +199,13 @@ class Edit implements HasActions, HasFilters {
 				'statuses'   => get_post_statuses(),
 				'languages'  => Language::$supported,
 				'optionsOpen' => true,
+			),
+			'revisions' => array(
+				'instances' => array(
+					array(
+						'date' => "Today's date",
+					)
+				),
 			),
 			'api'    => array(
 				'root'  => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
