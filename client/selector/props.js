@@ -9,7 +9,13 @@ export function selectSettingsProps(state$ : Observable<SettingsState>) : Observ
 }
 
 export function selectEditorProps(state$ : Observable<EditorPageState>) : Observable<EditorPageProps> {
-    return state$;
+    return state$.map(({ api, repo, route, editor, revisions } : EditorPageState) => ({
+        api,
+        repo,
+        route,
+        editor,
+        revisions: revisions.instances
+    }));
 }
 
 export function selectSearchProps(state$ : Observable<TinyMCEState>) : Observable<SearchProps> {
