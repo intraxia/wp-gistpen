@@ -2,7 +2,8 @@
 import type { Action, AjaxFunction, HasApiConfig, HasRepo, RouteChangeAction } from '../type';
 import R from 'ramda';
 import Kefir from 'kefir';
-import { ROUTE_CHANGE } from '../action';
+import { ROUTE_CHANGE, COMMITS_FETCH_SUCCEEDED, COMMITS_FETCH_STARTED,
+    COMMITS_FETCH_FAILED } from '../action';
 
 type RevisionsProps = HasRepo & HasApiConfig;
 type RevisionsServices = {
@@ -20,7 +21,7 @@ export default R.curry((
     .flatMapFirst((state : RevisionsProps) =>
         Kefir.concat([
             Kefir.constant({
-                type: 'COMMITS_FETCH_STARTED'
+                type: COMMITS_FETCH_STARTED
             }),
             ajax$(state.repo.commits_url, {
                 method: 'GET',
@@ -32,11 +33,11 @@ export default R.curry((
             })
                 .map(JSON.parse)
                 .map((response : GetCommitsResponse) => ({
-                    type: 'COMMITS_FETCH_SUCCEEDED',
+                    type: COMMITS_FETCH_SUCCEEDED,
                     payload: { response }
                 }))
                 .flatMapErrors((err : TypeError) => Kefir.constant({
-                    type: 'COMMITS_FETCH_FAILED',
+                    type: COMMITS_FETCH_FAILED,
                     payload: err,
                     error: true
                 })),
