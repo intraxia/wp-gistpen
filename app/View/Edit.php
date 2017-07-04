@@ -3,12 +3,9 @@ namespace Intraxia\Gistpen\View;
 
 use Intraxia\Gistpen\Contract\Templating;
 use Intraxia\Gistpen\Database\EntityManager;
-use Intraxia\Gistpen\Facade\Adapter;
-use Intraxia\Gistpen\Facade\Database;
 use Intraxia\Gistpen\Model\Blob;
-use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Gistpen\Options\User;
+use Intraxia\Gistpen\Params\Repository as Params;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 use WP_Query;
@@ -62,9 +59,9 @@ class Edit implements HasActions, HasFilters {
 	/**
 	 * User options service.
 	 *
-	 * @var User
+	 * @var Params
 	 */
-	protected $user;
+	protected $params;
 
 	/**
 	 * Templating service.
@@ -94,14 +91,14 @@ class Edit implements HasActions, HasFilters {
 	 * @since    0.5.0
 	 *
 	 * @param EntityManager $em
-	 * @param User          $user
+	 * @param Params        $params
 	 * @param Templating    $templating
 	 * @param string        $path
 	 * @param string        $url
 	 */
-	public function __construct( EntityManager $em, User $user, Templating $templating, $path, $url ) {
+	public function __construct( EntityManager $em, Params $params, Templating $templating, $path, $url ) {
 		$this->em         = $em;
-		$this->user       = $user;
+		$this->params     = $params;
 		$this->templating = $templating;
 		$this->path       = $path;
 		$this->url        = $url;
@@ -114,105 +111,8 @@ class Edit implements HasActions, HasFilters {
 		$post = get_post();
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
-			echo $this->templating->render( 'page/edit/index', array_merge( $this->get_initial_state(), array(
-				'revisions' => array(
-					array(
-						'date' => "Today's date"
-					),
-				),
-			) ) );
+			echo $this->templating->render( 'page/edit/index', $this->params->props( 'edit' ) );
 		}
-	}
-
-	/**
-	 * Returns the initial state for the editor page.
-	 *
-	 * @return array
-	 */
-	public function get_initial_state() {
-		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID() );
-
-		// @todo move to accessors?
-		if ( 'auto-draft' === $repo->status ) {
-			$repo->status = 'draft';
-			$repo->description = '';
-			$repo->sync = 'off';
-
-			$repo->blobs->add( new Blob( array(
-				'filename' => '',
-				'code' => '',
-				'language' => $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'plaintext' ) )->at( 0 ),
-			) ) );
-		}
-
-		$blobs = iterator_to_array( $repo->blobs );
-		usort( $blobs, function( $a, $b ) {
-			return (int) $a->ID - (int) $b->ID;
-		} );
-
-		$route = ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor';
-
-		return array(
-			'route'  => $route,
-			'repo'   => $repo->serialize(),
-			'editor' => array(
-				'description' => $repo->description,
-				'status' => $repo->status,
-				'password' => $repo->password,
-				'gist_id' => $repo->gist_id,
-				'sync' => $repo->sync,
-				'instances'  => array_map( function ( Blob $blob ) {
-					return array(
-						'key'      => (string) $blob->ID ? : 'new0',
-						'filename' => $blob->filename,
-						'code'     => $blob->code,
-						'language' => $blob->language->slug,
-						'cursor'   => false,
-						'history'  => array(
-							'undo' => array(),
-							'redo' => array(),
-						),
-					);
-				}, $blobs ),
-				'width'      => $this->user->get( 'editor.indent_width' ),
-				'theme'      => $this->user->get( 'editor.theme' ),
-				'invisibles' => $this->user->get( 'editor.invisibles_enabled' ) ? : 'off',
-				'tabs'       => $this->user->get( 'editor.tabs_enabled' ) ? : 'off',
-				'widths'     => array( '1', '2', '4', '8' ),
-				'themes'     => array(
-					'default'                         => __( 'Default', 'wp-gistpen' ),
-					'dark'                            => __( 'Dark', 'wp-gistpen' ),
-					'funky'                           => __( 'Funky', 'wp-gistpen' ),
-					'okaidia'                         => __( 'Okaidia', 'wp-gistpen' ),
-					'tomorrow'                        => __( 'Tomorrow', 'wp-gistpen' ),
-					'twilight'                        => __( 'Twilight', 'wp-gistpen' ),
-					'coy'                             => __( 'Coy', 'wp-gistpen' ),
-					'cb'                              => __( 'CB', 'wp-gistpen' ),
-					'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
-					'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
-					'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
-					'base16-ateliersulphurpool-light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
-					'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
-					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
-				),
-				'statuses'   => get_post_statuses(),
-				'languages'  => Language::$supported,
-				'optionsOpen' => true,
-			),
-			'revisions' => array(
-				'instances' => array(
-					array(
-						'date' => "Today's date",
-					)
-				),
-			),
-			'api'    => array(
-				'root'  => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
-				'nonce' => wp_create_nonce( 'wp_rest' ),
-				'url'   => $this->url,
-			),
-		);
 	}
 
 	/**

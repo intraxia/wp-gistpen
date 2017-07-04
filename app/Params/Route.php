@@ -48,6 +48,10 @@ class Route implements HasFilters {
 				'hook'   => 'params.state.edit',
 				'method' => 'apply_edit_route',
 			),
+			array(
+				'hook'   => 'params.props.edit',
+				'method' => 'apply_edit_route',
+			),
 		);
 	}
 }

@@ -123,6 +123,10 @@ class Editor implements HasFilters {
 				'hook'   => 'params.state.edit',
 				'method' => 'apply_editor',
 			),
+			array(
+				'hook'   => 'params.props.edit',
+				'method' => 'apply_editor',
+			),
 		);
 	}
 }
