@@ -132,6 +132,10 @@ JS
 				'hook'   => 'params.state.settings',
 				'method' => 'apply_settings_globals',
 			),
+			array(
+				'hook'   => 'params.props.settings',
+				'method' => 'apply_settings_globals',
+			),
 		);
 	}
 }

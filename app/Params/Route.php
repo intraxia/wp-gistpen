@@ -27,6 +27,10 @@ class Route implements HasFilters {
 				'hook'   => 'params.state.settings',
 				'method' => 'apply_settings_route',
 			),
+			array(
+				'hook'   => 'params.props.settings',
+				'method' => 'apply_settings_route',
+			),
 		);
 	}
 }

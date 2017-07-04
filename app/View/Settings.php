@@ -1,11 +1,8 @@
 <?php
 namespace Intraxia\Gistpen\View;
 
-use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Contract\Templating;
-use Intraxia\Gistpen\Database\EntityManager;
-use Intraxia\Gistpen\Model\Language;
-use Intraxia\Gistpen\Options\Site;
+use Intraxia\Gistpen\Params\Repository as Params;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
@@ -18,19 +15,20 @@ use Intraxia\Jaxion\Contract\Core\HasFilters;
  * @since      0.5.0
  */
 class Settings implements HasActions, HasFilters {
+
+	/**
+	 * Params service.
+	 *
+	 * @var Params
+	 */
+	private $params;
+
 	/**
 	 * Templating service.
 	 *
 	 * @var Templating
 	 */
 	protected $template;
-
-	/**
-	 * Site options.
-	 *
-	 * @var Site
-	 */
-	protected $site;
 
 	/**
 	 * Plugin basename.
@@ -47,27 +45,20 @@ class Settings implements HasActions, HasFilters {
 	protected $url;
 
 	/**
-	 * EntityManger service.
-	 *
-	 * @var EntityManager
-	 */
-	private $em;
-
-	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @param Templating    $template
-	 * @param Site          $site
-	 * @param EntityManager $em
-	 * @param string        $basename
-	 * @param string        $url
+	 * @param Params     $params
+	 * @param Templating $template
+	 * @param string     $basename
+	 * @param string     $url
 	 *
+	 * @internal param Site $site
+	 * @internal param EntityManager $em
 	 * @since    0.5.0
 	 */
-	public function __construct( Templating $template, Site $site, EntityManager $em, $basename, $url ) {
+	public function __construct( Params $params, Templating $template, $basename, $url ) {
+		$this->params = $params;
 		$this->template = $template;
-		$this->site     = $site;
-		$this->em = $em;
 		$this->basename = $basename;
 		$this->url      = $url;
 	}
@@ -93,91 +84,17 @@ class Settings implements HasActions, HasFilters {
 	 * @since    0.1.0
 	 */
 	public function display_plugin_admin_page() {
-		echo $this->template->render( 'page/settings/index', $this->get_initial_state() );
-	}
-
-	/**
-	 * Generates the initial state for the page.
-	 *
-	 * @return array
-	 */
-	public function get_initial_state() {
-		return array(
-			'route'  => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'highlighting',
-			'prism' => $this->site->get( 'prism' ),
-			'gist'  => $this->site->get( 'gist' ),
-			'globals' => array(
-				'languages'  => Language::$supported,
-				'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
-				'nonce'      => wp_create_nonce( 'wp_rest' ),
-				'url'        => $this->url,
-				'ace_themes' => Edit::$ace_themes,
-				'ace_widths' => array( 1, 2, 4, 8 ),
-				'statuses'   => get_post_statuses(),
-				'themes'     => array(
-					'default'                         => __( 'Default', 'wp-gistpen' ),
-					'dark'                            => __( 'Dark', 'wp-gistpen' ),
-					'funky'                           => __( 'Funky', 'wp-gistpen' ),
-					'okaidia'                         => __( 'Okaidia', 'wp-gistpen' ),
-					'tomorrow'                        => __( 'Tomorrow', 'wp-gistpen' ),
-					'twilight'                        => __( 'Twilight', 'wp-gistpen' ),
-					'coy'                             => __( 'Coy', 'wp-gistpen' ),
-					'cb'                              => __( 'CB', 'wp-gistpen' ),
-					'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
-					'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
-					'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
-					'base16-ateliersulphurpool-light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
-					'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
-					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
-				),
-				'repo'       => array(
-					'description' => 'Dummy Repo',
-					'status'      => 'draft',
-					'password'    => '',
-					'gist_id'     => 'none',
-					'sync'        => 'off',
-					'rest_url'    => '',
-					'commits_url' => '',
-					'html_url'    => '',
-					'created_at'  => '',
-					'updated_at'  => '',
-					'blobs'       => array(
-						array(
-							'filename' => 'dummy.js',
-							'language' => $this->em->find_by(
-								EntityManager::LANGUAGE_CLASS,
-								array( 'slug' => 'js' )
-							)->at( 0 )->serialize(),
-							'edit_url' => '#highlighting',
-							'code'     => /** @lang javascript */<<<JS
-function initHighlight(block, flags) {
-    try {
-        if (block.className.search(/\bno\-highlight\b/) != -1)
-            return processBlock(block.function, true, 0x0F) + ' class=""';
-    } catch (e) {
-        /* handle exception */
-        var e4x =
-                `<div>Example
-                        <p>1234</p></div>`;
-    }
-    for (var i = 0 / 2; i < classes.length; i++) { // "0 / 2" should not be parsed as regexp
-        if (checkCondition(classes[i]) === undefined)
-            return /\d+[\s/]/g;
-    }
-    console.log(Array.every(classes, Boolean));
-}
-JS
-						)
-					)
-				),
-			),
-		);
+		echo $this->template->render( 'page/settings/index', $this->params->props( 'settings' ) );
 	}
 
 	/**
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    0.1.0
+	 *
+	 * @param array $links
+	 *
+	 * @return array
 	 */
 	public function add_action_links( $links ) {
 		return array_merge(

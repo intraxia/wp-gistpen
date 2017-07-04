@@ -33,9 +33,8 @@ class ViewServiceProvider implements ServiceProvider {
 			} )
 			->define( 'view.settings', function ( Container $container ) {
 				return new Settings(
+					$container->fetch( 'params' ),
 					$container->fetch( 'templating' ),
-					$container->fetch( 'options.site' ),
-					$container->fetch( 'database' ),
 					$container->fetch( 'basename' ),
 					$container->fetch( 'url' )
 				);

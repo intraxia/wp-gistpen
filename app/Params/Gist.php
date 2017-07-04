@@ -43,6 +43,10 @@ class Gist implements HasFilters {
 				'hook'   => 'params.state.settings',
 				'method' => 'apply_gist',
 			),
+			array(
+				'hook'   => 'params.props.settings',
+				'method' => 'apply_gist',
+			),
 		);
 	}
 }
