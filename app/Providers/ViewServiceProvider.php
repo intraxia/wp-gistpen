@@ -43,7 +43,7 @@ class ViewServiceProvider implements ServiceProvider {
 				);
 			} )
 			->define( 'view.button', function ( Container $container ) {
-				return new Button( $container->fetch('templating'), $container->fetch( 'url' ) );
+				return new Button( $container->fetch('templating'), $container->fetch( 'params' ), $container->fetch( 'url' ) );
 			} );
 	}
 }

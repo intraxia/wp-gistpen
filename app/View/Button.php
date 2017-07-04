@@ -2,7 +2,7 @@
 namespace Intraxia\Gistpen\View;
 
 use Intraxia\Gistpen\Contract\Templating;
-use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Params\Repository as Params;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 /**
@@ -39,14 +39,24 @@ class Button implements HasFilters {
 	private $tmpl;
 
 	/**
+	 * Params service.
+	 *
+	 * @var Params
+	 */
+	private $params;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
 	 *
-	 * @param string $url
+	 * @param Templating $tmpl
+	 * @param Params     $params
+	 * @param string     $url
 	 */
-	public function __construct( Templating $tmpl, $url ) {
+	public function __construct( Templating $tmpl, Params $params, $url ) {
 		$this->tmpl = $tmpl;
+		$this->params = $params;
 		$this->url = $url;
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
@@ -82,33 +92,7 @@ class Button implements HasFilters {
 	 * Output the default state used by the TinyMCE plugin in a script tag.
 	 */
 	public function output_tinymce_state() {
-		echo $this->tmpl->render( 'page/tinymce/initial', array(
-			'globals' => array(
-				'languages'  => Language::$supported,
-				'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
-				'nonce'      => wp_create_nonce( 'wp_rest' ),
-				'url'        => $this->url,
-				'ace_themes' => Edit::$ace_themes,
-				'ace_widths' => array( 1, 2, 4, 8 ),
-				'statuses'   => get_post_statuses(),
-				'themes'     => array(
-					'default'                         => __( 'Default', 'wp-gistpen' ),
-					'dark'                            => __( 'Dark', 'wp-gistpen' ),
-					'funky'                           => __( 'Funky', 'wp-gistpen' ),
-					'okaidia'                         => __( 'Okaidia', 'wp-gistpen' ),
-					'tomorrow'                        => __( 'Tomorrow', 'wp-gistpen' ),
-					'twilight'                        => __( 'Twilight', 'wp-gistpen' ),
-					'coy'                             => __( 'Coy', 'wp-gistpen' ),
-					'cb'                              => __( 'CB', 'wp-gistpen' ),
-					'ghcolors'                        => __( 'GHColors', 'wp-gistpen' ),
-					'pojoaque'                        => __( 'Projoaque', 'wp-gistpen' ),
-					'xonokai'                         => __( 'Xonokai', 'wp-gistpen' ),
-					'base16-ateliersulphurpool-light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
-					'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
-					'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
-				),
-			)
-		));
+		echo $this->tmpl->render( 'page/tinymce/initial', $this->params->state( 'button' ) );
 	}
 
 	/**
