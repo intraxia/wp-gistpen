@@ -4,7 +4,7 @@ namespace Intraxia\Gistpen\Params;
 use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
-class Prism implements HasFilters {
+class Gist implements HasFilters {
 
 	/**
 	 * Site options service.
@@ -14,7 +14,7 @@ class Prism implements HasFilters {
 	private $site;
 
 	/**
-	 * Prism constructor.
+	 * Gist constructor.
 	 *
 	 * @param Site $site
 	 */
@@ -29,8 +29,8 @@ class Prism implements HasFilters {
 	 *
 	 * @return array
 	 */
-	public function apply_prism( $params ) {
-		$params['prism'] = $this->site->get( 'prism' );
+	public function apply_gist( $params ) {
+		$params['gist'] = $this->site->get( 'gist' );
 
 		return $params;
 	}
@@ -40,12 +40,8 @@ class Prism implements HasFilters {
 	public function filter_hooks() {
 		return array(
 			array(
-				'hook'   => 'params.state.content',
-				'method' => 'apply_prism',
-			),
-			array(
 				'hook'   => 'params.state.settings',
-				'method' => 'apply_prism',
+				'method' => 'apply_gist',
 			),
 		);
 	}

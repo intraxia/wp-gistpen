@@ -60,6 +60,62 @@ class Globals implements HasFilters {
 	}
 
 	/**
+	 * Adds extra information to the globals required for the Settings page.
+	 * Specifically, we need dummy repo to render the example.
+	 *
+	 * @param $params
+	 *
+	 * @return array
+	 */
+	public function apply_settings_globals( $params ) {
+		$params = $this->apply_globals( $params );
+
+		$params['globals']['repo'] = array(
+			'description' => 'Dummy Repo',
+			'status'      => 'draft',
+			'password'    => '',
+			'gist_id'     => 'none',
+			'sync'        => 'off',
+			'rest_url'    => '',
+			'commits_url' => '',
+			'html_url'    => '',
+			'created_at'  => '',
+			'updated_at'  => '',
+			'blobs'       => array(
+				array(
+					'filename' => 'dummy.js',
+					'language' => array(
+						'ID'   => 0,
+						'display_name' => 'JavaScript',
+						'slug' => 'js',
+					),
+					'edit_url' => '#highlighting',
+					'code'     => /** @lang javascript */<<<JS
+function initHighlight(block, flags) {
+    try {
+        if (block.className.search(/\bno\-highlight\b/) != -1)
+            return processBlock(block.function, true, 0x0F) + ' class=""';
+    } catch (e) {
+        /* handle exception */
+        var e4x =
+                `<div>Example
+                        <p>1234</p></div>`;
+    }
+    for (var i = 0 / 2; i < classes.length; i++) { // "0 / 2" should not be parsed as regexp
+        if (checkCondition(classes[i]) === undefined)
+            return /\d+[\s/]/g;
+    }
+    console.log(Array.every(classes, Boolean));
+}
+JS
+				)
+			)
+		);
+
+		return $params;
+	}
+
+	/**
 	 * @inheritDoc
 	 */
 	public function filter_hooks() {
@@ -71,6 +127,10 @@ class Globals implements HasFilters {
 			array(
 				'hook'   => 'params.state.content',
 				'method' => 'apply_globals',
+			),
+			array(
+				'hook'   => 'params.state.settings',
+				'method' => 'apply_settings_globals',
 			),
 		);
 	}

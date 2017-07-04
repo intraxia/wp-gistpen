@@ -63,12 +63,12 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/settings',
 			'footer'    => false,
 			'localize'  => function () {
-				/** @var Settings $settings */
-				$settings = $this->container->fetch( 'view.settings' );
+				/** @var Params $settings */
+				$params = $this->container->fetch( 'params' );
 
 				return array(
 					'name' => '__GISTPEN_SETTINGS__',
-					'data' => $settings->get_initial_state(),
+					'data' => $params->state( 'settings' ),
 				);
 			},
 		) );
