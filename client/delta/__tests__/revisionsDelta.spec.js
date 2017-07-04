@@ -1,6 +1,6 @@
 // @flow
 /* eslint-env mocha */
-import type { Action, AjaxOptions, HasRepo, HasApiConfig } from '../../type';
+import type { Action, AjaxOptions, HasRepo, HasGlobalsState } from '../../type';
 import '../../polyfills';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
@@ -35,11 +35,16 @@ describe('revisionsDelta', () => {
     it('should not respond to random actions', (done : () => void) => {
         const services = createServices();
         const actions$ = Kefir.later(10, { type: 'RANDOM_ACTION' });
-        const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
-            api: {
-                nonce: 'asdf',
+        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
+            globals: {
+                languages: {},
                 root: '',
-                url: ''
+                nonce: 'asdf',
+                url: '',
+                ace_themes: {},
+                ace_widths: [],
+                statuses: {},
+                themes: {}
             },
             repo: {
                 // no ID
@@ -71,14 +76,19 @@ describe('revisionsDelta', () => {
         });
     });
 
-    it('should not respond to random routes', done => {
+    it('should not respond to random routes', (done : () => void) => {
         const services = createServices();
-        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('random'));
-        const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
-            api: {
-                nonce: 'asdf',
+        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('random'));
+        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
+            globals: {
+                languages: {},
                 root: '',
-                url: ''
+                nonce: 'asdf',
+                url: '',
+                ace_themes: {},
+                ace_widths: [],
+                statuses: {},
+                themes: {}
             },
             repo: {
                 ID: 1234,
@@ -113,12 +123,17 @@ describe('revisionsDelta', () => {
 
     it('should not respond to revisions click for new repo', (done : () => void) => {
         const services = createServices();
-        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
-        const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
-            api: {
-                nonce: 'asdf',
+        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
+        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
+            globals: {
+                languages: {},
                 root: '',
-                url: ''
+                nonce: 'asdf',
+                url: '',
+                ace_themes: {},
+                ace_widths: [],
+                statuses: {},
+                themes: {}
             },
             repo: {
                 // no ID
@@ -149,8 +164,8 @@ describe('revisionsDelta', () => {
         });
     });
 
-    it('should emit start and success on revisions api success',(done : () => void) => {
-        const options : AjaxOptions = {
+    it('should emit start and success on revisions api success', (done : () => void) => {
+        const options: AjaxOptions = {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -159,13 +174,18 @@ describe('revisionsDelta', () => {
             }
         };
         const services = createServices();
-        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
+        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
         const commitsUrl = 'http://testing.dev/api/commits/1234';
-        const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
-            api: {
-                nonce: 'asdf',
+        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
+            globals: {
+                languages: {},
                 root: '',
-                url: ''
+                nonce: 'asdf',
+                url: '',
+                ace_themes: {},
+                ace_widths: [],
+                statuses: {},
+                themes: {}
             },
             repo: {
                 ID: 1234,
@@ -216,8 +236,8 @@ describe('revisionsDelta', () => {
         });
     });
 
-    it('should emit start and failure on revisions api failure',(done : () => void) => {
-        const options : AjaxOptions = {
+    it('should emit start and failure on revisions api failure', (done : () => void) => {
+        const options: AjaxOptions = {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -226,13 +246,18 @@ describe('revisionsDelta', () => {
             }
         };
         const services = createServices();
-        const actions$ : Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
+        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
         const commitsUrl = 'http://testing.dev/api/commits/1234';
-        const state$ : Kefir.Observable<HasRepo & HasApiConfig> = Kefir.constant({
-            api: {
-                nonce: 'asdf',
+        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
+            globals: {
+                languages: {},
                 root: '',
-                url: ''
+                nonce: 'asdf',
+                url: '',
+                ace_themes: {},
+                ace_widths: [],
+                statuses: {},
+                themes: {}
             },
             repo: {
                 ID: 1234,

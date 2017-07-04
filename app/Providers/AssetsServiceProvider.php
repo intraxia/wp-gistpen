@@ -41,12 +41,12 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/editor',
 			'footer'    => false,
 			'localize'  => function () {
-				/** @var Edit $editor */
-				$editor = $this->container->fetch( 'view.editor' );
+				/** @var Params $settings */
+				$params = $this->container->fetch( 'params' );
 
 				return array(
 					'name' => '__GISTPEN_EDITOR__',
-					'data' => $editor->get_initial_state(),
+					'data' => $params->state( 'edit' ),
 				);
 			},
 		) );

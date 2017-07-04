@@ -39,7 +39,7 @@ export default function repoDelta(action$ : Observable<Action>, state$ : Observa
             body: makeBody(state),
             credentials: 'include',
             headers: {
-                'X-WP-Nonce': state.api.nonce,
+                'X-WP-Nonce': state.globals.nonce,
                 'Content-Type': 'application/json'
             }
         }))

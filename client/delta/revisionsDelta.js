@@ -1,11 +1,11 @@
 // @flow
-import type { Action, AjaxFunction, HasApiConfig, HasRepo, RouteChangeAction } from '../type';
+import type { Action, AjaxFunction, HasGlobalsState, HasRepo, RouteChangeAction } from '../type';
 import R from 'ramda';
 import Kefir from 'kefir';
 import { ROUTE_CHANGE, COMMITS_FETCH_SUCCEEDED, COMMITS_FETCH_STARTED,
     COMMITS_FETCH_FAILED } from '../action';
 
-type RevisionsProps = HasRepo & HasApiConfig;
+type RevisionsProps = HasRepo & HasGlobalsState;
 type RevisionsServices = {
     ajax$ : AjaxFunction;
 };
@@ -27,7 +27,7 @@ export default R.curry((
                 method: 'GET',
                 credentials: 'include',
                 headers: {
-                    'X-WP-Nonce': state.api.nonce,
+                    'X-WP-Nonce': state.globals.nonce,
                     'Content-Type': 'application/json'
                 }
             })

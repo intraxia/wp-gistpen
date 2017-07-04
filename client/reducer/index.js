@@ -9,7 +9,4 @@ export { default as revisions } from './revision';
 export { default as route } from './route';
 export { default as search } from './search';
 
-const defaultReducer = R.pipe(R.defaultTo({}), R.identity);
-
-export const api = defaultReducer;
-export const globals = defaultReducer;
+export const globals = R.pipe(R.defaultTo({}), R.identity);

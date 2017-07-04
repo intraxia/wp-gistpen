@@ -1,6 +1,6 @@
 // @flow
 import type { EditorInstance, EditorState, SettingsState, TinyMCEState,
-    HasApiConfig, HasRepo, HasEditorState, HasRouteState } from './state';
+    HasGlobalsState, HasRepo, HasEditorState, HasRouteState } from './state';
 
 export type RevisionPropsInstance = {
     date : string;
@@ -10,7 +10,7 @@ export type HasRevisionsProps = {
 };
 
 export type SettingsProps = SettingsState;
-export type EditorPageProps = HasApiConfig & HasRepo & HasEditorState & HasRevisionsProps & HasRouteState;
+export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasRevisionsProps & HasRouteState;
 
 export type EditorInstanceProps = {
     instance : EditorInstance;

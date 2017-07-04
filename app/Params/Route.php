@@ -19,6 +19,19 @@ class Route implements HasFilters {
 	}
 
 	/**
+	 * Add route key to params array for edit page.
+	 *
+	 * @param array $params
+	 *
+	 * @return array
+	 */
+	public function apply_edit_route( $params ) {
+		$params['route'] = ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor';
+
+		return $params;
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function filter_hooks() {
@@ -30,6 +43,10 @@ class Route implements HasFilters {
 			array(
 				'hook'   => 'params.props.settings',
 				'method' => 'apply_settings_route',
+			),
+			array(
+				'hook'   => 'params.state.edit',
+				'method' => 'apply_edit_route',
 			),
 		);
 	}

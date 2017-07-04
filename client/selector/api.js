@@ -20,7 +20,7 @@ export function selectUserAjaxOpts(state : EditorPageState) : AjaxOptions {
         }),
         credentials: 'include',
         headers: {
-            'X-WP-Nonce': state.api.nonce,
+            'X-WP-Nonce': state.globals.nonce,
             'Content-Type': 'application/json'
         }
     };

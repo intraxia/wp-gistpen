@@ -81,12 +81,6 @@ export type RevisionInstance = {
     date : string;
 };
 
-export type ApiConfig = {
-    root : string;
-    nonce : string;
-    url : string;
-};
-
 export type EditorState = {
     description : string;
     status : string;
@@ -127,10 +121,6 @@ export type HasRouteState = {
     route : RouteState;
 };
 
-export type HasApiConfig = {
-    api : ApiConfig;
-};
-
 export type HasRepo = {
     repo : Repo;
 };
@@ -149,6 +139,6 @@ export type HasSearchState = {
 
 export type SettingsState = HasGlobalsState & HasPrismState & HasGistState & HasRouteState;
 
-export type EditorPageState = HasApiConfig & HasRepo & HasEditorState & HasRevisionsState & HasRouteState;
+export type EditorPageState = HasGlobalsState & HasRepo & HasEditorState & HasRevisionsState & HasRouteState;
 
 export type TinyMCEState = HasGlobalsState & HasSearchState;

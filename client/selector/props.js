@@ -9,8 +9,8 @@ export function selectSettingsProps(state$ : Observable<SettingsState>) : Observ
 }
 
 export function selectEditorProps(state$ : Observable<EditorPageState>) : Observable<EditorPageProps> {
-    return state$.map(({ api, repo, route, editor, revisions } : EditorPageState) => ({
-        api,
+    return state$.map(({ globals, repo, route, editor, revisions } : EditorPageState) => ({
+        globals,
         repo,
         route,
         editor,
