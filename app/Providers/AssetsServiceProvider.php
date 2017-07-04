@@ -1,9 +1,8 @@
 <?php
 namespace Intraxia\Gistpen\Providers;
 
-use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Gistpen\View\Content;
+use Intraxia\Gistpen\Params\Repository as Params;
 use Intraxia\Gistpen\View\Edit;
 use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Assets\Register as Assets;
@@ -102,12 +101,12 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/content',
 			'footer'    => false,
 			'localize'  => function() {
-				/** @var Content $content */
-				$content = $this->container->fetch( 'view.content' );
+				/** @var Params $content */
+				$params= $this->container->fetch( 'params' );
 
 				return array(
 					'name' => '__GISTPEN_CONTENT__',
-					'data' => $content->get_initial_state(),
+					'data' => $params->state( 'content' ),
 				);
 			},
 		) );
