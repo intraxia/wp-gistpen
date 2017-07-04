@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\Params\Globals;
 use Intraxia\Gistpen\Params\Prism;
+use Intraxia\Gistpen\Params\Repo;
 use Intraxia\Gistpen\Params\Repository as Params;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
@@ -23,6 +24,10 @@ class ParamsServiceProvider implements ServiceProvider {
 
 		$container->define('params.prism', function( Container $container ) {
 			return new Prism( $container->fetch( 'options.site' ) );
+		} );
+
+		$container->define('params.repo', function( Container $container ) {
+			return new Repo( $container->fetch( 'database' ) );
 		} );
 	}
 }
