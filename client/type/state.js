@@ -5,8 +5,6 @@ export type Language = {
     ID : number;
     display_name : string;
     slug : string;
-    // @deprecated
-    prism_slug : string;
 } | string;
 
 export type Blob = {
