@@ -28,6 +28,7 @@ const optionsAjax$ : (state : SettingsState) => Observable<Action> = R.converge(
  */
 export default function siteDelta(action$ : Observable<Action>, state$ : Observable<SettingsState>) : Observable<Action> {
     return state$
+        .skip(1)
         .skipDuplicates(
             (prev : SettingsState, next : SettingsState) : boolean =>
                 prev.gist === next.gist && prev.prism === next.prism)
