@@ -21,8 +21,13 @@ export const ajax$ : AjaxFunction = function ajax$(url : string , opts : AjaxOpt
         const options = makeOptions(opts);
         const xhr = new XMLHttpRequest();
 
-        xhr.onload = () : boolean =>
-            emitter.value('response' in xhr ? xhr.response : xhr.responseText);
+        xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 400) {
+                emitter.value('response' in xhr ? xhr.response : xhr.responseText);
+            } else {
+                emitter.error(new TypeError(`${xhr.status} - ${xhr.statusText}`));
+            }
+        };
 
         xhr.onerror = () : boolean =>
             emitter.error(new TypeError('Network request failed'));
