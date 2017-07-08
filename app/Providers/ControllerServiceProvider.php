@@ -47,7 +47,7 @@ class ControllerServiceProvider implements ServiceProvider {
 			return new BlobController( $app->fetch( 'database' ) );
 		} );
 		$container->share( array( 'controller.commit' => 'Intraxia\Gistpen\Http\BlobController' ), function( $app ) {
-			return new CommitController;
+			return new CommitController( $app->fetch( 'database' ) );
 		} );
 
 	}
