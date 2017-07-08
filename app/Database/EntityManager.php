@@ -2,8 +2,10 @@
 namespace Intraxia\Gistpen\Database;
 
 use Intraxia\Gistpen\Model\Blob;
+use Intraxia\Gistpen\Model\Commit;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
@@ -28,6 +30,16 @@ class EntityManager implements EntityManagerContract {
 	 * Model class for the Repo.
 	 */
 	const LANGUAGE_CLASS = 'Intraxia\Gistpen\Model\Language';
+
+	/**
+	 * Model class for the Commit.
+	 */
+	const COMMIT_CLASS = 'Intraxia\Gistpen\Model\Commit';
+
+	/**
+	 * Model class for the Commit.
+	 */
+	const STATE_CLASS = 'Intraxia\Gistpen\Model\State';
 
 	/**
 	 * Meta prefix.
@@ -77,6 +89,14 @@ class EntityManager implements EntityManagerContract {
 			return $this->find_language( $id );
 		}
 
+		if ( static::COMMIT_CLASS === $class ) {
+			return $this->find_commit( $id );
+		}
+
+		if ( static::STATE_CLASS === $class ) {
+			return $this->find_state( $id );
+		}
+
 		return new WP_Error( 'Invalid class' );
 	}
 
@@ -99,6 +119,14 @@ class EntityManager implements EntityManagerContract {
 
 		if ( static::LANGUAGE_CLASS === $class ) {
 			return $this->find_languages_by( $params );
+		}
+
+		if ( static::COMMIT_CLASS === $class ) {
+			return $this->find_commits_by( $params );
+		}
+
+		if ( static::STATE_CLASS === $class ) {
+			return $this->find_states_by( $params );
 		}
 
 		return new WP_Error( 'Invalid class' );
@@ -328,6 +356,138 @@ class EntityManager implements EntityManagerContract {
 	}
 
 	/**
+	 * Fetch a commit by its ID.
+	 *
+	 * @param int   $id
+	 * @param array $params
+	 *
+	 * @return Commit|WP_Error
+	 *
+	 */
+	protected function find_commit( $id, array $params = array() ) {
+		$model = new Commit;
+		/** @var \WP_Post|null $post */
+		$post  = get_post( $id );
+
+		if ( ! $post ||
+		     $post->post_type !== $model->get_post_type() ||
+		     $post->post_parent === 0
+		) {
+			return new WP_Error( 'Invalid id' );
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, $post );
+		$model->unguard();
+
+		foreach ( $model->get_table_keys() as $key ) {
+			if ( 'states' === $key ) {
+				$model->set_attribute(
+					$key,
+					new Collection
+				);
+
+				continue;
+			}
+
+			$model->set_attribute(
+				$key,
+				get_metadata( 'post', $id, $this->make_meta_key( $key ), true )
+			);
+
+			// Fallback for legacy metadata
+			// @todo move to migration
+			if ( $key === 'state_ids' ) {
+				$value = get_metadata( 'post', $id, '_wpgp_commit_meta', true);
+
+				if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
+					$model->set_attribute(
+						$key,
+						$value['state_ids']
+					);
+
+					delete_metadata( 'post', $id, '_wpgp_commit_meta'. true );
+				}
+			}
+		}
+
+		if ( isset( $params['with'] ) && $params['with'] === 'states') {
+			$states = new Collection;
+
+			foreach ( $model->state_ids as $state_id ) {
+				/** @var State|WP_Error $state */
+				$state = $this->find_state( $state_id );
+
+				if ( ! is_wp_error( $state ) ) {
+					$states->add( $state );
+				}
+			}
+
+			$model->set_attribute( 'states', $states );
+		}
+
+		$model->reguard();
+		$model->sync_original();
+
+		return $model;
+	}
+
+	/**
+	 * Fetch a State by its ID.
+	 *
+	 * @param int   $id
+	 *
+	 * @param array $params
+	 *
+	 * @return State|WP_Error
+	 */
+	protected function find_state( $id, array $params = array() ) {
+		$model = new State;
+		/** @var \WP_Post|null $post */
+		$post  = get_post( $id );
+
+		if ( ! $post ||
+		     $post->post_type !== $model::get_post_type() ||
+		     $post->post_parent === 0
+		) {
+			return new WP_Error( 'Invalid id' );
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, $post );
+		$model->unguard();
+
+		foreach ( $model->get_table_keys() as $key ) {
+			switch ( $key ) {
+				case 'language':
+					$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
+
+					if ( $terms ) {
+						$term = array_pop( $terms );
+					} else {
+						$term       = new WP_Term( new stdClass );
+						$term->slug = 'none';
+					}
+
+					$model->set_attribute(
+						'language',
+						new Language( array( Model::OBJECT_KEY => $term ) )
+					);
+					break;
+				default:
+					$model->set_attribute(
+						$key,
+						get_metadata( 'post', $id, $this->make_meta_key( $key ), true )
+					);
+					break;
+			}
+		}
+
+		$model->reguard();
+		$model->sync_original();
+
+		return $model;
+	}
+
+	/**
 	 * Queries for repos by the provided params.
 	 *
 	 * @param array $params Query parameters.
@@ -398,8 +558,69 @@ class EntityManager implements EntityManagerContract {
 			'hide_empty' => false,
 		) ) );
 
+		/** WP_Term $term */
 		foreach ( $query->get_terms() as $term ) {
-			$collection->add( new Language( array( Model::OBJECT_KEY => $term ) ) );
+			$language = $this->find_language( $term->term_id );
+
+			if ( ! is_wp_error( $language ) ) {
+				$collection->add( $language );
+			}
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * Queries for Commits by the provided params.
+	 *
+	 * @param array $params Query parameters.
+	 *
+	 * @return Collection<Commit>
+	 */
+	public function find_commits_by( $params = array() ) {
+		$collection = new Collection( array(), array(
+			'model' => self::COMMIT_CLASS,
+		) );
+
+		$query      = new WP_Query( array_merge( $params, array(
+			'post_type'           => 'revision',
+			'post_parent' => $params['repo_id'],
+		) ) );
+
+		foreach ( $query->get_posts() as $post ) {
+			$commit = $this->find_commit( $post->ID, $params );
+
+			if ( ! is_wp_error( $commit ) ) {
+				$collection->add( $commit );
+			}
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * Queries for States by the provided params.
+	 *
+	 * @param array $params Query parameters.
+	 *
+	 * @return Collection<State>
+	 */
+	public function find_states_by( $params = array() ) {
+		$collection = new Collection( array(), array(
+			'model' => self::STATE_CLASS,
+		) );
+
+		$query      = new WP_Query( array_merge( $params, array(
+			'post_type'   => 'revision',
+			'post_parent' => $params['blob_id'],
+		) ) );
+
+		foreach ( $query->get_posts() as $post ) {
+			$commit = $this->find_state( $post->ID, $params );
+
+			if ( ! is_wp_error( $commit ) ) {
+				$collection->add( $commit );
+			}
 		}
 
 		return $collection;

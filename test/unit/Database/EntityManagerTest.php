@@ -3,9 +3,11 @@ namespace Intraxia\Gistpen\Test\Database;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
+use Intraxia\Gistpen\Model\Commit;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Jaxion\Axolotl\Collection;
 
 class EntityManagerTest extends TestCase {
 	/**
@@ -44,6 +46,12 @@ class EntityManagerTest extends TestCase {
 		$this->assertInstanceOf( 'WP_Error', $this->em->find( EntityManager::LANGUAGE_CLASS, $term_id ) );
 	}
 
+	public function test_should_return_error_for_non_revision_commit() {
+		$post_id = $this->factory->post->create();
+
+		$this->assertInstanceOf( 'WP_Error', $this->em->find( EntityManager::COMMIT_CLASS, $post_id ) );
+	}
+
 	public function test_should_return_full_repo() {
 		/** @var Repo $model */
 		$model = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
@@ -57,6 +65,7 @@ class EntityManagerTest extends TestCase {
 		foreach ( $this->blobs as $blob ) {
 			/** @var Blob $model */
 			$model = $this->em->find( EntityManager::BLOB_CLASS, $blob );
+
 			$this->assertInstanceOf( EntityManager::BLOB_CLASS, $model );
 			$this->assertEquals( get_post( $blob ), $model->get_underlying_wp_object() );
 			$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model->language );
@@ -267,5 +276,104 @@ class EntityManagerTest extends TestCase {
 		$blob = $this->em->find( EntityManager::BLOB_CLASS, $this->blobs[0] );
 
 		$this->assertInstanceOf( 'WP_Error', $blob );
+	}
+
+	public function test_should_return_full_list_of_commits() {
+		/** @var Collection<Commit> $commits */
+		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+			'repo_id' => $this->repo->ID,
+		) );
+
+		$this->assertCount( 1, $commits );
+
+		/** @var Commit $commit */
+		$commit = $commits->at( 0 );
+
+		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
+		$this->assertSame( $this->commit->ID, $commit->ID );
+		$this->assertSame( $this->repo->ID, $commit->repo_id );
+		$this->assertCount( 3, $commit->state_ids );
+		$this->assertCount( 0, $commit->states );
+	}
+
+	public function test_should_return_full_list_of_commits_with_states() {
+		/** @var Collection<Commit> $commits */
+		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+			'repo_id' => $this->repo->ID,
+			'with'    => 'states',
+		) );
+
+		$this->assertCount( 1, $commits );
+
+		/** @var Commit $commit */
+		$commit = $commits->at( 0 );
+
+		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
+		$this->assertSame( $this->commit->ID, $commit->ID );
+		$this->assertSame( $this->repo->ID, $commit->repo_id );
+		$this->assertCount( 3, $commit->state_ids );
+		$this->assertCount( 3, $commit->states );
+
+		foreach ( $commit->states as $state ) {
+			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+		}
+	}
+
+	public function should_return_single_commit() {
+		/** @var Commit $commit */
+		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID );
+
+		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
+		$this->assertSame( $this->commit->ID, $commit->ID );
+		$this->assertSame( $this->repo->ID, $commit->repo_id );
+		$this->assertCount( 3, $commit->state_ids );
+		$this->assertCount( 0, $commit->states );
+	}
+
+	public function should_return_single_commit_with_states() {
+		/** @var Commit $commit */
+		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID, array(
+			'with' => 'states'
+		) );
+
+		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
+		$this->assertSame( $this->commit->ID, $commit->ID );
+		$this->assertSame( $this->repo->ID, $commit->repo_id );
+		$this->assertCount( 3, $commit->state_ids );
+		$this->assertCount( 3, $commit->states );
+
+		foreach ( $commit->states as $state ) {
+			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+		}
+	}
+
+	public function test_should_return_full_list_of_states() {
+		foreach ( $this->blobs as $idx => $blob_id ) {
+			$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+				'blob_id' => $blob_id
+			) );
+
+			$this->assertCount( 1, $states );
+
+			$state = $states->at( 0 );
+
+			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+			$this->assertEquals( get_post( $this->states[ $idx ] ), $state->get_underlying_wp_object() );
+			$this->assertSame( $blob_id, $state->blob_id );
+		}
+	}
+
+	public function test_should_return_single_state() {
+		foreach ( $this->states as $idx => $state_id ) {
+			$state = $this->em->find( EntityManager::STATE_CLASS, $state_id );
+
+			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+			$this->assertEquals( get_post( $state_id ), $state->get_underlying_wp_object() );
+			$this->assertSame( $this->blobs[ $idx ], $state->blob_id );
+		}
 	}
 }
