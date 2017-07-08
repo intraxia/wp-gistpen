@@ -14,7 +14,8 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property int        $ID
  * @property int        $repo_id
  * @property string     $description
- * @property Collection $blobs
+ * @property int[]      $state_ids
+ * @property Collection $states
  * @property string     $rest_url
  * @property string     $commits_url
  * @property string     $html_url
@@ -38,7 +39,10 @@ class Commit extends Model implements UsesWordPressPost {
 	 * @var array
 	 */
 	protected $fillable = array(
+		'repo_id',
 		'description',
+		'state_ids',
+		'states',
 	);
 
 	/**
@@ -47,7 +51,6 @@ class Commit extends Model implements UsesWordPressPost {
 	 * @var array
 	 */
 	protected $guarded = array(
-		'blobs',
 		'committed_at',
 	);
 
