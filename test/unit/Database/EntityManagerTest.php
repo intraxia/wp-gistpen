@@ -6,6 +6,7 @@ use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Gistpen\Model\State;
 use Intraxia\Gistpen\Test\TestCase;
 use Intraxia\Jaxion\Axolotl\Collection;
 
@@ -374,6 +375,60 @@ class EntityManagerTest extends TestCase {
 			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
 			$this->assertEquals( get_post( $state_id ), $state->get_underlying_wp_object() );
 			$this->assertSame( $this->blobs[ $idx ], $state->blob_id );
+		}
+	}
+
+	public function test_should_create_new_commit() {
+		$commit = array(
+			'repo_id'     => $this->repo->ID,
+			'description' => 'New Description',
+			'state_ids'   => $this->states,
+		);
+
+		$model = $this->em->create( EntityManager::COMMIT_CLASS, $commit );
+		$model = $this->em->find( EntityManager::COMMIT_CLASS, $model->ID );
+
+		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $model );
+		$this->assertEquals(
+			get_post( $model->get_primary_id() ),
+			$model->get_underlying_wp_object()
+		);
+
+		foreach ( $commit as $key => $value ) {
+			$this->assertSame( $value, $model->get_attribute( $key ) );
+		}
+	}
+
+	public function test_should_create_new_state() {
+		$state = array(
+			'blob_id'   => $this->blobs[0],
+			'code'      => 'New Code',
+			'filename'  => 'new-filename.php',
+			'language'  => $language = array(
+				'slug'  => 'php',
+			),
+		);
+
+		/** @var State $model */
+		$model = $this->em->create( EntityManager::STATE_CLASS, $state );
+		$model = $this->em->find( EntityManager::STATE_CLASS, $model->ID );
+
+		$this->assertInstanceOf( EntityManager::STATE_CLASS, $model );
+		$this->assertEquals(
+			get_post( $model->get_primary_id() ),
+			$model->get_underlying_wp_object()
+		);
+
+		foreach ( $state as $key => $value ) {
+			if ( $key === 'language' ) {
+				$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model->language );
+
+				foreach ( $language as $key => $value ) {
+					$this->assertSame( $value, $model->language->get_attribute( $key ) );
+				}
+			} else {
+				$this->assertSame( $value, $model->get_attribute( $key ) );
+			}
 		}
 	}
 }

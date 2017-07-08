@@ -153,6 +153,14 @@ class EntityManager implements EntityManagerContract {
 			return $this->create_language( $data );
 		}
 
+		if ( static::COMMIT_CLASS === $class ) {
+			return $this->create_commit( $data );
+		}
+
+		if ( static::STATE_CLASS === $class ) {
+			return $this->create_state( $data );
+		}
+
 		return new WP_Error( 'Invalid class' );
 	}
 
@@ -806,6 +814,118 @@ class EntityManager implements EntityManagerContract {
 				$attribute
 			);
 		}
+
+		return $model;
+	}
+
+	/**
+	 * Creates a new Commit with the provided data.
+	 *
+	 * @param array $data Data to create commit.
+	 *
+	 * @return Commit|WP_Error
+	 */
+	public function create_commit( array $data ) {
+		$model = new Commit;
+
+		foreach ( $data as $key => $value ) {
+			switch ( $key ) {
+				default:
+					try {
+						$model->set_attribute( $key, $value );
+					} catch ( GuardedPropertyException $exception ) {
+						// @todo Ignore the value?
+					}
+					break;
+			}
+		}
+
+		$result = wp_insert_post( (array) $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
+
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
+			update_metadata(
+				'post',
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		return $model;
+	}
+
+	/**
+	 * Creates a new State with the provided data.
+	 *
+	 * @param array $data Data to create state.
+	 *
+	 * @return state|WP_Error
+	 */
+	public function create_state( array $data ) {
+		$model = new State;
+
+		/**
+		 * Set aside the `language` key for use.
+		 */
+		$language_data = array();
+		if ( isset( $data['language'] ) ) {
+			if ( is_array( $data['language'] ) ) {
+				$language_data = $data['language'];
+			}
+
+			unset( $data['language'] );
+		}
+
+		foreach ( $data as $key => $value ) {
+			switch ( $key ) {
+				default:
+					try {
+						$model->set_attribute( $key, $value );
+					} catch ( GuardedPropertyException $exception ) {
+						// @todo Ignore the value?
+					}
+					break;
+			}
+		}
+
+		$result = wp_insert_post( (array) $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
+
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
+			update_metadata(
+				'post',
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		$language = $this->find_languages_by( array( 'slug' => $language_data['slug'] ) );
+
+		if ( count( $language ) === 0 ) {
+			$language = $this->create_language( $language_data );
+
+			if ( is_wp_error( $language ) ) {
+				return $language;
+			}
+		} else {
+			$language = $language->at( 0 );
+		}
+
+		$model->set_attribute( 'language', $language );
+
+		wp_set_object_terms( $model->get_primary_id(), $model->language->slug, Language::get_taxonomy(), false );
 
 		return $model;
 	}
