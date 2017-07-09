@@ -452,7 +452,9 @@ class EntityManagerTest extends TestCase {
 
 		/** @var State $model */
 		$model = $this->em->create( EntityManager::STATE_CLASS, $state );
-		$model = $this->em->find( EntityManager::STATE_CLASS, $model->ID );
+		$model = $this->em->find( EntityManager::STATE_CLASS, $model->ID, array(
+			'with' => 'language',
+		) );
 
 		$this->assertInstanceOf( EntityManager::STATE_CLASS, $model );
 		$this->assertEquals(

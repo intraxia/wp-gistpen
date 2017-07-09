@@ -69,154 +69,147 @@ class EntityManager implements EntityManagerContract {
 	 * @return Model|WP_Error
 	 */
 	public function find( $class, $id, array $params = array() ) {
-		if ( static::REPO_CLASS === $class || static::BLOB_CLASS === $class || static::LANGUAGE_CLASS === $class || static::COMMIT_CLASS === $class ) {
-			if ( ! isset( $params['with'] ) ) {
-				$params['with'] = array();
-			}
+		if ( ! isset( $params['with'] ) ) {
+			$params['with'] = array();
+		}
 
-			if ( is_string( $params['with'] ) ) {
-				$params['with'] = array( $params['with'] => array() );
-			}
+		if ( is_string( $params['with'] ) ) {
+			$params['with'] = array( $params['with'] => array() );
+		}
 
-			if ( ! is_array( $params['with'] ) ) {
-				throw new InvalidArgumentException( 'with' );
-			}
+		if ( ! is_array( $params['with'] ) ) {
+			throw new InvalidArgumentException( 'with' );
+		}
 
-			$reflection = new ReflectionClass( $class );
+		$reflection = new ReflectionClass( $class );
 
-			if ( ! $reflection->isSubclassOf( 'Intraxia\Jaxion\Axolotl\Model' ) ) {
-				return new WP_Error( 'Invalid model' );
-			}
+		if ( ! $reflection->isSubclassOf( 'Intraxia\Jaxion\Axolotl\Model' ) ) {
+			return new WP_Error( 'Invalid model' );
+		}
 
-			switch ( true ) {
-				case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost'):
-					$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
-					$post  = get_post( $id );
+		switch ( true ) {
+			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost'):
+				$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
+				// @todo validate post_parent === 0 if used for relation
+				$post  = get_post( $id );
 
-					if ( ! $post || $post->post_type !== $post_type ) {
-						return new WP_Error( 'Invalid id' );
+				if ( ! $post || $post->post_type !== $post_type ) {
+					return new WP_Error( 'Invalid id' );
+				}
+
+				/** @var Model $model */
+				$model = $reflection->newInstance( array( Model::OBJECT_KEY => $post ) );
+				$table = array();
+
+				foreach ( $model->get_table_keys() as $key ) {
+					if ( 'states' === $key ) {
+						$table[ $key ] = new Collection( self::STATE_CLASS );
 					}
 
-					/** @var Model $model */
-					$model = $reflection->newInstance( array( Model::OBJECT_KEY => $post ) );
-					$table = array();
+					// @todo handle related keys specially for now.
+					if ( in_array( $key, array( 'blobs', 'language', 'states' ) ) ) {
+						continue;
+					}
 
-					foreach ( $model->get_table_keys() as $key ) {
-						if ( 'states' === $key ) {
-							$table[ $key ] = new Collection( self::STATE_CLASS );
+					$value = $table[ $key ] = get_metadata( 'post', $id, $this->make_meta_key( $key ), true );
+
+					// @todo enable custom getter/setter in models
+					if ( $key === 'sync' && ! $value ) {
+						$table[ $key ] = 'off';
+					}
+
+					// Fallback for legacy metadata
+					// @todo move to migration
+					if ( $key === 'state_ids' ) {
+						$value = get_metadata( 'post', $id, '_wpgp_commit_meta', true);
+
+						if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
+							$model->set_attribute(
+								$key,
+								$value['state_ids']
+							);
+
+							delete_metadata( 'post', $id, '_wpgp_commit_meta'. true );
 						}
+					}
+				}
+				break;
+			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm'):
+				$taxonomy = $reflection->getMethod( 'get_taxonomy' )->invoke( null );
+				$term  = get_term( $id, $taxonomy );
 
-						// @todo handle related keys specially for now.
-						if ( in_array( $key, array( 'blobs', 'language', 'states' ) ) ) {
-							continue;
-						}
+				if ( ! $term ) {
+					$term = new WP_Error( 'Error getting term' );
+				}
 
-						$value = $table[ $key ] = get_metadata( 'post', $id, $this->make_meta_key( $key ), true );
+				if ( is_wp_error( $term ) ) {
+					return $term;
+				}
 
-						// @todo enable custom getter/setter in models
-						if ( $key === 'sync' && ! $value ) {
-							$table[ $key ] = 'off';
-						}
+				/** @var Model $model */
+				$model = $reflection->newInstance( array( Model::OBJECT_KEY => $term ) );
+				$table = array();
 
-						// Fallback for legacy metadata
-						// @todo move to migration
-						if ( $key === 'state_ids' ) {
-							$value = get_metadata( 'post', $id, '_wpgp_commit_meta', true);
+				foreach ( $model->get_table_keys() as $key ) {
+					switch ( $key ) {
+						default:
+							$table[ $key ] = get_term_meta( $term->term_id, $this->make_meta_key( $key ), true );
+					}
+				}
+				break;
+			default:
+				throw new Exception('Misconfigured Model' );
+		}
 
-							if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
-								$model->set_attribute(
-									$key,
-									$value['state_ids']
-								);
+		$model->set_attribute( Model::TABLE_KEY, $table );
 
-								delete_metadata( 'post', $id, '_wpgp_commit_meta'. true );
-							}
+		foreach ( $params['with'] as $key => $params ) {
+			$value = null;
+
+			switch ( $key ) {
+				case 'blobs';
+					$value = $this->find_by( self::BLOB_CLASS, array_merge( $params, array(
+						'post_parent' => $id,
+						'post_status' => $post->post_status,
+						'order'       => 'ASC',
+						'orderby'     => 'date',
+					) ) );
+					break;
+				case 'language':
+					$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
+
+					if ( $terms ) {
+						$term = array_pop( $terms );
+					} else {
+						$term       = new WP_Term( new stdClass );
+						$term->slug = 'none';
+					}
+
+					$value = new Language( array( Model::OBJECT_KEY => $term ) );
+					break;
+				case 'states':
+					$value = new Collection( self::STATE_CLASS );
+
+					foreach ( $model->state_ids as $state_id ) {
+						/** @var State|WP_Error $state */
+						$state = $this->find( self::STATE_CLASS, $state_id, $params );
+
+						if ( ! is_wp_error( $state ) ) {
+							$value = $value->add( $state );
 						}
 					}
 					break;
-				case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm'):
-					$taxonomy = $reflection->getMethod( 'get_taxonomy' )->invoke( null );
-					$term  = get_term( $id, $taxonomy );
-
-					if ( ! $term ) {
-						$term = new WP_Error( 'Error getting term' );
-					}
-
-					if ( is_wp_error( $term ) ) {
-						return $term;
-					}
-
-					/** @var Model $model */
-					$model = $reflection->newInstance( array( Model::OBJECT_KEY => $term ) );
-					$table = array();
-
-					foreach ( $model->get_table_keys() as $key ) {
-						switch ( $key ) {
-							default:
-								$table[ $key ] = get_term_meta( $term->term_id, $this->make_meta_key( $key ), true );
-						}
-					}
-					break;
-				default:
-					throw new Exception('Misconfigured Model' );
 			}
 
-			$model->set_attribute( Model::TABLE_KEY, $table );
-
-			foreach ( $params['with'] as $key => $params ) {
-				$value = null;
-
-				switch ( $key ) {
-					case 'blobs';
-						$value = $this->find_by( self::BLOB_CLASS, array_merge( $params, array(
-							'post_parent' => $id,
-							'post_status' => $post->post_status,
-							'order'       => 'ASC',
-							'orderby'     => 'date',
-						) ) );
-						break;
-					case 'language':
-						$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
-
-						if ( $terms ) {
-							$term = array_pop( $terms );
-						} else {
-							$term       = new WP_Term( new stdClass );
-							$term->slug = 'none';
-						}
-
-						$value = new Language( array( Model::OBJECT_KEY => $term ) );
-						break;
-					case 'states':
-						$value = new Collection( self::STATE_CLASS );
-
-						foreach ( $model->state_ids as $state_id ) {
-							/** @var State|WP_Error $state */
-							$state = $this->find_state( $state_id );
-
-							if ( ! is_wp_error( $state ) ) {
-								$value = $value->add( $state );
-							}
-						}
-						break;
-				}
-
-				if ( null !== $value ) {
-					$table[ $key ] = $value;
-				}
+			if ( null !== $value ) {
+				$table[ $key ] = $value;
 			}
-
-			$model->set_attribute( Model::TABLE_KEY, $table );
-			$model->sync_original();
-
-			return $model;
 		}
 
-		if ( static::STATE_CLASS === $class ) {
-			return $this->find_state( $id );
-		}
+		$model->set_attribute( Model::TABLE_KEY, $table );
+		$model->sync_original();
 
-		return new WP_Error( 'Invalid class' );
+		return $model;
 	}
 
 	/**
@@ -332,62 +325,6 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		return new WP_Error( 'Invalid class' );
-	}
-
-	/**
-	 * Fetch a State by its ID.
-	 *
-	 * @param int   $id
-	 *
-	 * @param array $params
-	 *
-	 * @return State|WP_Error
-	 */
-	protected function find_state( $id, array $params = array() ) {
-		$model = new State;
-		/** @var \WP_Post|null $post */
-		$post  = get_post( $id );
-
-		if ( ! $post ||
-		     $post->post_type !== $model::get_post_type() ||
-		     $post->post_parent === 0
-		) {
-			return new WP_Error( 'Invalid id' );
-		}
-
-		$model->set_attribute( Model::OBJECT_KEY, $post );
-		$model->unguard();
-
-		foreach ( $model->get_table_keys() as $key ) {
-			switch ( $key ) {
-				case 'language':
-					$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
-
-					if ( $terms ) {
-						$term = array_pop( $terms );
-					} else {
-						$term       = new WP_Term( new stdClass );
-						$term->slug = 'none';
-					}
-
-					$model->set_attribute(
-						'language',
-						new Language( array( Model::OBJECT_KEY => $term ) )
-					);
-					break;
-				default:
-					$model->set_attribute(
-						$key,
-						get_metadata( 'post', $id, $this->make_meta_key( $key ), true )
-					);
-					break;
-			}
-		}
-
-		$model->reguard();
-		$model->sync_original();
-
-		return $model;
 	}
 
 	/**
@@ -511,7 +448,7 @@ class EntityManager implements EntityManagerContract {
 		) ) );
 
 		foreach ( $query->get_posts() as $post ) {
-			$commit = $this->find_state( $post->ID, $params );
+			$commit = $this->find( self::STATE_CLASS, $post->ID, $params );
 
 			if ( ! is_wp_error( $commit ) ) {
 				$collection = $collection->add( $commit );
