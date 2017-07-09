@@ -1,4 +1,5 @@
 <?php
+
 namespace Intraxia\Gistpen\Test\Database;
 
 use Intraxia\Gistpen\Database\EntityManager;
@@ -67,7 +68,9 @@ class EntityManagerTest extends TestCase {
 	public function test_should_return_full_blob() {
 		foreach ( $this->blobs as $blob ) {
 			/** @var Blob $model */
-			$model = $this->em->find( EntityManager::BLOB_CLASS, $blob );
+			$model = $this->em->find( EntityManager::BLOB_CLASS, $blob, array(
+				'with' => 'language',
+			) );
 
 			$this->assertInstanceOf( EntityManager::BLOB_CLASS, $model );
 			$this->assertEquals( get_post( $blob ), $model->get_underlying_wp_object() );
@@ -129,7 +132,11 @@ class EntityManagerTest extends TestCase {
 		/** @var Repo $model */
 		$model = $this->em->create( EntityManager::REPO_CLASS, $data );
 		$model = $this->em->find( EntityManager::REPO_CLASS, $model->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language'
+				)
+			),
 		) );
 
 		$this->assertInstanceOf( EntityManager::REPO_CLASS, $model );
@@ -194,7 +201,11 @@ class EntityManagerTest extends TestCase {
 		$this->em->persist( $repo );
 
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language'
+				)
+			),
 		) );
 		$blob = $repo->blobs->at( 0 );
 
@@ -212,14 +223,19 @@ class EntityManagerTest extends TestCase {
 
 		$code     = $blob->code = 'some new php code';
 		$filename = $blob->filename = 'new-slug.php';
-		$language = $blob->language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )->at( 0 );
+		$language = $blob->language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
+		                                       ->at( 0 );
 
 		$repo->blobs = $repo->blobs->add( $blob );
 
 		$this->em->persist( $repo );
 
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
 		) );
 
 		$this->assertCount( 4, $repo->blobs );
@@ -238,7 +254,7 @@ class EntityManagerTest extends TestCase {
 		) );
 		/** @var Blob $removed_blob */
 		$removed_blob = $repo->blobs->at( 0 );
-		$repo->blobs = $repo->blobs->remove_at( 0 );
+		$repo->blobs  = $repo->blobs->remove_at( 0 );
 
 		$this->em->persist( $repo );
 
@@ -256,7 +272,8 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_update_language() {
 		/** @var Language $language */
-		$language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )->at( 0 );
+		$language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
+		                     ->at( 0 );
 
 		$slug = $language->slug = 'js';
 
@@ -425,11 +442,11 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_create_new_state() {
 		$state = array(
-			'blob_id'   => $this->blobs[0],
-			'code'      => 'New Code',
-			'filename'  => 'new-filename.php',
-			'language'  => $language = array(
-				'slug'  => 'php',
+			'blob_id'  => $this->blobs[0],
+			'code'     => 'New Code',
+			'filename' => 'new-filename.php',
+			'language' => $language = array(
+				'slug' => 'php',
 			),
 		);
 
@@ -464,7 +481,7 @@ class EntityManagerTest extends TestCase {
 
 		$commit = $this->em->persist( $commit );
 
-		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit);
+		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
 		$this->assertSame( $description, $commit->description );
 	}
 
@@ -473,7 +490,7 @@ class EntityManagerTest extends TestCase {
 		$state = $this->em->find( EntityManager::STATE_CLASS, $this->states[0] );
 
 		$filename = $state->filename = 'new-filename.php';
-		$code = $state->code = 'Some new PHP code is here';
+		$code     = $state->code = 'Some new PHP code is here';
 
 		$state = $this->em->persist( $state );
 

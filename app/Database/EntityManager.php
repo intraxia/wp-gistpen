@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Database;
 
+use Exception;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
 use Intraxia\Gistpen\Model\Language;
@@ -10,6 +11,8 @@ use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager as EntityManagerContract;
+use InvalidArgumentException;
+use ReflectionClass;
 use stdClass;
 use WP_Error;
 use WP_Query;
@@ -49,17 +52,6 @@ class EntityManager implements EntityManagerContract {
 	protected $prefix;
 
 	/**
-	 * Internal Model cache.
-	 *
-	 * @var array
-	 */
-	private $cache = array(
-		self::REPO_CLASS     => array(),
-		self::BLOB_CLASS     => array(),
-		self::LANGUAGE_CLASS => array(),
-	);
-
-	/**
 	 * EntityManager constructor.
 	 *
 	 * @param string $prefix Meta prefix for entities.
@@ -77,60 +69,84 @@ class EntityManager implements EntityManagerContract {
 	 * @return Model|WP_Error
 	 */
 	public function find( $class, $id, array $params = array() ) {
-		if ( static::REPO_CLASS === $class ) {
-			$reflection = new \ReflectionClass( $class );
+		if ( static::REPO_CLASS === $class || static::BLOB_CLASS === $class ) {
+			if ( ! isset( $params['with'] ) ) {
+				$params['with'] = array();
+			}
+
+			if ( is_string( $params['with'] ) ) {
+				$params['with'] = array( $params['with'] => array() );
+			}
+
+			if ( ! is_array( $params['with'] ) ) {
+				throw new InvalidArgumentException( 'with' );
+			}
+
+			$reflection = new ReflectionClass( $class );
 
 			if ( ! $reflection->isSubclassOf( 'Intraxia\Jaxion\Axolotl\Model' ) ) {
 				return new WP_Error( 'Invalid model' );
 			}
 
-			$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
-			$post  = get_post( $id );
+			switch ( true ) {
+				case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost'):
+					$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
+					$post  = get_post( $id );
 
-			if ( ! $post || $post->post_type !== $post_type ) {
-				return new WP_Error( 'Invalid id' );
-			}
-
-			/** @var Model $model */
-			$model = $reflection->newInstance( array( Model::OBJECT_KEY => $post ) );
-			$table = array();
-
-			foreach ( $model->get_table_keys() as $key ) {
-				// @todo handle related keys specially for now.
-				if ( in_array( $key, array( 'blobs' ) ) ) {
-					continue;
-				}
-
-				$value = $table[ $key ] = get_post_meta( $id, $this->make_meta_key( $key ), true );
-
-				// @todo enable custom getter/setter in models
-				if ( $key === 'sync' && ! $value ) {
-					$table[ $key ] = 'off';
-				}
-			}
-
-			if ( isset( $params['with'] ) ) {
-				if ( is_string( $params['with'] ) )  {
-					$params['with'] = array( $params['with'] );
-				}
-
-				foreach ( $params['with'] as $key ) {
-					$value = null;
-
-					switch ( $key ) {
-						case 'blobs';
-							$value = $this->find_by( self::BLOB_CLASS, array(
-								'post_parent' => $id,
-								'post_status' => $post->post_status,
-								'order'       => 'ASC',
-								'orderby'     => 'date',
-							) );
-							break;
+					if ( ! $post || $post->post_type !== $post_type ) {
+						return new WP_Error( 'Invalid id' );
 					}
 
-					if ( null !== $value ) {
-						$table[ $key ] = $value;
+					/** @var Model $model */
+					$model = $reflection->newInstance( array( Model::OBJECT_KEY => $post ) );
+					$table = array();
+
+					foreach ( $model->get_table_keys() as $key ) {
+						// @todo handle related keys specially for now.
+						if ( in_array( $key, array( 'blobs', 'language' ) ) ) {
+							continue;
+						}
+
+						$value = $table[ $key ] = get_post_meta( $id, $this->make_meta_key( $key ), true );
+
+						// @todo enable custom getter/setter in models
+						if ( $key === 'sync' && ! $value ) {
+							$table[ $key ] = 'off';
+						}
 					}
+					break;
+				default:
+					throw new Exception('Misconfigured Model' );
+			}
+
+			foreach ( $params['with'] as $key => $params ) {
+				$value = null;
+
+				switch ( $key ) {
+					case 'blobs';
+						$value = $this->find_by( self::BLOB_CLASS, array_merge( $params, array(
+							'post_parent' => $id,
+							'post_status' => $post->post_status,
+							'order'       => 'ASC',
+							'orderby'     => 'date',
+						) ) );
+						break;
+					case 'language':
+						$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
+
+						if ( $terms ) {
+							$term = array_pop( $terms );
+						} else {
+							$term       = new WP_Term( new stdClass );
+							$term->slug = 'none';
+						}
+
+						$value = new Language( array( Model::OBJECT_KEY => $term ) );
+						break;
+				}
+
+				if ( null !== $value ) {
+					$table[ $key ] = $value;
 				}
 			}
 
@@ -138,10 +154,6 @@ class EntityManager implements EntityManagerContract {
 			$model->sync_original();
 
 			return $model;
-		}
-
-		if ( static::BLOB_CLASS === $class ) {
-			return $this->find_blob( $id );
 		}
 
 		if ( static::LANGUAGE_CLASS === $class ) {
@@ -272,59 +284,6 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		return new WP_Error( 'Invalid class' );
-	}
-
-	/**
-	 * Fetch a blob by its ID.
-	 *
-	 * @param {int} $id
-	 *
-	 * @return Blob|WP_Error
-	 */
-	protected function find_blob( $id ) {
-		$post  = get_post( $id );
-		$model = new Blob;
-
-		if ( ! $post ||
-			$post->post_type !== $model::get_post_type() ||
-			$post->post_parent === 0
-		) {
-			return new WP_Error( 'Invalid id' );
-		}
-
-		$model->set_attribute( Model::OBJECT_KEY, $post );
-		$model->unguard();
-
-		foreach ( $model->get_table_keys() as $key ) {
-			switch ( $key ) {
-				case 'language':
-					$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
-
-					if ( $terms ) {
-						$term = array_pop( $terms );
-					} else {
-						$term       = new WP_Term( new stdClass );
-						$term->slug = 'none';
-					}
-
-					$model->set_attribute(
-						'language',
-						new Language( array( Model::OBJECT_KEY => $term ) )
-					);
-					break;
-				default:
-					$model->set_attribute(
-						$key,
-						get_post_meta( $post->ID, $this->make_meta_key( $key ), true )
-					);
-					break;
-			}
-		}
-
-		$model->reguard();
-		$model->sync_original();
-
-		return $model;
 	}
 
 	/**
@@ -540,7 +499,7 @@ class EntityManager implements EntityManagerContract {
 		) ) );
 
 		foreach ( $query->get_posts() as $post ) {
-			$blob = $this->find_blob( $post->ID );
+			$blob = $this->find( self::BLOB_CLASS, $post->ID, $params );
 
 			if ( ! is_wp_error( $blob ) ) {
 				$collection = $collection->add( $blob );
@@ -996,7 +955,7 @@ class EntityManager implements EntityManagerContract {
 
 		try {
 			wp_set_object_terms( $model->get_primary_id(), $model->language->slug, Language::get_taxonomy(), false );
-		} catch ( \Exception $exception ) {
+		} catch ( Exception $exception ) {
 			// @todo what to do?
 		}
 
