@@ -76,9 +76,68 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @return Model|WP_Error
 	 */
-	public function find( $class, $id ) {
+	public function find( $class, $id, array $params = array() ) {
 		if ( static::REPO_CLASS === $class ) {
-			return $this->find_repo( $id );
+			$reflection = new \ReflectionClass( $class );
+
+			if ( ! $reflection->isSubclassOf( 'Intraxia\Jaxion\Axolotl\Model' ) ) {
+				return new WP_Error( 'Invalid model' );
+			}
+
+			$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
+			$post  = get_post( $id );
+
+			if ( ! $post || $post->post_type !== $post_type ) {
+				return new WP_Error( 'Invalid id' );
+			}
+
+			/** @var Model $model */
+			$model = $reflection->newInstance( array( Model::OBJECT_KEY => $post ) );
+			$table = array();
+
+			foreach ( $model->get_table_keys() as $key ) {
+				// @todo handle related keys specially for now.
+				if ( in_array( $key, array( 'blobs' ) ) ) {
+					continue;
+				}
+
+				$value = $table[ $key ] = get_post_meta( $id, $this->make_meta_key( $key ), true );
+
+				// @todo enable custom getter/setter in models
+				if ( $key === 'sync' && ! $value ) {
+					$table[ $key ] = 'off';
+				}
+			}
+
+			if ( isset( $params['with'] ) ) {
+				if ( is_string( $params['with'] ) )  {
+					$params['with'] = array( $params['with'] );
+				}
+
+				foreach ( $params['with'] as $key ) {
+					$value = null;
+
+					switch ( $key ) {
+						case 'blobs';
+							$value = $this->find_by( self::BLOB_CLASS, array(
+								'post_parent' => $id,
+								'post_status' => $post->post_status,
+								'order'       => 'ASC',
+								'orderby'     => 'date',
+							) );
+							break;
+					}
+
+					if ( null !== $value ) {
+						$table[ $key ] = $value;
+					}
+				}
+			}
+
+			$model->set_attribute( Model::TABLE_KEY, $table );
+			$model->sync_original();
+
+			return $model;
 		}
 
 		if ( static::BLOB_CLASS === $class ) {
@@ -216,70 +275,6 @@ class EntityManager implements EntityManagerContract {
 	}
 
 	/**
-	 * Fetch a repo by its ID.
-	 *
-	 * @param {int} $id
-	 *
-	 * @return Repo|WP_Error
-	 */
-	protected function find_repo( $id ) {
-		if ( isset( $this->cache[ self::REPO_CLASS ][ $id ] ) ) {
-			return $this->cache[ self::REPO_CLASS ][ $id ];
-		}
-
-		$post  = get_post( $id );
-		$model = new Repo;
-
-		if ( ! $post || $post->post_type !== $model::get_post_type() ) {
-			return new WP_Error( 'Invalid id' );
-		}
-
-		$model->set_attribute( Model::OBJECT_KEY, $post );
-
-		$this->cache[ self::REPO_CLASS ][ $id ] = $model;
-
-		$model->unguard();
-
-		foreach ( $model->get_table_keys() as $key ) {
-			if ( 'blobs' === $key ) {
-				$model->set_attribute(
-					$key,
-					$blobs = $this->find_blobs_by( array(
-						'post_parent' => $id,
-						'post_status' => $post->post_status,
-						'order'       => 'ASC',
-						'orderby'     => 'date',
-					) )
-				);
-
-				foreach ( $blobs as $blob ) {
-					$blob->unguard();
-					$blob->set_attribute( 'repo', $model );
-					$blob->reguard();
-				}
-				continue;
-			}
-
-			$model->set_attribute(
-				$key,
-				$value = get_post_meta( $id, $this->make_meta_key( $key ), true )
-			);
-
-			// @todo enable custom getter/setter in models
-			if ( $key === 'sync' && ! $value ) {
-				$model->set_attribute( $key, 'off' );
-			}
-		}
-
-		$model->reguard();
-		$model->sync_original();
-
-		unset( $this->cache[ self::REPO_CLASS ][ $id ] );
-
-		return $model;
-	}
-
-	/**
 	 * Fetch a blob by its ID.
 	 *
 	 * @param {int} $id
@@ -291,8 +286,8 @@ class EntityManager implements EntityManagerContract {
 		$model = new Blob;
 
 		if ( ! $post ||
-		     $post->post_type !== $model::get_post_type() ||
-		     $post->post_parent === 0
+			$post->post_type !== $model::get_post_type() ||
+			$post->post_parent === 0
 		) {
 			return new WP_Error( 'Invalid id' );
 		}
@@ -518,7 +513,9 @@ class EntityManager implements EntityManagerContract {
 		) ) );
 
 		foreach ( $query->get_posts() as $post ) {
-			$repo = $this->find_repo( $post->ID );
+			$repo = $this->find( self::REPO_CLASS, $post->ID, array(
+				'with' => 'blobs',
+			) );
 
 			if ( ! is_wp_error( $repo ) ) {
 				$collection = $collection->add( $repo );

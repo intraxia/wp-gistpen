@@ -40,7 +40,12 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
-		$collection = $this->em->find_by( EntityManager::REPO_CLASS, $request->get_params() );
+		$collection = $this->em->find_by(
+			EntityManager::REPO_CLASS,
+			array_merge($request->get_params(), array(
+				'with' => 'blobs',
+			) )
+		);
 
 		if ( is_wp_error( $collection ) ) {
 			$collection->add_data( array( 'status' => 500 ) );
@@ -82,7 +87,9 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function view( WP_REST_Request $request ) {
-		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ), array(
+			'with' => 'blobs',
+		) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -102,7 +109,9 @@ class RepoController {
 	 */
 	public function update( WP_REST_Request $request ) {
 		/** @var Repo|WP_Error $model */
-		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ) );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ), array(
+			'with' => 'blobs',
+		) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 404 ) );
@@ -112,6 +121,16 @@ class RepoController {
 
 		$model->refresh( $request->get_json_params() );
 		$model = $this->em->persist( $model );
+
+		if ( is_wp_error( $model ) ) {
+			$model->add_data( array( 'status' => 500 ) );
+
+			return $model;
+		}
+
+		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ), array(
+			'with' => 'blobs',
+		) );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );

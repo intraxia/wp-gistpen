@@ -267,7 +267,7 @@ class Repo extends Model implements UsesWordPressPost {
 					}
 
 					if ( ! $matched ) {
-						$blobs = $blobs->add£¢( new Blob( $attribute ) );
+						$blobs = $blobs->add( new Blob( $attribute ) );
 					}
 				}
 			}

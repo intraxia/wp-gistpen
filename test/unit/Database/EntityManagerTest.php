@@ -55,7 +55,9 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_return_full_repo() {
 		/** @var Repo $model */
-		$model = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->assertInstanceOf( EntityManager::REPO_CLASS, $model );
 		$this->assertEquals( $this->repo, $model->get_underlying_wp_object() );
@@ -126,7 +128,9 @@ class EntityManagerTest extends TestCase {
 
 		/** @var Repo $model */
 		$model = $this->em->create( EntityManager::REPO_CLASS, $data );
-		$model = $this->em->find( EntityManager::REPO_CLASS, $model->ID );
+		$model = $this->em->find( EntityManager::REPO_CLASS, $model->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->assertInstanceOf( EntityManager::REPO_CLASS, $model );
 		$this->assertEquals(
@@ -154,7 +158,9 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_update_existing_repo() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$description = $repo->description = 'Updated Description';
 		$status      = $repo->status = 'draft';
@@ -163,7 +169,9 @@ class EntityManagerTest extends TestCase {
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->assertSame( $description, $repo->description );
 		$this->assertSame( $status, $repo->status );
@@ -173,7 +181,9 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_update_blob() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 		/** @var Blob $blob */
 		$blob = $repo->blobs->at( 0 );
 
@@ -183,7 +193,9 @@ class EntityManagerTest extends TestCase {
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 		$blob = $repo->blobs->at( 0 );
 
 		$this->assertSame( $code, $blob->code );
@@ -193,7 +205,9 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_add_new_blob() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 		$blob = new Blob;
 
 		$code     = $blob->code = 'some new php code';
@@ -204,7 +218,9 @@ class EntityManagerTest extends TestCase {
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->assertCount( 4, $repo->blobs );
 
@@ -217,14 +233,18 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_remove_missing_blob() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 		/** @var Blob $removed_blob */
 		$removed_blob = $repo->blobs->at( 0 );
 		$repo->blobs = $repo->blobs->remove_at( 0 );
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->assertCount( 2, $repo->blobs );
 
@@ -249,7 +269,9 @@ class EntityManagerTest extends TestCase {
 
 	public function test_should_delete_repo_and_all_blobs() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->em->delete( $repo, true );
 
@@ -260,7 +282,9 @@ class EntityManagerTest extends TestCase {
 		}
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->assertInstanceOf( 'WP_Error', $repo );
 	}

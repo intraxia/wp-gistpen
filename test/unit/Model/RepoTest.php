@@ -36,7 +36,9 @@ class RepoTest extends TestCase {
 
 	public function test_repo_should_have_correct_properties() {
 		/** @var Repo $repo */
-		$repo = $this->database->find( 'Intraxia\Gistpen\Model\Repo', $this->repo->ID );
+		$repo = $this->database->find( 'Intraxia\Gistpen\Model\Repo', $this->repo->ID, array(
+			'with' => 'blobs',
+		) );
 
 		$this->assertSame( $this->repo->ID, $repo->ID );
 		$this->assertSame( $this->repo->post_title, $repo->description );

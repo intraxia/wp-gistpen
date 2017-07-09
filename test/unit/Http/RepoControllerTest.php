@@ -40,9 +40,9 @@ class RepoControllerTest extends TestCase {
 			->andReturn( array() );
 		$this->database
 			->shouldReceive( 'find_by' )
-			->with( 'Intraxia\Jaxion\Model\Repo' )
-			->once()
-			->with( EntityManager::REPO_CLASS, array() )
+			->with( EntityManager::REPO_CLASS, array(
+				'with' => 'blobs',
+			) )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->index( $this->request ) );
@@ -59,7 +59,9 @@ class RepoControllerTest extends TestCase {
 			->andReturn( array() );
 		$this->database
 			->shouldReceive( 'find_by' )
-			->with( EntityManager::REPO_CLASS, array() )
+			->with( EntityManager::REPO_CLASS, array(
+				'with' => 'blobs',
+			) )
 			->once()
 			->andReturn( $collection );
 		$collection
@@ -131,7 +133,9 @@ class RepoControllerTest extends TestCase {
 			->andReturn( 1 );
 		$this->database
 			->shouldReceive( 'find' )
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => 'blobs',
+			) )
 			->once()
 			->andReturn( $error );
 
@@ -149,7 +153,9 @@ class RepoControllerTest extends TestCase {
 			->andReturn( 1 );
 		$this->database
 			->shouldReceive( 'find' )
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => 'blobs',
+			) )
 			->once()
 			->andReturn( $repo );
 		$repo
@@ -173,7 +179,9 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => 'blobs',
+			) )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->update( $this->request ) );
@@ -192,7 +200,9 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => 'blobs',
+			) )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
@@ -217,13 +227,15 @@ class RepoControllerTest extends TestCase {
 		$attrs = array( 'description' => 'Repo Description' );
 		$this->request
 			->shouldReceive( 'get_param' )
-			->once()
+			->twice()
 			->with( 'id' )
 			->andReturn( 1 );
 		$this->database
 			->shouldReceive( 'find' )
-			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->twice()
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => 'blobs',
+			) )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
