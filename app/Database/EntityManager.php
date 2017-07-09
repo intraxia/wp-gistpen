@@ -69,7 +69,7 @@ class EntityManager implements EntityManagerContract {
 	 * @return Model|WP_Error
 	 */
 	public function find( $class, $id, array $params = array() ) {
-		if ( static::REPO_CLASS === $class || static::BLOB_CLASS === $class || static::LANGUAGE_CLASS === $class ) {
+		if ( static::REPO_CLASS === $class || static::BLOB_CLASS === $class || static::LANGUAGE_CLASS === $class || static::COMMIT_CLASS === $class ) {
 			if ( ! isset( $params['with'] ) ) {
 				$params['with'] = array();
 			}
@@ -102,16 +102,35 @@ class EntityManager implements EntityManagerContract {
 					$table = array();
 
 					foreach ( $model->get_table_keys() as $key ) {
+						if ( 'states' === $key ) {
+							$table[ $key ] = new Collection( self::STATE_CLASS );
+						}
+
 						// @todo handle related keys specially for now.
-						if ( in_array( $key, array( 'blobs', 'language' ) ) ) {
+						if ( in_array( $key, array( 'blobs', 'language', 'states' ) ) ) {
 							continue;
 						}
 
-						$value = $table[ $key ] = get_post_meta( $id, $this->make_meta_key( $key ), true );
+						$value = $table[ $key ] = get_metadata( 'post', $id, $this->make_meta_key( $key ), true );
 
 						// @todo enable custom getter/setter in models
 						if ( $key === 'sync' && ! $value ) {
 							$table[ $key ] = 'off';
+						}
+
+						// Fallback for legacy metadata
+						// @todo move to migration
+						if ( $key === 'state_ids' ) {
+							$value = get_metadata( 'post', $id, '_wpgp_commit_meta', true);
+
+							if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
+								$model->set_attribute(
+									$key,
+									$value['state_ids']
+								);
+
+								delete_metadata( 'post', $id, '_wpgp_commit_meta'. true );
+							}
 						}
 					}
 					break;
@@ -168,6 +187,18 @@ class EntityManager implements EntityManagerContract {
 
 						$value = new Language( array( Model::OBJECT_KEY => $term ) );
 						break;
+					case 'states':
+						$value = new Collection( self::STATE_CLASS );
+
+						foreach ( $model->state_ids as $state_id ) {
+							/** @var State|WP_Error $state */
+							$state = $this->find_state( $state_id );
+
+							if ( ! is_wp_error( $state ) ) {
+								$value = $value->add( $state );
+							}
+						}
+						break;
 				}
 
 				if ( null !== $value ) {
@@ -179,10 +210,6 @@ class EntityManager implements EntityManagerContract {
 			$model->sync_original();
 
 			return $model;
-		}
-
-		if ( static::COMMIT_CLASS === $class ) {
-			return $this->find_commit( $id );
 		}
 
 		if ( static::STATE_CLASS === $class ) {
@@ -305,82 +332,6 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		return new WP_Error( 'Invalid class' );
-	}
-
-	/**
-	 * Fetch a commit by its ID.
-	 *
-	 * @param int   $id
-	 * @param array $params
-	 *
-	 * @return Commit|WP_Error
-	 *
-	 */
-	protected function find_commit( $id, array $params = array() ) {
-		$model = new Commit;
-		/** @var \WP_Post|null $post */
-		$post  = get_post( $id );
-
-		if ( ! $post ||
-		     $post->post_type !== $model->get_post_type() ||
-		     $post->post_parent === 0
-		) {
-			return new WP_Error( 'Invalid id' );
-		}
-
-		$model->set_attribute( Model::OBJECT_KEY, $post );
-		$model->unguard();
-
-		foreach ( $model->get_table_keys() as $key ) {
-			if ( 'states' === $key ) {
-				$model->set_attribute(
-					$key,
-					new Collection( self::STATE_CLASS )
-				);
-
-				continue;
-			}
-
-			$model->set_attribute(
-				$key,
-				get_metadata( 'post', $id, $this->make_meta_key( $key ), true )
-			);
-
-			// Fallback for legacy metadata
-			// @todo move to migration
-			if ( $key === 'state_ids' ) {
-				$value = get_metadata( 'post', $id, '_wpgp_commit_meta', true);
-
-				if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
-					$model->set_attribute(
-						$key,
-						$value['state_ids']
-					);
-
-					delete_metadata( 'post', $id, '_wpgp_commit_meta'. true );
-				}
-			}
-		}
-
-		if ( isset( $params['with'] ) && $params['with'] === 'states') {
-			$collection = new Collection( self::STATE_CLASS );
-
-			foreach ( $model->state_ids as $state_id ) {
-				/** @var State|WP_Error $state */
-				$state = $this->find_state( $state_id );
-
-				if ( ! is_wp_error( $state ) ) {
-					$collection = $collection->add( $state );
-				}
-			}
-
-			$model->set_attribute( 'states', $collection );
-		}
-
-		$model->reguard();
-		$model->sync_original();
-
-		return $model;
 	}
 
 	/**
@@ -534,7 +485,7 @@ class EntityManager implements EntityManagerContract {
 		) ) );
 
 		foreach ( $query->get_posts() as $post ) {
-			$commit = $this->find_commit( $post->ID, $params );
+			$commit = $this->find( self::COMMIT_CLASS, $post->ID, $params );
 
 			if ( ! is_wp_error( $commit ) ) {
 				$collection = $collection->add( $commit );
