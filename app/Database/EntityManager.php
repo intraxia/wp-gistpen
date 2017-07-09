@@ -17,6 +17,7 @@ use stdClass;
 use WP_Error;
 use WP_Query;
 use WP_Term;
+use WP_Term_Query;
 
 class EntityManager implements EntityManagerContract {
 	/**
@@ -176,7 +177,7 @@ class EntityManager implements EntityManagerContract {
 					) ) );
 					break;
 				case 'language':
-					$terms = get_the_terms( $post->ID, "{$this->prefix}_language" );
+					$terms = get_the_terms( $post->ID, Language::get_taxonomy() );
 
 					if ( $terms ) {
 						$term = array_pop( $terms );
@@ -221,27 +222,71 @@ class EntityManager implements EntityManagerContract {
 	 * @return Collection|WP_Error
 	 */
 	public function find_by( $class, array $params = array() ) {
-		if ( static::REPO_CLASS === $class ) {
-			return $this->find_repos_by( $params );
+		$reflection = new ReflectionClass( $class );
+
+		if ( ! $reflection->isSubclassOf( 'Intraxia\Jaxion\Axolotl\Model' ) ) {
+			return new WP_Error( 'Invalid model' );
 		}
 
-		if ( static::BLOB_CLASS === $class ) {
-			return $this->find_blobs_by( $params );
+		$collection = new Collection( $class );
+
+		switch ( true ) {
+			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost'):
+				$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
+				$parent_search = 'post_parent__in';
+
+				if ( $class === self::BLOB_CLASS ) {
+					$parent_search = 'post_parent__not_in';
+				}
+
+				$query_args = array(
+					'post_type'    => $post_type,
+					$parent_search => array( 0 ),
+					'fields'       => 'ids',
+				);
+
+				if ( $class === self::COMMIT_CLASS ) {
+					$query_args['post_parent'] = $params['repo_id'];
+				}
+
+				if ( $class === self::STATE_CLASS ) {
+					$query_args['post_parent'] = $params['blob_id'];
+				}
+
+				$query = new WP_Query( array_merge( $params, $query_args ) );
+
+				foreach ( $query->get_posts() as $id ) {
+					$model = $this->find( $class, $id, $params );
+
+					if ( ! is_wp_error( $model ) ) {
+						$collection = $collection->add( $model );
+					}
+				}
+				break;
+			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm'):
+				$taxonomy = $reflection->getMethod( 'get_taxonomy' )->invoke( null );
+				$collection = new Collection( $class );
+
+				$query = new WP_Term_Query( array_merge( $params, array(
+					'taxonomy'   => $taxonomy,
+					'hide_empty' => false,
+					'fields'     => 'ids',
+				) ) );
+
+				/** WP_Term $term */
+				foreach ( $query->get_terms() as $id ) {
+					$model = $this->find( $class, $id );
+
+					if ( ! is_wp_error( $model ) ) {
+						$collection = $collection->add( $model );
+					}
+				}
+				break;
+			default:
+				throw new Exception('Misconfigured Model' );
 		}
 
-		if ( static::LANGUAGE_CLASS === $class ) {
-			return $this->find_languages_by( $params );
-		}
-
-		if ( static::COMMIT_CLASS === $class ) {
-			return $this->find_commits_by( $params );
-		}
-
-		if ( static::STATE_CLASS === $class ) {
-			return $this->find_states_by( $params );
-		}
-
-		return new WP_Error( 'Invalid class' );
+		return $collection;
 	}
 
 	/**
@@ -325,137 +370,6 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		return new WP_Error( 'Invalid class' );
-	}
-
-	/**
-	 * Queries for repos by the provided params.
-	 *
-	 * @param array $params Query parameters.
-	 *
-	 * @return Collection<Repo>
-	 */
-	protected function find_repos_by( array $params = array() ) {
-		$collection = new Collection( self::REPO_CLASS );
-		$query      = new WP_Query( array_merge( $params, array(
-			'post_type'   => 'gistpen',
-			'post_parent' => 0,
-		) ) );
-
-		foreach ( $query->get_posts() as $post ) {
-			$repo = $this->find( self::REPO_CLASS, $post->ID, array(
-				'with' => 'blobs',
-			) );
-
-			if ( ! is_wp_error( $repo ) ) {
-				$collection = $collection->add( $repo );
-			}
-		}
-
-		return $collection;
-	}
-
-	/**
-	 * Queries for Blobs by the provided params.
-	 *
-	 * @param array $params Query parameters.
-	 *
-	 * @return Collection<Blob>
-	 */
-	protected function find_blobs_by( array $params = array() ) {
-		$collection = new Collection( self::BLOB_CLASS );
-		$query      = new WP_Query( array_merge( $params, array(
-			'post_type'           => 'gistpen',
-			'post_parent__not_in' => array( 0 ),
-		) ) );
-
-		foreach ( $query->get_posts() as $post ) {
-			$blob = $this->find( self::BLOB_CLASS, $post->ID, $params );
-
-			if ( ! is_wp_error( $blob ) ) {
-				$collection = $collection->add( $blob );
-			}
-		}
-
-		return $collection;
-	}
-
-	/**
-	 * Queries for Languages by the provided params.
-	 *
-	 * @param array $params Query parameters.
-	 *
-	 * @return Collection<Language>
-	 */
-	protected function find_languages_by( $params = array() ) {
-		$collection = new Collection( self::LANGUAGE_CLASS );
-
-		$query = new \WP_Term_Query( array_merge( $params, array(
-			'taxonomy'   => 'wpgp_language',
-			'hide_empty' => false,
-		) ) );
-
-		/** WP_Term $term */
-		foreach ( $query->get_terms() as $term ) {
-			$language = $this->find( self::LANGUAGE_CLASS, $term->term_id );
-
-			if ( ! is_wp_error( $language ) ) {
-				$collection = $collection->add( $language );
-			}
-		}
-
-		return $collection;
-	}
-
-	/**
-	 * Queries for Commits by the provided params.
-	 *
-	 * @param array $params Query parameters.
-	 *
-	 * @return Collection<Commit>
-	 */
-	public function find_commits_by( $params = array() ) {
-		$collection = new Collection( self::COMMIT_CLASS );
-
-		$query      = new WP_Query( array_merge( $params, array(
-			'post_type'           => 'revision',
-			'post_parent' => $params['repo_id'],
-		) ) );
-
-		foreach ( $query->get_posts() as $post ) {
-			$commit = $this->find( self::COMMIT_CLASS, $post->ID, $params );
-
-			if ( ! is_wp_error( $commit ) ) {
-				$collection = $collection->add( $commit );
-			}
-		}
-
-		return $collection;
-	}
-
-	/**
-	 * Queries for States by the provided params.
-	 *
-	 * @param array $params Query parameters.
-	 *
-	 * @return Collection<State>
-	 */
-	public function find_states_by( $params = array() ) {
-		$collection = new Collection( self::STATE_CLASS );
-
-		$query      = new WP_Query( array_merge( $params, array(
-			'post_type'   => 'revision',
-			'post_parent' => $params['blob_id'],
-		) ) );
-
-		foreach ( $query->get_posts() as $post ) {
-			$commit = $this->find( self::STATE_CLASS, $post->ID, $params );
-
-			if ( ! is_wp_error( $commit ) ) {
-				$collection = $collection->add( $commit );
-			}
-		}
-
-		return $collection;
 	}
 
 	/**
@@ -583,7 +497,7 @@ class EntityManager implements EntityManagerContract {
 			);
 		}
 
-		$language = $this->find_languages_by( array( 'slug' => $language_data['slug'] ) );
+		$language = $this->find_by( self::LANGUAGE_CLASS, array( 'slug' => $language_data['slug'] ) );
 
 		if ( count( $language ) === 0 ) {
 			$language = $this->create_language( $language_data );
@@ -620,7 +534,7 @@ class EntityManager implements EntityManagerContract {
 			}
 		}
 
-		$result = wp_insert_term( $model->slug, "{$this->prefix}_language" );
+		$result = wp_insert_term( $model->slug, Language::get_taxonomy() );
 
 		if ( is_wp_error( $result ) ) {
 			return $result;
@@ -732,7 +646,7 @@ class EntityManager implements EntityManagerContract {
 			);
 		}
 
-		$language = $this->find_languages_by( array( 'slug' => $language_data['slug'] ) );
+		$language = $this->find_by( self::LANGUAGE_CLASS, array( 'slug' => $language_data['slug'] ) );
 
 		if ( count( $language ) === 0 ) {
 			$language = $this->create_language( $language_data );
