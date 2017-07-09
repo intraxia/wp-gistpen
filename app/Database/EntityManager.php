@@ -69,7 +69,7 @@ class EntityManager implements EntityManagerContract {
 	 * @return Model|WP_Error
 	 */
 	public function find( $class, $id, array $params = array() ) {
-		if ( static::REPO_CLASS === $class || static::BLOB_CLASS === $class ) {
+		if ( static::REPO_CLASS === $class || static::BLOB_CLASS === $class || static::LANGUAGE_CLASS === $class ) {
 			if ( ! isset( $params['with'] ) ) {
 				$params['with'] = array();
 			}
@@ -115,9 +115,34 @@ class EntityManager implements EntityManagerContract {
 						}
 					}
 					break;
+				case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm'):
+					$taxonomy = $reflection->getMethod( 'get_taxonomy' )->invoke( null );
+					$term  = get_term( $id, $taxonomy );
+
+					if ( ! $term ) {
+						$term = new WP_Error( 'Error getting term' );
+					}
+
+					if ( is_wp_error( $term ) ) {
+						return $term;
+					}
+
+					/** @var Model $model */
+					$model = $reflection->newInstance( array( Model::OBJECT_KEY => $term ) );
+					$table = array();
+
+					foreach ( $model->get_table_keys() as $key ) {
+						switch ( $key ) {
+							default:
+								$table[ $key ] = get_term_meta( $term->term_id, $this->make_meta_key( $key ), true );
+						}
+					}
+					break;
 				default:
 					throw new Exception('Misconfigured Model' );
 			}
+
+			$model->set_attribute( Model::TABLE_KEY, $table );
 
 			foreach ( $params['with'] as $key => $params ) {
 				$value = null;
@@ -154,10 +179,6 @@ class EntityManager implements EntityManagerContract {
 			$model->sync_original();
 
 			return $model;
-		}
-
-		if ( static::LANGUAGE_CLASS === $class ) {
-			return $this->find_language( $id );
 		}
 
 		if ( static::COMMIT_CLASS === $class ) {
@@ -284,45 +305,6 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		return new WP_Error( 'Invalid class' );
-	}
-
-	/**
-	 * Fetch a language by its ID.
-	 *
-	 * @param {int} $id
-	 *
-	 * @return Language|WP_Error
-	 */
-	protected function find_language( $id ) {
-		$model = new Language;
-		$term  = get_term( $id, $model::get_taxonomy() );
-
-		if ( ! $term ) {
-			$term = new WP_Error( 'Error getting term' );
-		}
-
-		if ( is_wp_error( $term ) ) {
-			return $term;
-		}
-
-		$model->set_attribute( Model::OBJECT_KEY, $term );
-		$model->unguard();
-
-		foreach ( $model->get_table_keys() as $key ) {
-			switch ( $key ) {
-				default:
-					$model->set_attribute(
-						$key,
-						get_term_meta( $term->term_id, $this->make_meta_key( $key ), true )
-					);
-					break;
-			}
-		}
-
-		$model->reguard();
-		$model->sync_original();
-
-		return $model;
 	}
 
 	/**
@@ -526,7 +508,7 @@ class EntityManager implements EntityManagerContract {
 
 		/** WP_Term $term */
 		foreach ( $query->get_terms() as $term ) {
-			$language = $this->find_language( $term->term_id );
+			$language = $this->find( self::LANGUAGE_CLASS, $term->term_id );
 
 			if ( ! is_wp_error( $language ) ) {
 				$collection = $collection->add( $language );
