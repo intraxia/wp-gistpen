@@ -200,7 +200,7 @@ class EntityManagerTest extends TestCase {
 		$filename = $blob->filename = 'new-slug.php';
 		$language = $blob->language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )->at( 0 );
 
-		$repo->blobs->add( $blob );
+		$repo->blobs = $repo->blobs->add( $blob );
 
 		$this->em->persist( $repo );
 
@@ -220,7 +220,7 @@ class EntityManagerTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID );
 		/** @var Blob $removed_blob */
 		$removed_blob = $repo->blobs->at( 0 );
-		$repo->blobs->remove( 0 );
+		$repo->blobs = $repo->blobs->remove_at( 0 );
 
 		$this->em->persist( $repo );
 

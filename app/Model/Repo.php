@@ -193,14 +193,10 @@ class Repo extends Model implements UsesWordPressPost {
 		try {
 			$prev_blobs = $this->blobs;
 		} catch ( \Exception $exception ) {
-			$prev_blobs = new Collection( array(), array(
-				'model' => EntityManager::BLOB_CLASS,
-			) );
+			$prev_blobs = new Collection( EntityManager::BLOB_CLASS );
 		}
 
-		$new_blobs = new Collection( array(), array(
-			'model' => EntityManager::BLOB_CLASS,
-		) );
+		$new_blobs = new Collection( EntityManager::BLOB_CLASS );
 
 		if ( isset( $attributes['blobs'] ) ) {
 			if ( $attributes['blobs'] instanceof Collection ) {
@@ -227,7 +223,7 @@ class Repo extends Model implements UsesWordPressPost {
 						$blob = new Blob( $attribute );
 					}
 
-					$new_blobs->add( $blob );
+					$new_blobs = $new_blobs->add( $blob );
 				}
 			}
 
@@ -247,9 +243,7 @@ class Repo extends Model implements UsesWordPressPost {
 		try {
 			$blobs = $this->blobs;
 		} catch ( \Exception $exception ) {
-			$blobs = new Collection( array(), array(
-				'model' => EntityManager::BLOB_CLASS,
-			) );
+			$blobs = new Collection( EntityManager::BLOB_CLASS );
 		}
 
 		if ( isset( $attributes['blobs'] ) ) {
@@ -273,7 +267,7 @@ class Repo extends Model implements UsesWordPressPost {
 					}
 
 					if ( ! $matched ) {
-						$blobs->add( new Blob( $attribute ) );
+						$blobs = $blobs->add£¢( new Blob( $attribute ) );
 					}
 				}
 			}

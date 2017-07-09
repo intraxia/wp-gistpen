@@ -399,7 +399,7 @@ class EntityManager implements EntityManagerContract {
 			if ( 'states' === $key ) {
 				$model->set_attribute(
 					$key,
-					new Collection
+					new Collection( self::STATE_CLASS )
 				);
 
 				continue;
@@ -427,18 +427,18 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		if ( isset( $params['with'] ) && $params['with'] === 'states') {
-			$states = new Collection;
+			$collection = new Collection( self::STATE_CLASS );
 
 			foreach ( $model->state_ids as $state_id ) {
 				/** @var State|WP_Error $state */
 				$state = $this->find_state( $state_id );
 
 				if ( ! is_wp_error( $state ) ) {
-					$states->add( $state );
+					$collection = $collection->add( $state );
 				}
 			}
 
-			$model->set_attribute( 'states', $states );
+			$model->set_attribute( 'states', $collection );
 		}
 
 		$model->reguard();
@@ -511,9 +511,7 @@ class EntityManager implements EntityManagerContract {
 	 * @return Collection<Repo>
 	 */
 	protected function find_repos_by( array $params = array() ) {
-		$collection = new Collection( array(), array(
-			'model' => self::REPO_CLASS,
-		) );
+		$collection = new Collection( self::REPO_CLASS );
 		$query      = new WP_Query( array_merge( $params, array(
 			'post_type'   => 'gistpen',
 			'post_parent' => 0,
@@ -523,7 +521,7 @@ class EntityManager implements EntityManagerContract {
 			$repo = $this->find_repo( $post->ID );
 
 			if ( ! is_wp_error( $repo ) ) {
-				$collection->add( $repo );
+				$collection = $collection->add( $repo );
 			}
 		}
 
@@ -538,9 +536,7 @@ class EntityManager implements EntityManagerContract {
 	 * @return Collection<Blob>
 	 */
 	protected function find_blobs_by( array $params = array() ) {
-		$collection = new Collection( array(), array(
-			'model' => self::BLOB_CLASS,
-		) );
+		$collection = new Collection( self::BLOB_CLASS );
 		$query      = new WP_Query( array_merge( $params, array(
 			'post_type'           => 'gistpen',
 			'post_parent__not_in' => array( 0 ),
@@ -550,7 +546,7 @@ class EntityManager implements EntityManagerContract {
 			$blob = $this->find_blob( $post->ID );
 
 			if ( ! is_wp_error( $blob ) ) {
-				$collection->add( $blob );
+				$collection = $collection->add( $blob );
 			}
 		}
 
@@ -565,9 +561,7 @@ class EntityManager implements EntityManagerContract {
 	 * @return Collection<Language>
 	 */
 	protected function find_languages_by( $params = array() ) {
-		$collection = new Collection( array(), array(
-			'model' => self::LANGUAGE_CLASS,
-		) );
+		$collection = new Collection( self::LANGUAGE_CLASS );
 
 		$query = new \WP_Term_Query( array_merge( $params, array(
 			'taxonomy'   => 'wpgp_language',
@@ -579,7 +573,7 @@ class EntityManager implements EntityManagerContract {
 			$language = $this->find_language( $term->term_id );
 
 			if ( ! is_wp_error( $language ) ) {
-				$collection->add( $language );
+				$collection = $collection->add( $language );
 			}
 		}
 
@@ -594,9 +588,7 @@ class EntityManager implements EntityManagerContract {
 	 * @return Collection<Commit>
 	 */
 	public function find_commits_by( $params = array() ) {
-		$collection = new Collection( array(), array(
-			'model' => self::COMMIT_CLASS,
-		) );
+		$collection = new Collection( self::COMMIT_CLASS );
 
 		$query      = new WP_Query( array_merge( $params, array(
 			'post_type'           => 'revision',
@@ -607,7 +599,7 @@ class EntityManager implements EntityManagerContract {
 			$commit = $this->find_commit( $post->ID, $params );
 
 			if ( ! is_wp_error( $commit ) ) {
-				$collection->add( $commit );
+				$collection = $collection->add( $commit );
 			}
 		}
 
@@ -622,9 +614,7 @@ class EntityManager implements EntityManagerContract {
 	 * @return Collection<State>
 	 */
 	public function find_states_by( $params = array() ) {
-		$collection = new Collection( array(), array(
-			'model' => self::STATE_CLASS,
-		) );
+		$collection = new Collection( self::STATE_CLASS );
 
 		$query      = new WP_Query( array_merge( $params, array(
 			'post_type'   => 'revision',
@@ -635,7 +625,7 @@ class EntityManager implements EntityManagerContract {
 			$commit = $this->find_state( $post->ID, $params );
 
 			if ( ! is_wp_error( $commit ) ) {
-				$collection->add( $commit );
+				$collection = $collection->add( $commit );
 			}
 		}
 
@@ -651,10 +641,7 @@ class EntityManager implements EntityManagerContract {
 	 */
 	protected function create_repo( array $data ) {
 		$model = new Repo();
-
-		$blobs = new Collection( array(), array(
-			'model' => self::BLOB_CLASS,
-		) );
+		$blobs = new Collection( self::BLOB_CLASS );
 
 		/**
 		 * Set aside the `blobs` key for use.
