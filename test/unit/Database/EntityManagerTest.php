@@ -431,4 +431,30 @@ class EntityManagerTest extends TestCase {
 			}
 		}
 	}
+
+	public function test_should_update_commit() {
+		/** @var Commit $commit */
+		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID );
+
+		$description = $commit->description = 'New Description';
+
+		$commit = $this->em->persist( $commit );
+
+		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit);
+		$this->assertSame( $description, $commit->description );
+	}
+
+	public function test_should_update_state() {
+		/** @var State $state */
+		$state = $this->em->find( EntityManager::STATE_CLASS, $this->states[0] );
+
+		$filename = $state->filename = 'new-filename.php';
+		$code = $state->code = 'Some new PHP code is here';
+
+		$state = $this->em->persist( $state );
+
+		$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+		$this->assertSame( $filename, $state->filename );
+		$this->assertSame( $code, $state->code );
+	}
 }

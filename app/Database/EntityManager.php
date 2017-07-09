@@ -180,6 +180,14 @@ class EntityManager implements EntityManagerContract {
 			return $this->persist_language( $model );
 		}
 
+		if ( $model instanceof Commit ) {
+			return $this->persist_commit( $model );
+		}
+
+		if ( $model instanceof State ) {
+			return $this->persist_state( $model );
+		}
+
 		return new WP_Error( 'Invalid class' );
 	}
 
@@ -1042,6 +1050,62 @@ class EntityManager implements EntityManagerContract {
 		}
 
 		return $this->find( static::LANGUAGE_CLASS, $model->get_primary_id() );
+	}
+
+	/**
+	 * Updates a Repo to sync with the database.
+	 *
+	 * @param Commit $model
+	 *
+	 * @return Commit|WP_Error
+	 */
+	protected function persist_commit( Commit $model ) {
+		$result  = wp_update_post( $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		foreach ( $model->get_changed_table_attributes() as $key => $value ) {
+			update_metadata(
+				'post',
+				$model->get_primary_id() ,
+				"_{$this->prefix}_{$key}",
+				$value
+			);
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $model->get_primary_id() ) );
+
+		return $this->find( static::COMMIT_CLASS, $model->get_primary_id() );
+	}
+
+	/**
+	 * Updates a Repo to sync with the database.
+	 *
+	 * @param State $model
+	 *
+	 * @return State|WP_Error
+	 */
+	protected function persist_state( State $model ) {
+		$result  = wp_update_post( $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		foreach ( $model->get_changed_table_attributes() as $key => $value ) {
+			update_metadata(
+				'post',
+				$model->get_primary_id() ,
+				"_{$this->prefix}_{$key}",
+				$value
+			);
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $model->get_primary_id() ) );
+
+		return $this->find( static::STATE_CLASS, $model->get_primary_id() );
 	}
 
 	/**
