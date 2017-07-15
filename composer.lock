@@ -108,12 +108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "3988cfff3bbbc155b25103e60cd12f8f28365d00"
+                "reference": "250b3d90f2bda4d40b6e7878ebc4fe5a3055a762"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/3988cfff3bbbc155b25103e60cd12f8f28365d00",
-                "reference": "3988cfff3bbbc155b25103e60cd12f8f28365d00",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/250b3d90f2bda4d40b6e7878ebc4fe5a3055a762",
+                "reference": "250b3d90f2bda4d40b6e7878ebc4fe5a3055a762",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +143,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2017-07-09 04:45:23"
+            "time": "2017-07-15 22:31:29"
         },
         {
             "name": "knplabs/github-api",
@@ -558,7 +558,7 @@
                 }
             ],
             "description": "The Intraxia PHP Coding Standards.",
-            "time": "2016-10-01T19:46:52+00:00"
+            "time": "2016-10-01 19:46:52"
         },
         {
             "name": "mockery/mockery",
