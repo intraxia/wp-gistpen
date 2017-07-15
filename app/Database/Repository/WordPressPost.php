@@ -198,7 +198,7 @@ class WordPressPost extends AbstractRepository {
 				) );
 
 				if ( ! is_wp_error( $blob ) ) {
-					$blobs->add( $blob );
+					$blobs = $blobs->add( $blob );
 				}
 			}
 
