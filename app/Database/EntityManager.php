@@ -2,6 +2,9 @@
 namespace Intraxia\Gistpen\Database;
 
 use Exception;
+use Intraxia\Gistpen\Contract\Repository;
+use Intraxia\Gistpen\Database\Repository\WordPressPost;
+use Intraxia\Gistpen\Database\Repository\WordPressTerm;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
 use Intraxia\Gistpen\Model\Language;
@@ -11,13 +14,7 @@ use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager as EntityManagerContract;
-use InvalidArgumentException;
-use ReflectionClass;
-use stdClass;
 use WP_Error;
-use WP_Query;
-use WP_Term;
-use WP_Term_Query;
 
 class EntityManager implements EntityManagerContract {
 	/**
@@ -53,12 +50,24 @@ class EntityManager implements EntityManagerContract {
 	protected $prefix;
 
 	/**
+	 * Repositories for Model types.
+	 *
+	 * @var Repository[]
+	 */
+	protected $repositories;
+
+	/**
 	 * EntityManager constructor.
 	 *
 	 * @param string $prefix Meta prefix for entities.
 	 */
 	public function __construct( $prefix ) {
 		$this->prefix = $prefix;
+
+		$this->repositories = array(
+			'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost' => new WordPressPost( $this, $this->prefix ),
+			'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm' => new WordPressTerm( $this, $this->prefix ),
+		);
 	}
 
 	/**
@@ -70,147 +79,17 @@ class EntityManager implements EntityManagerContract {
 	 * @return Model|WP_Error
 	 */
 	public function find( $class, $id, array $params = array() ) {
-		if ( ! isset( $params['with'] ) ) {
-			$params['with'] = array();
-		}
-
-		if ( is_string( $params['with'] ) ) {
-			$params['with'] = array( $params['with'] => array() );
-		}
-
-		if ( ! is_array( $params['with'] ) ) {
-			throw new InvalidArgumentException( 'with' );
-		}
-
-		$reflection = new ReflectionClass( $class );
-
-		if ( ! $reflection->isSubclassOf( 'Intraxia\Jaxion\Axolotl\Model' ) ) {
+		if ( ! is_subclass_of( $class, 'Intraxia\Jaxion\Axolotl\Model' ) ) {
 			return new WP_Error( 'Invalid model' );
 		}
 
-		switch ( true ) {
-			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost'):
-				$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
-				// @todo validate post_parent === 0 if used for relation
-				$post  = get_post( $id );
-
-				if ( ! $post || $post->post_type !== $post_type ) {
-					return new WP_Error( 'Invalid id' );
-				}
-
-				/** @var Model $model */
-				$model = $reflection->newInstance( array( Model::OBJECT_KEY => $post ) );
-				$table = array();
-
-				foreach ( $model->get_table_keys() as $key ) {
-					if ( 'states' === $key ) {
-						$table[ $key ] = new Collection( self::STATE_CLASS );
-					}
-
-					// @todo handle related keys specially for now.
-					if ( in_array( $key, array( 'blobs', 'language', 'states' ) ) ) {
-						continue;
-					}
-
-					$value = $table[ $key ] = get_metadata( 'post', $id, $this->make_meta_key( $key ), true );
-
-					// @todo enable custom getter/setter in models
-					if ( $key === 'sync' && ! $value ) {
-						$table[ $key ] = 'off';
-					}
-
-					// Fallback for legacy metadata
-					// @todo move to migration
-					if ( $key === 'state_ids' ) {
-						$value = get_metadata( 'post', $id, '_wpgp_commit_meta', true);
-
-						if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
-							$model->set_attribute(
-								$key,
-								$value['state_ids']
-							);
-
-							delete_metadata( 'post', $id, '_wpgp_commit_meta'. true );
-						}
-					}
-				}
-				break;
-			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm'):
-				$taxonomy = $reflection->getMethod( 'get_taxonomy' )->invoke( null );
-				$term  = get_term( $id, $taxonomy );
-
-				if ( ! $term ) {
-					$term = new WP_Error( 'Error getting term' );
-				}
-
-				if ( is_wp_error( $term ) ) {
-					return $term;
-				}
-
-				/** @var Model $model */
-				$model = $reflection->newInstance( array( Model::OBJECT_KEY => $term ) );
-				$table = array();
-
-				foreach ( $model->get_table_keys() as $key ) {
-					switch ( $key ) {
-						default:
-							$table[ $key ] = get_term_meta( $term->term_id, $this->make_meta_key( $key ), true );
-					}
-				}
-				break;
-			default:
-				throw new Exception('Misconfigured Model' );
-		}
-
-		$model->set_attribute( Model::TABLE_KEY, $table );
-
-		foreach ( $params['with'] as $key => $params ) {
-			$value = null;
-
-			switch ( $key ) {
-				case 'blobs';
-					$value = $this->find_by( self::BLOB_CLASS, array_merge( $params, array(
-						'post_parent' => $id,
-						'post_status' => $post->post_status,
-						'order'       => 'ASC',
-						'orderby'     => 'date',
-					) ) );
-					break;
-				case 'language':
-					$terms = get_the_terms( $post->ID, Language::get_taxonomy() );
-
-					if ( $terms ) {
-						$term = array_pop( $terms );
-					} else {
-						$term       = new WP_Term( new stdClass );
-						$term->slug = 'none';
-					}
-
-					$value = new Language( array( Model::OBJECT_KEY => $term ) );
-					break;
-				case 'states':
-					$value = new Collection( self::STATE_CLASS );
-
-					foreach ( $model->state_ids as $state_id ) {
-						/** @var State|WP_Error $state */
-						$state = $this->find( self::STATE_CLASS, $state_id, $params );
-
-						if ( ! is_wp_error( $state ) ) {
-							$value = $value->add( $state );
-						}
-					}
-					break;
-			}
-
-			if ( null !== $value ) {
-				$table[ $key ] = $value;
+		foreach ( $this->repositories as $interface => $repository ) {
+			if ( is_subclass_of( $class, $interface ) ) {
+				return $repository->find( $class, $id, $params );
 			}
 		}
 
-		$model->set_attribute( Model::TABLE_KEY, $table );
-		$model->sync_original();
-
-		return $model;
+		return new WP_Error( 'Invalid Model' );
 	}
 
 	/**
@@ -222,71 +101,17 @@ class EntityManager implements EntityManagerContract {
 	 * @return Collection|WP_Error
 	 */
 	public function find_by( $class, array $params = array() ) {
-		$reflection = new ReflectionClass( $class );
-
-		if ( ! $reflection->isSubclassOf( 'Intraxia\Jaxion\Axolotl\Model' ) ) {
+		if ( ! is_subclass_of( $class, 'Intraxia\Jaxion\Axolotl\Model' ) ) {
 			return new WP_Error( 'Invalid model' );
 		}
 
-		$collection = new Collection( $class );
-
-		switch ( true ) {
-			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost'):
-				$post_type = $reflection->getMethod( 'get_post_type' )->invoke( null );
-				$parent_search = 'post_parent__in';
-
-				if ( $class === self::BLOB_CLASS ) {
-					$parent_search = 'post_parent__not_in';
-				}
-
-				$query_args = array(
-					'post_type'    => $post_type,
-					$parent_search => array( 0 ),
-					'fields'       => 'ids',
-				);
-
-				if ( $class === self::COMMIT_CLASS ) {
-					$query_args['post_parent'] = $params['repo_id'];
-				}
-
-				if ( $class === self::STATE_CLASS ) {
-					$query_args['post_parent'] = $params['blob_id'];
-				}
-
-				$query = new WP_Query( array_merge( $params, $query_args ) );
-
-				foreach ( $query->get_posts() as $id ) {
-					$model = $this->find( $class, $id, $params );
-
-					if ( ! is_wp_error( $model ) ) {
-						$collection = $collection->add( $model );
-					}
-				}
-				break;
-			case $reflection->implementsInterface( 'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm'):
-				$taxonomy = $reflection->getMethod( 'get_taxonomy' )->invoke( null );
-				$collection = new Collection( $class );
-
-				$query = new WP_Term_Query( array_merge( $params, array(
-					'taxonomy'   => $taxonomy,
-					'hide_empty' => false,
-					'fields'     => 'ids',
-				) ) );
-
-				/** WP_Term $term */
-				foreach ( $query->get_terms() as $id ) {
-					$model = $this->find( $class, $id );
-
-					if ( ! is_wp_error( $model ) ) {
-						$collection = $collection->add( $model );
-					}
-				}
-				break;
-			default:
-				throw new Exception('Misconfigured Model' );
+		foreach ( $this->repositories as $interface => $repository ) {
+			if ( is_subclass_of( $class, $interface ) ) {
+				return $repository->find_by( $class, $params );
+			}
 		}
 
-		return $collection;
+		return new WP_Error( 'Invalid Model' );
 	}
 
 	/**
