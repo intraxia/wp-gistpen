@@ -121,13 +121,15 @@ class WordPressTerm extends AbstractRepository {
 
 		$model->set_attribute( Model::OBJECT_KEY, get_term( $result['term_id'] ) );
 
-		foreach ( $model->get_changed_table_attributes() as $key => $attribute ) {
-			update_metadata(
-				'term',
-				$model->get_primary_id(),
-				$this->make_meta_key( $key ),
-				$attribute
-			);
+		foreach ( $model->get_table_attributes() as $key => $value ) {
+			if ( $model->get_original_attribute( $key ) !== $value ) {
+				update_metadata(
+					'term',
+					$model->get_primary_id(),
+					$this->make_meta_key( $key ),
+					$value
+				);
+			}
 		}
 
 		return $this->find( get_class( $model ), $model->get_primary_id() );

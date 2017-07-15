@@ -276,7 +276,11 @@ class EntityManagerTest extends TestCase {
 		$this->em->persist( $repo );
 
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
 		) );
 
 		$this->assertCount( 2, $repo->blobs );
