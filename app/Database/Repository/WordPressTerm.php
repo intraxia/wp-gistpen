@@ -66,10 +66,40 @@ class WordPressTerm extends AbstractRepository {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritdoc}
+	 *
+	 * @param string $class
+	 * @param array  $data
+	 * @param array  $options
+	 *
+	 * @return array|Model|WP_Error
 	 */
-	public function create( $class, array $data = array() ) {
-		// TODO: Implement create() method.
+	public function create( $class, array $data = array(), array $options = array() ) {
+		/** @var Model $model */
+		$model = new $class;
+
+		foreach ( $data as $key => $value ) {
+			$model->set_attribute( $key, $value );
+		}
+		/** @var UsesWordPressTerm $class */
+		$taxonomy = $class::get_taxonomy();
+		$result   = wp_insert_term( $model->slug, $taxonomy );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_term( $result['term_id'] ) );
+
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
+			update_term_meta(
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		return $model;
 	}
 
 	/**

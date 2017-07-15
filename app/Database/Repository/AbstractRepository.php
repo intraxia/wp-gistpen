@@ -25,7 +25,7 @@ abstract class AbstractRepository implements Repository {
 	/**
 	 * @var EntityManager
 	 */
-	private $em;
+	protected $em;
 
 	/**
 	 * AbstractRepository constructor.

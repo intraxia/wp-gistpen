@@ -2,7 +2,10 @@
 namespace Intraxia\Gistpen\Database\Repository;
 
 use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\Collection;
+use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
 use WP_Error;
@@ -122,8 +125,101 @@ class WordPressPost extends AbstractRepository {
 	/**
 	 * @inheritDoc
 	 */
-	public function create( $class, array $data = array() ) {
-		// TODO: Implement create() method.
+	public function create( $class, array $data = array(), array $options = array() ) {
+		/** @var Model $model */
+		$model = new $class;
+
+		/**
+		 * Set aside the `blobs` key for use.
+		 */
+		if ( isset( $data['blobs'] ) ) {
+			if ( is_array( $data['blobs'] ) ) {
+				$blobs_data = $data['blobs'];
+			}
+
+			unset( $data['blobs'] );
+		}
+
+		/**
+		 * Set aside the `language` key for use.
+		 */
+		if ( isset( $data['language'] ) ) {
+			if ( is_array( $data['language'] ) ) {
+				$language_data = $data['language'];
+			}
+
+			unset( $data['language'] );
+		}
+
+		$unguarded = isset( $options['unguarded'] ) && $options['unguarded'];
+
+		if ( $unguarded ) {
+			$model->unguard();
+		}
+
+		foreach ( $data as $key => $value ) {
+			$model->set_attribute( $key, $value );
+		}
+
+		if ( $unguarded ) {
+			$model->reguard();
+		}
+
+		$result = wp_insert_post( (array) $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
+
+		foreach ( $model->get_table_attributes() as $key => $attribute ) {
+			$result = update_metadata(
+				'post',
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		if ( isset( $blobs_data ) ) {
+			$blobs = new Collection( EntityManager::BLOB_CLASS );
+
+			foreach ( $blobs_data as $blob_data ) {
+				$blob_data['repo_id'] = $model->get_primary_id();
+				$blob_data['status'] = $model->get_attribute( 'status' );
+
+				$blob = $this->em->create( EntityManager::BLOB_CLASS, $blob_data, array(
+					'unguarded' => true,
+				) );
+
+				if ( ! is_wp_error( $blob ) ) {
+					$blobs->add( $blob );
+				}
+			}
+
+			$model->set_attribute( 'blobs', $blobs );
+		}
+
+		if ( isset( $language_data ) ) {
+			$language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => $language_data['slug'] ) );
+
+			if ( count( $language ) === 0 ) {
+				$language = $this->em->create( EntityManager::LANGUAGE_CLASS, $language_data );
+
+				if ( is_wp_error( $language ) ) {
+					return $language;
+				}
+			} else {
+				$language = $language->first();
+			}
+
+			$model->set_attribute( 'language', $language );
+
+			wp_set_object_terms( $model->get_primary_id(), $model->language->slug, Language::get_taxonomy(), false );
+		}
+
+		return $model;
 	}
 
 	/**
