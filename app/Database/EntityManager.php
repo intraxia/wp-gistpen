@@ -85,7 +85,15 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $this->repositories as $interface => $repository ) {
 			if ( is_subclass_of( $class, $interface ) ) {
-				return $repository->find( $class, $id, $params );
+				$model = $repository->find( $class, $id, $params );
+
+				if ( is_wp_error( $model ) ) {
+					return $model;
+				}
+
+				do_action( "{$this->prefix}.find.{$this->get_name( $class )}", $model );
+
+				return $model;
 			}
 		}
 
@@ -107,7 +115,15 @@ class EntityManager implements EntityManagerContract {
 
 		foreach ( $this->repositories as $interface => $repository ) {
 			if ( is_subclass_of( $class, $interface ) ) {
-				return $repository->find_by( $class, $params );
+				$collection = $repository->find_by( $class, $params );
+
+				if ( is_wp_error( $collection ) ) {
+					return $collection;
+				}
+
+				do_action( "{$this->prefix}.find_by.{$this->get_name( $class )}", $collection );
+
+				return $collection;
 			}
 		}
 
@@ -125,7 +141,15 @@ class EntityManager implements EntityManagerContract {
 	public function  create( $class, array $data = array(), array $options = array() ) {
 		foreach ( $this->repositories as $interface => $repository ) {
 			if ( is_subclass_of( $class, $interface ) ) {
-				return $repository->create( $class, $data, $options );
+				$model = $repository->create( $class, $data, $options );
+
+				if ( is_wp_error( $model ) ) {
+					return $model;
+				}
+
+				do_action( "{$this->prefix}.create.{$this->get_name( $class )}", $model );
+
+				return $model;
 			}
 		}
 
@@ -138,7 +162,15 @@ class EntityManager implements EntityManagerContract {
 	public function persist( Model $model ) {
 		foreach ( $this->repositories as $interface => $repository ) {
 			if ( is_subclass_of( $model, $interface ) ) {
-				return $repository->persist( $model );
+				$model = $repository->persist( $model );
+
+				if ( is_wp_error( $model ) ) {
+					return $model;
+				}
+
+				do_action( "{$this->prefix}.persist.{$this->get_name( $model )}", $model );
+
+				return $model;
 			}
 		}
 
@@ -156,10 +188,29 @@ class EntityManager implements EntityManagerContract {
 	public function delete( Model $model, $force = false ) {
 		foreach ( $this->repositories as $interface => $repository ) {
 			if ( is_subclass_of( $model, $interface ) ) {
-				return $repository->delete( $model, $force );
+				$model = $repository->delete( $model, $force );
+
+				if ( is_wp_error( $model ) ) {
+					return $model;
+				}
+
+				do_action( "{$this->prefix}.delete.{$this->get_name( $model )}", $model );
+
+				return $model;
 			}
 		}
 
 		return new WP_Error( 'Invalid class' );
+	}
+
+	private function get_name( $class ) {
+		if ( is_object( $class ) ) {
+			$class = get_class( $class );
+		}
+
+		$name = explode( '\\', $class );
+		$name = strtolower( array_pop( $name ) );
+
+		return $name;
 	}
 }
