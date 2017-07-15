@@ -166,7 +166,11 @@ class EntityManagerTest extends TestCase {
 	public function test_should_update_existing_repo() {
 		/** @var Repo $repo */
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
 		) );
 
 		$description = $repo->description = 'Updated Description';
@@ -189,7 +193,11 @@ class EntityManagerTest extends TestCase {
 	public function test_should_update_blob() {
 		/** @var Repo $repo */
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
 		) );
 		/** @var Blob $blob */
 		$blob = $repo->blobs->at( 0 );
@@ -217,14 +225,19 @@ class EntityManagerTest extends TestCase {
 	public function test_should_add_new_blob() {
 		/** @var Repo $repo */
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
 		) );
 		$blob = new Blob;
 
 		$code     = $blob->code = 'some new php code';
 		$filename = $blob->filename = 'new-slug.php';
-		$language = $blob->language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
-		                                       ->at( 0 );
+		$language = $blob->language = $this->em
+			->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
+			->first();
 
 		$repo->blobs = $repo->blobs->add( $blob );
 
@@ -250,7 +263,11 @@ class EntityManagerTest extends TestCase {
 	public function test_should_remove_missing_blob() {
 		/** @var Repo $repo */
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
-			'with' => 'blobs',
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
 		) );
 		/** @var Blob $removed_blob */
 		$removed_blob = $repo->blobs->at( 0 );
@@ -273,7 +290,7 @@ class EntityManagerTest extends TestCase {
 	public function test_should_update_language() {
 		/** @var Language $language */
 		$language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
-		                     ->at( 0 );
+			->at( 0 );
 
 		$slug = $language->slug = 'js';
 

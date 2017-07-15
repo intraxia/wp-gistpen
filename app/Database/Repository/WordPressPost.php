@@ -1,12 +1,16 @@
 <?php
+
 namespace Intraxia\Gistpen\Database\Repository;
 
+use Exception;
 use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
+use Intraxia\Jaxion\Axolotl\PropertyDoesNotExistException;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
 use WP_Error;
 use WP_Query;
@@ -25,7 +29,7 @@ class WordPressPost extends AbstractRepository {
 	public function find( $class, $id, array $params = array() ) {
 		/** @var UsesWordPressPost $class */
 		$post_type = $class::get_post_type();
-		$post  = get_post( $id );
+		$post      = get_post( $id );
 
 		if ( ! $post || $post->post_type !== $post_type ) {
 			return new WP_Error( 'Invalid id' );
@@ -59,7 +63,7 @@ class WordPressPost extends AbstractRepository {
 			// Fallback for legacy metadata
 			// @todo move to migration
 			if ( $key === 'state_ids' ) {
-				$value = get_post_meta( $id, '_wpgp_commit_meta', true);
+				$value = get_post_meta( $id, '_wpgp_commit_meta', true );
 
 				if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
 					$model->set_attribute(
@@ -67,7 +71,7 @@ class WordPressPost extends AbstractRepository {
 						$value['state_ids']
 					);
 
-					delete_metadata( 'post', $id, '_wpgp_commit_meta'. true );
+					delete_metadata( 'post', $id, '_wpgp_commit_meta' . true );
 				}
 			}
 		}
@@ -87,7 +91,7 @@ class WordPressPost extends AbstractRepository {
 	 */
 	public function find_by( $class, array $params = array() ) {
 		/** @var UsesWordPressPost $class */
-		$post_type = $class::get_post_type();
+		$post_type     = $class::get_post_type();
 		$parent_search = 'post_parent__in';
 
 		if ( $class === EntityManager::BLOB_CLASS ) {
@@ -109,7 +113,7 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		$collection = new Collection( $class );
-		$query = new WP_Query( array_merge( $params, $query_args ) );
+		$query      = new WP_Query( array_merge( $params, $query_args ) );
 
 		foreach ( $query->get_posts() as $id ) {
 			$model = $this->find( $class, $id, $params );
@@ -187,7 +191,7 @@ class WordPressPost extends AbstractRepository {
 
 			foreach ( $blobs_data as $blob_data ) {
 				$blob_data['repo_id'] = $model->get_primary_id();
-				$blob_data['status'] = $model->get_attribute( 'status' );
+				$blob_data['status']  = $model->get_attribute( 'status' );
 
 				$blob = $this->em->create( EntityManager::BLOB_CLASS, $blob_data, array(
 					'unguarded' => true,
@@ -226,7 +230,71 @@ class WordPressPost extends AbstractRepository {
 	 * @inheritDoc
 	 */
 	public function persist( Model $model ) {
-		// TODO: Implement persist() method.
+		$result = $model->get_primary_id() ?
+			wp_update_post( $model->get_underlying_wp_object(), true ) :
+			wp_insert_post( (array) $model->get_underlying_wp_object(), true );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
+
+		foreach ( $model->get_table_attributes() as $key => $value ) {
+			if ( in_array( $key, array( 'blobs', 'language', 'repo' ) ) ) {
+				continue;
+			}
+
+			if ( $model->get_original_attribute( $key ) !== $value ) {
+				update_metadata(
+					'post',
+					$model->get_primary_id(),
+					"_{$this->prefix}_{$key}",
+					$value
+				);
+			}
+		}
+
+		// Handle blobs
+		if ( $model instanceof Repo ) {
+			$deleted_blobs = $model->get_original_attribute( 'blobs' )
+				->filter( function ( Model $original_blob ) use ( &$model ) {
+					/** @var Model $blob */
+					foreach ( $model->blobs as $blob ) {
+						if ( $blob->get_primary_id() === $original_blob->get_primary_id() ) {
+							return false;
+						}
+					}
+
+					return true;
+				} );
+
+			/** @var Model $blob */
+			foreach ( $model->blobs as $blob ) {
+				$blob->unguard();
+				$blob->repo_id = $model->get_primary_id();
+				$blob->status  = $model->get_attribute( 'status' );
+				$blob->reguard();
+
+				$this->em->persist( $blob );
+			}
+
+			/** @var Model $deleted_blob */
+			foreach ( $deleted_blobs as $deleted_blob ) {
+				wp_trash_post( $deleted_blob->get_primary_id() );
+			}
+		}
+
+		if ( $model instanceof Blob ) {
+			wp_set_object_terms(
+				$model->get_primary_id(),
+				$model->language->slug,
+				Language::get_taxonomy(),
+				false
+			);
+		}
+
+		return $this->find( get_class( $model ), $model->get_primary_id() );
 	}
 
 	/**

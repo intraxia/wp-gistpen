@@ -2,6 +2,7 @@
 
 namespace Intraxia\Gistpen\Database\Repository;
 
+use Intraxia\Gistpen\Model\Language;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm;
@@ -72,7 +73,7 @@ class WordPressTerm extends AbstractRepository {
 	 * @param array  $data
 	 * @param array  $options
 	 *
-	 * @return array|Model|WP_Error
+	 * @return Model|WP_Error
 	 */
 	public function create( $class, array $data = array(), array $options = array() ) {
 		/** @var Model $model */
@@ -106,7 +107,30 @@ class WordPressTerm extends AbstractRepository {
 	 * @inheritDoc
 	 */
 	public function persist( Model $model ) {
-		// TODO: Implement persist() method.
+		$result  = $model->get_primary_id() ?
+			wp_update_term(
+				$model->get_primary_id(),
+				Language::get_taxonomy(),
+				(array) $model->get_underlying_wp_object()
+			) :
+			wp_insert_term( $model->slug, "{$this->prefix}_language" );
+
+		if ( is_wp_error( $result ) ) {
+			return $result;
+		}
+
+		$model->set_attribute( Model::OBJECT_KEY, get_term( $result['term_id'] ) );
+
+		foreach ( $model->get_changed_table_attributes() as $key => $attribute ) {
+			update_metadata(
+				'term',
+				$model->get_primary_id(),
+				$this->make_meta_key( $key ),
+				$attribute
+			);
+		}
+
+		return $this->find( get_class( $model ), $model->get_primary_id() );
 	}
 
 	/**
