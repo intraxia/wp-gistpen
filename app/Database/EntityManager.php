@@ -154,85 +154,12 @@ class EntityManager implements EntityManagerContract {
 	 * @return WP_Error|mixed
 	 */
 	public function delete( Model $model, $force = false ) {
-		if ( $model instanceof Repo ) {
-			return $this->delete_repo( $model, $force );
-		}
-
-		if ( $model instanceof Blob ) {
-			return $this->delete_blob( $model, $force );
-		}
-
-		if ( $model instanceof Language ) {
-			return $this->delete_language( $model, $force );
+		foreach ( $this->repositories as $interface => $repository ) {
+			if ( is_subclass_of( $model, $interface ) ) {
+				return $repository->delete( $model, $force );
+			}
 		}
 
 		return new WP_Error( 'Invalid class' );
-	}
-
-	/**
-	 * Deletes the Repo and all its associated Blobs.
-	 *
-	 * @param Repo $model
-	 * @param bool $force
-	 *
-	 * @return Repo|WP_Error
-	 */
-	protected function delete_repo( Repo $model, $force ) {
-		$id = $model->get_primary_id();
-
-		if ( ! $id ) {
-			return new WP_Error( __( 'Repo does not exist in the database.' ) );
-		}
-
-		$result = wp_delete_post( $id, $force );
-
-		if ( ! $result ) {
-			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
-		}
-
-		foreach ( $model->blobs as $blob ) {
-			$this->delete_blob( $blob, $force );
-		}
-
-		return $model;
-	}
-
-	/**
-	 * Delete a Blob from the database.
-	 *
-	 * @param Blob $model
-	 * @param bool $force
-	 *
-	 * @return Blob|WP_Error
-	 */
-	protected function delete_blob( Blob $model, $force ) {
-		$id = $model->get_primary_id();
-
-		if ( ! $id ) {
-			return new WP_Error( __( 'Repo does not exist in the database.' ) );
-		}
-
-		$result = wp_delete_post( $id, $force );
-
-		if ( ! $result ) {
-			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
-		}
-
-		return $model;
-	}
-
-	protected function delete_language( Language $model, $force ) {
-		return new WP_Error( 'not implemented' );
-	}
-
-	/**
-	 * Wraps the given key with the string required to make it a meta key.
-	 *
-	 * @param {string} $key Key to turn into meta key.
-	 *
-	 * @return string Generated meta key.
-	 */
-	protected function make_meta_key( $key ) {
-		return "_{$this->prefix}_{$key}";
 	}
 }

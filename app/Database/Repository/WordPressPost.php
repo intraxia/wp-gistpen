@@ -301,6 +301,24 @@ class WordPressPost extends AbstractRepository {
 	 * @inheritDoc
 	 */
 	public function delete( Model $model, $force = false ) {
-		// TODO: Implement delete() method.
+		$id = $model->get_primary_id();
+
+		if ( ! $id ) {
+			return new WP_Error( __( 'Repo does not exist in the database.' ) );
+		}
+
+		$result = wp_delete_post( $id, $force );
+
+		if ( ! $result ) {
+			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
+		}
+
+		if ( $model instanceof Repo ) {
+			foreach ( $model->blobs as $blob ) {
+				$this->em->delete( $blob, $force );
+			}
+		}
+
+		return $model;
 	}
 }

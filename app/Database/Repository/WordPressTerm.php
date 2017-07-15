@@ -137,6 +137,6 @@ class WordPressTerm extends AbstractRepository {
 	 * @inheritDoc
 	 */
 	public function delete( Model $model, $force = false ) {
-		// TODO: Implement delete() method.
+		return new WP_Error( 'not implemented' );
 	}
 }
