@@ -39,6 +39,7 @@ class App extends Application {
 		'Intraxia\Gistpen\Providers\EmbedServiceProvider',
 		'Intraxia\Gistpen\Providers\RouterServiceProvider',
 		'Intraxia\Gistpen\Providers\ParamsServiceProvider',
+		'Intraxia\Gistpen\Providers\ListenerServiceProvider',
 	);
 
 	/**
