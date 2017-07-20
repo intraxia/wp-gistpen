@@ -73,21 +73,25 @@ abstract class TestCase extends WP_UnitTestCase {
 		wp_set_current_user( $this->user_id );
 	}
 
-	public function create_post_and_children() {
+	public function create_post_and_children( $with_revision = true ) {
 		$this->repo   = $this->factory->gistpen->create_and_get();
 		$repo         = (array) $this->repo;
 		unset( $repo['ID'] );
 
-		$this->commit = get_post( wp_insert_post( array_merge( $repo, array(
-			'post_parent' => $this->repo->ID,
-			'post_type'   => 'revision',
-		) ) ) );
+		if ( $with_revision ) {
+			$this->commit = get_post( wp_insert_post( array_merge( $repo, array(
+				'post_parent' => $this->repo->ID,
+				'post_type'   => 'revision',
+			) ) ) );
+		}
 
 		$this->blobs = $this->factory->gistpen->create_many( 3, array(
 			'post_parent' => $this->repo->ID
 		) );
 
-		$this->states = array();
+		if ( $with_revision ) {
+			$this->states = array();
+		}
 
 		foreach ( $this->blobs as $blob_id ) {
 			wp_set_object_terms( $blob_id, 'php', 'wpgp_language', false );
@@ -95,15 +99,20 @@ abstract class TestCase extends WP_UnitTestCase {
 			$blob = get_post( $blob_id, ARRAY_A );
 			unset( $blob['ID'] );
 
-			$state_id = $this->states[] = wp_insert_post( array_merge( $blob, array(
-				'post_parent' => $blob_id,
-				'post_type'   => 'revision',
-			) ) );
+			if ( $with_revision ) {
+				$state_id = $this->states[] = wp_insert_post( array_merge( $blob, array(
+					'post_parent' => $blob_id,
+					'post_type'   => 'revision',
+				) ) );
 
-			wp_set_object_terms( $state_id, 'php', 'wpgp_language', false );
+				wp_set_object_terms( $state_id, 'php', 'wpgp_language', false );
+			}
+
 		}
 
-		update_metadata( 'post', $this->commit->ID, '_wpgp_state_ids', $this->states );
+		if ( $with_revision ) {
+			update_metadata( 'post', $this->commit->ID, '_wpgp_state_ids', $this->states );
+		}
 
 		$this->language = get_term_by( 'slug', 'php', 'wpgp_language' );
 
