@@ -384,7 +384,7 @@ class EntityManagerTest extends TestCase {
 		}
 	}
 
-	public function should_return_single_commit() {
+	public function test_should_return_single_commit() {
 		/** @var Commit $commit */
 		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID );
 
@@ -396,7 +396,7 @@ class EntityManagerTest extends TestCase {
 		$this->assertCount( 0, $commit->states );
 	}
 
-	public function should_return_single_commit_with_states() {
+	public function test_should_return_single_commit_with_states() {
 		/** @var Commit $commit */
 		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID, array(
 			'with' => 'states'

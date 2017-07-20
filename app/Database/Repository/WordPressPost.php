@@ -5,8 +5,10 @@ namespace Intraxia\Gistpen\Database\Repository;
 use Exception;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
+use Intraxia\Gistpen\Model\Commit;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
@@ -291,6 +293,29 @@ class WordPressPost extends AbstractRepository {
 				$model->language->slug,
 				Language::get_taxonomy(),
 				false
+			);
+		}
+
+		if ( $model instanceof Commit && $model->states ) {
+			$states = new Collection( EntityManager::STATE_CLASS );
+
+			foreach ( $model->states as $state ) {
+				$state = $this->em->persist( $state );
+
+				if ( ! is_wp_error( $state ) ) {
+					$states = $states->add( $state );
+				}
+			}
+
+			$state_ids = $states->map(function (State $state ) {
+				return $state->ID;
+			} )->to_array();
+
+			update_metadata(
+				'post',
+				$model->get_primary_id(),
+				"_{$this->prefix}_state_ids",
+				$state_ids
 			);
 		}
 
