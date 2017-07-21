@@ -41,7 +41,11 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find_by' )
 			->with( EntityManager::REPO_CLASS, array(
-				'with' => 'blobs',
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
 			) )
 			->andReturn( $error );
 
@@ -60,7 +64,11 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find_by' )
 			->with( EntityManager::REPO_CLASS, array(
-				'with' => 'blobs',
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
 			) )
 			->once()
 			->andReturn( $collection );
@@ -134,7 +142,11 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->with( EntityManager::REPO_CLASS, 1, array(
-				'with' => 'blobs',
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
 			) )
 			->once()
 			->andReturn( $error );
@@ -154,7 +166,11 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->with( EntityManager::REPO_CLASS, 1, array(
-				'with' => 'blobs',
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
 			) )
 			->once()
 			->andReturn( $repo );
@@ -180,7 +196,11 @@ class RepoControllerTest extends TestCase {
 			->shouldReceive( 'find' )
 			->once()
 			->with( EntityManager::REPO_CLASS, 1, array(
-				'with' => 'blobs',
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
 			) )
 			->andReturn( $error );
 
@@ -201,7 +221,11 @@ class RepoControllerTest extends TestCase {
 			->shouldReceive( 'find' )
 			->once()
 			->with( EntityManager::REPO_CLASS, 1, array(
-				'with' => 'blobs',
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
 			) )
 			->andReturn( $repo );
 		$this->request
@@ -227,14 +251,18 @@ class RepoControllerTest extends TestCase {
 		$attrs = array( 'description' => 'Repo Description' );
 		$this->request
 			->shouldReceive( 'get_param' )
-			->twice()
+			->once()
 			->with( 'id' )
 			->andReturn( 1 );
 		$this->database
 			->shouldReceive( 'find' )
 			->twice()
 			->with( EntityManager::REPO_CLASS, 1, array(
-				'with' => 'blobs',
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
 			) )
 			->andReturn( $repo );
 		$this->request
@@ -270,7 +298,13 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
+			) )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->apply( $this->request ) );
@@ -289,7 +323,13 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
+			) )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
@@ -319,8 +359,14 @@ class RepoControllerTest extends TestCase {
 			->andReturn( 1 );
 		$this->database
 			->shouldReceive( 'find' )
-			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->twice()
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
+			) )
 			->andReturn( $repo );
 		$this->request
 			->shouldReceive( 'get_json_params' )
@@ -355,7 +401,13 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
+			) )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->trash( $this->request ) );
@@ -373,7 +425,13 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
+			) )
 			->andReturn( $repo );
 		$this->database
 			->shouldReceive( 'delete' )
@@ -395,7 +453,13 @@ class RepoControllerTest extends TestCase {
 		$this->database
 			->shouldReceive( 'find' )
 			->once()
-			->with( EntityManager::REPO_CLASS, 1 )
+			->with( EntityManager::REPO_CLASS, 1, array(
+				'with' => array(
+					'blobs' => array(
+						'with' => 'language',
+					),
+				),
+			) )
 			->andReturn( $repo );
 		$this->database
 			->shouldReceive( 'delete' )
