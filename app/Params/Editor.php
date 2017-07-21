@@ -41,7 +41,13 @@ class Editor implements HasFilters {
 	 */
 	public function apply_editor( $params ) {
 		/** @var RepoModel $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID() );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID(), array(
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
+		) );
 
 		// @todo move to accessors?
 		if ( 'auto-draft' === $repo->status ) {

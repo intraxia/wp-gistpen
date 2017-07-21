@@ -35,7 +35,13 @@ class Repo implements HasFilters {
 	 */
 	public function apply_repo( $params ) {
 		/** @var RepoModel $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID() );
+		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID(), array(
+			'with' => array(
+				'blobs' => array(
+					'with' => 'language',
+				),
+			),
+		) );
 
 		if ( is_wp_error( $repo ) ) {
 			// @todo

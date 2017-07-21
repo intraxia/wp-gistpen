@@ -34,7 +34,9 @@ class Blob implements HasFilters {
 	 */
 	public function apply_prism( $params ) {
 		/** @var BlobModel $blob */
-		$blob = $this->em->find( EntityManager::BLOB_CLASS, get_the_ID() );
+		$blob = $this->em->find( EntityManager::BLOB_CLASS, get_the_ID(), array(
+			'with' => 'language'
+		) );
 
 		if ( is_wp_error( $blob ) ) {
 			// @todo
