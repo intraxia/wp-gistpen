@@ -132,6 +132,9 @@ class DatabaseTest extends TestCase {
 		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
+			'orderby' => 'ID',
+			'order'   => 'DESC',
+
 		) );
 
 		$this->assertCount( 2, $commits );
@@ -180,7 +183,7 @@ class DatabaseTest extends TestCase {
 		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
-			'orderby' => 'date',
+			'orderby' => 'ID',
 			'order'   => 'DESC',
 		) );
 
@@ -235,7 +238,7 @@ class DatabaseTest extends TestCase {
 		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
-			'orderby' => 'date',
+			'orderby' => 'ID',
 			'order'   => 'DESC',
 		) );
 
