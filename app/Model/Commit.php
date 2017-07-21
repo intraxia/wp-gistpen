@@ -17,8 +17,7 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property int[]      $state_ids
  * @property Collection $states
  * @property string     $rest_url
- * @property string     $commits_url
- * @property string     $html_url
+ * @property string     $states_url
  * @property string     $committed_at
  */
 class Commit extends Model implements UsesWordPressPost {
@@ -65,8 +64,7 @@ class Commit extends Model implements UsesWordPressPost {
 		'description',
 		'blobs',
 		'rest_url',
-		'commits_url',
-		'html_url',
+		'states_url',
 		'committed_at',
 	);
 
@@ -113,5 +111,31 @@ class Commit extends Model implements UsesWordPressPost {
 	 */
 	protected function map_committed_at() {
 		return 'post_date';
+	}
+
+	/**
+	 * Compute rest_url from current properties.
+	 *
+	 * @return string
+	 */
+	protected function compute_rest_url() {
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/repos/%s/commits/%s',
+			$this->repo_id,
+			$this->ID
+		) );
+	}
+
+	/**
+	 * Compute states url from current properties.
+	 *
+	 * @return string
+	 */
+	protected function compute_states_url() {
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/repos/%s/commits/%s/states',
+			$this->repo_id,
+			$this->ID
+		) );
 	}
 }
