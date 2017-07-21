@@ -1,4 +1,5 @@
 <?php
+
 namespace Intraxia\Gistpen\Database;
 
 use Exception;
@@ -138,13 +139,23 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @return Model|WP_Error
 	 */
-	public function  create( $class, array $data = array(), array $options = array() ) {
+	public function create( $class, array $data = array(), array $options = array() ) {
 		foreach ( $this->repositories as $interface => $repository ) {
 			if ( is_subclass_of( $class, $interface ) ) {
 				$model = $repository->create( $class, $data, $options );
 
 				if ( is_wp_error( $model ) ) {
 					return $model;
+				}
+
+				if ( $model instanceof Repo ) {
+					$model = $this->find( self::REPO_CLASS, $model->ID, array(
+						'with' => array(
+							'blobs' => array(
+								'with' => 'language',
+							),
+						),
+					) );
 				}
 
 				do_action( "{$this->prefix}.create.{$this->get_name( $class )}", $model );
@@ -166,6 +177,16 @@ class EntityManager implements EntityManagerContract {
 
 				if ( is_wp_error( $model ) ) {
 					return $model;
+				}
+
+				if ( $model instanceof Repo ) {
+					$model = $this->find( self::REPO_CLASS, $model->ID, array(
+						'with' => array(
+							'blobs' => array(
+								'with' => 'language',
+							),
+						),
+					) );
 				}
 
 				do_action( "{$this->prefix}.persist.{$this->get_name( $model )}", $model );
