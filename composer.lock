@@ -108,12 +108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "250b3d90f2bda4d40b6e7878ebc4fe5a3055a762"
+                "reference": "418b720db546a68c70a5b179e7fbeaf223a35b23"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/250b3d90f2bda4d40b6e7878ebc4fe5a3055a762",
-                "reference": "250b3d90f2bda4d40b6e7878ebc4fe5a3055a762",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/418b720db546a68c70a5b179e7fbeaf223a35b23",
+                "reference": "418b720db546a68c70a5b179e7fbeaf223a35b23",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +143,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2017-07-15 22:31:29"
+            "time": "2017-07-21 01:38:54"
         },
         {
             "name": "knplabs/github-api",
@@ -209,7 +209,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.24",
+            "version": "v2.8.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -1565,7 +1565,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.24",
+            "version": "v2.8.25",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
