@@ -130,7 +130,7 @@ class Database implements HasActions {
 				'method' => 'add_commit',
 			),
 			array(
-				'hook'   => 'wpgp.create.repo',
+				'hook'   => 'wpgp.persist.repo',
 				'method' => 'add_commit',
 			),
 		);
