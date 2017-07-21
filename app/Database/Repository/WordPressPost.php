@@ -287,13 +287,15 @@ class WordPressPost extends AbstractRepository {
 			}
 		}
 
-		if ( $model instanceof Blob ) {
-			wp_set_object_terms(
-				$model->get_primary_id(),
-				$model->language->slug,
-				Language::get_taxonomy(),
-				false
-			);
+		if ( $model instanceof Blob || $model instanceof State ) {
+			if ( $model->language ) {
+				wp_set_object_terms(
+					$model->get_primary_id(),
+					$model->language->slug,
+					Language::get_taxonomy(),
+					false
+				);
+			}
 		}
 
 		if ( $model instanceof Commit && $model->states ) {

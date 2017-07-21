@@ -340,6 +340,7 @@ class DatabaseTest extends TestCase {
 			),
 		) );
 
+		/** @var Blob $blob */
 		$blob = $repo->blobs->at( 0 );
 
 		$blob->code = 'some new php code';
@@ -365,6 +366,9 @@ class DatabaseTest extends TestCase {
 			if ( $state->blob_id === $blob->ID ) {
 				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
 					'blob_id' => $blob->ID,
+					// ID because the 2 commits are saving at the same time.
+					'orderby' => 'ID',
+					'order'   => 'DESC',
 				) );
 
 				$this->assertCount( 2, $states );
@@ -393,6 +397,7 @@ class DatabaseTest extends TestCase {
 			),
 		) );
 
+		/** @var Blob $blob */
 		$blob = $repo->blobs->at( 0 );
 
 		$blob->filename = 'new-slug.php';
@@ -418,12 +423,15 @@ class DatabaseTest extends TestCase {
 			if ( $state->blob_id === $blob->ID ) {
 				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
 					'blob_id' => $blob->ID,
+					// ID because the 2 commits are saving at the same time.
+					'orderby' => 'ID',
+					'order'   => 'DESC',
 				) );
 
 				$this->assertCount( 2, $states );
 				$state = $states->first();
 
-				$this->assertEquals( $blob->code, $state->code );
+				$this->assertEquals( $blob->filename, $state->filename );
 			} else {
 				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
 					'blob_id' => $state->blob_id,
@@ -446,6 +454,7 @@ class DatabaseTest extends TestCase {
 			),
 		) );
 
+		/** @var Blob $blob */
 		$blob = $repo->blobs->at( 0 );
 
 		wp_set_object_terms( $blob->ID, 'js', 'wpgp_language', false );
@@ -473,12 +482,16 @@ class DatabaseTest extends TestCase {
 			if ( $state->blob_id === $blob->ID ) {
 				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
 					'blob_id' => $blob->ID,
+					'with' => 'language',
+					// ID because the 2 commits are saving at the same time.
+					'orderby' => 'ID',
+					'order'   => 'DESC',
 				) );
 
 				$this->assertCount( 2, $states );
 				$state = $states->first();
 
-				$this->assertEquals( $blob->code, $state->code );
+				$this->assertEquals( $blob->language->ID, $state->language->ID );
 			} else {
 				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
 					'blob_id' => $state->blob_id,
