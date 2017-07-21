@@ -3,7 +3,7 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Gistpen\View\Button;
 use Intraxia\Gistpen\View\Content;
-use Intraxia\Gistpen\View\Editor;
+use Intraxia\Gistpen\View\Edit;
 use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
@@ -17,17 +17,15 @@ class ViewServiceProvider implements ServiceProvider {
 		$container
 			->define( 'view.content', function ( Container $container ) {
 				return new Content(
-					$container->fetch( 'database' ),
-					$container->fetch( 'options.site' ),
+					$container->fetch( 'params' ),
 					$container->fetch( 'templating' ),
-					$container->fetch( 'assets' ),
-					$container->fetch( 'url' )
+					$container->fetch( 'assets' )
 				);
 			} )
 			->define( 'view.editor', function ( Container $container ) {
-				return new Editor(
+				return new Edit(
 					$container->fetch( 'database' ),
-					$container->fetch( 'options.user' ),
+					$container->fetch( 'params' ),
 					$container->fetch( 'templating' ),
 					$container->fetch( 'path' ),
 					$container->fetch( 'url' )
@@ -35,15 +33,14 @@ class ViewServiceProvider implements ServiceProvider {
 			} )
 			->define( 'view.settings', function ( Container $container ) {
 				return new Settings(
+					$container->fetch( 'params' ),
 					$container->fetch( 'templating' ),
-					$container->fetch( 'options.site' ),
-					$container->fetch( 'database' ),
 					$container->fetch( 'basename' ),
 					$container->fetch( 'url' )
 				);
 			} )
 			->define( 'view.button', function ( Container $container ) {
-				return new Button( $container->fetch('templating'), $container->fetch( 'url' ) );
+				return new Button( $container->fetch('templating'), $container->fetch( 'params' ), $container->fetch( 'url' ) );
 			} );
 	}
 }

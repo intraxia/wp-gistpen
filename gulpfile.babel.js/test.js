@@ -11,10 +11,13 @@ gulp.task('test:unit', done => {
     const server = new Server({
         configFile: __dirname + '/karma.conf.js',
         singleRun: true
-    }, () => {
+    }, err => {
         gutil.log('Tests complete');
-
-        done();
+        if (err) {
+            done(err);
+        } else {
+            done();
+        }
     });
 
     server.start();

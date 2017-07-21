@@ -35,7 +35,9 @@ class BlobTest extends TestCase {
 
 	public function test_repo_should_have_correct_properties() {
 		/** @var Blob $blob */
-		$blob = $this->database->find( EntityManager::BLOB_CLASS, $this->blob->ID );
+		$blob = $this->database->find( EntityManager::BLOB_CLASS, $this->blob->ID, array(
+			'with' => 'language',
+		) );
 
 		$this->assertInstanceOf( EntityManager::BLOB_CLASS, $blob );
 		$this->assertSame( $this->blob->ID, $blob->ID );

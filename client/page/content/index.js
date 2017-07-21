@@ -12,7 +12,7 @@ plugin.use();
 const { __GISTPEN_CONTENT__ } = global;
 
 // eslint-disable-next-line camelcase
-Prism.setAutoloaderPath(__webpack_public_path__ = __GISTPEN_CONTENT__.url + 'assets/js/');
+Prism.setAutoloaderPath(__webpack_public_path__ = __GISTPEN_CONTENT__.globals.url + 'assets/js/');
 
 const promises : Array<Promise<void>> = [];
 

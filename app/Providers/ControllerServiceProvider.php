@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Providers;
 
+use Intraxia\Gistpen\Http\CommitController;
 use Intraxia\Gistpen\Http\JobController;
 use Intraxia\Gistpen\Http\SearchController;
 use Intraxia\Gistpen\Http\SiteController;
@@ -44,6 +45,9 @@ class ControllerServiceProvider implements ServiceProvider {
 		} );
 		$container->share( array( 'controller.blob' => 'Intraxia\Gistpen\Http\BlobController' ), function ( $app ) {
 			return new BlobController( $app->fetch( 'database' ) );
+		} );
+		$container->share( array( 'controller.commit' => 'Intraxia\Gistpen\Http\BlobController' ), function( $app ) {
+			return new CommitController( $app->fetch( 'database' ) );
 		} );
 
 	}

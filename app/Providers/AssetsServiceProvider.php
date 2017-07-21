@@ -1,10 +1,9 @@
 <?php
 namespace Intraxia\Gistpen\Providers;
 
-use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Gistpen\View\Content;
-use Intraxia\Gistpen\View\Editor;
+use Intraxia\Gistpen\Params\Repository as Params;
+use Intraxia\Gistpen\View\Edit;
 use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Assets\Register as Assets;
 use Intraxia\Jaxion\Assets\ServiceProvider;
@@ -31,7 +30,7 @@ class AssetsServiceProvider extends ServiceProvider {
 		$slug = $this->container->fetch( 'slug' );
 
 		/**
-		 * Editor Assets
+		 * Edit Assets
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
@@ -42,12 +41,12 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/editor',
 			'footer'    => false,
 			'localize'  => function () {
-				/** @var Editor $editor */
-				$editor = $this->container->fetch( 'view.editor' );
+				/** @var Params $settings */
+				$params = $this->container->fetch( 'params' );
 
 				return array(
 					'name' => '__GISTPEN_EDITOR__',
-					'data' => $editor->get_initial_state(),
+					'data' => $params->state( 'edit' ),
 				);
 			},
 		) );
@@ -64,12 +63,12 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/settings',
 			'footer'    => false,
 			'localize'  => function () {
-				/** @var Settings $settings */
-				$settings = $this->container->fetch( 'view.settings' );
+				/** @var Params $settings */
+				$params = $this->container->fetch( 'params' );
 
 				return array(
 					'name' => '__GISTPEN_SETTINGS__',
-					'data' => $settings->get_initial_state(),
+					'data' => $params->state( 'settings' ),
 				);
 			},
 		) );
@@ -102,12 +101,12 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/content',
 			'footer'    => false,
 			'localize'  => function() {
-				/** @var Content $content */
-				$content = $this->container->fetch( 'view.content' );
+				/** @var Params $content */
+				$params= $this->container->fetch( 'params' );
 
 				return array(
 					'name' => '__GISTPEN_CONTENT__',
-					'data' => $content->get_initial_state(),
+					'data' => $params->state( 'content' ),
 				);
 			},
 		) );

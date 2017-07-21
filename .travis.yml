@@ -1,13 +1,17 @@
 language: php
 sudo: false
+dist: trusty
 
 php:
     - 5.4
-    - 5.5
     - 5.6
-    - 7.0
     - 7.1
     - hhvm
+    - nightly
+
+matrix:
+    allow_failures:
+        - php: nightly
 
 branches:
     only:
@@ -22,6 +26,7 @@ env:
     - WP_VERSION=4.6 WP_MULTISITE=1
 
 before_script:
+    - if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]]; then phpenv config-rm xdebug.ini; fi
     - travis_retry composer self-update
     - travis_retry composer install
     - travis_retry nvm install v6.9.2

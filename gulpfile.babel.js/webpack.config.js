@@ -14,7 +14,7 @@ module.exports = {
     entry: {
         settings: path.join(page, 'settings'),
         content: path.join(page, 'content'),
-        editor: path.join(page, 'editor'),
+        editor: path.join(page, 'edit'),
         tinymce: path.join(page, 'tinymce')
     },
     output: {
@@ -32,7 +32,10 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: client
+                include: [
+                    client,
+                    path.join(__dirname, '..', 'node_modules', 'diffhtml')
+                ]
             },
             {
                 test: /\.hbs/,
