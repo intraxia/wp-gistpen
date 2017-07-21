@@ -5,20 +5,20 @@ import Kefir from 'kefir';
 import { ROUTE_CHANGE, COMMITS_FETCH_SUCCEEDED, COMMITS_FETCH_STARTED,
     COMMITS_FETCH_FAILED } from '../action';
 
-type RevisionsProps = HasRepo & HasGlobalsState;
-type RevisionsServices = {
+type CommitsProps = HasRepo & HasGlobalsState;
+type CommitsServices = {
     ajax$ : AjaxFunction;
 };
 type Commit = {};
 type GetCommitsResponse = Array<Commit>;
 
 export default R.curry((
-    { ajax$ } : RevisionsServices,
+    { ajax$ } : CommitsServices,
     actions$ : ActionObservable<Action>,
-    state$ : Kefir.Observable<RevisionsProps>
-) => state$.sampledBy(actions$.ofType(ROUTE_CHANGE).filter((action : RouteChangeAction) => action.payload.route === 'revisions'))
-    .filter((state : RevisionsProps) => state.repo.ID)
-    .flatMapFirst((state : RevisionsProps) =>
+    state$ : Kefir.Observable<CommitsProps>
+) => state$.sampledBy(actions$.ofType(ROUTE_CHANGE).filter((action : RouteChangeAction) => action.payload.route === 'commits'))
+    .filter((state : CommitsProps) => state.repo.ID)
+    .flatMapFirst((state : CommitsProps) =>
         Kefir.concat([
             Kefir.constant({
                 type: COMMITS_FETCH_STARTED

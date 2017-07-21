@@ -42,7 +42,7 @@ export type GistState = {
     token : string;
 };
 
-export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export' | 'editor' | 'revisions';
+export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export' | 'editor' | 'commits';
 
 export type GlobalsState = {|
     languages : {[key : string] : string; };
@@ -77,8 +77,8 @@ export type EditorInstance = {
     history : EditorHistory;
 };
 
-export type RevisionInstance = {
-    date : string;
+export type Commit = {
+    committed_at : string;
 };
 
 export type EditorState = {
@@ -96,8 +96,8 @@ export type EditorState = {
     optionsOpen : boolean;
 };
 
-export type RevisionsState = {
-    instances : Array<RevisionInstance>;
+export type CommitsState = {
+    instances : Array<Commit>;
 };
 
 export type SearchState = {
@@ -125,10 +125,6 @@ export type HasRepo = {
     repo : Repo;
 };
 
-export type HasRevisionsState = {
-    revisions : RevisionsState;
-};
-
 export type HasEditorState = {
     editor : EditorState;
 };
@@ -139,6 +135,12 @@ export type HasSearchState = {
 
 export type SettingsState = HasGlobalsState & HasPrismState & HasGistState & HasRouteState;
 
-export type EditorPageState = HasGlobalsState & HasRepo & HasEditorState & HasRevisionsState & HasRouteState;
+export type EditorPageState = {
+    globals : GlobalsState;
+    repo : Repo;
+    editor : EditorState;
+    commits : CommitsState;
+    route : RouteState;
+};
 
 export type TinyMCEState = HasGlobalsState & HasSearchState;

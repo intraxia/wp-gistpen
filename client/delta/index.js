@@ -5,7 +5,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { observeDelta } from 'brookjs';
 
 export { default as repoDelta } from './repo';
-export { default as revisionsDelta } from './revisionsDelta';
+export { default as commitsDelta } from './commitsDelta';
 export { default as routerDelta } from './routerDelta';
 export { default as searchDelta } from './search';
 export { default as siteDelta } from './site';

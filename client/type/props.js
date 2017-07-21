@@ -2,15 +2,15 @@
 import type { EditorInstance, EditorState, SettingsState, TinyMCEState,
     HasGlobalsState, HasRepo, HasEditorState, HasRouteState } from './state';
 
-export type RevisionPropsInstance = {
-    date : string;
+export type Commit = {
+    committed_at : string;
 };
-export type HasRevisionsProps = {
-    revisions : Array<RevisionPropsInstance>;
+export type HasCommitsProps = {
+    commits : Array<Commit>;
 };
 
 export type SettingsProps = SettingsState;
-export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasRevisionsProps & HasRouteState;
+export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasCommitsProps & HasRouteState;
 
 export type EditorInstanceProps = {
     instance : EditorInstance;

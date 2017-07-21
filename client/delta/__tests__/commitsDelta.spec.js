@@ -8,28 +8,28 @@ import sinon from 'sinon';
 import { Kefir } from 'brookjs';
 import { routeChangeAction } from '../../action';
 
-import revisionsDelta from '../revisionsDelta';
+import commitsDelta from '../commitsDelta';
 
 chai.use(sinonChai);
 
 const createServices = () => ({ ajax$: sinon.stub() });
 
-describe('revisionsDelta', () => {
+describe('commitsDelta', () => {
     before(() => {
         Kefir.Observable.prototype.ofType = Kefir.ActionObservable.prototype.ofType;
     });
 
     it('should be a function', () => {
-        expect(revisionsDelta).to.be.a('function')
+        expect(commitsDelta).to.be.a('function')
             .and.have.lengthOf(3);
     });
 
     it('should be curried', () => {
-        expect(revisionsDelta({})).to.be.a('function');
+        expect(commitsDelta({})).to.be.a('function');
     });
 
     it('should return an Observable', () => {
-        expect(revisionsDelta(createServices(), Kefir.actions(), Kefir.never())).to.be.an.instanceOf(Kefir.Observable);
+        expect(commitsDelta(createServices(), Kefir.actions(), Kefir.never())).to.be.an.instanceOf(Kefir.Observable);
     });
 
     it('should not respond to random actions', (done : () => void) => {
@@ -65,7 +65,7 @@ describe('revisionsDelta', () => {
         const value = sinon.spy();
         const error = sinon.spy();
 
-        revisionsDelta(services, actions$, state$).observe({
+        commitsDelta(services, actions$, state$).observe({
             value,
             error,
             end() {
@@ -109,7 +109,7 @@ describe('revisionsDelta', () => {
         const value = sinon.spy();
         const error = sinon.spy();
 
-        revisionsDelta(services, actions$, state$).observe({
+        commitsDelta(services, actions$, state$).observe({
             value,
             error,
             end() {
@@ -121,9 +121,9 @@ describe('revisionsDelta', () => {
         });
     });
 
-    it('should not respond to revisions click for new repo', (done : () => void) => {
+    it('should not respond to commits click for new repo', (done : () => void) => {
         const services = createServices();
-        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
+        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('commits'));
         const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
             globals: {
                 languages: {},
@@ -153,7 +153,7 @@ describe('revisionsDelta', () => {
 
         let calls = 0;
 
-        revisionsDelta(services, actions$, state$).observe({
+        commitsDelta(services, actions$, state$).observe({
             value() {
                 calls++;
             },
@@ -164,7 +164,7 @@ describe('revisionsDelta', () => {
         });
     });
 
-    it('should emit start and success on revisions api success', (done : () => void) => {
+    it('should emit start and success on commits api success', (done : () => void) => {
         const options: AjaxOptions = {
             method: 'GET',
             credentials: 'include',
@@ -174,7 +174,7 @@ describe('revisionsDelta', () => {
             }
         };
         const services = createServices();
-        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
+        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('commits'));
         const commitsUrl = 'http://testing.dev/api/commits/1234';
         const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
             globals: {
@@ -209,7 +209,7 @@ describe('revisionsDelta', () => {
             .onFirstCall()
             .returns(Kefir.later(10, JSON.stringify([])));
 
-        revisionsDelta(services, actions$, state$).observe({
+        commitsDelta(services, actions$, state$).observe({
             value(val : Action) {
                 calls++;
 
@@ -236,7 +236,7 @@ describe('revisionsDelta', () => {
         });
     });
 
-    it('should emit start and failure on revisions api failure', (done : () => void) => {
+    it('should emit start and failure on commits api failure', (done : () => void) => {
         const options: AjaxOptions = {
             method: 'GET',
             credentials: 'include',
@@ -246,7 +246,7 @@ describe('revisionsDelta', () => {
             }
         };
         const services = createServices();
-        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('revisions'));
+        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('commits'));
         const commitsUrl = 'http://testing.dev/api/commits/1234';
         const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
             globals: {
@@ -284,7 +284,7 @@ describe('revisionsDelta', () => {
                     .delay(10)
             );
 
-        revisionsDelta(services, actions$, state$).observe({
+        commitsDelta(services, actions$, state$).observe({
             value(val : Action) {
                 calls++;
 

@@ -5,5 +5,5 @@ import { routeChangeAction } from '../../action';
 
 export default sheetRouter({ default: '/editor' }, [
     ['/editor', R.always(routeChangeAction('editor'))],
-    ['/revisions', R.always(routeChangeAction('revisions'))]
+    ['/commits', R.always(routeChangeAction('commits'))]
 ]);

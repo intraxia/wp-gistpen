@@ -1,6 +1,6 @@
 // @flow
 import { children, component, Kefir, render } from 'brookjs';
-import { EditorComponent, RevisionsComponent } from '../../component';
+import { EditorComponent, CommitsComponent } from '../../component';
 import template from './index.hbs';
 
 export const el = (doc : Document) => Kefir.fromCallback((callback : (value : null | HTMLElement) => void) => {
@@ -10,7 +10,7 @@ export const el = (doc : Document) => Kefir.fromCallback((callback : (value : nu
 export const view = component({
     children: children({
         editor: EditorComponent,
-        revisions: RevisionsComponent
+        commits: CommitsComponent
     }),
     render: render(template)
 });
