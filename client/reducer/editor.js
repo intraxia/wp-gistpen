@@ -228,7 +228,7 @@ function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } :
                 before = before.slice(0, -1);
                 ss--;
             } else {
-                let befores = before.split('\n');
+                const befores = before.split('\n');
 
                 if ('\t' === befores[befores.length - 1].charAt(0)) {
                     befores[befores.length - 1] = befores[befores.length - 1].slice(1);
@@ -245,7 +245,7 @@ function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } :
                     ss--;
                 }
             } else {
-                let befores = before.split('\n');
+                const befores = before.split('\n');
 
                 while (w && ' ' === befores[befores.length - 1].charAt(0)) {
                     befores[befores.length - 1] = befores[befores.length - 1].slice(1);
@@ -293,8 +293,8 @@ function makeNewline({ code, cursor } : EditorValue) : EditorValue {
     let [ss,se] = cursor;
     let { before, after } = extractSections(code, ss, se);
 
-    let lf = before.lastIndexOf('\n') + 1;
-    let indent = (before.slice(lf).match(/^\s+/) || [''])[0];
+    const lf = before.lastIndexOf('\n') + 1;
+    const indent = (before.slice(lf).match(/^\s+/) || [''])[0];
 
     before += '\n' + indent;
 
@@ -319,7 +319,7 @@ function createUniqueKey(instances : Array<EditorInstance>) : string {
     let id = 0;
 
     while (true) {
-        let key = 'new' + id;
+        const key = 'new' + id;
 
         if (keys.indexOf(key) === -1) {
             return key;

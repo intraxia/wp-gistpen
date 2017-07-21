@@ -78,6 +78,9 @@ class Handlebars implements Templating {
 					}
 
 					return $slug;
+				},
+				'link' => function ( $route ) {
+					return $route; // @todo
 				}
 			)
 		) );

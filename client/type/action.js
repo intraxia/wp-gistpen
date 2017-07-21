@@ -142,6 +142,13 @@ export type EditorWidthChangeAction = {
     };
 };
 
+export type CommitsFetchSucceededAction = {
+    type : string;
+    payload : {
+        response : Array<{}>;
+    };
+};
+
 export type GistTokenChangeAction = {
     type : typeof GIST_TOKEN_CHANGE;
     payload : {

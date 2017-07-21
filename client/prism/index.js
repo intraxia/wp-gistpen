@@ -11,7 +11,7 @@ Prism.languages.none = {};
 
 let currentTheme;
 
-let plugins = {};
+const plugins = {};
 
 const extension = {
     setAutoloaderPath: path => Prism.plugins.autoloader.languages_path = path,

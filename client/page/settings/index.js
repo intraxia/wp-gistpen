@@ -20,7 +20,7 @@ createStore(
     __GISTPEN_SETTINGS__,
     applyDelta(
         domDelta({ el, selectProps, view }),
-        routerDelta({ router }),
+        routerDelta({ router, param: 'wpgp_route' }),
         siteDelta,
         webpackDelta
     )

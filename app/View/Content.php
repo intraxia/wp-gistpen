@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\View;
 
+use Intraxia\Gistpen\Params\Repository as Params;
 use Intraxia\Jaxion\Assets\Register as Assets;
 
 /**
@@ -13,11 +14,7 @@ use Intraxia\Jaxion\Assets\Register as Assets;
  */
 
 use Intraxia\Gistpen\Contract\Templating;
-use Intraxia\Gistpen\Database\EntityManager as EM;
-use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Gistpen\Options\Site;
-use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 use Intraxia\Jaxion\Contract\Core\HasShortcode;
@@ -38,19 +35,11 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	protected static $defaults = array( 'id' => null );
 
 	/**
-	 * Database Facade object
+	 * Params service.
 	 *
-	 * @var EntityManager
-	 * @since 0.5.0
+	 * @var Params
 	 */
-	protected $em;
-
-	/**
-	 * Site options.
-	 *
-	 * @var Site
-	 */
-	protected $site;
+	protected $params;
 
 	/**
 	 * Templating service.
@@ -58,13 +47,6 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * @var Templating
 	 */
 	protected $templating;
-
-	/**
-	 * Plugin url.
-	 *
-	 * @var string
-	 */
-	protected $url;
 
 	/**
 	 * Assets service provider.
@@ -78,18 +60,14 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 *
 	 * @since    0.5.0
 	 *
-	 * @param EntityManager $em
-	 * @param Site          $site
+	 * @param Params $params
 	 * @param Templating    $templating
 	 * @param Assets        $assets
-	 * @param string        $url
 	 */
-	public function __construct( EntityManager $em, Site $site, Templating $templating, Assets $assets, $url ) {
-		$this->em = $em;
-		$this->site = $site;
+	public function __construct( Params $params, Templating $templating, Assets $assets) {
+		$this->params = $params;
 		$this->templating = $templating;
 		$this->assets = $assets;
-		$this->url = $url;
 	}
 
 	/**
@@ -128,29 +106,15 @@ class Content implements HasActions, HasFilters, HasShortcode {
 		}
 
 		if ( ! $post->post_parent ) {
-			/** @var Repo $repo */
-			$repo = $this->em->find( EM::REPO_CLASS, $post->ID );
-
-			if ( is_wp_error( $repo ) ) {
-				return $content;
-			}
-
 			return $this->templating->render(
 				'component/repo/index',
-				$this->merge_state( array( 'repo' => $repo->serialize() ) )
+				$this->params->props( 'content.repo' )
 			);
-		}
-
-		/** @var Blob $repo */
-		$blob = $this->em->find( EM::BLOB_CLASS, $post->ID );
-
-		if ( is_wp_error( $blob  ) ) {
-			return $content;
 		}
 
 		return $this->templating->render(
 			'component/blob/index',
-			$this->merge_state( array( 'blob' => $blob->serialize() ) )
+			$this->params->props( 'content.blob' )
 		);
 	}
 
@@ -210,18 +174,6 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">ID provided is not a Gistpen repo.</div>';
 		}
 
-		if ( $post->post_parent === 0 ) {
-			/** @var Repo|\WP_Error $model */
-			$model = $this->em->find( EM::REPO_CLASS, $post->ID );
-		} else {
-			/** @var Blob|\WP_Error $model */
-			$model = $this->em->find( EM::BLOB_CLASS, $post->ID );
-		}
-
-		if ( is_wp_error( $model ) ) {
-			return '<div class="wp-gistpen-error">Error: ' . $model->get_error_message() .'.</div>';
-		}
-
 		return wp_oembed_get( get_post_embed_url( $post ) );
 	}
 
@@ -277,18 +229,6 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	}
 
 	/**
-	 * Gets the default initial state for the Content.
-	 *
-	 * @return array
-	 */
-	public function get_initial_state() {
-		return array(
-			'prism' => $this->site->get( 'prism' ),
-			'url'   => $this->url,
-		);
-	}
-
-	/**
 	 * {@inheritDoc}
 	 *
 	 * @return array[]
@@ -336,20 +276,6 @@ class Content implements HasActions, HasFilters, HasShortcode {
 				'method' => 'remove_embed_width',
 				'args'   => 2,
 			)
-		);
-	}
-
-	/**
-	 * Gets the initial state for the Content output.
-	 *
-	 * @param array $state
-	 *
-	 * @return array
-	 */
-	protected function merge_state( array $state ) {
-		return array_merge(
-			$this->get_initial_state(),
-			$state
 		);
 	}
 }

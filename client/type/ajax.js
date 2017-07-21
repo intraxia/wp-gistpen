@@ -1,16 +1,18 @@
 // @flow
 import type { Toggle, Repo, Blob } from './state';
+import Kefir from 'kefir';
 
 export type AjaxOptions = {
     method : string;
     body? : string;
-    credentials? : string;
+    credentials? : 'include';
     headers? : {
         [key : string] : string;
     };
 };
+export type AjaxFunction = (url : string, opts : AjaxOptions) => Kefir.Observable<string, TypeError>;
 
-type Indent = '1' | '2' | '4' | '8';
+export type Indent = '1' | '2' | '4' | '8';
 
 export type UserApiResponse = {
     editor : {

@@ -40,7 +40,7 @@ export default function userDelta(actions$ : Observable<Action>, state$ : Observ
     ]);
 
     return state$.sampledBy(user$).debounce(2500)
-        .flatMapLatest((state : EditorPageState) : Observable<string> => ajax$(state.api.root + 'me', selectUserAjaxOpts(state)))
+        .flatMapLatest((state : EditorPageState) : Observable<string> => ajax$(state.globals.root + 'me', selectUserAjaxOpts(state)))
         .map(JSON.parse)
         .flatten((response : UserApiResponse) : Array<Action> => [ajaxFinishedAction(response), userSaveSucceededAction(response)])
         .mapErrors(ajaxFailedAction);

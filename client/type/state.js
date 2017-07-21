@@ -5,8 +5,6 @@ export type Language = {
     ID : number;
     display_name : string;
     slug : string;
-    // @deprecated
-    prism_slug : string;
 } | string;
 
 export type Blob = {
@@ -44,7 +42,7 @@ export type GistState = {
     token : string;
 };
 
-export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export';
+export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export' | 'editor' | 'commits';
 
 export type GlobalsState = {|
     languages : {[key : string] : string; };
@@ -79,10 +77,8 @@ export type EditorInstance = {
     history : EditorHistory;
 };
 
-export type ApiConfig = {
-    root : string;
-    nonce : string;
-    url : string;
+export type Commit = {
+    committed_at : string;
 };
 
 export type EditorState = {
@@ -98,6 +94,10 @@ export type EditorState = {
     invisibles : Toggle;
     tabs : Toggle;
     optionsOpen : boolean;
+};
+
+export type CommitsState = {
+    instances : Array<Commit>;
 };
 
 export type SearchState = {
@@ -121,10 +121,6 @@ export type HasRouteState = {
     route : RouteState;
 };
 
-export type HasApiConfig = {
-    api : ApiConfig;
-};
-
 export type HasRepo = {
     repo : Repo;
 };
@@ -139,6 +135,12 @@ export type HasSearchState = {
 
 export type SettingsState = HasGlobalsState & HasPrismState & HasGistState & HasRouteState;
 
-export type EditorPageState = HasApiConfig & HasRepo & HasEditorState;
+export type EditorPageState = {
+    globals : GlobalsState;
+    repo : Repo;
+    editor : EditorState;
+    commits : CommitsState;
+    route : RouteState;
+};
 
 export type TinyMCEState = HasGlobalsState & HasSearchState;

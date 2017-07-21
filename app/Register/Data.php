@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Register;
 
+use Intraxia\Gistpen\Model\Language;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 
 /**
@@ -105,7 +106,7 @@ class Data implements HasActions {
 			'capabilities'               => $capabilities,
 		);
 
-		register_taxonomy( 'wpgp_language', array( 'gistpen' ), $args );
+		register_taxonomy( Language::get_taxonomy(), array( 'gistpen', 'revision' ), $args );
 	}
 
 	/**

@@ -20,7 +20,7 @@ class LanguageTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->database = new EntityManager( new WP_Query, 'wpgp' );
+		$this->database = new EntityManager( 'wpgp' );
 		$this->language = wp_insert_term( 'js', 'wpgp_language' );
 	}
 

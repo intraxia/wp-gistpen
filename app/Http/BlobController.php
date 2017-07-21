@@ -41,25 +41,14 @@ class BlobController implements HasFilters {
 	 */
 	public function raw( WP_REST_Request $request ) {
 		/** @var Repo|WP_Error $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'repo_id' ) );
+		$blob = $this->em->find( EntityManager::BLOB_CLASS, $request->get_param( 'blob_id' ), array(
+			'repo_id' => $request->get_param( 'repo_id' ),
+		) );
 
 		if ( is_wp_error( $repo ) ) {
 			$repo->add_data( array( 'status' => 404 ) );
 
 			return $repo;
-		}
-
-		/** @var Blob|null $blob */
-		$blob = $repo->blobs->find(function( $blob ) use ( $request ) {
-			if ( (string) $blob->ID === (string) $request->get_param( 'blob_id' ) ) {
-				return true;
-			}
-
-			return false;
-		});
-
-		if ( ! $blob ) {
-			return new WP_Error( 'invalid_blob_id', __( 'Invalid Blob ID', 'wp-gistpen' ), array( 'status' => 404 ) );
 		}
 
 		$response = new WP_REST_Response( $blob->code, 200 );

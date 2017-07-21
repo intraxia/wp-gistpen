@@ -13,10 +13,12 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property int      $ID
  * @property string   $filename
  * @property string   $code
- * @property Language $language
  * @property int      $repo_id
+ * @property Repo     $repo
+ * @property Language $language
  * @property int      $size
  * @property string   $raw_url
+ * @property string   $edit_url
  */
 class Blob extends Model implements UsesWordPressPost {
 	/**
@@ -38,6 +40,7 @@ class Blob extends Model implements UsesWordPressPost {
 	protected $guarded = array(
 		'ID',
 		'repo_id',
+		'repo',
 		'status',
 	);
 
