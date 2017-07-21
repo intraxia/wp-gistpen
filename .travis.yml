@@ -26,22 +26,20 @@ env:
     - WP_VERSION=4.6 WP_MULTISITE=1
 
 before_script:
-    - if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]]; then phpenv config-rm xdebug.ini; fi
+    - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '5.4' ]]; then phpenv config-rm xdebug.ini; fi
     - travis_retry composer self-update
     - travis_retry composer install
     - travis_retry nvm install v6.9.2
-    - travis_retry npm install
-    - travis_retry npm install -g gulp
+    - travis_retry yarn
+    - travis_retry yarn global add gulp
+    - travis_retry yarn global add greenkeeper-lockfile@1
     - greenkeeper-lockfile-update
     - travis_retry bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-
-before_install:
-  - yarn global add greenkeeper-lockfile@1
 
 script:
     - composer test
     - gulp test
 
 after_script:
-    - if [[ $TRAVIS_PHP_VERSION != 'hhvm' ]]; then composer upload; fi
+    - if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then composer upload; fi
     - greenkeeper-lockfile-upload
