@@ -1,18 +1,4 @@
-/**
- * Make of language slugs to prism slugs.
- *
- * @todo extract to JSON file for reuse.
- *
- * @type {Object}
- */
-const map = {
-    'js': 'javascript',
-    'sass': 'scss',
-    'py': 'python',
-    'html': 'markup',
-    'xml': 'markup',
-    'plaintext': 'none'
-};
+import langs from '../languages.json';
 
 /**
  * Map a language slug to its prism slug.
@@ -21,6 +7,6 @@ const map = {
  * @returns {string} Prism slug.
  */
 export default function prismSlug(slug) {
-    return map[slug] || slug;
+    return langs.aliases[slug] || slug;
 
 };
