@@ -1,4 +1,6 @@
 # WP-Gistpen #
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/mAAdhaTTah/wp-gistpen.svg)](https://greenkeeper.io/)
 **Contributors:** JamesDiGioia  
 **Donate link:** http://jamesdigioia.com/  
 **Tags:** gist, code snippets, codepen  

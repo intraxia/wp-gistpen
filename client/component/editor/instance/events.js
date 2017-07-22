@@ -53,7 +53,7 @@ function mapKeydownToAction(evt : ProxyEvent) : Action {
             return editorMakeCommentAction({ code, cursor });
     }
 
-    throw new Error('Keydown is missing matching action case', evt);
+    throw new Error('Keydown is missing matching action case');
 }
 
 export default events({

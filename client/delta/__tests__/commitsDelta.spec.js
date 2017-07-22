@@ -276,11 +276,12 @@ describe('commitsDelta', () => {
         });
 
         let calls = 0;
+        const payload = new TypeError('Network request failed');
         services.ajax$
             .withArgs(commitsUrl, options)
             .onFirstCall()
             .returns(
-                Kefir.constantError(new TypeError('Network request failed'))
+                Kefir.constantError(payload)
                     .delay(10)
             );
 
@@ -297,7 +298,7 @@ describe('commitsDelta', () => {
                 if (calls === 2) {
                     expect(val).to.eql({
                         type: 'COMMITS_FETCH_FAILED',
-                        payload: new TypeError('Network request failed'),
+                        payload,
                         error: true
                     });
                 }
