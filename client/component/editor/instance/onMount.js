@@ -282,8 +282,8 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
      */
     const lineNumber$ = props$.skipDuplicates(lineNumberIsEqual)
         .filter(R.path(['instance', 'cursor']))
-        .flatMapLatest((props : EditorInstanceProps) : Observable<void> =>
-            updateLineNumber(el.querySelector('pre'), ...(props.instance.cursor || [])))
+        .flatMapLatest((/*props : EditorInstanceProps*/) : Observable<void> =>
+            updateLineNumber(/* el.querySelector('pre'), ...(props.instance.cursor || [])*/))
         .setName('LineNumbers$');
 
     return merge([
