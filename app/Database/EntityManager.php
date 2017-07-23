@@ -240,6 +240,7 @@ class EntityManager implements EntityManagerContract {
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 		$runs_table = $this->make_table_name( Klass::RUN );
+		$messages_table = $this->make_table_name( Klass::MESSAGE );
 
 		dbDelta("
 			CREATE TABLE {$runs_table} (
@@ -252,6 +253,17 @@ class EntityManager implements EntityManagerContract {
 			  finished_at DATETIME,
 			  PRIMARY KEY  (ID)
 			);
+		");
+
+		dbDelta("
+			CREATE TABLE {$messages_table} (
+			  ID BIGINT(20) UNSIGNED AUTO_INCREMENT,
+			  run_id BIGINT(20) UNSIGNED NOT NULL,
+			  text TINYTEXT NOT NULL,
+			  level VARCHAR(32) NOT NULL,
+			  logged_at DATETIME NOT NULL,
+			  PRIMARY KEY  (ID)
+			)
 		");
 	}
 

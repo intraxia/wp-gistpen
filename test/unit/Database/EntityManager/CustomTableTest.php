@@ -3,8 +3,10 @@
 namespace Intraxia\Gistpen\Test\Database\EntityManager;
 
 use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Jobs\Level;
 use Intraxia\Gistpen\Jobs\Status;
 use Intraxia\Gistpen\Model\Klass;
+use Intraxia\Gistpen\Model\Message;
 use Intraxia\Gistpen\Model\Run;
 use Intraxia\Gistpen\Test\TestCase;
 
@@ -34,6 +36,16 @@ class CustomTableTest extends TestCase {
 	 */
 	protected $finished;
 
+	/**
+	 * @var int
+	 */
+	protected $message_id;
+
+	/**
+	 * @var string
+	 */
+	protected $logged;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -54,11 +66,28 @@ class CustomTableTest extends TestCase {
 		);
 
 		$this->run_id = $wpdb->insert_id;
+
+		$wpdb->insert(
+			$this->em->make_table_name( Klass::MESSAGE ),
+			array(
+				'run_id'    => $this->run_id,
+				'text'      => 'Run completed successfully.',
+				'level'     => Level::SUCCESS,
+				'logged_at' => $this->logged = current_time( 'mysql' ),
+			)
+		);
+
+		$this->message_id = $wpdb->insert_id;
 	}
 
-	public function test_should_return_error_for_invalid_id() {
-		/** @var Run $run */
+	public function test_should_return_error_for_invalid_run_id() {
 		$run = $this->em->find( Klass::RUN, $this->run_id + 1 );
+
+		$this->assertInstanceOf( 'WP_Error', $run );
+	}
+
+	public function test_should_return_error_for_invalid_message_id() {
+		$run = $this->em->find( Klass::MESSAGE, $this->message_id + 1 );
 
 		$this->assertInstanceOf( 'WP_Error', $run );
 	}
@@ -75,6 +104,17 @@ class CustomTableTest extends TestCase {
 		$this->assertEquals( $this->finished, $run->finished_at );
 	}
 
+	public function test_should_return_message_by_id() {
+		/** @var Message $message */
+		$message = $this->em->find( Klass::MESSAGE, $this->message_id );
+
+		$this->assertInstanceOf( Klass::MESSAGE, $message );
+		$this->assertEquals( $this->run_id, $message->run_id );
+		$this->assertEquals( 'Run completed successfully.', $message->text );
+		$this->assertEquals( Level::SUCCESS, $message->level );
+		$this->assertEquals( $this->logged, $message->logged_at );
+	}
+
 	public function test_should_return_list_of_all_runs() {
 		$runs = $this->em->find_by( Klass::RUN );
 
@@ -83,6 +123,16 @@ class CustomTableTest extends TestCase {
 		$run = $runs->first();
 
 		$this->assertInstanceOf( Klass::RUN, $run );
+	}
+
+	public function test_should_return_list_of_all_messages() {
+		$messages = $this->em->find_by( Klass::MESSAGE );
+
+		$this->assertCount( 1, $messages );
+
+		$run = $messages->first();
+
+		$this->assertInstanceOf( Klass::MESSAGE, $run );
 	}
 
 	public function test_should_return_list_of_runs_by_job() {
@@ -105,7 +155,27 @@ class CustomTableTest extends TestCase {
 		$this->assertCount( 0, $runs );
 	}
 
-	public function test_should_create_a_new_run() {
+	public function test_should_return_list_of_messages_by_run_id() {
+		$messages = $this->em->find_by( Klass::MESSAGE, array(
+			'run_id' => $this->run_id,
+		) );
+
+		$this->assertCount( 1, $messages );
+
+		$message = $messages->first();
+
+		$this->assertInstanceOf( Klass::MESSAGE, $message );
+	}
+
+	public function test_should_return_empty_list_of_messages_by_unknown_run() {
+		$messages = $this->em->find_by( Klass::MESSAGE, array(
+			'run_id' => $this->run_id + 1,
+		) );
+
+		$this->assertCount( 0, $messages );
+	}
+
+	public function test_should_create_new_run() {
 		global $wpdb;
 		$data = array(
 			'job'          => 'import',
@@ -127,7 +197,48 @@ class CustomTableTest extends TestCase {
 		$this->assertEquals( $data['finished_at'], $run->finished_at );
 	}
 
-	public function test_should_persist_a_new_run_without_primary_id() {
+	public function test_should_create_new_message() {
+		global $wpdb;
+		$data = array(
+			'run_id'    => $this->run_id,
+			'text'      => 'Finished run successfully.',
+			'level'     => Level::SUCCESS,
+			'logged_at' => current_time( 'mysql' ),
+		);
+		/** @var Message $message */
+		$message = $this->em->create( Klass::MESSAGE, $data );
+
+		$this->assertInstanceOf( Klass::MESSAGE, $message );
+
+		$this->assertEquals( $wpdb->insert_id, $message->ID );
+		$this->assertEquals( $data['run_id'], $message->run_id );
+		$this->assertEquals( $data['text'], $message->text );
+		$this->assertEquals( $data['level'], $message->level );
+		$this->assertEquals( $data['logged_at'], $message->logged_at );
+	}
+
+	public function test_should_not_create_new_message_with_no_repo_id() {
+		$message = $this->em->create( Klass::MESSAGE, array(
+			'text'      => 'Finished run successfully.',
+			'level'     => Level::SUCCESS,
+			'logged_at' => current_time( 'mysql' ),
+		) );
+
+		$this->assertInstanceOf( 'WP_Error', $message );
+	}
+
+	public function test_should_not_create_new_message_with_invalid_repo_id() {
+		$message = $this->em->create( Klass::MESSAGE, array(
+			'run_id'    => $this->run_id + 1,
+			'text'      => 'Finished run successfully.',
+			'level'     => Level::SUCCESS,
+			'logged_at' => current_time( 'mysql' ),
+		) );
+
+		$this->assertInstanceOf( 'WP_Error', $message );
+	}
+
+	public function test_should_persist_new_run_without_primary_id() {
 		global $wpdb;
 		$data = array(
 			'job'          => 'import',
@@ -150,7 +261,55 @@ class CustomTableTest extends TestCase {
 		$this->assertEquals( $data['finished_at'], $run->finished_at );
 	}
 
-	public function test_should_update_an_existing_run_with_primary_id() {
+	public function test_should_persist_new_message_without_primary_id() {
+		global $wpdb;
+		$data = array(
+			'run_id'    => $this->run_id,
+			'text'      => 'Another successful run.',
+			'level'     => Level::SUCCESS,
+			'logged_at' => current_time( 'mysql' ),
+		);
+		$message = new Message( $data );
+
+		$message = $this->em->persist( $message );
+
+		$this->assertInstanceOf( Klass::MESSAGE, $message );
+
+		$this->assertEquals( $wpdb->insert_id, $message->ID );
+		$this->assertEquals( $data['run_id'], $message->run_id );
+		$this->assertEquals( $data['text'], $message->text );
+		$this->assertEquals( $data['level'], $message->level );
+		$this->assertEquals( $data['logged_at'], $message->logged_at );
+	}
+
+	public function test_should_not_persist_new_message_with_no_run_id() {
+		$data = array(
+			'text'      => 'Another successful run.',
+			'level'     => Level::SUCCESS,
+			'logged_at' => current_time( 'mysql' ),
+		);
+		$message = new Message( $data );
+
+		$message = $this->em->persist( $message );
+
+		$this->assertInstanceOf( 'WP_Error', $message );
+	}
+
+	public function test_should_not_persist_new_message_with_invalid_run_id() {
+		$data = array(
+			'run_id'    => $this->run_id + 1,
+			'text'      => 'Another successful run.',
+			'level'     => Level::SUCCESS,
+			'logged_at' => current_time( 'mysql' ),
+		);
+		$message = new Message( $data );
+
+		$message = $this->em->persist( $message );
+
+		$this->assertInstanceOf( 'WP_Error', $message );
+	}
+
+	public function test_should_update_existing_run_with_primary_id() {
 		/** @var Run $run */
 		$run = $this->em->find( Klass::RUN, $this->run_id );
 
@@ -170,7 +329,46 @@ class CustomTableTest extends TestCase {
 		$this->assertEquals( $this->finished, $run->finished_at );
 	}
 
-	public function test_should_delete_an_existing_run() {
+	public function test_should_update_existing_message_with_primary_id() {
+		/** @var Message $message */
+		$message = $this->em->find( Klass::MESSAGE, $this->message_id );
+
+		$text = $message->text = 'New text for message';
+		$message->level = Level::DEBUG;
+		$this->logged= $message->logged_at = current_time( 'mysql' );
+
+		$message = $this->em->persist( $message );
+
+		$this->assertInstanceOf( Klass::MESSAGE, $message );
+
+		$this->assertEquals( $text, $message->text );
+		$this->assertEquals( Level::DEBUG, $message->level );
+		$this->assertEquals( $this->logged, $message->logged_at );
+	}
+
+	public function test_should_not_update_existing_message_with_no_run_id() {
+		/** @var Message $message */
+		$message = $this->em->find( Klass::MESSAGE, $this->message_id );
+
+		$message->run_id = null;
+
+		$message = $this->em->persist( $message );
+
+		$this->assertInstanceOf( 'WP_Error', $message );
+	}
+
+	public function test_should_not_update_existing_message_with_invalid_run_id() {
+		/** @var Message $message */
+		$message = $this->em->find( Klass::MESSAGE, $this->message_id );
+
+		$message->run_id = $this->run_id + 1;
+
+		$message = $this->em->persist( $message );
+
+		$this->assertInstanceOf( 'WP_Error', $message );
+	}
+
+	public function test_should_delete_existing_run_and_all_messages() {
 		$run = $this->em->find( Klass::RUN, $this->run_id );
 
 		$this->em->delete( $run );
@@ -178,5 +376,9 @@ class CustomTableTest extends TestCase {
 		$runs = $this->em->find_by( Klass::RUN );
 
 		$this->assertCount( 0, $runs );
+
+		$messages = $this->em->find_by( Klass::MESSAGE );
+
+		$this->assertCount( 0, $messages );
 	}
 }

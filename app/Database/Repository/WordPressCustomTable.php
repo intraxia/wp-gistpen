@@ -3,6 +3,7 @@
 namespace Intraxia\Gistpen\Database\Repository;
 
 use Intraxia\Gistpen\Model\Klass;
+use Intraxia\Gistpen\Model\Run;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
@@ -17,7 +18,7 @@ class WordPressCustomTable extends AbstractRepository {
 	 * @param int    $id     ID of the model.
 	 * @param array  $params Extra params/options.
 	 *
-	 * @return Model|WP_Error
+	 * @return Model|UsesCustomTable|WP_Error
 	 */
 	public function find( $class, $id, array $params = array() ) {
 		global $wpdb;
@@ -101,6 +102,12 @@ class WordPressCustomTable extends AbstractRepository {
 	public function create( $class, array $data = array(), array $options = array() ) {
 		global $wpdb;
 
+		$data = $this->validate_data( $class, $data );
+
+		if ( is_wp_error( $data ) ) {
+			return $data;
+		}
+
 		$results = $wpdb->insert(
 			$this->em->make_table_name( $class ),
 			// @todo escape values
@@ -118,7 +125,7 @@ class WordPressCustomTable extends AbstractRepository {
 	/**
 	 * Updates a model with its latest data.
 	 *
-	 * @param Model $model
+	 * @param Model|UsesCustomTable $model
 	 *
 	 * @return Model|WP_Error
 	 */
@@ -129,6 +136,12 @@ class WordPressCustomTable extends AbstractRepository {
 
 		if ( ! $model->get_primary_id() ) {
 			return $this->create( $class, $model->get_table_attributes() );
+		}
+
+		$valid = $this->validate_data( $class, $model->get_table_attributes() );
+
+		if ( is_wp_error( $valid ) ) {
+			return $valid;
 		}
 
 		$results = $wpdb->update(
@@ -148,7 +161,7 @@ class WordPressCustomTable extends AbstractRepository {
 	/**
 	 * Delete the provided model from the database.
 	 *
-	 * @param Model $model
+	 * @param Model|UsesCustomTable $model
 	 * @param bool  $force
 	 *
 	 * @return mixed
@@ -165,6 +178,17 @@ class WordPressCustomTable extends AbstractRepository {
 			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
 
+		if ( $model instanceof Run ) {
+			$results = $wpdb->delete(
+				$this->em->make_table_name( Klass::MESSAGE ),
+				array( 'run_id' => $model->get_primary_id() )
+			);
+
+			if ( ! $results ) {
+				return new WP_Error( 'db_error', $wpdb->last_error );
+			}
+		}
+
 		return $model;
 	}
 
@@ -178,10 +202,49 @@ class WordPressCustomTable extends AbstractRepository {
 	 */
 	private function is_valid_key( $class, $key ) {
 		switch ( $class ) {
+			case Klass::MESSAGE:
+				return in_array( $key, array( 'run_id' ), true );
 			case Klass::RUN:
 				return in_array( $key, array( 'job' ), true );
 			default:
 				return false;
+		}
+	}
+
+	/**
+	 * Validate a classes array of data.
+	 *
+	 * @param string $class
+	 * @param array  $data
+	 *
+	 * @return WP_Error|array
+	 */
+	private function validate_data( $class, $data ) {
+		switch ( $class ) {
+			case Klass::MESSAGE:
+				if ( ! isset( $data['run_id'] ) ) {
+					return new WP_Error( 'invalid_data', 'run_id is missing' );
+				}
+
+				global $wpdb;
+
+				$count = (int) $wpdb->get_var(
+					$wpdb->prepare(
+						"
+							SELECT COUNT(*) FROM {$this->em->make_table_name( Klass::RUN )}
+							WHERE ID = %d
+						",
+						$data['run_id']
+					)
+				);
+
+				if ( ! $count ) {
+					return new WP_Error( 'invalid_data', 'run_id is invalid' );
+				}
+
+				return $data;
+			default:
+				return $data;
 		}
 	}
 }
