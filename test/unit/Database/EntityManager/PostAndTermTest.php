@@ -1,6 +1,6 @@
 <?php
 
-namespace Intraxia\Gistpen\Test\Database;
+namespace Intraxia\Gistpen\Test\Database\EntityManager;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
@@ -11,7 +11,7 @@ use Intraxia\Gistpen\Model\State;
 use Intraxia\Gistpen\Test\TestCase;
 use Intraxia\Jaxion\Axolotl\Collection;
 
-class EntityManagerTest extends TestCase {
+class PostAndTermTest extends TestCase {
 	/**
 	 * @var EntityManager
 	 */
