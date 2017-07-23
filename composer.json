@@ -15,7 +15,8 @@
     "knplabs/github-api": "~1.4",
     "wpupdatephp/wp-update-php": "~1.0",
     "intraxia/jaxion": "dev-master",
-    "zordius/lightncandy": "^0.95.0"
+    "zordius/lightncandy": "^0.95.0",
+    "myclabs/php-enum": "^1.5"
   },
   "require-dev": {
     "phpunit/phpunit": "~4.3",
