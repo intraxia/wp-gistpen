@@ -3,11 +3,11 @@
 namespace Intraxia\Gistpen\Database\Repository;
 
 use Intraxia\Gistpen\Contract\Repository;
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
-use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use InvalidArgumentException;
 use stdClass;
 use WP_Error;

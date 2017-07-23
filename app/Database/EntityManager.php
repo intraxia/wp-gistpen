@@ -2,19 +2,16 @@
 
 namespace Intraxia\Gistpen\Database;
 
-use Exception;
 use Intraxia\Gistpen\Contract\Repository;
+use Intraxia\Gistpen\Database\Repository\WordPressCustomTable;
 use Intraxia\Gistpen\Database\Repository\WordPressPost;
 use Intraxia\Gistpen\Database\Repository\WordPressTerm;
-use Intraxia\Gistpen\Model\Blob;
-use Intraxia\Gistpen\Model\Commit;
-use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Axolotl\Collection;
-use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager as EntityManagerContract;
+use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
 use WP_Error;
 
 class EntityManager implements EntityManagerContract {
@@ -68,6 +65,7 @@ class EntityManager implements EntityManagerContract {
 		$this->repositories = array(
 			'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost' => new WordPressPost( $this, $this->prefix ),
 			'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm' => new WordPressTerm( $this, $this->prefix ),
+			'Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable'   => new WordPressCustomTable( $this, $this->prefix ),
 		);
 	}
 
@@ -233,5 +231,40 @@ class EntityManager implements EntityManagerContract {
 		$name = strtolower( array_pop( $name ) );
 
 		return $name;
+	}
+
+	/**
+	 * Update a database with the required custom tables.
+	 */
+	public function migrate() {
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
+		$runs_table = $this->make_table_name( Klass::RUN );
+
+		dbDelta("
+			CREATE TABLE {$runs_table} (
+			  ID BIGINT(20) UNSIGNED AUTO_INCREMENT,
+			  items LONGTEXT,
+			  job VARCHAR(64) NOT NULL,
+			  status VARCHAR(16) NOT NULL,
+			  scheduled_at DATETIME NOT NULL,
+			  started_at DATETIME,
+			  finished_at DATETIME,
+			  PRIMARY KEY  (ID)
+			);
+		");
+	}
+
+	/**
+	 * Combines the relevant prefixes to make a table name for a given class.
+	 *
+	 * @param UsesCustomTable|string $class
+	 *
+	 * @return string
+	 */
+	public function make_table_name( $class ) {
+		global $wpdb;
+
+		return $wpdb->prefix . $this->prefix . '_' . $class::get_table_name();
 	}
 }
