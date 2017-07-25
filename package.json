@@ -48,7 +48,7 @@
     "style-loader": "^0.18.2",
     "stylelint-webpack-plugin": "^0.7.0",
     "symbol-observable": "^1.0.4",
-    "webpack": "^2.2.1",
+    "webpack": "^3.4.0",
     "webpack-notifier": "^1.4.1"
   },
   "dependencies": {
