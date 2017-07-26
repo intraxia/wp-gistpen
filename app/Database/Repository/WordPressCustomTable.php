@@ -38,6 +38,10 @@ class WordPressCustomTable extends AbstractRepository {
 			return new WP_Error( 'db_error', $wpdb->last_error );
 		}
 
+		if ( isset( $result['items'] ) ) {
+			$result['items'] = maybe_unserialize( $result['items'] );
+		}
+
 		/** @var Model $model */
 		$model = new $class( $result );
 		$model->sync_original();
@@ -80,6 +84,10 @@ class WordPressCustomTable extends AbstractRepository {
 		}
 
 		foreach ( $results as $result ) {
+			if ( isset( $result['items'] ) ) {
+				$result['items'] = maybe_unserialize( $result['items'] );
+			}
+
 			/** @var Model $model */
 			$model  = new $class( $result );
 			$model->sync_original();
@@ -146,7 +154,7 @@ class WordPressCustomTable extends AbstractRepository {
 
 		$results = $wpdb->update(
 			$this->em->make_table_name( $class ),
-			$model->get_changed_table_attributes(),
+			$valid, // @todo only update changed attributes
 			/** UsesCustomTable $model */
 			array( $model->get_primary_key() => $model->get_primary_id() )
 		);
@@ -205,7 +213,7 @@ class WordPressCustomTable extends AbstractRepository {
 			case Klass::MESSAGE:
 				return in_array( $key, array( 'run_id' ), true );
 			case Klass::RUN:
-				return in_array( $key, array( 'job' ), true );
+				return in_array( $key, array( 'job', 'status' ), true );
 			default:
 				return false;
 		}
@@ -221,6 +229,12 @@ class WordPressCustomTable extends AbstractRepository {
 	 */
 	private function validate_data( $class, $data ) {
 		switch ( $class ) {
+			case Klass::RUN:
+				if ( isset( $data['items'] ) ) {
+					$data['items'] = maybe_serialize( $data['items'] );
+				}
+
+				return $data;
 			case Klass::MESSAGE:
 				if ( ! isset( $data['run_id'] ) ) {
 					return new WP_Error( 'invalid_data', 'run_id is missing' );

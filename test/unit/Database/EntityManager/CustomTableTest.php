@@ -9,6 +9,7 @@ use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Message;
 use Intraxia\Gistpen\Model\Run;
 use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Jaxion\Axolotl\Collection;
 
 class CustomTableTest extends TestCase {
 	/**
@@ -315,6 +316,7 @@ class CustomTableTest extends TestCase {
 
 		$run->job        = 'export';
 		$run->status     = Status::RUNNING;
+		$items = $run->items = new Collection( 'string', array( 'hello' ) );
 		$this->scheduled = $run->scheduled_at = current_time( 'mysql' );
 		$this->started   = $run->started_at = current_time( 'mysql' );
 		$this->finished  = $run->finished_at = current_time( 'mysql' );
@@ -324,6 +326,7 @@ class CustomTableTest extends TestCase {
 		$this->assertInstanceOf( Klass::RUN, $run );
 		$this->assertEquals( 'export', $run->job );
 		$this->assertEquals( Status::RUNNING, $run->status );
+		$this->assertEquals( $items, $run->items );
 		$this->assertEquals( $this->scheduled, $run->scheduled_at );
 		$this->assertEquals( $this->started, $run->started_at );
 		$this->assertEquals( $this->finished, $run->finished_at );
