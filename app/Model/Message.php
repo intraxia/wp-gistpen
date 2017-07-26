@@ -17,6 +17,30 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
  * @property string $logged_at
  */
 class Message extends Model implements UsesCustomTable {
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @var array
+	 */
+	public $fillable = array(
+		'run_id',
+		'text',
+		'level',
+		'logged_at',
+	);
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @var array
+	 */
+	public $visible = array(
+		'text',
+		'level',
+		'logged_at',
+	);
+
 	/**
 	 * Returns the custom table name used by the model.
 	 *
