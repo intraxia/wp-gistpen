@@ -44,11 +44,15 @@ class Run extends Model implements UsesCustomTable {
 	 * @var string[]
 	 */
 	public $visible = array(
+		'ID',
 		'job',
 		'status',
 		'scheduled_at',
 		'started_at',
 		'finished_at',
+		'rest_url',
+		'job_url',
+		'console_url',
 	);
 
 	/**
@@ -76,7 +80,7 @@ class Run extends Model implements UsesCustomTable {
 	 */
 	protected function compute_rest_url() {
 		return rest_url( sprintf(
-			'intraxia/v1/gistpen/jobs/%s/%s',
+			'intraxia/v1/gistpen/jobs/%s/runs/%s',
 			$this->job,
 			$this->ID
 		) );
@@ -91,6 +95,19 @@ class Run extends Model implements UsesCustomTable {
 		return rest_url( sprintf(
 			'intraxia/v1/gistpen/jobs/%s',
 			$this->job
+		) );
+	}
+
+	/**
+	 * Computes the console url property.
+	 *
+	 * @return string
+	 */
+	protected function compute_console_url() {
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/jobs/%s/runs/%s/console',
+			$this->job,
+			$this->ID
 		) );
 	}
 }
