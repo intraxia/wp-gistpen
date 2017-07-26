@@ -11,5 +11,6 @@ class Status extends Enum {
 	// Run Status
 	const SCHEDULED = 'scheduled';
 	const RUNNING = 'running';
+	const PAUSED = 'paused';
 	const FINISHED = 'finished';
 }
