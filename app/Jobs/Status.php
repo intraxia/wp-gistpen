@@ -13,4 +13,5 @@ class Status extends Enum {
 	const RUNNING = 'running';
 	const PAUSED = 'paused';
 	const FINISHED = 'finished';
+	const ERROR = 'error';
 }
