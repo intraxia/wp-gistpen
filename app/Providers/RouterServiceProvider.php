@@ -121,17 +121,26 @@ class RouterServiceProvider extends ServiceProvider {
 				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
 			);
 			$router->post(
-				'/jobs/(?P<name>\w+)/next',
-				array( $controllers['job'], 'next' ),
+				'/jobs/(?P<name>\w+)/process',
+				array( $controllers['job'], 'process' ),
+				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
+			);
+
+			/**
+			 * /jobs/{name}/runs
+			 */
+			$router->get(
+				'/jobs/(?P<name>\w+)/runs',
+				array( $controllers['job'], 'runs' ),
 				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
 			);
 			$router->get(
-				'/jobs/(?P<name>\w+)/(?P<timestamp>\w+)',
+				'/jobs/(?P<name>\w+)/runs/(?P<run_id>\w+)',
 				array( $controllers['job'], 'status' ),
 				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
 			);
 			$router->get(
-				'/jobs/(?P<name>\w+)/(?P<timestamp>\w+)/console',
+				'/jobs/(?P<name>\w+)/runs/(?P<run_id>\w+)/console',
 				array( $controllers['job'], 'console' ),
 				array( 'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ) )
 			);
