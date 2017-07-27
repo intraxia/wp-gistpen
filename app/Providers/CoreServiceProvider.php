@@ -32,7 +32,13 @@ class CoreServiceProvider implements ServiceProvider {
 			->define( 'facade.adapter', new Adapter )
 			->define( 'account.gist', new Gist( $container->fetch( 'facade.adapter' ), new Client ) )
 			->define( 'facade.database', new Database( $container->fetch( 'facade.adapter' ) ) )
-			->define( 'migration', new Migration( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ), $container->fetch( 'slug' ), $container->fetch( 'version' ) ) )
+			->define( 'migration', new Migration(
+				$container->fetch( 'facade.database' ),
+				$container->fetch( 'facade.adapter' ),
+				$container->fetch( 'database' ),
+				$container->fetch( 'slug' ),
+				$container->fetch( 'version' )
+			) )
 			->define( 'sync', new Sync( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) )
 			->define( 'save', new Save( $container->fetch( 'facade.database' ), $container->fetch( 'facade.adapter' ) ) )
 			->define( 'cli.command', function () {

@@ -11,9 +11,9 @@ namespace Intraxia\Gistpen;
  * @copyright 2014 James DiGioia
  */
 
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Facade\Adapter;
 use Intraxia\Gistpen\Facade\Database;
-use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 use WP_Query;
 
@@ -94,18 +94,27 @@ class Migration implements HasActions {
 	protected $version;
 
 	/**
+	 * Database service.
+	 *
+	 * @var EntityManager
+	 */
+	private $em;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    0.5.0
 	 *
-	 * @param Database $database
-	 * @param Adapter $adapter
-	 * @param string $slug
-	 * @param string $version
+	 * @param Database      $database
+	 * @param Adapter       $adapter
+	 * @param EntityManager $em
+	 * @param string        $slug
+	 * @param string        $version
 	 */
-	public function __construct( Database $database, Adapter $adapter, $slug, $version ) {
+	public function __construct( Database $database, Adapter $adapter, EntityManager $em, $slug, $version ) {
 		$this->database = $database;
 		$this->adapter = $adapter;
+		$this->em = $em;
 		$this->slug = $slug;
 		$this->version = $version;
 	}
@@ -414,6 +423,8 @@ class Migration implements HasActions {
 			)
 		));
 		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ) );
+
+		$this->em->migrate();
 	}
 
 	/**
