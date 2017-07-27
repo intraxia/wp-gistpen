@@ -3,6 +3,7 @@ namespace Intraxia\Jaxion\Test;
 
 use Intraxia\Gistpen\Migration;
 use Intraxia\Gistpen\Test\TestCase;
+use Mockery\Mock;
 
 class MigrationTest extends TestCase {
 	/**
@@ -10,13 +11,25 @@ class MigrationTest extends TestCase {
 	 */
 	protected $migration;
 
+	/**
+	 * @var Mock
+	 */
+	protected $em;
+
 	public function setUp() {
 		parent::setUp();
 
-		$this->migration = new Migration( $this->mock( 'facade.database' ), $this->mock( 'facade.adapter' ), $this->app->fetch( 'slug' ), '1.0.0' );
+		$this->migration = new Migration(
+			$this->mock( 'facade.database' ),
+			$this->mock( 'facade.adapter' ),
+			$this->em = $this->mock( 'database' ),
+			$this->app->fetch( 'slug' ),
+			'1.0.0'
+		);
 	}
 
 	public function test_should_update_to_1_0_0() {
+		$this->em->shouldReceive( 'migrate' )->once();
 		$old_opts = array(
 			'_wpgp_gistpen_highlighter_theme' => 'okaidia',
 			'_wpgp_gistpen_line_numbers'      => 'on',
