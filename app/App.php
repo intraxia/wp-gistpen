@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen;
 
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Jaxion\Core\Application;
 
 /**
@@ -34,6 +35,7 @@ class App extends Application {
 		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
 		'Intraxia\Gistpen\Providers\AssetsServiceProvider',
 		'Intraxia\Gistpen\Providers\DatabaseServiceProvider',
+		'Intraxia\Gistpen\Providers\JobsServiceProvider',
 		'Intraxia\Gistpen\Providers\ControllerServiceProvider',
 		'Intraxia\Gistpen\Providers\CoreServiceProvider',
 		'Intraxia\Gistpen\Providers\EmbedServiceProvider',

@@ -1,0 +1,28 @@
+<?php
+namespace Intraxia\Gistpen\Providers;
+
+use Intraxia\Gistpen\Jobs\ExportJob;
+use Intraxia\Gistpen\Jobs\Manager as Jobs;
+use Intraxia\Jaxion\Contract\Core\Container;
+use Intraxia\Jaxion\Contract\Core\ServiceProvider;
+
+class JobsServiceProvider implements ServiceProvider {
+
+	/**
+	 * Register the provider's services on the container.
+	 *
+	 * This method is passed the container to register on, giving the service provider
+	 * an opportunity to register its services on the container in an encapsulated way.
+	 *
+	 * @param Container $container
+	 */
+	public function register( Container $container ) {
+		$container->define('jobs', function ( Container $container ) {
+			$jobs = new Jobs;
+
+			// Register jobs here.
+
+			return $jobs;
+		} );
+	}
+}
