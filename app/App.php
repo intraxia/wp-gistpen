@@ -22,7 +22,7 @@ class App extends Application {
 	/**
 	 * Plugin version constant.
 	 */
-	const VERSION = '0.5.8';
+	const VERSION = '1.0.0';
 
 	/**
 	 * ServiceProviders to register with the Application

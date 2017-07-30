@@ -4,7 +4,7 @@ import type { Action, Delta, RouterDeltaOptions, RouteChangeAction } from '../ty
 import { Kefir } from 'brookjs';
 import href from 'sheet-router/href';
 import history from 'sheet-router/history';
-import { ROUTE_CHANGE, routeChangeAction } from '../action';
+import { ROUTE_CHANGE } from '../action';
 import { getRoute, getUrl, parseQueryString } from '../selector';
 
 type HrefTarget = {

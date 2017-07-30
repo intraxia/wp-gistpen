@@ -17,10 +17,14 @@ class JobsServiceProvider implements ServiceProvider {
 	 * @param Container $container
 	 */
 	public function register( Container $container ) {
+		$container->define('job.export', function ( Container $container ) {
+			return new ExportJob( $container->fetch( 'database' ) );
+		} );
+
 		$container->define('jobs', function ( Container $container ) {
 			$jobs = new Jobs;
 
-			// Register jobs here.
+			$jobs->add_job( 'export', $container->fetch( 'job.export' ) );
 
 			return $jobs;
 		} );
