@@ -108,12 +108,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "1d9cc5cb2956396c364e0a79a1394c859535c3b6"
+                "reference": "e150347f84f45a1caf53289af0656ea42f551c20"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/1d9cc5cb2956396c364e0a79a1394c859535c3b6",
-                "reference": "1d9cc5cb2956396c364e0a79a1394c859535c3b6",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/e150347f84f45a1caf53289af0656ea42f551c20",
+                "reference": "e150347f84f45a1caf53289af0656ea42f551c20",
                 "shasum": ""
             },
             "require": {
@@ -143,7 +143,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2017-07-23 19:30:15"
+            "time": "2017-07-30 14:37:25"
         },
         {
             "name": "knplabs/github-api",
