@@ -36,6 +36,8 @@ class Message extends Model implements UsesCustomTable {
 	 * @var array
 	 */
 	public $visible = array(
+		'ID',
+		'run_id',
 		'text',
 		'level',
 		'logged_at',
