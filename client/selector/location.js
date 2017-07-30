@@ -25,7 +25,7 @@ export const getRoute : (search : string, param : string) => string = R.pipe(
 export const generateParam = (route : Route) : string => {
     let param = route.name;
 
-    if (route.name === 'jobs' && route.parts && typeof route.parts.job === 'string') {
+    if (route.name === 'jobs' && typeof route.parts.job === 'string') {
         param = typeof route.parts.run === 'string' ?
             `${param}/${route.parts.job}/${route.parts.run}` :
             `${param}/${route.parts.job}`;

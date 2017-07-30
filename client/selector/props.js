@@ -10,7 +10,6 @@ export const selectJob = (state : SettingsState) : Job | void => {
     let job;
 
     if (state.route.name === 'jobs' &&
-        typeof state.route.parts !== 'undefined' &&
         typeof state.route.parts.job === 'string'
     ) {
         job = state.jobs[state.route.parts.job];
@@ -27,7 +26,6 @@ export const selectRun = (state : SettingsState) : Run | void => {
     let run;
 
     if (state.route.name === 'jobs' &&
-        typeof state.route.parts !== 'undefined' &&
         typeof state.route.parts.job === 'string' &&
         typeof state.route.parts.run === 'string'
     ) {

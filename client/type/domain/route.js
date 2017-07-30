@@ -5,5 +5,5 @@ export type RouteParts = {
 
 export type Route = {
     name : string;
-    parts? : RouteParts;
+    parts : RouteParts;
 };

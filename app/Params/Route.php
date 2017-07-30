@@ -42,6 +42,7 @@ class Route implements HasFilters {
 	public function apply_edit_route( $params ) {
 		$params['route'] = array(
 			'name' => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor',
+			'parts' => new stdClass,
 
 		);
 
