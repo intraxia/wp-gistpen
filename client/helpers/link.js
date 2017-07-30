@@ -1,5 +1,6 @@
+// @flow
 import { getUrl } from '../selector';
 
-export default function link(param : string, route : string) {
-    return getUrl(param, route);
+export default function link(param : string, name : string) : string {
+    return getUrl(param, { name });
 }

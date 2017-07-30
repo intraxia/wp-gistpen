@@ -1,3 +1,4 @@
+// @flow
 import langs from '../languages.json';
 
 /**
@@ -6,7 +7,7 @@ import langs from '../languages.json';
  * @param {string} slug - Language slug.
  * @returns {string} Prism slug.
  */
-export default function prismSlug(slug) {
+export default function prismSlug(slug : string) : string {
     return langs.aliases[slug] || slug;
 
 };

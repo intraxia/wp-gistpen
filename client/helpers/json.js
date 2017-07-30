@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * Handlebars helper to stringify data to json.
  *
@@ -6,6 +8,6 @@
  * @param {*} value - Value to stringify.
  * @returns {string} Stringified value..
  */
-export default function json(value) {
+export default function json(value : Object) : string {
     return JSON.stringify(value, null, '  ');
 };
