@@ -1,0 +1,32 @@
+<div class="table" data-brk-container="settingsJobs">
+    <h3 class="title">Background Jobs</h3>
+
+    <table class="widefat striped">
+        <thead>
+        <tr>
+            <th>Job Name</th>
+            <th>Job Description</th>
+            <th>Job Status</th>
+            <th>Job Runs</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>Job Name</th>
+            <th>Job Description</th>
+            <th>Job Status</th>
+            <th>Job Runs</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {{#each jobs}}
+            <tr>
+                <td><strong>{{name}}</strong></td>
+                <td>{{description}}</td>
+                <td>{{#if status}}{{status}}{{else}}Loading...{{/if}}</td>
+                <td><a href="{{link "wpgp_route" (join "jobs" slug "/")}}">View Runs</a></td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>

@@ -8,4 +8,14 @@
     {{#compare route.name "accounts"}}
         {{> page/settings/accounts}}
     {{/compare}}
+
+    {{#compare route.name "jobs"}}
+        {{#if route.parts.run}}
+            {{> page/settings/messages}}
+        {{else if route.parts.job}}
+            {{> page/settings/runs}}
+        {{else}}
+            {{> page/settings/jobs}}
+        {{/if}}
+    {{/compare}}
 </div>
