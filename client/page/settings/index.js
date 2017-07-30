@@ -6,8 +6,9 @@ import { domDelta, containerAttribute } from 'brookjs';
 import view from './view';
 import { selectSettingsProps as selectProps } from '../../selector';
 import router from './router';
-import { applyDelta, routerDelta, siteDelta, webpackDelta } from '../../delta';
+import { applyDelta, jobsDelta, routerDelta, siteDelta, webpackDelta } from '../../delta';
 import { globals, route, prism, gist, jobs, runs, messages } from '../../reducer';
+import { ajax$ } from '../../service';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
@@ -20,6 +21,7 @@ createStore(
     __GISTPEN_SETTINGS__,
     applyDelta(
         domDelta({ el, selectProps, view }),
+        jobsDelta({ ajax$ }),
         routerDelta({ router, param: 'wpgp_route' }),
         siteDelta,
         webpackDelta
