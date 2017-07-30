@@ -42,6 +42,13 @@ abstract class AbstractJob implements Job {
 	abstract protected function name();
 
 	/**
+	 * Get the Job's slug.
+	 *
+	 * @return string
+	 */
+	abstract protected function slug();
+
+	/**
 	 * Get the Job's description.
 	 *
 	 * @return mixed
@@ -80,7 +87,7 @@ abstract class AbstractJob implements Job {
 		if ( ! ( $items instanceof Collection ) ) {
 			return new WP_Error(
 				'invalid_items',
-				"items passed into dispatch or returned by fetch_items for job {$this->name()} is not a Collection"
+				"items passed into dispatch or returned by fetch_items for job {$this->slug()} is not a Collection"
 			);
 		}
 
@@ -89,7 +96,7 @@ abstract class AbstractJob implements Job {
 			'scheduled_at' => $this->make_timestamp(),
 			'items'        => $items,
 			'status'       => Status::SCHEDULED,
-			'job'          => $this->name(),
+			'job'          => $this->slug(),
 		) );
 
 		if ( is_wp_error( $run ) ) {
@@ -108,7 +115,7 @@ abstract class AbstractJob implements Job {
 	 */
 	public function process() {
 		if ( $this->is_running() ) {
-			return new WP_Error( 'job_running', "Job {$this->name()} is already running." );
+			return new WP_Error( 'job_running', "Job {$this->slug()} is already running." );
 		}
 
 		$start_time = time();
@@ -170,7 +177,29 @@ abstract class AbstractJob implements Job {
 	 */
 	public function runs() {
 		return $this->em->find_by( Klass::RUN, array(
-			'job' => $this->name(),
+			'job' => $this->slug(),
+		) );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @return Run|WP_Error
+	 */
+	public function run( $run_id ) {
+		return $this->em->find( Klass::RUN, $run_id, array(
+			'job' => $this->slug(),
+		) );
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @return Collection|WP_Error
+	 */
+	public function messages( $run_id ) {
+		return $this->em->find_by( Klass::MESSAGE, array(
+			'run_id' => $run_id,
 		) );
 	}
 
@@ -191,10 +220,11 @@ abstract class AbstractJob implements Job {
 	public function serialize() {
 		return array(
 			'name'        => $this->name(),
+			'slug'        => $this->slug(),
 			'description' => $this->description(),
 			'rest_url'    => rest_url( sprintf(
 				'intraxia/v1/gistpen/jobs/%s',
-				$this->name()
+				$this->slug()
 			) ),
 		);
 	}
@@ -243,7 +273,7 @@ abstract class AbstractJob implements Job {
 	private function process_url() {
 		return rest_url( sprintf(
 			'intraxia/v1/gistpen/jobs/%s/process',
-			$this->name()
+			$this->slug()
 		) );
 	}
 
@@ -281,7 +311,7 @@ abstract class AbstractJob implements Job {
 	 * @return string
 	 */
 	private function make_status_key() {
-		return "_wpgp_job_{$this->name()}_status";
+		return "_wpgp_job_{$this->slug()}_status";
 	}
 
 	/**

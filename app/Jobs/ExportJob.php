@@ -7,13 +7,21 @@ use Intraxia\Jaxion\Contract\Axolotl\Collection;
 use WP_Error;
 
 class ExportJob extends AbstractJob {
-
 	/**
 	 * {@inheritdoc}
 	 *
 	 * @return string
 	 */
 	protected function name() {
+		return 'Export';
+	}
+
+	/**
+	 * {@inheritdoc}
+	 *
+	 * @return string
+	 */
+	protected function slug() {
 		return 'export';
 	}
 

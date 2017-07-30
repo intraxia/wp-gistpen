@@ -2,7 +2,6 @@
 namespace Intraxia\Gistpen\Jobs;
 
 use Intraxia\Gistpen\Contract\Job;
-use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Dictionary;
 use Intraxia\Jaxion\Contract\Axolotl\Serializes;
 
@@ -10,7 +9,7 @@ class Manager implements Serializes {
 	/**
 	 * Jobs collection.
 	 *
-	 * @var Collection
+	 * @var Dictionary
 	 */
 	protected $jobs;
 

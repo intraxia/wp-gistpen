@@ -39,8 +39,6 @@ interface Job extends Serializes {
 	/**
 	 * Process a batch of data.
 	 *
-	 * @param int $run_id
-	 *
 	 * @return mixed
 	 */
 	public function process();
@@ -51,4 +49,22 @@ interface Job extends Serializes {
 	 * @return Collection
 	 */
 	public function runs();
+
+	/**
+	 * Get an individual run for the job.
+	 *
+	 * @param int $run_id
+	 *
+	 * @return Run
+	 */
+	public function run( $run_id );
+
+	/**
+	 * Get the Collection of messages for a given run.
+	 *
+	 * @param int $run_id
+	 *
+	 * @return Collection
+	 */
+	public function messages( $run_id );
 }
