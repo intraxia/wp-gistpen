@@ -10,7 +10,7 @@ export type Message = {
     logged_at : string;
 };
 
-export type RunStatus = 'scheduled' | 'finished';
+export type RunStatus = 'scheduled' | 'running' | 'paused' | 'finished' | 'error';
 
 export type Run = {
     ID : string;
