@@ -16,6 +16,19 @@ class Route implements HasFilters {
 	public function apply_settings_route( $params ) {
 		$params['route'] = array( 'name' => 'highlighting', 'parts' => $parts = new stdClass );
 
+		if ( ! empty( $_GET['wpgp_route'] ) ) {
+			$pieces = explode( '/', $_GET['wpgp_route'] );
+			$name = $params['route']['name'] = $pieces[0];
+
+			if ( 'jobs' === $name && isset( $pieces[1] ) ) {
+				$parts->job = $pieces[1];
+
+				if ( isset( $pieces[2] ) ) {
+					$parts->run = $pieces[2];
+				}
+			}
+		}
+
 		return $params;
 	}
 

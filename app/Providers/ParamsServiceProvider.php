@@ -4,6 +4,7 @@ namespace Intraxia\Gistpen\Providers;
 use Intraxia\Gistpen\Params\Editor;
 use Intraxia\Gistpen\Params\Gist;
 use Intraxia\Gistpen\Params\Globals;
+use Intraxia\Gistpen\Params\Jobs;
 use Intraxia\Gistpen\Params\Prism;
 use Intraxia\Gistpen\Params\Repo;
 use Intraxia\Gistpen\Params\Repository as Params;
@@ -39,6 +40,10 @@ class ParamsServiceProvider implements ServiceProvider {
 
 		$container->define( 'params.route', function ( Container $container ) {
 			return new Route();
+		} );
+
+		$container->define( 'params.jobs', function ( Container $container ) {
+			return new Jobs( $container->fetch( 'jobs' ) );
 		} );
 
 		$container->define( 'params.editor', function ( Container $container ) {
