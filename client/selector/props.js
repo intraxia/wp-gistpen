@@ -15,7 +15,10 @@ export const selectJob = (state : SettingsState) : Job | void => {
         job = state.jobs[state.route.parts.job];
 
         if (job) {
-            job.runs = state.runs.filter((run : Run) : boolean => run.job === job.slug);
+            job = {
+                ...job,
+                runs: state.runs.filter((run : Run) : boolean => run.job === job.slug)
+            };
         }
     }
 
@@ -33,7 +36,10 @@ export const selectRun = (state : SettingsState) : Run | void => {
         run = state.runs.find((run : Run) : boolean => run.ID === runId);
 
         if (run) {
-            run.messages = state.messages.filter((message : Message) => message.run_id === runId);
+            run = {
+                ...run,
+                messages: state.messages.filter((message : Message) => message.run_id === runId)
+            };
         }
     }
 
