@@ -29,10 +29,10 @@ export default function routerDelta({ router, param } : RouterDeltaOptions) : De
      * @returns {Observable<T, S>} Stream of routing actions.
      */
     return (actions$ : ActionObservable<Action>) : Observable<Action> => {
-        const initial$ = Kefir.later(0, router(getRoute(param)));
+        const initial$ = Kefir.later(0, router(getRoute(window.location.search, param)));
 
         const pushState$ = actions$.ofType(ROUTE_CHANGE).flatMap(({ payload } : RouteChangeAction) => Kefir.stream((emitter : Emitter<void, void>) => {
-            const dest = getUrl(param, payload.route);
+            const dest = getUrl(param, payload);
 
             if (dest !== (location.pathname + location.search)) {
                 global.history.pushState({}, '', dest);
@@ -41,14 +41,14 @@ export default function routerDelta({ router, param } : RouterDeltaOptions) : De
             emitter.end();
         }));
 
-        const href$ = Kefir.stream((emitter : Emitter<RouteChangeAction, empty>) => {
+        const href$ = Kefir.stream((emitter : Emitter<Action, empty>) => {
             const emit = ({ search, href } : HrefTarget) => {
                 if (typeof search === 'string') {
                     search = parseQueryString(search);
                 }
 
                 if (search[param]) {
-                    emitter.value(routeChangeAction(search[param]));
+                    emitter.value(router(`/${search[param]}`));
                 } else {
                     location.href = href;
                     emitter.end();

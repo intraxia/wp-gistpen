@@ -16,7 +16,7 @@ export default R.curry((
     { ajax$ } : CommitsServices,
     actions$ : ActionObservable<Action>,
     state$ : Kefir.Observable<CommitsProps>
-) => state$.sampledBy(actions$.ofType(ROUTE_CHANGE).filter((action : RouteChangeAction) => action.payload.route === 'commits'))
+) => state$.sampledBy(actions$.ofType(ROUTE_CHANGE).filter((action : RouteChangeAction) => action.payload.name === 'commits'))
     .filter((state : CommitsProps) => state.repo.ID)
     .flatMapFirst((state : CommitsProps) =>
         Kefir.concat([

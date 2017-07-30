@@ -1,4 +1,6 @@
 // @flow
+import type { Job, Route, Run, Message } from './domain';
+
 export type Toggle = 'on' | 'off';
 
 export type Language = {
@@ -42,7 +44,6 @@ export type GistState = {
     token : string;
 };
 
-export type RouteState  = 'highlighting' | 'accounts' | 'import' | 'export' | 'editor' | 'commits';
 
 export type GlobalsState = {|
     languages : {[key : string] : string; };
@@ -113,12 +114,8 @@ export type HasPrismState = {
     prism : PrismState;
 };
 
-export type HasGistState = {
-    gist : GistState;
-};
-
 export type HasRouteState = {
-    route : RouteState;
+    route : Route;
 };
 
 export type HasRepo = {
@@ -133,14 +130,19 @@ export type HasSearchState = {
     search : SearchState;
 };
 
-export type SettingsState = HasGlobalsState & HasPrismState & HasGistState & HasRouteState;
+export type SettingsState = {
+    globals : GlobalsState;
+    prism : PrismState;
+    gist : GistState;
+    route : Route;
+};
 
 export type EditorPageState = {
     globals : GlobalsState;
     repo : Repo;
     editor : EditorState;
     commits : CommitsState;
-    route : RouteState;
+    route : Route;
 };
 
 export type TinyMCEState = HasGlobalsState & HasSearchState;

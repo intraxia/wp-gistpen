@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Params;
 
 use Intraxia\Jaxion\Contract\Core\HasFilters;
+use stdClass;
 
 class Route implements HasFilters {
 
@@ -13,7 +14,7 @@ class Route implements HasFilters {
 	 * @return array
 	 */
 	public function apply_settings_route( $params ) {
-		$params['route'] = ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'highlighting';
+		$params['route'] = array( 'name' => 'highlighting', 'parts' => $parts = new stdClass );
 
 		return $params;
 	}
@@ -26,7 +27,10 @@ class Route implements HasFilters {
 	 * @return array
 	 */
 	public function apply_edit_route( $params ) {
-		$params['route'] = ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor';
+		$params['route'] = array(
+			'name' => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor',
+
+		);
 
 		return $params;
 	}
@@ -37,20 +41,24 @@ class Route implements HasFilters {
 	public function filter_hooks() {
 		return array(
 			array(
-				'hook'   => 'params.state.settings',
-				'method' => 'apply_settings_route',
+				'hook'     => 'params.state.settings',
+				'method'   => 'apply_settings_route',
+				'priority' => 5,
 			),
 			array(
-				'hook'   => 'params.props.settings',
-				'method' => 'apply_settings_route',
+				'hook'     => 'params.props.settings',
+				'method'   => 'apply_settings_route',
+				'priority' => 5,
 			),
 			array(
-				'hook'   => 'params.state.edit',
-				'method' => 'apply_edit_route',
+				'hook'     => 'params.state.edit',
+				'method'   => 'apply_edit_route',
+				'priority' => 5,
 			),
 			array(
-				'hook'   => 'params.props.edit',
-				'method' => 'apply_edit_route',
+				'hook'     => 'params.props.edit',
+				'method'   => 'apply_edit_route',
+				'priority' => 5,
 			),
 		);
 	}

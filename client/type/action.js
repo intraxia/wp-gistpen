@@ -1,6 +1,7 @@
 // @flow
 import type { ApiResponse, RepoApiResponse, UserApiResponse } from './ajax';
 import type { Blob, Cursor, Toggle } from './state';
+import type { Route } from './domain';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     AJAX_FINISHED, AJAX_FAILED, REPO_SAVE_SUCCEEDED, USER_SAVE_SUCCEEDED,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_INSERT_CLICK, TINYMCE_POPUP_CLOSE_CLICK,
@@ -158,9 +159,7 @@ export type GistTokenChangeAction = {
 
 export type RouteChangeAction = {
     type : typeof ROUTE_CHANGE;
-    payload : {
-        route : string;
-    };
+    payload : Route;
 };
 
 export type ThemeChangeAction = {

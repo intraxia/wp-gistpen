@@ -1,22 +1,12 @@
 // @flow
-import type { RouteChangeAction } from '../type';
+import type { RouteChangeAction, RouteParts } from '../type';
 
 /**
  * Dispatched when route changes.
- *
- * @type {string}
  */
 export const ROUTE_CHANGE = 'ROUTE_CHANGE';
 
-/**
- * Create a new Route change action.
- *
- * @param {string} route - Route changed to.
- * @returns {Action} Route change action.
- */
-export function routeChangeAction(route : string) : RouteChangeAction {
-    return {
-        type: ROUTE_CHANGE,
-        payload: { route }
-    };
-}
+export const routeChangeAction = (name : string, parts : RouteParts = {}) : RouteChangeAction => ({
+    type: ROUTE_CHANGE,
+    payload: { name, parts }
+});

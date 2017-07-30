@@ -1,6 +1,6 @@
 // @flow
-import type { Action } from './action';
-export type SheetRouter = (route : string) => Action;
+import type { RouteChangeAction } from './action';
+export type SheetRouter = (route : string) => RouteChangeAction;
 
 export type RouterDeltaOptions = {
     router : SheetRouter;
