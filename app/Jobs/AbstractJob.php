@@ -226,6 +226,10 @@ abstract class AbstractJob implements Job {
 				'intraxia/v1/gistpen/jobs/%s',
 				$this->slug()
 			) ),
+			'runs_url'    => rest_url( sprintf(
+				'intraxia/v1/gistpen/jobs/%s/runs',
+				$this->slug()
+			) ),
 		);
 	}
 

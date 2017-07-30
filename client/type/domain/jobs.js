@@ -32,6 +32,7 @@ export type Job = {
     slug : string;
     description : string;
     rest_url : string;
+    runs_url : string;
     status? : JobStatus;
     runs? : Array<Run>;
 };
