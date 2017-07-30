@@ -7,7 +7,7 @@ import view from './view';
 import { selectSettingsProps as selectProps } from '../../selector';
 import router from './router';
 import { applyDelta, routerDelta, siteDelta, webpackDelta } from '../../delta';
-import { globals, route, prism, gist } from '../../reducer';
+import { globals, route, prism, gist, jobs, runs, messages } from '../../reducer';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
@@ -16,7 +16,7 @@ const el = (doc : Document) => fromCallback((callback : (value : null | HTMLElem
 );
 
 createStore(
-    combineReducers({ globals, route, prism, gist }),
+    combineReducers({ globals, route, prism, gist, jobs, runs, messages }),
     __GISTPEN_SETTINGS__,
     applyDelta(
         domDelta({ el, selectProps, view }),

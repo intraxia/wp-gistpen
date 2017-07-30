@@ -44,6 +44,9 @@ export type GistState = {
     token : string;
 };
 
+export type JobsState = {
+    [key : string] : Job;
+};
 
 export type GlobalsState = {|
     languages : {[key : string] : string; };
@@ -106,6 +109,10 @@ export type SearchState = {
     selection? : number;
 };
 
+export type MessagesState = Array<Message>;
+
+export type RunsState = Array<Run>;
+
 export type HasGlobalsState = {
     globals : GlobalsState;
 };
@@ -135,6 +142,9 @@ export type SettingsState = {
     prism : PrismState;
     gist : GistState;
     route : Route;
+    jobs : JobsState;
+    runs : RunsState;
+    messages : MessagesState;
 };
 
 export type EditorPageState = {
