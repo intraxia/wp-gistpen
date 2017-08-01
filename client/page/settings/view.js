@@ -6,6 +6,7 @@ import header from './header';
 import highlighting from './highlighting';
 import accounts from './accounts';
 import template from './index.hbs';
+import { JobsComponent } from '../../component';
 
 const prismChanged = (prev : SettingsProps, next : SettingsProps) : boolean =>
     prev.prism.theme === next.prism.theme &&
@@ -20,6 +21,7 @@ export default component({
             factory: highlighting,
             modifyChildProps: (props$ : Observable<SettingsProps>) : Observable<HasPrismState> => props$.skipDuplicates(prismChanged)
         },
-        settingsAccounts: accounts
+        settingsAccounts: accounts,
+        settingsJobs: JobsComponent
     })
 });

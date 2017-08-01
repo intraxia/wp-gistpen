@@ -1,0 +1,12 @@
+<tr data-brk-container="jobRow" data-brk-key="{{slug}}">
+    <td><strong>{{name}}</strong></td>
+    <td>{{description}}</td>
+    <td>{{#if status}}{{status}}{{else}}Loading...{{/if}}</td>
+    <td><a href="{{link "wpgp_route" (join "jobs" slug "/")}}">View Runs</a></td>
+    <td>
+        <button class="button button-primary"
+                data-brk-onclick="onStartClick">
+            Start Job
+        </button>
+    </td>
+</tr>

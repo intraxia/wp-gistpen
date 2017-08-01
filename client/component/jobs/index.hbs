@@ -8,6 +8,7 @@
             <th>Job Description</th>
             <th>Job Status</th>
             <th>Job Runs</th>
+            <th>Start Job</th>
         </tr>
         </thead>
         <tfoot>
@@ -16,16 +17,12 @@
             <th>Job Description</th>
             <th>Job Status</th>
             <th>Job Runs</th>
+            <th>Start Job</th>
         </tr>
         </tfoot>
         <tbody>
         {{#each jobs}}
-            <tr>
-                <td><strong>{{name}}</strong></td>
-                <td>{{description}}</td>
-                <td>{{#if status}}{{status}}{{else}}Loading...{{/if}}</td>
-                <td><a href="{{link "wpgp_route" (join "jobs" slug "/")}}">View Runs</a></td>
-            </tr>
+            {{> component/jobs/row}}
         {{/each}}
         </tbody>
     </table>
