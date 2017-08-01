@@ -1,6 +1,6 @@
 // @flow
 
-export type MessageLevel = 'success';
+export type MessageLevel = 'success' | 'info' | 'error';
 
 export type Message = {
     ID : string;
@@ -17,8 +17,8 @@ export type Run = {
     job : string;
     status : RunStatus;
     scheduled_at : string;
-    started_at : string;
-    finished_at : string;
+    started_at : string | null;
+    finished_at : string | null;
     rest_url : string;
     job_url : string;
     console_url : string;
