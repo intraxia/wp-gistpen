@@ -1,11 +1,12 @@
 // @flow
-import type { Action, AjaxFunction, RouteChangeAction,
-    Route, Run, GlobalsState, Message, Job, RunStatus } from '../type';
+import type { Action, AjaxFunction, RouteChangeAction, JobDispatchClickAction,
+    Route, Run, GlobalsState, Message, Job, RunStatus, HasMetaKey } from '../type';
 import R from 'ramda';
 import { Kefir } from 'brookjs';
 import { MESSAGES_FETCH_STARTED, MESSAGES_FETCH_SUCCEEDED, MESSAGES_FETCH_FAILED,
     ROUTE_CHANGE, JOB_FETCH_STARTED, JOB_FETCH_SUCCEEDED, JOB_FETCH_FAILED,
-    RUNS_FETCH_STARTED, RUNS_FETCH_SUCCEEDED, RUNS_FETCH_FAILED } from '../action';
+    RUNS_FETCH_STARTED, RUNS_FETCH_SUCCEEDED, RUNS_FETCH_FAILED, JOB_DISPATCH_CLICK,
+    jobDispatchStarted, jobDispatchSucceeded, jobDispatchFailed } from '../action';
 
 type JobsServices = {
     ajax$ : AjaxFunction;
@@ -29,135 +30,165 @@ type GetRunsResponse = Array<Run>;
 
 export default R.curry((
     { ajax$ } : JobsServices,
-    actions$ : ActionObservable<Action>,
+    actions$ : Kefir.ActionObservable<Action>,
     state$ : Kefir.Observable<JobProps>
-) => state$.sampledBy(
-    actions$.ofType(ROUTE_CHANGE)
-        .filter((action : RouteChangeAction) => action.payload.name === 'jobs')
-)
-    .flatMapLatest(({ route, runs, globals, jobs } : JobProps) : Kefir.Observable<Action> => {
-        if (typeof route.parts.run === 'string') {
-            const run = runs.find((run : Run) => route.parts.run === run.ID);
+) : Kefir.Observable<Action> => {
+    const fetch$ = state$.sampledBy(
+        actions$.ofType(ROUTE_CHANGE)
+            .filter((action : RouteChangeAction) => action.payload.name === 'jobs')
+    )
+        .flatMapLatest(({ route, runs, globals, jobs } : JobProps) : Kefir.Observable<Action> => {
+            if (typeof route.parts.run === 'string') {
+                const run = runs.find((run : Run) => route.parts.run === run.ID);
 
-            if (!run) {
-                return Kefir.never();
+                if (!run) {
+                    return Kefir.never();
+                }
+
+                return Kefir.concat([
+                    Kefir.constant({
+                        type: MESSAGES_FETCH_STARTED
+                    }),
+                    ajax$(run.console_url, {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'X-WP-Nonce': globals.nonce,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .map(JSON.parse)
+                        .map((response : GetConsoleResponse) => ({
+                            type: MESSAGES_FETCH_SUCCEEDED,
+                            payload: { response }
+                        }))
+                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                            type: MESSAGES_FETCH_FAILED,
+                            payload: err,
+                            error: true
+                        })),
+                ]);
             }
 
-            return Kefir.concat([
-                Kefir.constant({
-                    type: MESSAGES_FETCH_STARTED
-                }),
-                ajax$(run.console_url, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'X-WP-Nonce': globals.nonce,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .map(JSON.parse)
-                    .map((response : GetConsoleResponse) => ({
-                        type: MESSAGES_FETCH_SUCCEEDED,
-                        payload: { response }
-                    }))
-                    .flatMapErrors((err : TypeError) => Kefir.constant({
-                        type: MESSAGES_FETCH_FAILED,
-                        payload: err,
-                        error: true
-                    })),
-            ]);
-        }
+            if (typeof route.parts.job === 'string') {
+                const job = jobs[route.parts.job];
 
-        if (typeof route.parts.job === 'string') {
-            const job = jobs[route.parts.job];
+                if (!job) {
+                    return Kefir.never();
+                }
 
-            if (!job) {
-                return Kefir.never();
+                const job$ = Kefir.concat([
+                    Kefir.constant({
+                        type: JOB_FETCH_STARTED
+                    }),
+                    ajax$(job.rest_url, {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'X-WP-Nonce': globals.nonce,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .map(JSON.parse)
+                        .map((response : GetJobResponse) => ({
+                            type: JOB_FETCH_SUCCEEDED,
+                            payload: { response }
+                        }))
+                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                            type: JOB_FETCH_FAILED,
+                            payload: err,
+                            error: true
+                        })),
+                ]);
+
+                const runs$ = Kefir.concat([
+                    Kefir.constant({
+                        type: RUNS_FETCH_STARTED
+                    }),
+                    ajax$(job.runs_url, {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'X-WP-Nonce': globals.nonce,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .map(JSON.parse)
+                        .map((response : GetRunsResponse) => ({
+                            type: RUNS_FETCH_SUCCEEDED,
+                            payload: { response }
+                        }))
+                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                            type: RUNS_FETCH_FAILED,
+                            payload: err,
+                            error: true
+                        })),
+                ]);
+
+                return Kefir.merge([job$, runs$]);
             }
 
-            const job$ = Kefir.concat([
-                Kefir.constant({
-                    type: JOB_FETCH_STARTED
-                }),
-                ajax$(job.rest_url, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'X-WP-Nonce': globals.nonce,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .map(JSON.parse)
-                    .map((response : GetJobResponse) => ({
-                        type: JOB_FETCH_SUCCEEDED,
-                        payload: { response }
-                    }))
-                    .flatMapErrors((err : TypeError) => Kefir.constant({
-                        type: JOB_FETCH_FAILED,
-                        payload: err,
-                        error: true
-                    })),
-            ]);
+            const jobs$ = [];
 
-            const runs$ = Kefir.concat([
-                Kefir.constant({
-                    type: RUNS_FETCH_STARTED
-                }),
-                ajax$(job.runs_url, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'X-WP-Nonce': globals.nonce,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .map(JSON.parse)
-                    .map((response : GetRunsResponse) => ({
-                        type: RUNS_FETCH_SUCCEEDED,
-                        payload: { response }
-                    }))
-                    .flatMapErrors((err : TypeError) => Kefir.constant({
-                        type: RUNS_FETCH_FAILED,
-                        payload: err,
-                        error: true
-                    })),
-            ]);
+            for (const key in jobs) {
+                const job = jobs[key];
 
-            return Kefir.merge([job$, runs$]);
-        }
+                const job$ = Kefir.concat([
+                    Kefir.constant({
+                        type: JOB_FETCH_STARTED
+                    }),
+                    ajax$(job.rest_url, {
+                        method: 'GET',
+                        credentials: 'include',
+                        headers: {
+                            'X-WP-Nonce': globals.nonce,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                        .map(JSON.parse)
+                        .map((response : GetJobResponse) => ({
+                            type: JOB_FETCH_SUCCEEDED,
+                            payload: { response }
+                        }))
+                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                            type: JOB_FETCH_FAILED,
+                            payload: err,
+                            error: true
+                        })),
+                ]);
 
-        const jobs$ = [];
+                jobs$.push(job$);
+            }
 
-        for (const key in jobs) {
-            const job = jobs[key];
+            return Kefir.merge(jobs$);
+        });
 
-            const job$ = Kefir.concat([
-                Kefir.constant({
-                    type: JOB_FETCH_STARTED
-                }),
-                ajax$(job.rest_url, {
-                    method: 'GET',
-                    credentials: 'include',
-                    headers: {
-                        'X-WP-Nonce': globals.nonce,
-                        'Content-Type': 'application/json'
-                    }
-                })
-                    .map(JSON.parse)
-                    .map((response : GetJobResponse) => ({
-                        type: JOB_FETCH_SUCCEEDED,
-                        payload: { response }
-                    }))
-                    .flatMapErrors((err : TypeError) => Kefir.constant({
-                        type: JOB_FETCH_FAILED,
-                        payload: err,
-                        error: true
-                    })),
-            ]);
+    const start$ = Kefir.combine(
+        [actions$.ofType(JOB_DISPATCH_CLICK)],
+        [state$],
+        (action : JobDispatchClickAction & HasMetaKey, state : JobProps) => ({
+            job: state.jobs[action.meta.key],
+            globals: state.globals
+        })
+    )
+        .flatMap(({ globals, job } : { job : Job; globals : GlobalsState; }) => Kefir.concat([
+            Kefir.constant(jobDispatchStarted()),
+            ajax$(job.rest_url, {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'X-WP-Nonce': globals.nonce,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .map(JSON.parse)
+                .map(jobDispatchSucceeded)
+                .flatMapErrors((err : TypeError) => Kefir.constant(jobDispatchFailed(err)))
+        ]));
 
-            jobs$.push(job$);
-        }
-
-        return Kefir.merge(jobs$);
-    })
+    return Kefir.merge([
+        fetch$,
+        start$
+    ]);
+}
 );
