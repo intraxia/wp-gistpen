@@ -19,6 +19,10 @@ export type HasMetaKey = {
     };
 };
 
+export type JobStartClickAction = {
+    type : string;
+};
+
 export type EditorValue = {
     code : string;
     cursor : Cursor;
