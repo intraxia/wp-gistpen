@@ -140,11 +140,13 @@ class Site {
 		$option = array();
 
 		if ( current_user_can( 'manage_options' ) ) {
-			$option = get_option( $this->slug . '_priv' );
+			$option = get_option( $this->slug . '_priv', array( 'gist' => array( 'token' => '' ) ) );
 
 			if ( ! $option ) {
 				$option = array( 'gist' => array( 'token' => '' ) );
 			}
+
+			$option['gist']['token'] = ! empty( $option['gist']['token'] ) ? $option['gist']['token'] : '';
 		}
 
 		return $option;
