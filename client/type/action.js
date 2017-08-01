@@ -19,8 +19,25 @@ export type HasMetaKey = {
     };
 };
 
-export type JobStartClickAction = {
+export type JobDispatchClickAction = {
     type : string;
+};
+
+export type JobDispatchStarted = {
+    type : string;
+};
+
+export type JobDispatchSucceeded = {
+    type : string;
+    payload : {
+        response : Run;
+    };
+};
+
+export type JobDispatchFailed = {
+    type : string;
+    payload : TypeError;
+    error : true;
 };
 
 export type EditorValue = {
