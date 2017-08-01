@@ -108,7 +108,10 @@ class JobsController {
 			return $run;
 		}
 
-		$response = new WP_REST_Response( array( 'status' => $job->get_status() ), 200 );
+		$response = new WP_REST_Response(
+			array_merge( $job->serialize(), array( 'status' => $job->get_status() ) ),
+			200
+		);
 		$response->header( 'Location', $run->rest_url );
 
 		return $response;
