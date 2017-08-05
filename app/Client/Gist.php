@@ -207,7 +207,7 @@ class Gist {
 			// 4XX errors: client-side problems
 			if ( $response->status_code >= 400 && $response->status_code < 500 ) {
 				if ( $response->status_code === 401 ) {
-					return new WP_Error( 'auth_error', 'Bad credentials.' );
+					return new WP_Error( 'auth_error', 'Authorization error. Message: ' . $json->message );
 				}
 
 				return new WP_Error( 'client_error', 'Error sending request. Message: ' . $json->message );
