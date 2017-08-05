@@ -51,6 +51,6 @@
     "py": "python",
     "html": "markup",
     "xml": "markup",
-    "plaintext": "none"
+    "none": "plaintext"
   }
 }
