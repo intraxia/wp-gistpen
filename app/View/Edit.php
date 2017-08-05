@@ -129,7 +129,7 @@ class Edit implements HasActions, HasFilters {
 	 */
 	public function manage_posts_columns( $columns ) {
 		return array_merge( $columns, array(
-			'gistpen_files' => __( 'Files', 'wp-gistpen' ),
+			'wpgp_blobs' => __( 'Blobs', 'wp-gistpen' ),
 		) );
 	}
 
@@ -141,9 +141,11 @@ class Edit implements HasActions, HasFilters {
 	 * @since  0.4.0
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
-		if ( 'gistpen_files' === $column_name ) {
+		if ( 'wpgp_blobs' === $column_name ) {
 			/** @var Repo $repo */
-			$repo = $this->em->find( EntityManager::REPO_CLASS,  $post_id );
+			$repo = $this->em->find( EntityManager::REPO_CLASS,  $post_id, array(
+				'with' => 'blobs',
+			) );
 
 			/** @var Blob $blob */
 			foreach ( $repo->blobs as $blob ) {
