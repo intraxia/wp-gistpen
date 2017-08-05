@@ -50,7 +50,7 @@ class App extends Application {
 	 */
 	public function activate() {
 		if ( ! get_option( '_wpgp_activated' ) ) {
-			update_option( 'wp_gistpen_version', $this->fetch( 'version' ) );
+			$this->fetch( 'listener.migration' )->run();
 		}
 
 		update_option( '_wpgp_activated', 'done' );

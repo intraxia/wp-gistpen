@@ -16,7 +16,6 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm;
  * @property int        $ID
  * @property string     $slug
  * @property string     $prism_slug
- * @property string     $file_ext
  * @property string     $display_name
  * @property Collection $blobs
  */
@@ -115,20 +114,6 @@ class Language extends Model implements UsesWordPressTerm {
 	}
 
 	/**
-	 * Language constructor.
-	 *
-	 * @param string|array $attributes
-	 */
-	public function __construct( $attributes = '' ) {
-		if ( is_array( $attributes ) ) {
-			parent::__construct( $attributes );
-		} else {
-			$this->validate_slug( $attributes );
-			parent::__construct( array( 'slug' => $attributes ) );
-		}
-	}
-
-	/**
 	 * Maps the Language's ID to the WP_Term term_id.
 	 *
 	 * @return string
@@ -144,150 +129,6 @@ class Language extends Model implements UsesWordPressTerm {
 	 */
 	public function map_slug() {
 		return 'slug';
-	}
-
-	/**
-	 * Gets the language slug.
-	 *
-	 * @since  0.4.0
-	 * @return string The language slug
-	 * @deprecated
-	 */
-	public function get_slug() {
-		return $this->get_attribute( 'slug' );
-	}
-
-	/**
-	 * Validates & sets the language slug
-	 *
-	 * @since 0.5.0
-	 *
-	 * @param string $slug language slug
-	 *
-	 * @deprecated
-	 */
-	public function set_slug( $slug ) {
-		$this->validate_slug( $slug );
-
-		$this->set_attribute( 'slug', $slug );
-	}
-
-	/**
-	 * Validates the language slug
-	 *
-	 * @param string $slug Language slug to validate
-	 *
-	 * @throws \Exception If invalid slug
-	 * @deprecated
-	 */
-	public function validate_slug( $slug ) {
-		// empty slug is allowed
-		if ( '' === $slug ) {
-			return;
-		}
-
-		// Convert "Markup" to "HTML"
-		if ( 'markup' === $slug ) {
-			$slug = 'html';
-		}
-
-		// otherwise, the slug needs ot match a supported slug
-		if ( ! array_search( $slug, self::$supported ) ) {
-			throw new \Exception( __( "Invalid language slug: {$slug}", 'wp-gistpen' ), 1 );
-		}
-	}
-
-	/**
-	 * Gets the Prism language slug based on the language slug.
-	 *
-	 * @since  0.4.0
-	 * @return string The language slug used by Prism for highlighting
-	 * @deprecated
-	 */
-	public function get_prism_slug() {
-		return $this->get_attribute( 'prism_slug' );
-	}
-
-	/**
-	 * Computes the Language's prism_slug property.
-	 *
-	 * @return string
-	 * @deprecated
-	 */
-	public function compute_prism_slug() {
-		$map = array(
-			'js'   => 'javascript',
-			'sass' => 'scss',
-			'py'   => 'python',
-			'html' => 'markup',
-			'xml'  => 'markup',
-		);
-
-		$slug = $this->get_attribute( 'slug' );
-
-		if ( array_key_exists( $slug, $map ) ) {
-			$slug = $map[ $slug ];
-		}
-
-		return $slug;
-	}
-
-	/**
-	 * Gets the file extension slug based on the language slug.
-	 *
-	 * @since  0.4.0
-	 * @return string The file extension slug
-	 * @deprecated
-	 */
-	public function get_file_ext() {
-		return $this->get_attribute( 'file_ext' );
-	}
-
-	/**
-	 * @return string
-	 */
-	public function compute_file_ext() {
-		$map = array(
-			'sass'         => 'scss',
-			'bash'         => 'sh',
-			'ruby'         => 'rb',
-			'plaintext'    => 'txt',
-			'csharp'       => 'cs',
-			'coffeescript' => 'coffee',
-			'objectivec'   => 'm',
-			'actionscript' => 'as',
-			'eiffel'       => 'e',
-			'erlang'       => 'erl',
-			'gherkin'      => 'feature',
-			'git'          => 'diff',
-			'perl'         => 'pl',
-			'latex'        => 'tex',
-			'markdown'     => 'md',
-			'nasm'         => 'asm',
-			'powershell'   => 'ps1',
-			'rust'         => 'rs',
-			'scheme'       => 'scm',
-			'smarty'       => 'tpl',
-		);
-
-		$slug = $this->get_attribute( 'slug' );
-
-		if ( array_key_exists( $slug, $map ) ) {
-			$slug = $map[ $slug ];
-		}
-
-		return $slug;
-	}
-
-	/**
-	 * Gets the display name based on the language slug.
-	 *
-	 * @since  0.4.0
-	 * @return string The display name
-	 * @deprecated
-	 */
-	public function get_display_name() {
-		return $this->get_attribute( 'display_name' );
 	}
 
 	/**

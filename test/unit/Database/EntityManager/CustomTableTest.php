@@ -53,7 +53,6 @@ class CustomTableTest extends TestCase {
 		global $wpdb;
 
 		$this->em = new EntityManager( 'wpgp' );
-		$this->em->migrate();
 
 		$wpdb->insert(
 			$this->em->make_table_name( Klass::RUN ),
