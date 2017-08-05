@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "e150347f84f45a1caf53289af0656ea42f551c20"
+                "reference": "d41fc50a582dfdae90373418aae065bce32d4b1d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/e150347f84f45a1caf53289af0656ea42f551c20",
-                "reference": "e150347f84f45a1caf53289af0656ea42f551c20",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/d41fc50a582dfdae90373418aae065bce32d4b1d",
+                "reference": "d41fc50a582dfdae90373418aae065bce32d4b1d",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2017-07-30 14:37:25"
+            "time": "2017-08-05 23:15:13"
         },
         {
             "name": "myclabs/php-enum",
