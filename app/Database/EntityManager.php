@@ -202,7 +202,7 @@ class EntityManager implements EntityManagerContract {
 	 * @param Model $model
 	 * @param bool  $force
 	 *
-	 * @return WP_Error|mixed
+	 * @return WP_Error|Model
 	 */
 	public function delete( Model $model, $force = false ) {
 		foreach ( $this->repositories as $interface => $repository ) {
@@ -222,51 +222,6 @@ class EntityManager implements EntityManagerContract {
 		return new WP_Error( 'Invalid class' );
 	}
 
-	private function get_name( $class ) {
-		if ( is_object( $class ) ) {
-			$class = get_class( $class );
-		}
-
-		$name = explode( '\\', $class );
-		$name = strtolower( array_pop( $name ) );
-
-		return $name;
-	}
-
-	/**
-	 * Update a database with the required custom tables.
-	 */
-	public function migrate() {
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-
-		$runs_table = $this->make_table_name( Klass::RUN );
-		$messages_table = $this->make_table_name( Klass::MESSAGE );
-
-		dbDelta("
-			CREATE TABLE {$runs_table} (
-			  ID BIGINT(20) UNSIGNED AUTO_INCREMENT,
-			  items LONGTEXT,
-			  job VARCHAR(64) NOT NULL,
-			  status VARCHAR(16) NOT NULL,
-			  scheduled_at DATETIME NOT NULL,
-			  started_at DATETIME,
-			  finished_at DATETIME,
-			  PRIMARY KEY  (ID)
-			);
-		");
-
-		dbDelta("
-			CREATE TABLE {$messages_table} (
-			  ID BIGINT(20) UNSIGNED AUTO_INCREMENT,
-			  run_id BIGINT(20) UNSIGNED NOT NULL,
-			  text TINYTEXT NOT NULL,
-			  level VARCHAR(32) NOT NULL,
-			  logged_at DATETIME NOT NULL,
-			  PRIMARY KEY  (ID)
-			)
-		");
-	}
-
 	/**
 	 * Combines the relevant prefixes to make a table name for a given class.
 	 *
@@ -278,5 +233,23 @@ class EntityManager implements EntityManagerContract {
 		global $wpdb;
 
 		return $wpdb->prefix . $this->prefix . '_' . $class::get_table_name();
+	}
+
+	/**
+	 * Gets the simplified name of the given class.
+	 *
+	 * @param string|object $class
+	 *
+	 * @return string
+	 */
+	private function get_name( $class ) {
+		if ( is_object( $class ) ) {
+			$class = get_class( $class );
+		}
+
+		$name = explode( '\\', $class );
+		$name = strtolower( array_pop( $name ) );
+
+		return $name;
 	}
 }
