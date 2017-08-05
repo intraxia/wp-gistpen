@@ -3,7 +3,6 @@
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
   "author": "maadhattah",
   "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
-  "main": "gulpfile.js",
   "license": "GPL-2.0+",
   "devDependencies": {
     "babel-core": "^6.4.5",
