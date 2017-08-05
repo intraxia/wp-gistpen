@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen;
 
+use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Jaxion\Core\Application;
 
 /**
@@ -21,7 +22,7 @@ class App extends Application {
 	/**
 	 * Plugin version constant.
 	 */
-	const VERSION = '0.5.8';
+	const VERSION = '1.0.0';
 
 	/**
 	 * ServiceProviders to register with the Application
@@ -29,11 +30,13 @@ class App extends Application {
 	 * @var string[]
 	 */
 	protected $providers = array(
+		'Intraxia\Gistpen\Providers\ClientServiceProvider',
 		'Intraxia\Gistpen\Providers\ViewServiceProvider',
 		'Intraxia\Gistpen\Providers\TemplatingServiceProvider',
 		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
 		'Intraxia\Gistpen\Providers\AssetsServiceProvider',
 		'Intraxia\Gistpen\Providers\DatabaseServiceProvider',
+		'Intraxia\Gistpen\Providers\JobsServiceProvider',
 		'Intraxia\Gistpen\Providers\ControllerServiceProvider',
 		'Intraxia\Gistpen\Providers\CoreServiceProvider',
 		'Intraxia\Gistpen\Providers\EmbedServiceProvider',
@@ -47,7 +50,7 @@ class App extends Application {
 	 */
 	public function activate() {
 		if ( ! get_option( '_wpgp_activated' ) ) {
-			update_option( 'wp_gistpen_version', $this->fetch( 'version' ) );
+			$this->fetch( 'listener.migration' )->run();
 		}
 
 		update_option( '_wpgp_activated', 'done' );

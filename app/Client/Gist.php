@@ -1,285 +1,224 @@
 <?php
 namespace Intraxia\Gistpen\Client;
 
-use Exception;
-use Intraxia\Gistpen\Facade\Adapter;
-use Github\Client;
-use Github\ResultPager;
-use Intraxia\Gistpen\Model\Commit\Meta;
-use Intraxia\Gistpen\Model\File;
-use Intraxia\Gistpen\Model\Zip;
+use Intraxia\Gistpen\Options\Site;
+use Requests_Response;
+use Requests_Session;
 use WP_Error;
 
 /**
- * This is the class description.
+ * Gist client service.
  *
  * @package    Intraxia\Gistpen
+ * @subpackage Client
  * @author     James DiGioia <jamesorodig@gmail.com>
  * @link       http://jamesdigioia.com/wp-gistpen/
- * @since      0.5.0
  */
 class Gist {
 	/**
-	 * Adapter Facade object.
-	 *
-	 * @var Adapter
-	 * @since  0.5.0
+	 * Gist API endpoint url.
 	 */
-	protected $adapter;
+	const API = 'https://api.github.com/gists';
 
 	/**
-	 * GitHub client.
+	 * Site Options service.
 	 *
-	 * @var \Github\Client
-	 * @since 0.5.0
+	 * @var Site
 	 */
-	protected $client;
+	private $site;
 
 	/**
-	 * Whether the class has a token to start making requests with.
+	 * HTTP client.
 	 *
-	 * @var bool
+	 * @var Requests_Session
 	 */
-	protected $ready = false;
+	private $http;
 
 	/**
-	 * Error object for previous error.
+	 * Gist constructor.
 	 *
-	 * @var null|WP_Error
+	 * @param Site             $site
+	 * @param Requests_Session $http
 	 */
-	protected $error = null;
-
-	/**
-	 * Initialize the Gist class and sets its properties.
-	 *
-	 * @since    0.5.0
-	 *
-	 * @param Adapter $adapter
-	 * @param Client  $client
-	 */
-	public function __construct( Adapter $adapter, Client $client ) {
-		$this->adapter = $adapter;
-		$this->client  = $client;
+	public function __construct( Site $site, Requests_Session $http ) {
+		$this->site = $site;
+		$this->http = $http;
 	}
 
 	/**
-	 * Sets the GitHub client's authentication token
-	 * and puts the class into the "ready" state.
+	 * Get a list of all the user's remote gists.
 	 *
-	 * @since 0.6.0
-	 *
-	 * @param string $token
-	 */
-	public function set_token( $token ) {
-		if ( $token ) {
-			$this->client->authenticate( $token, null, Client::AUTH_HTTP_TOKEN );
-			$this->ready = true;
-		} else {
-			$this->ready = false;
-		}
-	}
-
-	/**
-	 * Retrieves the last error.
-	 *
-	 * If there was no error previously, the last error will be returned as `null`.
-	 *
-	 * @return null|WP_Error
-	 */
-	public function get_error() {
-		return $this->error;
-	}
-
-	/**
-	 * Checks if account is ready to call Gist API.
-	 *
-	 * If the client is not in the "ready" state, attempts to retrieve the token
-	 * from the database and set it. Returns the current ready state after attempting.
-	 *
-	 * @return bool
-	 */
-	public function is_ready() {
-		if ( ! $this->ready
-			// @todo && $token = (string) cmb2_get_option( 'wp-gistpen', '_wpgp_gist_token' )
-		) {
-			$this->set_token( '' );
-		}
-
-		return $this->ready;
-	}
-
-	/**
-	 * Returns whether a token is valid.
-	 *
-	 * Connects to the GitHub api and attempts to retrieve user information with
-	 * the supplied token. Returns a boolean indicating whether retrieval succeeded.
-	 *
-	 * @return bool
-	 * @since  0.5.0
-	 */
-	public function is_token_valid() {
-		if ( ! $this->is_ready() ) {
-			$this->set_error_not_ready();
-
-			return false;
-		}
-
-		delete_transient( '_wpgp_github_token_user_info' );
-
-		try {
-			set_transient( '_wpgp_github_token_user_info', $this->client->api( 'me' )
-				->show() );
-
-			return true;
-		} catch ( Exception $e ) {
-			$this->error = new WP_Error( $e->getCode(), $e->getMessage() );
-
-			return false;
-		}
-	}
-
-	/**
-	 * Creates a new Gist from a Commit.
-	 *
-	 * Prepares the commit Meta and its set of states and creates a new Gist
-	 * from that commit meta.
-	 *
-	 * @param Meta $commit
-	 *
-	 * @return false|array
-	 * @since  0.5.0
-	 */
-	public function create( Meta $commit ) {
-		if ( ! $this->is_ready() ) {
-			$this->set_error_not_ready();
-
-			return false;
-		}
-
-		$gist = $this->adapter->build( 'gist' )
-			->create_by_commit( $commit );
-
-		try {
-			return $this->client->api( 'gists' )
-				->create( $gist );
-		} catch ( Exception $e ) {
-			$this->error = new WP_Error( $e->getCode(), $e->getMessage() );
-
-			return false;
-		}
-	}
-
-	/**
-	 * Update an existing Gist based on Zip
-	 *
-	 * @param  \Intraxia\Gistpen\Model\Commit\Meta $commit
-	 *
-	 * @return bool
-	 * @since  0.5.0
-	 */
-	public function update( Meta $commit ) {
-		if ( ! $this->is_ready() ) {
-			$this->set_error_not_ready();
-
-			return false;
-		}
-
-		$gist = $this->adapter->build( 'gist' )
-			->update_by_commit( $commit );
-
-		try {
-			return $this->client->api( 'gists' )
-				->update( $commit->get_head_gist_id(), $gist );
-		} catch ( Exception $e ) {
-			$this->error = new WP_Error( $e->getCode(), $e->getMessage() );
-
-			return false;
-		}
-	}
-
-	/**
-	 * Retrieves all the Gist IDs for the current user
-	 *
-	 * @return false|string[]
-	 * @since  0.5.0
+	 * @return Requests_Response|WP_Error
 	 */
 	public function all() {
-		if ( ! $this->is_ready() ) {
-			$this->set_error_not_ready();
+		$token = $this->get_token();
 
-			return false;
+		if ( is_wp_error( $token ) ) {
+			return $token;
 		}
 
-		try {
-			$pager    = new ResultPager( $this->client );
-			$response = $pager->fetchAll( $this->client->api( 'gists' ), 'all' );
+		$response = $this->http->get( self::API, $this->get_default_headers( $token ) );
 
-			$gists = array();
-
-			foreach ( $response as $gist ) {
-				$gists[] = $gist['id'];
-			}
-
-			return $gists;
-		} catch ( Exception $e ) {
-			$this->error = new WP_Error( $e->getCode(), $e->getMessage() );
-
-			return false;
-		}
+		return $this->process_response( $response );
 	}
 
 	/**
-	 * Retrieves an individual Gist
+	 * Get a single remote gist.
 	 *
-	 * @param  string $id Gist id
-	 *
-	 * @return false|array      array response with Zip and commit version sha
-	 * @since  0.5.0
+	 * @return WP_Error|Requests_Response
 	 */
-	public function get( $id ) {
-		if ( ! $this->is_ready() ) {
-			$this->set_error_not_ready();
+	public function one( $id ) {
+		$token = $this->get_token();
 
-			return false;
+		if ( is_wp_error( $token ) ) {
+			return $token;
 		}
 
-		try {
-			$response = $this->client->api( 'gists' )
-				->show( $id );
+		$response = $this->http->get(
+			self::API . '/' . $id,
+			$this->get_default_headers( $token )
+		);
 
-			/** @var Zip $zip */
-			$zip = $this->adapter->build( 'zip' )
-				->by_gist( $response );
-
-			foreach ( $response['files'] as $filename => $file_data ) {
-				/** @var File $file */
-				$file = $this->adapter->build( 'file' )
-					->by_gist( $file_data );
-				$file->set_language( $this->adapter->build( 'language' )
-					->by_gist( $file_data['language'] ) );
-
-				$zip->add_file( $file );
-			}
-
-			$result = array(
-				'zip'     => $zip,
-				'version' => $response['history'][0]['version'],
-			);
-
-			return $result;
-		} catch ( Exception $e ) {
-			$this->error = new WP_Error( $e->getCode(), $e->getMessage() );
-
-			return false;
-		}
+		return $this->process_response( $response );
 	}
 
 	/**
-	 * Returns the default error when no token is available.
+	 * Cretate a new remote gist.
 	 *
-	 * @return WP_Error
+	 * @param array $data
+	 *
+	 * @return Requests_Response|WP_Error
 	 */
-	protected function set_error_not_ready() {
-		$this->error = new WP_Error( 'noToken', __( 'No GitHub OAuth token found.', 'wp-gistpen' ) );
+	public function create( array $data ) {
+		$token = $this->get_token();
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
+		$response = $this->http->post(
+			self::API,
+			$this->get_post_headers( $token ),
+			json_encode( $data )
+		);
+
+		return $this->process_response( $response );
+	}
+
+	/**
+	 * Update a remote gist.
+	 *
+	 * @param string $id
+	 * @param array  $data
+	 *
+	 * @return Requests_Response|WP_Error
+	 */
+	public function update( $id, array $data ) {
+		$token = $this->get_token();
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
+		$response = $this->http->patch(
+			self::API . '/' . $id,
+			$this->get_post_headers( $token ),
+			json_encode( $data )
+		);
+
+		return $this->process_response( $response );
+	}
+
+	/**
+	 * Delete a remote gist.
+	 *
+	 * @param string $id
+	 *
+	 * @return Requests_Response|WP_Error
+	 */
+	public function delete( $id ) {
+		$token = $this->get_token();
+
+		if ( is_wp_error( $token ) ) {
+			return $token;
+		}
+
+		$response = $this->http->delete(
+			self::API . '/' . $id,
+			$this->get_default_headers( $token )
+		);
+
+		return $this->process_response( $response );
+	}
+
+	/**
+	 * Get the site token or WP_Error if not set.
+	 *
+	 * @return WP_Error|string
+	 */
+	private function get_token() {
+		$gist = $this->site->get( 'gist' );
+
+		if ( ! $gist['token'] ) {
+			return new WP_Error( 'auth_error', 'No token saved.' );
+		}
+
+		return $gist['token'];
+	}
+
+	/**
+	 * Get combined headers used for POST requests.
+	 *
+	 * @param string $token
+	 *
+	 * @return array
+	 */
+	private function get_post_headers( $token ) {
+		return array_merge( $this->get_default_headers( $token ), array(
+			'Content-Type' => 'application/json; charset=utf-8',
+		) );
+	}
+
+	/**
+	 * Get the default headers used for Gist requests.
+	 *
+	 * @param string $token
+	 *
+	 * @return array
+	 */
+	private function get_default_headers( $token ) {
+		return array(
+			'Authorization' => 'token ' . $token,
+			'Accept'        => 'application/json',
+		);
+	}
+
+	/**
+	 * Processes the response into a WP_Error if failed.
+	 *
+	 * @param Requests_Response $response
+	 *
+	 * @return Requests_Response|WP_Error
+	 */
+	private function process_response( Requests_Response $response ) {
+		$json = $response->json = json_decode( $response->body );
+
+		if ( ! $response->success ) {
+			// 4XX errors: client-side problems
+			if ( $response->status_code >= 400 && $response->status_code < 500 ) {
+				if ( $response->status_code === 401 ) {
+					return new WP_Error( 'auth_error', 'Authorization error. Message: ' . $json->message );
+				}
+
+				return new WP_Error( 'client_error', 'Error sending request. Message: ' . $json->message );
+			}
+
+			// 5XX error: server-side problems
+			if ( $response->status_code >= 500 ) {
+				return new WP_Error( 'server_error', 'Server error.' );
+			}
+		}
+
+		return $response;
 	}
 }

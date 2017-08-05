@@ -30,8 +30,6 @@ class LanguageTest extends TestCase {
 
 		$this->assertSame( $this->language['term_id'], $language->ID );
 		$this->assertSame( 'js', $language->slug );
-		$this->assertSame( 'javascript', $language->prism_slug );
-		$this->assertSame( 'js', $language->file_ext );
 		$this->assertSame( 'JavaScript', $language->display_name );
 	}
 }

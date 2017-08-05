@@ -81,6 +81,13 @@ class Handlebars implements Templating {
 				},
 				'link' => function ( $route ) {
 					return $route; // @todo
+				},
+				'join' => function () {
+					$args = func_get_args();
+					array_pop( $args );
+					$glue = array_pop( $args );
+
+					return implode( $glue, $args );
 				}
 			)
 		) );

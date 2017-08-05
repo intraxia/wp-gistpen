@@ -3,8 +3,8 @@
 **Contributors:** JamesDiGioia  
 **Donate link:** http://jamesdigioia.com/  
 **Tags:** gist, code snippets, codepen  
-**Requires at least:** 3.4  
-**Tested up to:** 4.4  
+**Requires at least:** 4.6  
+**Tested up to:** 4.8  
 **Stable tag:** 0.5.8  
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  

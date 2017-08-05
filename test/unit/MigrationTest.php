@@ -1,8 +1,9 @@
 <?php
 namespace Intraxia\Jaxion\Test;
 
-use Intraxia\Gistpen\Migration;
+use Intraxia\Gistpen\Listener\Migration;
 use Intraxia\Gistpen\Test\TestCase;
+use Mockery\Mock;
 
 class MigrationTest extends TestCase {
 	/**
@@ -10,10 +11,20 @@ class MigrationTest extends TestCase {
 	 */
 	protected $migration;
 
+	/**
+	 * @var Mock
+	 */
+	protected $em;
+
 	public function setUp() {
 		parent::setUp();
 
-		$this->migration = new Migration( $this->mock( 'facade.database' ), $this->mock( 'facade.adapter' ), $this->app->fetch( 'slug' ), '1.0.0' );
+		$this->migration = new Migration(
+			$this->em = $this->mock( 'database' )->makePartial(),
+			'wpgp',
+			$this->app->fetch( 'slug' ),
+			'1.0.0'
+		);
 	}
 
 	public function test_should_update_to_1_0_0() {

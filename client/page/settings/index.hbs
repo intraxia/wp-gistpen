@@ -1,11 +1,21 @@
 <div class="wrap" data-brk-container="settings">
     {{> page/settings/header}}
 
-    {{#compare route "highlighting"}}
+    {{#compare route.name "highlighting"}}
         {{> page/settings/highlighting}}
     {{/compare}}
 
-    {{#compare route "accounts"}}
+    {{#compare route.name "accounts"}}
         {{> page/settings/accounts}}
+    {{/compare}}
+
+    {{#compare route.name "jobs"}}
+        {{#if route.parts.run}}
+            {{> page/settings/messages}}
+        {{else if route.parts.job}}
+            {{> page/settings/runs}}
+        {{else}}
+            {{> component/jobs/index}}
+        {{/if}}
     {{/compare}}
 </div>

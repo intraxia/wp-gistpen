@@ -4,6 +4,7 @@ namespace Intraxia\Gistpen\Listener;
 use Intraxia\Gistpen\Database\EntityManager as EM;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
+use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Axolotl\Collection;
@@ -116,6 +117,56 @@ class Database implements HasActions {
 	}
 
 	/**
+	 * Remove the action hook to save a post revision
+	 *
+	 * We're going to be handling this ourselves
+	 *
+	 * @param  int $post_id
+	 *
+	 * @since  0.5.0
+	 */
+	public function remove_revision_save( $post_id ) {
+		if ( 'gistpen' === get_post_type( $post_id ) ) {
+			remove_action( 'post_updated', 'wp_save_post_revision', 10 );
+		}
+	}
+
+	/**
+	 * Allows empty Repo to save.
+	 *
+	 * @param  bool  $maybe_empty Whether post should be considered empty.
+	 * @param  array $postarr Array of post data.
+	 *
+	 * @return bool                Result of empty check
+	 * @since  0.5.0
+	 */
+	public function allow_empty_zip( $maybe_empty, $postarr ) {
+		if ( 'gistpen' === $postarr['post_type'] && 0 === $postarr['post_parent'] ) {
+			$maybe_empty = false;
+		}
+
+		return $maybe_empty;
+	}
+
+	/**
+	 * Disables checking for changes when we save a post revision
+	 *
+	 * @param  bool     $check_for_changes whether we check for changes
+	 * @param  \WP_Post $last_revision previous revision object
+	 * @param  \WP_Post $post current revision
+	 *
+	 * @return bool                        whether we check for changes
+	 * @since  0.5.0
+	 */
+	public function disable_check_for_change( $check_for_changes, $last_revision, $post ) {
+		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
+			$check_for_changes = false;
+		}
+
+		return $check_for_changes;
+	}
+
+	/**
 	 * Provides the array of actions the class wants to register with WordPress.
 	 *
 	 * These actions are retrieved by the Loader class and used to register the
@@ -132,6 +183,31 @@ class Database implements HasActions {
 			array(
 				'hook'   => 'wpgp.persist.repo',
 				'method' => 'add_commit',
+			),
+			array(
+				'hook'     => 'post_updated',
+				'method'   => 'remove_revision_save',
+				'priority' => 9,
+			),
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function filter_hooks() {
+		return array(
+			array(
+				'hook'   => 'wp_insert_post_empty_content',
+				'method' => 'allow_empty_zip',
+				'args'   => 2,
+			),
+			array(
+				'hook'   => 'wp_save_post_revision_check_for_changes',
+				'method' => 'disable_check_for_change',
+				'args'   => 3,
 			),
 		);
 	}

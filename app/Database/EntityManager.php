@@ -2,19 +2,16 @@
 
 namespace Intraxia\Gistpen\Database;
 
-use Exception;
 use Intraxia\Gistpen\Contract\Repository;
+use Intraxia\Gistpen\Database\Repository\WordPressCustomTable;
 use Intraxia\Gistpen\Database\Repository\WordPressPost;
 use Intraxia\Gistpen\Database\Repository\WordPressTerm;
-use Intraxia\Gistpen\Model\Blob;
-use Intraxia\Gistpen\Model\Commit;
-use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Repo;
-use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Axolotl\Collection;
-use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager as EntityManagerContract;
+use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
 use WP_Error;
 
 class EntityManager implements EntityManagerContract {
@@ -68,6 +65,7 @@ class EntityManager implements EntityManagerContract {
 		$this->repositories = array(
 			'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost' => new WordPressPost( $this, $this->prefix ),
 			'Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm' => new WordPressTerm( $this, $this->prefix ),
+			'Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable'   => new WordPressCustomTable( $this, $this->prefix ),
 		);
 	}
 
@@ -204,7 +202,7 @@ class EntityManager implements EntityManagerContract {
 	 * @param Model $model
 	 * @param bool  $force
 	 *
-	 * @return WP_Error|mixed
+	 * @return WP_Error|Model
 	 */
 	public function delete( Model $model, $force = false ) {
 		foreach ( $this->repositories as $interface => $repository ) {
@@ -224,6 +222,26 @@ class EntityManager implements EntityManagerContract {
 		return new WP_Error( 'Invalid class' );
 	}
 
+	/**
+	 * Combines the relevant prefixes to make a table name for a given class.
+	 *
+	 * @param UsesCustomTable|string $class
+	 *
+	 * @return string
+	 */
+	public function make_table_name( $class ) {
+		global $wpdb;
+
+		return $wpdb->prefix . $this->prefix . '_' . $class::get_table_name();
+	}
+
+	/**
+	 * Gets the simplified name of the given class.
+	 *
+	 * @param string|object $class
+	 *
+	 * @return string
+	 */
 	private function get_name( $class ) {
 		if ( is_object( $class ) ) {
 			$class = get_class( $class );
