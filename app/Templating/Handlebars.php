@@ -103,6 +103,6 @@ class Handlebars implements Templating {
 			throw new Exception('Invalid PHP generated. Check Handlebars template for invalid syntax.');
 		}
 
-		return $render( $data );
+		return $render->call( $this, $data );
 	}
 }

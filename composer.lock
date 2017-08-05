@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "1de4520de850ebb133b25cba0acb887f",
+    "content-hash": "d2279950e27f46322179fb435aae3933",
     "packages": [
         {
             "name": "intraxia/jaxion",
@@ -125,28 +125,28 @@
         },
         {
             "name": "zordius/lightncandy",
-            "version": "v0.95",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zordius/lightncandy.git",
-                "reference": "748cd17b2d496dbc7657b9390d918cf7dcd0101e"
+                "reference": "f859bd752699642f4c110ee8b14187ab92200bde"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/748cd17b2d496dbc7657b9390d918cf7dcd0101e",
-                "reference": "748cd17b2d496dbc7657b9390d918cf7dcd0101e",
+                "url": "https://api.github.com/repos/zordius/lightncandy/zipball/f859bd752699642f4c110ee8b14187ab92200bde",
+                "reference": "f859bd752699642f4c110ee8b14187ab92200bde",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "4.0.17"
+                "phpunit/phpunit": "4.8.35"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "v0.95-dev"
+                    "dev-master": "1.1.1-dev"
                 }
             },
             "autoload": {
@@ -173,7 +173,7 @@
                 "php",
                 "template"
             ],
-            "time": "2016-08-23T07:07:34+00:00"
+            "time": "2017-03-22T04:54:38+00:00"
         }
     ],
     "packages-dev": [
@@ -1391,7 +1391,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.25",
+            "version": "v2.8.26",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
