@@ -1,25 +1,26 @@
 <?php
 namespace Intraxia\Gistpen\Params;
 
-use Intraxia\Gistpen\Model\Language;
+use Intraxia\Gistpen\Config;
 use Intraxia\Gistpen\View\Edit;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 class Globals implements HasFilters {
+
 	/**
-	 * Website url.
+	 * App Config service.
 	 *
-	 * @var string
+	 * @var Config
 	 */
-	private $url;
+	private $config;
 
 	/**
 	 * Globals constructor.
 	 *
-	 * @param string $url
+	 * @param Config $config
 	 */
-	public function __construct( $url ) {
-		$this->url = $url;
+	public function __construct( Config $config ) {
+		$this->config = $config;
 	}
 
 	/**
@@ -30,11 +31,13 @@ class Globals implements HasFilters {
 	 * @return array
 	 */
 	public function apply_globals( $params ) {
+		$languages = $this->config->get_config_json( 'languages' );
+
 		$params['globals'] = array(
-			'languages'  => Language::$supported,
+			'languages'  => $languages['list'],
 			'root'       => esc_url_raw( rest_url() . 'intraxia/v1/gistpen/' ),
 			'nonce'      => wp_create_nonce( 'wp_rest' ),
-			'url'        => $this->url,
+			'url'        => $this->config->url,
 			'ace_themes' => Edit::$ace_themes,
 			'ace_widths' => array( 1, 2, 4, 8 ),
 			'statuses'   => get_post_statuses(),

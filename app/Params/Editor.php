@@ -1,14 +1,21 @@
 <?php
 namespace Intraxia\Gistpen\Params;
 
+use Intraxia\Gistpen\Config;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob as BlobModel;
-use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo as RepoModel;
 use Intraxia\Gistpen\Options\User;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 class Editor implements HasFilters {
+
+	/**
+	 * App Config service.
+	 *
+	 * @var Config
+	 */
+	private $config;
 
 	/**
 	 * Database service.
@@ -27,7 +34,8 @@ class Editor implements HasFilters {
 	/**
 	 * @inheritDoc
 	 */
-	public function __construct( EntityManager $em, User $user ) {
+	public function __construct( Config $config, EntityManager $em, User $user ) {
+		$this->config = $config;
 		$this->em = $em;
 		$this->user = $user;
 	}
@@ -66,6 +74,8 @@ class Editor implements HasFilters {
 		usort( $blobs, function( $a, $b ) {
 			return (int) $a->ID - (int) $b->ID;
 		} );
+
+		$languages = $this->config->get_config_json( 'languages' );
 
 		$params['editor'] = array(
 			'description' => $repo->description,
@@ -108,7 +118,7 @@ class Editor implements HasFilters {
 				'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
 			),
 			'statuses'   => get_post_statuses(),
-			'languages'  => Language::$supported,
+			'languages'  => $languages['list'],
 			'optionsOpen' => true,
 		);
 

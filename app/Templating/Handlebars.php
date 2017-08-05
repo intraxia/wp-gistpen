@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Templating;
 
 use Exception;
+use Intraxia\Gistpen\Config;
 use LightnCandy\LightnCandy;
 use Intraxia\Gistpen\Contract\Templating;
 use LightnCandy\SafeString;
@@ -23,11 +24,20 @@ class Handlebars implements Templating {
 	protected $client;
 
 	/**
+	 * App Config service.
+	 *
+	 * @var Config
+	 */
+	private $config;
+
+	/**
 	 * Handlebars constructor.
 	 *
+	 * @param Config $config
 	 * @param string $client
 	 */
-	public function __construct( $client ) {
+	public function __construct( Config $config, $client ) {
+		$this->config = $config;
 		$this->client = $client;
 	}
 
@@ -64,14 +74,8 @@ class Handlebars implements Templating {
 					return new SafeString( wp_json_encode( $context ) );
 				},
 				'prism_slug' => function ( $slug ) {
-					$map = array(
-						'js'        => 'javascript',
-						'sass'      => 'scss',
-						'py'        => 'python',
-						'html'      => 'markup',
-						'xml'       => 'markup',
-						'plaintext' => 'none',
-					);
+					$languages = $this->config->get_config_json( 'languages' );
+					$map = $languages['aliases'];
 
 					if ( array_key_exists( $slug, $map ) ) {
 						$slug = $map[ $slug ];

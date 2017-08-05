@@ -17,7 +17,10 @@ class TemplatingServiceProvider implements ServiceProvider {
 	 */
 	public function register( Container $container ) {
 		$container->define( 'templating', function ( Container $container ) {
-			return new HandlebarsTemplating( $container->fetch( 'path' ) . 'client/' );
+			return new HandlebarsTemplating(
+				$container->fetch( 'config' ),
+				$container->fetch( 'path' ) . 'client/'
+			);
 		} );
 	}
 }
