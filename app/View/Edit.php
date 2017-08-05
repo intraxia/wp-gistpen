@@ -19,40 +19,11 @@ use WP_Query;
  * @since      0.5.0
  */
 class Edit implements HasActions, HasFilters {
-	/**
-	 * All the Ace themes for select box
-	 *
-	 * @var array
-	 * @since    0.4.0
-	 */
-	public static $ace_themes = array(
-		'ambiance' => 'Ambiance',
-		'chaos' => 'Chaos',
-		'chrome' => 'Chrome',
-		'clouds' => 'Clouds',
-		'clouds_midnight' => 'Clouds Midnight',
-		'cobalt' => 'Cobalt',
-		'crimson_editor' => 'Crimson Edit',
-		'dawn' => 'Dawn',
-		'dreamweaver' => 'Dreamweaver',
-		'eclipse' => 'Eclipse',
-		'github' => 'GitHub',
-		'idle_fingers' => 'Idle Fingers',
-		'katzenmilch' => 'Katzenmilch',
-		'kr_theme' => 'KR',
-		'kuroir' => 'Kuroir',
-		'merbivore' => 'Merbivore',
-		'monokai' => 'Monokai',
-		'solarized_dark' => 'Solarized Dark',
-		'solarized_light' => 'Solarized Light',
-		'twilight' => 'Twilight',
-	);
 
 	/**
-	 * Database Facade object
+	 * Database service.
 	 *
 	 * @var EntityManager
-	 * @since 0.5.0
 	 */
 	protected $em;
 

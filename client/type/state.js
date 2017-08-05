@@ -53,7 +53,6 @@ export type GlobalsState = {|
     root : string;
     nonce : string;
     url : string;
-    ace_themes : { [key : string] : string; };
     ace_widths : Array<number>;
     statuses : { [key : string] : string; };
     themes : { [key : string] : string; };
