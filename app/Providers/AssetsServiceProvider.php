@@ -74,18 +74,6 @@ class AssetsServiceProvider extends ServiceProvider {
 		) );
 
 		/**
-		 * TinyMCE Popup Assets
-		 */
-		$assets->register_style( array(
-			'type'      => 'admin',
-			'condition' => function () {
-				return 'gistpen' !== get_current_screen()->id;
-			},
-			'handle'    => $slug . '-popup-styles',
-			'src'       => 'assets/css/tinymce',
-		) );
-
-		/**
 		 * Content Assets
 		 */
 		$assets->register_script( array(
