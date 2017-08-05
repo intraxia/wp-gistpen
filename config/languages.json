@@ -123,7 +123,7 @@
     "py": "python",
     "html": "markup",
     "xml": "markup",
-    "none": "plaintext",
+    "plaintext": "none",
     "jinja2": "django"
   }
 }
