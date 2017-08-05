@@ -24,6 +24,17 @@ export function lineNumberIsEqual(/* prev, next */) : boolean {
 }
 
 /**
+ * Returns whether the language has changed.
+ *
+ * @param {Object} prev - Previous props.
+ * @param {Object} next - Next props.
+ * @returns {boolean} Whether the language is the same.
+ */
+export function languageIsEqual(prev : EditorInstanceProps, next : EditorInstanceProps) : boolean {
+    return prev.instance.language === next.instance.language;
+}
+
+/**
  * Returns whether the event object is a special event, handled
  * by the reducer logic.
  *

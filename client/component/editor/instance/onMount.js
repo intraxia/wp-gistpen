@@ -5,7 +5,7 @@ import R from 'ramda';
 import Prism from '../../../prism';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import { Kefir, renderFromHTML, raf$ } from 'brookjs';
-import { editorOptionsIsEqual, lineNumberIsEqual, isSpecialEvent } from './util';
+import { editorOptionsIsEqual, lineNumberIsEqual, isSpecialEvent, languageIsEqual } from './util';
 import template from './index.hbs';
 
 toolbarStyles.use();
@@ -285,12 +285,16 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
             updateLineNumber(/* el.querySelector('pre'), ...(props.instance.cursor || [])*/))
         .setName('LineNumbers$');
 
+    const language$ = props$.skipDuplicates(languageIsEqual)
+        .flatMapLatest((props : EditorInstanceProps) => createDOMUpdateStream(el, props));
+
     return Kefir.merge([
         setAutoloader$,
         initial$,
         options$,
         typing$,
         special$,
+        language$,
         lineNumber$
     ])
         .setName('OnMount$');
