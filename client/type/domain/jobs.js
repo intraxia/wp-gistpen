@@ -1,6 +1,6 @@
 // @flow
 
-export type MessageLevel = 'success' | 'info' | 'error';
+export type MessageLevel = 'error' | 'warning' | 'success' | 'info' | 'debug';
 
 export type Message = {
     ID : string;
