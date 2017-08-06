@@ -81,6 +81,7 @@ class Repo extends Model implements UsesWordPressPost {
 		'status',
 		'password',
 		'gist_id',
+		'gist_url',
 		'sync',
 		'blobs',
 		'rest_url',
@@ -184,6 +185,22 @@ class Repo extends Model implements UsesWordPressPost {
 	 */
 	protected function compute_html_url() {
 		return get_permalink( $this->ID );
+	}
+
+	/**
+	 * Computes the Repo's gist_url.
+	 *
+	 * @return string
+	 */
+	protected function compute_gist_url() {
+		if ( ! $this->gist_id ) {
+			return null;
+		}
+
+		return sprintf(
+			'https://gist.github.com/%s',
+			$this->gist_id
+		);
 	}
 
 	/**

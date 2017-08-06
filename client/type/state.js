@@ -25,6 +25,7 @@ export type Repo = {
     status : string;
     password : string;
     gist_id : string;
+    gist_url : string | null;
     sync : Toggle;
     blobs : Array<Blob>;
     rest_url : string;

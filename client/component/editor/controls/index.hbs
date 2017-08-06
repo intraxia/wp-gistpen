@@ -60,6 +60,7 @@
         <button type="button" class="dashicons-before wpgp-button wpgp-button-update" data-brk-onclick="onUpdateClick">Update Gistpen</button>
         <button type="button" class="dashicons-before wpgp-button wpgp-button-add" data-brk-onclick="onAddClick">Add File</button>
         <a href="{{link "wpgp_route" "commits"}}" class="dashicons-before wpgp-button wpgp-button-add">View Commits</a>
+        {{#if repo.gist_url}}<a href="{{repo.gist_url}}" class="dashicons-before wpgp-button wpgp-button-add">View on Gist</a>{{/if}}
         {{!--<span class="spinner" data-wpgp-spinner></span>--}}
     </div>
 </div>
