@@ -56,4 +56,5 @@ deploy:
       on:
           tags: true
           php: 5.4
-          condition: $WP_MULTISITE = 0
+          branch: develop
+          condition: $WP_MULTISITE = 0 && WP_VERSION = 'latest'
