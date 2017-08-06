@@ -297,5 +297,6 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
         language$,
         lineNumber$
     ])
+        .takeUntilBy(props$.last().delay(30))
         .setName('OnMount$');
 });
