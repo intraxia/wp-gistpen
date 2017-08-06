@@ -43,3 +43,17 @@ script:
 after_script:
     - if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then composer upload; fi
     - greenkeeper-lockfile-upload
+
+before_deploy:
+    - gulp build:zip
+
+deploy:
+    - provider: releases
+      skip_cleanup: true
+      api_key:
+          secure: gAUbtuJKtw/mcBiZ1sAa6sCcCvfOThyc80bNRVf59gdUnV+8A+gwb6c0KV0tntcX/eJ6VmJHFtJGz18jGhMC6xklqkXxZB1xnyR4TpUgOMh6ZB30v/HH+rFj4rWxuXXejrQ5vqfM7jD1ZHOGqZYgGEX7f4LnlLMv9pCPmJBz4b4=
+      file: wp-gistpen.zip
+      on:
+          tags: true
+          php: 5.4
+          condition: $WP_MULTISITE = 0
