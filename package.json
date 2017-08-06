@@ -41,6 +41,7 @@
     "node-sass": "^4.5.1",
     "phantomjs-prebuilt": "^2.1.14",
     "sass-loader": "^6.0.3",
+    "shelljs": "^0.7.8",
     "simulant": "^0.2.2",
     "sinon": "^3.0.0",
     "sinon-chai": "^2.9.0",
