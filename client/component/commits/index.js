@@ -1,5 +1,4 @@
 // @flow
-import './index.scss';
 import { component, render } from 'brookjs';
 import template from './index.hbs';
 
