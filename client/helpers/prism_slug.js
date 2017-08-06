@@ -1,5 +1,5 @@
 // @flow
-import langs from '../languages.json';
+import langs from '../../config/languages.json';
 
 /**
  * Map a language slug to its prism slug.

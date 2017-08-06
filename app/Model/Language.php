@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Model;
 
+use Intraxia\Gistpen\App;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm;
@@ -26,59 +27,6 @@ class Language extends Model implements UsesWordPressTerm {
 	const BLOB_CLASS = 'Intraxia\Gistpen\Model\Blob';
 
 	/**
-	 * Languages currently supported
-	 *
-	 * @var      array
-	 * @since    0.1.0
-	 */
-	public static $supported = array(
-		'Assembly (NASM)'  => 'nasm',
-		'ActionScript'     => 'actionscript',
-		'AppleScript'      => 'applescript',
-		'Bash'             => 'bash',
-		'C'                => 'c',
-		'Coffeescript'     => 'coffeescript',
-		'C#'               => 'csharp',
-		'CSS'              => 'css',
-		'Dart'             => 'dart',
-		'Eiffel'           => 'eiffel',
-		'Erlang'           => 'erlang',
-		'Gherkin/Cucumber' => 'gherkin',
-		'Git/Diff'         => 'git',
-		'Go'               => 'go',
-		'Groovy'           => 'groovy',
-		'HAML'             => 'haml',
-		'Handlebars'       => 'handlebars',
-		'HTML'             => 'html',
-		'HTTP'             => 'http',
-		'ini'              => 'ini',
-		'Jade'             => 'jade',
-		'Java'             => 'java',
-		'JavaScript'       => 'js',
-		'LaTeX'            => 'latex',
-		'LESS'             => 'less',
-		'Markdown'         => 'markdown',
-		'Matlab'           => 'matlab',
-		'Objective-C'      => 'objectivec',
-		'Perl'             => 'perl',
-		'PHP'              => 'php',
-		'PlainText'        => 'plaintext',
-		'PowerShell'       => 'powershell',
-		'Python'           => 'py',
-		'R'                => 'r',
-		'Rust'             => 'rust',
-		'Ruby'             => 'ruby',
-		'Sass'             => 'sass',
-		'Scala'            => 'scala',
-		'Scheme'           => 'scheme',
-		'Smarty'           => 'smarty',
-		'Sql'              => 'sql',
-		'Swift'            => 'swift',
-		'Twig'             => 'twig',
-		'XML'              => 'xml',
-	);
-
-	/**
 	 * {@inheritDoc}
 	 *
 	 * @var array
@@ -101,7 +49,6 @@ class Language extends Model implements UsesWordPressTerm {
 		'ID',
 		'display_name',
 		'slug',
-		'prism_slug',
 	);
 
 	/**
@@ -132,9 +79,16 @@ class Language extends Model implements UsesWordPressTerm {
 	}
 
 	/**
+	 * Get the display name for the Language.
+	 *
 	 * @return string
 	 */
 	public function compute_display_name() {
-		return array_search( $this->get_attribute( 'slug' ), self::$supported, true );
+		// @todo move serialization out of the model into a serializer?
+		$languages = App::instance()->fetch( 'config' )->get_config_json( 'languages' );
+
+		return isset( $languages['list'][ $this->get_attribute( 'slug' ) ] ) ?
+			$languages['list'][ $this->get_attribute( 'slug' ) ] :
+			$languages['list']['plaintext'];
 	}
 }

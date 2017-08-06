@@ -41,7 +41,6 @@ describe('commitsDelta', () => {
                 root: '',
                 nonce: 'asdf',
                 url: '',
-                ace_themes: {},
                 ace_widths: [],
                 statuses: {},
                 themes: {}
@@ -85,7 +84,6 @@ describe('commitsDelta', () => {
                 root: '',
                 nonce: 'asdf',
                 url: '',
-                ace_themes: {},
                 ace_widths: [],
                 statuses: {},
                 themes: {}
@@ -130,7 +128,6 @@ describe('commitsDelta', () => {
                 root: '',
                 nonce: 'asdf',
                 url: '',
-                ace_themes: {},
                 ace_widths: [],
                 statuses: {},
                 themes: {}
@@ -182,7 +179,6 @@ describe('commitsDelta', () => {
                 root: '',
                 nonce: 'asdf',
                 url: '',
-                ace_themes: {},
                 ace_widths: [],
                 statuses: {},
                 themes: {}
@@ -254,7 +250,6 @@ describe('commitsDelta', () => {
                 root: '',
                 nonce: 'asdf',
                 url: '',
-                ace_themes: {},
                 ace_widths: [],
                 statuses: {},
                 themes: {}

@@ -23,7 +23,7 @@ class ParamsServiceProvider implements ServiceProvider {
 		} );
 
 		$container->define('params.globals', function( Container $container ) {
-			return new Globals( $container->fetch( 'url' ) );
+			return new Globals( $container->fetch( 'config' ) );
 		} );
 
 		$container->define('params.prism', function( Container $container ) {
@@ -48,6 +48,7 @@ class ParamsServiceProvider implements ServiceProvider {
 
 		$container->define( 'params.editor', function ( Container $container ) {
 			return new Editor(
+				$container->fetch( 'config' ),
 				$container->fetch('database' ),
 				$container->fetch( 'options.user' )
 			);

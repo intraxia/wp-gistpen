@@ -22,10 +22,6 @@ class AppTest extends WP_UnitTestCase {
 	}
 
 	public function test_should_fully_boot_all_providers() {
-		// @todo add to jaxion-bootstrap
-		App::shutdown();
-		$app = new App( __FILE__ );
-
-		$app->boot();
+		App::instance()->boot();
 	}
 }
