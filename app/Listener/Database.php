@@ -132,6 +132,30 @@ class Database implements HasActions {
 	}
 
 	/**
+	 * Deletes the related Blobs when a Repo gets deleted.
+	 *
+	 * Is this something that should be absorbed by Jaxion\Axolotl?
+	 *
+	 * @param  int $post_id post ID of the zip being deleted
+	 *
+	 * @since  0.5.0
+	 */
+	public function delete_blobs( $post_id ) {
+		$post = get_post( $post_id );
+
+		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
+			$blobs = $this->em->find_by( Klass::BLOB, array(
+				'repo_id' => $post_id,
+			) );;
+
+			/* Blob $blob */
+			foreach ( $blobs as $blob ) {
+				wp_delete_post( $blob->ID, true );
+			}
+		}
+	}
+
+	/**
 	 * Allows empty Repo to save.
 	 *
 	 * @param  bool  $maybe_empty Whether post should be considered empty.
@@ -188,6 +212,10 @@ class Database implements HasActions {
 				'hook'     => 'post_updated',
 				'method'   => 'remove_revision_save',
 				'priority' => 9,
+			),
+			array(
+				'hook'   => 'before_delete_post',
+				'method' => 'delete_blobs',
 			),
 		);
 	}
