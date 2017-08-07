@@ -1,6 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Providers;
 
+use Intraxia\Gistpen\Params\Blob;
 use Intraxia\Gistpen\Params\Editor;
 use Intraxia\Gistpen\Params\Gist;
 use Intraxia\Gistpen\Params\Globals;
@@ -36,6 +37,10 @@ class ParamsServiceProvider implements ServiceProvider {
 
 		$container->define('params.repo', function( Container $container ) {
 			return new Repo( $container->fetch( 'database' ) );
+		} );
+
+		$container->define('params.blob', function( Container $container ) {
+			return new Blob( $container->fetch( 'database' ) );
 		} );
 
 		$container->define( 'params.route', function ( Container $container ) {

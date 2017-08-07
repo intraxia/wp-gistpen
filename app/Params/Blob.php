@@ -32,7 +32,7 @@ class Blob implements HasFilters {
 	 *
 	 * @return array
 	 */
-	public function apply_prism( $params ) {
+	public function apply_blob( $params ) {
 		/** @var BlobModel $blob */
 		$blob = $this->em->find( EntityManager::BLOB_CLASS, get_the_ID(), array(
 			'with' => 'language'
@@ -52,8 +52,8 @@ class Blob implements HasFilters {
 	public function filter_hooks() {
 		return array(
 			array(
-				'hook'   => 'params.props.content.repo',
-				'method' => 'apply_prism',
+				'hook'   => 'params.props.content.blob',
+				'method' => 'apply_blob',
 			),
 		);
 	}
