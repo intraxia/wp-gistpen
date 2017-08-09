@@ -1,0 +1,32 @@
+<div class="wpgp-search-container" data-brk-container="search">
+    <div class="wpgp-search-form">
+        <label for="wpgp-search-field" class="wpgp-search-label">Search Gistpens</label>
+        <input type="search" id="gistpen-search-field"
+               class="wpgp-search-field"
+               placeholder="keywords" value="{{search.term}}"
+               {{event "input" "onSearchTyping"}} />
+    </div>
+
+    {{#if search.results}}
+        <ul class="wpgp-search-results">
+        {{#each search.results}}
+            <li class="wpgp-search-result">
+                <input type="radio" id="wpgp-radio-{{ID}}"
+                       {{event "change" "onRadioChange"}}
+                       {{#compare ID search.selection}}checked{{/compare}}
+                       name="wpgp-search-results" value="{{ID}}" />
+                <label for="wpgp-radio-{{ID}}"
+                       class="wpgp-search-result-title">
+                    {{filename}}
+                </label>
+            </li>
+        {{/each}}
+        </ul>
+    {{else}}
+        {{#if search.term}}
+            <p>Please enter a valid search term.</p>
+        {{else}}
+            <p>Loading Recent Gistpens...</p>
+        {{/if}}
+    {{/if}}
+</div>

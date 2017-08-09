@@ -1,0 +1,482 @@
+FORMAT: 1A
+HOST: http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen
+
+# WP-Gistpen
+
+The WP-Gistpen API is built into the WP-API for client-side Gistpen manipulation.
+
+## Repo Collection [/repos]
+
+You can interact with the collection of Repos.
+
+### List Repo Resources [GET]
+
+You can retrieve the most recently created Repos with this endpoint.
+
++ Response 200
+
+    + Body
+
+            [
+                {
+                    "ID": 1,
+                    "description": "Existing Repo",
+                    "status": "publish",
+                    "password": "",
+                    "gist_id": "none",
+                    "sync": "off",
+                    "blobs": [
+                        {
+                            "size": 19,
+                            "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
+                            "slug": "file.txt",
+                            "code": "Some code goes here",
+                            "ID": 2,
+                            "language": {
+                                "slug": "plaintext"
+                            }
+                        }
+                    ],
+                    "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                    "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                    "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                    "created_at": "2016-04-14T02:15:15Z",
+                    "updated_at": "2016-06-20T11:34:15Z"
+                }
+            ]
+
+### Create Repo Resource [POST]
+
+You can create a new Repo with this endpoint.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "description": "New Repo",
+                "status": "draft",
+                "password": "",
+                "sync": "on",
+                "blobs": [
+                    {
+                        "filename": "new-file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ]
+            }
+
++ Response 201 (application/json)
+
+    + Headers
+
+            Location: http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1
+
+    + Body
+
+            {
+                "ID": 1,
+                "description": "New Repo",
+                "status": "draft",
+                "password": "",
+                "gist_id": "pending",
+                "sync": "off",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/new-file.txt",
+                        "filename": "new-file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/new-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
+            }
+
+## Repo Resouce [/repos/{repo_id}{?force}]
+
+You can also interact with individual Repos.
+
++ Parameters
+
+    + repo_id (number) - ID of the Repo
+
+### Get Individual Repo Resource [GET]
+
+You can retrieve the information for an individual Repo resource.
+
++ Response 200
+
+    + Body
+
+            {
+                "ID": 1,
+                "description": "Existing Repo",
+                "status": "publish",
+                "password": "",
+                "gist_id": "none",
+                "sync": "off",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
+                        "slug": "file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
+            }
+
+### Update Individual Repo Resource [PUT]
+
+You can update an individual Repo resource. If no
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "description": "New Repo Description",
+                "status": "draft",
+                "password": "",
+                "sync": "on",
+                "blobs": [
+                    {
+                        "ID": 2
+                        "filename": "new-file.txt",
+                        "code": "Updated code goes here",
+                        "language": "plaintext"
+                    }
+                ]
+            }
+
++ Response 200
+
+    + Body
+
+            {
+                "ID": 1,
+                "description": "New Repo Descrption",
+                "status": "draft",
+                "password": "",
+                "gist_id": "none",
+                "sync": "on",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/new-file.txt",
+                        "filename": "new-file.txt",
+                        "code": "Updated code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
+            }
+
+### Patch Update Individual Repo Resource [PATCH]
+
+You can just send the changes you would like to make to the Repo resource.
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "description": "New Repo Description",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "code": "Updated code goes here"
+                    }
+                ]
+            }
+
++ Response 200
+
+    + Body
+
+            {
+                "ID": 1,
+                "description": "New Repo Description",
+                "status": "publish",
+                "password": "",
+                "gist_id": "none",
+                "sync": "off",
+                "blobs": [
+                    {
+                        "ID": 2,
+                        "size": 23,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/2/file.txt",
+                        "slug": "file.txt",
+                        "code": "Updated code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "commits_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits",
+                "html_url": "https://intraxiadev.ngrok.io/gistpens/existing-repository/",
+                "created_at": "2016-04-14T02:15:15Z",
+                "updated_at": "2016-06-20T11:34:15Z"
+            }
+
+### Delete Individual Repo Resource [DELETE]
+
+You can delete an individual Repo resource, along with a special flag to force delete the Repo rather than just moving the resource into the Trash.
+
++ Parameters
+
+    + force: false (boolean, optional) - Whether to force delete the resource
+        + Default: false
+
++ Response 204
+
+## Repo Commits Collection [/repos/{repo_id}/commits]
+
+You can view the collection of Commits for a given Repo. You cannot directly create a Commit. They are created everytime a Repo resource is updated.
+
++ Parameters
+
+    + repo_id (number) - ID of the Repo
+
+### List Repo Commits [GET]
+
+You can retrieve the collection of Commits for a given Repo.
+
++ Response 200 (application/json)
+
+    + Body
+
+            [
+                {
+                    "ID": 3,
+                    "created_at": "2016-04-14T02:15:15Z",
+                    "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3"
+                }
+            ]
+
+## Repo Commit Resouce [/repos/{repo_id}/commits/{commit_id}]
+
+You can retrieve the information for an individual Commit for a given Repo.
+
++ Parameters
+
+    + repo_id (number) - ID of the Repo
+    + commit_id (number) - ID of the Commit
+
+### Get Commit Resouce [GET]
+
++ Response 200
+
+    + Body
+
+            {
+                "ID": 3,
+                "description": "Existing Repo",
+                "gist_id": "none",
+                "blobs": [
+                    {
+                        "ID": 4,
+                        "size": 19,
+                        "raw_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3/4/file.txt",
+                        "slug": "file.txt",
+                        "code": "Some code goes here",
+                        "language": "plaintext"
+                    }
+                ],
+                "rest_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1/commits/3",
+                "head_url": "http://intraxiadev.ngrok.io/wp-json/intraxia/v1/gistpen/repos/1",
+                "created_at": "2016-04-14T02:15:15Z"
+            }
+
+## User Collection [/me]
+
+### List User Settings [GET]
+
+You can retrieve the user's current settings with this endpoint. It returns an object with key:value pairs with all of the user's settings.
+
++ Response 200 (application/json)
+
+        {
+            "ace_theme": "ambiance"
+        }
+
+### Update User Settings [PATCH]
+
+You can update a user's settings with this endpoint. It also returns an object with the user's settings, in addition to an error array for any keys that weren't updated.
+
++ Request (application/json)
+
+        {
+            "ace_theme": "chaos",
+            "unknown_key": "random-value"
+        }
+
++ Response 200 (application/json)
+
+    + Header
+
+            X-Invalid-Keys: random-value
+
+    + Body
+
+            {
+                "ace_theme": "chaos"
+            }
+
+## Site Options Collection [/site]
+
+### List Site Options [GET]
+
+You can retrieve the site's current settings with this endpoint. You'll only receive information matching user permissions.
+
++ Response 200 (application/json)
+
+            {
+                "prism": {
+                    "theme": "default",
+                    "line-numbers": true,
+                    "show-invisibles": false
+                },
+                "gist": {
+                    "token": "123456789asdfghjklqwertyuiop"
+                }
+            }
+
+### Update Site Options [PATCH]
+
+You can update any of the site's settings with this endpoint. Just send the data in the location in the structure that needs to be updataed. The endpoint will return the updated settings for the site. Invalid keys will be ignored.
+
++ Request (application/json)
+
+        {
+            "prism": {
+                "theme": "xonokai"
+            },
+            "random": "value"
+        }
+
++ Response 200 (application/json)
+
+            {
+                "prism": {
+                    "theme": "xonokai",
+                    "line-numbers": true,
+                    "show-invisibles": false
+                },
+                "gist": {
+                    "token": "123456789asdfghjklqwertyuiop"
+                }
+            }
+
+## Jobs Collection [/jobs]
+
+The Jobs Collection endpoints provides client access to the jobs system.
+
+### List Jobs [GET]
+
+Retrieve a list of all the registered jobs.
+
++ Response 200 (application/json)
+
+        [
+            {
+                "name": "export",
+                "url": "full-url/jobs/export"
+            }
+        ]
+
+## Jobs Resource [/jobs/{job_name}]
+
+The Jobs Resource endpoints provide a way for clients to start and retrieve data on past runs, as well as forming an integral part of the system itself.
+
++ Parameters
+    + job_name (string) - Job name registered with the jobs system
+
+### Get Job Status [GET]
+
+Retrieves the last status as well as recent run history.
+
++ Response 200 (application/json)
+
+        {
+            "latest": {
+                "status": "passed",
+                "url": "/jobs/export/12345"
+            },
+            "history": [
+                {
+                    "status": "passed",
+                    "url": "/jobs/export/12345"
+                }
+            ]
+        }
+
+### Start New Job [POST]
+
+Kicks off a new background task for the registered job.
+
++ Response 202 (application/json)
+
+        {
+            "status": "created",
+            "url": "/jobs_exports/12345"
+        }
+
+## Task Resource [/jobs/{job_name}/{task_timestamp}]
+
+The Task resource provides status and console information for running background tasks.
+
++ Parameters
+    + job_name (string) - Job name registered with the jobs system
+    + task_timestamp (number) - Timestamp for the task was created
+
+### Get Task Status [GET]
+
++ Response 200 (application/json)
+
+        {
+            "status": "running",
+            "console": "/jobs/export/12345/console"
+        }
+
+## Task Console [/jobs/{jobs_name}/{task_timestamp}/console]
+
+### Get Console Messages [GET]
+
+The Task console provides a stream of helpful information from the running task.
+
++ Paramters
+    + o (number) - Console offset, starts at 0
+        + Default: "0"
+
+Use the provided "next" key to make subsequent calls to the console API.
+
++ Response 200 (application/json)
+
+        {
+            "messages": [
+                {
+                    "text": "This is a message",
+                    "level": "debug",
+                    "timestamp": "2016-01-00T00:00:00+00:00Z"
+                }
+            ],
+            "next": "/jobs/exports/12345/console?o=1"
+        }

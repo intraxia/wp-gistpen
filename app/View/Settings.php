@@ -1,7 +1,10 @@
 <?php
-namespace WP_Gistpen\View;
+namespace Intraxia\Gistpen\View;
 
-use WP_Gistpen\Account\Gist;
+use Intraxia\Gistpen\Contract\Templating;
+use Intraxia\Gistpen\Params\Repository as Params;
+use Intraxia\Jaxion\Contract\Core\HasActions;
+use Intraxia\Jaxion\Contract\Core\HasFilters;
 
 /**
  * This class registers all of the settings page views
@@ -11,48 +14,53 @@ use WP_Gistpen\Account\Gist;
  * @link       http://jamesdigioia.com/wp-gistpen/
  * @since      0.5.0
  */
-class Settings {
+class Settings implements HasActions, HasFilters {
 
 	/**
-	 * The ID of this plugin.
+	 * Params service.
 	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $plugin_name    The ID of this plugin.
+	 * @var Params
 	 */
-	private $plugin_name;
+	private $params;
 
 	/**
-	 * The version of this plugin.
+	 * Templating service.
 	 *
-	 * @since    0.5.0
-	 * @access   private
-	 * @var      string    $version    The current version of this plugin.
+	 * @var Templating
 	 */
-	private $version;
+	protected $template;
 
 	/**
-	 * Gist account object
+	 * Plugin basename.
 	 *
-	 * @var Gist
-	 * @since 0.5.0
+	 * @var string
 	 */
-	public $client;
+	protected $basename;
+
+	/**
+	 * Site URL.
+	 *
+	 * @var string
+	 */
+	protected $url;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
+	 * @param Params     $params
+	 * @param Templating $template
+	 * @param string     $basename
+	 * @param string     $url
+	 *
+	 * @internal param Site $site
+	 * @internal param EntityManager $em
 	 * @since    0.5.0
-	 * @var      string    $plugin_name       The name of this plugin.
-	 * @var      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-
-		$this->client = new Gist( $plugin_name, $version );
-
+	public function __construct( Params $params, Templating $template, $basename, $url ) {
+		$this->params = $params;
+		$this->template = $template;
+		$this->basename = $basename;
+		$this->url      = $url;
 	}
 
 	/**
@@ -61,15 +69,13 @@ class Settings {
 	 * @since    0.1.0
 	 */
 	public function add_plugin_admin_menu() {
-
 		add_options_page(
-			__( 'WP-Gistpen Settings', $this->plugin_name ),
-			__( 'Gistpens', $this->plugin_name ),
+			__( 'WP-Gistpen Settings', 'wp-gistpen' ),
+			__( 'Gistpens', 'wp-gistpen' ),
 			'edit_posts',
-			$this->plugin_name,
+			'wp-gistpen',
 			array( $this, 'display_plugin_admin_page' )
 		);
-
 	}
 
 	/**
@@ -78,127 +84,25 @@ class Settings {
 	 * @since    0.1.0
 	 */
 	public function display_plugin_admin_page() {
-
-		include_once( WP_GISTPEN_DIR . 'partials/settings/page.php' );
-
-	}
-
-	/**
-	 * Display GitHub user info on settings page
-	 *
-	 * @since 0.5.0
-	 */
-	public function github_user_layout() {
-		$token = cmb2_get_option( $this->plugin_name, '_wpgp_gist_token' );
-
-		if ( false === $token ) {
-			return;
-		}
-
-		$user = get_transient( '_wpgp_github_token_user_info' );
-
-		if ( false === $user ) {
-			$this->client->authenticate( $token );
-
-			if ( is_wp_error( $error = $this->client->check_token() ) ) {
-				// If this token doesn't validate, clear it and bail.
-				cmb2_update_option( $this->plugin_name, '_wpgp_gist_token', '' );
-				delete_transient( '_wpgp_github_token_user_info' );
-				return;
-			}
-
-			$user = get_transient( '_wpgp_github_token_user_info' );
-		}
-
-		$login = array_key_exists('login', $user) ? $user['login'] : '';
-		$email = array_key_exists('email', $user) ? $user['email'] : '';
-		$public_gists = array_key_exists('public_gists', $user) ? $user['public_gists'] : '0';
-		$private_gists = array_key_exists('private_gists', $user) ? $user['private_gists'] : '0';
-
-		?><h3>Authorized User</h3>
-
-		<strong><?php _e( 'Username: ', $this->plugin_name ); ?></strong><?php echo esc_html( $login ); ?><br>
-		<strong><?php _e( 'Email: ', $this->plugin_name ); ?></strong><?php echo esc_html( $email ); ?><br>
-		<strong><?php _e( 'Public Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $public_gists ); ?><br>
-		<strong><?php _e( 'Private Gists: ', $this->plugin_name ); ?></strong><?php echo esc_html( $private_gists ); ?><br><br>
-
-		<p class="cmb2-metabox-description">
-			<?php submit_button( 'Export Gistpens', 'secondary', 'export-gistpens', false ); ?>
-			<?php _e( "When you export  Gistpens, all Gistpens are exported, even if sync is unchecked. Sync will be enabled for those Gistpens; you can disable them individually.", $this->plugin_name ); ?>
-		</p>
-
-		<p class="cmb2-metabox-description">
-			<?php submit_button( 'Import Gists', 'secondary', 'import-gists', false ); ?>
-			<?php _e( "When you import Gists, only Gists not previously imported will be added.", $this->plugin_name ); ?>
-		</p>
-		<?php
-	}
-
-	/**
-	 * Modify CMB2's form output to validate
-	 * @param  string $form_format CMB2's form format
-	 * @param  string $object_id   CMB2's form object ID
-	 * @param  obj    $cmb         CMB2 object
-	 * @return string              modified form format
-	 */
-	public function modify_form_output( $form_format, $object_id, $cmb ) {
-		if ( 'wp-gistpen' == $object_id && 'wpgp_option_metabox' == $cmb->cmb_id ) {
-			$form_format = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<input type="submit" name="submit-cmb" value="%4$s" class="button-primary"></form>';
-		}
-
-		return $form_format;
+		echo $this->template->render( 'page/settings/index', $this->params->props( 'settings' ) );
 	}
 
 	/**
 	 * Add settings action link to the plugins page.
 	 *
 	 * @since    0.1.0
+	 *
+	 * @param array $links
+	 *
+	 * @return array
 	 */
 	public function add_action_links( $links ) {
-
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . $this->plugin_name ) . '">' . __( 'Settings', $this->plugin_name ) . '</a>'
+				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . 'wp-gistpen' ) . '">' . __( 'Settings', 'wp-gistpen' ) . '</a>'
 			),
 			$links
 		);
-
-	}
-
-	/**
-	 * Validates the OAuth token and  before save.
-	 *
-	 * @param    null            $override_value null if validation fails
-	 * @param    string          $value          value to validate
-	 * @param    int             $object_id      CMB2_Options object id
-	 * @param    array           $args           CMB2 args
-	 * @param    \CMB2_Sanitize  $validation_obj validation object
-	 * @return   string|null                     string if success, null if fail
-	 * @since    0.5.0
-	 */
-	public function validate_gist_token( $override_value, $value, $object_id, $args, $validation_obj ) {
-		if ( 'wp-gistpen' !== $object_id || empty( $value ) || $validation_obj->value === $validation_obj->field->value ) {
-			return $value;
-		}
-
-		$this->client->authenticate( $value );
-
-		if ( is_wp_error( $error = $this->client->check_token() ) ) {
-			delete_transient( '_wpgp_github_token_user_info' ); ?>
-
-			<div class="error">
-				<p>
-					<?php
-						_e( 'Gist token failed to validate. Error message: ', $this->plugin_name );
-						echo esc_html( $error->get_error_message() );
-					?>
-				</p>
-			</div><?php
-
-			$value = $override_value;
-		}
-
-		return $value;
 	}
 
 	/**
@@ -207,7 +111,38 @@ class Settings {
 	 * @since 0.3.0
 	 */
 	public function register_setting() {
-		register_setting( $this->plugin_name, $this->plugin_name );
+		register_setting( 'wp-gistpen', 'wp-gistpen' );
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function action_hooks() {
+		return array(
+			array(
+				'hook'   => 'admin_menu',
+				'method' => 'add_plugin_admin_menu',
+			),
+			array(
+				'hook'   => 'admin_init',
+				'method' => 'register_setting',
+			),
+		);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @return array[]
+	 */
+	public function filter_hooks() {
+		return array(
+			array(
+				'hook'   => 'plugin_action_links_' . $this->basename,
+				'method' => 'add_action_links',
+			)
+		);
+	}
 }

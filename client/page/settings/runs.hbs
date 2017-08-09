@@ -1,0 +1,40 @@
+<div class="table" data-brk-container="settingsRuns">
+    <h3 class="title">Runs for {{job.name}} Job</h3>
+    <p><strong>Current Status: {{job.status}}</strong></p>
+    <p><a href="{{link "wpgp_route" "jobs"}}">&larr; back</a></p>
+
+    <table class="widefat striped">
+        <thead>
+        <tr>
+            <th>Run ID</th>
+            <th>Run Status</th>
+            <th>Run Scheduled At</th>
+            <th>Run Started At</th>
+            <th>Run Finished At</th>
+            <th>Run Messages</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <th>Run ID</th>
+            <th>Run Status</th>
+            <th>Run Scheduled At</th>
+            <th>Run Started At</th>
+            <th>Run Finished At</th>
+            <th>Run Messages</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        {{#each job.runs}}
+            <tr>
+                <td>{{ID}}</td>
+                <td>{{status}}</td>
+                <td>{{scheduled_at}}</td>
+                <td>{{started_at}}</td>
+                <td>{{finished_at}}</td>
+                <td><a href="{{link "wpgp_route" (join "jobs" job ID "/")}}">View Messages</a></td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>

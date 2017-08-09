@@ -1,0 +1,12 @@
+[ignore]
+.*node_modules.*/stylelint.*.
+
+[include]
+
+[libs]
+./client/type/declare.js
+
+[options]
+module.use_strict=true
+module.name_mapper.extension='scss' -> '<PROJECT_ROOT>/client/type/css.js'
+module.name_mapper.extension='hbs' -> '<PROJECT_ROOT>/client/type/handlebars.js'

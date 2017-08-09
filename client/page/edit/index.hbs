@@ -1,0 +1,9 @@
+<div data-brk-container="edit">
+    {{#compare route.name "editor"}}
+        {{> component/editor/index}}
+    {{/compare}}
+
+    {{#compare route.name "commits"}}
+        {{> component/commits/index}}
+    {{/compare}}
+</div>

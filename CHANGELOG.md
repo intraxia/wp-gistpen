@@ -2,11 +2,48 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [0.5.8] - 2015-07-26
+### [Unreleased] ###
+
+#### Removed ####
+* Database migration from old versions
+	* If you're on the latest version of WP-Gistpen, you should have no problems. Given that the plugin hasn't been updated on .org in 2+ years, and .org reports the only versions are 0.5.x+, anyone who is still using an old version of WP-Gistpen is unlikely to upgrade to 1.0.0+ anyway. We are going to remove the Migration code because it'll allow us to remove a lot of old code that is currently only being used by it.
+
+		If you're using an old version of WP-Gistpen, you'll need to upgrade to 0.5.2+ before upgrading to 1.0.0 or the database migration will not be performed correctly. Fresh installs should have no problems either.
+
+#### Added ####
+* Completely rewritten internals
+	* Plugin architecture now built on [Jaxion][] framework
+	* Improved Database layer & use of Models
+* WP-API integration
+	* This requires an upgrade to WordPress 4.6+.
+* New Prism plugins:
+	* Show invisibles: Display tabs and line returns as characters
+	* Show language: Display the language in the embed
+	* Copy-to-clipboard: Displlay button to copy code to clipboard
+* New Prism themes:
+	* Tomorrow
+	* CB
+	* GHColors
+	* Projoaque
+	* Xonokai
+	* Ateliersulphurpool-Light
+	* Hopscotch
+	* Atom Dark
+* New code snippet editor
+	* Rewritten on top of Prism, ensuring consistency between supported editor and highlighting languages.
+	* Built  on [brookjs][]
+* API-driven settings page
+
+#### Fixed ####
+* Fixed code sample display on mobile
+* Fixed display on custom post type pages
+* Fixed bug where adding two files would only save one at a time
+
+### [0.5.8] - 2015-07-26 ###
 
 #### Fixed ####
 * Fixed a bug introduced in WordPress 4.2.3 where cap checks fail for `edit_post` on a post_id of 0.
-* Also loosened a couple checks because null values were being cast to 0. 
+* Also loosened a couple checks because null values were being cast to 0.
 
 ### [0.5.7] - 2015-05-23 ###
 
@@ -105,7 +142,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 
 #### Added ####
 * Options page
-* Theme switching 
+* Theme switching
 * Line numbers plugin
 * Line-highlighting
 * Link to lines
@@ -180,6 +217,8 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * Embeddable in posts via shortcode
 * Use SyntaxHighlighter to display
 
+[Jaxion]: https://github.com/intraxia/jaxion
+[brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
 [0.5.8]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.8
 [0.5.7]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.7

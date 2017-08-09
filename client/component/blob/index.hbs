@@ -1,0 +1,5 @@
+<pre class="gistpen line-numbers"
+        {{#if highlight}}data-line="{{highlight}}"{{/if}}
+        {{#if blob.edit_url}}data-edit-url="{{{blob.edit_url}}}"{{/if}}
+        data-filename="{{blob.filename}}"><code
+        class="language-{{prism_slug blob.language.slug}}">{{blob.code}}</code></pre>
