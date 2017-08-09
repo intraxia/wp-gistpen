@@ -15,7 +15,7 @@ describe('EditorInstanceComponent', () => {
         const initial : EditorInstanceProps = {
             'instance': {
                 'filename': '',
-                'code': '\n',
+                'code': '',
                 'language': 'plaintext',
                 'cursor': false,
                 'history': {
@@ -33,7 +33,7 @@ describe('EditorInstanceComponent', () => {
                 'instances': [
                     {
                         'filename': '',
-                        'code': '\n',
+                        'code': '',
                         'language': 'plaintext',
                         'cursor': false,
                         'history': {
