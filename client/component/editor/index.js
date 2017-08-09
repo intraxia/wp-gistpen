@@ -15,20 +15,16 @@ export default component({
         'instance': {
             factory: InstanceComponent,
             modifyChildProps: (props$ : Observable<EditorPageProps>, key : string) : Observable<EditorInstanceProps> => {
-                return props$.flatten((props : EditorPageProps) : Array<EditorInstanceProps> => {
-                    const instance = props.editor.instances.find((instance : EditorInstance) => instance.key === key);
+                return props$.map((props : EditorPageProps) : EditorInstanceProps => {
+                    const instance = props.editor.instances.find((instance : EditorInstance) => instance.key === key) || {};
 
-                    if (!instance) {
-                        return [];
-                    }
-
-                    return [{
+                    return {
                         instance: {
                             ...instance,
                             code: !/\n$/.test(instance.code) ? instance.code + '\n' : instance.code
                         },
                         editor: props.editor
-                    }];
+                    };
                 });
             },
             preplug: (instance$ : Observable<Action>, key : string) => instance$.map((action : Action) => ({
