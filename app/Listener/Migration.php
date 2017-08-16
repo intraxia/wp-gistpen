@@ -104,23 +104,6 @@ class Migration implements HasActions {
 	 * @since 1.0.0
 	 */
 	public function update_to_1_0_0() {
-		$old_opts = get_option( 'wp-gistpen' );
-
-		if ( ! $old_opts ) {
-			return;
-		}
-
-		delete_option( 'wp-gistpen' );
-
-		update_option( $this->slug . '_no_priv', array(
-			'prism' => array(
-				'theme'           => $old_opts['_wpgp_gistpen_highlighter_theme'],
-				'line-numbers'    => $old_opts['_wpgp_gistpen_line_numbers'],
-				'show-invisibles' => 'off',
-			)
-		));
-		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ) );
-
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 
 		$runs_table = $this->em->make_table_name( Klass::RUN );
@@ -149,6 +132,23 @@ class Migration implements HasActions {
 			  PRIMARY KEY  (ID)
 			)
 		");
+
+		$old_opts = get_option( 'wp-gistpen' );
+
+		if ( ! $old_opts ) {
+			return;
+		}
+
+		delete_option( 'wp-gistpen' );
+
+		update_option( $this->slug . '_no_priv', array(
+			'prism' => array(
+				'theme'           => $old_opts['_wpgp_gistpen_highlighter_theme'],
+				'line-numbers'    => $old_opts['_wpgp_gistpen_line_numbers'],
+				'show-invisibles' => 'off',
+			)
+		));
+		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ) );
 	}
 
 	/**
