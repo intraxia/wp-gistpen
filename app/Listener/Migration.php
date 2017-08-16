@@ -105,6 +105,11 @@ class Migration implements HasActions {
 	 */
 	public function update_to_1_0_0() {
 		$old_opts = get_option( 'wp-gistpen' );
+
+		if ( ! $old_opts ) {
+			return;
+		}
+
 		delete_option( 'wp-gistpen' );
 
 		update_option( $this->slug . '_no_priv', array(
