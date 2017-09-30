@@ -16,7 +16,24 @@ export default component({
             factory: InstanceComponent,
             modifyChildProps: (props$ : Observable<EditorPageProps>, key : string) : Observable<EditorInstanceProps> => {
                 return props$.map((props : EditorPageProps) : EditorInstanceProps => {
-                    const instance = props.editor.instances.find((instance : EditorInstance) => instance.key === key) || {};
+                    const instance = props.editor.instances.find((instance : EditorInstance) => instance.key === key);
+
+                    if (instance == null) {
+                        return {
+                            instance: {
+                                key,
+                                code: '\n',
+                                cursor: false,
+                                filename: '',
+                                history: {
+                                    undo: [],
+                                    redo: []
+                                },
+                                language: 'plaintext'
+                            },
+                            editor: props.editor
+                        };
+                    }
 
                     return {
                         instance: {
