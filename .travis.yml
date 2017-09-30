@@ -39,6 +39,7 @@ before_script:
 script:
     - composer test
     - gulp test
+    - npx dredd
 
 after_script:
     - if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then composer upload; fi
