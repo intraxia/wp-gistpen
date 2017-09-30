@@ -28,7 +28,7 @@ const createTinyMCEButton = (actions$ : ActionObservable<Action>, state$ : Obser
     }),
     state$.sampledBy(actions$.ofType(TINYMCE_POPUP_INSERT_CLICK))
         .flatMap((state : TinyMCEState) => stream((emitter : Emitter<Action, void>) => {
-            if (state.search.selection) {
+            if (state.search.selection != null) {
                 editor.insertContent('[gistpen id="' + state.search.selection + '"]');
             }
 

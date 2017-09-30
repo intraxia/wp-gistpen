@@ -24,6 +24,7 @@ module.exports = {
         'valtech'
     ],
     rules: {
+        'eqeqeq': [2, "smart"],
         'rest-spread-spacing': [2, 'never'],
         'flowtype/boolean-style': ['error', 'boolean'],
         'flowtype/define-flow-type': 'error',

@@ -55,7 +55,7 @@ const setSelectionRange = R.curry(function setSelectionRange(node : Element, ss 
             offsetEnd = findOffset(node, se);
         }
 
-        if (!offsetStart.error && !offsetEnd.error) {
+        if (offsetStart.error !== true && offsetEnd.error !== true) {
             range.setStart(offsetStart.element, offsetStart.offset);
 
             range.setEnd(offsetEnd.element, offsetEnd.offset);
