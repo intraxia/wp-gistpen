@@ -31,7 +31,10 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Intraxia\\Gistpen\\Test\\": "test/unit/"
+      "Intraxia\\Gistpen\\Test\\": [
+        "test/unit/",
+        "test/integration/"
+      ]
     }
   },
   "config": {

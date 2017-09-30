@@ -11,8 +11,11 @@
 	syntaxCheck="false"
 	>
 	<testsuites>
-		<testsuite name="WP-Gistpen Test Suite">
+		<testsuite name="WP-Gistpen Unit Test Suite">
 			<directory suffix=".php">test/unit/</directory>
+		</testsuite>
+		<testsuite name="WP-Gistpen Integration Test Suite">
+			<directory suffix=".php">test/integration/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
