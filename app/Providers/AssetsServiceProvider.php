@@ -35,7 +35,13 @@ class AssetsServiceProvider extends ServiceProvider {
 		$assets->register_script( array(
 			'type'      => 'admin',
 			'condition' => function () {
-				return 'gistpen' === get_current_screen()->id;
+				$cond = 'gistpen' === get_current_screen()->id;
+
+				if ( $cond ) {
+					wp_dequeue_script( 'autosave' );
+				}
+
+				return $cond;
 			},
 			'handle'    => $slug . '-editor-script',
 			'src'       => 'assets/js/editor',

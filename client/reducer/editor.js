@@ -143,7 +143,7 @@ export default combineActionReducers([
             sync: repo.sync,
             instances: repo.blobs.map((blob : Blob) => ({
                 ...defaultInstance,
-                key: (blob.ID || '') + '',
+                key: blob.ID != null ? String(blob.ID)  : '',
                 filename: blob.filename,
                 code: blob.code,
                 language: typeof blob.language === 'string' ? blob.language : blob.language.slug

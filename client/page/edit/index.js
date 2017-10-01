@@ -18,9 +18,27 @@ __webpack_public_path__ = __GISTPEN_EDITOR__.globals.url + 'assets/js/';
 
 const reducer : Reducer<EditorPageState, Action> = combineReducers({ globals, editor, commits, repo, route });
 
+const initialState = {
+    ...__GISTPEN_EDITOR__,
+    editor: {
+        ...__GISTPEN_EDITOR__.editor,
+        instances: __GISTPEN_EDITOR__.editor.instances.length > 0 ? __GISTPEN_EDITOR__.editor.instances : [{
+            key: 'new0',
+            filename: '',
+            code: '\n',
+            language: 'plaintext',
+            cursor: false,
+            history: {
+                undo: [],
+                redo: []
+            }
+        }]
+    }
+};
+
 const store : Store<EditorPageState, Action> = createStore(
     reducer,
-    __GISTPEN_EDITOR__,
+    initialState,
     applyDelta(
         domDelta({ el, selectProps, view }),
         repoDelta,

@@ -1,0 +1,47 @@
+FORMAT: 1A
+HOST: http://localhost:8080/wp-json/intraxia/v1/gistpen
+
+# WP-Gistpen
+
+The WP-Gistpen API is built into WP-API for client-side Gistpen manipulation.
+
+# Data Structures
+Some reusable data structures for WP-Gistpen.
+
+## Repo Base (object)
++ description: A repo description (string, required)
++ status: publish (string, required)
++ password (string, required)
++ sync: off (string, required)
++ blobs (array[Blob Base], required)
+
+## Blob Base (object)
++ filename: a-txt-file.txt (string, required)
++ code: The contents of the text file. (string, required)
+
+# Group Repos
+
+## Repo [/repos/{id}]
+An individual repo resource.
+
++ Parameters
+    + id: 1 (number)
+
++ Attributes (Repo Base)
+    + id: 1 (number, required)
+    + rest_url (string)
+    + commits_url (string)
+    + html_url (string)
+    + created_at (string)
+    + updated_at (string)
+
+## Repos [/repos]
+
++ Attributes (array[Repo])
+
+### List all Repos [GET]
+
+You can retrieve the most recently created Repos with this endpoint.
+
++ Response 200 (application/json; charset=UTF-8)
+    + Attributes (Repos)

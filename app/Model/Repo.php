@@ -22,6 +22,7 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property string     $rest_url
  * @property string     $commits_url
  * @property string     $html_url
+ * @property string     $gist_url
  * @property string     $created_at
  * @property string     $updated_at
  */
@@ -193,7 +194,7 @@ class Repo extends Model implements UsesWordPressPost {
 	 * @return string
 	 */
 	protected function compute_gist_url() {
-		if ( ! $this->gist_id ) {
+		if ( ! $this->gist_id || 'none' === $this->gist_id ) {
 			return null;
 		}
 

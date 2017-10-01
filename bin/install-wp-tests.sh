@@ -47,6 +47,13 @@ install_wp() {
 		return;
 	fi
 
+	# portable in-place argument for both GNU sed and Mac OSX sed
+	if [[ $(uname -s) == 'Darwin' ]]; then
+		local ioption='-i .bak'
+	else
+		local ioption='-i'
+	fi
+
 	mkdir -p $WP_CORE_DIR
 
 	if [[ $WP_VERSION == 'nightly' || $WP_VERSION == 'trunk' ]]; then
@@ -65,6 +72,16 @@ install_wp() {
 	fi
 
 	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+
+	# remove all forward slashes in the end
+	WP_CORE_DIR=$(echo $WP_CORE_DIR | sed "s:/\+$::")
+	cp "$WP_CORE_DIR/wp-config-sample.php" "$WP_CORE_DIR/wp-config.php"
+	sed $ioption "s/database_name_here/$DB_NAME/" "$WP_CORE_DIR"/wp-config.php
+	sed $ioption "s/username_here/$DB_USER/" "$WP_CORE_DIR"/wp-config.php
+	sed $ioption "s/password_here/$DB_PASS/" "$WP_CORE_DIR"/wp-config.php
+	sed $ioption "s|localhost|${DB_HOST}|" "$WP_CORE_DIR"/wp-config.php
+
+	ln -s $(pwd) "$WP_CORE_DIR/wp-content/plugins/wp-gistpen"
 }
 
 install_test_suite() {
@@ -85,8 +102,6 @@ install_test_suite() {
 
 	if [ ! -f wp-tests-config.php ]; then
 		download https://develop.svn.wordpress.org/${WP_TESTS_TAG}/wp-tests-config-sample.php "$WP_TESTS_DIR"/wp-tests-config.php
-		# remove all forward slashes in the end
-		WP_CORE_DIR=$(echo $WP_CORE_DIR | sed "s:/\+$::")
 		sed $ioption "s:dirname( __FILE__ ) . '/src/':'$WP_CORE_DIR/':" "$WP_TESTS_DIR"/wp-tests-config.php
 		sed $ioption "s/youremptytestdbnamehere/$DB_NAME/" "$WP_TESTS_DIR"/wp-tests-config.php
 		sed $ioption "s/yourusernamehere/$DB_USER/" "$WP_TESTS_DIR"/wp-tests-config.php
