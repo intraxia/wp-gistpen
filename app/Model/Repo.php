@@ -194,7 +194,7 @@ class Repo extends Model implements UsesWordPressPost {
 	 * @return string
 	 */
 	protected function compute_gist_url() {
-		if ( ! $this->gist_id || $this->gist_id === 'none' ) {
+		if ( ! $this->gist_id || 'none' === $this->gist_id ) {
 			return null;
 		}
 
