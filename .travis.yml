@@ -17,6 +17,7 @@ branches:
         - master
         - develop
         - /^greenkeeper/.*$/
+        - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 env:
     - WP_VERSION=latest WP_MULTISITE=0
