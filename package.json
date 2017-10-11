@@ -62,7 +62,7 @@
     "mutationobserver-shim": "^0.3.2",
     "prism-themes": "git+https://github.com/PrismJS/prism-themes.git",
     "prismjs": "1.6.0",
-    "ramda": "^0.24.1",
+    "ramda": "^0.25.0",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.0",
     "sheet-router": "^4.0.0-0",
