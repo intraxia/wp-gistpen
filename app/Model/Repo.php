@@ -21,6 +21,7 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property Collection $blobs
  * @property string     $rest_url
  * @property string     $commits_url
+ * @property string     $blobs_url
  * @property string     $html_url
  * @property string     $gist_url
  * @property string     $created_at
@@ -86,6 +87,7 @@ class Repo extends Model implements UsesWordPressPost {
 		'sync',
 		'blobs',
 		'rest_url',
+		'blobs_url',
 		'commits_url',
 		'html_url',
 		'created_at',
@@ -202,6 +204,18 @@ class Repo extends Model implements UsesWordPressPost {
 			'https://gist.github.com/%s',
 			$this->gist_id
 		);
+	}
+
+	/**
+	 * Computes the Repo's blobs_url.
+	 *
+	 * @return string
+	 */
+	protected function compute_blobs_url() {
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/repos/%s/blobs',
+			$this->ID
+		) );
 	}
 
 	/**
