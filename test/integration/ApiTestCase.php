@@ -8,6 +8,11 @@ abstract class ApiTestCase extends TestCase {
 	 */
 	protected $server;
 
+	/**
+	 * @var \Intraxia\Gistpen\Database\EntityManager
+	 */
+	protected $em;
+
 	public function setUp() {
 		parent::setUp();
 
@@ -15,6 +20,8 @@ abstract class ApiTestCase extends TestCase {
 		$this->server = $wp_rest_server = new WP_REST_Server;
 		do_action( 'plugins_loaded' );
 		do_action( 'rest_api_init' );
+
+		$this->em = $this->app->fetch( 'database' );
 	}
 
 	public function tearDown() {
