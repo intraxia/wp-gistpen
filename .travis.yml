@@ -65,4 +65,4 @@ deploy:
           tags: true
           php: 5.4
           all_branches: true
-          condition: "$WP_MULTISITE == 0 && WP_VERSION == 'latest'"
+          condition: "$WP_MULTISITE == 0 && $WP_VERSION == 'latest'"
