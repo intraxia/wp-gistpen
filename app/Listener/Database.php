@@ -145,7 +145,10 @@ class Database implements HasActions {
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
 			$blobs = $this->em->find_by( Klass::BLOB, array(
-				'repo_id' => $post_id,
+				'post_parent' => $post_id,
+				'post_status' => 'any',
+				'order'       => 'ASC',
+				'orderby'     => 'date',
 			) );;
 
 			/* Blob $blob */
