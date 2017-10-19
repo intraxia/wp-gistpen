@@ -40,13 +40,7 @@ class RepoControllerTest extends TestCase {
 			->andReturn( array() );
 		$this->database
 			->shouldReceive( 'find_by' )
-			->with( EntityManager::REPO_CLASS, array(
-				'with' => array(
-					'blobs' => array(
-						'with' => 'language',
-					),
-				),
-			) )
+			->with( EntityManager::REPO_CLASS, array() )
 			->andReturn( $error );
 
 		$this->assertSame( $error, $this->controller->index( $this->request ) );
@@ -63,14 +57,11 @@ class RepoControllerTest extends TestCase {
 			->andReturn( array() );
 		$this->database
 			->shouldReceive( 'find_by' )
-			->with( EntityManager::REPO_CLASS, array(
-				'with' => array(
-					'blobs' => array(
-						'with' => 'language',
-					),
-				),
-			) )
+			->with( EntityManager::REPO_CLASS, array() )
 			->once()
+			->andReturn( $collection );
+		$collection->shouldReceive( 'map' )
+			->with(Mockery::type('\Closure'))
 			->andReturn( $collection );
 		$collection
 			->shouldReceive( 'serialize' )

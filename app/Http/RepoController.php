@@ -3,7 +3,6 @@
 namespace Intraxia\Gistpen\Http;
 
 use Intraxia\Gistpen\Database\EntityManager;
-use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
 use WP_Error;
 use WP_REST_Request;
@@ -43,13 +42,7 @@ class RepoController {
 	public function index( WP_REST_Request $request ) {
 		$collection = $this->em->find_by(
 			EntityManager::REPO_CLASS,
-			array_merge( $request->get_params(), array(
-				'with' => array(
-					'blobs' => array(
-						'with' => 'language',
-					),
-				),
-			) )
+			$request->get_params()
 		);
 
 		if ( is_wp_error( $collection ) ) {
@@ -58,7 +51,26 @@ class RepoController {
 			return $collection;
 		}
 
-		return new WP_REST_Response( $collection->serialize(), 200 );
+		$response = $collection->map( function ( Repo $repo ) {
+			$response = $this->to_response( $repo );
+
+			$data   = (array) $response->get_data();
+			$server = rest_get_server();
+
+			if ( method_exists( $server, 'get_compact_response_links' ) ) {
+				$links = call_user_func( array( $server, 'get_compact_response_links' ), $response );
+			} else {
+				$links = call_user_func( array( $server, 'get_response_links' ), $response );
+			}
+
+			if ( ! empty( $links ) ) {
+				$data['_links'] = $links;
+			}
+
+			return $data;
+		} );
+
+		return new WP_REST_Response( $response->serialize(), 200 );
 	}
 
 	/**
@@ -242,5 +254,19 @@ class RepoController {
 		}
 
 		return new WP_REST_Response( null, 204 );
+	}
+
+	/**
+	 * Transform a Repo to a REST Response.
+	 *
+	 * @param Repo $repo
+	 *
+	 * @return WP_REST_Response
+	 */
+	private function to_response( Repo $repo ) {
+		$response = new WP_REST_Response( $repo->serialize(), 200 );
+		$response->add_link( 'blobs', $repo->blobs_url, array( 'embeddable' => true ) );
+
+		return $response;
 	}
 }
