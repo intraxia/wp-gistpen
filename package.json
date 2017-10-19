@@ -61,7 +61,7 @@
     "kefir": "^3.6.0",
     "mutationobserver-shim": "^0.3.2",
     "prism-themes": "git+https://github.com/PrismJS/prism-themes.git",
-    "prismjs": "1.6.0",
+    "prismjs": "1.8.3",
     "ramda": "^0.25.0",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.0",
