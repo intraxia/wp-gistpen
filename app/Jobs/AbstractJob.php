@@ -58,7 +58,7 @@ abstract class AbstractJob implements Job {
 	/**
 	 * Fetch all the items the Job can process.
 	 *
-	 * @return mixed
+	 * @return Collection|WP_Error
 	 */
 	abstract protected function fetch_items();
 
@@ -82,6 +82,10 @@ abstract class AbstractJob implements Job {
 	public function dispatch( Collection $items = null ) {
 		if ( null === $items ) {
 			$items = $this->fetch_items();
+		}
+
+		if ( is_wp_error( $items ) ) {
+			return $items;
 		}
 
 		if ( ! ( $items instanceof Collection ) ) {
