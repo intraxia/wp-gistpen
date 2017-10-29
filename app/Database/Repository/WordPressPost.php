@@ -114,6 +114,15 @@ class WordPressPost extends AbstractRepository {
 			$query_args['post_parent'] = $params['blob_id'];
 		}
 
+		if ( isset( $params['gist_id'] ) ) {
+			$query_args['meta_query'] = array(
+				array(
+					'key' => $this->make_meta_key( 'gist_id' ),
+					'value' => $params['gist_id'],
+				)
+			);
+		}
+
 		$collection = new Collection( $class );
 		$query      = new WP_Query( array_merge( $params, $query_args ) );
 
