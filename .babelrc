@@ -1,27 +1,54 @@
 {
   "plugins": [
-    ["tcomb", {
-      "globals": [
-        {
-          "Disposer": true
-        },
-        {
-          "ActionObservable": true
-        },
-        {
-          "ProxyEvent": true
-        },
-        {
-          "Node": true
-        }
-      ]
-    }],
     "ramda",
     "transform-object-rest-spread",
     "syntax-flow",
     "transform-flow-strip-types"
   ],
   "presets": [
-    ["es2015", { "loose": false, "modules": false }]
-  ]
+    ["env", { "loose": false, "modules": false }]
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        ["tcomb", {
+          "skipAsserts": true,
+          "globals": [
+            {
+              "Disposer": true
+            },
+            {
+              "ActionObservable": true
+            },
+            {
+              "ProxyEvent": true
+            },
+            {
+              "Node": true
+            }
+          ]
+        }]
+      ]
+    },
+    "development": {
+      "plugins": [
+        ["tcomb", {
+          "globals": [
+            {
+              "Disposer": true
+            },
+            {
+              "ActionObservable": true
+            },
+            {
+              "ProxyEvent": true
+            },
+            {
+              "Node": true
+            }
+          ]
+        }],
+      ]
+    }
+  }
 }
