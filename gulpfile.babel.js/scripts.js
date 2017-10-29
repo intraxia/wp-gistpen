@@ -1,4 +1,3 @@
-const R = require('ramda');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const webpack = require('webpack');
@@ -20,7 +19,9 @@ gulp.task('scripts:dev', callback => {
     });
 });
 
-gulp.task('scripts:build', callback => {
+gulp.task('scripts:build', ['scripts:dev'],callback => {
+    process.env.NODE_ENV = 'production';
+
     const webpackBuildConfig = merge(webpackConfig, {
         devtool: '',
         output: {
