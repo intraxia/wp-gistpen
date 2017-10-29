@@ -1,8 +1,8 @@
 const R = require('ramda');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
-
 const webpack = require('webpack');
+const merge = require('webpack-merge');
 const webpackConfig = require('./webpack.config.js');
 
 gulp.task('scripts', ['scripts:dev', 'scripts:build']);
@@ -21,18 +21,21 @@ gulp.task('scripts:dev', callback => {
 });
 
 gulp.task('scripts:build', callback => {
-    const webpackBuildConfig = R.clone(webpackConfig);
-    delete webpackBuildConfig.devtool;
-    webpackBuildConfig.output.filename = '[name].min.js';
-    webpackBuildConfig.output.chunkFilename = '[id].min.js';
-    webpackBuildConfig.plugins = webpackBuildConfig.plugins.concat(
-        new webpack.DefinePlugin({
-            'process.env': {
-                'NODE_ENV': JSON.stringify('production')
-            }
-        }),
-        new webpack.optimize.UglifyJsPlugin({ minimize: true })
-    );
+    const webpackBuildConfig = merge(webpackConfig, {
+        devtool: '',
+        output: {
+            filename: '[name].min.js',
+            chunkFilename: '[id].min.js'
+        },
+        plugins: [
+            new webpack.DefinePlugin({
+                'process.env': {
+                    'NODE_ENV': JSON.stringify('production')
+                }
+            }),
+            new webpack.optimize.UglifyJsPlugin({ minimize: true })
+        ]
+    });
 
     webpack(webpackBuildConfig, (err, stats) => {
         if (err) {
