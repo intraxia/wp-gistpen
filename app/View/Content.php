@@ -32,7 +32,10 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 *
 	 * @var array
 	 */
-	protected static $defaults = array( 'id' => null );
+	protected static $defaults = array(
+		'id'        => null,
+		'highlight' => null,
+	);
 
 	/**
 	 * Params service.
@@ -49,6 +52,20 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	protected $templating;
 
 	/**
+	 * Post currently being processed by shortcode.
+	 *
+	 * @var WP_Post
+	 */
+	private $shortcode_post;
+
+	/**
+	 * Highlighting for the current shortcode.
+	 *
+	 * @var string
+	 */
+	private $shortcode_highlight;
+
+	/**
 	 * Assets service provider.
 	 *
 	 * @var Assets
@@ -60,14 +77,14 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 *
 	 * @since    0.5.0
 	 *
-	 * @param Params $params
-	 * @param Templating    $templating
-	 * @param Assets        $assets
+	 * @param Params     $params
+	 * @param Templating $templating
+	 * @param Assets     $assets
 	 */
-	public function __construct( Params $params, Templating $templating, Assets $assets) {
-		$this->params = $params;
+	public function __construct( Params $params, Templating $templating, Assets $assets ) {
+		$this->params     = $params;
 		$this->templating = $templating;
-		$this->assets = $assets;
+		$this->assets     = $assets;
 	}
 
 	/**
@@ -141,7 +158,6 @@ class Content implements HasActions, HasFilters, HasShortcode {
 		return $query;
 	}
 
-
 	/**
 	 * {@inheritDoc}
 	 *
@@ -168,13 +184,29 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
-		$post = get_post( $args['id'] );
-
-		if ( Repo::get_post_type() !== $post->post_type ) {
+		if ( Repo::get_post_type() !== get_post_type( $args['id' ]) ) {
 			return '<div class="wp-gistpen-error">ID provided is not a Gistpen repo.</div>';
 		}
 
-		return wp_oembed_get( get_post_embed_url( $post ) );
+		global $post;
+		$post_bu = $post;
+		$post = get_post( $args['id'] );
+
+		if ( ! $post->post_parent ) {
+			$content = $this->templating->render(
+				'component/repo/index',
+				$this->params->props( 'content.repo' )
+			);
+		} else {
+			$content = $this->templating->render(
+				'component/blob/index',
+				$this->params->props( 'content.blob', array( 'highlight' => $args['highlight'] ) )
+			);
+		}
+
+		$post = $post_bu;
+
+		return $content;
 	}
 
 	/**
@@ -215,17 +247,48 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	/**
 	 * Remove the hard-coded width so the embed can scale with the width of the column.
 	 *
-	 * @param string $output Embed html output.
-	 * @param WP_Post $post  Associated post.
+	 * @param string  $output Embed html output.
+	 * @param WP_Post $post   Associated post.
 	 *
 	 * @return string New embed html output.
 	 */
 	public function remove_embed_width( $output, WP_Post $post ) {
 		if ( Repo::get_post_type() === $post->post_type ) {
-			return preg_replace('/width="\d+"/', 'width="100%"', $output );
+			return preg_replace( '/width="\d+"/', 'width="100%"', $output );
 		}
 
 		return $output;
+	}
+
+	/**
+	 * Replaces the styles injected by WordPress with our own for the embed.
+	 */
+	public function inject_styles() {
+		if ( get_post_type() === Repo::get_post_type() ) {
+			remove_action( 'embed_head', 'print_embed_styles' );
+			remove_action( 'embed_content_meta', 'print_embed_comments_button' );
+			remove_action( 'embed_content_meta', 'print_embed_sharing_button' );
+			remove_action( 'embed_footer', 'print_embed_sharing_dialog' );
+			remove_action( 'embed_footer', 'print_embed_scripts' );
+
+			echo <<<CSS
+<style>
+body {
+    margin: 0;
+}
+
+.wp-embed-footer,
+.wp-embed-heading {
+    display: none;
+}
+
+.wp-embed-excerpt pre[class*="language-"] {
+    margin: 0;
+}
+</style>
+CSS;
+
+		}
 	}
 
 	/**
@@ -235,6 +298,11 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 */
 	public function action_hooks() {
 		return array(
+			array(
+				'hook'     => 'embed_head',
+				'method'   => 'inject_styles',
+				'priority' => 5,
+			),
 			array(
 				'hook'   => 'the_content',
 				'method' => 'remove_filters',

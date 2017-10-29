@@ -32,7 +32,7 @@ class Blob implements HasFilters {
 	 *
 	 * @return array
 	 */
-	public function apply_blob( $params ) {
+	public function apply_blob( $params, array $data = array() ) {
 		/** @var BlobModel $blob */
 		$blob = $this->em->find( EntityManager::BLOB_CLASS, get_the_ID(), array(
 			'with' => 'language'
@@ -42,6 +42,10 @@ class Blob implements HasFilters {
 			// @todo
 		} else {
 			$params['blob'] = $blob->serialize();
+
+			if ( isset( $data['highlight'] ) ) {
+				$params['blob']['highlight'] = $data['highlight'];
+			}
 		}
 
 		return $params;
@@ -54,6 +58,7 @@ class Blob implements HasFilters {
 			array(
 				'hook'   => 'params.props.content.blob',
 				'method' => 'apply_blob',
+				'args'   => 2,
 			),
 		);
 	}

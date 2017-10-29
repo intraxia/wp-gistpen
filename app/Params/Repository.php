@@ -11,8 +11,8 @@ class Repository {
 	 *
 	 * @return array
 	 */
-	public function state( $key ) {
-		return apply_filters( "params.state.{$key}", array() );
+	public function state( $key, array $data = array() ) {
+		return apply_filters( "params.state.{$key}", array(), $data );
 	}
 
 	/**
@@ -22,7 +22,7 @@ class Repository {
 	 *
 	 * @return array
 	 */
-	public function props( $key ) {
-		return apply_filters( "params.props.{$key}", array() );
+	public function props( $key, array $data = array() ) {
+		return apply_filters( "params.props.{$key}", array(), $data );
 	}
 }

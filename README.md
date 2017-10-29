@@ -100,7 +100,7 @@ Features include:
 
 First, revisions need to be enabled. They can be disabled in `wp-config.php`, but WP-Gistpen relies on them to keep everything in sync. A future version will remove this dependency, but it's currently required.
 
-Additionally, your PHP version should be 5.3+. If you're a developer using 5.2, may God have mercy on your soul.
+Additionally, your PHP version should be 5.4+.
 
 ### How do I create a Gistpen and insert it into the post? ###
 
@@ -112,7 +112,7 @@ After inserting the shortcode, your code will appear in your post, highlighted b
 
 ### How do I highlight specific lines in my Gistpen? ###
 
-To highlight a specific line, add `highlight="^^"`, where ^^ is a line number or range of numbers you want highlighted, like this ([via PrismJS documentation](http://prismjs.com/plugins/line-highlight/)):
+To highlight a specific line, add `highlight=^^`, where ^^ is a line number or range of numbers you want highlighted, like this ([via PrismJS documentation](http://prismjs.com/plugins/line-highlight/)):
 
 * A single number refers to the line with that number
 * Ranges are denoted by two numbers, separated with a hyphen (-)
@@ -121,12 +121,10 @@ To highlight a specific line, add `highlight="^^"`, where ^^ is a line number or
 
 Examples:
 
-* `highlight="5"`: The 5th line
-* `highlight="1-5"`: Lines 1 through 5
-* `highlight="1,4"`: Line 1 and line 4
-* `highlight="1-2,5,9-20"`: Lines 1 through 2, line 5, lines 9 through 20
-
-Offset does not yet work but will be added soon.
+* `highlight=5`: The 5th line
+* `highlight=1-5`: Lines 1 through 5
+* `highlight=1,4`: Line 1 and line 4
+* `highlight=1-2,5,9-20`: Lines 1 through 2, line 5, lines 9 through 20
 
 ### How do I link to a specific line? ###
 

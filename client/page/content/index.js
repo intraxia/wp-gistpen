@@ -1,13 +1,14 @@
 // @flow
 import '../../polyfills';
 import Prism from '../../prism';
-
-import { plugin } from '../../prism/plugins/toolbar';
+import { plugin as p1 } from '../../prism/plugins/toolbar';
+import { plugin as p2 } from '../../prism/plugins/line-highlight';
 import '../../prism/plugins/copy-to-clipboard';
 import '../../prism/plugins/edit';
 import '../../prism/plugins/filename';
 
-plugin.use();
+p1.use();
+p2.use();
 
 const { __GISTPEN_CONTENT__ } = global;
 
