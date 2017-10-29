@@ -9,4 +9,5 @@ class Klass extends Enum {
 	const RUN = 'Intraxia\Gistpen\Model\Run';
 	const MESSAGE = 'Intraxia\Gistpen\Model\Message';
 	const STATE = 'Intraxia\Gistpen\Model\State';
+	const LANGUAGE = 'Intraxia\Gistpen\Model\Language';
 }
