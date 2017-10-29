@@ -1,5 +1,5 @@
 <div class="table" data-brk-container="settingsAccounts">
-    <h3 class="title" >Sync Account Settings</h3>
+    <h3 class="title">Sync Account Settings</h3>
     <table class="form-table">
         <tbody>
         <tr>
@@ -10,7 +10,11 @@
                 <input type="text" name="wpgp-token"
                        id="wpgp-token" class="regular-text"
                        data-brk-oninput="onGistTokenChange"
-                       value="{{gist.token}}" />
+                       value="{{gist.token}}"/>
+                <p class="description" id="wpgp-token-description">
+                    Create a new <a href="https://github.com/settings/tokens" target="_blank">Personal Access Token</a>
+                    with <code>gist</code> scope and paste it here.
+                </p>
             </td>
         </tr>
         </tbody>
