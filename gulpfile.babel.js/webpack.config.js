@@ -22,16 +22,16 @@ module.exports = {
         filename: '[name].js'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.js$/,
-                loader: 'eslint-loader',
+                use: ['eslint-loader'],
                 include: client,
                 enforce: 'pre'
             },
             {
                 test: /\.js$/,
-                loader: 'babel-loader',
+                use: ['babel-loader'],
                 include: [
                     client,
                     path.join(__dirname, '..', 'node_modules', 'diffhtml')
@@ -39,13 +39,15 @@ module.exports = {
             },
             {
                 test: /\.hbs/,
-                loader: 'handlebars-loader',
-                query: {
-                    helperDirs: [path.join(client, 'helpers')],
-                    partialDirs: [client],
-                    preventIndent: true,
-                    compat: true
-                }
+                use: [{
+                    loader: 'handlebars-loader',
+                    query: {
+                        helperDirs: [path.join(client, 'helpers')],
+                        partialDirs: [client],
+                        preventIndent: true,
+                        compat: true
+                    }
+                }]
             },
             {
                 test: /\.(scss|css)$/,
@@ -54,7 +56,12 @@ module.exports = {
                     path.join(page, 'tinymce'),
                     path.join(client, 'component')
                 ],
-                loaders: ['style-loader', 'css-loader', 'sass-loader']
+                use: [{
+                    loader: 'style-loader',
+                    options: {
+                        hmr: false
+                    }
+                }, 'css-loader', 'sass-loader']
             },
             {
                 test: /\.(scss|css)$/,
@@ -63,7 +70,12 @@ module.exports = {
                     path.join(client, 'prism'),
                     /node_modules/
                 ],
-                loaders: ['style-loader/useable', 'css-loader', 'sass-loader']
+                use: [{
+                    loader: 'style-loader/useable',
+                    options: {
+                        hmr: false
+                    }
+                }, 'css-loader', 'sass-loader']
             }
         ]
     },

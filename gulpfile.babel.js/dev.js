@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const R = require('ramda');
+const merge = require('webpack-merge');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const gutil = require('gulp-util');
@@ -8,8 +8,9 @@ const { Server } = require('karma');
 gulp.task('dev', ['dev:app', 'dev:tdd']);
 
 gulp.task('dev:app', ['common'], () => {
-    const webpackWatchConfig = R.clone(webpackConfig);
-    webpackWatchConfig.watch = true;
+    const webpackWatchConfig = merge(webpackConfig, {
+        watch: true
+    });
 
     webpack(webpackWatchConfig, (err, stats) => {
         if (err) {
