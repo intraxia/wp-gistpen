@@ -33,17 +33,17 @@ class Jobs implements HasFilters {
 		$params['jobs'] = $this->jobs->serialize();
 		$parts          = $params['route']['parts'];
 
-		if ( $params['route']['name'] === 'jobs' && ! $parts->run && ! $parts->job ) {
+		if ( $params['route']['name'] === 'jobs' && ! isset( $parts->run ) && ! isset( $parts->job ) ) {
 			foreach ( $params['jobs'] as $key => $job ) {
 				$params['jobs'][ $key ]['status'] = $this->jobs->get( $job['slug'] )->get_status();
 			}
 		}
 
-		if ( $params['route']['name'] === 'jobs' && $parts->job ) {
+		if ( $params['route']['name'] === 'jobs' && isset( $parts->job ) ) {
 			$params['jobs'][ $parts->job ]['status'] = $this->jobs->get( $parts->job )->get_status();
 			$params['runs'] = $this->jobs->get( $parts->job )->runs()->serialize();
 
-			if ( $parts->run ) {
+			if ( isset( $parts->run ) ) {
 				$params['runs'] = array( $this->jobs->get( $parts->job )->run( $parts->run )->serialize() );
 				$params['messages'] = $this->jobs->get( $parts->job )->messages( $parts->run )->serialize();
 			}
@@ -56,10 +56,10 @@ class Jobs implements HasFilters {
 		$params = $this->apply_jobs( $params );
 		$parts  = $params['route']['parts'];
 
-		if ( $params['route']['name'] === 'jobs' && $parts->job ) {
+		if ( $params['route']['name'] === 'jobs' && isset( $parts->job ) ) {
 			$job = $this->jobs->get( $parts->job );
 
-			if ( ! $parts->run ) {
+			if ( ! isset( $parts->run ) ) {
 				$params['job']           = $job->serialize();
 				$params['job']['status'] = $job->get_status();
 				$params['job']['runs']   = $job->runs()->serialize();
@@ -68,7 +68,7 @@ class Jobs implements HasFilters {
 				$params['run']['messages'] = $job->messages( $parts->run )->serialize();
 			}
 
-			if ( $parts->run && $parts->job ) {
+			if ( isset( $parts->run ) && isset( $parts->job ) ) {
 
 			}
 		}
