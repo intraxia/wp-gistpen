@@ -6,6 +6,7 @@ use Exception;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
+use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
@@ -107,6 +108,10 @@ class WordPressPost extends AbstractRepository {
 		);
 
 		if ( $class === EntityManager::COMMIT_CLASS ) {
+			$query_args['post_parent'] = $params['repo_id'];
+		}
+
+		if ( $class === Klass::BLOB && isset( $params['repo_id'] ) ) {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 

@@ -5,6 +5,7 @@ namespace Intraxia\Gistpen\Test\Database\EntityManager;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
+use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
@@ -98,6 +99,15 @@ class PostAndTermTest extends TestCase {
 		$blobs = $this->em->find_by( EntityManager::BLOB_CLASS );
 
 		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $blobs );
+		$this->assertCount( 3, $blobs );
+	}
+
+	public function test_should_return_repos_by_repo_id() {
+		$this->create_post_and_children( false );
+		$blobs = $this->em->find_by( Klass::BLOB , array(
+			'repo_id' => $this->repo->ID,
+		) );
+
 		$this->assertCount( 3, $blobs );
 	}
 
