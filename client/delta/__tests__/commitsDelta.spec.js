@@ -15,10 +15,6 @@ chai.use(sinonChai);
 const createServices = () => ({ ajax$: sinon.stub() });
 
 describe('commitsDelta', () => {
-    before(() => {
-        Kefir.Observable.prototype.ofType = Kefir.ActionObservable.prototype.ofType;
-    });
-
     it('should be a function', () => {
         expect(commitsDelta).to.be.a('function')
             .and.have.lengthOf(3);
@@ -29,7 +25,7 @@ describe('commitsDelta', () => {
     });
 
     it('should return an Observable', () => {
-        expect(commitsDelta(createServices(), Kefir.actions(), Kefir.never())).to.be.an.instanceOf(Kefir.Observable);
+        expect(commitsDelta(createServices(), Kefir.never(), Kefir.never())).to.be.an.instanceOf(Kefir.Observable);
     });
 
     it('should not respond to random actions', (done : () => void) => {

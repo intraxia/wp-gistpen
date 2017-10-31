@@ -4,6 +4,7 @@ import type { Emitter, Observable } from 'kefir';
 import type { TinyMCEAction as Action, TinyMCEEditor as Editor, TinyMCEState } from '../type';
 import R from 'ramda';
 import { merge, stream } from 'kefir';
+import { ofType } from 'brookjs';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK } from '../action';
 import { SearchComponent } from '../component';
@@ -26,7 +27,7 @@ const createTinyMCEButton = (actions$ : ActionObservable<Action>, state$ : Obser
             cmd: 'wpgp_insert'
         });
     }),
-    state$.sampledBy(actions$.ofType(TINYMCE_POPUP_INSERT_CLICK))
+    state$.sampledBy(actions$.thru(ofType(TINYMCE_POPUP_INSERT_CLICK)))
         .flatMap((state : TinyMCEState) => stream((emitter : Emitter<Action, void>) => {
             if (state.search.selection != null) {
                 editor.insertContent('[gistpen id="' + state.search.selection + '"]');
@@ -73,11 +74,11 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, El
 const createTinyMCEWindow = (actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
     // This is kind of abusive, b/c it's not an "error", but it's another channel to use...
     .flatMapErrors((el : Element) => SearchComponent(el, selectProps(state$)))
-    .takeUntilBy(actions$.ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK));
+    .takeUntilBy(actions$.thru(ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK)));
 
 const mergeTinyMCEButtonAndPopup = R.curry((actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
     createTinyMCEButton(actions$, state$, editor),
-    actions$.ofType(TINYMCE_BUTTON_CLICK)
+    actions$.thru(ofType(TINYMCE_BUTTON_CLICK))
         .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, state$, editor))
 ]));
 

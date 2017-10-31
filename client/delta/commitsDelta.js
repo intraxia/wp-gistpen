@@ -2,6 +2,7 @@
 import type { Action, AjaxFunction, HasGlobalsState, HasRepo, RouteChangeAction } from '../type';
 import R from 'ramda';
 import Kefir from 'kefir';
+import { ofType } from 'brookjs';
 import { ROUTE_CHANGE, COMMITS_FETCH_SUCCEEDED, COMMITS_FETCH_STARTED,
     COMMITS_FETCH_FAILED } from '../action';
 
@@ -16,7 +17,7 @@ export default R.curry((
     { ajax$ } : CommitsServices,
     actions$ : ActionObservable<Action>,
     state$ : Kefir.Observable<CommitsProps>
-) => state$.sampledBy(actions$.ofType(ROUTE_CHANGE).filter((action : RouteChangeAction) => action.payload.name === 'commits'))
+) => state$.sampledBy(actions$.thru(ofType(ROUTE_CHANGE)).filter((action : RouteChangeAction) => action.payload.name === 'commits'))
     .filter((state : CommitsProps) => state.repo.ID)
     .flatMapFirst((state : CommitsProps) =>
         Kefir.concat([
