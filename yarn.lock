@@ -1010,12 +1010,12 @@ braces@^1.8.2:
     preserve "^0.2.0"
     repeat-element "^1.1.2"
 
-brookjs@^0.8.3:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/brookjs/-/brookjs-0.8.9.tgz#35b479c90735f52a4171bdf09c1f562ef22f269a"
+brookjs@0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/brookjs/-/brookjs-0.9.0.tgz#382a4aafe98febe3b191e84d9686cb219e221fd2"
   dependencies:
     diffhtml "1.0.0-beta.9"
-    kefir "^3.3.0"
+    kefir "^3.8.0"
     ramda "^0.25.0"
     redux "^3.5.2"
 
@@ -3859,7 +3859,7 @@ karma@^1.4.0:
     tmp "0.0.31"
     useragent "^2.1.12"
 
-kefir@^3.3.0, kefir@^3.6.0:
+kefir@^3.6.0, kefir@^3.8.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/kefir/-/kefir-3.8.0.tgz#63b5dce575f1a7ab3286788e771eb104b181b676"
   dependencies:

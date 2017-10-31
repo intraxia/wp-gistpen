@@ -2,7 +2,7 @@
 import type { Action, AjaxFunction, RouteChangeAction, JobDispatchClickAction,
     Route, Run, GlobalsState, Message, Job, RunStatus, HasMetaKey } from '../type';
 import R from 'ramda';
-import { Kefir } from 'brookjs';
+import { Kefir, ofType } from 'brookjs';
 import { MESSAGES_FETCH_STARTED, MESSAGES_FETCH_SUCCEEDED, MESSAGES_FETCH_FAILED,
     ROUTE_CHANGE, JOB_FETCH_STARTED, JOB_FETCH_SUCCEEDED, JOB_FETCH_FAILED,
     RUNS_FETCH_STARTED, RUNS_FETCH_SUCCEEDED, RUNS_FETCH_FAILED, JOB_DISPATCH_CLICK,
@@ -34,7 +34,7 @@ export default R.curry((
     state$ : Kefir.Observable<JobProps>
 ) : Kefir.Observable<Action> => {
     const fetch$ = state$.sampledBy(
-        actions$.ofType(ROUTE_CHANGE)
+        actions$.thru(ofType(ROUTE_CHANGE))
             .filter((action : RouteChangeAction) => action.payload.name === 'jobs')
     )
         .flatMapLatest(({ route, runs, globals, jobs } : JobProps) : Kefir.Observable<Action> => {
@@ -164,7 +164,7 @@ export default R.curry((
         });
 
     const start$ = Kefir.combine(
-        [actions$.ofType(JOB_DISPATCH_CLICK)],
+        [actions$.thru(ofType(JOB_DISPATCH_CLICK))],
         [state$],
         (action : JobDispatchClickAction & HasMetaKey, state : JobProps) => ({
             job: state.jobs[action.meta.key],

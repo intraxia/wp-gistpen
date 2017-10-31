@@ -1,7 +1,7 @@
 // @flow
 import type { Emitter, Observable } from 'kefir';
 import type { Action, Delta, RouterDeltaOptions, RouteChangeAction } from '../type';
-import { Kefir } from 'brookjs';
+import { Kefir, ofType } from 'brookjs';
 import href from 'sheet-router/href';
 import history from 'sheet-router/history';
 import { ROUTE_CHANGE } from '../action';
@@ -31,7 +31,7 @@ export default function routerDelta({ router, param } : RouterDeltaOptions) : De
     return (actions$ : ActionObservable<Action>) : Observable<Action> => {
         const initial$ = Kefir.later(0, router(getRoute(window.location.search, param)));
 
-        const pushState$ = actions$.ofType(ROUTE_CHANGE).flatMap(({ payload } : RouteChangeAction) => Kefir.stream((emitter : Emitter<void, void>) => {
+        const pushState$ = actions$.thru(ofType(ROUTE_CHANGE)).flatMap(({ payload } : RouteChangeAction) => Kefir.stream((emitter : Emitter<void, void>) => {
             const dest = getUrl(param, payload);
 
             if (dest !== (location.pathname + location.search)) {
