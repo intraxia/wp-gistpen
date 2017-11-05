@@ -2622,7 +2622,7 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@0.58.0:
+flow-bin@^0.58.0:
   version "0.58.0"
   resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.58.0.tgz#62d5a776589419e5656800a0e5230a5e585ca65e"
 
@@ -5457,9 +5457,9 @@ pretty-hrtime@^1.0.0:
   version "1.0.0"
   resolved "git+https://github.com/PrismJS/prism-themes.git#afb4116547cd854074ad705b8171768403ca11f3"
 
-prismjs@1.8.3:
-  version "1.8.3"
-  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.8.3.tgz#4a3d140be5f2614a8987ca2330733a40d8ad207b"
+prismjs@1.8.4:
+  version "1.8.4"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.8.4.tgz#573cc7a14c2c06566e1eca20d813f5ae55db80d2"
   optionalDependencies:
     clipboard "^1.5.5"
 
