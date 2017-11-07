@@ -21,11 +21,7 @@ class AssetsServiceProvider extends ServiceProvider {
 	 * @param Assets $assets
 	 */
 	protected function add_assets( Assets $assets ) {
-		$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-
-		if ( $debug ) {
-			$assets->set_debug( true );
-		}
+		$assets->set_debug( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
 
 		$slug = $this->container->fetch( 'slug' );
 
