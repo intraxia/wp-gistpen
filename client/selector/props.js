@@ -54,15 +54,21 @@ export const selectSettingsProps = (state$ : Observable<SettingsState>) : Observ
     }))
         .skipDuplicates(R.equals);
 
-export function selectEditorProps(state$ : Observable<EditorPageState>) : Observable<EditorPageProps> {
-    return state$.map(({ globals, repo, route, editor, commits } : EditorPageState) : EditorPageProps => ({
+export const selectEditorProps = (state$ : Observable<EditorPageState>) : Observable<EditorPageProps> =>
+    state$.map(({ globals, repo, route, editor, commits } : EditorPageState) : EditorPageProps => ({
         globals,
         repo,
         route,
         editor,
-        commits: commits.instances
+        commits: commits.instances.map(instance => ({
+            ...instance,
+            author: {
+                displayName: 'James DiGioia',
+                image: 'https://secure.gravatar.com/avatar/9a2965a86b7596abaca73ba46716c2a1?s=32&d=identicon&r=pg'
+            }
+        })),
+        selectedCommit: commits.instances.find(instance => instance.ID === commits.selected)
     }));
-}
 
 export function selectSearchProps(state$ : Observable<TinyMCEState>) : Observable<SearchProps> {
     return state$;
