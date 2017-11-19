@@ -53,6 +53,7 @@ class Database implements HasActions {
 		$new_commit = new Commit( array(
 			'repo_id'     => $repo->ID,
 			'description' => $repo->description,
+			'author'      => get_current_user_id(),
 		) );
 
 		// This is the first commit.
