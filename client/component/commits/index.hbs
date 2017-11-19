@@ -9,8 +9,8 @@
             {{#each commits}}
                 <div class="wpgp-commits__item {{#compare ID selectedCommit.ID}}wpgp-commits__item--selected{{/compare}}"
                      data-id="{{ID}}" data-brk-onclick="onItemClick">
-                    <img src="{{author.image}}"
-                         alt="{{author.displayName}}">
+                    <img src="{{author.avatar_urls.[48]}}"
+                         alt="{{author.name}}">
                     <p><strong>{{description}}</strong></p>
                     <p>{{committed_at}}</p>
                 </div>
