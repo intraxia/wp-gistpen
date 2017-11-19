@@ -62,7 +62,7 @@ class Commit extends Model implements UsesWordPressPost {
 		'ID',
 		'repo_id',
 		'description',
-		'blobs',
+		'states',
 		'rest_url',
 		'states_url',
 		'committed_at',
