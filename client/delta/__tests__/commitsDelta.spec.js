@@ -2,6 +2,7 @@
 /* eslint-env mocha */
 import type { Action, HasRepo, HasGlobalsState } from '../../type';
 import type { AjaxOptions } from '../../service';
+import { ObsResponse } from '../../service';
 import '../../polyfills';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
@@ -197,10 +198,11 @@ describe('commitsDelta', () => {
         });
 
         let calls = 0;
+        const xhr = (({ response: JSON.stringify([]) } : any) : XMLHttpRequest);
         services.ajax$
             .withArgs(commitsUrl, options)
             .onFirstCall()
-            .returns(Kefir.later(10, JSON.stringify([])));
+            .returns(Kefir.later(10, new ObsResponse(xhr)));
 
         commitsDelta(services, actions$, state$).observe({
             value(val : Action) {
