@@ -1,6 +1,7 @@
 // @flow
 import type { Action, EditorPageState, UserApiResponse } from '../type';
 import type { Observable } from 'kefir';
+import type { ObsResponse } from '../service';
 import R from 'ramda';
 import { merge } from 'kefir';
 import { ajax$ } from '../service';
@@ -40,8 +41,8 @@ export default function userDelta(actions$ : Observable<Action>, state$ : Observ
     ]);
 
     return state$.sampledBy(user$).debounce(2500)
-        .flatMapLatest((state : EditorPageState) : Observable<string> => ajax$(state.globals.root + 'me', selectUserAjaxOpts(state)))
-        .map(JSON.parse)
+        .flatMapLatest((state : EditorPageState) : Observable<ObsResponse> => ajax$(state.globals.root + 'me', selectUserAjaxOpts(state)))
+        .flatMap((response : ObsResponse) => response.json())
         .flatten((response : UserApiResponse) : Array<Action> => [ajaxFinishedAction(response), userSaveSucceededAction(response)])
         .mapErrors(ajaxFailedAction);
 }

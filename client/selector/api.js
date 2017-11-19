@@ -1,5 +1,6 @@
 // @flow
-import type { AjaxOptions, EditorPageState } from '../type';
+import type { EditorPageState } from '../type';
+import type { AjaxOptions } from '../service';
 
 /**
  * Map the editor page state to the Ajax options for the user endpoint.

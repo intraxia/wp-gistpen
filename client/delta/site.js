@@ -1,6 +1,7 @@
 // @flow
 import type { Observable } from 'kefir';
-import type { Action, SettingsState, AjaxOptions, } from '../type';
+import type { Action, SettingsState } from '../type';
+import type { AjaxOptions } from '../service';
 import R from 'ramda';
 import { ajax$ } from '../service';
 import { ajaxFailedAction, ajaxFinishedAction } from '../action';

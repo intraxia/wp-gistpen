@@ -1,6 +1,7 @@
 // @flow
 /* eslint-env mocha */
-import type { Action, AjaxOptions, HasRepo, HasGlobalsState } from '../../type';
+import type { Action, HasRepo, HasGlobalsState } from '../../type';
+import type { AjaxOptions } from '../../service';
 import '../../polyfills';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';

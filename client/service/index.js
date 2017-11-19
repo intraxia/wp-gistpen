@@ -1,13 +1,44 @@
 // @flow
-import type { AjaxFunction, AjaxOptions } from '../type';
 import type { Emitter } from 'kefir';
-import R from 'ramda';
 import Kefir from 'kefir';
 
-const makeOptions = R.merge({
+export type AjaxOptions = {
+    method : string;
+    body? : string;
+    credentials? : 'include';
+    headers? : {
+        [key : string] : string;
+    };
+};
+
+const defaults : AjaxOptions = {
     method: 'GET',
     headers: {}
-});
+};
+
+export class ObsResponse {
+    xhr : XMLHttpRequest;
+
+    constructor(xhr : XMLHttpRequest) {
+        this.xhr = xhr;
+    }
+
+    json<T>() : Kefir.Observable<T, TypeError> {
+        const xhr = this.xhr;
+
+        return Kefir.stream(emitter => {
+            try {
+                emitter.value(JSON.parse('response' in xhr ? xhr.response : xhr.responseText));
+            } catch (e) {
+                emitter.error(new TypeError(`Error parsing JSON response: ${e.message}`));
+            }
+
+            emitter.end();
+        });
+    }
+}
+
+export type AjaxService = (url : string, opts : AjaxOptions) => Kefir.Observable<ObsResponse, TypeError>;
 
 /**
  * Create a new ajax request stream.
@@ -16,14 +47,17 @@ const makeOptions = R.merge({
  * @param {Object} opts - Request options.
  * @returns {Stream<T, S>} Ajax stream.
  */
-export const ajax$ : AjaxFunction = function ajax$(url : string , opts : AjaxOptions) : Kefir.Observable<string, TypeError> {
-    return Kefir.stream((emitter : Emitter<string, TypeError>) : (() => void) => {
-        const options = makeOptions(opts);
+export const ajax$ : AjaxService = (
+    url : string ,
+    opts : AjaxOptions
+) : Kefir.Observable<ObsResponse, TypeError> =>
+    Kefir.stream((emitter : Emitter<ObsResponse, TypeError>) : (() => void) => {
+        const options = { ...defaults, ...opts };
         const xhr = new XMLHttpRequest();
 
         xhr.onload = () => {
             if (xhr.status >= 200 && xhr.status < 400) {
-                emitter.value('response' in xhr ? xhr.response : xhr.responseText);
+                emitter.value(new ObsResponse(xhr));
             } else {
                 emitter.error(new TypeError(`${xhr.status} - ${xhr.statusText}`));
             }
@@ -51,4 +85,3 @@ export const ajax$ : AjaxFunction = function ajax$(url : string , opts : AjaxOpt
 
         return () : void => xhr.abort();
     }).take(1).takeErrors(1);
-};
