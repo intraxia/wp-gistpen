@@ -82,6 +82,7 @@ export type EditorInstance = {
 };
 
 export type Commit = {
+    ID : number;
     committed_at : string;
 };
 
@@ -102,6 +103,7 @@ export type EditorState = {
 
 export type CommitsState = {
     instances : Array<Commit>;
+    selected : ?number;
 };
 
 export type SearchState = {
