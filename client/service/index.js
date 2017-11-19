@@ -27,10 +27,17 @@ export class ObsResponse {
         const xhr = this.xhr;
 
         return Kefir.stream(emitter => {
+            let result;
+
+            // We're doing this to ensure only the parsing is caught
             try {
-                emitter.value(JSON.parse('response' in xhr ? xhr.response : xhr.responseText));
+                result = JSON.parse('response' in xhr ? xhr.response : xhr.responseText);
             } catch (e) {
                 emitter.error(new TypeError(`Error parsing JSON response: ${e.message}`));
+            } finally {
+                if (result) {
+                    emitter.value(result);
+                }
             }
 
             emitter.end();
