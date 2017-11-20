@@ -16,7 +16,7 @@ type GetCommitsResponse = Array<Commit>;
 
 export default R.curry((
     { ajax$ } : CommitsServices,
-    actions$ : ActionObservable<Action>,
+    actions$ : Kefir.Observable<Action>,
     state$ : Kefir.Observable<CommitsProps>
 ) : Kefir.Observable<Action> => {
     const fetchCommits$ = state$.sampledBy(

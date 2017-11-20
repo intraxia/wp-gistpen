@@ -15,7 +15,7 @@ const createTinyMCEPlugin = () : Observable<Editor> => stream((emitter : Emitter
     tinymce.PluginManager.add('wp_gistpen', emitter.value);
 });
 
-const createTinyMCEButton = (actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
+const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
     stream((emitter : Emitter<Action, void>) => {
         // Bind command to stream.
         editor.addCommand('wpgp_insert', R.pipe(tinymceButtonClickAction, emitter.value));
@@ -71,12 +71,12 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, El
     return () : void => void e.close();
 });
 
-const createTinyMCEWindow = (actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
+const createTinyMCEWindow = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
     // This is kind of abusive, b/c it's not an "error", but it's another channel to use...
     .flatMapErrors((el : Element) => SearchComponent(el, selectProps(state$)))
     .takeUntilBy(actions$.thru(ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK)));
 
-const mergeTinyMCEButtonAndPopup = R.curry((actions$ : ActionObservable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
+const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
     createTinyMCEButton(actions$, state$, editor),
     actions$.thru(ofType(TINYMCE_BUTTON_CLICK))
         .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, state$, editor))

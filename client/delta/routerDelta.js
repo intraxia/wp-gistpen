@@ -25,10 +25,10 @@ export default function routerDelta({ router, param } : RouterDeltaOptions) : De
     /**
      * Creates the router stream.
      *
-     * @param {ActionObservable<Action>} actions$ - Stream of actions from the app.
+     * @param {Observable<Action>} actions$ - Stream of actions from the app.
      * @returns {Observable<T, S>} Stream of routing actions.
      */
-    return (actions$ : ActionObservable<Action>) : Observable<Action> => {
+    return (actions$ : Observable<Action>) : Observable<Action> => {
         const initial$ = Kefir.later(0, router(getRoute(window.location.search, param)));
 
         const pushState$ = actions$.thru(ofType(ROUTE_CHANGE)).flatMap(({ payload } : RouteChangeAction) => Kefir.stream((emitter : Emitter<void, void>) => {

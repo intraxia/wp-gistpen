@@ -18,9 +18,6 @@
               "Disposer": true
             },
             {
-              "ActionObservable": true
-            },
-            {
               "ProxyEvent": true
             },
             {
@@ -36,9 +33,6 @@
           "globals": [
             {
               "Disposer": true
-            },
-            {
-              "ActionObservable": true
             },
             {
               "ProxyEvent": true
