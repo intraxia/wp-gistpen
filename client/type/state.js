@@ -1,5 +1,5 @@
 // @flow
-import type { Job, Route, Run, Message } from './domain';
+import type { Author, Job, Route, Run, Message } from './domain';
 
 export type Toggle = 'on' | 'off';
 
@@ -33,6 +33,12 @@ export type Repo = {
     html_url : string;
     created_at : string;
     updated_at : string;
+};
+
+export type AuthorsState = {
+    items : {
+        [key : string] : Author;
+    };
 };
 
 export type PrismState = {
@@ -81,7 +87,9 @@ export type EditorInstance = {
     history : EditorHistory;
 };
 
-export type Commit = {
+export type CommitState = {
+    ID : number;
+    author : string;
     committed_at : string;
 };
 
@@ -101,7 +109,8 @@ export type EditorState = {
 };
 
 export type CommitsState = {
-    instances : Array<Commit>;
+    instances : Array<CommitState>;
+    selected : ?number;
 };
 
 export type SearchState = {
@@ -148,6 +157,7 @@ export type SettingsState = {
 };
 
 export type EditorPageState = {
+    authors : AuthorsState;
     globals : GlobalsState;
     repo : Repo;
     editor : EditorState;

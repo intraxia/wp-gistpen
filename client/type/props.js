@@ -2,13 +2,14 @@
 import type { EditorInstance, EditorState, TinyMCEState,
     HasGlobalsState, HasRepo, HasEditorState, HasRouteState, GlobalsState,
     PrismState, GistState, JobsState } from './state';
-import type { Job, Route, Run } from './domain';
+import type { Author, Job, Route, Run } from './domain';
 
-export type Commit = {
+export type CommitProps = {
+    author : ?Author;
     committed_at : string;
 };
 export type HasCommitsProps = {
-    commits : Array<Commit>;
+    commits : Array<CommitProps>;
 };
 
 export type SettingsProps = {

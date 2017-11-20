@@ -4,8 +4,8 @@ import type { Action, EditorPageState } from '../../type';
 import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { domDelta } from 'brookjs';
-import { applyDelta, repoDelta, commitsDelta, routerDelta, userDelta } from '../../delta';
-import { globals, editor, repo, commits, route } from '../../reducer';
+import { applyDelta, authorDelta, repoDelta, commitsDelta, routerDelta, userDelta } from '../../delta';
+import { authors, globals, editor, repo, commits, route } from '../../reducer';
 import { selectEditorProps as selectProps } from '../../selector';
 import { ajax$ } from '../../service';
 import { el, view } from './dom';
@@ -16,7 +16,7 @@ const { __GISTPEN_EDITOR__ } = global;
 // eslint-disable-next-line camelcase
 __webpack_public_path__ = __GISTPEN_EDITOR__.globals.url + 'assets/js/';
 
-const reducer : Reducer<EditorPageState, Action> = combineReducers({ globals, editor, commits, repo, route });
+const reducer : Reducer<EditorPageState, Action> = combineReducers({ authors, globals, editor, commits, repo, route });
 
 const initialState = {
     ...__GISTPEN_EDITOR__,
@@ -40,6 +40,7 @@ const store : Store<EditorPageState, Action> = createStore(
     reducer,
     initialState,
     applyDelta(
+        authorDelta({ ajax$ }),
         domDelta({ el, selectProps, view }),
         repoDelta,
         routerDelta({ router, param: 'wpgp_route' }),

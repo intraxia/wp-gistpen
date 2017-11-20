@@ -4,6 +4,7 @@ import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { observeDelta } from 'brookjs';
 
+export { default as authorDelta } from './authorDelta';
 export { default as repoDelta } from './repo';
 export { default as commitsDelta } from './commitsDelta';
 export { default as jobsDelta } from './jobsDelta';

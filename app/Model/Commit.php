@@ -61,8 +61,9 @@ class Commit extends Model implements UsesWordPressPost {
 	protected $visible = array(
 		'ID',
 		'repo_id',
+		'author',
 		'description',
-		'blobs',
+		'states',
 		'rest_url',
 		'states_url',
 		'committed_at',
@@ -84,6 +85,15 @@ class Commit extends Model implements UsesWordPressPost {
 	 */
 	protected function map_ID() {
 		return 'ID';
+	}
+
+	/**
+	 * Maps the Commit's author to WP_Posts's post_author.
+	 *
+	 * @return string
+	 */
+	protected function map_author() {
+		return 'post_author';
 	}
 
 	/**

@@ -35,6 +35,11 @@ class CommitController {
 	public function index( WP_REST_Request $request ) {
 		$collection = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
 			'repo_id' => $request->get_param( 'repo_id' ),
+			'with'    => array(
+				'states' => array(
+					'with' => 'language'
+				)
+			)
 		) );
 
 		if ( is_wp_error( $collection ) ) {

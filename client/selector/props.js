@@ -2,7 +2,7 @@
 import type { Observable } from 'kefir';
 import type {
     EditorPageState, EditorPageProps, SettingsState, SettingsProps,
-    TinyMCEState, SearchProps, Job, Run, Message
+    TinyMCEState, SearchProps, Job, Run, Message, CommitProps, CommitState
 } from '../type';
 import R from 'ramda';
 
@@ -54,15 +54,19 @@ export const selectSettingsProps = (state$ : Observable<SettingsState>) : Observ
     }))
         .skipDuplicates(R.equals);
 
-export function selectEditorProps(state$ : Observable<EditorPageState>) : Observable<EditorPageProps> {
-    return state$.map(({ globals, repo, route, editor, commits } : EditorPageState) : EditorPageProps => ({
+export const selectEditorProps = (state$ : Observable<EditorPageState>) : Observable<EditorPageProps> =>
+    state$.map(({ authors, globals, repo, route, editor, commits } : EditorPageState) : EditorPageProps => ({
         globals,
         repo,
         route,
         editor,
-        commits: commits.instances
+        // $FlowFixMe
+        commits: commits.instances.map((instance : CommitState) : CommitProps => ({
+            ...instance,
+            author: authors.items[String(instance.author)]
+        })),
+        selectedCommit: commits.instances.find(instance => instance.ID === commits.selected)
     }));
-}
 
 export function selectSearchProps(state$ : Observable<TinyMCEState>) : Observable<SearchProps> {
     return state$;

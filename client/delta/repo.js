@@ -1,6 +1,7 @@
 // @flow
 import type { Action, Blob, EditorPageState, EditorInstance, RepoApiResponse } from '../type';
 import type { Observable } from 'kefir';
+import type { ObsResponse } from '../service';
 import R from 'ramda';
 import { ajax$ } from '../service';
 import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../action';
@@ -34,7 +35,7 @@ const onlyEditorUpdateClicks = R.filter(R.pipe(
  */
 export default function repoDelta(action$ : Observable<Action>, state$ : Observable<EditorPageState>) : Observable<Action> {
     return state$.sampledBy(onlyEditorUpdateClicks(action$))
-        .flatMapLatest((state : EditorPageState) : Observable<string> => ajax$(state.repo.rest_url, {
+        .flatMapLatest((state : EditorPageState) : Observable<ObsResponse> => ajax$(state.repo.rest_url, {
             method: 'PUT',
             body: makeBody(state),
             credentials: 'include',
@@ -43,7 +44,7 @@ export default function repoDelta(action$ : Observable<Action>, state$ : Observa
                 'Content-Type': 'application/json'
             }
         }))
-        .map(JSON.parse)
+        .flatMap((response : ObsResponse) => response.json())
         .flatten((response : RepoApiResponse) : Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
         .mapErrors(ajaxFailedAction);
 }

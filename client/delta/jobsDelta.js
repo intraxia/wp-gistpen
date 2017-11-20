@@ -1,6 +1,7 @@
 // @flow
-import type { Action, AjaxFunction, RouteChangeAction, JobDispatchClickAction,
+import type { Action, RouteChangeAction, JobDispatchClickAction,
     Route, Run, GlobalsState, Message, Job, RunStatus, HasMetaKey } from '../type';
+import type { AjaxService, ObsResponse } from '../service';
 import R from 'ramda';
 import { Kefir, ofType } from 'brookjs';
 import { MESSAGES_FETCH_STARTED, MESSAGES_FETCH_SUCCEEDED, MESSAGES_FETCH_FAILED,
@@ -9,7 +10,7 @@ import { MESSAGES_FETCH_STARTED, MESSAGES_FETCH_SUCCEEDED, MESSAGES_FETCH_FAILED
     jobDispatchStarted, jobDispatchSucceeded, jobDispatchFailed } from '../action';
 
 type JobsServices = {
-    ajax$ : AjaxFunction;
+    ajax$ : AjaxService;
 };
 
 type JobProps = {
@@ -57,7 +58,7 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .map(JSON.parse)
+                        .flatMap((response : ObsResponse) => response.json())
                         .map((response : GetConsoleResponse) => ({
                             type: MESSAGES_FETCH_SUCCEEDED,
                             payload: { response }
@@ -89,7 +90,7 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .map(JSON.parse)
+                        .flatMap((response : ObsResponse) => response.json())
                         .map((response : GetJobResponse) => ({
                             type: JOB_FETCH_SUCCEEDED,
                             payload: { response }
@@ -113,7 +114,7 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .map(JSON.parse)
+                        .flatMap((response : ObsResponse) => response.json())
                         .map((response : GetRunsResponse) => ({
                             type: RUNS_FETCH_SUCCEEDED,
                             payload: { response }
@@ -145,7 +146,7 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .map(JSON.parse)
+                        .flatMap((response : ObsResponse) => response.json())
                         .map((response : GetJobResponse) => ({
                             type: JOB_FETCH_SUCCEEDED,
                             payload: { response }
@@ -181,7 +182,7 @@ export default R.curry((
                     'Content-Type': 'application/json'
                 }
             })
-                .map(JSON.parse)
+                .flatMap((response : ObsResponse) => response.json())
                 .map(jobDispatchSucceeded)
                 .flatMapErrors((err : TypeError) => Kefir.constant(jobDispatchFailed(err)))
         ]));
