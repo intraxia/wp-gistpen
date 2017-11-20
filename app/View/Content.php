@@ -33,8 +33,8 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * @var array
 	 */
 	protected static $defaults = array(
-		'id'        => null,
-		'highlight' => null,
+		'id'        => 0,
+		'highlight' => '',
 	);
 
 	/**
@@ -184,7 +184,9 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
 		}
 
-		if ( Repo::get_post_type() !== get_post_type( $args['id' ]) ) {
+		$args['id'] = (int) str_replace('&quot;', '', $args['id' ]);
+
+		if ( Repo::get_post_type() !== get_post_type( $args['id'] ) ) {
 			return '<div class="wp-gistpen-error">ID provided is not a Gistpen repo.</div>';
 		}
 
