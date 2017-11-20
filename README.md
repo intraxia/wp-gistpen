@@ -21,53 +21,9 @@ Features include:
 
 * Revision saving
 * Gist import & export
-* ACE editor
 * PrismJS syntax highlighting
-* Supported Languages
-	- Assembly (NASM)
-	- ActionScript
-	- AppleScript
-	- Bash
-	- C
-	- Coffeescript
-	- C#
-	- CSS
-	- Dart
-	- Eiffel
-	- Erlang
-	- Gherkin/Cucumber
-	- Git/Diff
-	- Go
-	- Groovy
-	- HAML
-	- Handlebars
-	- HTML
-	- HTTP
-	- ini
-	- Jade
-	- Java
-	- JavaScript
-	- LaTeX
-	- LESS
-	- Markdown
-	- Matlab
-	- Objective-C
-	- Perl
-	- PHP
-	- PlainText
-	- PowerShell
-	- Python
-	- R
-	- Rust
-	- Ruby
-	- Sass
-	- Scala
-	- Scheme
-	- Smarty
-	- Sql
-	- Swift
-	- Twig
-	- XML
+* Prism-based text editor
+* oEmbed snippet embedding
 
 ## Installation ##
 
@@ -98,17 +54,13 @@ Features include:
 
 ### What are the plugin's requirements? ###
 
-First, revisions need to be enabled. They can be disabled in `wp-config.php`, but WP-Gistpen relies on them to keep everything in sync. A future version will remove this dependency, but it's currently required.
-
-Additionally, your PHP version should be 5.4+.
+Your PHP version should be 5.4+, and you must be running WordPress v4.6+. This is because WP-Gistpen relies on the WP-API infrastructure.
 
 ### How do I create a Gistpen and insert it into the post? ###
 
-To add a new Gistpen, go to Gistpens -> Add New, and paste in your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
+To add a new Gistpen, go to Gistpens -> Add New, and add your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
 
-You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the code button. From the pop-up, select one of the recent Gistpens, search your Gistpens, or create a new one by pasting in your code and clicking "Insert".
-
-After inserting the shortcode, your code will appear in your post, highlighted by [PrismJS](http://prismjs.com).
+You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the code button. From the pop-up, search for your gistpen, select it, and click insert. Your shortcode will be inserted into the editor.
 
 ### How do I highlight specific lines in my Gistpen? ###
 
@@ -121,10 +73,10 @@ To highlight a specific line, add `highlight=^^`, where ^^ is a line number or r
 
 Examples:
 
-* `highlight=5`: The 5th line
-* `highlight=1-5`: Lines 1 through 5
-* `highlight=1,4`: Line 1 and line 4
-* `highlight=1-2,5,9-20`: Lines 1 through 2, line 5, lines 9 through 20
+* `highlight="5"`: The 5th line
+* `highlight="1-5"`: Lines 1 through 5
+* `highlight="1,4"`: Line 1 and line 4
+* `highlight="1-2,5,9-20"`: Lines 1 through 2, line 5, lines 9 through 20
 
 ### How do I link to a specific line? ###
 
@@ -148,14 +100,6 @@ Gistpens can be exported en masse from the Gistpens settings page. All Gistpens 
 
 If you do not want this, you can enable/disable Gistpen syncing on a per-Gistpen basis. Just click the checkbox on the Gistpen edit page, and any changes will be reflected on the corresponding Gist on update. If you uncheck that box, future changes will not be reflected on Gist.
 
-### What is the future of this plugin? ###
-
-Eventually, I hope to make this plugin interoperable with Gist, allowing you to import your current Gists, fork other people's Gists into your Gistpen, and publishing your Gistpens to Gist.
-
-Additionally, I want to make Gistpens embeddable on other websites the same way you can embed Gists, but both of those larger features are likely a long way off.
-
-Essentially, the idea is to build a fully-featured Gist clone in WordPress
-
 ## Screenshots ##
 
 ![](screenshot-1.png)
@@ -172,12 +116,16 @@ Twilight theme with line numbers enabled. Check out all the themes at [PrismJS.c
 
 ![](screenshot-4.png)
 
-The current options page.
+The current options page – first page.
 
 ![](screenshot-5.png)
 
-The options page with a token saved.
+The current options page – second page.
 
 ![](screenshot-6.png)
 
-Gistpen editor screen with Ace editor
+The current options page – third page.
+
+![](screenshot-7.png)
+
+PrismJS-based text editor.

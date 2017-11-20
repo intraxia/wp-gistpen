@@ -1,13 +1,13 @@
 // @flow
 import type { Observable } from 'kefir';
 import type { Action, SettingsState } from '../type';
-import type { AjaxOptions } from '../service';
+import type { AjaxOptions, ObsResponse } from '../service';
 import R from 'ramda';
 import { ajax$ } from '../service';
 import { ajaxFailedAction, ajaxFinishedAction } from '../action';
 
 const makeBody = R.pipe(R.pick(['gist', 'prism']), JSON.stringify);
-const optionsAjax$ : (state : SettingsState) => Observable<Action> = R.converge(ajax$, [
+const optionsAjax$ : (state : SettingsState) => Observable<ObsResponse> = R.converge(ajax$, [
     (state : SettingsState) : string => state.globals.root + 'site',
     (state : SettingsState) : AjaxOptions => ({
         method: 'PATCH',
@@ -35,6 +35,7 @@ export default function siteDelta(action$ : Observable<Action>, state$ : Observa
                 prev.gist === next.gist && prev.prism === next.prism)
         .debounce(1000)
         .flatMapLatest(optionsAjax$)
-        .map(R.pipe(JSON.parse, ajaxFinishedAction))
+        .flatMap((response : ObsResponse) => response.json())
+        .map(ajaxFinishedAction)
         .mapErrors(ajaxFailedAction);
 }

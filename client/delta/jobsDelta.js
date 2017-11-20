@@ -31,7 +31,7 @@ type GetRunsResponse = Array<Run>;
 
 export default R.curry((
     { ajax$ } : JobsServices,
-    actions$ : Kefir.ActionObservable<Action>,
+    actions$ : Kefir.Observable<Action>,
     state$ : Kefir.Observable<JobProps>
 ) : Kefir.Observable<Action> => {
     const fetch$ = state$.sampledBy(
