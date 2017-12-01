@@ -29,7 +29,7 @@ before_script:
     - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '5.4' && $TRAVIS_PHP_VERSION != 'nightly' ]]; then phpenv config-rm xdebug.ini; fi
     - travis_retry composer self-update
     - travis_retry composer install
-    - travis_retry nvm install stable
+    - travis_retry nvm install 8
     - travis_retry npm install
     - travis_retry npm install -g gulp
     - travis_retry npm install -g greenkeeper-lockfile@1
