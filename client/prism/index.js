@@ -15,7 +15,7 @@ const plugins = {};
 
 const extension = {
     setAutoloaderPath: path => Prism.plugins.autoloader.languages_path = path,
-    setTheme: theme => System.import(
+    setTheme: theme => import(
         `./themes/${theme}.js`
     )
         .then(({ theme }) =>
@@ -31,7 +31,7 @@ const extension = {
                 resolve(currentTheme);
             }))
         ),
-    togglePlugin: (pluginKey, toggle) => System.import(
+    togglePlugin: (pluginKey, toggle) => import(
         `./plugins/${pluginKey}.js`
     )
         .then(({ plugin }) =>

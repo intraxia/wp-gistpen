@@ -1,6 +1,7 @@
 {
   "plugins": [
     "ramda",
+    "syntax-dynamic-import",
     "transform-object-rest-spread",
     "syntax-flow",
     "transform-flow-strip-types"
