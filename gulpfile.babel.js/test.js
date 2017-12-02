@@ -37,7 +37,9 @@ gulp.task('test:typecheck', done => {
     stream.stdout.on('end', () =>{
         result = JSON.parse(result);
 
-        if (result.errors.length) {
+        if (result.exit && result.exit.code !== 0) {
+            done(new gutil.PluginError('gulp-flow', result.exit.msg));
+        } else if (result.errors.length) {
             reporter(result.errors);
 
             done(new gutil.PluginError('gulp-flow', 'Flow failed'));
