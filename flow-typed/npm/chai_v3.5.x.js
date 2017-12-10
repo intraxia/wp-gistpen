@@ -1,7 +1,10 @@
 // flow-typed signature: 9e3d57d259619cd3fcf8c7c3eced99f5
 // flow-typed version: 60acee2512/chai_v3.5.x/flow_>=v0.24.0
 
-declare module "chai" {
+declare module 'chai' {
+
+    declare type Event = {};
+    declare type TimedEvent = [number, Event];
 
     declare type ExpectChain<T> = {
         and: ExpectChain<T>,
@@ -93,6 +96,10 @@ declare module "chai" {
         calledWith: (...args: Array<mixed>) => ExpectChain<T>,
         calledWithMatch: (...args: Array<mixed>) => ExpectChain<T>,
         calledWithExactly: (...args: Array<mixed>) => ExpectChain<T>,
+
+        // chai-kefir
+        emitInTime: (events: Array<TimedEvent>, callback: Function) => ExpectChain<T>,
+        emitEffectsInTime: (events: Array<TimedEvent>, callback: Function) => ExpectChain<T>,
     };
 
     declare function expect<T>(actual: T): ExpectChain<T>;
