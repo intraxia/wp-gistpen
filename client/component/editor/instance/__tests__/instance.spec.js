@@ -2,16 +2,19 @@
 /* eslint-env mocha */
 import type { EditorInstanceProps } from '../../../../type';
 import '../../../../polyfills';
-import R from 'ramda';
-import { expect } from 'chai';
+import { expect, use } from 'chai';
 import { Kefir } from 'brookjs';
-import * as Desalinate from 'brookjs/es/desalinate';
+import * as Desalinate from 'brookjs-desalinate';
 
-import onMount from '../onMount';
+import Instance from '../';
 import template from '../index.hbs';
 
+const { plugin, send, prop, value } = Desalinate.chaiPlugin({ Kefir });
+
+use(plugin);
+
 describe('EditorInstanceComponent', () => {
-    it('should render with hard return', (done : Function) => {
+    it('should render with hard return', () => {
         const initial : EditorInstanceProps = {
             'instance': {
                 'filename': '',
@@ -54,16 +57,16 @@ describe('EditorInstanceComponent', () => {
                 'optionsOpen': true
             }
         };
-        const next : EditorInstanceProps = R.clone(initial);
 
         const el = Desalinate.createElementFromTemplate(template, initial);
+        const props$ = send(prop(), [value(initial)]);
 
-        onMount(el, Kefir.sequentially(20, [initial, next])).observe({
-            end() {
-                expect(el.querySelector('code').textContent).to.equal('\n');
-
-                done();
-            }
+        expect(Instance(el, props$)).to.emitEffectsInTime([], () => {
+            expect(el.querySelector('code').textContent).to.equal('\n');
         });
+    });
+
+    afterEach(() => {
+        Desalinate.cleanup();
     });
 });
