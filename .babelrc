@@ -1,13 +1,10 @@
 {
   "plugins": [
-    "ramda",
-    "syntax-dynamic-import",
-    "transform-object-rest-spread",
     "syntax-flow",
     "transform-flow-strip-types"
   ],
   "presets": [
-    ["env", { "loose": false, "modules": false }]
+    ["brookjs", { "loose": false, "modules": false }]
   ],
   "env": {
     "production": {

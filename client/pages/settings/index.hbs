@@ -1,0 +1,21 @@
+<div class="wrap" data-brk-container="settings">
+    {{> pages/settings/header}}
+
+    {{#compare route.name "highlighting"}}
+        {{> pages/settings/highlighting}}
+    {{/compare}}
+
+    {{#compare route.name "accounts"}}
+        {{> pages/settings/accounts}}
+    {{/compare}}
+
+    {{#compare route.name "jobs"}}
+        {{#if route.parts.run}}
+            {{> pages/settings/messages}}
+        {{else if route.parts.job}}
+            {{> pages/settings/runs}}
+        {{else}}
+            {{> components/jobs/index}}
+        {{/if}}
+    {{/compare}}
+</div>

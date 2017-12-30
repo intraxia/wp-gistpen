@@ -4,17 +4,19 @@
   "author": "maadhattah",
   "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
   "license": "GPL-2.0+",
+  "scripts": {
+    "test": "flow check && eslint ./client && beaver test unit --env production"
+  },
   "devDependencies": {
     "babel-core": "^6.4.5",
     "babel-eslint": "^8.0.3",
     "babel-loader": "^7.0.0",
-    "babel-plugin-ramda": "^1.1.6",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-syntax-flow": "^6.18.0",
     "babel-plugin-tcomb": "^0.3.24",
     "babel-plugin-transform-flow-strip-types": "^6.14.0",
     "babel-plugin-transform-object-rest-spread": "^6.16.0",
-    "babel-preset-env": "^1.6.1",
+    "babel-preset-brookjs": "^0.11.0",
+    "brookjs-cli": "^0.11.0",
     "brookjs-desalinate": "^0.11.1",
     "chai": "^4.0.2",
     "css-loader": "^0.28.4",
@@ -24,7 +26,6 @@
     "eslint-loader": "^1.5.0",
     "eslint-plugin-flowtype": "^2.20.0",
     "flow-bin": "^0.61.0",
-    "flow-reporter": "^0.1.0",
     "flow-status-webpack-plugin": "^0.1.7",
     "gulp": "3.9",
     "gulp-sort": "^2.0.0",
@@ -32,15 +33,8 @@
     "gulp-wp-pot": "1.0.1",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.1.4",
-    "karma": "^2.0.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-mocha": "^1.3.0",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-notify-reporter": "^1.0.1",
-    "karma-sourcemap-loader": "^0.3.7",
-    "karma-spec-reporter": "0.0.32",
-    "karma-webpack": "^2.0.2",
-    "mocha": "^4.0.0",
+    "jsdom": "^11.5.1",
+    "jsdom-global": "^3.0.2",
     "node-notifier": "^5.0.0",
     "node-sass": "^4.5.1",
     "sass-loader": "^6.0.3",
@@ -76,5 +70,6 @@
     "ignore": [
       "gulp-wp-pot"
     ]
-  }
+  },
+  "@std/esm": "cjs"
 }
