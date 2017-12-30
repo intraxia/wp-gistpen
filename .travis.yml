@@ -8,9 +8,6 @@ php:
     - 7.1
     - nightly
 
-addons:
-  chrome: stable
-
 matrix:
     allow_failures:
         - php: nightly
@@ -47,7 +44,7 @@ before_script:
 
 script:
     - composer test
-    - gulp test
+    - npm test
     # - npx dredd
 
 after_script:

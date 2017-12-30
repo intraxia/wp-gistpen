@@ -1,4 +1,4 @@
 // @flow
 declare export default {
-    use : (() => void)
+    use : (() => void);
 };

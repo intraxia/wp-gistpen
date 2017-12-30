@@ -6,7 +6,7 @@ declare var __webpack_public_path__ : string;
 
 declare var tinymce : TinyMCE;
 
-declare type Disposer = () => any;
+declare type Disposer = () => any; // eslint-disable-line
 
 type jQueryObject = Array<Element>;
 
