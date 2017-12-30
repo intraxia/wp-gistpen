@@ -8,6 +8,9 @@ php:
     - 7.1
     - nightly
 
+addons:
+  chrome: stable
+
 matrix:
     allow_failures:
         - php: nightly

@@ -355,4 +355,54 @@ describe('Editor Reducer', () => {
 
         expect(editorReducer(before, action)).to.eql(after);
     });
+
+    it('should remove indentation when cursor at beginning of line', () => {
+        const action : EditorIndentAction & HasMetaKey = {
+            ...editorIndentAction({
+                code: '    echo "Hello";\necho "world!";',
+                cursor: [0, 0],
+                inverse: true
+            }),
+            meta: {
+                key: '1'
+            }
+        };
+        const before : EditorState = {
+            ...initial,
+            tabs: 'off',
+            instances: [{
+                ...initial.instances[0],
+                code: '    echo "Hello";\necho "world!";',
+                cursor: [0, 0],
+            }]
+        };
+        const after : EditorState = {
+            optionsOpen: false,
+            theme: 'default',
+            tabs: 'off',
+            width: '4',
+            invisibles: 'off',
+            description: 'PHP Code',
+            status: 'publish',
+            password: '',
+            gist_id: '',
+            sync: 'off',
+            instances: [{
+                key: '1',
+                filename: 'file.php',
+                code: 'echo "Hello";\necho "world!";',
+                cursor: [0, 0],
+                language: 'php',
+                history: {
+                    undo: [{
+                        code: '    echo "Hello";\necho "world!";',
+                        cursor: [0, 0]
+                    }],
+                    redo: []
+                }
+            }]
+        };
+
+        expect(editorReducer(before, action)).to.eql(after);
+    });
 });
