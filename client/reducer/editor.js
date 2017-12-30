@@ -218,62 +218,80 @@ function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } :
     if (!cursor) {
         return { code, cursor, inverse };
     }
-    let [ss,se] = cursor;
-    let w = parseInt(width, 10);
-    let { before, selection, after } = extractSections(code, ss, se);
+    let [ss, se] = cursor;
+    const { before, selection, after } = extractSections(code, ss, se);
 
-    if (inverse) {
-        if (tabs === 'on') {
-            if ('\t' === before.charAt(before.length - 1)) {
-                before = before.slice(0, -1);
-                ss--;
-            } else {
-                const befores = before.split('\n');
+    const w = parseInt(width, 10);
+    const befores = before.split('\n');
+    const rolBefore = befores.pop();
+    const afters = after.split('\n');
+    const rolAfter = afters.shift();
+    const lines = (rolBefore + selection + rolAfter).split('\n');
+    const tabsEnabled = tabs === 'on';
+    const append = tabsEnabled ? '\t' : new Array(w + 1).join(' ');
 
-                if ('\t' === befores[befores.length - 1].charAt(0)) {
-                    befores[befores.length - 1] = befores[befores.length - 1].slice(1);
-                    ss--;
+    for (let i = 0; i < lines.length; i++) {
+        const isFirstLineWithoutSelection = i === 0 && ss === se;
+        let line = lines[i];
+
+        if (inverse) {
+            if (tabsEnabled) {
+                if (isFirstLineWithoutSelection && rolBefore.endsWith('\t')) {
+                    line = rolBefore.slice(0, rolBefore.length - 1) + line.replace(rolBefore, '');
+                } else if (line.startsWith('\t')) {
+                    line = line.replace('\t', '');
+                } else {
+                    break;
                 }
 
-                before = befores.join('\n');
+                ss && ss--;
+                se && se--;
+            } else {
+                let w = parseInt(width, 10);
+                let newRolBefore = rolBefore;
+
+                while (w) {
+                    if (isFirstLineWithoutSelection && ' ' === newRolBefore.charAt(newRolBefore.length - 1)) {
+                        newRolBefore = rolBefore.slice(0, newRolBefore.length - 1);
+
+                        if (!w || ' ' !== newRolBefore.charAt(newRolBefore.length - 1)) {
+                            ss && ss--;
+                            se && se--;
+                            line = line.replace(rolBefore, newRolBefore);
+                            break;
+                        }
+
+                    } else {
+                        if (!line.startsWith(' ')) {
+                            break;
+                        }
+                        line = line.replace(' ', '');
+                    }
+
+                    w--;
+                    ss && ss--;
+                    se && se--;
+                }
             }
         } else {
-            if (' ' === before.charAt(before.length - 1)) {
-                while (w && ' ' === before.charAt(before.length - 1)) {
-                    before = before.slice(0, -1);
-                    w--;
-                    ss--;
-                }
+            // If the cursor isn't selection anything on the line,
+            // and the line is more than spaces or tabs to the left,
+            // then we should insert the append at the cursor location.
+            if (isFirstLineWithoutSelection && line.replace(/\s/g, '').length) {
+                line = rolBefore + line.replace(rolBefore, append);
             } else {
-                const befores = before.split('\n');
-
-                while (w && ' ' === befores[befores.length - 1].charAt(0)) {
-                    befores[befores.length - 1] = befores[befores.length - 1].slice(1);
-                    w--;
-                    ss--;
-                }
-
-                before = befores.join('\n');
+                line = append + line;
             }
+
+            ss += append.length;
+            se += append.length;
         }
-    } else {
-        const append = tabs === 'on' ? '\t' : new Array(w + 1).join(' ');
 
-        before += append;
-
-        ss += append.length;
-        se += append.length;
-
-        return {
-            code: before + selection + after,
-            cursor: [ss, se]
-        };
+        lines[i] = line;
     }
 
-    se = ss + selection.length;
-
     return {
-        code: before + selection + after,
+        code: [...befores, ...lines, ...afters].join('\n'),
         cursor: [ss, se]
     };
 }
