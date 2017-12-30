@@ -7,15 +7,15 @@ const notifier = require('node-notifier');
 const flowPath = require('flow-bin');
 
 const client = path.join(__dirname, '..', 'client');
-const page = path.join(client, 'page');
+const pages = path.join(client, 'pages');
 
 module.exports = {
     devtool: 'sourcemap',
     entry: {
-        settings: path.join(page, 'settings'),
-        content: path.join(page, 'content'),
-        editor: path.join(page, 'edit'),
-        tinymce: path.join(page, 'tinymce')
+        settings: path.join(pages, 'settings'),
+        content: path.join(pages, 'content'),
+        editor: path.join(pages, 'edit'),
+        tinymce: path.join(pages, 'tinymce')
     },
     output: {
         path: path.join(__dirname, '..', 'assets', 'js'),
@@ -52,8 +52,8 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 include: [
-                    path.join(page, 'editor'),
-                    path.join(page, 'tinymce'),
+                    path.join(pages, 'editor'),
+                    path.join(pages, 'tinymce'),
                     path.join(client, 'component')
                 ],
                 use: [{
@@ -66,7 +66,7 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 include: [
-                    path.join(page, 'settings'),
+                    path.join(pages, 'settings'),
                     path.join(client, 'prism'),
                     /node_modules/
                 ],

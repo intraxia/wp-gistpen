@@ -3,7 +3,6 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
 const gutil = require('gulp-util');
-const { Server } = require('karma');
 
 gulp.task('dev', ['dev:app', 'dev:tdd']);
 
