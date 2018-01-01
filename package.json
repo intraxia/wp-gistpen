@@ -5,7 +5,16 @@
   "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
   "license": "GPL-2.0+",
   "scripts": {
-    "test": "flow check && eslint ./client && beaver test unit --env production"
+    "test": "npm run test:typecheck && npm run test:lint && npm run test:unit",
+    "test:typecheck": "flow check",
+    "test:lint": "eslint ./client",
+    "test:unit": "beaver test unit --env production",
+    "build": "npm run build:dev && npm run build:prod",
+    "build:dev": "beaver build --env development",
+    "build:prod": "beaver build --env production",
+    "dev:app": "beaver dev app --env development",
+    "dev:tdd": "beaver dev tdd --env development",
+    "dev:storybook": "beaver dev storybook --env development"
   },
   "devDependencies": {
     "babel-core": "^6.4.5",
@@ -19,6 +28,7 @@
     "brookjs-cli": "^0.11.0",
     "brookjs-desalinate": "^0.11.1",
     "chai": "^4.0.2",
+    "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.28.4",
     "dredd": "^4.5.0",
     "eslint": "^4.13.0",
