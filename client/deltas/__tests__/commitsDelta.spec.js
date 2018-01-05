@@ -1,20 +1,65 @@
 // @flow
 /* eslint-env mocha */
-import type { Action, HasRepo, HasGlobalsState } from '../../types';
 import type { AjaxOptions } from '../../services';
 import { ObsResponse } from '../../services';
 import '../../polyfills';
-import chai, { expect } from 'chai';
+import { expect, use } from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import { Kefir } from 'brookjs';
+import { chaiPlugin } from 'brookjs-desalinate';
 import { routeChangeAction } from '../../actions';
-
 import commitsDelta from '../commitsDelta';
 
-chai.use(sinonChai);
+const { plugin, stream, prop, value, error, end, send } = chaiPlugin({ Kefir });
+
+use(sinonChai);
+use(plugin);
 
 const createServices = () => ({ ajax$: sinon.stub() });
+const globals = {
+    languages: {},
+    root: '',
+    nonce: 'asdf',
+    url: '',
+    ace_widths: [],
+    statuses: {},
+    themes: {}
+};
+const stateNoId = {
+    globals,
+    repo: {
+        // no ID
+        blobs: [],
+        created_at: '',
+        description: '',
+        gist_id: '',
+        html_url: '',
+        password: '',
+        commits_url: '',
+        rest_url: '',
+        status: '',
+        sync: 'off',
+        updated_at: ''
+    }
+};
+const stateWithId = {
+    globals,
+    repo: {
+        ID: 1234,
+        blobs: [],
+        created_at: '',
+        description: '',
+        gist_id: '',
+        html_url: '',
+        password: '',
+        commits_url: 'http://testing.dev/api/commits/1234',
+        rest_url: '',
+        status: '',
+        sync: 'off',
+        updated_at: ''
+    }
+};
 
 describe('commitsDelta', () => {
     it('should be a function', () => {
@@ -27,139 +72,44 @@ describe('commitsDelta', () => {
     });
 
     it('should return an Observable', () => {
-        expect(commitsDelta(createServices(), Kefir.never(), Kefir.never())).to.be.an.instanceOf(Kefir.Observable);
+        expect(commitsDelta(createServices(), Kefir.never(), Kefir.never())).to.be.an.observable();
     });
 
-    it('should not respond to random actions', (done : () => void) => {
+    it('should not respond to random actions', () => {
         const services = createServices();
-        const actions$ = Kefir.later(10, { type: 'RANDOM_ACTION' });
-        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
-            globals: {
-                languages: {},
-                root: '',
-                nonce: 'asdf',
-                url: '',
-                ace_widths: [],
-                statuses: {},
-                themes: {}
-            },
-            repo: {
-                // no ID
-                blobs: [],
-                created_at: '',
-                description: '',
-                gist_id: '',
-                html_url: '',
-                password: '',
-                commits_url: '',
-                rest_url: '',
-                status: '',
-                sync: 'off',
-                updated_at: ''
-            }
-        });
+        const action$ = stream();
+        const state$ = prop();
 
-        const value = sinon.spy();
-        const error = sinon.spy();
-
-        commitsDelta(services, actions$, state$).observe({
-            value,
-            error,
-            end() {
-                expect(value).to.have.callCount(0);
-                expect(error).to.have.callCount(0);
-                done();
-            }
+        expect(commitsDelta(services, action$, state$)).to.emit([], () => {
+            send(state$,  [value(stateNoId)]);
+            send(action$, [value({ type: 'RANDOM_ACTION' })]);
         });
     });
 
-    it('should not respond to random routes', (done : () => void) => {
+    it('should not respond to random routes', () => {
         const services = createServices();
-        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('random'));
-        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
-            globals: {
-                languages: {},
-                root: '',
-                nonce: 'asdf',
-                url: '',
-                ace_widths: [],
-                statuses: {},
-                themes: {}
-            },
-            repo: {
-                ID: 1234,
-                blobs: [],
-                created_at: '',
-                description: '',
-                gist_id: '',
-                html_url: '',
-                password: '',
-                commits_url: 'http://testing.dev/api/commits/1234',
-                rest_url: '',
-                status: '',
-                sync: 'off',
-                updated_at: ''
-            }
-        });
+        const actions$ = stream();
+        const state$ = prop();
 
-        const value = sinon.spy();
-        const error = sinon.spy();
-
-        commitsDelta(services, actions$, state$).observe({
-            value,
-            error,
-            end() {
-                expect(error).to.have.callCount(0);
-                expect(value).to.have.callCount(0);
-
-                done();
-            }
+        expect(commitsDelta(services, actions$, state$)).to.emit([], () => {
+            send(state$, [value(stateWithId)]);
+            send(actions$, [value(routeChangeAction('random'))]);
         });
     });
 
-    it('should not respond to commits click for new repo', (done : () => void) => {
+    it('should not respond to commits click for new repo', () => {
         const services = createServices();
-        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('commits'));
-        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
-            globals: {
-                languages: {},
-                root: '',
-                nonce: 'asdf',
-                url: '',
-                ace_widths: [],
-                statuses: {},
-                themes: {}
-            },
-            repo: {
-                // no ID
-                blobs: [],
-                created_at: '',
-                description: '',
-                gist_id: '',
-                html_url: '',
-                password: '',
-                commits_url: '',
-                rest_url: '',
-                status: '',
-                sync: 'off',
-                updated_at: ''
-            }
-        });
+        const actions$ = stream(); // Kefir.later(10, );
+        const state$ = prop();
 
-        let calls = 0;
-
-        commitsDelta(services, actions$, state$).observe({
-            value() {
-                calls++;
-            },
-            end() {
-                expect(calls).to.equal(0);
-                done();
-            }
+        expect(commitsDelta(services, actions$, state$)).to.emit([], () => {
+            send(state$, [value(stateNoId)]);
+            send(actions$, [value(routeChangeAction('commits'))]);
         });
     });
 
-    it('should emit start and success on commits api success', (done : () => void) => {
+    it('should emit start and success on commits api success', () => {
+        const commitsUrl = 'http://testing.dev/api/commits/1234';
         const options: AjaxOptions = {
             method: 'GET',
             credentials: 'include',
@@ -168,70 +118,37 @@ describe('commitsDelta', () => {
                 'Content-Type': 'application/json'
             }
         };
-        const services = createServices();
-        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('commits'));
-        const commitsUrl = 'http://testing.dev/api/commits/1234';
-        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
-            globals: {
-                languages: {},
-                root: '',
-                nonce: 'asdf',
-                url: '',
-                ace_widths: [],
-                statuses: {},
-                themes: {}
-            },
-            repo: {
-                ID: 1234,
-                blobs: [],
-                created_at: '',
-                description: '',
-                gist_id: '',
-                html_url: '',
-                password: '',
-                commits_url: commitsUrl,
-                rest_url: '',
-                status: '',
-                sync: 'off',
-                updated_at: ''
-            }
-        });
-
-        let calls = 0;
         const xhr = (({ response: JSON.stringify([]) } : any) : XMLHttpRequest);
+        const services = createServices();
+        const actions$ = stream();
+        const state$ = prop();
+        const effect$ = stream();
+
         services.ajax$
             .withArgs(commitsUrl, options)
             .onFirstCall()
-            .returns(Kefir.later(10, new ObsResponse(xhr)));
+            .returns(effect$);
 
-        commitsDelta(services, actions$, state$).observe({
-            value(val : Action) {
-                calls++;
-
-                if (calls === 1) {
-                    expect(val).to.eql({
-                        type: 'COMMITS_FETCH_STARTED'
-                    });
+        expect(commitsDelta(services, actions$, state$)).to.emitInTime([
+            [0, value({
+                type: 'COMMITS_FETCH_STARTED'
+            })],
+            [10, value({
+                type: 'COMMITS_FETCH_SUCCEEDED',
+                payload: {
+                    response: []
                 }
-
-                if (calls === 2) {
-                    expect(val).to.eql({
-                        type: 'COMMITS_FETCH_SUCCEEDED',
-                        payload: {
-                            response: []
-                        }
-                    });
-                }
-            },
-            end() {
-                expect(calls).to.equal(2);
-
-                done();
-            }
+            })]
+        ], tick => {
+            send(state$, [value(stateWithId)]);
+            send(actions$, [value(routeChangeAction('commits'))]);
+            tick(10);
+            send(effect$, [value(new ObsResponse(xhr)), end()]);
         });
     });
 
-    it('should emit start and failure on commits api failure', (done : () => void) => {
+    it('should emit start and failure on commits api failure', () => {
+        const commitsUrl = 'http://testing.dev/api/commits/1234';
         const options: AjaxOptions = {
             method: 'GET',
             credentials: 'include',
@@ -240,68 +157,31 @@ describe('commitsDelta', () => {
                 'Content-Type': 'application/json'
             }
         };
-        const services = createServices();
-        const actions$: Kefir.Observable<Action> = Kefir.later(10, routeChangeAction('commits'));
-        const commitsUrl = 'http://testing.dev/api/commits/1234';
-        const state$: Kefir.Observable<HasRepo & HasGlobalsState> = Kefir.constant({
-            globals: {
-                languages: {},
-                root: '',
-                nonce: 'asdf',
-                url: '',
-                ace_widths: [],
-                statuses: {},
-                themes: {}
-            },
-            repo: {
-                ID: 1234,
-                blobs: [],
-                created_at: '',
-                description: '',
-                gist_id: '',
-                html_url: '',
-                password: '',
-                commits_url: commitsUrl,
-                rest_url: '',
-                status: '',
-                sync: 'off',
-                updated_at: ''
-            }
-        });
-
-        let calls = 0;
         const payload = new TypeError('Network request failed');
+        const services = createServices();
+        const actions$ = stream();
+        const state$ = prop();
+        const effect$ = stream();
+
         services.ajax$
             .withArgs(commitsUrl, options)
             .onFirstCall()
-            .returns(
-                Kefir.constantError(payload)
-                    .delay(10)
-            );
+            .returns(effect$);
 
-        commitsDelta(services, actions$, state$).observe({
-            value(val : Action) {
-                calls++;
-
-                if (calls === 1) {
-                    expect(val).to.eql({
-                        type: 'COMMITS_FETCH_STARTED'
-                    });
-                }
-
-                if (calls === 2) {
-                    expect(val).to.eql({
-                        type: 'COMMITS_FETCH_FAILED',
-                        payload,
-                        error: true
-                    });
-                }
-            },
-            end() {
-                expect(calls).to.equal(2);
-
-                done();
-            }
+        expect(commitsDelta(services, actions$, state$)).to.emitInTime([
+            [0, value({
+                type: 'COMMITS_FETCH_STARTED'
+            })],
+            [10, value({
+                type: 'COMMITS_FETCH_FAILED',
+                payload,
+                error: true
+            })]
+        ], tick => {
+            send(state$, [value(stateWithId)]);
+            send(actions$, [value(routeChangeAction('commits'))]);
+            tick(10);
+            send(effect$, [error(payload), end()]);
         });
     });
 });
