@@ -109,6 +109,47 @@ describe('Editor Reducer', () => {
         expect(editorReducer(before, action)).to.eql(after);
     });
 
+    it('should space indent by width when cursor is on multiple lines', () => {
+        const action : EditorIndentAction & HasMetaKey = {
+            ...editorIndentAction({
+                code: 'echo "Hello";\necho "world!";',
+                cursor: [0, 28],
+                inverse: false
+            }),
+            meta: { key: '1' }
+        };
+        const before : EditorState = { ...initial, tabs: 'off' };
+        const after : EditorState = {
+            optionsOpen: false,
+            theme: 'default',
+            tabs: 'off',
+            width: '4',
+            invisibles: 'off',
+            description: 'PHP Code',
+            status: 'publish',
+            password: '',
+            gist_id: '',
+            sync: 'off',
+            instances: [{
+                key: '1',
+                filename: 'file.php',
+                code: '    echo "Hello";\n    echo "world!";',
+                cursor: [4, 36],
+                language: 'php',
+                history: {
+                    undo: [{
+                        code: 'echo "Hello";\necho "world!";',
+                        // This matches the previous state, not the dispatched value.
+                        cursor: [13, 13],
+                    }],
+                    redo: []
+                }
+            }]
+        };
+
+        expect(editorReducer(before, action)).to.eql(after);
+    });
+
     it('should delete tab next to cursor if inverse', () => {
         const action : EditorIndentAction & HasMetaKey = {
             ...editorIndentAction({

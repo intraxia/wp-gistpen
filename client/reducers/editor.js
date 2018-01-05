@@ -4,7 +4,7 @@ import type { HasMetaKey, EditorInstance, EditorValue, EditorIndentValue, Editor
     EditorInvisiblesToggleAction, EditorCursorMoveAction, EditorDescriptionChangeAction,
     EditorStatusChangeAction, EditorSyncChangeAction, EditorDeleteClickAction,
     EditorFilenameChangeAction, EditorLanguageChangeAction, EditorIndentAction,
-    EditorMakeNewLineAction, EditorValueChangeAction, RepoSaveSucceededAction, Blob } from '../types';
+    EditorMakeNewLineAction, EditorValueChangeAction, RepoSaveSucceededAction, Blob, Toggle } from '../types';
 import R from 'ramda';
 import { combineActionReducers } from 'brookjs';
 import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
@@ -200,7 +200,7 @@ function extractSections(code : string, ss : number, se : number) : Section {
 }
 
 type Indentation = {
-    tabs : string;
+    tabs : Toggle;
     width : string;
 };
 
@@ -231,7 +231,8 @@ function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } :
     const append = tabsEnabled ? '\t' : new Array(w + 1).join(' ');
 
     for (let i = 0; i < lines.length; i++) {
-        const isFirstLineWithoutSelection = i === 0 && ss === se;
+        const isFirstLine = i === 0;
+        const isFirstLineWithoutSelection = isFirstLine && ss === se;
         let line = lines[i];
 
         if (inverse) {
@@ -283,7 +284,10 @@ function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } :
                 line = append + line;
             }
 
-            ss += append.length;
+            if (isFirstLine) {
+                ss += append.length;
+            }
+
             se += append.length;
         }
 
