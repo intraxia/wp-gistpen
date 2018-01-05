@@ -16,7 +16,7 @@ gulp.task('build:zip', () => {
 
     shell.echo('Installing dependencies...');
     shell.cd(ZIP_DIR);
-    shell.exec('yarn');
+    shell.exec('npm i');
     shell.exec('composer install --quiet --no-dev --optimize-autoloader &>/dev/null');
     shell.echo('Done!');
 
