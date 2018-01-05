@@ -8,13 +8,13 @@
  * @author    James DiGioia <jamesorodig@gmail.com>
  * @license   GPL-2.0+
  * @link      http://jamesdigioia.com/wp-gistpen/
- * @copyright 2014 James DiGioia
+ * @copyright 2018 James DiGioia
  *
  * @wordpress-plugin
  * Plugin Name:       WP-Gistpen
  * Plugin URI:        http://www.jamesdigioia.com/wp-gistpen/
  * Description:       A self-hosted alternative to putting your code snippets on Gist.
- * Version:           1.0.0-beta.1
+ * Version:           1.0.0-beta.2
  * Author:            James DiGioia
  * Author URI:        http://www.jamesdigioia.com/
  * Text Domain:       wp-gistpen
