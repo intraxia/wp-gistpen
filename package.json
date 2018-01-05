@@ -13,7 +13,7 @@
     "build:dev": "beaver build --env development",
     "build:prod": "beaver build --env production",
     "dev:app": "beaver dev app --env development",
-    "dev:tdd": "beaver dev tdd --env development",
+    "dev:tdd": "beaver dev tdd --env production",
     "dev:storybook": "beaver dev storybook --env development"
   },
   "devDependencies": {

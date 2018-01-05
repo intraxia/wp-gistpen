@@ -98,6 +98,7 @@ declare module 'chai' {
         calledWithExactly: (...args: Array<mixed>) => ExpectChain<T>,
 
         // chai-kefir
+        emit: (event: Array<Event>, callback: Function) => ExpectChain<T>,
         emitInTime: (events: Array<TimedEvent>, callback: Function) => ExpectChain<T>,
         emitEffectsInTime: (events: Array<TimedEvent>, callback: Function) => ExpectChain<T>,
     };
