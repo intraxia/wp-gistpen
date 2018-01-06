@@ -61,7 +61,7 @@
     "webpack-notifier": "^1.4.1"
   },
   "dependencies": {
-    "bourbon": "^4.2.7",
+    "bourbon": "^5.0.0",
     "bourbon-neat": "^1.8.0",
     "brookjs": "^0.11.2",
     "clipboard": "^1.5.5",
