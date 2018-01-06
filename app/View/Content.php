@@ -124,13 +124,13 @@ class Content implements HasActions, HasFilters, HasShortcode {
 
 		if ( ! $post->post_parent ) {
 			return $this->templating->render(
-				'component/repo/index',
+				'components/repo/index',
 				$this->params->props( 'content.repo' )
 			);
 		}
 
 		return $this->templating->render(
-			'component/blob/index',
+			'components/blob/index',
 			$this->params->props( 'content.blob' )
 		);
 	}
@@ -197,12 +197,12 @@ class Content implements HasActions, HasFilters, HasShortcode {
 
 		if ( ! $post->post_parent ) {
 			$content = $this->templating->render(
-				'component/repo/index',
+				'components/repo/index',
 				$this->params->props( 'content.repo' )
 			);
 		} else {
 			$content = $this->templating->render(
-				'component/blob/index',
+				'components/blob/index',
 				$this->params->props( 'content.blob', array( 'highlight' => $args['highlight'] ) )
 			);
 		}
