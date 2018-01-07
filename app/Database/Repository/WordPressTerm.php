@@ -20,7 +20,7 @@ class WordPressTerm extends AbstractRepository {
 		$term  = get_term( $id, $taxonomy );
 
 		if ( ! $term ) {
-			$term = new WP_Error( 'Error getting term' );
+			$term = new WP_Error( 'db_error', __( 'Error getting term', 'wp-gistpen' ) );
 		}
 
 		if ( is_wp_error( $term ) ) {
@@ -139,6 +139,6 @@ class WordPressTerm extends AbstractRepository {
 	 * @inheritDoc
 	 */
 	public function delete( Model $model, $force = false ) {
-		return new WP_Error( 'not implemented' );
+		return new WP_Error( 'not_impl', __( 'This method is not yet implemented.', 'wp-gistpen' ) );
 	}
 }

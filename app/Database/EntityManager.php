@@ -79,7 +79,7 @@ class EntityManager implements EntityManagerContract {
 	 */
 	public function find( $class, $id, array $params = array() ) {
 		if ( ! is_subclass_of( $class, 'Intraxia\Jaxion\Axolotl\Model' ) ) {
-			return new WP_Error( 'Invalid model' );
+			return new WP_Error( 'invalid_model', __( 'Invalid model', 'wp-gistpen' ) );
 		}
 
 		foreach ( $this->repositories as $interface => $repository ) {
@@ -96,7 +96,7 @@ class EntityManager implements EntityManagerContract {
 			}
 		}
 
-		return new WP_Error( 'Invalid Model' );
+		return new WP_Error( 'invalid_model', __( 'Invalid model', 'wp-gistpen' ) );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class EntityManager implements EntityManagerContract {
 	 */
 	public function find_by( $class, array $params = array() ) {
 		if ( ! is_subclass_of( $class, 'Intraxia\Jaxion\Axolotl\Model' ) ) {
-			return new WP_Error( 'Invalid model' );
+			return new WP_Error( 'invalid_model', __( 'Invalid model', 'wp-gistpen' ) );
 		}
 
 		foreach ( $this->repositories as $interface => $repository ) {
@@ -126,7 +126,7 @@ class EntityManager implements EntityManagerContract {
 			}
 		}
 
-		return new WP_Error( 'Invalid Model' );
+		return new WP_Error( 'invalid_model', __( 'Invalid model', 'wp-gistpen' ) );
 	}
 
 	/**
@@ -162,7 +162,7 @@ class EntityManager implements EntityManagerContract {
 			}
 		}
 
-		return new WP_Error( 'Invalid Model' );
+		return new WP_Error( 'invalid_model', __( 'Invalid model', 'wp-gistpen' ) );
 	}
 
 	/**
@@ -193,7 +193,7 @@ class EntityManager implements EntityManagerContract {
 			}
 		}
 
-		return new WP_Error( 'Invalid class' );
+		return new WP_Error( 'invalid_model', __( 'Invalid model', 'wp-gistpen' ) );
 	}
 
 	/**
@@ -219,7 +219,7 @@ class EntityManager implements EntityManagerContract {
 			}
 		}
 
-		return new WP_Error( 'Invalid class' );
+		return new WP_Error( 'invalid_model', __( 'Invalid model', 'wp-gistpen' ) );
 	}
 
 	/**

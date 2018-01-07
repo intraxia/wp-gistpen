@@ -4,7 +4,7 @@
             <label id="title-prompt-text"
                    for="title"
                     {{#if editor.description}} class="screen-reader-text"{{/if}}>
-                Description...
+                {{i18n "editor.description"}}
             </label>
             <input type="text" value="{{{editor.description}}}"
                    data-brk-oninput="oninput"

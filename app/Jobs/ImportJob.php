@@ -60,7 +60,7 @@ class ImportJob extends AbstractJob {
 	 * @return string
 	 */
 	protected function description() {
-		return 'Import all imported GitHub gists.';
+		return __( 'Import all imported GitHub gists.', 'wp-gistpen' );
 	}
 
 	/**
@@ -87,7 +87,13 @@ class ImportJob extends AbstractJob {
 	 */
 	protected function process_item( $gist ) {
 		if ( ! ( $gist instanceof stdClass ) ) {
-			$this->log( 'Expected to see Gist data, got ' . gettype( $gist ) . ' instead.', Level::ERROR );
+			$this->log(
+				sprintf(
+					__( 'Expected to see Gist data, got %s instead.', 'wp-gistpen' ),
+					gettype( $gist )
+				),
+				Level::ERROR
+			);
 
 			return null;
 		}
@@ -138,7 +144,14 @@ class ImportJob extends AbstractJob {
 		if ( is_wp_error( $response ) ) {
 			$this->log_reponse_error( $gist, $response );
 		} else {
-			$this->log( 'Created Repo' . $response->ID . ' for gist ' . $gist->id, Level::SUCCESS );
+			$this->log(
+				sprintf(
+					__( 'Created Repo %s for gist %s', 'wp-gistpen' ),
+					$response->ID,
+					 $gist->id
+				),
+				Level::SUCCESS
+			);
 		}
 
 		return null;
@@ -188,11 +201,23 @@ class ImportJob extends AbstractJob {
 		$result = $this->em->persist( $repo );
 
 		if ( is_wp_error( $result ) ) {
-			$this->log( 'Error saving repo for gist ' . $gist->id . '. Error: ' . $result->get_error_message(),
-				Level::ERROR );
+			$this->log(
+				sprintf(
+					__( 'Error saving repo for gist %s. Error: %s', 'wp-gistpen' ),
+					$gist->id,
+					$result->get_error_message()
+				),
+				Level::ERROR
+			);
 		} else {
-			$this->log( 'Successfully imported gist ' . $gist->id . ' from Gist. Updated with repo id ' . $repo->ID . '.',
-				Level::SUCCESS );
+			$this->log(
+				sprintf(
+					__( 'Successfully imported gist %s from Gist. Updated with repo id %s.', 'wp-gistpen' ),
+					$gist->id,
+					$repo->ID
+				),
+				Level::SUCCESS
+			);
 		}
 
 		return null;
@@ -269,16 +294,31 @@ class ImportJob extends AbstractJob {
 	 * @param      $response
 	 */
 	private function log_reponse_error( $gist, WP_Error $response ) {
-		$this->log( 'Error fetching gist ' . $gist->id. '. Error: ' . $response->get_error_message(), Level::ERROR );
+		$this->log(
+			sprintf(
+				__( 'Error fetching gist %s. Error: %s', 'wp-gistpen' ),
+				$gist->id,
+				$response->get_error_message()
+			),
+			Level::ERROR );
 
 		if ( $response->get_error_code() === 'auth_error' ) {
-			$this->log( 'Will not reprocess gist ' . $gist->id. '. Authorization failed. Check that your gist token is valid.',
+			$this->log(
+				sprintf(
+					__( 'Will not reprocess gist %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
+					$gist->id
+				),
 				Level::WARNING );
 		}
 
 		if ( $response->get_error_code() === 'client_error' ) {
-			$this->log( 'Will not reprocess gist ' . $gist->id . '. Client error. Please report to the developer.',
-				Level::WARNING );
+			$this->log(
+				sprintf(
+					__( 'Will not reprocess gist %s. Client error. Please report to the developer.', 'wp-gistpen' ),
+					$gist->id
+				),
+				Level::WARNING
+			);
 		}
 	}
 }

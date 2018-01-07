@@ -181,14 +181,14 @@ class Content implements HasActions, HasFilters, HasShortcode {
 
 		// If the user didn't provide an ID, raise an error
 		if ( ! $args['id'] ) {
-			return '<div class="wp-gistpen-error">No Gistpen ID was provided.</div>';
+			return '<div class="wp-gistpen-error">' . __( 'No Gistpen ID was provided.', 'wp-gistpen' ) . '</div>';
 		}
 
 		$args['id'] = (int) str_replace('&quot;', '', $args['id']);
 		$args['highlight'] = str_replace('&quot;', '', $args['highlight']);
 
 		if ( Repo::get_post_type() !== get_post_type( $args['id'] ) ) {
-			return '<div class="wp-gistpen-error">ID provided is not a Gistpen repo.</div>';
+			return '<div class="wp-gistpen-error">' . __( 'ID provided is not a Gistpen repo.', 'wp-gistpen' ) . '</div>';
 		}
 
 		global $post;

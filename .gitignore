@@ -43,7 +43,6 @@ bower_components
 # Generated files
 assets/
 build/
-languages/wp-gistpen.pot
 report.md
 
 # Local phpunit config

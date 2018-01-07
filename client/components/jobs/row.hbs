@@ -1,12 +1,12 @@
 <tr data-brk-container="jobRow" data-brk-key="{{slug}}">
     <td><strong>{{name}}</strong></td>
     <td>{{description}}</td>
-    <td>{{#if status}}{{status}}{{else}}Loading...{{/if}}</td>
-    <td><a href="{{link "wpgp_route" (join "jobs" slug "/")}}">View Runs</a></td>
+    <td>{{#if status}}{{status}}{{else}}{{i18n "runs.loading"}}{{/if}}</td>
+    <td><a href="{{link "wpgp_route" (join "jobs" slug "/")}}">{{i18n "jobs.runs.view"}}</a></td>
     <td>
         <button class="button button-primary"
                 data-brk-onclick="onStartClick">
-            Dispatch Job
+            {{i18n "jobs.dispatch"}}
         </button>
     </td>
 </tr>

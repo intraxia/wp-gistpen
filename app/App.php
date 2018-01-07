@@ -33,6 +33,7 @@ class App extends Application {
 		'Intraxia\Gistpen\Providers\ConfigServiceProvider',
 		'Intraxia\Gistpen\Providers\ClientServiceProvider',
 		'Intraxia\Gistpen\Providers\ViewServiceProvider',
+		'Intraxia\Gistpen\Providers\TranslatorServiceProvider',
 		'Intraxia\Gistpen\Providers\TemplatingServiceProvider',
 		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
 		'Intraxia\Gistpen\Providers\AssetsServiceProvider',

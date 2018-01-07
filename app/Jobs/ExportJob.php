@@ -59,7 +59,7 @@ class ExportJob extends AbstractJob {
 	 * @return string
 	 */
 	protected function description() {
-		return 'Export all unexported gistpen repos.';
+		return __( 'Export all unexported gistpen repos.', 'wp-gistpen' );
 	}
 
 	/**
@@ -82,7 +82,13 @@ class ExportJob extends AbstractJob {
 	 */
 	protected function process_item( $repo ) {
 		if ( ! ( $repo instanceof Repo ) ) {
-			$this->log( 'Expected to see instance of Repo, got ' . gettype( $repo ) . ' instead.', Level::ERROR );
+			$this->log(
+				sprintf(
+					__( 'Expected to see instance of Repo, got %s instead.', 'wp-gistpen' ),
+					gettype( $repo )
+				),
+				Level::ERROR
+			);
 
 			return null;
 		}
@@ -103,8 +109,14 @@ class ExportJob extends AbstractJob {
 		$response = $this->client->one( $repo->gist_id );
 
 		if ( is_wp_error( $response ) ) {
-			$this->log( 'Error fetching gist for Repo ' . $repo->ID . '. Error: ' . $response->get_error_message(),
-				Level::ERROR );
+			$this->log(
+				sprintf(
+					__( 'Error fetching gist for Repo %s. Error: %s', 'wp-gistpen' ),
+					$repo->ID,
+					$response->get_error_message()
+				),
+				Level::ERROR
+			);
 
 			return null;
 		}
@@ -136,13 +148,25 @@ class ExportJob extends AbstractJob {
 		$repo = $this->em->persist( $repo );
 
 		if ( is_wp_error( $repo ) ) {
-			$this->log( 'Error saving gist_id for Repo ' . $repo->ID . '. Error: ' . $repo->get_error_message(),
-				Level::ERROR );
+			$this->log(
+				sprintf(
+					__('Error saving gist_id for Repo %s. Error: %s', 'wp-gistpen' ),
+					$repo->ID,
+					$repo->get_error_message()
+				),
+				Level::ERROR
+			);
 
 			return null;
 		}
 
-		$this->log( 'Successfully exported Repo ' . $repo->ID . ' to Gist. Created with gist id ' . $repo->gist_id . '.',
+		$this->log(
+			sprintf(
+				__( 'Successfully exported Repo %s to Gist. Created with gist id %s.', 'wp-gistpen' ),
+				$repo->ID,
+				$repo->gist_id
+
+			),
 			Level::SUCCESS );
 
 		return null;
@@ -160,7 +184,12 @@ class ExportJob extends AbstractJob {
 		$entity = $this->map_repo_to_new_entity( $repo );
 
 		if ( $this->entity_matches_gist( $entity, $gist ) ) {
-			$this->log( 'Repo ID ' . $repo->ID . ' will not be exported. No changes.' );
+			$this->log(
+				sprintf(
+					__( 'Repo ID %s will not be exported. No changes.', 'wp-gistpen' ),
+					$repo->ID
+				)
+			);
 
 			return null;
 		}
@@ -216,7 +245,13 @@ class ExportJob extends AbstractJob {
 			return null;
 		}
 
-		$this->log( 'Successfully updated Repo ID ' . $repo->ID, Level::SUCCESS );
+		$this->log(
+			sprintf(
+				__( 'Successfully updated Repo ID %s', 'wp-gistpen' ),
+				$repo->ID
+			),
+			Level::SUCCESS
+		);
 
 		return null;
 	}
@@ -249,7 +284,7 @@ class ExportJob extends AbstractJob {
 	 * Determines whether the provided entity matches the provided gist.
 	 *
 	 * @param array $entity
-	 * @param array $gist
+	 * @param \stdClass $gist
 	 *
 	 * @return bool
 	 */
@@ -298,16 +333,33 @@ class ExportJob extends AbstractJob {
 	 * @param      $response
 	 */
 	private function log_reponse_error( Repo $repo, WP_Error $response ) {
-		$this->log( 'Error creating new gist for Repo ' . $repo->ID . '. Error: ' . $response->get_error_message(), Level::ERROR );
+		$this->log(
+			sprintf(
+				__( 'Error creating new gist for Repo %s. Error: %s', 'wp-gistpen'),
+				$repo->ID,
+				$response->get_error_message()
+			),
+			Level::ERROR
+		);
 
 		if ( $response->get_error_code() === 'auth_error' ) {
-			$this->log( 'Will not reprocess Repo ' . $repo->ID . '. Authorization failed. Check that your gist token is valid.',
-				Level::WARNING );
+			$this->log(
+				sprintf(
+					__( 'Will not reprocess Repo %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
+					$repo->ID
+				),
+				Level::WARNING
+			);
 		}
 
 		if ( $response->get_error_code() === 'client_error' ) {
-			$this->log( 'Will not reprocess Repo ' . $repo->ID . '. Client error. Please report to the developer.',
-				Level::WARNING );
+			$this->log(
+				sprintf(
+					__( 'Will not reprocess Repo %s. Client error. Please report to the developer.', 'wp-gistpen' ),
+					$repo->ID
+				),
+				Level::WARNING
+			);
 		}
 	}
 }
