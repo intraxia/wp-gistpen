@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Templating;
 
 use Exception;
 use Intraxia\Gistpen\Config;
+use Intraxia\Gistpen\Contract\Translator;
 use LightnCandy\LightnCandy;
 use Intraxia\Gistpen\Contract\Templating;
 use LightnCandy\SafeString;
@@ -24,6 +25,13 @@ class Handlebars implements Templating {
 	protected $client;
 
 	/**
+	 * Translation service.
+	 *
+	 * @var Translator
+	 */
+	protected $translator;
+
+	/**
 	 * App Config service.
 	 *
 	 * @var Config
@@ -33,19 +41,21 @@ class Handlebars implements Templating {
 	/**
 	 * Handlebars constructor.
 	 *
-	 * @param Config $config
-	 * @param string $client
+	 * @param Config     $config
+	 * @param Translator $translator
+	 * @param string     $client
 	 */
-	public function __construct( Config $config, $client ) {
-		$this->config = $config;
-		$this->client = $client;
+	public function __construct( Config $config, Translator $translator, $client ) {
+		$this->config     = $config;
+		$this->client     = $client;
+		$this->translator = $translator;
 	}
 
 	/**
 	 * Generates a string from the handlebars partials and provided data.
 	 *
 	 * @param string $partial
-	 * @param array  $data
+	 * @param array $data
 	 *
 	 * @return string
 	 * @throws \Exception
@@ -70,12 +80,12 @@ class Handlebars implements Templating {
 						return $options['inverse']( $options['data'] );
 					}
 				},
-				'json'       => function( $context ) {
+				'json'       => function ( $context ) {
 					return new SafeString( wp_json_encode( $context ) );
 				},
 				'prism_slug' => function ( $slug ) {
 					$languages = $this->config->get_config_json( 'languages' );
-					$map = $languages['aliases'];
+					$map       = $languages['aliases'];
 
 					if ( array_key_exists( $slug, $map ) ) {
 						$slug = $map[ $slug ];
@@ -83,16 +93,19 @@ class Handlebars implements Templating {
 
 					return $slug;
 				},
-				'link' => function (/* $search_key, $target */) {
+				'link'       => function ( /* $search_key, $target */ ) {
 					return '#';
 				},
-				'join' => function () {
+				'join'       => function () {
 					$args = func_get_args();
 					array_pop( $args );
 					$glue = array_pop( $args );
 
 					return implode( $glue, $args );
-				}
+				},
+				'i18n'       => function ( $key ) {
+					return new SafeString( $this->translator->translate( $key ) );
+				},
 			)
 		) );
 

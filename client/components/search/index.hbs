@@ -1,6 +1,8 @@
 <div class="wpgp-search-container" data-brk-container="search">
     <div class="wpgp-search-form">
-        <label for="wpgp-search-field" class="wpgp-search-label">Search Gistpens</label>
+        <label for="wpgp-search-field" class="wpgp-search-label">
+            {{i18n "search.title"}}
+        </label>
         <input type="search" id="gistpen-search-field"
                class="wpgp-search-field"
                placeholder="keywords" value="{{search.term}}"
@@ -24,9 +26,9 @@
         </ul>
     {{else}}
         {{#if search.term}}
-            <p>Please enter a valid search term.</p>
+            <p>{{i18n "search.invalid"}}</p>
         {{else}}
-            <p>Loading Recent Gistpens...</p>
+            <p>{{i18n "search.loading"}}</p>
         {{/if}}
     {{/if}}
 </div>
