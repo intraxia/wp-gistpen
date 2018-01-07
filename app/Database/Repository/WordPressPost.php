@@ -35,11 +35,23 @@ class WordPressPost extends AbstractRepository {
 		$post      = get_post( $id );
 
 		if ( ! $post || $post->post_type !== $post_type ) {
-			return new WP_Error( 'Invalid id' );
+			return new WP_Error(
+				'invalid_data',
+				sprintf(
+					__( 'post id %s is invalid', 'wp-gistpen' ),
+					$id
+				)
+			);
 		}
 
 		if ( $class === EntityManager::BLOB_CLASS && $post->post_parent === 0 ) {
-			return new WP_Error( 'Invalid id' );
+			return new WP_Error(
+				'invalid_data',
+				sprintf(
+					__( 'post id %s is invalid', 'wp-gistpen' ),
+					$id
+				)
+			);
 		}
 
 		/** @var UsesWordPressPost|Model $model */
@@ -323,7 +335,7 @@ class WordPressPost extends AbstractRepository {
 				}
 			}
 
-			$state_ids = $states->map(function (State $state ) {
+			$state_ids = $states->map(function ( State $state ) {
 				return $state->ID;
 			} )->to_array();
 
@@ -345,13 +357,13 @@ class WordPressPost extends AbstractRepository {
 		$id = $model->get_primary_id();
 
 		if ( ! $id ) {
-			return new WP_Error( __( 'Repo does not exist in the database.' ) );
+			return new WP_Error( __( 'Repo does not exist in the database.', 'wp-gistpen' ) );
 		}
 
 		$result = wp_delete_post( $id, $force );
 
 		if ( ! $result ) {
-			return new WP_Error( __( 'Failed to delete Repo from the Database.' ) );
+			return new WP_Error( __( 'Failed to delete Repo from the Database.', 'wp-gistpen'  ) );
 		}
 
 		if ( $model instanceof Repo ) {

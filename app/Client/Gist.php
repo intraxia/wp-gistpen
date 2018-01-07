@@ -160,7 +160,7 @@ class Gist {
 		$gist = $this->site->get( 'gist' );
 
 		if ( ! $gist['token'] ) {
-			return new WP_Error( 'auth_error', 'No token saved.' );
+			return new WP_Error( 'auth_error', __( 'No token saved.', 'wp-gistpen' ) );
 		}
 
 		return $gist['token'];
@@ -207,15 +207,27 @@ class Gist {
 			// 4XX errors: client-side problems
 			if ( $response->status_code >= 400 && $response->status_code < 500 ) {
 				if ( $response->status_code === 401 ) {
-					return new WP_Error( 'auth_error', 'Authorization error. Message: ' . $json->message );
+					return new WP_Error(
+						'auth_error',
+						sprintf(
+							__( 'Authorization error. Message: %s', 'wp-gistpen' ),
+							$json->message
+						)
+					);
 				}
 
-				return new WP_Error( 'client_error', 'Error sending request. Message: ' . $json->message );
+				return new WP_Error(
+					'client_error',
+					sprintf(
+						__( 'Error sending request. Message: %s', 'wp-gistpen' ),
+						$json->message
+					)
+				);
 			}
 
 			// 5XX error: server-side problems
 			if ( $response->status_code >= 500 ) {
-				return new WP_Error( 'server_error', 'Server error.' );
+				return new WP_Error( 'server_error', __( 'Server error.', 'wp-gistpen' ) );
 			}
 		}
 

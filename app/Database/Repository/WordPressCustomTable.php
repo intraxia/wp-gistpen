@@ -35,7 +35,13 @@ class WordPressCustomTable extends AbstractRepository {
 		);
 
 		if ( ! $result ) {
-			return new WP_Error( 'db_error', $wpdb->last_error );
+			return new WP_Error(
+				'db_error',
+				sprintf(
+					__( 'Query failed with error: %s', 'wp-gistpen' ),
+					$wpdb->last_error
+				)
+			);
 		}
 
 		if ( isset( $result['items'] ) ) {
@@ -79,8 +85,14 @@ class WordPressCustomTable extends AbstractRepository {
 
 		$results = $wpdb->get_results( $query, ARRAY_A );
 
-		if ( ! is_array( $results )  ) {
-			return new WP_Error( 'db_error', $wpdb->last_error );
+		if ( ! is_array( $results ) ) {
+			return new WP_Error(
+				'db_error',
+				sprintf(
+					__( 'Query failed with error: %s', 'wp-gistpen' ),
+					$wpdb->last_error
+				)
+			);
 		}
 
 		foreach ( $results as $result ) {
@@ -124,7 +136,13 @@ class WordPressCustomTable extends AbstractRepository {
 		);
 
 		if ( ! $results ) {
-			return new WP_Error( 'db_error', $wpdb->last_error );
+			return new WP_Error(
+				'db_error',
+				sprintf(
+					__( 'Query failed with error: %s', 'wp-gistpen' ),
+					$wpdb->last_error
+				)
+			);
 		}
 
 		return $this->find( $class, $wpdb->insert_id );
@@ -160,7 +178,13 @@ class WordPressCustomTable extends AbstractRepository {
 		);
 
 		if ( ! $results ) {
-			return new WP_Error( 'db_error', $wpdb->last_error );
+			return new WP_Error(
+				'db_error',
+				sprintf(
+					__( 'Query failed with error: %s', 'wp-gistpen' ),
+					$wpdb->last_error
+				)
+			);
 		}
 
 		return $this->find( $class, $model->get_primary_id() );
@@ -183,7 +207,13 @@ class WordPressCustomTable extends AbstractRepository {
 		);
 
 		if ( ! $results ) {
-			return new WP_Error( 'db_error', $wpdb->last_error );
+			return new WP_Error(
+				'db_error',
+				sprintf(
+					__( 'Query failed with error: %s', 'wp-gistpen' ),
+					$wpdb->last_error
+				)
+			);
 		}
 
 		if ( $model instanceof Run ) {
@@ -193,7 +223,13 @@ class WordPressCustomTable extends AbstractRepository {
 			);
 
 			if ( ! $results ) {
-				return new WP_Error( 'db_error', $wpdb->last_error );
+				return new WP_Error(
+					'db_error',
+					sprintf(
+						__( 'Query failed with error: %s', 'wp-gistpen' ),
+						$wpdb->last_error
+					)
+				);
 			}
 		}
 
@@ -237,7 +273,10 @@ class WordPressCustomTable extends AbstractRepository {
 				return $data;
 			case Klass::MESSAGE:
 				if ( ! isset( $data['run_id'] ) ) {
-					return new WP_Error( 'invalid_data', 'run_id is missing' );
+					return new WP_Error(
+						'invalid_run_id',
+						__( 'run_id was not provided' )
+					);
 				}
 
 				global $wpdb;
@@ -253,7 +292,13 @@ class WordPressCustomTable extends AbstractRepository {
 				);
 
 				if ( ! $count ) {
-					return new WP_Error( 'invalid_data', 'run_id is invalid' );
+					return new WP_Error(
+						'invalid_data',
+						sprintf(
+							__( 'run_id %s is invalid', 'wp-gistpen' ),
+							$data['run_id']
+						)
+					);
 				}
 
 				return $data;

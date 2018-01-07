@@ -91,7 +91,10 @@ abstract class AbstractJob implements Job {
 		if ( ! ( $items instanceof Collection ) ) {
 			return new WP_Error(
 				'invalid_items',
-				"items passed into dispatch or returned by fetch_items for job {$this->slug()} is not a Collection"
+				sprintf(
+					__( 'items passed into dispatch or returned by fetch_items for job %s is not a Collection' , 'wp-gistpen' ),
+					$this->slug()
+				)
 			);
 		}
 
@@ -119,7 +122,13 @@ abstract class AbstractJob implements Job {
 	 */
 	public function process() {
 		if ( $this->is_running() ) {
-			return new WP_Error( 'job_running', "Job {$this->slug()} is already running." );
+			return new WP_Error(
+				'job_running',
+				sprintf(
+					__( 'Job %s is already running.', 'wp-gistpen' ),
+					$this->slug()
+				)
+			);
 		}
 
 		$start_time = time();

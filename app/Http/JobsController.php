@@ -54,7 +54,10 @@ class JobsController {
 		if ( ! $job ) {
 			return new WP_Error(
 				'invalid_job',
-				"Provided job {$name} is invalid.",
+				sprintf(
+					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
+					$name
+				),
 				array( 'status' => 404 )
 			);
 		}
@@ -95,7 +98,10 @@ class JobsController {
 		if ( ! $job ) {
 			return new WP_Error(
 				'invalid_job',
-				"Provided job {$name} is invalid.",
+				sprintf(
+					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
+					$name
+				),
 				array( 'status' => 404 )
 			);
 		}
@@ -133,7 +139,10 @@ class JobsController {
 		if ( ! $job ) {
 			return new WP_Error(
 				'invalid_job',
-				"Provided job {$name} is invalid.",
+				sprintf(
+					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
+					$name
+				),
 				array( 'status' => 404 )
 			);
 		}
@@ -165,7 +174,10 @@ class JobsController {
 		if ( ! $job ) {
 			return new WP_Error(
 				'invalid_job',
-				"Provided job {$name} is invalid.",
+				sprintf(
+					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
+					$name
+				),
 				array( 'status' => 404 )
 			);
 		}
@@ -190,7 +202,10 @@ class JobsController {
 		if ( ! $job ) {
 			return new WP_Error(
 				'invalid_job',
-				"Provided job {$name} is invalid.",
+				sprintf(
+					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
+					$name
+				),
 				array( 'status' => 404 )
 			);
 		}
