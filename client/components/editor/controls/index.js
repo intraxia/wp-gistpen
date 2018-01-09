@@ -37,7 +37,13 @@ export default component({
         onInvisiblesToggle: R.map(
             R.pipe(mapCheckedToString, editorInvisiblesToggleAction)
         ),
-        onUpdateClick: R.map(editorUpdateClickAction),
-        onAddClick: R.map(editorAddClickAction)
+        onUpdateClick: R.map(R.pipe(
+            R.tap(e => e.preventDefault()),
+            editorUpdateClickAction
+        )),
+        onAddClick: R.map(R.pipe(
+            R.tap(e => e.preventDefault()),
+            editorAddClickAction
+        ))
     })
 });
