@@ -4,6 +4,7 @@ gulpfile.babel.js
 node_modules
 test
 .babelrc
+.beaverrc.js
 .editorconfig
 .eslintignore
 .eslintrc.js
