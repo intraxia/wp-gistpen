@@ -8,14 +8,15 @@ gulp.task('scripts', ['scripts:dev', 'scripts:build']);
 
 gulp.task('scripts:dev', callback => {
     webpack(webpackConfig, (err, stats) => {
-        if (err) {
-            throw new gutil.PluginError('webpack:dev', err);
-        }
-
         gutil.log('[webpack:dev]', stats.toString({
             colors: true
         }));
-        callback();
+
+        if (err) {
+            callback(new gutil.PluginError('webpack:dev', err));
+        } else {
+            callback();
+        }
     });
 });
 
@@ -39,13 +40,14 @@ gulp.task('scripts:build', ['scripts:dev'],callback => {
     });
 
     webpack(webpackBuildConfig, (err, stats) => {
-        if (err) {
-            throw new gutil.PluginError('webpack:build', err);
-        }
-
         gutil.log('[webpack:build]', stats.toString({
             colors: true
         }));
-        callback();
+
+        if (err) {
+            callback(new gutil.PluginError('webpack:dev', err));
+        } else {
+            callback();
+        }
     });
 });
