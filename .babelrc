@@ -4,7 +4,7 @@
     "transform-flow-strip-types"
   ],
   "presets": [
-    ["brookjs", { "loose": false, "modules": false }]
+    ["brookjs", { "loose": false, "modules": false, "pragma": "h" }]
   ],
   "env": {
     "production": {

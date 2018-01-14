@@ -6,7 +6,8 @@ module.exports = {
         sourceType: 'module',
         ecmaFeatures: {
             impliedStrict: true,
-            experimentalObjectRestSpread: true
+            experimentalObjectRestSpread: true,
+            jsx: true
         },
     },
     globals: {
@@ -18,14 +19,18 @@ module.exports = {
         browser: true
     },
     plugins: [
-        'flowtype'
+        'flowtype',
+        'react',
     ],
     extends: [
         'valtech'
     ],
     rules: {
+        // default rules overrides
         'eqeqeq': [2, "smart"],
         'rest-spread-spacing': [2, 'never'],
+
+        // flowtype
         'flowtype/boolean-style': ['error', 'boolean'],
         'flowtype/define-flow-type': 'error',
         'flowtype/delimiter-dangle': ['error', 'always'],
@@ -43,11 +48,18 @@ module.exports = {
         'flowtype/space-before-type-colon': ['error', 'always'],
         'flowtype/union-intersection-spacing': ['error', 'always'],
         'flowtype/use-flow-type': 'error',
-        'flowtype/valid-syntax': 'error'
+        'flowtype/valid-syntax': 'error',
+
+        // react
+        'react/jsx-uses-react': 2,
+        'react/jsx-uses-vars': 2,
     },
     settings: {
         flowtype: {
             'onlyFilesWithFlowAnnotation': true
+        },
+        react: {
+            pragma: 'h',
         }
     }
 };
