@@ -20,13 +20,15 @@ const extension = {
     )
         .then(({ theme }) =>
             new Promise(resolve => requestAnimationFrame(() => {
-                if (currentTheme) {
-                    currentTheme.unuse();
+                if (currentTheme !== theme) {
+                    if (currentTheme) {
+                        currentTheme.unuse();
+                    }
+
+                    theme.use();
+
+                    currentTheme = theme;
                 }
-
-                theme.use();
-
-                currentTheme = theme;
 
                 resolve(currentTheme);
             }))
@@ -36,11 +38,7 @@ const extension = {
     )
         .then(({ plugin }) =>
             new Promise(resolve => requestAnimationFrame(() => {
-                if (toggle) {
-                    if (plugins[pluginKey]) {
-                        plugin.unuse();
-                    }
-
+                if (toggle && !plugins[pluginKey]) {
                     plugin.use();
                     plugins[pluginKey] = true;
                 }
@@ -50,7 +48,7 @@ const extension = {
                     plugins[pluginKey] = false;
                 }
 
-                resolve();
+                resolve(plugin);
             }))
         )
 };
