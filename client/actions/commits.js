@@ -9,11 +9,11 @@ export const COMMIT_CLICK = 'COMMIT_CLICK';
 export type CommitClickAction = {
     type : typeof COMMIT_CLICK,
     meta : {
-        key : string;
+        key : string | number;
     };
 };
 
-export const commitClick = (key : string) : CommitClickAction => ({
+export const commitClick = (key : string | number) : CommitClickAction => ({
     type: COMMIT_CLICK,
     meta: { key }
 });
