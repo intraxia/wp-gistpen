@@ -81,11 +81,15 @@ class AssetsServiceProvider extends ServiceProvider {
 		$assets->register_script( array(
 			'type'      => 'web',
 			'condition' => function () {
-				if ( ! is_embed() ) {
+				if ( is_home() || is_archive() ) {
 					return true;
 				}
 
-				return Repo::get_post_type() === get_post_type();
+				if ( Repo::get_post_type() === get_post_type() ) {
+					return true;
+				}
+
+				return has_shortcode( get_post()->post_content, 'gistpen' );
 			},
 			'handle'    => $slug . '-content-script',
 			'src'       => 'assets/js/content',
