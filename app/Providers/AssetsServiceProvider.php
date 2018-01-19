@@ -89,7 +89,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			},
 			'handle'    => $slug . '-content-script',
 			'src'       => 'assets/js/content',
-			'footer'    => false,
+			'footer'    => true,
 			'localize'  => function() {
 				/** @var Params $content */
 				$params= $this->container->fetch( 'params' );
