@@ -56,6 +56,10 @@ Features include:
 
 Your PHP version should be 5.4+, and you must be running WordPress v4.6+. This is because WP-Gistpen relies on the WP-API infrastructure.
 
+### How do I create an archive page for my Gistpens? ###
+
+Go to the "Pages" screen and create a new, blank page with the name "Gistpens" and click publish. That URL will now display all of your Gistpens. You can link to this page in the menu to direct users to your Gistpens archive page. Just make sure the slug of the page is "gistpens".
+
 ### How do I create a Gistpen and insert it into the post? ###
 
 To add a new Gistpen, go to Gistpens -> Add New, and add your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
