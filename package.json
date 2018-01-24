@@ -42,7 +42,7 @@
     "eslint-config-valtech": "^1.0.0",
     "eslint-loader": "^1.5.0",
     "eslint-plugin-flowtype": "^2.41.0",
-    "flow-bin": "^0.63.1",
+    "flow-bin": "^0.64.0",
     "flow-status-webpack-plugin": "^0.1.7",
     "gulp": "3.9",
     "gulp-sort": "^2.0.0",
