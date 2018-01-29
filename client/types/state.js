@@ -13,7 +13,7 @@ export type Blob = {
     filename : string;
     code : string;
     language : Language;
-    ID? : number;
+    ID : number;
     size? : number;
     raw_url? : string;
     edit_url? : string;

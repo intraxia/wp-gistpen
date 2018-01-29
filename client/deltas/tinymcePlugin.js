@@ -1,22 +1,24 @@
 // @flow
+// @jsx h
 /* global jQuery, tinymce */
 import type { Emitter, Observable } from 'kefir';
-import type { TinyMCEAction as Action, TinyMCEEditor as Editor, TinyMCEState } from '../types';
+import type { SearchProps } from '../components';
+import type { TinyMCEState } from '../reducers';
+import type { TinyMCEAction as Action, TinyMCEEditor as Editor, Blob } from '../types';
 import R from 'ramda';
-import { merge, stream } from 'kefir';
-import { ofType } from 'brookjs';
+import { Kefir, ofType } from 'brookjs';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK } from '../actions';
-import { SearchComponent } from '../components';
-import { selectSearchProps as selectProps } from '../selectors';
-import template from '../components/search/index.hbs';
+import { Search } from '../components';
+import { h, Aggregator } from 'brookjs-silt';
+import { render, unmountComponentAtNode } from 'react-dom';
 
-const createTinyMCEPlugin = () : Observable<Editor> => stream((emitter : Emitter<Editor, void>) => {
+const createTinyMCEPlugin = () : Observable<Editor> => Kefir.stream((emitter : Emitter<Editor, void>) => {
     tinymce.PluginManager.add('wp_gistpen', emitter.value);
 });
 
-const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
-    stream((emitter : Emitter<Action, void>) => {
+const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> =>Kefir.merge([
+    Kefir.stream((emitter : Emitter<Action, void>) => {
         // Bind command to stream.
         editor.addCommand('wpgp_insert', R.pipe(tinymceButtonClickAction, emitter.value));
 
@@ -28,7 +30,7 @@ const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<
         });
     }),
     state$.sampledBy(actions$.thru(ofType(TINYMCE_POPUP_INSERT_CLICK)))
-        .flatMap((state : TinyMCEState) => stream((emitter : Emitter<Action, void>) => {
+        .flatMap((state : TinyMCEState) => Kefir.stream((emitter : Emitter<Action, void>) => {
             if (state.search.selection != null) {
                 editor.insertContent('[gistpen id="' + state.search.selection + '"]');
             }
@@ -61,7 +63,7 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, El
         ]
     });
 
-    const $el = jQuery(template({}));
+    const $el = jQuery('<div class="app"></div>');
 
     e.$el.find(`#${id}-body`).append($el);
 
@@ -71,12 +73,31 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, El
     return () : void => void e.close();
 });
 
-const createTinyMCEWindow = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => stream(emitTinyMCEWindow(editor))
+const createTinyMCEWindow = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => Kefir.stream(emitTinyMCEWindow(editor))
     // This is kind of abusive, b/c it's not an "error", but it's another channel to use...
-    .flatMapErrors((el : Element) => SearchComponent(el, selectProps(state$)))
+    .flatMapErrors((el: Element) => Kefir.stream(emitter => {
+        render(
+            <Aggregator action$={action$ => action$.observe(emitter)}>
+                <Search stream$={state$.map((state: TinyMCEState): SearchProps => ({
+                    loading: state.ajax.running,
+                    term: state.search.term,
+                    results: {
+                        order: state.search.results.map((blob: Blob) => blob.ID),
+                        dict: state.search.results.reduce((acc: { [key: number | string]: Blob }, blob: Blob) => ({
+                            ...acc,
+                            [blob.ID]: blob
+                        }), {})
+                    }
+                }))}/>
+            </Aggregator>,
+            el
+        );
+
+        return () => unmountComponentAtNode(el);
+    }))
     .takeUntilBy(actions$.thru(ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK)));
 
-const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => merge([
+const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => Kefir.merge([
     createTinyMCEButton(actions$, state$, editor),
     actions$.thru(ofType(TINYMCE_BUTTON_CLICK))
         .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, state$, editor))
