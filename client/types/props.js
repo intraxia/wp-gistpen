@@ -1,5 +1,5 @@
 // @flow
-import type { EditorInstance, EditorState, TinyMCEState,
+import type { EditorInstance, EditorState,
     HasGlobalsState, HasRepo, HasEditorState, HasRouteState, GlobalsState,
     PrismState, GistState, JobsState } from './state';
 import type { Author, Job, Route, Run } from './domain';
@@ -27,4 +27,3 @@ export type EditorInstanceProps = {
     instance : EditorInstance;
     editor : EditorState;
 };
-export type SearchProps = TinyMCEState;

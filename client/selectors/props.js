@@ -2,7 +2,7 @@
 import type { Observable } from 'kefir';
 import type {
     EditorPageState, EditorPageProps, SettingsState, SettingsProps,
-    TinyMCEState, SearchProps, Job, Run, Message, CommitProps, CommitState
+    Job, Run, Message, CommitProps, CommitState
 } from '../types';
 import R from 'ramda';
 
@@ -67,7 +67,3 @@ export const selectEditorProps = (state$ : Observable<EditorPageState>) : Observ
         })),
         selectedCommit: commits.instances.find(instance => instance.ID === commits.selected)
     }));
-
-export function selectSearchProps(state$ : Observable<TinyMCEState>) : Observable<SearchProps> {
-    return state$;
-}

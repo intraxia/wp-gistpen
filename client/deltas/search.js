@@ -1,6 +1,7 @@
 // @flow
 import type { Observable } from 'kefir';
-import type { Action, TinyMCEState } from '../types';
+import type { TinyMCEState } from '../reducers';
+import type { Action } from '../types';
 import type { ObsResponse } from '../services';
 import R from 'ramda';
 import { ajax$ } from '../services';

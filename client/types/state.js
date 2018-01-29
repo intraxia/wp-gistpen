@@ -113,11 +113,6 @@ export type CommitsState = {
     selected : ?number;
 };
 
-export type SearchState = {
-    term : string;
-    selection? : number;
-};
-
 export type MessagesState = Array<Message>;
 
 export type RunsState = Array<Run>;
@@ -142,10 +137,6 @@ export type HasEditorState = {
     editor : EditorState;
 };
 
-export type HasSearchState = {
-    search : SearchState;
-};
-
 export type SettingsState = {
     globals : GlobalsState;
     prism : PrismState;
@@ -164,5 +155,3 @@ export type EditorPageState = {
     commits : CommitsState;
     route : Route;
 };
-
-export type TinyMCEState = HasGlobalsState & HasSearchState;
