@@ -20,6 +20,9 @@
             },
             {
               "Node": true
+            },
+            {
+              "SyntheticInputEvent": true
             }
           ]
         }]
@@ -37,6 +40,9 @@
             },
             {
               "Node": true
+            },
+            {
+              "SyntheticInputEvent": true
             }
           ]
         }],
