@@ -37,7 +37,7 @@
     "chai": "^4.0.2",
     "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.28.8",
-    "dredd": "^4.9.2",
+    "dredd": "^5.0.0",
     "eslint": "^4.14.0",
     "eslint-config-valtech": "^1.0.0",
     "eslint-loader": "^1.5.0",
