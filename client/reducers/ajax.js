@@ -1,4 +1,5 @@
 // @flow
+import type { Reducer } from 'redux';
 import { combineActionReducers } from 'brookjs';
 
 export type AjaxState = {
@@ -13,4 +14,4 @@ const cond = [
 
 ];
 
-export default combineActionReducers(cond, defaults);
+export const ajaxReducer : Reducer<AjaxState, *> = combineActionReducers(cond, defaults);
