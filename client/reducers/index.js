@@ -1,6 +1,6 @@
 // @flow
-import R from 'ramda';
 
+export { default as ajax, AjaxState } from './ajax';
 export { default as authors } from './authors';
 export { default as editor } from './editor';
 export { default as gist } from './gist';
@@ -13,4 +13,4 @@ export { default as jobs } from './jobs';
 export { default as runs } from './runs';
 export { default as messages } from './messages';
 
-export const globals = R.pipe(R.defaultTo({}), R.identity);
+export const globals = <T>(x : T) => (x || {});
