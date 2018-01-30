@@ -11,12 +11,12 @@ import { searchInputAction, searchResultSelectionChangeAction } from '../actions
 type ID = number | string;
 
 type ResultsProps = {
-    order : Array<ID>;
-    dict : {
-        [key : ID] : {
-            filename : string;
-        },
-    };
+    order: Array<ID>;
+    dict: {
+        [key: ID]: {
+            filename: string
+        }
+    }
 };
 
 export type SearchProps = {
@@ -25,10 +25,10 @@ export type SearchProps = {
     loading: boolean
 };
 
-const onRadioChange = (evt$ : Observable<SyntheticInputEvent<*>>) : Observable<SearchResultSelectionChangeAction> => evt$
-    .map((e : SyntheticInputEvent<*>) => searchResultSelectionChangeAction(e.target.value));
+const onRadioChange = (evt$: Observable<SyntheticInputEvent<*>>): Observable<SearchResultSelectionChangeAction> => evt$
+    .map((e: SyntheticInputEvent<*>) => searchResultSelectionChangeAction(e.target.value));
 
-const HasResults = ({ stream$ } : { stream$ : Observable<ResultsProps>, }) => (
+const HasResults = ({ stream$ }: { stream$: Observable<ResultsProps> }) => (
     <Collector>
         <ul className={'wpgp-search-results'}>
             {stream$.thru(loop((child$, id) => (
@@ -51,12 +51,12 @@ const NoResults = () => (
     <p>{i18n('search.results.none')}</p>
 );
 
-const onSearchTyping = (evt$ : Observable<SyntheticInputEvent<*>>) : Observable<SearchInputAction> => evt$
-    .map((e : SyntheticInputEvent<*>) : string => e.target.value)
+const onSearchTyping = (evt$: Observable<SyntheticInputEvent<*>>): Observable<SearchInputAction> => evt$
+    .map((e: SyntheticInputEvent<*>): string => e.target.value)
     .debounce(300)
     .map(searchInputAction);
 
-export const Search = ({ stream$ } : { stream$ : Observable<SearchProps>, }) : Node => (
+export const Search = ({ stream$ }: { stream$: Observable<SearchProps> }): Node => (
     <Collector>
         <div className={'wpgp-search-container'}>
             <div className="wpgp-search-form">

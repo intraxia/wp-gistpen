@@ -9,7 +9,7 @@ import { Search } from './Search';
 storiesOf('Search', module)
     .add('without results; not loading', () => (
         <Aggregator action$={action$ => action$.observe(a => action('Search')(a))}>
-            <Search stream$={Kefir.constant({ loading: false, term: '', results: { order: [], dict: {} }})}/>
+            <Search stream$={Kefir.constant({ loading: false, term: '', results: { order: [], dict: {} } })}/>
         </Aggregator>
     ))
     .add('with results; not loading', () => (
@@ -33,7 +33,7 @@ storiesOf('Search', module)
     ))
     .add('without results; loading', () => (
         <Aggregator action$={action$ => action$.observe(a => action('Search')(a))}>
-            <Search stream$={Kefir.constant({ loading: true, term: '', results: { order: [], dict: {} }})}/>
+            <Search stream$={Kefir.constant({ loading: true, term: '', results: { order: [], dict: {} } })}/>
         </Aggregator>
     ))
     .add('with results; loading', () => (

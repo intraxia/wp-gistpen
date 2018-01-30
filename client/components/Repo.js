@@ -6,24 +6,24 @@ import { Fragment } from 'react';
 import Blob from './Blob';
 
 type RepoProps = {
-    blobs : {
-        order : Array<number>;
-        dict : {
-            [key : number] : {
-                code : string;
-                filename : string;
-                language : string;
-            };
-        };
+    blobs: {
+        order: Array<number>;
+        dict: {
+            [key: number]: {
+                code: string;
+                filename: string;
+                language: string
+            }
+        }
     };
-    prism : {
-        theme : string;
-        'line-numbers' : number;
-        'show-invisibles' : Toggle;
-    };
+    prism: {
+        theme: string;
+        'line-numbers': number;
+        'show-invisibles': Toggle
+    }
 };
 
-export default ({ stream$ } : { stream$ : Observable<RepoProps>, }) => (
+export default ({ stream$ }: { stream$: Observable<RepoProps> }) => (
     <Fragment>
         {/* $FlowFixMe */}
         <div>

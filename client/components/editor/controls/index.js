@@ -8,13 +8,13 @@ import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggle
     editorUpdateClickAction, editorAddClickAction } from '../../../actions';
 import template from './index.hbs';
 
-const mapCheckedToString : ((e : Event) => Toggle) = R.ifElse(
+const mapCheckedToString : ((e: Event) => Toggle) = R.ifElse(
     R.path(['target', 'checked']),
     R.always('on'),
     R.always('off')
 );
 
-const getTargetValue : ((e : Event) => string) = R.path(['target', 'value']);
+const getTargetValue : ((e: Event) => string) = R.path(['target', 'value']);
 
 export default component({
     render: render(template),

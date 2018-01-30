@@ -9,7 +9,7 @@ const defaults : AuthorsState = {
 };
 
 const cond = [
-    [FETCH_AUTHOR_SUCCEEDED, (state : AuthorsState, { payload } : FetchAuthorSucceeded) => ({
+    [FETCH_AUTHOR_SUCCEEDED, (state: AuthorsState, { payload }: FetchAuthorSucceeded) => ({
         ...state,
         items: {
             ...state.items,

@@ -15,8 +15,8 @@ export default component({
     children: children({
         blob: {
             factory: BlobComponent,
-            modifyChildProps: (props$ : Observable<EditorPageProps>) : Observable<HasPrismState> =>
-                props$.map((props : EditorPageProps) : HasPrismState => ({
+            modifyChildProps: (props$: Observable<EditorPageProps>): Observable<HasPrismState> =>
+                props$.map((props: EditorPageProps): HasPrismState => ({
                     prism: {
                         theme: props.editor.theme,
                         'show-invisibles': props.editor.invisibles === 'on',

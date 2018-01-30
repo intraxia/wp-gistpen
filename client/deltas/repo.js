@@ -9,9 +9,9 @@ import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction, repoSaveSucc
 const repoProps = R.pick(['description', 'status', 'password', 'sync']);
 const blobProps = R.pick(['filename', 'code', 'language']);
 
-const makeBody = (state : EditorPageState) : string => JSON.stringify({
+const makeBody = (state: EditorPageState): string => JSON.stringify({
     ...repoProps(state.editor),
-    blobs: state.editor.instances.map((instance : EditorInstance) : Blob => {
+    blobs: state.editor.instances.map((instance: EditorInstance): Blob => {
         const blob = blobProps(instance);
 
         if (instance.key.indexOf('new') === -1) {
@@ -33,9 +33,9 @@ const onlyEditorUpdateClicks = R.filter(R.pipe(
  * @param {Observable<T,U>} state$ - Stream of states.
  * @returns {Observable<T, U>} Options API stream.
  */
-export default function repoDelta(action$ : Observable<Action>, state$ : Observable<EditorPageState>) : Observable<Action> {
+export default function repoDelta(action$: Observable<Action>, state$: Observable<EditorPageState>): Observable<Action> {
     return state$.sampledBy(onlyEditorUpdateClicks(action$))
-        .flatMapLatest((state : EditorPageState) : Observable<ObsResponse> => ajax$(state.repo.rest_url, {
+        .flatMapLatest((state: EditorPageState): Observable<ObsResponse> => ajax$(state.repo.rest_url, {
             method: 'PUT',
             body: makeBody(state),
             credentials: 'include',
@@ -44,7 +44,7 @@ export default function repoDelta(action$ : Observable<Action>, state$ : Observa
                 'Content-Type': 'application/json'
             }
         }))
-        .flatMap((response : ObsResponse) => response.json())
-        .flatten((response : RepoApiResponse) : Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
+        .flatMap((response: ObsResponse) => response.json())
+        .flatten((response: RepoApiResponse): Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
         .mapErrors(ajaxFailedAction);
 }

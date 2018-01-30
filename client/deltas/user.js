@@ -16,7 +16,7 @@ import { selectUserAjaxOpts } from '../selectors';
  * @param {Observable<EditorPageState>} state$ - Stream of store states.
  * @returns {Observable<Action>} Stream of actions.
  */
-export default function userDelta(actions$ : Observable<Action>, state$ : Observable<EditorPageState>) : Observable<Action> {
+export default function userDelta(actions$: Observable<Action>, state$: Observable<EditorPageState>): Observable<Action> {
     const editorWidthChange$ = actions$.filter(
         R.propEq('type', EDITOR_WIDTH_CHANGE)
     );
@@ -41,8 +41,8 @@ export default function userDelta(actions$ : Observable<Action>, state$ : Observ
     ]);
 
     return state$.sampledBy(user$).debounce(2500)
-        .flatMapLatest((state : EditorPageState) : Observable<ObsResponse> => ajax$(state.globals.root + 'me', selectUserAjaxOpts(state)))
-        .flatMap((response : ObsResponse) => response.json())
-        .flatten((response : UserApiResponse) : Array<Action> => [ajaxFinishedAction(response), userSaveSucceededAction(response)])
+        .flatMapLatest((state: EditorPageState): Observable<ObsResponse> => ajax$(state.globals.root + 'me', selectUserAjaxOpts(state)))
+        .flatMap((response: ObsResponse) => response.json())
+        .flatten((response: UserApiResponse): Array<Action> => [ajaxFinishedAction(response), userSaveSucceededAction(response)])
         .mapErrors(ajaxFailedAction);
 }

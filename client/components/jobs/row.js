@@ -5,7 +5,7 @@ import { jobDispatchClick } from '../../actions';
 
 export default component({
     events: events({
-        onStartClick: (evt$ : Observable<Event>) => evt$
+        onStartClick: (evt$: Observable<Event>) => evt$
             .map(jobDispatchClick)
             .debounce(200)
     })

@@ -12,7 +12,7 @@ import { ajax$ } from '../../services';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
-const el = (doc : Document) => fromCallback((callback : (value : null | HTMLElement) => void) =>
+const el = (doc: Document) => fromCallback((callback: (value: null | HTMLElement) => void) =>
     callback(doc.querySelector(`[${containerAttribute('settings')}]`))
 );
 

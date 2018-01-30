@@ -13,13 +13,13 @@ export * from './tinymce';
 export const INIT = 'INIT';
 
 export type InitAction<I> = {
-    type : typeof INIT;
-    payload : { initial : I }
+    type: typeof INIT;
+    payload: { initial: I }
 };
 
-export const init = <I>(initial : I) : InitAction<I> => ({
+export const init = <I>(initial: I): InitAction<I> => ({
     type: INIT,
     payload: { initial }
 });
 
-export type Action<I> = InitAction<I> | { type : string };
+export type Action<I> = InitAction<I>;

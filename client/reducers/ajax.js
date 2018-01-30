@@ -3,7 +3,7 @@ import type { Reducer } from 'redux';
 import { combineActionReducers } from 'brookjs';
 
 export type AjaxState = {
-    running : boolean;
+    running: boolean
 };
 
 const defaults : AjaxState = {

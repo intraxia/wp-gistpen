@@ -10,17 +10,17 @@ const defaults : PrismState = {
     'show-invisibles': false
 };
 
-const themeChangeReducer = (state : PrismState, action : ThemeChangeAction) : PrismState => ({
+const themeChangeReducer = (state: PrismState, action: ThemeChangeAction): PrismState => ({
     ...state,
     theme: action.payload.value
 });
 
-const lineNumbersChangeReducer = (state : PrismState, action : LineNumbersChangeAction) : PrismState => ({
+const lineNumbersChangeReducer = (state: PrismState, action: LineNumbersChangeAction): PrismState => ({
     ...state,
     'line-numbers': action.payload.value
 });
 
-const showInvisiblesChangeReducer = (state : PrismState, action : ShowInvisiblesChangeAction) : PrismState => ({
+const showInvisiblesChangeReducer = (state: PrismState, action: ShowInvisiblesChangeAction): PrismState => ({
     ...state,
     'show-invisibles': action.payload.value
 });

@@ -14,280 +14,280 @@ import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     EDITOR_MAKE_NEWLINE, EDITOR_REDO, EDITOR_UNDO, ROUTE_CHANGE } from '../actions';
 
 export type HasMetaKey = {
-    meta : {
-        key : string;
-    };
+    meta: {
+        key: string
+    }
 };
 
 export type JobDispatchClickAction = {
-    type : string;
+    type: string
 };
 
 export type JobDispatchStarted = {
-    type : string;
+    type: string
 };
 
 export type JobDispatchSucceeded = {
-    type : string;
-    payload : {
-        response : Run;
-    };
+    type: string;
+    payload: {
+        response: Run
+    }
 };
 
 export type JobDispatchFailed = {
-    type : string;
-    payload : TypeError;
-    error : true;
+    type: string;
+    payload: TypeError;
+    error: true
 };
 
 export type EditorValue = {
-    code : string;
-    cursor : Cursor;
+    code: string;
+    cursor: Cursor
 };
 
 export type EditorIndentValue = EditorValue & {
-    inverse : boolean;
+    inverse: boolean
 };
 
 export type EditorAddClickAction = {
-    type : typeof EDITOR_ADD_CLICK;
+    type: typeof EDITOR_ADD_CLICK
 };
 
 
 export type EditorCursorMoveAction = {
-    type : typeof EDITOR_CURSOR_MOVE;
-    payload : {
-        cursor : Cursor;
-    };
+    type: typeof EDITOR_CURSOR_MOVE;
+    payload: {
+        cursor: Cursor
+    }
 };
 
 export type EditorDeleteClickAction = {
-    type : typeof EDITOR_DELETE_CLICK;
+    type: typeof EDITOR_DELETE_CLICK
 };
 
 export type EditorDescriptionChangeAction = {
-    type : typeof EDITOR_DESCRIPTION_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof EDITOR_DESCRIPTION_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type EditorFilenameChangeAction = {
-    type : typeof EDITOR_FILENAME_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof EDITOR_FILENAME_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type EditorIndentAction = {
-    type : typeof EDITOR_INDENT;
-    payload : EditorIndentValue;
+    type: typeof EDITOR_INDENT;
+    payload: EditorIndentValue
 };
 
 export type EditorInvisiblesToggleAction = {
-    type : typeof EDITOR_INVISIBLES_TOGGLE;
-    payload : {
-        value : Toggle;
-    };
+    type: typeof EDITOR_INVISIBLES_TOGGLE;
+    payload: {
+        value: Toggle
+    }
 };
 
 export type EditorLanguageChangeAction = {
-    type : typeof EDITOR_LANGUAGE_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof EDITOR_LANGUAGE_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type EditorMakeCommentAction = {
-    type : typeof EDITOR_MAKE_COMMENT;
-    payload : EditorValue;
+    type: typeof EDITOR_MAKE_COMMENT;
+    payload: EditorValue
 };
 
 export type EditorMakeNewLineAction = {
-    type : typeof EDITOR_MAKE_NEWLINE;
-    payload : EditorValue;
+    type: typeof EDITOR_MAKE_NEWLINE;
+    payload: EditorValue
 };
 
 export type EditorOptionsClickAction = {
-    type : typeof EDITOR_OPTIONS_CLICK;
+    type: typeof EDITOR_OPTIONS_CLICK
 };
 
 export type EditorRedoAction = {
-    type : typeof EDITOR_REDO;
+    type: typeof EDITOR_REDO
 };
 
 export type EditorStatusChangeAction = {
-    type : typeof EDITOR_STATUS_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof EDITOR_STATUS_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type EditorSyncChangeAction = {
-    type : typeof EDITOR_SYNC_TOGGLE;
-    payload : {
-        value : Toggle;
-    };
+    type: typeof EDITOR_SYNC_TOGGLE;
+    payload: {
+        value: Toggle
+    }
 };
 
 export type EditorTabsToggleAction = {
-    type : typeof EDITOR_TABS_TOGGLE;
-    payload : {
-        value : string;
-    };
+    type: typeof EDITOR_TABS_TOGGLE;
+    payload: {
+        value: string
+    }
 };
 
 export type EditorThemeChangeAction = {
-    type : typeof EDITOR_THEME_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof EDITOR_THEME_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type EditorUndoAction = {
-    type : typeof EDITOR_UNDO;
+    type: typeof EDITOR_UNDO
 };
 
 export type EditorUpdateClickAction = {
-    type : typeof EDITOR_UPDATE_CLICK;
+    type: typeof EDITOR_UPDATE_CLICK
 };
 
 export type EditorValueChangeAction = {
-    type : typeof EDITOR_VALUE_CHANGE;
-    payload : EditorValue;
+    type: typeof EDITOR_VALUE_CHANGE;
+    payload: EditorValue
 };
 
 export type EditorWidthChangeAction = {
-    type : typeof EDITOR_WIDTH_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof EDITOR_WIDTH_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type CommitsFetchSucceededAction = {
-    type : string;
-    payload : {
-        response : Array<{}>;
-    };
+    type: string;
+    payload: {
+        response: Array<{}>
+    }
 };
 
 export type JobFetchSucceededAction = {
-    type : string;
-    payload : {
-        response : Job;
-    };
+    type: string;
+    payload: {
+        response: Job
+    }
 };
 
 export type RunsFetchSucceededAction = {
-    type : string;
-    payload : {
-        response : Array<Run>;
-    };
+    type: string;
+    payload: {
+        response: Array<Run>
+    }
 };
 
 export type MessagesFetchSucceededAction = {
-    type : string;
-    payload : {
-        response : {
-            status : RunStatus;
-            messages : Array<Message>;
-        };
-    };
+    type: string;
+    payload: {
+        response: {
+            status: RunStatus;
+            messages: Array<Message>
+        }
+    }
 };
 
 export type GistTokenChangeAction = {
-    type : typeof GIST_TOKEN_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof GIST_TOKEN_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type RouteChangeAction = {
-    type : typeof ROUTE_CHANGE;
-    payload : Route;
+    type: typeof ROUTE_CHANGE;
+    payload: Route
 };
 
 export type ThemeChangeAction = {
-    type : typeof THEME_CHANGE;
-    payload : {
-        value : string;
-    };
+    type: typeof THEME_CHANGE;
+    payload: {
+        value: string
+    }
 };
 
 export type LineNumbersChangeAction = {
-    type : typeof LINE_NUMBERS_CHANGE;
-    payload : {
-        value : boolean;
-    };
+    type: typeof LINE_NUMBERS_CHANGE;
+    payload: {
+        value: boolean
+    }
 };
 
 export type ShowInvisiblesChangeAction = {
-    type : typeof SHOW_INVISIBLES_CHANGE;
-    payload : {
-        value : boolean;
-    };
+    type: typeof SHOW_INVISIBLES_CHANGE;
+    payload: {
+        value: boolean
+    }
 };
 
 export type AjaxFinishedAction = {
-    type : typeof AJAX_FINISHED;
-    payload : {
-        response : ApiResponse;
-    };
+    type: typeof AJAX_FINISHED;
+    payload: {
+        response: ApiResponse
+    }
 };
 
 export type AjaxFailedAction = {
-    type : typeof AJAX_FAILED;
-    payload : {
-        error : Error;
+    type: typeof AJAX_FAILED;
+    payload: {
+        error: Error
     };
-    error : true;
+    error: true
 };
 
 export type RepoSaveSucceededAction = {
-    type : typeof REPO_SAVE_SUCCEEDED;
-    payload : {
-        response : RepoApiResponse;
-    };
+    type: typeof REPO_SAVE_SUCCEEDED;
+    payload: {
+        response: RepoApiResponse
+    }
 };
 
 export type UserSaveSucceededAction = {
-    type : typeof USER_SAVE_SUCCEEDED;
-    payload : {
-        response : UserApiResponse;
-    };
+    type: typeof USER_SAVE_SUCCEEDED;
+    payload: {
+        response: UserApiResponse
+    }
 };
 
 export type TinyMCEButtonClickAction = {
-    type : typeof TINYMCE_BUTTON_CLICK;
+    type: typeof TINYMCE_BUTTON_CLICK
 };
 
 export type TinyMCEPopupInsertClickAction = {
-    type : typeof TINYMCE_POPUP_INSERT_CLICK;
+    type: typeof TINYMCE_POPUP_INSERT_CLICK
 };
 
 export type TinyMCEPopupCloseClickAction = {
-    type : typeof TINYMCE_POPUP_CLOSE_CLICK;
+    type: typeof TINYMCE_POPUP_CLOSE_CLICK
 };
 
 export type SearchInputAction = {
-    type : typeof SEARCH_INPUT;
-    payload : {
-        value : string;
-    };
+    type: typeof SEARCH_INPUT;
+    payload: {
+        value: string
+    }
 };
 
 export type SearchResultsSucceededAction = {
-    type : typeof SEARCH_RESULTS_SUCCEEDED;
-    payload : {
-        response : Array<Blob>;
-    };
+    type: typeof SEARCH_RESULTS_SUCCEEDED;
+    payload: {
+        response: Array<Blob>
+    }
 };
 
 export type SearchResultSelectionChangeAction = {
-    type : typeof SEARCH_RESULT_SELECTION_CHANGE,
-    payload : {
-        selection : string;
-    };
+    type: typeof SEARCH_RESULT_SELECTION_CHANGE,
+    payload: {
+        selection: string
+    }
 };
 
 export type SettingsAction = GistTokenChangeAction | RouteChangeAction;

@@ -39,66 +39,66 @@ const defaults = {
 };
 
 export default combineActionReducers([
-    [EDITOR_OPTIONS_CLICK, (state : EditorState) => ({
+    [EDITOR_OPTIONS_CLICK, (state: EditorState) => ({
         ...state,
         optionsOpen: !state.optionsOpen
     })],
-    [EDITOR_THEME_CHANGE, (state : EditorState, { payload } : EditorThemeChangeAction) => ({
+    [EDITOR_THEME_CHANGE, (state: EditorState, { payload }: EditorThemeChangeAction) => ({
         ...state,
         theme: payload.value
     })],
-    [EDITOR_TABS_TOGGLE, (state : EditorState, { payload } : EditorTabsToggleAction) => ({
+    [EDITOR_TABS_TOGGLE, (state: EditorState, { payload }: EditorTabsToggleAction) => ({
         ...state,
         tabs: payload.value
     })],
-    [EDITOR_WIDTH_CHANGE, (state : EditorState, { payload } : EditorWidthChangeAction) => ({
+    [EDITOR_WIDTH_CHANGE, (state: EditorState, { payload }: EditorWidthChangeAction) => ({
         ...state,
         width: payload.value
     })],
-    [EDITOR_INVISIBLES_TOGGLE, (state : EditorState, { payload } : EditorInvisiblesToggleAction) => ({
+    [EDITOR_INVISIBLES_TOGGLE, (state: EditorState, { payload }: EditorInvisiblesToggleAction) => ({
         ...state,
         invisibles: payload.value
     })],
-    [EDITOR_DESCRIPTION_CHANGE, (state : EditorState, { payload } : EditorDescriptionChangeAction) => ({
+    [EDITOR_DESCRIPTION_CHANGE, (state: EditorState, { payload }: EditorDescriptionChangeAction) => ({
         ...state,
         description: payload.value
     })],
-    [EDITOR_STATUS_CHANGE, (state : EditorState, { payload } : EditorStatusChangeAction) => ({
+    [EDITOR_STATUS_CHANGE, (state: EditorState, { payload }: EditorStatusChangeAction) => ({
         ...state,
         status: payload.value
     })],
-    [EDITOR_SYNC_TOGGLE, (state : EditorState, { payload } : EditorSyncChangeAction) => ({
+    [EDITOR_SYNC_TOGGLE, (state: EditorState, { payload }: EditorSyncChangeAction) => ({
         ...state,
         sync: payload.value
     })],
-    [EDITOR_ADD_CLICK, (state : EditorState) => ({
+    [EDITOR_ADD_CLICK, (state: EditorState) => ({
         ...state,
         instances: [...state.instances, {
             ...defaultInstance,
             key: createUniqueKey(state.instances)
         }]
     })],
-    [EDITOR_DELETE_CLICK, (state : EditorState, { meta } : EditorDeleteClickAction & HasMetaKey) => ({
+    [EDITOR_DELETE_CLICK, (state: EditorState, { meta }: EditorDeleteClickAction & HasMetaKey) => ({
         ...state,
         instances: rejectWithKey(meta.key, state.instances)
     })],
-    [EDITOR_CURSOR_MOVE, (state : EditorState, { payload, meta } : EditorCursorMoveAction & HasMetaKey) => mapInstanceWithKey(
+    [EDITOR_CURSOR_MOVE, (state: EditorState, { payload, meta }: EditorCursorMoveAction & HasMetaKey) => mapInstanceWithKey(
         state,
         meta.key,
-        (instance : EditorInstance)=> ({
+        (instance: EditorInstance)=> ({
             ...instance,
             cursor: payload.cursor
         })
     )],
-    [EDITOR_FILENAME_CHANGE, (state : EditorState, { payload, meta } : EditorFilenameChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+    [EDITOR_FILENAME_CHANGE, (state: EditorState, { payload, meta }: EditorFilenameChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance: EditorInstance) => ({
         ...instance,
         filename: payload.value
     }))],
-    [EDITOR_LANGUAGE_CHANGE, (state : EditorState, { payload, meta } : EditorLanguageChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+    [EDITOR_LANGUAGE_CHANGE, (state: EditorState, { payload, meta }: EditorLanguageChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance: EditorInstance) => ({
         ...instance,
         language: payload.value
     }))],
-    [EDITOR_INDENT, (state : EditorState, { payload, meta } : EditorIndentAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+    [EDITOR_INDENT, (state: EditorState, { payload, meta }: EditorIndentAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance: EditorInstance) => ({
         ...instance,
         ...indent(payload, { tabs: state.tabs, width: state.width }),
         history: {
@@ -109,7 +109,7 @@ export default combineActionReducers([
             })
         }
     }))],
-    [EDITOR_MAKE_NEWLINE, (state : EditorState, { payload, meta } : EditorMakeNewLineAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+    [EDITOR_MAKE_NEWLINE, (state: EditorState, { payload, meta }: EditorMakeNewLineAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance: EditorInstance) => ({
         ...instance,
         ...makeNewline(payload),
         history: {
@@ -120,7 +120,7 @@ export default combineActionReducers([
             })
         }
     }))],
-    [EDITOR_VALUE_CHANGE, (state : EditorState, { payload, meta } : EditorValueChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance : EditorInstance) => ({
+    [EDITOR_VALUE_CHANGE, (state: EditorState, { payload, meta }: EditorValueChangeAction & HasMetaKey) => mapInstanceWithKey(state, meta.key, (instance: EditorInstance) => ({
         ...instance,
         code: payload.code,
         cursor: payload.cursor,
@@ -132,7 +132,7 @@ export default combineActionReducers([
             })
         }
     }))],
-    [REPO_SAVE_SUCCEEDED, (state : EditorState, { payload } : RepoSaveSucceededAction) : EditorState => {
+    [REPO_SAVE_SUCCEEDED, (state: EditorState, { payload }: RepoSaveSucceededAction): EditorState => {
         const { response: repo } = payload;
         return {
             ...state,
@@ -141,7 +141,7 @@ export default combineActionReducers([
             password: repo.password,
             gist_id: repo.gist_id,
             sync: repo.sync,
-            instances: repo.blobs.map((blob : Blob) => ({
+            instances: repo.blobs.map((blob: Blob) => ({
                 ...defaultInstance,
                 key: blob.ID != null ? String(blob.ID)  : '',
                 filename: blob.filename,
@@ -159,8 +159,8 @@ export default combineActionReducers([
  * @param {Instance[]} instances - Current instances
  * @returns {Instance[]} Update instances.
  */
-function rejectWithKey(key : string, instances : Array<EditorInstance>) : Array<EditorInstance> {
-    return R.reject((instance : EditorInstance)=> key === instance.key, instances);
+function rejectWithKey(key: string, instances: Array<EditorInstance>): Array<EditorInstance> {
+    return R.reject((instance: EditorInstance)=> key === instance.key, instances);
 }
 
 /**
@@ -171,16 +171,16 @@ function rejectWithKey(key : string, instances : Array<EditorInstance>) : Array<
  * @param {Function} fn - Function to call
  * @returns {Object} New State.
  */
-function mapInstanceWithKey(state : EditorState, key : string, fn : (i : EditorInstance) => EditorInstance) : EditorState {
-    return { ...state, instances: state.instances.map((instance : EditorInstance) =>
+function mapInstanceWithKey(state: EditorState, key: string, fn: (i: EditorInstance) => EditorInstance): EditorState {
+    return { ...state, instances: state.instances.map((instance: EditorInstance) =>
         instance.key !== key ? instance : fn(instance)
     ) };
 }
 
 type Section = {
-    before : string;
-    selection : string;
-    after : string;
+    before: string;
+    selection: string;
+    after: string
 };
 
 /**
@@ -191,7 +191,7 @@ type Section = {
  * @param {number} se - Selection end.s
  * @returns {Section} Code section.
  */
-function extractSections(code : string, ss : number, se : number) : Section {
+function extractSections(code: string, ss: number, se: number): Section {
     return {
         before: code.slice(0, ss),
         selection: code.slice(ss, se),
@@ -200,8 +200,8 @@ function extractSections(code : string, ss : number, se : number) : Section {
 }
 
 type Indentation = {
-    tabs : Toggle;
-    width : string;
+    tabs: Toggle;
+    width: string
 };
 
 /**
@@ -214,7 +214,7 @@ type Indentation = {
  * @param {string} width - Width of tabs.
  * @returns {{code: string, cursor: [number, number]}} New code and cursor position.
  */
-function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } : Indentation) : EditorValue {
+function indent({ code, cursor, inverse }: EditorIndentValue, { tabs, width }: Indentation): EditorValue {
     if (!cursor) {
         return { code, cursor, inverse };
     }
@@ -307,7 +307,7 @@ function indent({ code, cursor, inverse } : EditorIndentValue, { tabs, width } :
  * @param {Cursor} cursor - Cursor definition.
  * @returns {{code: string, cursor: [number, number]}} New code and cursor position.
  */
-function makeNewline({ code, cursor } : EditorValue) : EditorValue {
+function makeNewline({ code, cursor }: EditorValue): EditorValue {
     if (!cursor) {
         return { code, cursor };
     }
@@ -335,7 +335,7 @@ function makeNewline({ code, cursor } : EditorValue) : EditorValue {
  * @param {Instance[]} instances - Array of instances.
  * @returns {string} New unique key.
  */
-function createUniqueKey(instances : Array<EditorInstance>) : string {
+function createUniqueKey(instances: Array<EditorInstance>): string {
     const keys = instances.map(R.prop('key'));
 
     let id = 0;

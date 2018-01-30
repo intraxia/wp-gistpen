@@ -118,7 +118,7 @@ describe('commitsDelta', () => {
                 'Content-Type': 'application/json'
             }
         };
-        const xhr = (({ response: JSON.stringify([]) } : any) : XMLHttpRequest);
+        const xhr = (({ response: JSON.stringify([]) }: any): XMLHttpRequest);
         const services = createServices();
         const actions$ = stream();
         const state$ = prop();

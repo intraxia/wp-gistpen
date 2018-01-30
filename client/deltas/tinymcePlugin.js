@@ -13,12 +13,12 @@ import { Search } from '../components';
 import { h, Aggregator } from 'brookjs-silt';
 import { render, unmountComponentAtNode } from 'react-dom';
 
-const createTinyMCEPlugin = () : Observable<Editor> => Kefir.stream((emitter : Emitter<Editor, void>) => {
+const createTinyMCEPlugin = (): Observable<Editor> => Kefir.stream((emitter: Emitter<Editor, void>) => {
     tinymce.PluginManager.add('wp_gistpen', emitter.value);
 });
 
-const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> =>Kefir.merge([
-    Kefir.stream((emitter : Emitter<Action, void>) => {
+const createTinyMCEButton = (actions$: Observable<Action>, state$: Observable<TinyMCEState>, editor: Editor): Observable<Action> =>Kefir.merge([
+    Kefir.stream((emitter: Emitter<Action, void>) => {
         // Bind command to stream.
         editor.addCommand('wpgp_insert', R.pipe(tinymceButtonClickAction, emitter.value));
 
@@ -30,7 +30,7 @@ const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<
         });
     }),
     state$.sampledBy(actions$.thru(ofType(TINYMCE_POPUP_INSERT_CLICK)))
-        .flatMap((state : TinyMCEState) => Kefir.stream((emitter : Emitter<Action, void>) => {
+        .flatMap((state: TinyMCEState) => Kefir.stream((emitter: Emitter<Action, void>) => {
             if (state.search.selection != null) {
                 editor.insertContent('[gistpen id="' + state.search.selection + '"]');
             }
@@ -39,7 +39,7 @@ const createTinyMCEButton = (actions$ : Observable<Action>, state$ : Observable<
         }))
 ]);
 
-const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, Element>) : Disposer => {
+const emitTinyMCEWindow = R.curry((editor: Editor, emitter: Emitter<Action, Element>): Disposer => {
     const id = `wpgp-tinymce-popup-container`;
     const e = editor.windowManager.open({
         // Modal settings
@@ -70,10 +70,10 @@ const emitTinyMCEWindow = R.curry((editor : Editor, emitter : Emitter<Action, El
     emitter.error($el[0]);
 
     // void the return value for tcomb
-    return () : void => void e.close();
+    return (): void => void e.close();
 });
 
-const createTinyMCEWindow = (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => Kefir.stream(emitTinyMCEWindow(editor))
+const createTinyMCEWindow = (actions$: Observable<Action>, state$: Observable<TinyMCEState>, editor: Editor): Observable<Action> => Kefir.stream(emitTinyMCEWindow(editor))
     // This is kind of abusive, b/c it's not an "error", but it's another channel to use...
     .flatMapErrors((el: Element) => Kefir.stream(emitter => {
         render(
@@ -97,11 +97,11 @@ const createTinyMCEWindow = (actions$ : Observable<Action>, state$ : Observable<
     }))
     .takeUntilBy(actions$.thru(ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK)));
 
-const mergeTinyMCEButtonAndPopup = R.curry((actions$ : Observable<Action>, state$ : Observable<TinyMCEState>, editor : Editor) : Observable<Action> => Kefir.merge([
+const mergeTinyMCEButtonAndPopup = R.curry((actions$: Observable<Action>, state$: Observable<TinyMCEState>, editor: Editor): Observable<Action> => Kefir.merge([
     createTinyMCEButton(actions$, state$, editor),
     actions$.thru(ofType(TINYMCE_BUTTON_CLICK))
-        .flatMapLatest(() : Observable<Action> => createTinyMCEWindow(actions$, state$, editor))
+        .flatMapLatest((): Observable<Action> => createTinyMCEWindow(actions$, state$, editor))
 ]));
 
-export default (actions$ : Observable<Action>, state$ : Observable<TinyMCEState>) : Observable<Action> =>
+export default (actions$: Observable<Action>, state$: Observable<TinyMCEState>): Observable<Action> =>
     createTinyMCEPlugin().flatMapLatest(mergeTinyMCEButtonAndPopup(actions$, state$));

@@ -11,7 +11,7 @@ all=warn
 ./client/types/declare.js
 
 [options]
-include_warnings=false
+include_warnings=true
 module.use_strict=true
 module.name_mapper.extension='scss' -> '<PROJECT_ROOT>/client/types/css.js'
 module.name_mapper.extension='hbs' -> '<PROJECT_ROOT>/client/types/handlebars.js'

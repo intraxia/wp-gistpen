@@ -9,9 +9,9 @@ import { globalsReducer } from './globals';
 import { searchReducer } from './search';
 
 export type TinyMCEState = {
-    ajax : AjaxState;
-    globals : GlobalsState;
-    search : SearchState;
+    ajax: AjaxState;
+    globals: GlobalsState;
+    search: SearchState
 };
 
 export const tinyMCEReducer : Reducer<TinyMCEState, *> = combineReducers({

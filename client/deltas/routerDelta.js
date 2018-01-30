@@ -8,10 +8,10 @@ import { ROUTE_CHANGE } from '../actions';
 import { getRoute, getUrl, parseQueryString } from '../selectors';
 
 type HrefTarget = {
-    search : {
-        [key : string] : string;
+    search: {
+        [key: string]: string
     } | string;
-    href : string;
+    href: string
 };
 
 /**
@@ -21,17 +21,17 @@ type HrefTarget = {
  * @param {string} param - Query param to use.
  * @returns {Function} Router delta creating function.
  */
-export default function routerDelta({ router, param } : RouterDeltaOptions) : Delta<Action, void> {
+export default function routerDelta({ router, param }: RouterDeltaOptions): Delta<Action, void> {
     /**
      * Creates the router stream.
      *
      * @param {Observable<Action>} actions$ - Stream of actions from the app.
      * @returns {Observable<T, S>} Stream of routing actions.
      */
-    return (actions$ : Observable<Action>) : Observable<Action> => {
+    return (actions$: Observable<Action>): Observable<Action> => {
         const initial$ = Kefir.later(0, router(getRoute(window.location.search, param)));
 
-        const pushState$ = actions$.thru(ofType(ROUTE_CHANGE)).flatMap(({ payload } : RouteChangeAction) => Kefir.stream((emitter : Emitter<void, void>) => {
+        const pushState$ = actions$.thru(ofType(ROUTE_CHANGE)).flatMap(({ payload }: RouteChangeAction) => Kefir.stream((emitter: Emitter<void, void>) => {
             const dest = getUrl(param, payload);
 
             if (dest !== (location.pathname + location.search)) {
@@ -41,8 +41,8 @@ export default function routerDelta({ router, param } : RouterDeltaOptions) : De
             emitter.end();
         }));
 
-        const href$ = Kefir.stream((emitter : Emitter<Action, empty>) => {
-            const emit = ({ search, href } : HrefTarget) => {
+        const href$ = Kefir.stream((emitter: Emitter<Action, empty>) => {
+            const emit = ({ search, href }: HrefTarget) => {
                 if (typeof search === 'string') {
                     search = parseQueryString(search);
                 }

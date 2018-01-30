@@ -9,25 +9,25 @@ import { h } from 'brookjs-silt';
 import Prism from '../prism';
 
 type ObservableProps<T> = {
-    stream$ : Kefir.Observable<T>;
+    stream$: Kefir.Observable<T>
 };
 
 type BlobProps = {
-    blob : {
-        code : string;
-        filename : string;
-        language : string;
+    blob: {
+        code: string;
+        filename: string;
+        language: string
     };
-    prism : {
-        theme : string;
-        'line-numbers' : number;
-        'show-invisibles' : Toggle;
-    };
+    prism: {
+        theme: string;
+        'line-numbers': number;
+        'show-invisibles': Toggle
+    }
 };
 
 export default class Blob extends Component<ObservableProps<BlobProps>> {
-    code : ?Element;
-    sub : ?Subscription;
+    code: ?Element;
+    sub: ?Subscription;
 
     componentWillMount() {
         Prism.setAutoloaderPath(__webpack_public_path__);
@@ -35,8 +35,8 @@ export default class Blob extends Component<ObservableProps<BlobProps>> {
     }
 
     componentDidUpdate() {
-        this.sub = this.props.stream$.flatMap((props) : Kefir.Observable<void> => {
-            const promise = Prism.setTheme(props.prism.theme).then(() : Promise<Array<void>> => Promise.all([
+        this.sub = this.props.stream$.flatMap((props): Kefir.Observable<void> => {
+            const promise = Prism.setTheme(props.prism.theme).then((): Promise<Array<void>> => Promise.all([
                 Prism.togglePlugin('line-numbers', props.prism['line-numbers']),
                 Prism.togglePlugin('show-invisibles', props.prism['show-invisibles'])
             ]));
