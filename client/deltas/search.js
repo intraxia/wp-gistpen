@@ -12,6 +12,7 @@ function getSearchUrl(state: TinyMCEState): string {
 }
 export default function searchDelta(actions$: Observable<Action>, state$: Observable<TinyMCEState>): Observable<Action> {
     return state$.sampledBy(actions$.filter(R.pipe(R.prop('type'), R.equals(SEARCH_INPUT))))
+        .filter((state: TinyMCEState) => state.search.term)
         .flatMapLatest((state: TinyMCEState): Observable<ObsResponse, TypeError> => ajax$(getSearchUrl(state), {
             method: 'GET',
             headers: {

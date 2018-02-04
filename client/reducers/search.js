@@ -13,7 +13,8 @@ export type SearchState = {
 export const searchReducer : Reducer<SearchState, *> = combineActionReducers([
     [SEARCH_INPUT, (state: SearchState, action: SearchInputAction): SearchState => ({
         ...state,
-        term: action.payload.value
+        term: action.payload.value,
+        results: action.payload.value ? state.results : []
     })],
     [SEARCH_RESULTS_SUCCEEDED, (state: SearchState, action: SearchResultsSucceededAction): SearchState  => ({
         ...state,

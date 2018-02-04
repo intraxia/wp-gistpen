@@ -1,5 +1,6 @@
 // @flow
 import type { Reducer } from 'redux';
+import type { SearchInputAction } from '../types';
 import { combineActionReducers } from 'brookjs';
 import { SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED } from '../actions';
 
@@ -12,7 +13,7 @@ const defaults : AjaxState = {
 };
 
 const cond = [
-    [SEARCH_INPUT, (state: AjaxState) => ({ ...state, running: true })],
+    [SEARCH_INPUT, (state: AjaxState, { payload }: SearchInputAction) => ({ ...state, running: !!payload.value })],
     [SEARCH_RESULTS_SUCCEEDED, (state: AjaxState) => ({ ...state, running: false })]
 ];
 
