@@ -7,23 +7,23 @@ import { ofType } from 'brookjs';
 import { fetchAuthorSucceeded, fetchAuthorFailed, COMMITS_FETCH_SUCCEEDED } from '../actions';
 
 type AuthorServices = {
-    ajax$ : AjaxService;
+    ajax$: AjaxService
 };
 
 type AuthorApiResponse = Author;
 
 type AuthorDeltaState = {
-    commits : CommitsState;
-    globals : GlobalsState;
+    commits: CommitsState;
+    globals: GlobalsState
 };
 
-export default ({ ajax$ } : AuthorServices) =>
-    (actions$ : Kefir.Observable<Action>, state$ : Kefir.Observable<AuthorDeltaState>) =>
+export default ({ ajax$ }: AuthorServices) =>
+    (actions$: Kefir.Observable<Action>, state$: Kefir.Observable<AuthorDeltaState>) =>
         state$.sampledBy(
             actions$.thru(ofType(COMMITS_FETCH_SUCCEEDED))
         )
-            .flatMapLatest((state : AuthorDeltaState) => Kefir.merge(
-                state.commits.instances.map((instance : CommitState) =>
+            .flatMapLatest((state: AuthorDeltaState) => Kefir.merge(
+                state.commits.instances.map((instance: CommitState) =>
                     ajax$(`/wp-json/wp/v2/users/${instance.author}`, {
                         method: 'GET',
                         credentials: 'include',
@@ -32,7 +32,7 @@ export default ({ ajax$ } : AuthorServices) =>
                             'Content-Type': 'application/json'
                         }
                     })
-                        .flatMap((response : ObsResponse) => response.json())
-                        .map((response : AuthorApiResponse) => fetchAuthorSucceeded(response))
-                        .flatMapErrors((err : TypeError) => Kefir.constant(fetchAuthorFailed(err))))
+                        .flatMap((response: ObsResponse) => response.json())
+                        .map((response: AuthorApiResponse) => fetchAuthorSucceeded(response))
+                        .flatMapErrors((err: TypeError) => Kefir.constant(fetchAuthorFailed(err))))
             ));

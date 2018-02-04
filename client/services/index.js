@@ -3,12 +3,12 @@ import type { Emitter } from 'kefir';
 import Kefir from 'kefir';
 
 export type AjaxOptions = {
-    method : string;
-    body? : string;
-    credentials? : 'include';
-    headers? : {
-        [key : string] : string;
-    };
+    method: string;
+    body?: string;
+    credentials?: 'include';
+    headers?: {
+        [key: string]: string
+    }
 };
 
 const defaults : AjaxOptions = {
@@ -17,13 +17,13 @@ const defaults : AjaxOptions = {
 };
 
 export class ObsResponse {
-    xhr : XMLHttpRequest;
+    xhr: XMLHttpRequest;
 
-    constructor(xhr : XMLHttpRequest) {
+    constructor(xhr: XMLHttpRequest) {
         this.xhr = xhr;
     }
 
-    json<T>() : Kefir.Observable<T, TypeError> {
+    json<T>(): Kefir.Observable<T, TypeError> {
         const xhr = this.xhr;
 
         return Kefir.stream(emitter => {
@@ -45,7 +45,7 @@ export class ObsResponse {
     }
 }
 
-export type AjaxService = (url : string, opts : AjaxOptions) => Kefir.Observable<ObsResponse, TypeError>;
+export type AjaxService = (url: string, opts: AjaxOptions) => Kefir.Observable<ObsResponse, TypeError>;
 
 /**
  * Create a new ajax request stream.
@@ -55,10 +55,10 @@ export type AjaxService = (url : string, opts : AjaxOptions) => Kefir.Observable
  * @returns {Stream<T, S>} Ajax stream.
  */
 export const ajax$ : AjaxService = (
-    url : string ,
-    opts : AjaxOptions
-) : Kefir.Observable<ObsResponse, TypeError> =>
-    Kefir.stream((emitter : Emitter<ObsResponse, TypeError>) : (() => void) => {
+    url: string ,
+    opts: AjaxOptions
+): Kefir.Observable<ObsResponse, TypeError> =>
+    Kefir.stream((emitter: Emitter<ObsResponse, TypeError>): (() => void) => {
         const options = { ...defaults, ...opts };
         const xhr = new XMLHttpRequest();
 
@@ -70,10 +70,10 @@ export const ajax$ : AjaxService = (
             }
         };
 
-        xhr.onerror = () : boolean =>
+        xhr.onerror = (): boolean =>
             emitter.error(new TypeError('Network request failed'));
 
-        xhr.ontimeout = () : boolean =>
+        xhr.ontimeout = (): boolean =>
             emitter.error(new TypeError('Network request failed'));
 
         xhr.open(options.method, url, true);
@@ -90,5 +90,5 @@ export const ajax$ : AjaxService = (
 
         xhr.send(typeof options.body !== 'undefined' ? options.body : null);
 
-        return () : void => xhr.abort();
+        return (): void => xhr.abort();
     }).take(1).takeErrors(1);

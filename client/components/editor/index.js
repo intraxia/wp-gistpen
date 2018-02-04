@@ -14,9 +14,9 @@ export default component({
         'description': DescriptionComponent,
         'instance': {
             factory: InstanceComponent,
-            modifyChildProps: (props$ : Observable<EditorPageProps>, key : string) : Observable<EditorInstanceProps> => {
-                return props$.map((props : EditorPageProps) : EditorInstanceProps => {
-                    const instance = props.editor.instances.find((instance : EditorInstance) => instance.key === key);
+            modifyChildProps: (props$: Observable<EditorPageProps>, key: string): Observable<EditorInstanceProps> => {
+                return props$.map((props: EditorPageProps): EditorInstanceProps => {
+                    const instance = props.editor.instances.find((instance: EditorInstance) => instance.key === key);
 
                     if (instance == null) {
                         return {
@@ -44,7 +44,7 @@ export default component({
                     };
                 });
             },
-            preplug: (instance$ : Observable<Action>, key : string) => instance$.map((action : Action) => ({
+            preplug: (instance$: Observable<Action>, key: string) => instance$.map((action: Action) => ({
                 ...action,
                 meta: { key }
             }))

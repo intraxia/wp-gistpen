@@ -6,7 +6,7 @@ import { JOB_FETCH_SUCCEEDED } from '../actions';
 const defaults : JobsState = {};
 
 const cond = [
-    [JOB_FETCH_SUCCEEDED, (state : JobsState, action : JobFetchSucceededAction) => ({
+    [JOB_FETCH_SUCCEEDED, (state: JobsState, action: JobFetchSucceededAction) => ({
         ...state,
         [action.payload.response.slug]: action.payload.response
     })]

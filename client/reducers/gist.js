@@ -6,7 +6,7 @@ import { GIST_TOKEN_CHANGE } from '../actions';
 const defaults = { token: '' };
 
 export default combineActionReducers([
-    [GIST_TOKEN_CHANGE, (state : GistState, { payload } : GistTokenChangeAction) => ({
+    [GIST_TOKEN_CHANGE, (state: GistState, { payload }: GistTokenChangeAction) => ({
         ...state,
         token: payload.value
     })]

@@ -7,7 +7,7 @@ import langs from '../../config/languages.json';
  * @param {string} slug - Language slug.
  * @returns {string} Prism slug.
  */
-export default function prismSlug(slug : string) : string {
+export default function prismSlug(slug: string): string {
     return langs.aliases[slug] || slug;
 
 };

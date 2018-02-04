@@ -3,7 +3,7 @@ import { children, component, Kefir, render } from 'brookjs';
 import { EditorComponent, CommitsComponent } from '../../components';
 import template from './index.hbs';
 
-export const el = (doc : Document) => Kefir.fromCallback((callback : (value : null | HTMLElement) => void) => {
+export const el = (doc: Document) => Kefir.fromCallback((callback: (value: null | HTMLElement) => void) => {
     callback(doc.querySelector('[data-brk-container="edit"]'));
 });
 

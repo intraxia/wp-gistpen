@@ -8,7 +8,7 @@ import type { EditorInstanceProps } from '../../../types';
  * @param {Object} next - Next props.
  * @returns {boolean} Whether any editor options have changed.
  */
-export function editorOptionsIsEqual(prev : EditorInstanceProps, next : EditorInstanceProps) : boolean {
+export function editorOptionsIsEqual(prev: EditorInstanceProps, next: EditorInstanceProps): boolean {
     return prev.editor.theme === next.editor.theme &&
         prev.editor.invisibles === next.editor.invisibles;
 }
@@ -19,7 +19,7 @@ export function editorOptionsIsEqual(prev : EditorInstanceProps, next : EditorIn
  * @todo implement with line numbers.
  * @returns {boolean} Whether any the line numbers have changed.
  */
-export function lineNumberIsEqual(/* prev, next */) : boolean {
+export function lineNumberIsEqual(/* prev, next */): boolean {
     return true;
 }
 
@@ -30,7 +30,7 @@ export function lineNumberIsEqual(/* prev, next */) : boolean {
  * @param {Object} next - Next props.
  * @returns {boolean} Whether the language is the same.
  */
-export function languageIsEqual(prev : EditorInstanceProps, next : EditorInstanceProps) : boolean {
+export function languageIsEqual(prev: EditorInstanceProps, next: EditorInstanceProps): boolean {
     return prev.instance.language === next.instance.language;
 }
 
@@ -41,7 +41,7 @@ export function languageIsEqual(prev : EditorInstanceProps, next : EditorInstanc
  * @param {Event} evt - Event object.
  * @returns {boolean} Whether this is a special event.
  */
-export function isSpecialEvent(evt : ProxyEvent) : boolean {
+export function isSpecialEvent(evt: ProxyEvent): boolean {
     const { altKey, metaKey, ctrlKey } = evt;
     const cmdOrCtrl = metaKey || ctrlKey;
 

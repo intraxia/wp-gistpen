@@ -8,7 +8,7 @@ import accounts from './accounts';
 import template from './index.hbs';
 import { JobsComponent } from '../../components';
 
-const prismChanged = (prev : SettingsProps, next : SettingsProps) : boolean =>
+const prismChanged = (prev: SettingsProps, next: SettingsProps): boolean =>
     prev.prism.theme === next.prism.theme &&
         prev.prism['line-numbers'] === next.prism['line-numbers'] &&
         prev.prism['show-invisibles'] === next.prism['show-invisibles'];
@@ -19,7 +19,7 @@ export default component({
         settingsHeader: header,
         settingsHighlighting: {
             factory: highlighting,
-            modifyChildProps: (props$ : Observable<SettingsProps>) : Observable<HasPrismState> => props$.skipDuplicates(prismChanged)
+            modifyChildProps: (props$: Observable<SettingsProps>): Observable<HasPrismState> => props$.skipDuplicates(prismChanged)
         },
         settingsAccounts: accounts,
         settingsJobs: JobsComponent

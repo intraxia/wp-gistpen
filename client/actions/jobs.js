@@ -15,19 +15,19 @@ export const MESSAGES_FETCH_FAILED = 'MESSAGES_FETCH_FAILED';
 
 export const JOB_DISPATCH_CLICK = 'JOB_DISPATCH_CLICK';
 
-export function jobDispatchClick() : JobDispatchClickAction {
+export function jobDispatchClick(): JobDispatchClickAction {
     return { type: JOB_DISPATCH_CLICK };
 }
 
 export const JOB_DISPATCH_STARTED = 'JOB_DISPATCH_STARTED';
 
-export function jobDispatchStarted() : JobDispatchStarted {
+export function jobDispatchStarted(): JobDispatchStarted {
     return { type: JOB_DISPATCH_STARTED };
 }
 
 export const JOB_DISPATCH_SUCCEEDED = 'JOB_DISPATCH_SUCCEEDED';
 
-export function jobDispatchSucceeded(response : Run) : JobDispatchSucceeded {
+export function jobDispatchSucceeded(response: Run): JobDispatchSucceeded {
     return {
         type: JOB_DISPATCH_SUCCEEDED,
         payload: { response }
@@ -36,7 +36,7 @@ export function jobDispatchSucceeded(response : Run) : JobDispatchSucceeded {
 
 export const JOB_DISPATCH_FAILED = 'JOB_DISPATCH_FAILED';
 
-export function jobDispatchFailed(err : TypeError) : JobDispatchFailed {
+export function jobDispatchFailed(err: TypeError): JobDispatchFailed {
     return {
         type: JOB_DISPATCH_FAILED,
         payload: err,

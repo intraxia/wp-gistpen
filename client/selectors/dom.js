@@ -6,7 +6,7 @@
  * @param {Element} node - Element to check for selection start.
  * @returns {number} Selection start.
  */
-export function selectSelectionStart(node : Element) : number {
+export function selectSelectionStart(node: Element): number {
     const selection = getSelection();
 
     if (selection && selection.rangeCount) {
@@ -41,7 +41,7 @@ export function selectSelectionStart(node : Element) : number {
  * @param {Element} node - Element to check for selection start.
  * @returns {number} Selection end.
  */
-export function selectSelectionEnd(node : Element) : number {
+export function selectSelectionEnd(node: Element): number {
     const selection = getSelection();
 
     if (selection && selection.rangeCount) {

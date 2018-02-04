@@ -10,7 +10,7 @@ export default component({
     children: children({
         jobRow: {
             factory: row,
-            preplug: (instance$ : Observable<Action>, key : string) : Observable<Action & HasMetaKey> =>
+            preplug: (instance$: Observable<Action>, key: string): Observable<Action & HasMetaKey> =>
                 instance$.map(R.set(R.lensProp('meta'), { key }))
         }
     }),

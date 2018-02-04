@@ -10,37 +10,37 @@ import { MESSAGES_FETCH_STARTED, MESSAGES_FETCH_SUCCEEDED, MESSAGES_FETCH_FAILED
     jobDispatchStarted, jobDispatchSucceeded, jobDispatchFailed } from '../actions';
 
 type JobsServices = {
-    ajax$ : AjaxService;
+    ajax$: AjaxService
 };
 
 type JobProps = {
-    route : Route;
-    runs : Array<Run>;
-    globals : GlobalsState;
-    jobs : {
-        [key : string] : Job;
-    };
+    route: Route;
+    runs: Array<Run>;
+    globals: GlobalsState;
+    jobs: {
+        [key: string]: Job
+    }
 };
 
 type GetConsoleResponse = {
-    status : RunStatus;
-    messages : Array<Message>;
+    status: RunStatus;
+    messages: Array<Message>
 };
 type GetJobResponse = Job;
 type GetRunsResponse = Array<Run>;
 
 export default R.curry((
-    { ajax$ } : JobsServices,
-    actions$ : Kefir.Observable<Action>,
-    state$ : Kefir.Observable<JobProps>
-) : Kefir.Observable<Action> => {
+    { ajax$ }: JobsServices,
+    actions$: Kefir.Observable<Action>,
+    state$: Kefir.Observable<JobProps>
+): Kefir.Observable<Action> => {
     const fetch$ = state$.sampledBy(
         actions$.thru(ofType(ROUTE_CHANGE))
-            .filter((action : RouteChangeAction) => action.payload.name === 'jobs')
+            .filter((action: RouteChangeAction) => action.payload.name === 'jobs')
     )
-        .flatMapLatest(({ route, runs, globals, jobs } : JobProps) : Kefir.Observable<Action> => {
+        .flatMapLatest(({ route, runs, globals, jobs }: JobProps): Kefir.Observable<Action> => {
             if (typeof route.parts.run === 'string') {
-                const run = runs.find((run : Run) => route.parts.run === run.ID);
+                const run = runs.find((run: Run) => route.parts.run === run.ID);
 
                 if (!run) {
                     return Kefir.never();
@@ -58,12 +58,12 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .flatMap((response : ObsResponse) => response.json())
-                        .map((response : GetConsoleResponse) => ({
+                        .flatMap((response: ObsResponse) => response.json())
+                        .map((response: GetConsoleResponse) => ({
                             type: MESSAGES_FETCH_SUCCEEDED,
                             payload: { response }
                         }))
-                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                        .flatMapErrors((err: TypeError) => Kefir.constant({
                             type: MESSAGES_FETCH_FAILED,
                             payload: err,
                             error: true
@@ -90,12 +90,12 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .flatMap((response : ObsResponse) => response.json())
-                        .map((response : GetJobResponse) => ({
+                        .flatMap((response: ObsResponse) => response.json())
+                        .map((response: GetJobResponse) => ({
                             type: JOB_FETCH_SUCCEEDED,
                             payload: { response }
                         }))
-                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                        .flatMapErrors((err: TypeError) => Kefir.constant({
                             type: JOB_FETCH_FAILED,
                             payload: err,
                             error: true
@@ -114,12 +114,12 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .flatMap((response : ObsResponse) => response.json())
-                        .map((response : GetRunsResponse) => ({
+                        .flatMap((response: ObsResponse) => response.json())
+                        .map((response: GetRunsResponse) => ({
                             type: RUNS_FETCH_SUCCEEDED,
                             payload: { response }
                         }))
-                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                        .flatMapErrors((err: TypeError) => Kefir.constant({
                             type: RUNS_FETCH_FAILED,
                             payload: err,
                             error: true
@@ -146,12 +146,12 @@ export default R.curry((
                             'Content-Type': 'application/json'
                         }
                     })
-                        .flatMap((response : ObsResponse) => response.json())
-                        .map((response : GetJobResponse) => ({
+                        .flatMap((response: ObsResponse) => response.json())
+                        .map((response: GetJobResponse) => ({
                             type: JOB_FETCH_SUCCEEDED,
                             payload: { response }
                         }))
-                        .flatMapErrors((err : TypeError) => Kefir.constant({
+                        .flatMapErrors((err: TypeError) => Kefir.constant({
                             type: JOB_FETCH_FAILED,
                             payload: err,
                             error: true
@@ -167,12 +167,12 @@ export default R.curry((
     const start$ = Kefir.combine(
         [actions$.thru(ofType(JOB_DISPATCH_CLICK))],
         [state$],
-        (action : JobDispatchClickAction & HasMetaKey, state : JobProps) => ({
+        (action: JobDispatchClickAction & HasMetaKey, state: JobProps) => ({
             job: state.jobs[action.meta.key],
             globals: state.globals
         })
     )
-        .flatMap(({ globals, job } : { job : Job; globals : GlobalsState; }) => Kefir.concat([
+        .flatMap(({ globals, job }: { job: Job; globals: GlobalsState }) => Kefir.concat([
             Kefir.constant(jobDispatchStarted()),
             ajax$(job.rest_url, {
                 method: 'POST',
@@ -182,9 +182,9 @@ export default R.curry((
                     'Content-Type': 'application/json'
                 }
             })
-                .flatMap((response : ObsResponse) => response.json())
+                .flatMap((response: ObsResponse) => response.json())
                 .map(jobDispatchSucceeded)
-                .flatMapErrors((err : TypeError) => Kefir.constant(jobDispatchFailed(err)))
+                .flatMapErrors((err: TypeError) => Kefir.constant(jobDispatchFailed(err)))
         ]));
 
     return Kefir.merge([

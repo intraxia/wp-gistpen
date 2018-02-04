@@ -17,8 +17,8 @@ toolbarStyles.use();
  *
  * @returns {Observable} Observable to update the editor line numbers.
  */
-function updateLineNumber(/*pre, start, end*/) : Observable<void> {
-    return Kefir.stream((emitter : Emitter<void, void>) => {
+function updateLineNumber(/*pre, start, end*/): Observable<void> {
+    return Kefir.stream((emitter: Emitter<void, void>) => {
         // let content = pre.textContent;
         // let ss = pre.selectionStart;
         // let se = pre.selectionEnd;
@@ -45,8 +45,8 @@ function updateLineNumber(/*pre, start, end*/) : Observable<void> {
  * @param {number} se - Selection end.
  * @returns {Observable} Observable to update selection range.
  */
-const setSelectionRange = R.curry(function setSelectionRange(node : Element, ss : number, se : number) : Observable<void> {
-    return Kefir.stream((emitter : Emitter<void, void>) => {
+const setSelectionRange = R.curry(function setSelectionRange(node: Element, ss: number, se: number): Observable<void> {
+    return Kefir.stream((emitter: Emitter<void, void>) => {
         const range = document.createRange();
         const offsetStart = findOffset(node, ss);
         let offsetEnd = offsetStart;
@@ -70,7 +70,7 @@ const setSelectionRange = R.curry(function setSelectionRange(node : Element, ss 
         .setName('SetSelectionRange$');
 });
 
-type Offset = { element : Node; offset : number; } | { element : null; offset : 0; error : true; };
+type Offset = { element: Node; offset: number } | { element: null; offset: 0; error: true };
 
 /**
  * Find the offset for a given selection start
@@ -79,7 +79,7 @@ type Offset = { element : Node; offset : number; } | { element : null; offset : 
  * @param {number} ss - Start point for offset.
  * @returns {Object} Offset information.
  */
-function findOffset(root : Element, ss : number) : Offset {
+function findOffset(root: Element, ss: number): Offset {
     let container;
     let offset = 0;
     let element = root;
@@ -144,8 +144,8 @@ function findOffset(root : Element, ss : number) : Offset {
  * @param {Element} el - Element to highlight.
  * @returns {Observable} Observable to highlight element.
  */
-const highlightElement = function highlightElement(el : Element) : Observable<void> {
-    return Kefir.stream((emitter : Emitter<void, void>) => {
+const highlightElement = function highlightElement(el: Element): Observable<void> {
+    return Kefir.stream((emitter: Emitter<void, void>) => {
         Prism.highlightElement(el.querySelector('code'), false);
         emitter.end();
     })
@@ -158,7 +158,7 @@ const highlightElement = function highlightElement(el : Element) : Observable<vo
  * @param {Object} props - Current pages props.
  * @returns {Observable} Observable that ends after Prism is updated.
  */
-const createPrismUpdateStream = function createPrismUpdateStream(props : EditorInstanceProps) : Observable<void> {
+const createPrismUpdateStream = function createPrismUpdateStream(props: EditorInstanceProps): Observable<void> {
     return Kefir.fromPromise(Promise.all([
         Prism.setTheme(props.editor.theme),
         Prism.togglePlugin('show-invisibles', props.editor.invisibles === 'on')
@@ -174,7 +174,7 @@ const createPrismUpdateStream = function createPrismUpdateStream(props : EditorI
  * @param {Object} props - Latest props.
  * @returns {Observable} Observable to update element.
  */
-const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el : Element, props : EditorInstanceProps) : Observable<void> {
+const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el: Element, props: EditorInstanceProps): Observable<void> {
     let stream$ = renderFromHTML(el, template(props)).concat(highlightElement(el));
 
     if (props.instance.cursor) {
@@ -196,13 +196,13 @@ const createDOMUpdateStream = R.curry(function createDOMUpdateStream(el : Elemen
  * @param {Observable} props$ - Stream of editor props.
  * @returns {Observable} - Stream of renders.
  */
-export default R.curry(function onMount(el : Element, props$ : Observable<EditorInstanceProps>) : Observable<void> {
+export default R.curry(function onMount(el: Element, props$: Observable<EditorInstanceProps>): Observable<void> {
     const keyUp$ = Kefir.fromEvents(el, 'keyup').setName('KeyUp$');
     const keyDown$ = Kefir.fromEvents(el, 'keydown').setName('KeyDown$');
 
     // Ensure the autoload path is set correctly on startup.
     // @todo move elsewhere?
-    const setAutoloader$ = Kefir.stream((emitter : Emitter<void, void>) => {
+    const setAutoloader$ = Kefir.stream((emitter: Emitter<void, void>) => {
         Prism.setAutoloaderPath(__webpack_public_path__);
 
         emitter.end();
@@ -217,7 +217,7 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
      * so we get a value immediately.
      */
     const initial$ = props$.take(1)
-        .flatMapLatest((props : EditorInstanceProps) : Observable<void> => createDOMUpdateStream(el, props))
+        .flatMapLatest((props: EditorInstanceProps): Observable<void> => createDOMUpdateStream(el, props))
         .setName('Initial$');
 
     /**
@@ -229,7 +229,7 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
      * chance of messing up typing.
      */
     const options$ = props$.skipDuplicates(editorOptionsIsEqual)
-        .flatMapLatest((props : EditorInstanceProps) : Observable<void> => Kefir.concat([
+        .flatMapLatest((props: EditorInstanceProps): Observable<void> => Kefir.concat([
             createPrismUpdateStream(props),
             createDOMUpdateStream(el, props)
         ]))
@@ -243,7 +243,7 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
      * the props
      */
     const typing$ = props$.sampledBy(keyUp$.debounce(10))
-        .flatMapLatest((props : EditorInstanceProps) : Observable<void> => createDOMUpdateStream(el, props).takeUntilBy(keyDown$))
+        .flatMapLatest((props: EditorInstanceProps): Observable<void> => createDOMUpdateStream(el, props).takeUntilBy(keyDown$))
         .setName('Typing$');
 
     /**
@@ -255,14 +255,14 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
      * The render is thus done synchronously.
      */
     const special$ = props$.sampledBy(keyDown$.filter(isSpecialEvent).delay(0))
-        .flatMapLatest((props : EditorInstanceProps) => raf$.take(1).flatMap(() : Observable<void> =>  {
+        .flatMapLatest((props: EditorInstanceProps) => raf$.take(1).flatMap((): Observable<void> =>  {
             const code = el.querySelector('code');
 
             if (!code) {
                 return Kefir.never();
             }
 
-            return Kefir.stream((emitter : Emitter<void, void>) => {
+            return Kefir.stream((emitter: Emitter<void, void>) => {
                 code.textContent = props.instance.code;
                 emitter.end();
             })
@@ -281,12 +281,12 @@ export default R.curry(function onMount(el : Element, props$ : Observable<Editor
      */
     const lineNumber$ = props$.skipDuplicates(lineNumberIsEqual)
         .filter(R.path(['instance', 'cursor']))
-        .flatMapLatest((/*props : EditorInstanceProps*/) : Observable<void> =>
+        .flatMapLatest((/*props : EditorInstanceProps*/): Observable<void> =>
             updateLineNumber(/* el.querySelector('pre'), ...(props.instance.cursor || [])*/))
         .setName('LineNumbers$');
 
     const language$ = props$.skipDuplicates(languageIsEqual)
-        .flatMapLatest((props : EditorInstanceProps) => createDOMUpdateStream(el, props));
+        .flatMapLatest((props: EditorInstanceProps) => createDOMUpdateStream(el, props));
 
     return Kefir.merge([
         setAutoloader$,

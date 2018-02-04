@@ -82,7 +82,8 @@ module.exports = {
     resolve: {
         alias: {
             redux: 'redux/es',
-            brookjs: 'brookjs/es'
+            brookjs: 'brookjs/es',
+            'brookjs-silt': 'brookjs-silt/es'
         },
         mainFields: ['jsnext:main', 'browser', 'main']
     },

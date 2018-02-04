@@ -8,7 +8,7 @@ import type { AjaxOptions } from '../services';
  * @param {EditorPageState} state - Current editor pages state.
  * @returns {AjaxOptions} Ajax options object.
  */
-export function selectUserAjaxOpts(state : EditorPageState) : AjaxOptions {
+export function selectUserAjaxOpts(state: EditorPageState): AjaxOptions {
     return {
         method: 'PATCH',
         body: JSON.stringify({

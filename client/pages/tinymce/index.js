@@ -1,18 +1,9 @@
 // @flow
 import './index.scss';
 import '../../polyfills';
-import { createStore, combineReducers } from 'redux';
-import { globals, search } from '../../reducers';
-import { applyDelta, searchDelta, tinymcePluginDelta, webpackDelta } from '../../deltas';
+import { init } from '../../actions';
+import store from './store';
 
 const { __GISTPEN_TINYMCE__ } = global;
 
-createStore(
-    combineReducers({ globals, search }),
-    __GISTPEN_TINYMCE__,
-    applyDelta(
-        searchDelta,
-        tinymcePluginDelta,
-        webpackDelta
-    )
-);
+store.dispatch(init(__GISTPEN_TINYMCE__));
