@@ -93,6 +93,7 @@
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.0",
     "sheet-router": "^4.0.0-0",
+    "sprintf-js": "^1.1.1",
     "tcomb": "^3.2.16",
     "whatwg-fetch": "^2.0.2"
   },
