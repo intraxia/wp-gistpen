@@ -1,7 +1,11 @@
 {
   "name": "wp-gistpen",
   "description": "A self-hosted alternative to putting your code snippets on Gist.",
-  "author": "maadhattah",
+  "author": {
+    "name": "James DiGioia",
+    "email": "jamesorodig@gmail.com",
+    "twitter": "@JamesDiGioia"
+  },
   "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
   "license": "GPL-2.0+",
   "scripts": {
@@ -9,13 +13,15 @@
     "test:typecheck": "flow check",
     "test:lint": "eslint ./client",
     "test:unit": "beaver test unit --env production",
-    "build": "npm run build:dev && npm run build:prod && npm run build:pot",
+    "build": "npm run build:dev && npm run build:prod",
     "build:dev": "beaver build --env development",
     "build:prod": "beaver build --env production",
-    "build:pot": "wp-pot --bug-report http://github.com/mAAdhaTTah/wp-gistpen --domain wp-gistpen --package wp-gistpen --src 'app/**/*.php' --relative-to . --dest-file languages/wp-gistpen.pot",
     "dev:app": "beaver dev app --env development",
     "dev:tdd": "beaver dev tdd --env production",
-    "dev:storybook": "start-storybook -s ./assets/js -p 9001 -c .storybook"
+    "dev:storybook": "start-storybook -s ./assets/js -p 9001 -c .storybook",
+    "gen": "npm run gen:coc && npm run gen:pot",
+    "gen:coc": "weallbehave -o .",
+    "gen:pot": "wp-pot --bug-report http://github.com/mAAdhaTTah/wp-gistpen --domain wp-gistpen --package wp-gistpen --src 'app/**/*.php' --relative-to . --dest-file languages/wp-gistpen.pot"
   },
   "devDependencies": {
     "@storybook/react": "^3.3.12",
@@ -38,7 +44,7 @@
     "eslint-loader": "^1.5.0",
     "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-react": "^7.6.1",
-    "flow-bin": "^0.63.1",
+    "flow-bin": "^0.64.0",
     "flow-status-webpack-plugin": "^0.1.7",
     "gulp": "3.9",
     "gulp-sort": "^2.0.0",
@@ -56,10 +62,11 @@
     "simulant": "^0.2.2",
     "sinon": "^4.2.2",
     "sinon-chai": "^2.9.0",
-    "style-loader": "^0.19.1",
+    "style-loader": "^0.20.0",
     "stylelint": "^8.4.0",
     "stylelint-webpack-plugin": "^0.10.1",
     "symbol-observable": "^1.2.0",
+    "weallbehave": "^1.2.0",
     "webpack": "^3.10.0",
     "webpack-merge": "^4.1.0",
     "webpack-notifier": "^1.5.1",

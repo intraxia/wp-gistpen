@@ -14,6 +14,102 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: app/Translator.php:22
+msgid "View Commits"
+msgstr ""
+
+#: app/Translator.php:23
+msgid "Delete"
+msgstr ""
+
+#: app/Translator.php:24
+msgid "Description..."
+msgstr ""
+
+#: app/Translator.php:25
+msgid "Add File"
+msgstr ""
+
+#: app/Translator.php:26
+msgid "View on Gist"
+msgstr ""
+
+#: app/Translator.php:27
+msgid "Enable Invisibles?"
+msgstr ""
+
+#: app/Translator.php:28
+msgid "Return to Editor"
+msgstr ""
+
+#: app/Translator.php:29
+msgid "Post Status"
+msgstr ""
+
+#: app/Translator.php:30
+msgid "Sync Gistpen with Gist?"
+msgstr ""
+
+#: app/Translator.php:31
+msgid "Enable Tabs?"
+msgstr ""
+
+#: app/Translator.php:32
+msgid "Theme"
+msgstr ""
+
+#: app/Translator.php:33, app/Register/Data.php:34
+msgid "Update Gistpen"
+msgstr ""
+
+#: app/Translator.php:34
+msgid "Indentation width (in spaces)"
+msgstr ""
+
+#: app/Translator.php:35
+msgid "Translation for key %s not found."
+msgstr ""
+
+#: app/Translator.php:36
+msgid "Job Description"
+msgstr ""
+
+#: app/Translator.php:37
+msgid "Dispatch Job"
+msgstr ""
+
+#: app/Translator.php:38
+msgid "Loading..."
+msgstr ""
+
+#: app/Translator.php:39, app/Translator.php:42
+msgid "Job Name"
+msgstr ""
+
+#: app/Translator.php:40
+msgid "Job Runs"
+msgstr ""
+
+#: app/Translator.php:41
+msgid "View Runs"
+msgstr ""
+
+#: app/Translator.php:43
+msgid "Background Jobs"
+msgstr ""
+
+#: app/Translator.php:44
+msgid "Please enter a valid search term."
+msgstr ""
+
+#: app/Translator.php:45
+msgid "Loading Gistpens..."
+msgstr ""
+
+#: app/Translator.php:46, app/Register/Data.php:35
+msgid "Search Gistpens"
+msgstr ""
+
 #: app/Client/Gist.php:163
 msgid "No token saved."
 msgstr ""
@@ -216,14 +312,6 @@ msgstr ""
 msgid "Edit Gistpen"
 msgstr ""
 
-#: app/Register/Data.php:34
-msgid "Update Gistpen"
-msgstr ""
-
-#: app/Register/Data.php:35
-msgid "Search Gistpens"
-msgstr ""
-
 #: app/Register/Data.php:36
 msgid "Gistpen not found"
 msgstr ""
@@ -300,10 +388,6 @@ msgstr ""
 
 #: app/Register/Data.php:89
 msgid "Not Found"
-msgstr ""
-
-#: app/Templating/Handlebars.php:116
-msgid "Invalid PHP generated. Check Handlebars template for invalid syntax."
 msgstr ""
 
 #: app/View/Content.php:184

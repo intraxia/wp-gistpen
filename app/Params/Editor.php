@@ -4,9 +4,14 @@ namespace Intraxia\Gistpen\Params;
 use Intraxia\Gistpen\Config;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob as BlobModel;
+use Intraxia\Gistpen\Model\Klass;
+use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo as RepoModel;
 use Intraxia\Gistpen\Options\User;
+use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
+use stdClass;
+use WP_Term;
 
 class Editor implements HasFilters {
 
@@ -49,7 +54,7 @@ class Editor implements HasFilters {
 	 */
 	public function apply_editor( $params ) {
 		/** @var RepoModel $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID(), array(
+		$repo = $this->em->find( Klass::REPO, get_the_ID(), array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -63,10 +68,21 @@ class Editor implements HasFilters {
 			$repo->description = '';
 			$repo->sync = 'off';
 
+			$language = $this->em->find_by( Klass::LANGUAGE, array( 'slug' => 'plaintext' ) );
+
+			if ( $language->index_exists( 0 ) ) {
+				$language = $language->at( 0 );
+			} else {
+				$term       = new WP_Term( new stdClass );
+				$term->slug = 'plaintext';
+
+				$language = new Language( array( Model::OBJECT_KEY => $term ) );
+			}
+
 			$repo->blobs->add( new BlobModel( array(
 				'filename' => '',
 				'code' => '',
-				'language' => $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'plaintext' ) )->at( 0 ),
+				'language' => $language,
 			) ) );
 		}
 
