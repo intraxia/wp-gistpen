@@ -25,13 +25,16 @@
 }
 
 .loader,
-.loader::after {
+.loader::after,
+.mce-container .loader,
+.mce-container .loader::after {
     border-radius: 50%;
     width: 1.5em;
     height: 1.5em;
 }
 
-.loader {
+.loader,
+.mce-container .loader {
     margin-left: 1em;
     font-size: 10px;
     position: relative;

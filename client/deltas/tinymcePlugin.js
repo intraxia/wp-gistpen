@@ -10,7 +10,7 @@ import { Kefir, ofType } from 'brookjs';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK } from '../actions';
 import { Search } from '../components';
-import { h, Aggregator } from 'brookjs-silt';
+import { h, Aggregator, view } from 'brookjs-silt';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 const createTinyMCEPlugin = (): Observable<Editor> => Kefir.stream((emitter: Emitter<Editor, void>) => {
@@ -78,7 +78,7 @@ const createTinyMCEWindow = (actions$: Observable<Action>, state$: Observable<Ti
     .flatMapErrors((el: Element) => Kefir.stream(emitter => {
         render(
             <Aggregator action$={action$ => action$.observe(emitter)}>
-                <Search stream$={state$.map((state: TinyMCEState): SearchProps => ({
+                <Search stream$={state$.thru(view((state: TinyMCEState): SearchProps => ({
                     loading: state.ajax.running,
                     term: state.search.term,
                     results: {
@@ -88,7 +88,7 @@ const createTinyMCEWindow = (actions$: Observable<Action>, state$: Observable<Ti
                             [blob.ID]: blob
                         }), {})
                     }
-                }))}/>
+                })))}/>
             </Aggregator>,
             el
         );
