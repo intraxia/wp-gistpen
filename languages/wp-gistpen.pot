@@ -106,7 +106,15 @@ msgstr ""
 msgid "Loading Gistpens..."
 msgstr ""
 
-#: app/Translator.php:46, app/Register/Data.php:35
+#: app/Translator.php:46
+msgid "No results found for term %s"
+msgstr ""
+
+#: app/Translator.php:47
+msgid "Please enter a search term "
+msgstr ""
+
+#: app/Translator.php:48, app/Register/Data.php:35
 msgid "Search Gistpens"
 msgstr ""
 
@@ -218,59 +226,59 @@ msgstr ""
 msgid "Will not reprocess gist %s. Client error. Please report to the developer."
 msgstr ""
 
-#: app/Params/Editor.php:105, app/Params/Globals.php:44
+#: app/Params/Editor.php:121, app/Params/Globals.php:44
 msgid "Default"
 msgstr ""
 
-#: app/Params/Editor.php:106, app/Params/Globals.php:45
+#: app/Params/Editor.php:122, app/Params/Globals.php:45
 msgid "Dark"
 msgstr ""
 
-#: app/Params/Editor.php:107, app/Params/Globals.php:46
+#: app/Params/Editor.php:123, app/Params/Globals.php:46
 msgid "Funky"
 msgstr ""
 
-#: app/Params/Editor.php:108, app/Params/Globals.php:47
+#: app/Params/Editor.php:124, app/Params/Globals.php:47
 msgid "Okaidia"
 msgstr ""
 
-#: app/Params/Editor.php:109, app/Params/Globals.php:48
+#: app/Params/Editor.php:125, app/Params/Globals.php:48
 msgid "Tomorrow"
 msgstr ""
 
-#: app/Params/Editor.php:110, app/Params/Globals.php:49
+#: app/Params/Editor.php:126, app/Params/Globals.php:49
 msgid "Twilight"
 msgstr ""
 
-#: app/Params/Editor.php:111, app/Params/Globals.php:50
+#: app/Params/Editor.php:127, app/Params/Globals.php:50
 msgid "Coy"
 msgstr ""
 
-#: app/Params/Editor.php:112, app/Params/Globals.php:51
+#: app/Params/Editor.php:128, app/Params/Globals.php:51
 msgid "CB"
 msgstr ""
 
-#: app/Params/Editor.php:113, app/Params/Globals.php:52
+#: app/Params/Editor.php:129, app/Params/Globals.php:52
 msgid "GHColors"
 msgstr ""
 
-#: app/Params/Editor.php:114, app/Params/Globals.php:53
+#: app/Params/Editor.php:130, app/Params/Globals.php:53
 msgid "Projoaque"
 msgstr ""
 
-#: app/Params/Editor.php:115, app/Params/Globals.php:54
+#: app/Params/Editor.php:131, app/Params/Globals.php:54
 msgid "Xonokai"
 msgstr ""
 
-#: app/Params/Editor.php:116, app/Params/Globals.php:55
+#: app/Params/Editor.php:132, app/Params/Globals.php:55
 msgid "Ateliersulphurpool-Light"
 msgstr ""
 
-#: app/Params/Editor.php:117, app/Params/Globals.php:56
+#: app/Params/Editor.php:133, app/Params/Globals.php:56
 msgid "Hopscotch"
 msgstr ""
 
-#: app/Params/Editor.php:118, app/Params/Globals.php:57
+#: app/Params/Editor.php:134, app/Params/Globals.php:57
 msgid "Atom Dark"
 msgstr ""
 

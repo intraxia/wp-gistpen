@@ -43,6 +43,8 @@ class Translator implements TranslatorContract, HasActions {
 			'jobs.title'         => __( 'Background Jobs', 'wp-gistpen' ),
 			'search.invalid'     => __( 'Please enter a valid search term.', 'wp-gistpen' ),
 			'search.loading'     => __( 'Loading Gistpens...', 'wp-gistpen' ),
+			'search.results.no'  => __( 'No results found for term %s', 'wp-gistpen' ),
+			'search.term.no'     => __( 'Please enter a search term ', 'wp-gistpen' ),
 			'search.title'       => __( 'Search Gistpens', 'wp-gistpen' ),
 		);
 	}

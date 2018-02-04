@@ -4,6 +4,7 @@ import type { Observable } from 'kefir';
 import type { Node } from 'react';
 import type { SearchInputAction, SearchResultSelectionChangeAction } from '../types';
 import './Search.scss';
+import R from 'ramda';
 import { h, Collector, loop, view } from 'brookjs-silt';
 import i18n from '../helpers/i18n';
 import { searchInputAction, searchResultSelectionChangeAction } from '../actions';
@@ -47,8 +48,12 @@ const HasResults = ({ stream$ }: { stream$: Observable<ResultsProps> }) => (
     </Collector>
 );
 
-const NoResults = () => (
-    <p>{i18n('search.results.none')}</p>
+const NoResults = ({ term$ }) => (
+    <p>{term$.map(term => i18n('search.results.no', term))}</p>
+);
+
+const NoTerm = () => (
+    <p>{i18n('search.term.no')}</p>
 );
 
 const onSearchTyping = (evt$: Observable<SyntheticInputEvent<*>>): Observable<SearchInputAction> => evt$
@@ -72,10 +77,13 @@ export const Search = ({ stream$ }: { stream$: Observable<SearchProps> }): Node 
                 ))}
             </div>
 
-            {stream$.thru(view(props => props.results)).map((results: ResultsProps) =>
-                results.order.length ?
-                    <HasResults stream$={stream$.thru(view(props => props.results))}/> :
-                    <NoResults/>)}
+            {stream$.skipDuplicates(R.equals).map((props: SearchProps) =>
+                props.term ?
+                    (props.results.order.length ?
+                        <HasResults stream$={stream$.thru(view(props => props.results))}/> :
+                        <NoResults term$={stream$.thru(view(props => props.term))}/>) :
+                    <NoTerm />
+            )}
         </div>
     </Collector>
 );
