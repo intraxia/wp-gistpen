@@ -4,8 +4,7 @@ import classNames from 'classnames';
 import jss from 'jss';
 import nested from 'jss-nested';
 import { commitClick } from '../actions';
-import link from '../helpers/link';
-import i18n from '../helpers/i18n';
+import { i18n, link } from '../helpers';
 import Blob from './Blob';
 
 jss.use(nested());

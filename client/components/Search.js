@@ -6,7 +6,7 @@ import type { SearchInputAction, SearchResultSelectionChangeAction } from '../ty
 import './Search.scss';
 import R from 'ramda';
 import { h, Collector, loop, view } from 'brookjs-silt';
-import i18n from '../helpers/i18n';
+import { i18n } from '../helpers';
 import { searchInputAction, searchResultSelectionChangeAction } from '../actions';
 
 type ID = number | string;
