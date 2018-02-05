@@ -8,10 +8,6 @@ import { Component } from 'react';
 import { h } from 'brookjs-silt';
 import Prism from '../prism';
 
-type ObservableProps<T> = {
-    stream$: Kefir.Observable<T>
-};
-
 type BlobProps = {
     blob: {
         code: string;
