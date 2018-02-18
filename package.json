@@ -63,7 +63,7 @@
     "sinon": "^4.2.2",
     "sinon-chai": "^2.9.0",
     "style-loader": "^0.20.0",
-    "stylelint": "^8.4.0",
+    "stylelint": "^9.0.0",
     "stylelint-webpack-plugin": "^0.10.1",
     "symbol-observable": "^1.2.0",
     "weallbehave": "^1.2.0",
