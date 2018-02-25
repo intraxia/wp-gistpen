@@ -67,7 +67,7 @@
     "stylelint-webpack-plugin": "^0.10.1",
     "symbol-observable": "^1.2.0",
     "weallbehave": "^1.2.0",
-    "webpack": "^3.10.0",
+    "webpack": "^4.0.0",
     "webpack-merge": "^4.1.0",
     "webpack-notifier": "^1.5.1",
     "wp-pot-cli": "^1.0.3"
