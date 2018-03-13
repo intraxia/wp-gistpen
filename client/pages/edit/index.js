@@ -36,7 +36,7 @@ const initialState = {
     }
 };
 
-const store : Store<EditorPageState, Action> = createStore(
+const store : Store<EditorPageState, Action> = createStore( // eslint-disable-line no-unused-vars
     reducer,
     initialState,
     applyDelta(
@@ -49,4 +49,4 @@ const store : Store<EditorPageState, Action> = createStore(
     )
 );
 
-store.dispatch({ type: 'INIT' });
+// store.dispatch({ type: 'INIT' });
