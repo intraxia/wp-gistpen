@@ -6,3 +6,4 @@ export { default as CommitsComponent } from './commits';
 export { default as JobsComponent } from './jobs';
 export { default as Repo } from './Repo';
 export { Search, SearchProps } from './Search';
+export { SettingsPage } from './SettingsPage';
