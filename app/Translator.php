@@ -39,7 +39,7 @@ class Translator implements TranslatorContract, HasActions {
 			'jobs.name'          => __( 'Job Name', 'wp-gistpen' ),
 			'jobs.runs'          => __( 'Job Runs', 'wp-gistpen' ),
 			'jobs.runs.view'     => __( 'View Runs', 'wp-gistpen' ),
-			'jobs.status'        => __( 'Job Name', 'wp-gistpen' ),
+			'jobs.status'        => __( 'Job Status', 'wp-gistpen' ),
 			'jobs.title'         => __( 'Background Jobs', 'wp-gistpen' ),
 			'search.invalid'     => __( 'Please enter a valid search term.', 'wp-gistpen' ),
 			'search.loading'     => __( 'Loading Gistpens...', 'wp-gistpen' ),
