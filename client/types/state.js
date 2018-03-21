@@ -138,7 +138,16 @@ export type HasEditorState = {
 };
 
 export type SettingsState = {
-    globals: GlobalsState;
+    globals: {
+        demo: {
+            code: string;
+            filename: string;
+            language: string
+        };
+        root: string;
+        nonce: string;
+        themes: { [key: string]: string }
+    };
     prism: PrismState;
     gist: GistState;
     route: Route;

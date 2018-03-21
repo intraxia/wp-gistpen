@@ -1,5 +1,7 @@
 // @flow
 
+import type { Loopable } from '../framework';
+
 export type MessageLevel = 'error' | 'warning' | 'success' | 'info' | 'debug';
 
 export type Message = {
@@ -22,7 +24,7 @@ export type Run = {
     rest_url: string;
     job_url: string;
     console_url: string;
-    messages?: Array<Message>
+    messages?: Loopable<string, Message>
 };
 
 export type JobStatus = 'idle' | 'processing';
@@ -34,5 +36,5 @@ export type Job = {
     rest_url: string;
     runs_url: string;
     status?: JobStatus;
-    runs?: Array<Run>
+    runs?: Loopable<string, Run>
 };
