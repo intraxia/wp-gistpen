@@ -13,4 +13,4 @@ export { default as jobs } from './jobs';
 export { default as runs } from './runs';
 export { default as messages } from './messages';
 export { tinyMCEReducer, TinyMCEState } from './tinyMCE';
-export { globalsReducer, GlobalsState } from './globals';
+export { globalsReducer } from './globals';

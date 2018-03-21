@@ -55,7 +55,7 @@ export type JobsState = {
     [key: string]: Job
 };
 
-export type GlobalsState = {|
+export type GlobalsState = {
     languages: {[key: string]: string };
     root: string;
     nonce: string;
@@ -64,7 +64,7 @@ export type GlobalsState = {|
     statuses: { [key: string]: string };
     themes: { [key: string]: string };
     repo?: Repo
-|};
+};
 
 export type Cursor = false | [number, number];
 
