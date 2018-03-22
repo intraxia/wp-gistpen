@@ -10,6 +10,7 @@ storiesOf('SettingsPage', module)
     .add('highlighting view', () => (
         <Aggregator action$={action$ => action$.observe(a => action('SettingsPage')(a))}>
             <SettingsPage stream$={Kefir.constant({
+                loading: false,
                 route: {
                     name: 'highlighting',
                     parts: {}
@@ -117,6 +118,7 @@ storiesOf('SettingsPage', module)
     .add('accounts view', () => (
         <Aggregator action$={action$ => action$.observe(a => action('SettingsPage')(a))}>
             <SettingsPage stream$={Kefir.constant({
+                loading: false,
                 route: {
                     name: 'accounts',
                     parts: {}
@@ -229,6 +231,7 @@ storiesOf('SettingsPage', module)
     .add('jobs view - no job selected', () => (
         <Aggregator action$={action$ => action$.observe(a => action('SettingsPage')(a))}>
             <SettingsPage stream$={Kefir.constant({
+                loading: false,
                 route: {
                     name: 'jobs',
                     parts: {}
@@ -341,6 +344,7 @@ storiesOf('SettingsPage', module)
     .add('jobs view - job selected', () => (
         <Aggregator action$={action$ => action$.observe(a => action('SettingsPage')(a))}>
             <SettingsPage stream$={Kefir.constant({
+                loading: false,
                 route: {
                     name: 'jobs',
                     parts: {
@@ -455,6 +459,7 @@ storiesOf('SettingsPage', module)
     .add('jobs view - job & run selected', () => (
         <Aggregator action$={action$ => action$.observe(a => action('SettingsPage')(a))}>
             <SettingsPage stream$={Kefir.constant({
+                loading: false,
                 route: {
                     name: 'jobs',
                     parts: {

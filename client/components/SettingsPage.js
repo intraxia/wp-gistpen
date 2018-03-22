@@ -14,7 +14,8 @@ export const SettingsPage = ({ stream$ }: ObservableProps<SettingsProps>) => (
     <Collector>
         <div className="wrap">
             <Header stream$={stream$.thru(view(props => ({
-                route: props.route.name
+                route: props.route.name,
+                loading: props.loading
             })))} />
 
             {stream$.thru(view(props => props.route)).map(route => {
