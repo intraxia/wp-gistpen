@@ -101,8 +101,9 @@ class Translator implements TranslatorContract, HasActions {
 	public function action_hooks() {
 		return array(
 			array(
-				'hook'   => 'admin_head',
-				'method' => 'output_translations',
+				'hook'     => 'admin_enqueue_scripts',
+				'method'   => 'output_translations',
+				'priority' => 5,
 			),
 		);
 	}
