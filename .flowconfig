@@ -9,6 +9,7 @@ all=warn
 
 [libs]
 ./client/types/declare.js
+./node_modules/jss/flow-typed
 
 [options]
 include_warnings=true
