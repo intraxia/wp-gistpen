@@ -9,3 +9,10 @@ export type ViewDeltaConfig<P, A> = {
     root: ComponentFactory<P, A>;
     getElement: () => Observable<Element, Error>
 };
+
+export type Loopable<I, E> = {
+    order: Array<I>;
+    dict: {
+        [key: I]: E
+    }
+};

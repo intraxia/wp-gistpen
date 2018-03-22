@@ -23,6 +23,9 @@
             },
             {
               "SyntheticInputEvent": true
+            },
+            {
+              "ObservableProps": true
             }
           ]
         }]
@@ -43,6 +46,9 @@
             },
             {
               "SyntheticInputEvent": true
+            },
+            {
+              "ObservableProps": true
             }
           ]
         }],

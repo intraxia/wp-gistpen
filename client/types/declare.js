@@ -1,4 +1,5 @@
 // @flow
+import { Kefir } from 'brookjs';
 import type { TinyMCE } from './tinymce';
 
 // eslint-disable-next-line camelcase
@@ -22,3 +23,7 @@ declare class ProxyEvent {
     shiftKey: boolean;
     preventDefault() : void
 }
+
+declare type ObservableProps<T> = {
+    stream$: Kefir.Observable<T>
+};

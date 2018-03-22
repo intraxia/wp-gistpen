@@ -63,7 +63,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			},
 			'handle'    => $slug . '-settings-script',
 			'src'       => 'assets/js/settings',
-			'footer'    => false,
+			'footer'    => true,
 			'localize'  => function () {
 				/** @var Params $settings */
 				$params = $this->container->fetch( 'params' );

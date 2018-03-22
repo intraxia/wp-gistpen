@@ -3,6 +3,10 @@ import type { AjaxFinishedAction, AjaxFailedAction, ApiResponse,
     RepoApiResponse, RepoSaveSucceededAction, UserApiResponse,
     UserSaveSucceededAction, SearchApiResponse, SearchResultsSucceededAction } from '../types';
 
+export const AJAX_STARTED = 'AJAX_STARTED';
+
+export const ajaxStartedAction = () => ({ type: AJAX_STARTED });
+
 export const AJAX_FINISHED = 'AJAX_FINISHED';
 
 /**

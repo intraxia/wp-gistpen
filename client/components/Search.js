@@ -8,6 +8,7 @@ import R from 'ramda';
 import { h, Collector, loop, view } from 'brookjs-silt';
 import { i18n } from '../helpers';
 import { searchInputAction, searchResultSelectionChangeAction } from '../actions';
+import Loader from './Loader';
 
 type ID = number | string;
 
@@ -73,7 +74,7 @@ export const Search = ({ stream$ }: { stream$: Observable<SearchProps> }): Node 
                     placeholder="keywords" defaultValue={stream$.take(1).map(props => props.term)}
                     onInput={onSearchTyping}/>
                 {stream$.thru(view((props: SearchProps) => props.loading)).map((loading: boolean) => (
-                    loading ? <div className={'loader'}>{i18n('search.loading')}</div> : null
+                    loading ? <Loader /> : null
                 ))}
             </div>
 

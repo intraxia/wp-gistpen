@@ -3,8 +3,9 @@ import type { Observable } from 'kefir';
 import type { Action, SettingsState } from '../types';
 import type { AjaxOptions, ObsResponse } from '../services';
 import R from 'ramda';
+import Kefir from 'kefir';
 import { ajax$ } from '../services';
-import { ajaxFailedAction, ajaxFinishedAction } from '../actions';
+import { ajaxStartedAction, ajaxFailedAction, ajaxFinishedAction } from '../actions';
 
 const makeBody = R.pipe(R.pick(['gist', 'prism']), JSON.stringify);
 const optionsAjax$ : (state: SettingsState) => Observable<ObsResponse> = R.converge(ajax$, [
@@ -34,8 +35,11 @@ export default function siteDelta(action$: Observable<Action>, state$: Observabl
             (prev: SettingsState, next: SettingsState): boolean =>
                 prev.gist === next.gist && prev.prism === next.prism)
         .debounce(1000)
-        .flatMapLatest(optionsAjax$)
-        .flatMap((response: ObsResponse) => response.json())
-        .map(ajaxFinishedAction)
-        .mapErrors(ajaxFailedAction);
+        .flatMapLatest(state => Kefir.concat([
+            Kefir.constant(ajaxStartedAction()),
+            optionsAjax$(state)
+                .flatMap((response: ObsResponse) => response.json())
+                .map(ajaxFinishedAction)
+                .mapErrors(ajaxFailedAction)
+        ]));
 }

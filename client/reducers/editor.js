@@ -35,7 +35,7 @@ const defaults = {
     password: '',
     gist_id: '',
     sync: 'off',
-    instances: [{ ...defaultInstance, key: createUniqueKey([]) }]
+    instances: [{ ...defaultInstance, key: 'new0' }]
 };
 
 export default combineActionReducers([

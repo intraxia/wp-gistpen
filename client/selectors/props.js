@@ -1,58 +1,78 @@
 // @flow
 import type { Observable } from 'kefir';
 import type {
-    EditorPageState, EditorPageProps, SettingsState, SettingsProps,
-    Job, Run, Message, CommitProps, CommitState
+    EditorPageState, EditorPageProps,
+    SettingsState, SettingsProps, CommitProps,
+    CommitState, Route, Theme, Loopable, Run
 } from '../types';
 import R from 'ramda';
+import type { Job, Message } from '../types';
 
-export const selectJob = (state: SettingsState): Job | void => {
-    let job;
+export const selectRoute = (state: { route: Route }): Route => state.route;
 
-    if (state.route.name === 'jobs' &&
-        typeof state.route.parts.job === 'string'
-    ) {
-        job = state.jobs[state.route.parts.job];
+export const selectDemo = (state: SettingsState) => state.globals.demo;
 
-        if (job) {
-            job = {
-                ...job,
-                runs: state.runs.filter((run: Run): boolean => run.job === job.slug)
-            };
+export const selectThemes = (state: SettingsState) => ({
+    order: Object.keys(state.globals.themes),
+    dict: Object.entries(state.globals.themes).reduce((acc, [key, val]) => ({
+        ...acc,
+        [key]: {
+            name: val,
+            key,
+            selected: key === state.prism.theme
+
         }
-    }
+    }), ({}: { [key: string]: Theme }))
+});
 
-    return job;
-};
+export const selectLineNumbers = (state: SettingsState) => state.prism['line-numbers'];
 
-export const selectRun = (state: SettingsState): Run | void => {
-    let run;
+export const selectShowInvisibles = (state: SettingsState) => state.prism['show-invisibles'];
 
-    if (state.route.name === 'jobs' &&
-        typeof state.route.parts.job === 'string' &&
-        typeof state.route.parts.run === 'string'
-    ) {
-        const runId = state.route.parts.run;
-        run = state.runs.find((run: Run): boolean => run.ID === runId);
+export const selectToken = (state: SettingsState) => state.gist.token;
 
-        if (run) {
-            run = {
+const selectMessagesForRun = (state: SettingsState, run: Run): Loopable<string, Message> =>
+    state.messages.filter((msg: Message) => msg.run_id === run.ID)
+        .reduce((acc: Loopable<string, Message>, msg: Message) => {
+            acc.order.push(msg.ID);
+            acc.dict[msg.ID] = msg;
+
+            return acc;
+        }, { dict: {}, order: [] });
+
+const selectRunsForJob = (state: SettingsState, job: Job): Loopable<string, Run> =>
+    state.runs.filter((run: Run) => run.job === job.slug)
+        .reduce((acc: Loopable<string, Run>, run: Run) => {
+            acc.order.push(run.ID);
+            acc.dict[run.ID] = {
                 ...run,
-                messages: state.messages.filter((message: Message) => message.run_id === runId)
+                messages: selectMessagesForRun(state, run)
             };
-        }
-    }
 
-    return run;
-};
+            return acc;
+        }, { dict: {}, order: [] });
 
-export const selectSettingsProps = (state$: Observable<SettingsState>): Observable<SettingsProps> =>
-    state$.map((state: SettingsState): SettingsProps => ({
-        ...state,
-        job: selectJob(state),
-        run: selectRun(state)
-    }))
-        .skipDuplicates(R.equals);
+
+export const selectJobs = (state: SettingsState) => ({
+    order: Object.keys(state.jobs),
+    dict: R.map(job => ({
+        ...job,
+        runs: selectRunsForJob(state, job)
+    }), state.jobs)
+});
+
+export const selectLoading = (state: SettingsState) => state.ajax.running;
+
+export const selectSettingsProps = (state: SettingsState): SettingsProps => ({
+    loading: selectLoading(state),
+    route: selectRoute(state),
+    demo: selectDemo(state),
+    themes: selectThemes(state),
+    'line-numbers': selectLineNumbers(state),
+    'show-invisibles': selectShowInvisibles(state),
+    token: selectToken(state),
+    jobs: selectJobs(state)
+});
 
 export const selectEditorProps = (state$: Observable<EditorPageState>): Observable<EditorPageProps> =>
     state$.map(({ authors, globals, repo, route, editor, commits }: EditorPageState): EditorPageProps => ({

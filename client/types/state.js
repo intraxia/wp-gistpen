@@ -3,6 +3,10 @@ import type { Author, Job, Route, Run, Message } from './domain';
 
 export type Toggle = 'on' | 'off';
 
+export type AjaxState = {
+    running: boolean
+};
+
 export type Language = {
     ID: number;
     display_name: string;
@@ -55,7 +59,7 @@ export type JobsState = {
     [key: string]: Job
 };
 
-export type GlobalsState = {|
+export type GlobalsState = {
     languages: {[key: string]: string };
     root: string;
     nonce: string;
@@ -64,7 +68,7 @@ export type GlobalsState = {|
     statuses: { [key: string]: string };
     themes: { [key: string]: string };
     repo?: Repo
-|};
+};
 
 export type Cursor = false | [number, number];
 
@@ -138,7 +142,17 @@ export type HasEditorState = {
 };
 
 export type SettingsState = {
-    globals: GlobalsState;
+    ajax: AjaxState;
+    globals: {
+        demo: {
+            code: string;
+            filename: string;
+            language: string
+        };
+        root: string;
+        nonce: string;
+        themes: { [key: string]: string }
+    };
     prism: PrismState;
     gist: GistState;
     route: Route;

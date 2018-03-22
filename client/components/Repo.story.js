@@ -4,9 +4,10 @@ import { h } from 'brookjs-silt';
 import Repo from './Repo';
 
 const blobs = {
-    order: [1, 2],
+    order: ['1', '2'],
     dict: {
-        1: {
+        '1': {
+            ID: '1',
             filename: 'test.js',
             language: 'javascript',
             code: `function $initHighlight(block, flags) {
@@ -26,7 +27,8 @@ const blobs = {
     console.log(Array.every(classes, Boolean));
 }`
         },
-        2: {
+        '2': {
+            ID: '2',
             filename: 'test.js',
             language: 'javascript',
             code: `function $initHighlight(block, flags) {
