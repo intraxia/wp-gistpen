@@ -19,6 +19,7 @@ export type Theme = {
 };
 
 export type SettingsProps = {
+    loading: boolean;
     route: Route;
     demo: {
         code: string;

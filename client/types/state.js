@@ -3,6 +3,10 @@ import type { Author, Job, Route, Run, Message } from './domain';
 
 export type Toggle = 'on' | 'off';
 
+export type AjaxState = {
+    running: boolean
+};
+
 export type Language = {
     ID: number;
     display_name: string;
@@ -138,6 +142,7 @@ export type HasEditorState = {
 };
 
 export type SettingsState = {
+    ajax: AjaxState;
     globals: {
         demo: {
             code: string;

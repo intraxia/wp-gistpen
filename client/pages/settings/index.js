@@ -8,14 +8,23 @@ import ReactDOM from 'react-dom';
 import { selectSettingsProps as selectProps } from '../../selectors';
 import router from './router';
 import { applyDelta, jobsDelta, routerDelta, siteDelta, webpackDelta } from '../../deltas';
-import { globalsReducer, route, prism, gist, jobs, runs, messages } from '../../reducers';
+import { ajaxReducer, globalsReducer, route, prism, gist, jobs, runs, messages } from '../../reducers';
 import { ajax$ } from '../../services';
 import { SettingsPage } from '../../components';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
 const store = createStore(
-    combineReducers({ globals: globalsReducer, route, prism, gist, jobs, runs, messages }),
+    combineReducers({
+        ajax: ajaxReducer,
+        globals: globalsReducer,
+        route,
+        prism,
+        gist,
+        jobs,
+        runs,
+        messages
+    }),
     __GISTPEN_SETTINGS__,
     applyDelta(
         jobsDelta({ ajax$ }),

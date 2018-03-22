@@ -61,7 +61,10 @@ export const selectJobs = (state: SettingsState) => ({
     }), state.jobs)
 });
 
+export const selectLoading = (state: SettingsState) => state.ajax.running;
+
 export const selectSettingsProps = (state: SettingsState): SettingsProps => ({
+    loading: selectLoading(state),
     route: selectRoute(state),
     demo: selectDemo(state),
     themes: selectThemes(state),

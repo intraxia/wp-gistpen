@@ -1,6 +1,6 @@
 // @flow
 
-export { ajaxReducer, AjaxState } from './ajax';
+export { ajaxReducer } from './ajax';
 export { default as authors } from './authors';
 export { default as editor } from './editor';
 export { default as gist } from './gist';

@@ -1,8 +1,7 @@
 // @flow
 import type { Reducer } from 'redux';
 import type { SearchState } from './search';
-import type { AjaxState } from './ajax';
-import type { GlobalsState } from '../types';
+import type { AjaxState, GlobalsState } from '../types';
 import { combineReducers } from 'redux';
 import { ajaxReducer } from './ajax';
 import { globalsReducer } from './globals';
