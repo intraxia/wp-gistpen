@@ -2,7 +2,7 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [Unreleased] ###
+### [1.0.0][] ###
 
 #### Removed ####
 * Database migration from old versions
@@ -11,33 +11,26 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 		If you're using an old version of WP-Gistpen, you'll need to upgrade to 0.5.2+ before upgrading to 1.0.0 or the database migration will not be performed correctly. Fresh installs should have no problems either.
 
 #### Added ####
-* Completely rewritten internals
-	* Plugin architecture now built on [Jaxion][] framework
+* **Completely rewritten from the ground up**
+* New internal architecture
+	* Built on [Jaxion][], WordPress framework
 	* Improved Database layer & use of Models
 * WP-API integration
 	* This requires an upgrade to WordPress 4.6+.
+* New code snippet editor
+	* Custom snippet editor
+	* Built on [brookjs][], Prism, & React.js
 * New Prism plugins:
 	* Show invisibles: Display tabs and line returns as characters
 	* Show language: Display the language in the embed
-	* Copy-to-clipboard: Displlay button to copy code to clipboard
-* New Prism themes:
-	* Tomorrow
-	* CB
-	* GHColors
-	* Projoaque
-	* Xonokai
-	* Ateliersulphurpool-Light
-	* Hopscotch
-	* Atom Dark
-* New code snippet editor
-	* Rewritten on top of Prism, ensuring consistency between supported editor and highlighting languages.
-	* Built  on [brookjs][]
-* API-driven settings page
+	* Copy-to-clipboard: Display button to copy code to clipboard
+* Supports all Prism languages & built-in Prism themes + bonus from prism-themes
 
 #### Fixed ####
 * Fixed code sample display on mobile
 * Fixed display on custom post type pages
 * Fixed bug where adding two files would only save one at a time
+* Tighten up revision saving logic
 
 ### [0.5.8] - 2015-07-26 ###
 
@@ -220,6 +213,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
+[1.0.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/1.0.0
 [0.5.8]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.8
 [0.5.7]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.7
 [0.5.6]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.6

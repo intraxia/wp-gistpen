@@ -58,7 +58,7 @@ Your PHP version should be 5.4+, and you must be running WordPress v4.6+. This i
 
 ### How do I create an archive page for my Gistpens? ###
 
-Go to the "Pages" screen and create a new, blank page with the name "Gistpens" and click publish. That URL will now display all of your Gistpens. You can link to this page in the menu to direct users to your Gistpens archive page. Just make sure the slug of the page is "gistpens".
+Go to the "Pages" screen and create a new, blank page with the name "Gistpens" and click publish. That URL will now display all of your Gistpens. You can link to this page in the menu to direct users to your Gistpens archive page. You can change the name of the page; just make sure the slug of the page is "gistpens".
 
 ### How do I create a Gistpen and insert it into the post? ###
 
@@ -100,9 +100,15 @@ You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen
 
 ### How do I sync my Gistpens to Gist? ###
 
-Gistpens can be exported en masse from the Gistpens settings page. All Gistpens will be synced, only if the Gistpen hasn't been synced yet, but **regardless of whether syncing for the Gistpen is enabled**. Syncing will then be enabled on the exported Gistpens.
+Gistpens can be exported en masse. All Gistpens will be synced, only if the Gistpen hasn't been synced yet, but **regardless of whether syncing for the Gistpen is enabled**. Syncing will then be enabled on the exported Gistpens.
 
 If you do not want this, you can enable/disable Gistpen syncing on a per-Gistpen basis. Just click the checkbox on the Gistpen edit page, and any changes will be reflected on the corresponding Gist on update. If you uncheck that box, future changes will not be reflected on Gist.
+
+To go this, go to the Gistpens settings page and click "Jobs". Next to the the "Export Job", click "Dispatch Job". After the Job is done, check out the log messages to ensure everything exported correctly.
+
+### How do I import my Gistpens from Gist? ###
+
+Go to the Gistpents settings page and click "Jobs". Next to the "Import Job", click "Dispatch Job", then check out the log messages to ensure everything was imported correctly.
 
 ## Screenshots ##
 
