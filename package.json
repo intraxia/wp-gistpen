@@ -41,7 +41,7 @@
     "dredd": "^5.1.0",
     "eslint": "^4.17.0",
     "eslint-config-valtech": "^1.0.0",
-    "eslint-loader": "^1.5.0",
+    "eslint-loader": "^2.0.0",
     "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-react": "^7.6.1",
     "flow-bin": "^0.68.0",
