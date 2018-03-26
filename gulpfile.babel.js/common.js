@@ -15,6 +15,6 @@ gulp.task('common:genpot', () =>
             domain: 'wp-gistpen',
             destFile: 'wp-gistpen.pot',
             package: 'wp-gistpen',
-            bugReport: 'http://github.com/mAAdhaTTah/WP-Gistpen'
+            bugReport: 'http://github.com/intraxia/WP-Gistpen'
         }))
         .pipe(gulp.dest('languages/')));

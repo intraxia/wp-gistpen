@@ -51,6 +51,6 @@ On the front-end, unit tests are in files with `*.spec.js` as the extension or s
   [4]: http://gulpjs.com/
   [5]: https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate
   [6]: https://scrutinizer-ci.com/
-  [7]: https://codeclimate.com/github/mAAdhaTTah/wp-gistpen
+  [7]: https://codeclimate.com/github/intraxia/wp-gistpen
   [8]: https://eslint.org/
   [9]: https://github.com/valtech-nyc/eslint-config-valtech

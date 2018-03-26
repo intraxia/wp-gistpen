@@ -61,7 +61,7 @@ deploy:
           secure: gAUbtuJKtw/mcBiZ1sAa6sCcCvfOThyc80bNRVf59gdUnV+8A+gwb6c0KV0tntcX/eJ6VmJHFtJGz18jGhMC6xklqkXxZB1xnyR4TpUgOMh6ZB30v/HH+rFj4rWxuXXejrQ5vqfM7jD1ZHOGqZYgGEX7f4LnlLMv9pCPmJBz4b4=
       file: wp-gistpen.zip
       on:
-          repo: mAAdhaTTah/wp-gistpen
+          repo: intraxia/wp-gistpen
           tags: true
           php: 5.4
           all_branches: true

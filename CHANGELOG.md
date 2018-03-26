@@ -152,7 +152,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 	- Twig
 
 #### Removed ####
-* Languages (*If you need any of these languages readded, please open an issue on [GitHub](https://github.com/mAAdhaTTah/WP-Gistpen) to discuss.)
+* Languages (*If you need any of these languages readded, please open an issue on [GitHub](https://github.com/intraxia/WP-Gistpen) to discuss.)
 	- AppleScript
 	- ActionScript3
 	- ColdFusion
@@ -212,22 +212,22 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
-[unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
-[1.0.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/1.0.0
-[0.5.8]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.8
-[0.5.7]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.7
-[0.5.6]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.6
-[0.5.5]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.5
-[0.5.4]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.4
-[0.5.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.2
-[0.5.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.0
-[0.4.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.4.0
-[0.3.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.3.1
-[0.3.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.3.0
-[0.2.3]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.3
-[0.2.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.2
-[0.2.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.1
-[0.2.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.0
-[0.1.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.1.2
-[0.1.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.1.1
-[0.1.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.1.0
+[unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.0.0]: https://github.com/intraxia/WP-Gistpen/tree/1.0.0
+[0.5.8]: https://github.com/intraxia/WP-Gistpen/tree/0.5.8
+[0.5.7]: https://github.com/intraxia/WP-Gistpen/tree/0.5.7
+[0.5.6]: https://github.com/intraxia/WP-Gistpen/tree/0.5.6
+[0.5.5]: https://github.com/intraxia/WP-Gistpen/tree/0.5.5
+[0.5.4]: https://github.com/intraxia/WP-Gistpen/tree/0.5.4
+[0.5.2]: https://github.com/intraxia/WP-Gistpen/tree/0.5.2
+[0.5.0]: https://github.com/intraxia/WP-Gistpen/tree/0.5.0
+[0.4.0]: https://github.com/intraxia/WP-Gistpen/tree/0.4.0
+[0.3.1]: https://github.com/intraxia/WP-Gistpen/tree/0.3.1
+[0.3.0]: https://github.com/intraxia/WP-Gistpen/tree/0.3.0
+[0.2.3]: https://github.com/intraxia/WP-Gistpen/tree/0.2.3
+[0.2.2]: https://github.com/intraxia/WP-Gistpen/tree/0.2.2
+[0.2.1]: https://github.com/intraxia/WP-Gistpen/tree/0.2.1
+[0.2.0]: https://github.com/intraxia/WP-Gistpen/tree/0.2.0
+[0.1.2]: https://github.com/intraxia/WP-Gistpen/tree/0.1.2
+[0.1.1]: https://github.com/intraxia/WP-Gistpen/tree/0.1.1
+[0.1.0]: https://github.com/intraxia/WP-Gistpen/tree/0.1.0

@@ -13,7 +13,7 @@
 
 A self-hosted alternative to putting your code snippets on Gist.
 
-[![Build Status](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/build-status/develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop)[![Greenkeeper badge](https://badges.greenkeeper.io/mAAdhaTTah/wp-gistpen.svg)](https://greenkeeper.io/) [![Maintainability](https://api.codeclimate.com/v1/badges/0eee18837a01d55dd33e/maintainability)](https://codeclimate.com/github/mAAdhaTTah/wp-gistpen/maintainability)
+[![Build Status](https://travis-ci.org/intraxia/wp-gistpen.svg?branch=develop)](https://travis-ci.org/intraxia/wp-gistpen)  [![Maintainability](https://api.codeclimate.com/v1/badges/0eee18837a01d55dd33e/maintainability)](https://codeclimate.com/github/intraxia/wp-gistpen/maintainability)
 
 You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement for your WordPress blog.
 
