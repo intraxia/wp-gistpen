@@ -41,7 +41,7 @@
     "dredd": "^5.1.0",
     "eslint": "^4.17.0",
     "eslint-config-valtech": "^1.0.0",
-    "eslint-loader": "^1.5.0",
+    "eslint-loader": "^2.0.0",
     "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-react": "^7.6.1",
     "flow-bin": "^0.68.0",
@@ -67,7 +67,7 @@
     "stylelint-webpack-plugin": "^0.10.1",
     "symbol-observable": "^1.2.0",
     "weallbehave": "^1.2.0",
-    "webpack": "^3.10.0",
+    "webpack": "^4.2.0",
     "webpack-merge": "^4.1.0",
     "webpack-notifier": "^1.5.1",
     "wp-pot-cli": "^1.0.3"
