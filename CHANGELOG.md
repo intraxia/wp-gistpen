@@ -2,7 +2,9 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [1.0.0][] ###
+### [1.0.0][] - 2018-03-26 ###
+
+Almost three years in the making!
 
 #### Removed ####
 * Database migration from old versions
