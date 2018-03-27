@@ -4,6 +4,7 @@ gulpfile.babel.js
 node_modules
 client
 test
+config
 .babelrc
 .beaverrc.js
 .editorconfig
@@ -12,6 +13,7 @@ test
 .flowconfig
 .gitignore
 .scrutinizer.yml
+.storybook
 .svnignore
 .travis.yml
 stylelint.config.js
