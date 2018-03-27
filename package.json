@@ -38,23 +38,18 @@
     "chai": "^4.0.2",
     "copy-webpack-plugin": "^4.3.1",
     "css-loader": "^0.28.9",
-    "dredd": "^5.1.0",
     "eslint": "^4.17.0",
     "eslint-config-valtech": "^1.0.0",
     "eslint-loader": "^2.0.0",
     "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-react": "^7.6.1",
+    "esm": "^3.0.10",
     "flow-bin": "^0.68.0",
     "flow-status-webpack-plugin": "^0.1.7",
-    "gulp": "3.9",
-    "gulp-sort": "^2.0.0",
-    "gulp-util": "^3.0.7",
-    "gulp-wp-pot": "1.0.1",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.1.4",
     "jsdom": "^11.6.2",
     "jsdom-global": "^3.0.2",
-    "marked": "^0.3.12",
     "node-notifier": "^5.2.1",
     "node-sass": "^4.5.1",
     "sass-loader": "^6.0.3",
@@ -67,8 +62,7 @@
     "stylelint-webpack-plugin": "^0.10.1",
     "symbol-observable": "^1.2.0",
     "weallbehave": "^1.2.0",
-    "webpack": "^4.2.0",
-    "webpack-merge": "^4.1.0",
+    "webpack": "^3.11.0",
     "webpack-notifier": "^1.5.1",
     "wp-pot-cli": "^1.0.3"
   },
@@ -97,10 +91,8 @@
     "tcomb": "^3.2.16",
     "whatwg-fetch": "^2.0.2"
   },
-  "greenkeeper": {
-    "ignore": [
-      "gulp-wp-pot"
-    ]
-  },
-  "@std/esm": "cjs"
+  "esm": {
+    "mode": "auto",
+    "cjs": true
+  }
 }

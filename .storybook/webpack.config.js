@@ -1,11 +1,7 @@
-// @todo dedupe from main webpack configuration
 const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const FlowStatusWebpackPlugin = require('flow-status-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
-const gutil = require('gulp-util');
-const notifier = require('node-notifier');
-const flowPath = require('flow-bin');
+const flowPlugin = require('../config/flowPlugin');
 
 const client = path.join(__dirname, '..', 'client');
 const pages = path.join(client, 'pages');
@@ -51,19 +47,7 @@ module.exports = {
         }
     },
     plugins: [
-        new FlowStatusWebpackPlugin({
-            binaryPath: flowPath,
-            onSuccess: stdout => {
-                gutil.log('[webpack:flow]', stdout);
-
-                notifier.notify({ title: 'Flow', message: 'Flow passed' });
-            },
-            onError: stdout => {
-                gutil.log('[webpack:flow]', stdout);
-
-                notifier.notify({ title: 'Flow', message: 'Flow failed' });
-            }
-        }),
+        flowPlugin,
         new StyleLintPlugin({
             syntax: 'scss'
         }),
