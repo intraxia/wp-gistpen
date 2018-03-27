@@ -5,6 +5,7 @@ import WebpackNotifierPlugin from 'webpack-notifier';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import flowPath from 'flow-bin';
 import notifier from 'node-notifier';
+import flowPlugin from './config/flowPlugin';
 
 export const dir = 'client';
 
@@ -67,19 +68,7 @@ export const webpack = {
             }, 'css-loader', 'sass-loader']
         });
 
-        config.plugins.push(new FlowStatusWebpackPlugin({
-            binaryPath: flowPath,
-            onSuccess: stdout => {
-                console.log('[webpack:flow]', stdout);
-
-                notifier.notify({title: 'Flow', message: 'Flow passed'});
-            },
-            onError: stdout => {
-                console.log('[webpack:flow]', stdout);
-
-                notifier.notify({title: 'Flow', message: 'Flow failed'});
-            }
-        }));
+        config.plugins.push(flowPlugin);
         config.plugins.push(new StyleLintPlugin({ syntax: 'scss' }));
         config.plugins.push(new WebpackNotifierPlugin({alwaysNotify: true}));
         config.plugins.push(new CopyWebpackPlugin([{
