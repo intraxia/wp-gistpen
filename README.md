@@ -5,7 +5,7 @@
 **Tags:** gist, code snippets, codepen  
 **Requires at least:** 4.6  
 **Tested up to:** 4.9.3  
-**Stable tag:** 1.0.0-beta.10  
+**Stable tag:** 1.0.0  
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -13,7 +13,7 @@
 
 A self-hosted alternative to putting your code snippets on Gist.
 
-[![Build Status](https://travis-ci.org/intraxia/wp-gistpen.svg?branch=develop)](https://travis-ci.org/intraxia/wp-gistpen)  [![Greenkeeper badge](https://badges.greenkeeper.io/intraxia/wp-gistpen.svg)](https://greenkeeper.io/) [![Maintainability](https://api.codeclimate.com/v1/badges/0eee18837a01d55dd33e/maintainability)](https://codeclimate.com/github/intraxia/wp-gistpen/maintainability)
+[![Build Status](https://travis-ci.org/intraxia/wp-gistpen.svg?branch=latest)](https://travis-ci.org/intraxia/wp-gistpen)  [![Greenkeeper badge](https://badges.greenkeeper.io/intraxia/wp-gistpen.svg)](https://greenkeeper.io/) [![Maintainability](https://api.codeclimate.com/v1/badges/0eee18837a01d55dd33e/maintainability)](https://codeclimate.com/github/intraxia/wp-gistpen/maintainability)
 
 You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement for your WordPress blog.
 

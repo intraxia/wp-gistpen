@@ -14,8 +14,8 @@ matrix:
 
 branches:
     only:
-        - master
-        - develop
+        - latest
+        - next
         - /^greenkeeper/.*$/
         - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
