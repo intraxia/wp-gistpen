@@ -98,7 +98,7 @@ echo "Done."
 
 # build everything in place
 echo -n "Building plugin files..."
-gulp build --silent
+npm run build
 echo "Done."
 
 # transform the readme
