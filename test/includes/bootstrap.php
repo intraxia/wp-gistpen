@@ -1,5 +1,7 @@
 <?php
 
+use Intraxia\Gistpen\App;
+
 define('WP_GISTPEN_TESTING', true);
 
 $_tests_dir = getenv('WP_TESTS_DIR');
@@ -14,8 +16,4 @@ tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 require $_tests_dir . '/includes/bootstrap.php';
 
-require_once dirname( __FILE__ ) . '/factory.php';
-
-require_once dirname( __FILE__ ) . '/testcase.php';
-
-WP_Gistpen\Activator::activate();
+App::instance()->activate();

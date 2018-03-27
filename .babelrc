@@ -1,0 +1,58 @@
+{
+  "plugins": [
+    "syntax-flow",
+    "transform-flow-strip-types"
+  ],
+  "presets": [
+    ["brookjs", { "loose": false, "modules": false, "pragma": "h" }]
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        ["tcomb", {
+          "skipAsserts": true,
+          "globals": [
+            {
+              "Disposer": true
+            },
+            {
+              "ProxyEvent": true
+            },
+            {
+              "Node": true
+            },
+            {
+              "SyntheticInputEvent": true
+            },
+            {
+              "ObservableProps": true
+            }
+          ]
+        }]
+      ]
+    },
+    "development": {
+      "plugins": [
+        ["tcomb", {
+          "globals": [
+            {
+              "Disposer": true
+            },
+            {
+              "ProxyEvent": true
+            },
+            {
+              "Node": true
+            },
+            {
+              "SyntheticInputEvent": true
+            },
+            {
+              "ObservableProps": true
+            }
+          ]
+        }],
+      ]
+    }
+  }
+}

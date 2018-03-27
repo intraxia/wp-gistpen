@@ -93,13 +93,12 @@ cd $SVN_DIR/
 # install npm, bower, and composer dependencies
 echo -n "Installing dependencies..."
 npm install --silent &>/dev/null
-bower install --quiet &>/dev/null
 composer install --quiet --no-dev --optimize-autoloader &>/dev/null
 echo "Done."
 
 # build everything in place
 echo -n "Building plugin files..."
-gulp build --silent
+npm run build
 echo "Done."
 
 # transform the readme

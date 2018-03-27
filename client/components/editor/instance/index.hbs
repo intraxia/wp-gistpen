@@ -1,0 +1,11 @@
+<div class="editor page" data-brk-container="instance" data-brk-key="{{instance.key}}" data-brk-blackbox="instance">
+    <pre spellcheck="false"
+            class="code-toolbar language-{{prism_slug instance.language}}"><code
+            data-brk-onblur="onBlur"
+            data-brk-onclick="onClick"
+            data-brk-onfocus="onFocus"
+            data-brk-oninput="onInput"
+            data-brk-onkeyup="onKeyup"
+            data-brk-onkeydown="onKeydown"
+            contenteditable="true">{{ensure_return instance.code}}</code>{{> components/editor/instance/toolbar}}</pre>
+</div>

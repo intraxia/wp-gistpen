@@ -1,10 +1,11 @@
 # WP-Gistpen #
+
 **Contributors:** JamesDiGioia  
 **Donate link:** http://jamesdigioia.com/  
 **Tags:** gist, code snippets, codepen  
-**Requires at least:** 3.9  
-**Tested up to:** 4.2.3  
-**Stable tag:** 0.5.8  
+**Requires at least:** 4.6  
+**Tested up to:** 4.9.3  
+**Stable tag:** 1.0.0-beta.10  
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -12,7 +13,7 @@
 
 A self-hosted alternative to putting your code snippets on Gist.
 
-[![Build Status](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/build.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/build-status/develop) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/quality-score.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop) [![Code Coverage](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/badges/coverage.png?b=develop)](https://scrutinizer-ci.com/g/mAAdhaTTah/WP-Gistpen/?branch=develop)
+[![Build Status](https://travis-ci.org/intraxia/wp-gistpen.svg?branch=develop)](https://travis-ci.org/intraxia/wp-gistpen)  [![Greenkeeper badge](https://badges.greenkeeper.io/intraxia/wp-gistpen.svg)](https://greenkeeper.io/) [![Maintainability](https://api.codeclimate.com/v1/badges/0eee18837a01d55dd33e/maintainability)](https://codeclimate.com/github/intraxia/wp-gistpen/maintainability)
 
 You use WordPress because you want control over your writing. Why give Gist or Codepen your code snippets? WP-Gistpen is a self-hosted replacement for your WordPress blog.
 
@@ -20,53 +21,9 @@ Features include:
 
 * Revision saving
 * Gist import & export
-* ACE editor
 * PrismJS syntax highlighting
-* Supported Languages
-	- Assembly (NASM)
-	- ActionScript
-	- AppleScript
-	- Bash
-	- C
-	- Coffeescript
-	- C#
-	- CSS
-	- Dart
-	- Eiffel
-	- Erlang
-	- Gherkin/Cucumber
-	- Git/Diff
-	- Go
-	- Groovy
-	- HAML
-	- Handlebars
-	- HTML
-	- HTTP
-	- ini
-	- Jade
-	- Java
-	- JavaScript
-	- LaTeX
-	- LESS
-	- Markdown
-	- Matlab
-	- Objective-C
-	- Perl
-	- PHP
-	- PlainText
-	- PowerShell
-	- Python
-	- R
-	- Rust
-	- Ruby
-	- Sass
-	- Scala
-	- Scheme
-	- Smarty
-	- Sql
-	- Swift
-	- Twig
-	- XML
+* Prism-based text editor
+* oEmbed snippet embedding
 
 ## Installation ##
 
@@ -97,21 +54,21 @@ Features include:
 
 ### What are the plugin's requirements? ###
 
-First, revisions need to be enabled. They can be disabled in `wp-config.php`, but WP-Gistpen relies on them to keep everything in sync. A future version will remove this dependency, but it's currently required.
+Your PHP version should be 5.4+, and you must be running WordPress v4.6+. This is because WP-Gistpen relies on the WP-API infrastructure.
 
-Additionally, your PHP version should be 5.3+. If you're a developer using 5.2, may God have mercy on your soul.
+### How do I create an archive page for my Gistpens? ###
+
+Go to the "Pages" screen and create a new, blank page with the name "Gistpens" and click publish. That URL will now display all of your Gistpens. You can link to this page in the menu to direct users to your Gistpens archive page. You can change the name of the page; just make sure the slug of the page is "gistpens".
 
 ### How do I create a Gistpen and insert it into the post? ###
 
-To add a new Gistpen, go to Gistpens -> Add New, and paste in your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
+To add a new Gistpen, go to Gistpens -> Add New, and add your code. You can enable or disable Gist syncing on a a per-Gistpen basis.
 
-You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the code button. From the pop-up, select one of the recent Gistpens, search your Gistpens, or create a new one by pasting in your code and clicking "Insert".
-
-After inserting the shortcode, your code will appear in your post, highlighted by [PrismJS](http://prismjs.com).
+You can also create and insert a Gistpen directly into your post/page from the visual editor by clicking the code button. From the pop-up, search for your gistpen, select it, and click insert. Your shortcode will be inserted into the editor.
 
 ### How do I highlight specific lines in my Gistpen? ###
 
-To highlight a specific line, add `highlight="^^"`, where ^^ is a line number or range of numbers you want highlighted, like this ([via PrismJS documentation](http://prismjs.com/plugins/line-highlight/)):
+To highlight a specific line, add `highlight=^^`, where ^^ is a line number or range of numbers you want highlighted, like this ([via PrismJS documentation](http://prismjs.com/plugins/line-highlight/)):
 
 * A single number refers to the line with that number
 * Ranges are denoted by two numbers, separated with a hyphen (-)
@@ -124,8 +81,6 @@ Examples:
 * `highlight="1-5"`: Lines 1 through 5
 * `highlight="1,4"`: Line 1 and line 4
 * `highlight="1-2,5,9-20"`: Lines 1 through 2, line 5, lines 9 through 20
-
-Offset does not yet work but will be added soon.
 
 ### How do I link to a specific line? ###
 
@@ -145,17 +100,15 @@ You can link to a specific line in your Gistpen by linking to `#gistpen-{gistpen
 
 ### How do I sync my Gistpens to Gist? ###
 
-Gistpens can be exported en masse from the Gistpens settings page. All Gistpens will be synced, only if the Gistpen hasn't been synced yet, but **regardless of whether syncing for the Gistpen is enabled**. Syncing will then be enabled on the exported Gistpens.
+Gistpens can be exported en masse. All Gistpens will be synced, only if the Gistpen hasn't been synced yet, but **regardless of whether syncing for the Gistpen is enabled**. Syncing will then be enabled on the exported Gistpens.
 
 If you do not want this, you can enable/disable Gistpen syncing on a per-Gistpen basis. Just click the checkbox on the Gistpen edit page, and any changes will be reflected on the corresponding Gist on update. If you uncheck that box, future changes will not be reflected on Gist.
 
-### What is the future of this plugin? ###
+To go this, go to the Gistpens settings page and click "Jobs". Next to the the "Export Job", click "Dispatch Job". After the Job is done, check out the log messages to ensure everything exported correctly.
 
-Eventually, I hope to make this plugin interoperable with Gist, allowing you to import your current Gists, fork other people's Gists into your Gistpen, and publishing your Gistpens to Gist.
+### How do I import my Gistpens from Gist? ###
 
-Additionally, I want to make Gistpens embeddable on other websites the same way you can embed Gists, but both of those larger features are likely a long way off.
-
-Essentially, the idea is to build a fully-featured Gist clone in WordPress
+Go to the Gistpents settings page and click "Jobs". Next to the "Import Job", click "Dispatch Job", then check out the log messages to ensure everything was imported correctly.
 
 ## Screenshots ##
 
@@ -173,12 +126,16 @@ Twilight theme with line numbers enabled. Check out all the themes at [PrismJS.c
 
 ![](screenshot-4.png)
 
-The current options page.
+The current options page – first page.
 
 ![](screenshot-5.png)
 
-The options page with a token saved.
+The current options page – second page.
 
 ![](screenshot-6.png)
 
-Gistpen editor screen with Ace editor
+The current options page – third page.
+
+![](screenshot-7.png)
+
+PrismJS-based text editor.

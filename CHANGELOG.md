@@ -2,11 +2,41 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [0.5.8] - 2015-07-26
+### [1.0.0][] ###
+
+#### Removed ####
+* Database migration from old versions
+	* If you're on the latest version of WP-Gistpen, you should have no problems. Given that the plugin hasn't been updated on .org in 2+ years, and .org reports the only versions are 0.5.x+, anyone who is still using an old version of WP-Gistpen is unlikely to upgrade to 1.0.0+ anyway. We are going to remove the Migration code because it'll allow us to remove a lot of old code that is currently only being used by it.
+
+		If you're using an old version of WP-Gistpen, you'll need to upgrade to 0.5.2+ before upgrading to 1.0.0 or the database migration will not be performed correctly. Fresh installs should have no problems either.
+
+#### Added ####
+* **Completely rewritten from the ground up**
+* New internal architecture
+	* Built on [Jaxion][], WordPress framework
+	* Improved Database layer & use of Models
+* WP-API integration
+	* This requires an upgrade to WordPress 4.6+.
+* New code snippet editor
+	* Custom snippet editor
+	* Built on [brookjs][], Prism, & React.js
+* New Prism plugins:
+	* Show invisibles: Display tabs and line returns as characters
+	* Show language: Display the language in the embed
+	* Copy-to-clipboard: Display button to copy code to clipboard
+* Supports all Prism languages & built-in Prism themes + bonus from prism-themes
+
+#### Fixed ####
+* Fixed code sample display on mobile
+* Fixed display on custom post type pages
+* Fixed bug where adding two files would only save one at a time
+* Tighten up revision saving logic
+
+### [0.5.8] - 2015-07-26 ###
 
 #### Fixed ####
 * Fixed a bug introduced in WordPress 4.2.3 where cap checks fail for `edit_post` on a post_id of 0.
-* Also loosened a couple checks because null values were being cast to 0. 
+* Also loosened a couple checks because null values were being cast to 0.
 
 ### [0.5.7] - 2015-05-23 ###
 
@@ -105,7 +135,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 
 #### Added ####
 * Options page
-* Theme switching 
+* Theme switching
 * Line numbers plugin
 * Line-highlighting
 * Link to lines
@@ -122,7 +152,7 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 	- Twig
 
 #### Removed ####
-* Languages (*If you need any of these languages readded, please open an issue on [GitHub](https://github.com/mAAdhaTTah/WP-Gistpen) to discuss.)
+* Languages (*If you need any of these languages readded, please open an issue on [GitHub](https://github.com/intraxia/WP-Gistpen) to discuss.)
 	- AppleScript
 	- ActionScript3
 	- ColdFusion
@@ -180,21 +210,24 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * Embeddable in posts via shortcode
 * Use SyntaxHighlighter to display
 
-[unreleased]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/develop
-[0.5.8]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.8
-[0.5.7]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.7
-[0.5.6]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.6
-[0.5.5]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.5
-[0.5.4]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.4
-[0.5.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.2
-[0.5.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.5.0
-[0.4.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.4.0
-[0.3.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.3.1
-[0.3.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.3.0
-[0.2.3]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.3
-[0.2.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.2
-[0.2.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.1
-[0.2.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.2.0
-[0.1.2]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.1.2
-[0.1.1]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.1.1
-[0.1.0]: https://github.com/mAAdhaTTah/WP-Gistpen/tree/0.1.0
+[Jaxion]: https://github.com/intraxia/jaxion
+[brookjs]: https://github.com/valtech-nyc/brookjs
+[unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.0.0]: https://github.com/intraxia/WP-Gistpen/tree/1.0.0
+[0.5.8]: https://github.com/intraxia/WP-Gistpen/tree/0.5.8
+[0.5.7]: https://github.com/intraxia/WP-Gistpen/tree/0.5.7
+[0.5.6]: https://github.com/intraxia/WP-Gistpen/tree/0.5.6
+[0.5.5]: https://github.com/intraxia/WP-Gistpen/tree/0.5.5
+[0.5.4]: https://github.com/intraxia/WP-Gistpen/tree/0.5.4
+[0.5.2]: https://github.com/intraxia/WP-Gistpen/tree/0.5.2
+[0.5.0]: https://github.com/intraxia/WP-Gistpen/tree/0.5.0
+[0.4.0]: https://github.com/intraxia/WP-Gistpen/tree/0.4.0
+[0.3.1]: https://github.com/intraxia/WP-Gistpen/tree/0.3.1
+[0.3.0]: https://github.com/intraxia/WP-Gistpen/tree/0.3.0
+[0.2.3]: https://github.com/intraxia/WP-Gistpen/tree/0.2.3
+[0.2.2]: https://github.com/intraxia/WP-Gistpen/tree/0.2.2
+[0.2.1]: https://github.com/intraxia/WP-Gistpen/tree/0.2.1
+[0.2.0]: https://github.com/intraxia/WP-Gistpen/tree/0.2.0
+[0.1.2]: https://github.com/intraxia/WP-Gistpen/tree/0.1.2
+[0.1.1]: https://github.com/intraxia/WP-Gistpen/tree/0.1.1
+[0.1.0]: https://github.com/intraxia/WP-Gistpen/tree/0.1.0

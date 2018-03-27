@@ -1,0 +1,18 @@
+[ignore]
+.*node_modules.*/stylelint.*.
+.*node_modules.*/jsonlint.*.
+
+[lints]
+all=warn
+
+[include]
+
+[libs]
+./client/types/declare.js
+./node_modules/jss/flow-typed
+
+[options]
+include_warnings=true
+module.use_strict=true
+module.name_mapper.extension='scss' -> '<PROJECT_ROOT>/client/types/css.js'
+module.name_mapper.extension='hbs' -> '<PROJECT_ROOT>/client/types/handlebars.js'

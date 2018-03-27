@@ -1,28 +1,51 @@
 language: php
 sudo: false
+dist: trusty
 
 php:
-    - 5.3
     - 5.4
-    - 5.5
     - 5.6
+    - 7.1
+    - nightly
+
+matrix:
+    allow_failures:
+        - php: nightly
+
+branches:
+    only:
+        - master
+        - develop
+        - /^greenkeeper/.*$/
+        - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 env:
     - WP_VERSION=latest WP_MULTISITE=0
     - WP_VERSION=latest WP_MULTISITE=1
-    - WP_VERSION=4.1 WP_MULTISITE=0
-    - WP_VERSION=4.1 WP_MULTISITE=1
-    - WP_VERSION=4.0 WP_MULTISITE=0
-    - WP_VERSION=4.0 WP_MULTISITE=1
-    - WP_VERSION=3.9 WP_MULTISITE=0
-    - WP_VERSION=3.9 WP_MULTISITE=1
+    - WP_VERSION=4.6 WP_MULTISITE=0
+    - WP_VERSION=4.6 WP_MULTISITE=1
 
 before_script:
-    - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-    - composer install
+    - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '5.4' && $TRAVIS_PHP_VERSION != 'nightly' ]]; then phpenv config-rm xdebug.ini; fi
+    - travis_retry composer self-update
+    - travis_retry composer install
+    - travis_retry nvm install 8
+    - travis_retry npm install
+    - travis_retry npm install -g gulp
+    - travis_retry npm install -g greenkeeper-lockfile@1
+    - greenkeeper-lockfile-update
+    - travis_retry bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+    - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    - chmod +x wp-cli.phar
+    - mkdir $PWD/.bin
+    - mv wp-cli.phar $PWD/.bin/wp
+    - export PATH=$PATH:$PWD/.bin/
+    - wp --version
+
+script:
+    - composer test
+    - npm test
 
 after_script:
-    - wget https://scrutinizer-ci.com/ocular.phar
-    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
-
-script: phpunit --coverage-clover=coverage.clover
+    - if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then composer upload; fi
+    - greenkeeper-lockfile-upload
