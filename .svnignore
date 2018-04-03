@@ -2,7 +2,6 @@ bin
 flow-typed
 gulpfile.babel.js
 node_modules
-client
 test
 .babelrc
 .beaverrc.js
@@ -12,6 +11,7 @@ test
 .flowconfig
 .gitignore
 .scrutinizer.yml
+.storybook
 .svnignore
 .travis.yml
 stylelint.config.js

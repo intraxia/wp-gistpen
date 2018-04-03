@@ -25,6 +25,8 @@ export const mocha = {
 const client = path.resolve(__dirname, dir);
 const pages = path.resolve(client, 'pages');
 
+const isProd = state => state.command.opts.env === 'production';
+
 /**
  * Webpack build configuration.
  */
@@ -37,9 +39,14 @@ export const webpack = {
     },
     output: {
         path: 'assets/js/',
-        filename: '[name].js'
+        filename: state =>
+            `[name]${isProd(state) ? '.min' : ''}.js`
     },
     modifier: (config, state) => {
+        if (!isProd(state)) {
+            config.devtool = 'sourcemap';
+        }
+
         config.module.rules.push({
             test: /\.(scss|css)$/,
             include: [
