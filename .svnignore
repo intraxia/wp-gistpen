@@ -2,9 +2,7 @@ bin
 flow-typed
 gulpfile.babel.js
 node_modules
-client
 test
-config
 .babelrc
 .beaverrc.js
 .editorconfig
