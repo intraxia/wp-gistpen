@@ -92,7 +92,7 @@ class AssetsServiceProvider extends ServiceProvider {
 				$post = get_post();
 
 				if ( ! $post ) {
-					return false
+					return false;
 				}
 
 				return has_shortcode( $post->post_content, 'gistpen' );
