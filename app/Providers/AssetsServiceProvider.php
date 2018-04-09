@@ -89,13 +89,19 @@ class AssetsServiceProvider extends ServiceProvider {
 					return true;
 				}
 
-				return has_shortcode( get_post()->post_content, 'gistpen' );
+				$post = get_post();
+
+				if ( ! $post ) {
+					return false
+				}
+
+				return has_shortcode( $post->post_content, 'gistpen' );
 			},
 			'handle'    => $slug . '-content-script',
 			'src'       => 'assets/js/content',
 			'footer'    => true,
 			'localize'  => function() {
-				/** @var Params $content */
+				/** @var Params $params */
 				$params= $this->container->fetch( 'params' );
 
 				return array(
