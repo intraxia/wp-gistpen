@@ -17,7 +17,7 @@
     "build:dev": "beaver build --env development",
     "build:prod": "beaver build --env production",
     "dev:app": "beaver dev app --env development",
-    "dev:tdd": "beaver dev tdd --env production",
+    "dev:tdd": "beaver dev tdd --env development",
     "dev:storybook": "start-storybook -s ./assets/js -p 9001 -c .storybook",
     "gen": "npm run gen:coc && npm run gen:pot",
     "gen:coc": "weallbehave -o .",
