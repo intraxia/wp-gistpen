@@ -2,11 +2,12 @@
     box-sizing: border-box;
     overflow: auto;
 
-    & > pre {
+    & > div {
         &.code-toolbar .toolbar {
             white-space: initial;
             opacity: 1;
             font-size: 16px;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 
             .toolbar-item {
                 line-height: 1em;
@@ -34,7 +35,7 @@
             }
         }
 
-        & > code {
+        pre > code {
             font-size: 16px;
             padding: 0;
             outline: none;
