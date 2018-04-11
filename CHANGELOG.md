@@ -2,6 +2,15 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [1.0.2][] - 2018-04-03 ###
+
+* Fix CSS display in editor
+
+### [1.0.1][] - 2018-04-03 ###
+
+* Fix deployment scripts
+	* The old scripts resulted in a botched deployment with missing files. This readds them.
+
 ### [1.0.0][] - 2018-03-26 ###
 
 Almost three years in the making!
@@ -215,6 +224,8 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.0.2]: https://github.com/intraxia/WP-Gistpen/tree/1.0.2
+[1.0.1]: https://github.com/intraxia/WP-Gistpen/tree/1.0.1
 [1.0.0]: https://github.com/intraxia/WP-Gistpen/tree/1.0.0
 [0.5.8]: https://github.com/intraxia/WP-Gistpen/tree/0.5.8
 [0.5.7]: https://github.com/intraxia/WP-Gistpen/tree/0.5.7
