@@ -52,7 +52,7 @@
     "jsdom-global": "^3.0.2",
     "node-notifier": "^5.2.1",
     "node-sass": "^4.5.1",
-    "sass-loader": "^6.0.3",
+    "sass-loader": "^7.0.0",
     "shelljs": "^0.8.1",
     "simulant": "^0.2.2",
     "sinon": "^5.0.0",
