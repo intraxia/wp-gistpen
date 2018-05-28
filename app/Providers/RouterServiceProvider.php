@@ -1,11 +1,11 @@
 <?php
 namespace Intraxia\Gistpen\Providers;
 
-use Intraxia\Gistpen\Http\ZipFilter;
 use Intraxia\Jaxion\Http\Filter;
 use Intraxia\Jaxion\Http\Guard;
 use Intraxia\Jaxion\Http\Router;
 use Intraxia\Jaxion\Http\ServiceProvider;
+use Intraxia\Gistpen\Http\Filter\Repo as RepoFilter;
 
 /**
  * Class RouterServiceProvider
@@ -38,7 +38,7 @@ class RouterServiceProvider extends ServiceProvider {
 			 */
 			$router->get( '/repos', array( $controllers['repo'], 'index' ) );
 			$router->post( '/repos', array( $controllers['repo'], 'create' ), array(
-//				'filter' => new RepoFilter,
+				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
@@ -47,15 +47,15 @@ class RouterServiceProvider extends ServiceProvider {
 			 */
 			$router->get( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'view' ) );
 			$router->put( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'update' ), array(
-//				'filter' => new RepoFilter,
+				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 			$router->patch( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'apply' ), array(
-//				'filter' => new RepoFilter,
+				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 			$router->delete( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
-//				'filter' => new RepoFilter,
+				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
