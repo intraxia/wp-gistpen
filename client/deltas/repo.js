@@ -1,17 +1,29 @@
 // @flow
-import type { Action, Blob, EditorPageState, EditorInstance, RepoApiResponse } from '../types';
+import type { Action, EditorPageState, EditorInstance, RepoApiResponse } from '../types';
 import type { Observable } from 'kefir';
 import type { ObsResponse } from '../services';
 import R from 'ramda';
+import { Kefir } from 'brookjs';
 import { ajax$ } from '../services';
 import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../actions';
 
+type ApiRequestBlob = {
+    ID?: number;
+    filename: string;
+    code: string;
+    language: string
+};
+
 const repoProps = R.pick(['description', 'status', 'password', 'sync']);
-const blobProps = R.pick(['filename', 'code', 'language']);
+const blobProps = (editor: EditorInstance): ApiRequestBlob => ({
+    filename: editor.filename,
+    code: editor.code,
+    language: editor.language
+});
 
 const makeBody = (state: EditorPageState): string => JSON.stringify({
     ...repoProps(state.editor),
-    blobs: state.editor.instances.map((instance: EditorInstance): Blob => {
+    blobs: state.editor.instances.map((instance: EditorInstance): ApiRequestBlob => {
         const blob = blobProps(instance);
 
         if (instance.key.indexOf('new') === -1) {
@@ -46,5 +58,5 @@ export default function repoDelta(action$: Observable<Action>, state$: Observabl
         }))
         .flatMap((response: ObsResponse) => response.json())
         .flatten((response: RepoApiResponse): Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
-        .mapErrors(ajaxFailedAction);
+        .flatMapErrors(err => Kefir.constant(ajaxFailedAction(err)));
 }
