@@ -43,7 +43,6 @@
   "scripts": {
     "test": "phpunit",
     "sniff": "phpcs -s --runtime-set installed_paths lib/wp-coding-standards/wpcs  -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=full",
-    "clean": "phpcbf --runtime-set installed_paths lib/wp-coding-standards/wpcs -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=full",
-    "upload": "wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml"
+    "clean": "phpcbf --runtime-set installed_paths lib/wp-coding-standards/wpcs -p app/ --standard=lib/intraxia/codestyle/ruleset.xml --report=full"
   }
 }
