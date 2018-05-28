@@ -24,8 +24,15 @@ abstract class ApiTestCase extends TestCase {
 		$wp_rest_server = null;
 	}
 
+	public function set_role( $role ) {
+		$post = $_POST;
+		$user_id = $this->factory->user->create( array( 'role' => $role ) );
+		wp_set_current_user( $user_id );
+		$_POST = array_merge( $_POST, $post );
+	}
+
 	protected function assertResponseStatus( $status, WP_REST_Response $response ) {
-		$this->assertEquals( $status, $response->get_status() );
+		$this->assertSame( $status, $response->get_status() );
 	}
 
 	protected function assertResponseData( $data, WP_REST_Response $response ) {
@@ -38,6 +45,6 @@ abstract class ApiTestCase extends TestCase {
 				$tested_data[ $key ] = null;
 			}
 		}
-		$this->assertEquals( $data, $tested_data );
+		$this->assertSame( $data, $tested_data );
 	}
 }
