@@ -57,7 +57,7 @@
     "simulant": "^0.2.2",
     "sinon": "^5.0.0",
     "sinon-chai": "^3.0.0",
-    "style-loader": "^0.20.0",
+    "style-loader": "^0.21.0",
     "stylelint": "^9.0.0",
     "stylelint-webpack-plugin": "^0.10.1",
     "symbol-observable": "^1.2.0",
