@@ -190,6 +190,7 @@ abstract class AbstractJob implements Job {
 	 */
 	public function runs() {
 		return $this->em->find_by( Klass::RUN, array(
+			'order_by' => 'ID',
 			'job' => $this->slug(),
 		) );
 	}
