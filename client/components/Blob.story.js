@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { Kefir } from 'brookjs';
 import { h } from 'brookjs-silt';
-import Blob from './Blob';
+import Blob from './Blob.component';
 
 const blob = {
     filename: 'test.js',
