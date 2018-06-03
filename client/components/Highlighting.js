@@ -5,7 +5,7 @@ import { Collector, h, view, loop } from 'brookjs-silt';
 import R from 'ramda';
 import { lineNumbersChangeAction, showInvisiblesChangeAction,
     themeChangeAction } from '../actions';
-import Repo from './Repo';
+import Repo from './Repo.component';
 
 type HighlightingProps = {
     themes: {

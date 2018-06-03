@@ -5,7 +5,7 @@ import jss from 'jss';
 import nested from 'jss-nested';
 import { commitClick } from '../actions';
 import { i18n, link } from '../helpers';
-import Blob from './Blob';
+import Blob from './Blob.component';
 
 jss.use(nested());
 
