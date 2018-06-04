@@ -57,7 +57,8 @@ export const webpack = {
             use: [{
                 loader: 'style-loader',
                 options: {
-                    hmr: false
+                    hmr: false,
+                    sourceMap: !isProd(state)
                 }
             }, 'css-loader', 'sass-loader']
         });
@@ -70,7 +71,8 @@ export const webpack = {
             use: [{
                 loader: 'style-loader/useable',
                 options: {
-                    hmr: false
+                    hmr: false,
+                    sourceMap: !isProd(state)
                 }
             }, 'css-loader', 'sass-loader']
         });
