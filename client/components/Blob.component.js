@@ -1,7 +1,7 @@
 // @flow
 // @jsx h
 import { Kefir } from 'brookjs';
-import { h, view } from 'brookjs-silt';
+import { h, view, withRef$ } from 'brookjs-silt';
 import classNames from 'classnames';
 import Prism from '../prism';
 
@@ -32,28 +32,23 @@ const propsToClassName = props => classNames({
     'line-numbers': props.prism['line-numbers']
 });
 
-const Blob = ({ stream$ }: ObservableProps<Props>) => {
-    const code$ = new Kefir.Stream();
+const Code = withRef$(({ stream$ }, ref) => (
+    <code ref={ref} className={stream$.thru(view(props => `language-${props.blob.language}`))}>
+        {stream$.thru(view(props => props.blob.code))}
+    </code>
+), (ref$, { stream$ }) => ref$.flatMap(el =>
+    stream$.flatMapLatest(props =>
+        Kefir.fromPromise(updatePrism(props.prism)).flatMap(() => {
+            Prism.highlightElement(el, false);
+            return Kefir.never();
+        })
+    )));
 
-    const highlighting$ = code$.flatMap(el =>
-        stream$.flatMapLatest(props =>
-            Kefir.fromPromise(updatePrism(props.prism)).flatMap(() => {
-                Prism.highlightElement(el, false);
-                return Kefir.constant(true);
-            })
-        ))
-        .toProperty(() => false);
-
-    return (
-        <pre className={stream$.thru(view(propsToClassName))}
-            data-highlighting={highlighting$}
-            data-filename={stream$.thru(view(props => props.blob.filename))}>
-            <code className={stream$.thru(view(props => `language-${props.blob.language}`))}
-                ref={code => code$._emitValue(code)}>
-                {stream$.thru(view(props => props.blob.code))}
-            </code>
-        </pre>
-    );
-};
+const Blob = ({ stream$ }: ObservableProps<Props>) => (
+    <pre className={stream$.thru(view(propsToClassName))}
+        data-filename={stream$.thru(view(props => props.blob.filename))}>
+        <Code stream$={stream$} />
+    </pre>
+);
 
 export default Blob;
