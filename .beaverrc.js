@@ -1,7 +1,7 @@
 import path from 'path';
 import { flowPlugin, devtool, styleRule,
     usableStyleRule, styleLintPlugin, notifierPlugin,
-    copyPlugin } from './webpack';
+    copyPlugin, prismLanguageGenerationPlugin } from './webpack';
 
 export const dir = 'client';
 
@@ -51,6 +51,7 @@ export const webpack = {
         config.plugins.push(styleLintPlugin);
         config.plugins.push(notifierPlugin);
         config.plugins.push(copyPlugin);
+        config.plugins.push(prismLanguageGenerationPlugin);
 
         return config;
     }
