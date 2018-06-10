@@ -41,6 +41,7 @@ before_script:
     - mv wp-cli.phar $PWD/.bin/wp
     - export PATH=$PATH:$PWD/.bin/
     - wp --version
+    - npm run build
 
 script:
     - composer test
