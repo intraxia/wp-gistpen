@@ -41,11 +41,11 @@ before_script:
     - mv wp-cli.phar $PWD/.bin/wp
     - export PATH=$PATH:$PWD/.bin/
     - wp --version
+    - npm run build
 
 script:
     - composer test
     - npm test
 
 after_script:
-    - if [[ $TRAVIS_PHP_VERSION == '5.4' ]]; then composer upload; fi
     - greenkeeper-lockfile-upload

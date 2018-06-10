@@ -2,7 +2,7 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { Kefir } from 'brookjs';
 import { h, Aggregator } from 'brookjs-silt';
-import Commits from './Commits';
+import Commits from './Commits.component';
 
 storiesOf('Commits', module)
     .add('default', () => (

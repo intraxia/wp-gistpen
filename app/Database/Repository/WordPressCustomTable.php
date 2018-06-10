@@ -73,6 +73,9 @@ class WordPressCustomTable extends AbstractRepository {
 
 		foreach ( $params as $key => $value ) {
 			switch ( $key ) {
+				case 'order_by':
+					// skip, handled below
+					break;
 				default:
 					if ( $this->is_valid_key( $class, $key ) ) {
 						$query .= $wpdb->prepare(
@@ -80,6 +83,15 @@ class WordPressCustomTable extends AbstractRepository {
 							$value
 						);
 					}
+			}
+		}
+
+		if ( isset( $params['order_by'] ) ) {
+			// @todo find a better way of whitelisting order_by
+			switch ( $params['order_by'] ) {
+				case 'ID':
+					$query .= " ORDER BY {$params['order_by']} DESC";
+					break;
 			}
 		}
 

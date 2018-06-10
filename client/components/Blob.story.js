@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import { Kefir } from 'brookjs';
-import { h } from 'brookjs-silt';
-import Blob from './Blob';
+import { h, Aggregator } from 'brookjs-silt';
+import Blob from './Blob.component';
 
 const blob = {
     filename: 'test.js',
@@ -32,11 +32,17 @@ const prism = {
 
 storiesOf('Blob', module)
     .add('default', () => (
-        <Blob stream$={Kefir.constant({ blob, prism })}/>
+        <Aggregator action$={action$ => action$.observe()}>
+            <Blob stream$={Kefir.constant({ blob, prism })}/>
+        </Aggregator>
     ))
     .add('with line-numbers', () => (
-        <Blob stream$={Kefir.constant({ blob, prism: { ...prism, 'line-numbers': true } })}/>
+        <Aggregator action$={action$ => action$.observe()}>
+            <Blob stream$={Kefir.constant({ blob, prism: { ...prism, 'line-numbers': true } })}/>
+        </Aggregator>
     ))
     .add('with invisibles', () => (
-        <Blob stream$={Kefir.constant({ blob, prism: { ...prism, 'show-invisibles': true } })}/>
+        <Aggregator action$={action$ => action$.observe()}>
+            <Blob stream$={Kefir.constant({ blob, prism: { ...prism, 'show-invisibles': true } })}/>
+        </Aggregator>
     ));

@@ -2,6 +2,16 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [1.0.3][] - 2018-06-09 ###
+
+* More editor CSS fixes
+* Generate languages.json instead of maintaining manually
+* Validate blobs in API endpoint
+	- Requires filename now
+* Order Runs in descending order
+* Fix demo code indentation
+* Simplify Blob component implementation
+
 ### [1.0.2][] - 2018-04-03 ###
 
 * Fix CSS display in editor
@@ -224,6 +234,7 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.0.3]: https://github.com/intraxia/WP-Gistpen/tree/1.0.3
 [1.0.2]: https://github.com/intraxia/WP-Gistpen/tree/1.0.2
 [1.0.1]: https://github.com/intraxia/WP-Gistpen/tree/1.0.1
 [1.0.0]: https://github.com/intraxia/WP-Gistpen/tree/1.0.0

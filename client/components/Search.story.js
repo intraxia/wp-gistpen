@@ -16,7 +16,7 @@ storiesOf('Search', module)
         <Aggregator action$={action$ => action$.observe(a => action('Search')(a))}>
             <Search stream$={Kefir.constant({
                 loading: false,
-                term: '',
+                term: 'test',
                 results: {
                     order: ['2', '1'],
                     dict: {
@@ -40,7 +40,7 @@ storiesOf('Search', module)
         <Aggregator action$={action$ => action$.observe(a => action('Search')(a))}>
             <Search stream$={Kefir.constant({
                 loading: true,
-                term: '',
+                term: 'test',
                 results: {
                     order: ['2', '1'],
                     dict: {

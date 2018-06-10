@@ -29,4 +29,14 @@ class RepoCollectionTest extends ApiTestCase {
 		$this->assertResponseStatus( 200, $response );
 		$this->assertResponseData( array( $repo->serialize() ), $response );
 	}
+
+	public function test_returns_error_with_invalid_blobs() {
+		$this->set_role( 'administrator' );
+		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
+
+		$response = $this->server->dispatch( $request );
+
+		$this->assertResponseStatus( 400, $response );
+		$this->assertResponseData( array( 'message' => 'Missing parameter(s): blobs', ), $response );
+	}
 }
