@@ -1,16 +1,46 @@
 // @flow
+// @jsx h
 import type { Observable } from 'kefir';
 import type { Action, EditorPageProps, EditorInstance, EditorInstanceProps } from '../../types';
 import './index.scss';
 import { component, children, render } from 'brookjs';
-import ControlsComponent from './controls';
+import { fromReact } from 'brookjs-silt';
+import Controls from './Controls';
 import DescriptionComponent from './description';
 import InstanceComponent from './instance';
 import template from './index.hbs';
 
 export default component({
     children: children({
-        'controls': ControlsComponent,
+        'controls': {
+            factory: fromReact(Controls),
+            modifyChildProps: props$ => props$.map((props: EditorPageProps) => ({
+                statuses: {
+                    order: Object.keys(props.globals.statuses),
+                    dict: props.globals.statuses
+                },
+                themes: {
+                    order: Object.keys(props.globals.themes),
+                    dict: props.globals.themes
+                },
+                widths: {
+                    order: props.globals.ace_widths,
+                    dict: props.globals.ace_widths
+                        .reduce((dict, width) =>
+                            Object.assign(dict, { [width]: width }), {})
+                },
+                gist: {
+                    show: props.repo.gist_url != null,
+                    url: props.repo.gist_url
+                },
+                sync: props.editor.sync,
+                tabs: props.editor.tabs,
+                invisibles: props.editor.invisibles,
+                selectedTheme: props.editor.theme,
+                selectedStatus: props.editor.status,
+                selectedWidth: props.editor.width,
+            }))
+        },
         'description': DescriptionComponent,
         'instance': {
             factory: InstanceComponent,
