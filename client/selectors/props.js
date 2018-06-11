@@ -75,7 +75,8 @@ export const selectSettingsProps = (state: SettingsState): SettingsProps => ({
 });
 
 export const selectEditorProps = (state$: Observable<EditorPageState>): Observable<EditorPageProps> =>
-    state$.map(({ authors, globals, repo, route, editor, commits }: EditorPageState): EditorPageProps => ({
+    state$.map(({ ajax, authors, globals, repo, route, editor, commits }: EditorPageState): EditorPageProps => ({
+        ajax,
         globals,
         repo,
         route,

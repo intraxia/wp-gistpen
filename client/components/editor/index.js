@@ -43,7 +43,10 @@ export default component({
         },
         'description': {
             factory: fromReact(Description),
-            modifyChildProps: props$ => props$.map(props => ({ description: props.editor.description }))
+            modifyChildProps: props$ => props$.map((props: EditorPageProps) => ({
+                description: props.editor.description,
+                loading: props.ajax.running
+            }))
         },
         'instance': {
             factory: InstanceComponent,
