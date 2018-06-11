@@ -26,6 +26,7 @@ class Translator implements TranslatorContract, HasActions {
 			'editor.gist'        => __( 'View on Gist', 'wp-gistpen' ),
 			'editor.invisibles'  => __( 'Enable Invisibles?', 'wp-gistpen' ),
 			'editor.return'      => __( 'Return to Editor', 'wp-gistpen' ),
+			'editor.saving'      => __( 'Saving Gistpen...', 'wp-gistpen' ),
 			'editor.status'      => __( 'Post Status', 'wp-gistpen' ),
 			'editor.sync'        => __( 'Sync Gistpen with Gist?', 'wp-gistpen' ),
 			'editor.tabs'        => __( 'Enable Tabs?', 'wp-gistpen' ),
@@ -54,6 +55,7 @@ class Translator implements TranslatorContract, HasActions {
 			'search.results.no'  => __( 'No results found for term %s', 'wp-gistpen' ),
 			'search.term.no'     => __( 'Please enter a search term ', 'wp-gistpen' ),
 			'search.title'       => __( 'Search Gistpens', 'wp-gistpen' ),
+			'settings.saving'    => __( 'Saving settings...', 'wp-gistpen'),
 		);
 	}
 
