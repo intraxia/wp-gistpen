@@ -6,7 +6,7 @@ import './index.scss';
 import { component, children, render } from 'brookjs';
 import { fromReact } from 'brookjs-silt';
 import Controls from './Controls';
-import DescriptionComponent from './description';
+import Description from './Description';
 import InstanceComponent from './instance';
 import template from './index.hbs';
 
@@ -41,7 +41,10 @@ export default component({
                 selectedWidth: props.editor.width,
             }))
         },
-        'description': DescriptionComponent,
+        'description': {
+            factory: fromReact(Description),
+            modifyChildProps: props$ => props$.map(props => ({ description: props.editor.description }))
+        },
         'instance': {
             factory: InstanceComponent,
             modifyChildProps: (props$: Observable<EditorPageProps>, key: string): Observable<EditorInstanceProps> => {
