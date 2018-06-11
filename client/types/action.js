@@ -6,7 +6,7 @@ import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE,
     AJAX_FINISHED, AJAX_FAILED, REPO_SAVE_SUCCEEDED, USER_SAVE_SUCCEEDED,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_INSERT_CLICK, TINYMCE_POPUP_CLOSE_CLICK,
     SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED, SEARCH_RESULT_SELECTION_CHANGE,
-    GIST_TOKEN_CHANGE, EDITOR_ADD_CLICK, EDITOR_OPTIONS_CLICK, EDITOR_THEME_CHANGE,
+    GIST_TOKEN_CHANGE, EDITOR_ADD_CLICK, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_INVISIBLES_TOGGLE,
     EDITOR_UPDATE_CLICK, EDITOR_DELETE_CLICK, EDITOR_CURSOR_MOVE, EDITOR_MAKE_COMMENT,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
@@ -106,10 +106,6 @@ export type EditorMakeCommentAction = {
 export type EditorMakeNewLineAction = {
     type: typeof EDITOR_MAKE_NEWLINE;
     payload: EditorValue
-};
-
-export type EditorOptionsClickAction = {
-    type: typeof EDITOR_OPTIONS_CLICK
 };
 
 export type EditorRedoAction = {
@@ -295,7 +291,7 @@ export type SettingsAction = GistTokenChangeAction | RouteChangeAction;
 export type EditorAction = EditorAddClickAction | EditorCursorMoveAction
     | EditorFilenameChangeAction | EditorIndentAction | EditorInvisiblesToggleAction
     | EditorLanguageChangeAction | EditorMakeCommentAction | EditorMakeNewLineAction
-    | EditorOptionsClickAction | EditorRedoAction | EditorStatusChangeAction
+    | EditorRedoAction | EditorStatusChangeAction
     | EditorSyncChangeAction | EditorTabsToggleAction | EditorThemeChangeAction
     | EditorUndoAction | EditorUpdateClickAction | EditorValueChangeAction
     | EditorWidthChangeAction | EditorDeleteClickAction | EditorDescriptionChangeAction;

@@ -108,8 +108,7 @@ export type EditorState = {
     width: string;
     theme: string;
     invisibles: Toggle;
-    tabs: Toggle;
-    optionsOpen: boolean
+    tabs: Toggle
 };
 
 export type CommitsState = {

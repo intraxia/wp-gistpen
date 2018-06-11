@@ -53,8 +53,7 @@ describe('EditorInstanceComponent', () => {
                 'widths': [],
                 'themes': {},
                 'statuses': {},
-                'languages': {},
-                'optionsOpen': true
+                'languages': {}
             }
         };
 
