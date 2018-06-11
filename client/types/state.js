@@ -162,6 +162,7 @@ export type SettingsState = {
 };
 
 export type EditorPageState = {
+    ajax: AjaxState;
     authors: AuthorsState;
     globals: GlobalsState;
     repo: Repo;

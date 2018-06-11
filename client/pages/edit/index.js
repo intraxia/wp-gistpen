@@ -5,7 +5,7 @@ import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
 import { domDelta } from 'brookjs';
 import { applyDelta, authorDelta, repoDelta, commitsDelta, routerDelta, userDelta } from '../../deltas';
-import { authors, globalsReducer, editor, repo, commits, route } from '../../reducers';
+import { ajaxReducer, authors, globalsReducer, editor, repo, commits, route } from '../../reducers';
 import { selectEditorProps as selectProps } from '../../selectors';
 import { ajax$ } from '../../services';
 import { el, view } from './dom';
@@ -16,9 +16,18 @@ const { __GISTPEN_EDITOR__ } = global;
 // eslint-disable-next-line camelcase
 __webpack_public_path__ = __GISTPEN_EDITOR__.globals.url + 'assets/js/';
 
-const reducer : Reducer<EditorPageState, Action> = combineReducers({ authors, globals: globalsReducer, editor, commits, repo, route });
+const reducer : Reducer<EditorPageState, Action> = combineReducers({
+    ajax: ajaxReducer,
+    authors,
+    globals: globalsReducer,
+    editor,
+    commits,
+    repo,
+    route
+});
 
 const initialState = {
+    ajax: { running: false },
     ...__GISTPEN_EDITOR__,
     editor: {
         ...__GISTPEN_EDITOR__.editor,
