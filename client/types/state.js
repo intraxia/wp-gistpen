@@ -108,8 +108,7 @@ export type EditorState = {
     width: string;
     theme: string;
     invisibles: Toggle;
-    tabs: Toggle;
-    optionsOpen: boolean
+    tabs: Toggle
 };
 
 export type CommitsState = {
@@ -162,6 +161,7 @@ export type SettingsState = {
 };
 
 export type EditorPageState = {
+    ajax: AjaxState;
     authors: AuthorsState;
     globals: GlobalsState;
     repo: Repo;

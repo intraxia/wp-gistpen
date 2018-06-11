@@ -135,7 +135,6 @@ class Editor implements HasFilters {
 			),
 			'statuses'   => get_post_statuses(),
 			'languages'  => $languages['list'],
-			'optionsOpen' => true,
 		);
 
 		return $params;

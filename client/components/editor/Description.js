@@ -4,10 +4,12 @@ import './Description.scss';
 import R from 'ramda';
 import { h, view, Collector } from 'brookjs-silt';
 import { i18n } from '../../helpers';
-import { editorOptionsClickAction, editorDescriptionChangeAction } from '../../actions';
+import { editorDescriptionChangeAction } from '../../actions';
+import Loader from '../Loader';
 
 type Props = {
-    description: string
+    description: string;
+    loading: boolean
 };
 
 const Description = ({ stream$ }: ObservableProps<Props>) => (
@@ -25,8 +27,10 @@ const Description = ({ stream$ }: ObservableProps<Props>) => (
                         id="title" spellCheck="true"
                         autoComplete="off" />
                 </div>
-                <div className="wpgp-editor-options-button-container" onClick={R.map(R.always(editorOptionsClickAction()))}>
-                    <div tabIndex="0" className="wpgp-editor-options-button dashicons-before dashicons-admin-settings"><br /></div>
+                <div className="wpgp-editor-loader-container">
+                    {stream$.thru(view(props => props.loading)).map((loading: boolean) => (
+                        loading ? <Loader text={i18n('editor.saving')} /> : null
+                    ))}
                 </div>
             </div>
         </div>

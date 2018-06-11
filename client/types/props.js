@@ -33,7 +33,13 @@ export type SettingsProps = {
     jobs: Loopable<string, Job>
 };
 
-export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasCommitsProps & HasRouteState;
+export type AjaxProps = {
+    running: boolean
+};
+
+export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasCommitsProps & HasRouteState & {
+    ajax: AjaxProps
+};
 
 export type EditorInstanceProps = {
     instance: EditorInstance;

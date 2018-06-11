@@ -5,7 +5,7 @@ import type { ObsResponse } from '../services';
 import R from 'ramda';
 import { Kefir } from 'brookjs';
 import { ajax$ } from '../services';
-import { EDITOR_UPDATE_CLICK, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../actions';
+import { EDITOR_UPDATE_CLICK, ajaxStartedAction, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../actions';
 
 type ApiRequestBlob = {
     ID?: number;
@@ -47,16 +47,19 @@ const onlyEditorUpdateClicks = R.filter(R.pipe(
  */
 export default function repoDelta(action$: Observable<Action>, state$: Observable<EditorPageState>): Observable<Action> {
     return state$.sampledBy(onlyEditorUpdateClicks(action$))
-        .flatMapLatest((state: EditorPageState): Observable<ObsResponse> => ajax$(state.repo.rest_url, {
-            method: 'PUT',
-            body: makeBody(state),
-            credentials: 'include',
-            headers: {
-                'X-WP-Nonce': state.globals.nonce,
-                'Content-Type': 'application/json'
-            }
-        }))
-        .flatMap((response: ObsResponse) => response.json())
-        .flatten((response: RepoApiResponse): Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
-        .flatMapErrors(err => Kefir.constant(ajaxFailedAction(err)));
+        .flatMapLatest((state: EditorPageState): Observable<Action> => Kefir.concat([
+            Kefir.constant(ajaxStartedAction()),
+            ajax$(state.repo.rest_url, {
+                method: 'PUT',
+                body: makeBody(state),
+                credentials: 'include',
+                headers: {
+                    'X-WP-Nonce': state.globals.nonce,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .flatMap((response: ObsResponse) => response.json())
+                .flatten((response: RepoApiResponse): Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
+                .flatMapErrors(err => Kefir.constant(ajaxFailedAction(err)))
+        ]));
 }

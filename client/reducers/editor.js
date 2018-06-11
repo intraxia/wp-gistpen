@@ -7,7 +7,7 @@ import type { HasMetaKey, EditorInstance, EditorValue, EditorIndentValue, Editor
     EditorMakeNewLineAction, EditorValueChangeAction, RepoSaveSucceededAction, Blob, Toggle } from '../types';
 import R from 'ramda';
 import { combineActionReducers } from 'brookjs';
-import { EDITOR_OPTIONS_CLICK, EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
+import { EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_DELETE_CLICK,
     EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE, REPO_SAVE_SUCCEEDED,
     EDITOR_DESCRIPTION_CHANGE, EDITOR_STATUS_CHANGE, EDITOR_SYNC_TOGGLE,
@@ -25,7 +25,6 @@ const defaultInstance = {
 };
 
 const defaults = {
-    optionsOpen: false,
     theme: 'default',
     tabs: 'off',
     width: '4',
@@ -39,10 +38,6 @@ const defaults = {
 };
 
 export default combineActionReducers([
-    [EDITOR_OPTIONS_CLICK, (state: EditorState) => ({
-        ...state,
-        optionsOpen: !state.optionsOpen
-    })],
     [EDITOR_THEME_CHANGE, (state: EditorState, { payload }: EditorThemeChangeAction) => ({
         ...state,
         theme: payload.value
