@@ -1,10 +1,12 @@
 <div data-brk-container="editor" class="wpgp-editor">
-    <div class="wpgp-editor-row">
-        {{> components/editor/description/index}}
+    <div data-brk-container="description"
+         data-brk-blackbox="description"
+         class="wpgp-editor-row">
     </div>
 
-    <div class="wpgp-editor-row">
-        {{> components/editor/controls/index}}
+    <div data-brk-container="controls"
+         data-brk-blackbox="controls"
+         class="wpgp-editor-row">
     </div>
 
     {{#each editor.instances as |instance|}}

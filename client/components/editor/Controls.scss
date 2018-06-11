@@ -1,4 +1,4 @@
-@import "../common";
+@import "./common";
 
 #wpbody .wpgp-editor-controls {
     @include outer-container(100%);
@@ -10,8 +10,22 @@
         display: inline-block;
         padding: 0.5em;
         margin-bottom: 1em;
+        margin-right: 4px;
+        margin-left: 4px;
         border-radius: 0.5em;
         line-height: 1.5em;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        label {
+            margin-right: 4px;
+        }
     }
 
     .wpgp-button {
@@ -27,6 +41,8 @@
         font-family: inherit;
         font-size: inherit;
         font-weight: inherit;
+        margin-left: 4px;
+        margin-right: 4px;
 
         &::before {
             margin-right: 0.25em;
