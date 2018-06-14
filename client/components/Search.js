@@ -13,7 +13,7 @@ import Loader from './Loader';
 type ID = number | string;
 
 type ResultsProps = {
-    order: Array<ID>;
+    order: Array<ID>,
     dict: {
         [key: ID]: {
             filename: string
@@ -22,7 +22,7 @@ type ResultsProps = {
 };
 
 export type SearchProps = {
-    term: string;
+    term: string,
     results: ResultsProps,
     loading: boolean
 };

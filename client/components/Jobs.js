@@ -37,7 +37,7 @@ const Row = ({ stream$ }: ObservableProps<Job>) => (
 
 type JobsProps = {
     jobs: {
-        order: Array<string>;
+        order: Array<string>,
         dict: {
             [key: string]: Job
         }

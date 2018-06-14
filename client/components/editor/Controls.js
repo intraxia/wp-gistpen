@@ -18,35 +18,35 @@ const mapCheckedToString : ((e: Event) => Toggle) = R.ifElse(
 const getTargetValue : ((e: Event) => string) = R.path(['target', 'value']);
 
 type Status = {
-    slug: string;
-    name: string;
+    slug: string,
+    name: string,
     selected: boolean
 };
 
 type Theme = {
-    slug: string;
-    name: string;
+    slug: string,
+    name: string,
     active: boolean
 };
 
 type Width = {
-    slug: string;
-    name: string;
+    slug: string,
+    name: string,
     active: boolean
 };
 
 type Props = {
-    statuses: Loopable<string, Status>;
-    themes: Loopable<string, Theme>;
-    widths: Loopable<string, Width>;
+    statuses: Loopable<string, Status>,
+    themes: Loopable<string, Theme>,
+    widths: Loopable<string, Width>,
     gist: {
-        show: boolean;
+        show: boolean,
         url: ?string
     },
-    sync: Toggle;
-    tabs: Toggle;
-    invisibles: Toggle;
-    selectedTheme: string;
+    sync: Toggle,
+    tabs: Toggle,
+    invisibles: Toggle,
+    selectedTheme: string,
     selectedStatus: string
 };
 

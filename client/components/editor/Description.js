@@ -9,7 +9,7 @@ import { editorDescriptionChangeAction } from '../../actions';
 import Loader from '../Loader';
 
 type Props = {
-    description: string;
+    description: string,
     loading: boolean
 };
 

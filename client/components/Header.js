@@ -10,7 +10,7 @@ import { i18n, link } from '../helpers';
 import Loader from './Loader';
 
 type HeaderProps = {
-    loading: boolean;
+    loading: boolean,
     route: string
 };
 

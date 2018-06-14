@@ -14,16 +14,16 @@ type JobsServices = {
 };
 
 type JobProps = {
-    route: Route;
-    runs: Array<Run>;
-    globals: GlobalsState;
+    route: Route,
+    runs: Array<Run>,
+    globals: GlobalsState,
     jobs: {
         [key: string]: Job
     }
 };
 
 type GetConsoleResponse = {
-    status: RunStatus;
+    status: RunStatus,
     messages: Array<Message>
 };
 type GetJobResponse = Job;
@@ -172,7 +172,7 @@ export default R.curry((
             globals: state.globals
         })
     )
-        .flatMap(({ globals, job }: { job: Job; globals: GlobalsState }) => Kefir.concat([
+        .flatMap(({ globals, job }: { job: Job, globals: GlobalsState }) => Kefir.concat([
             Kefir.constant(jobDispatchStarted()),
             ajax$(job.rest_url, {
                 method: 'POST',

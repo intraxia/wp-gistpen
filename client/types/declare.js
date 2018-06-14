@@ -13,12 +13,12 @@ type jQueryObject = Array<Element>;
 declare var jQuery : (html: string) => jQueryObject;
 
 declare class ProxyEvent {
-    delegateTarget: Element;
-    target: Element;
-    keyCode: string;
-    altKey: boolean;
-    ctrlKey: boolean;
-    metaKey: boolean;
-    shiftKey: boolean;
+    delegateTarget: Element,
+    target: Element,
+    keyCode: string,
+    altKey: boolean,
+    ctrlKey: boolean,
+    metaKey: boolean,
+    shiftKey: boolean,
     preventDefault() : void
 }

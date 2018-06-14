@@ -5,7 +5,7 @@ import { combineActionReducers } from 'brookjs';
 import { SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED, SEARCH_RESULT_SELECTION_CHANGE } from '../actions';
 
 export type SearchState = {
-    term: string;
+    term: string,
     selection: number | null,
     results: Array<Blob>
 };

@@ -7,17 +7,17 @@ import classNames from 'classnames';
 import Prism from '../prism';
 
 type PrismProps = {
-    theme: string;
-    'line-numbers': boolean;
+    theme: string,
+    'line-numbers': boolean,
     'show-invisibles': boolean
 };
 
 type Props = {
     blob: {
-        code: string;
-        filename: string;
+        code: string,
+        filename: string,
         language: string
-    };
+    },
     prism: PrismProps
 };
 

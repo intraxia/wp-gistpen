@@ -6,18 +6,18 @@ import Blob from './Blob.component';
 
 type RepoProps = {
     blobs: {
-        order: Array<string>;
+        order: Array<string>,
         dict: {
             [key: string]: {
-                code: string;
-                filename: string;
+                code: string,
+                filename: string,
                 language: string
             }
         }
-    };
+    },
     prism: {
-        theme: string;
-        'line-numbers': boolean;
+        theme: string,
+        'line-numbers': boolean,
         'show-invisibles': boolean
     }
 };

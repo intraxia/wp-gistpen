@@ -8,9 +8,9 @@ import { ajax$ } from '../services';
 import { EDITOR_UPDATE_CLICK, ajaxStartedAction, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../actions';
 
 type ApiRequestBlob = {
-    ID?: number;
-    filename: string;
-    code: string;
+    ID?: number,
+    filename: string,
+    code: string,
     language: string
 };
 

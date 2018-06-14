@@ -8,7 +8,7 @@ type ID = string;
 
 type MessagesProps = {
     job: string,
-    job_id: string;
+    job_id: string,
     status: RunStatus,
     messages: {
         order: Array<ID>,

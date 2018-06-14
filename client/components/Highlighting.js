@@ -15,8 +15,8 @@ type HighlightingProps = {
     'line-numbers': boolean,
     'show-invisibles': boolean,
     demo: {
-        code: string;
-        filename: string;
+        code: string,
+        filename: string,
         language: string
     }
 };
