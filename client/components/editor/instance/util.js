@@ -1,5 +1,5 @@
 // @flow
-import type { EditorInstanceProps } from '../../../types';
+import type { Props as EditorInstanceProps } from './types';
 
 /**
  * Returns whether any of the editor options have changed.
@@ -9,8 +9,8 @@ import type { EditorInstanceProps } from '../../../types';
  * @returns {boolean} Whether any editor options have changed.
  */
 export function editorOptionsIsEqual(prev: EditorInstanceProps, next: EditorInstanceProps): boolean {
-    return prev.editor.theme === next.editor.theme &&
-        prev.editor.invisibles === next.editor.invisibles;
+    return prev.theme === next.theme &&
+        prev.invisibles === next.invisibles;
 }
 
 /**
@@ -31,7 +31,7 @@ export function lineNumberIsEqual(/* prev, next */): boolean {
  * @returns {boolean} Whether the language is the same.
  */
 export function languageIsEqual(prev: EditorInstanceProps, next: EditorInstanceProps): boolean {
-    return prev.instance.language === next.instance.language;
+    return prev.language === next.language;
 }
 
 /**

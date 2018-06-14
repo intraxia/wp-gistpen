@@ -1,13 +1,14 @@
 // @flow
 // @jsx h
 import type { Observable } from 'kefir';
-import type { Action, EditorPageProps, EditorInstance, EditorInstanceProps } from '../../types';
+import type { Action, EditorPageProps, EditorInstance } from '../../types';
 import './index.scss';
 import { component, children, render } from 'brookjs';
 import { fromReact } from 'brookjs-silt';
 import Controls from './Controls';
 import Description from './Description';
-import InstanceComponent from './instance';
+import type { Props as EditorInstanceProps } from './instance/types';
+import Instance from './instance';
 import template from './index.hbs';
 
 export default component({
@@ -49,37 +50,34 @@ export default component({
             }))
         },
         'instance': {
-            factory: InstanceComponent,
-            modifyChildProps: (props$: Observable<EditorPageProps>, key: string): Observable<EditorInstanceProps> => {
-                return props$.map((props: EditorPageProps): EditorInstanceProps => {
-                    const instance = props.editor.instances.find((instance: EditorInstance) => instance.key === key);
-
-                    if (instance == null) {
-                        return {
-                            instance: {
-                                key,
-                                code: '\n',
-                                cursor: false,
-                                filename: '',
-                                history: {
-                                    undo: [],
-                                    redo: []
-                                },
-                                language: 'plaintext'
-                            },
-                            editor: props.editor
-                        };
-                    }
+            factory: fromReact(Instance),
+            modifyChildProps: (props$: Observable<EditorPageProps>, key: string): Observable<EditorInstanceProps> =>
+                props$.map((props: EditorPageProps): EditorInstanceProps => {
+                    const instance: EditorInstance = props.editor.instances.find((instance: EditorInstance) => instance.key === key) || {
+                        key,
+                        code: '\n',
+                        cursor: false,
+                        filename: '',
+                        history: {
+                            undo: [],
+                            redo: []
+                        },
+                        language: 'plaintext'
+                    };
 
                     return {
-                        instance: {
-                            ...instance,
-                            code: !/\n$/.test(instance.code) ? instance.code + '\n' : instance.code
+                        filename: instance.filename,
+                        code: instance.code,
+                        invisibles: props.editor.invisibles,
+                        language: instance.language,
+                        theme: props.editor.theme,
+                        cursor: instance.cursor,
+                        languages: {
+                            order: Object.keys(props.globals.languages),
+                            dict: props.globals.languages
                         },
-                        editor: props.editor
                     };
-                });
-            },
+                }),
             preplug: (instance$: Observable<Action>, key: string) => instance$.map((action: Action) => ({
                 ...action,
                 meta: { key }
