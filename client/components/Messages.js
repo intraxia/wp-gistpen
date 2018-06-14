@@ -1,6 +1,6 @@
 // @flow
 // @jsx h
-import type { Message as MessageEntity, RunStatus } from '../types';
+import type { Message as MessageEntity, RunStatus, ObservableProps } from '../types';
 import { Collector, h, view, loop } from 'brookjs-silt';
 import { link } from '../helpers';
 

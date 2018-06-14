@@ -1,6 +1,6 @@
 // @flow
 // @jsx h
-import type { Run as RunEntity, Loopable } from '../types';
+import type { Run as RunEntity, Loopable, ObservableProps } from '../types';
 import { Collector, h, view, loop } from 'brookjs-silt';
 import { link, i18n } from '../helpers';
 

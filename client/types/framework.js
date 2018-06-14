@@ -16,3 +16,7 @@ export type Loopable<I, E> = {
         [key: I]: E
     }
 };
+
+export type ObservableProps<T> = {
+    stream$: Observable<T>
+};

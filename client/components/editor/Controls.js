@@ -1,6 +1,6 @@
 // @flow
 // @jsx h
-import type { Toggle, Loopable } from '../../types';
+import type { Toggle, Loopable, ObservableProps } from '../../types';
 import './Controls.scss';
 import R from 'ramda';
 import { loop, view, h, Collector } from 'brookjs-silt';

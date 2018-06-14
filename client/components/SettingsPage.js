@@ -1,6 +1,6 @@
 // @flow
 // @jsx h
-import type { SettingsProps } from '../types';
+import type { SettingsProps, ObservableProps } from '../types';
 import { Collector, h, view } from 'brookjs-silt';
 import { i18n } from '../helpers';
 import Accounts from './Accounts';

@@ -1,6 +1,6 @@
 // @flow
 // @jsx h
-import type { Theme } from '../types';
+import type { Theme, ObservableProps } from '../types';
 import { Collector, h, view, loop } from 'brookjs-silt';
 import R from 'ramda';
 import { lineNumbersChangeAction, showInvisiblesChangeAction,

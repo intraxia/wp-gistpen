@@ -1,5 +1,6 @@
 // @flow
 // @jsx h
+import type { ObservableProps } from '../types';
 import { h, view } from 'brookjs-silt';
 import classNames from 'classnames';
 import jss from 'jss';
