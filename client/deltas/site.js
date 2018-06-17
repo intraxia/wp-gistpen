@@ -7,12 +7,14 @@ import Kefir from 'kefir';
 import { ajax$ } from '../services';
 import { ajaxStartedAction, ajaxFailedAction, ajaxFinishedAction } from '../actions';
 
-const makeBody = R.pipe(R.pick(['gist', 'prism']), JSON.stringify);
 const optionsAjax$ : (state: SettingsState) => Observable<ObsResponse> = R.converge(ajax$, [
     (state: SettingsState): string => state.globals.root + 'site',
     (state: SettingsState): AjaxOptions => ({
         method: 'PATCH',
-        body: makeBody(state),
+        body: JSON.stringify({
+            gist: state.gist,
+            prism: state.prism
+        }),
         credentials: 'include',
         headers: {
             'X-WP-Nonce': state.globals.nonce,

@@ -9,18 +9,18 @@ export const parseQueryString : ((query: string) => { [key: string]: string }) =
     R.fromPairs
 );
 
-export const buildQueryString : ((obj: { [key: string]: string }) => string) = R.compose(
-    R.concat('?'),
-    R.join('&'),
+export const buildQueryString : ((obj: { [key: string]: string }) => string) = R.pipe(
+    R.toPairs,
     R.map(R.join('=')),
-    R.toPairs
+    R.join('&'),
+    R.concat('?')
 );
 
-export const getRoute : (search: string, param: string) => string = R.pipe(
-    (search: string, param: string) => parseQueryString(search)[param],
-    R.defaultTo(''),
-    R.concat('/')
-);
+export const getRoute = (search: string, param: string): string => {
+    const query = R.defaultTo('', parseQueryString(search)[param]);
+
+    return R.concat('/', query);
+};
 
 export const generateParam = (route: Route): string => {
     let param = route.name;

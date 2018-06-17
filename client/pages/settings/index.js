@@ -1,7 +1,8 @@
 // @flow
 // @jsx h
 import '../../polyfills';
-import { createStore, combineReducers } from 'redux';
+import type { Action, SettingsState } from '../../types';
+import { createStore, combineReducers, type Store } from 'redux';
 import Kefir from 'kefir';
 import { Aggregator, h } from 'brookjs-silt';
 import ReactDOM from 'react-dom';
@@ -14,7 +15,7 @@ import { SettingsPage } from '../../components';
 
 const { __GISTPEN_SETTINGS__ } = global;
 
-const store = createStore(
+const store: Store<SettingsState, Action> = createStore(
     combineReducers({
         ajax: ajaxReducer,
         globals: globalsReducer,

@@ -54,7 +54,6 @@
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.0",
     "shelljs": "^0.8.1",
-    "simulant": "^0.2.2",
     "sinon": "^6.0.0",
     "sinon-chai": "^3.0.0",
     "style-loader": "^0.21.0",
