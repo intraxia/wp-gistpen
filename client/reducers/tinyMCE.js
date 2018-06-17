@@ -8,8 +8,8 @@ import { globalsReducer } from './globals';
 import { searchReducer } from './search';
 
 export type TinyMCEState = {
-    ajax: AjaxState;
-    globals: GlobalsState;
+    ajax: AjaxState,
+    globals: GlobalsState,
     search: SearchState
 };
 

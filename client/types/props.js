@@ -1,11 +1,10 @@
 // @flow
-import type { EditorInstance, EditorState,
-    HasGlobalsState, HasRepo, HasEditorState, HasRouteState } from './state';
+import type { HasGlobalsState, HasRepo, HasEditorState, HasRouteState } from './state';
 import type { Author, Job, Route } from './domain';
 import type { Loopable } from './framework';
 
 export type CommitProps = {
-    author: ?Author;
+    author: ?Author,
     committed_at: string
 };
 export type HasCommitsProps = {
@@ -19,17 +18,17 @@ export type Theme = {
 };
 
 export type SettingsProps = {
-    loading: boolean;
-    route: Route;
+    loading: boolean,
+    route: Route,
     demo: {
-        code: string;
-        filename: string;
+        code: string,
+        filename: string,
         language: string
-    };
-    themes: Loopable<string, Theme>;
-    'line-numbers': boolean;
-    'show-invisibles': boolean;
-    token: string;
+    },
+    themes: Loopable<string, Theme>,
+    'line-numbers': boolean,
+    'show-invisibles': boolean,
+    token: string,
     jobs: Loopable<string, Job>
 };
 
@@ -39,9 +38,4 @@ export type AjaxProps = {
 
 export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasCommitsProps & HasRouteState & {
     ajax: AjaxProps
-};
-
-export type EditorInstanceProps = {
-    instance: EditorInstance;
-    editor: EditorState
 };

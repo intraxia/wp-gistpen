@@ -173,8 +173,8 @@ function mapInstanceWithKey(state: EditorState, key: string, fn: (i: EditorInsta
 }
 
 type Section = {
-    before: string;
-    selection: string;
+    before: string,
+    selection: string,
     after: string
 };
 
@@ -195,7 +195,7 @@ function extractSections(code: string, ss: number, se: number): Section {
 }
 
 type Indentation = {
-    tabs: Toggle;
+    tabs: Toggle,
     width: string
 };
 

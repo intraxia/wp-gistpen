@@ -1,5 +1,6 @@
 // @flow
 // @jsx h
+import type { ObservableProps } from '../types';
 import { h, view } from 'brookjs-silt';
 import classNames from 'classnames';
 import jss from 'jss';
@@ -9,7 +10,7 @@ import { i18n, link } from '../helpers';
 import Loader from './Loader';
 
 type HeaderProps = {
-    loading: boolean;
+    loading: boolean,
     route: string
 };
 

@@ -1,22 +1,23 @@
 // @flow
 // @jsx h
+import type { ObservableProps } from '../types';
 import { Kefir } from 'brookjs';
 import { h, view, withRef$ } from 'brookjs-silt';
 import classNames from 'classnames';
 import Prism from '../prism';
 
 type PrismProps = {
-    theme: string;
-    'line-numbers': boolean;
+    theme: string,
+    'line-numbers': boolean,
     'show-invisibles': boolean
 };
 
 type Props = {
     blob: {
-        code: string;
-        filename: string;
+        code: string,
+        filename: string,
         language: string
-    };
+    },
     prism: PrismProps
 };
 

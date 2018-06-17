@@ -10,7 +10,7 @@ import { getRoute, getUrl, parseQueryString } from '../selectors';
 type HrefTarget = {
     search: {
         [key: string]: string
-    } | string;
+    } | string,
     href: string
 };
 

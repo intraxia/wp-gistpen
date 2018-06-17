@@ -1,5 +1,4 @@
 // @flow
-import { Kefir } from 'brookjs';
 import type { TinyMCE } from './tinymce';
 
 // eslint-disable-next-line camelcase
@@ -14,16 +13,12 @@ type jQueryObject = Array<Element>;
 declare var jQuery : (html: string) => jQueryObject;
 
 declare class ProxyEvent {
-    delegateTarget: Element;
-    target: Element;
-    keyCode: string;
-    altKey: boolean;
-    ctrlKey: boolean;
-    metaKey: boolean;
-    shiftKey: boolean;
+    delegateTarget: Element,
+    target: Element,
+    keyCode: string,
+    altKey: boolean,
+    ctrlKey: boolean,
+    metaKey: boolean,
+    shiftKey: boolean,
     preventDefault() : void
 }
-
-declare type ObservableProps<T> = {
-    stream$: Kefir.Observable<T>
-};

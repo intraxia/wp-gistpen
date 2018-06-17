@@ -3,9 +3,9 @@ import type { Emitter } from 'kefir';
 import Kefir from 'kefir';
 
 export type AjaxOptions = {
-    method: string;
-    body?: string;
-    credentials?: 'include';
+    method: string,
+    body?: string,
+    credentials?: 'include',
     headers?: {
         [key: string]: string
     }

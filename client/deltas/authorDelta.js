@@ -13,7 +13,7 @@ type AuthorServices = {
 type AuthorApiResponse = Author;
 
 type AuthorDeltaState = {
-    commits: CommitsState;
+    commits: CommitsState,
     globals: GlobalsState
 };
 

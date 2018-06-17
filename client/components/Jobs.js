@@ -4,7 +4,7 @@ import type { Observable } from 'kefir';
 import { Collector, h, view, loop } from 'brookjs-silt';
 import { i18n, link } from '../helpers';
 import { jobDispatchClick } from '../actions';
-import type { Job } from '../types';
+import type { Job, ObservableProps } from '../types';
 
 const Row = ({ stream$ }: ObservableProps<Job>) => (
     <tr>
@@ -37,7 +37,7 @@ const Row = ({ stream$ }: ObservableProps<Job>) => (
 
 type JobsProps = {
     jobs: {
-        order: Array<string>;
+        order: Array<string>,
         dict: {
             [key: string]: Job
         }

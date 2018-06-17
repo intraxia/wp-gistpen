@@ -10,8 +10,10 @@
     </div>
 
     {{#each editor.instances as |instance|}}
-        <div class="wpgp-editor-row">
-            {{> components/editor/instance/index instance=instance}}
+        <div class="wpgp-editor-row"
+             data-brk-container="instance"
+             data-brk-key="{{instance.key}}"
+             data-brk-blackbox="instance">
         </div>
     {{/each}}
 </div>

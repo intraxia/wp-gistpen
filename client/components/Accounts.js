@@ -1,5 +1,6 @@
 // @flow
 // @jsx h
+import type { ObservableProps } from '../types';
 import { Collector, h, view } from 'brookjs-silt';
 import { gistTokenChange } from '../actions';
 

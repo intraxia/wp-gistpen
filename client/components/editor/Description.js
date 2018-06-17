@@ -1,6 +1,7 @@
 // @flow
 // @jsx h
 import './Description.scss';
+import type { ObservableProps } from '../../types';
 import R from 'ramda';
 import { h, view, Collector } from 'brookjs-silt';
 import { i18n } from '../../helpers';
@@ -8,7 +9,7 @@ import { editorDescriptionChangeAction } from '../../actions';
 import Loader from '../Loader';
 
 type Props = {
-    description: string;
+    description: string,
     loading: boolean
 };
 
