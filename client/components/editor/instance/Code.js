@@ -147,7 +147,7 @@ const Code = ({ stream$ }, ref) => (
                 R.map(mapKeydownToAction)
             )}
             className={stream$.thru(view((props: Props) => `language-${prismSlug(props.language)}`))}
-            ref={ref} contentEditable="true">
+            ref={ref} contentEditable="true" spellCheck="false">
         </code>
     </Collector>
 );

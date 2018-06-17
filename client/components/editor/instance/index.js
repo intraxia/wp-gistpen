@@ -23,7 +23,7 @@ const ToolbarButton = ({ children }) => (
 const Filename = ({ stream$ }: ObservableProps<Props>) => (
     <Collector>
         <ToolbarButton silt-emittable>
-            <span contentEditable="true"
+            <span contentEditable="true" spellCheck="false"
                 dangerouslySetInnerHTML={stream$.take(1)
                     .map(props => ({ __html: props.filename }))}
                 onInput={R.map(R.pipe(R.path(['target', 'textContent']), editorFilenameChangeAction))}>
