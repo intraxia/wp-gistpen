@@ -26,8 +26,9 @@ const reducer : Reducer<EditorPageState, Action> = combineReducers({
     route
 });
 
-const initialState = {
+const initialState: EditorPageState = {
     ajax: { running: false },
+    authors: { items: {} },
     ...__GISTPEN_EDITOR__,
     editor: {
         ...__GISTPEN_EDITOR__.editor,
