@@ -1,4 +1,9 @@
-import { h, Collector } from 'brookjs-silt';
+// @flow
+// @jsx h
+import type { EditorPageProps } from '../types';
+import type { Observable } from 'kefir';
+import { Kefir } from 'brookjs';
+import { h, view, Collector } from 'brookjs-silt';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 import jss from 'jss';
@@ -49,7 +54,11 @@ const styles = {
     }
 };
 
-const Commits = ({ classes, stream$ }) => (
+type ClassMap = {
+    [key: $Keys<typeof styles>]: string
+};
+
+const Commits = ({ classes, stream$ }: { classes: ClassMap, stream$: Observable<EditorPageProps>}) => (
     <Collector silt-embeddable>
         <div className={classes.container}>
             <div className={classes.header}>
@@ -62,20 +71,30 @@ const Commits = ({ classes, stream$ }) => (
                     {stream$.map(({ commits }) => commits.map(commit => (
                         <div className={stream$.map(({ selectedCommit }) => classNames({
                             [classes.item]: true,
-                            [classes.selected]: selectedCommit.ID === commit.ID
+                            [classes.selected]: selectedCommit && selectedCommit.ID === commit.ID
                         }))}
-                        onClick={evt$ => evt$.map(() => commitClick(commit.ID))}>
-                            <img src={commit.author.avatar} alt={commit.author.name} />
+                        onClick={evt$ => evt$.map(() => commitClick((commit.ID: any)))}>
+                            {commit.author ? <img src={commit.author.avatar_urls['48']} alt={commit.author.name} /> : null}
                             <p><strong>{commit.description}</strong></p>
                             <p>{commit.committed_at}</p>
                         </div>
                     )))}
                 </div>
                 <div className={classes.preview}>
-                    <h3>{stream$.map(({ selectedCommit }) => selectedCommit.description)}</h3>
-                    {stream$.map(({ selectedCommit }) => selectedCommit.states.order.map(id => (
-                        <Blob key={id} stream$={stream$.map(({ selectedCommit, prism }) => ({ blob: selectedCommit.states.dict[id], prism }))} />
-                    )))}
+                    {stream$.thru(view(({ selectedCommit, prism }) => ({ selectedCommit, prism }))).map(({ selectedCommit, prism }) => (
+                        selectedCommit ? (
+                            <span>
+                                <h3>{selectedCommit.description}</h3>
+                                {selectedCommit.states.map(state => (
+                                    <Blob key={state.ID}
+                                        stream$={Kefir.constant({
+                                            prism,
+                                            blob: { ...state, language: state.language.slug }
+                                        })} />
+                                ))}
+                            </span>
+                        ) : null
+                    ))}
                 </div>
             </div>
         </div>

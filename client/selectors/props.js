@@ -2,9 +2,8 @@
 import type { Observable } from 'kefir';
 import type {
     EditorPageState, EditorPageProps,
-    SettingsState, SettingsProps, CommitProps,
-    CommitState, Route, Theme, Loopable, Run
-} from '../types';
+    SettingsState, SettingsProps, Route, CommitProps,
+    Theme, Loopable, Run } from '../types';
 import R from 'ramda';
 import type { Job, Message } from '../types';
 
@@ -75,16 +74,44 @@ export const selectSettingsProps = (state: SettingsState): SettingsProps => ({
 });
 
 export const selectEditorProps = (state$: Observable<EditorPageState>): Observable<EditorPageProps> =>
-    state$.map(({ ajax, authors, globals, repo, route, editor, commits }: EditorPageState): EditorPageProps => ({
+    state$.map(({ ajax, authors, globals, repo, route, editor, commits }): EditorPageProps => ({
         ajax,
         globals,
         repo,
         route,
         editor,
-        // $FlowFixMe
-        commits: commits.instances.map((instance: CommitState): CommitProps => ({
-            ...instance,
-            author: authors.items[String(instance.author)]
+        prism: {
+            'line-numbers': false,
+            'show-invisibles': editor.invisibles === 'on',
+            theme: editor.theme
+        },
+        // eslint-disable-next-line
+        commits: commits.instances.map(({ author, ID, committed_at, description, states }): CommitProps => ({
+            ID,
+            committed_at,
+            description,
+            states,
+            author: authors.items[String(author)]
         })),
-        selectedCommit: commits.instances.find(instance => instance.ID === commits.selected)
+        selectedCommit: (() => {
+            const commit = commits.instances.find(instance => instance.ID === commits.selected);
+
+            if (!commit) {
+                return;
+            }
+
+            const author = authors.items[String(commit.author)];
+
+            if (!author) {
+                return;
+            }
+
+            return {
+                ID: commit.ID,
+                committed_at: commit.committed_at,
+                description: commit.description,
+                states: commit.states,
+                author
+            };
+        })()
     }));

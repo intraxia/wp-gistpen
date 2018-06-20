@@ -1,5 +1,5 @@
 // @flow
-import type { Author, Job, Route, Run, Message } from './domain';
+import type { Author, Job, Route, Run, Message, Commit } from './domain';
 
 export type Toggle = 'on' | 'off';
 
@@ -91,12 +91,6 @@ export type EditorInstance = {
     history: EditorHistory
 };
 
-export type CommitState = {
-    ID: number,
-    author: string,
-    committed_at: string
-};
-
 export type EditorState = {
     description: string,
     status: string,
@@ -112,7 +106,7 @@ export type EditorState = {
 };
 
 export type CommitsState = {
-    instances: Array<CommitState>,
+    instances: Array<Commit>,
     selected: ?number
 };
 

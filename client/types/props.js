@@ -1,15 +1,7 @@
 // @flow
 import type { HasGlobalsState, HasRepo, HasEditorState, HasRouteState } from './state';
-import type { Author, Job, Route } from './domain';
+import type { Author, Job, Route, Commit } from './domain';
 import type { Loopable } from './framework';
-
-export type CommitProps = {
-    author: ?Author,
-    committed_at: string
-};
-export type HasCommitsProps = {
-    commits: Array<CommitProps>
-};
 
 export type Theme = {
     name: string,
@@ -36,6 +28,13 @@ export type AjaxProps = {
     running: boolean
 };
 
-export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasCommitsProps & HasRouteState & {
-    ajax: AjaxProps
+export type CommitProps = {
+    ...Commit,
+    author: ?Author
+};
+
+export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasRouteState & {
+    ajax: AjaxProps,
+    commits: Array<CommitProps>,
+    selectedCommit: ?CommitProps
 };

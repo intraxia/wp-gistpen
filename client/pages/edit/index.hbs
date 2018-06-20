@@ -4,6 +4,8 @@
     {{/compare}}
 
     {{#compare route.name "commits"}}
-        {{> components/commits/index}}
+        <div data-brk-container="commits"
+             data-brk-blackbox="commits">
+        </div>
     {{/compare}}
 </div>
