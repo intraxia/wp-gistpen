@@ -44,4 +44,4 @@ if ( ! $update_php->does_it_meet_required_php_version( PHP_VERSION ) ) {
 }
 
 // Boot!
-call_user_func( array( new Intraxia\Gistpen\App( __FILE__ ), 'boot' ) );
+call_user_func( array( new Intraxia\Gistpen\App( new Intraxia\Jaxion\Core\Config( Intraxia\Jaxion\Core\ConfigType::PLUGIN, __FILE__ ) ), 'boot' ) );
