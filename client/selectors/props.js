@@ -12,7 +12,7 @@ export const selectRoute = (state: { route: Route }): Route => state.route;
 export const selectDemo = (state: SettingsState) => state.globals.demo;
 
 export const selectThemes = (state: SettingsState) => ({
-    order: Object.keys(state.globals.themes),
+    order: (Object.keys(state.globals.themes): Array<string>),
     dict: Object.entries(state.globals.themes).reduce((acc, [key, val]) => ({
         ...acc,
         [key]: {
@@ -53,7 +53,7 @@ const selectRunsForJob = (state: SettingsState, job: Job): Loopable<string, Run>
 
 
 export const selectJobs = (state: SettingsState) => ({
-    order: Object.keys(state.jobs),
+    order: (Object.keys(state.jobs): Array<string>),
     dict: R.map(job => ({
         ...job,
         runs: selectRunsForJob(state, job)
