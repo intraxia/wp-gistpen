@@ -3,7 +3,7 @@
 import type { EditorPageProps } from '../types';
 import type { Observable } from 'kefir';
 import { Kefir } from 'brookjs';
-import { h, view, Collector } from 'brookjs-silt';
+import { h, loop, view, Collector } from 'brookjs-silt';
 import injectSheet from 'react-jss';
 import classNames from 'classnames';
 import jss from 'jss';
@@ -68,15 +68,16 @@ const Commits = ({ classes, stream$ }: { classes: ClassMap, stream$: Observable<
             </div>
             <div className={classes.app}>
                 <div className={classes.list}>
-                    {stream$.map(({ commits }) => commits.map(commit => (
-                        <div className={stream$.map(({ selectedCommit }) => classNames({
+                    {stream$.thru(loop(({ commits }) => commits, (commit$, key) => (
+                        <div key={key} className={commit$.thru(view(commit => classNames({
                             [classes.item]: true,
-                            [classes.selected]: selectedCommit && selectedCommit.ID === commit.ID
-                        }))}
-                        onClick={evt$ => evt$.map(() => commitClick((commit.ID: any)))}>
-                            {commit.author ? <img src={commit.author.avatar_urls['48']} alt={commit.author.name} /> : null}
-                            <p><strong>{commit.description}</strong></p>
-                            <p>{commit.committed_at}</p>
+                            [classes.selected]: commit.selected
+                        })))}
+                        onClick={evt$ => evt$.map(() => commitClick(key))}>
+                            {commit$.thru(view(commit => commit.author))
+                                .map(author => author ? <img src={author.avatar_urls['48']} alt={author.name} /> : null)}
+                            <p><strong>{commit$.thru(view(commit => commit.description))}</strong></p>
+                            <p>{commit$.thru(view(commit => commit.committed_at))}</p>
                         </div>
                     )))}
                 </div>

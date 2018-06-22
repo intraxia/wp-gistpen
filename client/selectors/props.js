@@ -2,7 +2,7 @@
 import type { Observable } from 'kefir';
 import type {
     EditorPageState, EditorPageProps,
-    SettingsState, SettingsProps, Route, CommitProps,
+    SettingsState, SettingsProps, Route,
     Theme, Loopable, Run } from '../types';
 import R from 'ramda';
 import type { Job, Message } from '../types';
@@ -79,20 +79,42 @@ export const selectEditorProps = (state$: Observable<EditorPageState>): Observab
         globals,
         repo,
         route,
-        editor,
+        editor: {
+            // can't get spread types to work :(
+            description: editor.description,
+            gist_id: editor.gist_id,
+            width: editor.width,
+            theme: editor.theme,
+            tabs: editor.tabs,
+            sync: editor.sync,
+            status: editor.status,
+            password: editor.password,
+            invisibles: editor.invisibles,
+            instances: {
+                order: editor.instances.map(({ key }) => key),
+                dict: editor.instances
+                    .reduce((acc, next) =>
+                        Object.assign(acc, {
+                            [next.key]: { ...next, theme: editor.theme, invisibles: editor.invisibles, languages: {
+                                order: Object.keys(globals.languages),
+                                dict: globals.languages
+                            } }
+                        }), {})
+            }
+        },
         prism: {
             'line-numbers': false,
             'show-invisibles': editor.invisibles === 'on',
             theme: editor.theme
         },
-        // eslint-disable-next-line
-        commits: commits.instances.map(({ author, ID, committed_at, description, states }): CommitProps => ({
-            ID,
-            committed_at,
-            description,
-            states,
-            author: authors.items[String(author)]
-        })),
+        commits: {
+            order: commits.instances.map(({ ID }) => ID),
+            dict: commits.instances
+                .reduce((acc, next) =>
+                    Object.assign(acc, {
+                        [next.ID]: { ...next, author: authors.items[String(next.author)], selected: next.ID === commits.selected }
+                    }), {})
+        },
         selectedCommit: (() => {
             const commit = commits.instances.find(instance => instance.ID === commits.selected);
 

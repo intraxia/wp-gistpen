@@ -73,16 +73,6 @@ class Handlebars implements Templating {
 				return "[partial (file:$filename) not found]";
 			},
 			'helpers'         => array(
-				'compare'    => function ( $first, $second, $options ) {
-					if ( $first === $second ) {
-						return $options['fn']( $options['data'] );
-					} else {
-						return $options['inverse']( $options['data'] );
-					}
-				},
-				'json'       => function ( $context ) {
-					return new SafeString( wp_json_encode( $context ) );
-				},
 				'prism_slug' => function ( $slug ) {
 					$languages = $this->config->get_config_json( 'languages' );
 					$map       = $languages['aliases'];
@@ -95,13 +85,6 @@ class Handlebars implements Templating {
 				},
 				'link'       => function ( /* $search_key, $target */ ) {
 					return '#';
-				},
-				'join'       => function () {
-					$args = func_get_args();
-					array_pop( $args );
-					$glue = array_pop( $args );
-
-					return implode( $glue, $args );
 				},
 				'i18n'       => function ( $key ) {
 					return new SafeString( $this->translator->translate( $key ) );

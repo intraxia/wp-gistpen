@@ -1,5 +1,5 @@
 // @flow
-import type { HasGlobalsState, HasRepo, HasEditorState, HasRouteState } from './state';
+import type { HasGlobalsState, HasRepo, Toggle, HasRouteState, EditorInstance } from './state';
 import type { Author, Job, Route, Commit } from './domain';
 import type { Loopable } from './framework';
 
@@ -33,8 +33,23 @@ export type CommitProps = {
     author: ?Author
 };
 
-export type EditorPageProps = HasGlobalsState & HasRepo & HasEditorState & HasRouteState & {
+export type EditorProps = {
+    description: string,
+    status: string,
+    password: string,
+    password: string,
+    gist_id: string,
+    sync: Toggle,
+    instances: Loopable<string, EditorInstance>,
+    width: string,
+    theme: string,
+    invisibles: Toggle,
+    tabs: Toggle
+};
+
+export type EditorPageProps = HasGlobalsState & HasRepo & HasRouteState & {
     ajax: AjaxProps,
-    commits: Array<CommitProps>,
+    commits: Loopable<number, CommitProps>,
+    editor: EditorProps,
     selectedCommit: ?CommitProps
 };
