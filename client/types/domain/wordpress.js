@@ -11,3 +11,18 @@ export type Author = {
         [key: string]: string
     }
 };
+
+// @todo flesh out & dedupe
+export type BlobState = {
+    language: {
+        slug: string
+    }
+};
+
+export type Commit = {
+    ID: number,
+    description: string,
+    committed_at: string,
+    author: string,
+    states: Array<BlobState>
+};

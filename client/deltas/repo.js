@@ -1,5 +1,5 @@
 // @flow
-import type { Action, EditorPageState, EditorInstance, RepoApiResponse } from '../types';
+import type { Action, EditorPageState, EditorInstance, RepoApiResponse, EditorState } from '../types';
 import type { Observable } from 'kefir';
 import type { ObsResponse } from '../services';
 import R from 'ramda';
@@ -14,7 +14,13 @@ type ApiRequestBlob = {
     language: string
 };
 
-const repoProps = R.pick(['description', 'status', 'password', 'sync']);
+const repoProps = (editor: EditorState) => ({
+    description: editor.description,
+    status: editor.status,
+    password: editor.password,
+    sync: editor.sync
+});
+
 const blobProps = (editor: EditorInstance): ApiRequestBlob => ({
     filename: editor.filename,
     code: editor.code,

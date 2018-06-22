@@ -67,10 +67,6 @@ describe('commitsDelta', () => {
             .and.have.lengthOf(3);
     });
 
-    it('should be curried', () => {
-        expect(commitsDelta({})).to.be.a('function');
-    });
-
     it('should return an Observable', () => {
         expect(commitsDelta(createServices(), Kefir.never(), Kefir.never())).to.be.an.observable();
     });

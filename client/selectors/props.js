@@ -2,9 +2,8 @@
 import type { Observable } from 'kefir';
 import type {
     EditorPageState, EditorPageProps,
-    SettingsState, SettingsProps, CommitProps,
-    CommitState, Route, Theme, Loopable, Run
-} from '../types';
+    SettingsState, SettingsProps, Route,
+    Theme, Loopable, Run } from '../types';
 import R from 'ramda';
 import type { Job, Message } from '../types';
 
@@ -75,16 +74,66 @@ export const selectSettingsProps = (state: SettingsState): SettingsProps => ({
 });
 
 export const selectEditorProps = (state$: Observable<EditorPageState>): Observable<EditorPageProps> =>
-    state$.map(({ ajax, authors, globals, repo, route, editor, commits }: EditorPageState): EditorPageProps => ({
+    state$.map(({ ajax, authors, globals, repo, route, editor, commits }): EditorPageProps => ({
         ajax,
         globals,
         repo,
         route,
-        editor,
-        // $FlowFixMe
-        commits: commits.instances.map((instance: CommitState): CommitProps => ({
-            ...instance,
-            author: authors.items[String(instance.author)]
-        })),
-        selectedCommit: commits.instances.find(instance => instance.ID === commits.selected)
+        editor: {
+            // can't get spread types to work :(
+            description: editor.description,
+            gist_id: editor.gist_id,
+            width: editor.width,
+            theme: editor.theme,
+            tabs: editor.tabs,
+            sync: editor.sync,
+            status: editor.status,
+            password: editor.password,
+            invisibles: editor.invisibles,
+            instances: {
+                order: editor.instances.map(({ key }) => key),
+                dict: editor.instances
+                    .reduce((acc, next) =>
+                        Object.assign(acc, {
+                            [next.key]: { ...next, theme: editor.theme, invisibles: editor.invisibles, languages: {
+                                order: Object.keys(globals.languages),
+                                dict: globals.languages
+                            } }
+                        }), {})
+            }
+        },
+        prism: {
+            'line-numbers': false,
+            'show-invisibles': editor.invisibles === 'on',
+            theme: editor.theme
+        },
+        commits: {
+            order: commits.instances.map(({ ID }) => ID),
+            dict: commits.instances
+                .reduce((acc, next) =>
+                    Object.assign(acc, {
+                        [next.ID]: { ...next, author: authors.items[String(next.author)], selected: next.ID === commits.selected }
+                    }), {})
+        },
+        selectedCommit: (() => {
+            const commit = commits.instances.find(instance => instance.ID === commits.selected);
+
+            if (!commit) {
+                return;
+            }
+
+            const author = authors.items[String(commit.author)];
+
+            if (!author) {
+                return;
+            }
+
+            return {
+                ID: commit.ID,
+                committed_at: commit.committed_at,
+                description: commit.description,
+                states: commit.states,
+                author
+            };
+        })()
     }));

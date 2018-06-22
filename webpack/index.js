@@ -28,25 +28,12 @@ exports.babelRule = {
     ]
 };
 
-exports.handlebarsRule = {
-    test: /\.hbs/,
-    use: [{
-        loader: 'handlebars-loader',
-        query: {
-            helperDirs: [path.join(client, 'helpers')],
-            partialDirs: [client],
-            preventIndent: true,
-            compat: true
-        }
-    }]
-};
-
 exports.styleRule = {
     test: /\.(scss|css)$/,
     include: [
         path.join(pages, 'editor'),
         path.join(pages, 'tinymce'),
-        path.join(client, 'component')
+        path.join(client, 'components')
     ],
     use: [{
         loader: 'style-loader',

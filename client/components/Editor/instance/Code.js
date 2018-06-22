@@ -27,7 +27,7 @@ const mapToTargetCursorAction = (evt$: Observable<ProxyEvent>) =>
  * @param {Event} evt - DOM Event object.
  * @returns {Action|false} Action to emit, or false if no actions.
  */
-const  mapKeydownToAction = (evt: ProxyEvent): Action => {
+const mapKeydownToAction = (evt: ProxyEvent): Action => {
     const { shiftKey: inverse } = evt;
     const { textContent: code } = evt.target;
     const cursor = [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)];
@@ -201,6 +201,7 @@ const refback = (ref$, { stream$ }: ObservableProps<Props>) => ref$.flatMap(el =
      * the props
      */
     const typing$ = stream$.sampledBy(keyUp$.debounce(10))
+        .skipDuplicates((prev, next) => prev.code === next.code)
         .flatMapLatest((props: Props): Observable<void> =>
             createDOMUpdateStream(el, props).takeUntilBy(keyDown$))
         .setName('typing$');
@@ -214,6 +215,7 @@ const refback = (ref$, { stream$ }: ObservableProps<Props>) => ref$.flatMap(el =
          * The render is thus done synchronously.
          */
     const special$ = stream$.sampledBy(keyDown$.filter(isSpecialEvent).delay(0))
+        .skipDuplicates((prev, next) => prev.code === next.code)
         .flatMapLatest((props: Props) =>
             raf$.take(1).flatMap((): Observable<void> =>
                 createDOMUpdateStream(el, props)))

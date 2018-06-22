@@ -5,6 +5,7 @@ import { Kefir } from 'brookjs';
 import { h, view, withRef$ } from 'brookjs-silt';
 import classNames from 'classnames';
 import Prism from '../prism';
+import { prismSlug } from '../helpers';
 
 type PrismProps = {
     theme: string,
@@ -34,7 +35,7 @@ const propsToClassName = props => classNames({
 });
 
 const Code = withRef$(({ stream$ }, ref) => (
-    <code ref={ref} className={stream$.thru(view(props => `language-${props.blob.language}`))}>
+    <code ref={ref} className={stream$.thru(view(props => `language-${prismSlug(props.blob.language)}`))}>
         {stream$.thru(view(props => props.blob.code))}
     </code>
 ), (ref$, { stream$ }) => ref$.flatMap(el =>
