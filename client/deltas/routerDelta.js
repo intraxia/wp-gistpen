@@ -1,6 +1,6 @@
 // @flow
 import type { Emitter, Observable } from 'kefir';
-import type { Action, Delta, RouterDeltaOptions, RouteChangeAction } from '../types';
+import type { Action, RouterDeltaOptions, RouteChangeAction } from '../types';
 import { Kefir, ofType } from 'brookjs';
 import href from 'sheet-router/href';
 import history from 'sheet-router/history';
@@ -21,7 +21,7 @@ type HrefTarget = {
  * @param {string} param - Query param to use.
  * @returns {Function} Router delta creating function.
  */
-export default function routerDelta({ router, param }: RouterDeltaOptions): Delta<Action, void> {
+export default function routerDelta({ router, param }: RouterDeltaOptions) {
     /**
      * Creates the router stream.
      *

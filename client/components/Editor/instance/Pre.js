@@ -58,7 +58,7 @@ const ref = (ref$, { stream$ }) => ref$.flatMap((/* el */) => {
         .filter(R.path(['instance', 'cursor']))
         .flatMapLatest((/*props : EditorInstanceProps*/): Observable<void> =>
             updateLineNumber(/* el.querySelector('pre'), ...(props.instance.cursor || [])*/))
-        .setName('LineNumbers$');
+        .setName('lineNumbers$');
 
     return lineNumber$;
 });

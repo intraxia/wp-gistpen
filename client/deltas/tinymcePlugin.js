@@ -20,7 +20,7 @@ const createTinyMCEPlugin = (): Observable<Editor> => Kefir.stream((emitter: Emi
 const createTinyMCEButton = (actions$: Observable<Action>, state$: Observable<TinyMCEState>, editor: Editor): Observable<Action> =>Kefir.merge([
     Kefir.stream((emitter: Emitter<Action, void>) => {
         // Bind command to stream.
-        editor.addCommand('wpgp_insert', R.pipe(tinymceButtonClickAction, emitter.value));
+        editor.addCommand('wpgp_insert', () => void emitter.value(tinymceButtonClickAction()));
 
         // Add the Insert Gistpen button
         editor.addButton('wp_gistpen', {
