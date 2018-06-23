@@ -2,6 +2,14 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [1.1.0][] - 2018-06-22 ###
+
+* Upgrade the editor into React
+* Remove LightNCandy
+	* First step towards supporting php-5.3 again
+* Tighten up Flowtypes
+* Display spinner when saving
+
 ### [1.0.3][] - 2018-06-09 ###
 
 * More editor CSS fixes
