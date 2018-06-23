@@ -51,6 +51,10 @@ class Prism implements HasFilters {
 				'hook'   => 'params.props.settings',
 				'method' => 'apply_prism',
 			),
+			array(
+				'hook'   => 'params.props.content.blob',
+				'method' => 'apply_prism',
+			),
 		);
 	}
 }

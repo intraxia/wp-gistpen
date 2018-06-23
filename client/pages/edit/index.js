@@ -1,14 +1,17 @@
 // @flow
+// @jsx h
 import type { Store, Reducer } from 'redux';
 import type { Action, EditorPageState } from '../../types';
 import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
-import { domDelta } from 'brookjs';
+import { h, view, Aggregator } from 'brookjs-silt';
+import { Kefir } from 'brookjs';
+import ReactDOM from 'react-dom';
 import { applyDelta, authorDelta, repoDelta, commitsDelta, routerDelta, userDelta } from '../../deltas';
-import { authors, globalsReducer, editor, repo, commits, route } from '../../reducers';
+import { ajaxReducer, authors, globalsReducer, editor, repo, commits, route } from '../../reducers';
 import { selectEditorProps as selectProps } from '../../selectors';
 import { ajax$ } from '../../services';
-import { el, view } from './dom';
+import { Editor, Commits } from '../../components';
 import router from './router';
 
 const { __GISTPEN_EDITOR__ } = global;
@@ -16,9 +19,19 @@ const { __GISTPEN_EDITOR__ } = global;
 // eslint-disable-next-line camelcase
 __webpack_public_path__ = __GISTPEN_EDITOR__.globals.url + 'assets/js/';
 
-const reducer : Reducer<EditorPageState, Action> = combineReducers({ authors, globals: globalsReducer, editor, commits, repo, route });
+const reducer : Reducer<EditorPageState, Action> = combineReducers({
+    ajax: ajaxReducer,
+    authors,
+    globals: globalsReducer,
+    editor,
+    commits,
+    repo,
+    route
+});
 
-const initialState = {
+const initialState: EditorPageState = {
+    ajax: { running: false },
+    authors: { items: {} },
     ...__GISTPEN_EDITOR__,
     editor: {
         ...__GISTPEN_EDITOR__.editor,
@@ -41,12 +54,37 @@ const store : Store<EditorPageState, Action> = createStore( // eslint-disable-li
     initialState,
     applyDelta(
         authorDelta({ ajax$ }),
-        domDelta({ el, selectProps, view }),
         repoDelta,
         routerDelta({ router, param: 'wpgp_route' }),
         commitsDelta({ ajax$ }),
         userDelta
     )
 );
+
+const stream$ = Kefir.fromESObservable(store).toProperty(store.getState).thru(selectProps);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('edit-app');
+
+    if (!el) {
+        throw new Error('edit-app not found');
+    }
+
+    ReactDOM.render(
+        <Aggregator silt-embeddable action$={action$ => action$.observe(store.dispatch)}>
+            {stream$.thru(view(props => props.route.name)).map(route => {
+                switch (route) {
+                    case 'editor':
+                        return <Editor stream$={stream$} />;
+                    case 'commits':
+                        return <Commits stream$={stream$} />;
+                    default:
+                        return null;
+                }
+            })}
+        </Aggregator>,
+        el
+    );
+});
 
 // store.dispatch({ type: 'INIT' });

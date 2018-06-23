@@ -7,7 +7,6 @@ import editorReducer from '../editor';
 
 describe('Editor Reducer', () => {
     const initial : EditorState = {
-        optionsOpen: false,
         theme: 'default',
         tabs: 'on',
         width: '4',
@@ -43,7 +42,6 @@ describe('Editor Reducer', () => {
         };
         const before : EditorState = initial;
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'on',
             width: '4',
@@ -80,7 +78,6 @@ describe('Editor Reducer', () => {
         }), { meta: { key: '1' } });
         const before : EditorState = { ...initial, tabs: 'off' };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'off',
             width: '4',
@@ -120,7 +117,6 @@ describe('Editor Reducer', () => {
         };
         const before : EditorState = { ...initial, tabs: 'off' };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'off',
             width: '4',
@@ -170,7 +166,6 @@ describe('Editor Reducer', () => {
             }]
         };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'on',
             width: '4',
@@ -219,7 +214,6 @@ describe('Editor Reducer', () => {
             }]
         };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'on',
             width: '4',
@@ -269,7 +263,6 @@ describe('Editor Reducer', () => {
             }]
         };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'off',
             width: '4',
@@ -319,7 +312,6 @@ describe('Editor Reducer', () => {
             }]
         };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'off',
             width: '4',
@@ -368,7 +360,6 @@ describe('Editor Reducer', () => {
             }]
         };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'off',
             width: '4',
@@ -418,7 +409,6 @@ describe('Editor Reducer', () => {
             }]
         };
         const after : EditorState = {
-            optionsOpen: false,
             theme: 'default',
             tabs: 'off',
             width: '4',

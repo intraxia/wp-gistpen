@@ -1,15 +1,16 @@
 // @flow
 // @jsx h
+import type { ObservableProps } from '../types';
 import { h, view } from 'brookjs-silt';
 import classNames from 'classnames';
 import jss from 'jss';
 import nested from 'jss-nested';
 import injectSheet from 'react-jss';
-import { link } from '../helpers';
+import { i18n, link } from '../helpers';
 import Loader from './Loader';
 
 type HeaderProps = {
-    loading: boolean;
+    loading: boolean,
     route: string
 };
 
@@ -49,7 +50,7 @@ const Header = ({ stream$, classes }: ObservableProps<HeaderProps> & HeaderClass
                     Jobs
                 </a>
                 {stream$.thru(view(props => props.loading))
-                    .map(loading => loading ? <Loader /> : null)}
+                    .map(loading => loading ? <Loader text={i18n('settings.loading')} /> : null)}
             </h2>
         </div>
     );

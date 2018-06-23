@@ -1,5 +1,5 @@
 // @flow
-import type { Action, CommitsState, GlobalsState, CommitState } from '../types';
+import type { Action, Commit, CommitsState, GlobalsState } from '../types';
 import type { AjaxService, ObsResponse } from '../services';
 import type { Author } from '../types';
 import Kefir from 'kefir';
@@ -13,7 +13,7 @@ type AuthorServices = {
 type AuthorApiResponse = Author;
 
 type AuthorDeltaState = {
-    commits: CommitsState;
+    commits: CommitsState,
     globals: GlobalsState
 };
 
@@ -23,7 +23,7 @@ export default ({ ajax$ }: AuthorServices) =>
             actions$.thru(ofType(COMMITS_FETCH_SUCCEEDED))
         )
             .flatMapLatest((state: AuthorDeltaState) => Kefir.merge(
-                state.commits.instances.map((instance: CommitState) =>
+                state.commits.instances.map((instance: Commit) =>
                     ajax$(`/wp-json/wp/v2/users/${instance.author}`, {
                         method: 'GET',
                         credentials: 'include',

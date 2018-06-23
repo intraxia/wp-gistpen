@@ -14,7 +14,7 @@
  * Plugin Name:       WP-Gistpen
  * Plugin URI:        http://www.jamesdigioia.com/wp-gistpen/
  * Description:       A self-hosted alternative to putting your code snippets on Gist.
- * Version:           1.0.3
+ * Version:           1.1.0
  * Author:            James DiGioia
  * Author URI:        http://www.jamesdigioia.com/
  * Text Domain:       wp-gistpen
@@ -44,4 +44,4 @@ if ( ! $update_php->does_it_meet_required_php_version( PHP_VERSION ) ) {
 }
 
 // Boot!
-call_user_func( array( new Intraxia\Gistpen\App( __FILE__ ), 'boot' ) );
+call_user_func( array( new Intraxia\Gistpen\App( new Intraxia\Jaxion\Core\Config( Intraxia\Jaxion\Core\ConfigType::PLUGIN, __FILE__ ) ), 'boot' ) );

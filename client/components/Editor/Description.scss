@@ -1,0 +1,52 @@
+@import "./common";
+
+.wpgp-editor-header-container {
+    display: table;
+    width: 100%;
+}
+
+.wpgp-editor-header-row {
+    display: table-row;
+}
+
+.wpgp-editor-description-container {
+    display: table-cell;
+}
+
+.wpgp-editor-loader-container {
+    display: table-cell;
+    width: 1px;
+    height: 1px;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 0 10px;
+    margin: 0;
+}
+
+.wpgp-editor-options-button {
+    font-size: 2.7em;
+    line-height: 100%;
+    width: 1em;
+    color: black;
+    position: relative;
+    background-color: white;
+    box-sizing: border-box;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+    &:focus {
+        border: 1px solid $light-blue;
+
+        @include focus-border();
+    }
+
+    &::before {
+        position: absolute;
+        margin: 3px auto;
+        width: 1em;
+        height: 1em;
+        font-size: 0.92em;
+        left: -1px;
+        right: 0;
+    }
+}

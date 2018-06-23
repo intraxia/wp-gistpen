@@ -1,5 +1,5 @@
 // @flow
-import R from 'ramda';
+import type { Delta } from 'brookjs';
 import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { observeDelta } from 'brookjs';
@@ -15,4 +15,5 @@ export { default as tinymcePluginDelta } from './tinymcePlugin';
 export { default as userDelta } from './user';
 export { default as webpackDelta } from './webpack';
 
-export const applyDelta = R.pipe(observeDelta, applyMiddleware, composeWithDevTools);
+export const applyDelta = <A, S>(...args: Array<Delta<A, S>>) =>
+    composeWithDevTools(applyMiddleware(observeDelta(...args)));

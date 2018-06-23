@@ -1,22 +1,24 @@
 // @flow
 // @jsx h
+import type { ObservableProps } from '../types';
 import { Kefir } from 'brookjs';
 import { h, view, withRef$ } from 'brookjs-silt';
 import classNames from 'classnames';
 import Prism from '../prism';
+import { prismSlug } from '../helpers';
 
 type PrismProps = {
-    theme: string;
-    'line-numbers': boolean;
+    theme: string,
+    'line-numbers': boolean,
     'show-invisibles': boolean
 };
 
 type Props = {
     blob: {
-        code: string;
-        filename: string;
+        code: string,
+        filename: string,
         language: string
-    };
+    },
     prism: PrismProps
 };
 
@@ -33,7 +35,7 @@ const propsToClassName = props => classNames({
 });
 
 const Code = withRef$(({ stream$ }, ref) => (
-    <code ref={ref} className={stream$.thru(view(props => `language-${props.blob.language}`))}>
+    <code ref={ref} className={stream$.thru(view(props => `language-${prismSlug(props.blob.language)}`))}>
         {stream$.thru(view(props => props.blob.code))}
     </code>
 ), (ref$, { stream$ }) => ref$.flatMap(el =>

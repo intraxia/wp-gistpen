@@ -22,7 +22,7 @@ class App extends Application {
 	/**
 	 * Plugin version constant.
 	 */
-	const VERSION = '1.0.3';
+	const VERSION = '1.1.0';
 
 	/**
 	 * ServiceProviders to register with the Application
@@ -30,7 +30,6 @@ class App extends Application {
 	 * @var string[]
 	 */
 	protected $providers = array(
-		'Intraxia\Gistpen\Providers\ConfigServiceProvider',
 		'Intraxia\Gistpen\Providers\ClientServiceProvider',
 		'Intraxia\Gistpen\Providers\ViewServiceProvider',
 		'Intraxia\Gistpen\Providers\TranslatorServiceProvider',

@@ -1,7 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Params;
 
-use Intraxia\Gistpen\Config;
+use Intraxia\Jaxion\Core\Config;
 use Intraxia\Gistpen\View\Edit;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 

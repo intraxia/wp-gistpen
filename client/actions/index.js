@@ -13,7 +13,7 @@ export * from './tinymce';
 export const INIT = 'INIT';
 
 export type InitAction<I> = {
-    type: typeof INIT;
+    type: typeof INIT,
     payload: { initial: I }
 };
 

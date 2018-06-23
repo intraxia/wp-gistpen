@@ -1,7 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Params;
 
-use Intraxia\Gistpen\Config;
+use Intraxia\Jaxion\Core\Config;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob as BlobModel;
 use Intraxia\Gistpen\Model\Klass;
@@ -135,7 +135,6 @@ class Editor implements HasFilters {
 			),
 			'statuses'   => get_post_statuses(),
 			'languages'  => $languages['list'],
-			'optionsOpen' => true,
 		);
 
 		return $params;

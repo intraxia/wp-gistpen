@@ -13,7 +13,7 @@ import Loader from './Loader';
 type ID = number | string;
 
 type ResultsProps = {
-    order: Array<ID>;
+    order: Array<ID>,
     dict: {
         [key: ID]: {
             filename: string
@@ -22,7 +22,7 @@ type ResultsProps = {
 };
 
 export type SearchProps = {
-    term: string;
+    term: string,
     results: ResultsProps,
     loading: boolean
 };
@@ -74,7 +74,7 @@ export const Search = ({ stream$ }: { stream$: Observable<SearchProps> }): Node 
                     placeholder="keywords" defaultValue={stream$.take(1).map(props => props.term)}
                     onInput={onSearchTyping}/>
                 {stream$.thru(view((props: SearchProps) => props.loading)).map((loading: boolean) => (
-                    loading ? <Loader /> : null
+                    loading ? <Loader text={i18n('search.loading')} /> : null
                 ))}
             </div>
 

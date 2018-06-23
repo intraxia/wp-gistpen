@@ -82,7 +82,7 @@ class Edit implements HasActions, HasFilters {
 		$post = get_post();
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
-			echo $this->templating->render( 'pages/edit/index', $this->params->props( 'edit' ) );
+			echo '<div id="edit-app"></div>';
 		}
 	}
 

@@ -28,25 +28,12 @@ exports.babelRule = {
     ]
 };
 
-exports.handlebarsRule = {
-    test: /\.hbs/,
-    use: [{
-        loader: 'handlebars-loader',
-        query: {
-            helperDirs: [path.join(client, 'helpers')],
-            partialDirs: [client],
-            preventIndent: true,
-            compat: true
-        }
-    }]
-};
-
 exports.styleRule = {
     test: /\.(scss|css)$/,
     include: [
         path.join(pages, 'editor'),
         path.join(pages, 'tinymce'),
-        path.join(client, 'component')
+        path.join(client, 'components')
     ],
     use: [{
         loader: 'style-loader',
@@ -126,22 +113,27 @@ class PrismLanguageGenerationPlugin {
             'markup-templating',
             'php-extras'
         ];
+        this.prev = null;
     }
 
     apply(compiler) {
-        compiler.plugin(
-            'before-run',
-            (compilation, callback) => this.emit(compilation, callback));
+        const cb = (compilation, callback) => this.emit(compilation, callback);
+        compiler.plugin('watch-run', cb);
+        compiler.plugin('before-run', cb);
     }
 
     emit(compilation, callback) {
+        if (this.prev !== null) {
+            return callback();
+        }
+
         fs.readFile(this.src, (err, data) => {
             if (err) {
                 throw err;
             }
 
             const { languages } = JSON.parse(data.toString());
-            const dest = this.languagesToDest(languages);
+            const dest = this.prev = this.languagesToDest(languages);
 
             fs.outputFile(this.dest, JSON.stringify(dest, null, '  '), err => {
                 if (err) {
