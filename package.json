@@ -44,7 +44,7 @@
     "eslint-plugin-flowtype": "^2.42.0",
     "eslint-plugin-react": "^7.6.1",
     "esm": "^3.0.10",
-    "flow-bin": "^0.75.0",
+    "flow-bin": "^0.76.0",
     "flow-status-webpack-plugin": "^0.1.7",
     "jsdom": "^11.11.0",
     "jsdom-global": "^3.0.2",
