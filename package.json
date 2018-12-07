@@ -37,7 +37,7 @@
     "brookjs-desalinate": "^0.11.10",
     "chai": "^4.0.2",
     "copy-webpack-plugin": "^4.3.1",
-    "css-loader": "^1.0.0",
+    "css-loader": "^2.0.0",
     "eslint": "^5.0.0",
     "eslint-config-valtech": "^1.0.0",
     "eslint-loader": "^2.0.0",
