@@ -6,11 +6,12 @@ import type { SearchProps } from '../components';
 import type { TinyMCEState } from '../reducers';
 import type { TinyMCEAction as Action, TinyMCEEditor as Editor, Blob } from '../types';
 import R from 'ramda';
-import { Kefir, ofType } from 'brookjs';
+import Kefir from 'kefir';
+import { ofType } from 'brookjs';
 import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
     TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK } from '../actions';
 import { Search } from '../components';
-import { h, Aggregator, view } from 'brookjs-silt';
+import { h, RootJunction, view } from 'brookjs-silt';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 const createTinyMCEPlugin = (): Observable<Editor> => Kefir.stream((emitter: Emitter<Editor, void>) => {
@@ -77,7 +78,7 @@ const createTinyMCEWindow = (actions$: Observable<Action>, state$: Observable<Ti
     // This is kind of abusive, b/c it's not an "error", but it's another channel to use...
     .flatMapErrors((el: Element) => Kefir.stream(emitter => {
         render(
-            <Aggregator action$={action$ => action$.observe(emitter)}>
+            <RootJunction action$={action$ => action$.observe(emitter)}>
                 <Search stream$={state$.thru(view((state: TinyMCEState): SearchProps => ({
                     loading: state.ajax.running,
                     term: state.search.term,
@@ -89,7 +90,7 @@ const createTinyMCEWindow = (actions$: Observable<Action>, state$: Observable<Ti
                         }), {})
                     }
                 })))}/>
-            </Aggregator>,
+            </RootJunction>,
             el
         );
 

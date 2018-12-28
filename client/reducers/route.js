@@ -1,6 +1,6 @@
 // @flow
 import type { Route, RouteChangeAction } from '../types';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { ROUTE_CHANGE } from '../actions';
 
 export default combineActionReducers([

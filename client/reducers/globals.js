@@ -1,7 +1,7 @@
 // @flow
 import type { InitAction } from '../actions';
 import type { GlobalsState } from '../types';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { INIT } from '../actions';
 
 const defaults : GlobalsState = {

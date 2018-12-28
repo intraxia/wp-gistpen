@@ -2,7 +2,7 @@
 import type { PrismState, LineNumbersChangeAction, ShowInvisiblesChangeAction,
     ThemeChangeAction } from '../types';
 import { THEME_CHANGE, LINE_NUMBERS_CHANGE, SHOW_INVISIBLES_CHANGE } from '../actions';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 
 const defaults : PrismState = {
     theme: 'default',

@@ -1,6 +1,6 @@
 // @flow
 import type { JobsState, JobFetchSucceededAction } from '../types';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { JOB_FETCH_SUCCEEDED } from '../actions';
 
 const defaults : JobsState = {};

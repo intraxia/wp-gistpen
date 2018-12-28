@@ -1,7 +1,7 @@
 // @flow
 // @jsx h
 import type { ObservableProps } from '../types';
-import { Kefir } from 'brookjs';
+import Kefir from 'kefir';
 import { h, view, withRef$ } from 'brookjs-silt';
 import classNames from 'classnames';
 import Prism from '../prism';

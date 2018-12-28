@@ -3,8 +3,9 @@
 import type { Observable } from 'kefir';
 import type { Action, ObservableProps } from '../../../types';
 import R from 'ramda';
-import { Kefir, raf$ } from 'brookjs';
-import { Collector, h, view, withRef$ } from 'brookjs-silt';
+import Kefir from 'kefir';
+import { raf$ } from 'brookjs';
+import { toJunction, h, view, withRef$ } from 'brookjs-silt';
 import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
     editorMakeNewlineAction, editorRedoAction, editorUndoAction,
     editorValueChangeAction } from '../../../actions';
@@ -127,29 +128,17 @@ const createDOMUpdateStream = (el: Element, props: Props): Observable<void> =>
         ])
     );
 
-const Code = ({ stream$ }, ref) => (
-    <Collector>
-        <code onBlur={R.map(R.always(editorCursorMoveAction(false)))}
-            onClick={mapToTargetCursorAction}
-            onFocus={mapToTargetCursorAction}
-            onInput={R.map((evt: ProxyEvent) =>
-                editorValueChangeAction({
-                    code: evt.target.textContent,
-                    cursor: [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)]
-                })
-            )}
-            onKeyUp={R.pipe(
-                R.filter(R.pipe(isSpecialEvent, R.not)),
-                mapToTargetCursorAction
-            )}
-            onKeyDown={R.pipe(
-                R.filter(isSpecialEvent),
-                R.map(mapKeydownToAction)
-            )}
-            className={stream$.thru(view((props: Props) => `language-${prismSlug(props.language)}`))}
-            ref={ref} contentEditable="true" spellCheck="false">
-        </code>
-    </Collector>
+const Code = ({ stream$, onBlur, onClick, onFocus, onInput, onKeyUp, onKeyDown }, ref) => (
+    <code
+        onBlur={onBlur}
+        onClick={onClick}
+        onFocus={onFocus}
+        onInput={onInput}
+        onKeyUp={onKeyUp}
+        onKeyDown={onKeyDown}
+        className={stream$.thru(view((props: Props) => `language-${prismSlug(props.language)}`))}
+        ref={ref} contentEditable="true" spellCheck="false">
+    </code>
 );
 
 const refback = (ref$, { stream$ }: ObservableProps<Props>) => ref$.flatMap(el => {
@@ -177,14 +166,14 @@ const refback = (ref$, { stream$ }: ObservableProps<Props>) => ref$.flatMap(el =
             createDOMUpdateStream(el, props))
         .setName('initial$');
 
-        /**
-         * Create options update & render stream.
-         *
-         * This stream covers options changes & rerenders the editor.
-         * There's no need to debounce or cancel because the user will
-         * either be interacting with the options panel, so there's no
-         * chance of messing up typing.
-         */
+    /**
+     * Create options update & render stream.
+     *
+     * This stream covers options changes & rerenders the editor.
+     * There's no need to debounce or cancel because the user will
+     * either be interacting with the options panel, so there's no
+     * chance of messing up typing.
+     */
     const options$ = stream$.skipDuplicates(editorOptionsIsEqual)
         .flatMapLatest((props: Props): Observable<void> =>
             Kefir.concat([
@@ -206,14 +195,14 @@ const refback = (ref$, { stream$ }: ObservableProps<Props>) => ref$.flatMap(el =
             createDOMUpdateStream(el, props).takeUntilBy(keyDown$))
         .setName('typing$');
 
-        /**
-         * Create special keys renders stream.
-         *
-         * There are a few keys that run through the reducer logic. These
-         * need to update the editor immediately, interrupting the user
-         * typing to update the code in the editor and the cursor location.
-         * The render is thus done synchronously.
-         */
+    /**
+     * Create special keys renders stream.
+     *
+     * There are a few keys that run through the reducer logic. These
+     * need to update the editor immediately, interrupting the user
+     * typing to update the code in the editor and the cursor location.
+     * The render is thus done synchronously.
+     */
     const special$ = stream$.sampledBy(keyDown$.filter(isSpecialEvent).delay(0))
         .skipDuplicates((prev, next) => prev.code === next.code)
         .flatMapLatest((props: Props) =>
@@ -235,4 +224,24 @@ const refback = (ref$, { stream$ }: ObservableProps<Props>) => ref$.flatMap(el =
     ]);
 });
 
-export default withRef$(Code, refback);
+export default toJunction({
+    events: {
+        onBlur: R.map(R.always(editorCursorMoveAction(false))),
+        onClick: mapToTargetCursorAction,
+        onFocus: mapToTargetCursorAction,
+        onInput: R.map((evt: ProxyEvent) =>
+            editorValueChangeAction({
+                code: evt.target.textContent,
+                cursor: [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)]
+            })
+        ),
+        onKeyUp: R.pipe(
+            R.filter(R.pipe(isSpecialEvent, R.not)),
+            mapToTargetCursorAction
+        ),
+        onKeyDown: R.pipe(
+            R.filter(isSpecialEvent),
+            R.map(mapKeydownToAction)
+        )
+    }
+})(withRef$(Code, refback));

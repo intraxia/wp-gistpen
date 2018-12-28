@@ -1,6 +1,6 @@
 // @flow
 import type { RepoSaveSucceededAction, Repo } from '../types';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { REPO_SAVE_SUCCEEDED } from '../actions';
 
 export default combineActionReducers([

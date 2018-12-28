@@ -4,7 +4,7 @@ import '../../polyfills';
 import type { Action, SettingsState } from '../../types';
 import { createStore, combineReducers, type Store } from 'redux';
 import Kefir from 'kefir';
-import { Aggregator, h } from 'brookjs-silt';
+import { RootJunction, h } from 'brookjs-silt';
 import ReactDOM from 'react-dom';
 import { selectSettingsProps as selectProps } from '../../selectors';
 import router from './router';
@@ -39,9 +39,9 @@ const store: Store<SettingsState, Action> = createStore(
 const stream$ = Kefir.fromESObservable(store).toProperty(store.getState).map(selectProps);
 
 ReactDOM.render(
-    <Aggregator action$={action$ => action$.observe(store.dispatch)}>
+    <RootJunction action$={action$ => action$.observe(store.dispatch)}>
         <SettingsPage stream$={stream$} />
-    </Aggregator>,
+    </RootJunction>,
     // $FlowFixMe
     (document.getElementById('settings-app'): Element)
 );

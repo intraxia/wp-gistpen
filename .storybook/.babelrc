@@ -2,12 +2,11 @@
   "plugins": [
     "@babel/plugin-syntax-flow",
     "@babel/plugin-transform-flow-strip-types",
-    "@babel/plugin-syntax-dynamic-import",
-    "ramda"
+    "@babel/plugin-syntax-dynamic-import"
   ],
   "presets": [
     "brookjs",
-    ["@babel/preset-env", { "modules": false }],
+    ["@babel/preset-env", { "modules": false}],
     "@babel/preset-flow"
   ]
 }

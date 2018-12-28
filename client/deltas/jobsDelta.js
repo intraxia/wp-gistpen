@@ -3,7 +3,8 @@ import type { Action, RouteChangeAction, JobDispatchClickAction,
     Route, Run, GlobalsState, Message, Job, RunStatus, HasMetaKey } from '../types';
 import type { AjaxService, ObsResponse } from '../services';
 import R from 'ramda';
-import { Kefir, ofType } from 'brookjs';
+import Kefir from 'kefir';
+import { ofType } from 'brookjs';
 import { MESSAGES_FETCH_STARTED, MESSAGES_FETCH_SUCCEEDED, MESSAGES_FETCH_FAILED,
     ROUTE_CHANGE, JOB_FETCH_STARTED, JOB_FETCH_SUCCEEDED, JOB_FETCH_FAILED,
     RUNS_FETCH_STARTED, RUNS_FETCH_SUCCEEDED, RUNS_FETCH_FAILED, JOB_DISPATCH_CLICK,

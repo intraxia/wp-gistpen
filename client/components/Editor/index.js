@@ -2,10 +2,10 @@
 // @jsx h
 import type { Action, EditorPageProps, ObservableProps } from '../../types';
 import './index.scss';
-import { h, loop, Collector } from 'brookjs-silt';
+import { h, loop } from 'brookjs-silt';
 import Controls from './Controls';
 import Description from './Description';
-import Instance from './instance';
+import Instance from './Instance';
 
 const Editor = ({ stream$ }: ObservableProps<EditorPageProps>) => {
     const controls$ = stream$.map((props: EditorPageProps) => ({
@@ -52,12 +52,13 @@ const Editor = ({ stream$ }: ObservableProps<EditorPageProps>) => {
 
             {stream$.thru(loop((props: EditorPageProps) => props.editor.instances, (instance$, key) => (
                 <div className="wpgp-editor-row" key={key}>
-                    <Collector preplug={instance$ => instance$.map((action: Action) => ({
-                        ...action,
-                        meta: { key }
-                    }))}>
-                        <Instance stream$={instance$} />
-                    </Collector>
+                    <Instance
+                        stream$={instance$}
+                        preplug={instance$ => instance$.spy().map((action: Action) => ({
+                            ...action,
+                            meta: { key }
+                        }))}
+                    />
                 </div>
             )))}
         </div>

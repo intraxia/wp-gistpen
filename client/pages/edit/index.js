@@ -4,8 +4,8 @@ import type { Store, Reducer } from 'redux';
 import type { Action, EditorPageState } from '../../types';
 import '../../polyfills';
 import { createStore, combineReducers } from 'redux';
-import { h, view, Aggregator } from 'brookjs-silt';
-import { Kefir } from 'brookjs';
+import { h, view, RootJunction } from 'brookjs-silt';
+import Kefir from 'kefir';
 import ReactDOM from 'react-dom';
 import { applyDelta, authorDelta, repoDelta, commitsDelta, routerDelta, userDelta } from '../../deltas';
 import { ajaxReducer, authors, globalsReducer, editor, repo, commits, route } from '../../reducers';
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     ReactDOM.render(
-        <Aggregator silt-embeddable action$={action$ => action$.observe(store.dispatch)}>
+        <RootJunction silt-embeddable root$={root$ => root$.observe(store.dispatch)}>
             {stream$.thru(view(props => props.route.name)).map(route => {
                 switch (route) {
                     case 'editor':
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         return null;
                 }
             })}
-        </Aggregator>,
+        </RootJunction>,
         el
     );
 });

@@ -1,5 +1,5 @@
 import path from 'path';
-import { flowPlugin, devtool, styleRule,
+import { devtool, styleRule,
     usableStyleRule, styleLintPlugin, notifierPlugin,
     copyPlugin, prismLanguageGenerationPlugin } from './webpack';
 
@@ -12,7 +12,7 @@ export const mocha = {
     reporter: 'spec',
     ui: 'bdd',
     requires: [
-        'babel-register',
+        '@babel/register',
         'esm',
         'jsdom-global/register'
     ]
@@ -47,7 +47,6 @@ export const webpack = {
         config.module.rules.push(styleRule);
         config.module.rules.push(usableStyleRule);
 
-        config.plugins.push(flowPlugin);
         config.plugins.push(styleLintPlugin);
         config.plugins.push(notifierPlugin);
         config.plugins.push(copyPlugin);

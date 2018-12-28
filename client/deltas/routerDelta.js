@@ -1,7 +1,8 @@
 // @flow
 import type { Emitter, Observable } from 'kefir';
 import type { Action, RouterDeltaOptions, RouteChangeAction } from '../types';
-import { Kefir, ofType } from 'brookjs';
+import Kefir from 'kefir';
+import { ofType } from 'brookjs';
 import href from 'sheet-router/href';
 import history from 'sheet-router/history';
 import { ROUTE_CHANGE } from '../actions';

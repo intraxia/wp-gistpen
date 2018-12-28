@@ -1,7 +1,7 @@
 // @flow
 import type { Reducer } from 'redux';
 import type { AjaxState, SearchInputAction } from '../types';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { AJAX_STARTED, AJAX_FAILED, AJAX_FINISHED,
     SEARCH_INPUT, SEARCH_RESULTS_SUCCEEDED } from '../actions';
 

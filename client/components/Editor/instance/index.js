@@ -3,7 +3,7 @@
 import './index.scss';
 import type { ObservableProps } from '../../../types';
 import type { Props } from './types';
-import { Collector, h, view, loop } from 'brookjs-silt';
+import { toJunction, h, view, loop } from 'brookjs-silt';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import R from 'ramda';
 import { editorFilenameChangeAction, editorDeleteClickAction,
@@ -20,41 +20,35 @@ const ToolbarButton = ({ children }) => (
     </div>
 );
 
-const Filename = ({ stream$ }: ObservableProps<Props>) => (
-    <Collector>
-        <ToolbarButton silt-emittable>
-            <span contentEditable="true" spellCheck="false"
-                dangerouslySetInnerHTML={stream$.take(1)
-                    .map(props => ({ __html: props.filename }))}
-                onInput={R.map(R.pipe(R.path(['target', 'textContent']), editorFilenameChangeAction))}>
-            </span>
-        </ToolbarButton>
-    </Collector>
+const Filename = ({ stream$, onInput }: ObservableProps<Props>) => (
+    <ToolbarButton>
+        <span contentEditable="true" spellCheck="false"
+            dangerouslySetInnerHTML={stream$.take(1)
+                .map(props => ({ __html: props.filename }))}
+            onInput={onInput}>
+        </span>
+    </ToolbarButton>
 );
 
-const Language = ({ stream$ }: ObservableProps<Props>) => (
-    <Collector>
-        <ToolbarButton silt-emittable>
-            <select onChange={evt$ => evt$.map(R.pipe(R.path(['target', 'value']), editorLanguageChangeAction))}
-                value={stream$.thru(view(props => props.language))}>
-                {stream$.thru(loop(props => props.languages, (language$, key) => (
-                    <option value={key} key={key}>
-                        {language$}
-                    </option>
-                )))}
-            </select>
-        </ToolbarButton>
-    </Collector>
+const Language = ({ stream$, onChange }: ObservableProps<Props>) => (
+    <ToolbarButton>
+        <select onChange={onChange}
+            value={stream$.thru(view(props => props.language))}>
+            {stream$.thru(loop(props => props.languages, (language$, key) => (
+                <option value={key} key={key}>
+                    {language$}
+                </option>
+            )))}
+        </select>
+    </ToolbarButton>
 );
 
-const Delete = () => (
-    <Collector>
-        <ToolbarButton silt-emittable>
-            <button type="button" onClick={R.map(editorDeleteClickAction)}>
-                {i18n('editor.delete')}
-            </button>
-        </ToolbarButton>
-    </Collector>
+const Delete = ({ onClick }) => (
+    <ToolbarButton>
+        <button type="button" onClick={onClick}>
+            {i18n('editor.delete')}
+        </button>
+    </ToolbarButton>
 );
 
 const Toolbar = ({ children }) => (
@@ -63,21 +57,25 @@ const Toolbar = ({ children }) => (
     </div>
 );
 
-const Instance = ({ stream$ }: ObservableProps<Props>) => (
-    <Collector>
-        <div className="editor page">
-            <div className="code-toolbar">
-                <Toolbar>
-                    <Filename stream$={stream$} />
-                    <Language stream$={stream$} />
-                    <Delete />
-                </Toolbar>
-                <Pre stream$={stream$}>
-                    <Code stream$={stream$} />
-                </Pre>
-            </div>
+const Instance = ({ stream$, onFilenameChange, onLanguageChange, onDeleteClick }: ObservableProps<Props>) => (
+    <div className="editor page">
+        <div className="code-toolbar">
+            <Toolbar>
+                <Filename stream$={stream$} onInput={onFilenameChange} />
+                <Language stream$={stream$} onChange={onLanguageChange} />
+                <Delete onClick={onDeleteClick} />
+            </Toolbar>
+            <Pre stream$={stream$}>
+                <Code stream$={stream$} />
+            </Pre>
         </div>
-    </Collector>
+    </div>
 );
 
-export default Instance;
+export default toJunction({
+    events: {
+        onFilenameChange: R.map(R.pipe(R.path(['target', 'textContent']), editorFilenameChangeAction)),
+        onLanguageChange: R.map(R.pipe(R.path(['target', 'value']), editorLanguageChangeAction)),
+        onDeleteClick: R.map(editorDeleteClickAction)
+    }
+})(Instance);
