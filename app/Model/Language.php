@@ -87,6 +87,10 @@ class Language extends Model implements UsesWordPressTerm {
 		// @todo move serialization out of the model into a serializer?
 		$languages = App::instance()->fetch( 'config' )->get_config_json( 'languages' );
 
+		if ( $languages === null ) {
+			return 'Plaintext';
+		}
+
 		return isset( $languages['list'][ $this->get_attribute( 'slug' ) ] ) ?
 			$languages['list'][ $this->get_attribute( 'slug' ) ] :
 			$languages['list']['plaintext'];
