@@ -10,6 +10,7 @@
       "email": "jamesorodig@gmail.com"
     }
   ],
+  "minimum-stability": "dev",
   "require": {
     "php": ">=5.4.0",
     "wpupdatephp/wp-update-php": "~1.0",
