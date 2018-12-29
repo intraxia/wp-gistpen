@@ -3,6 +3,8 @@ const fs = require('fs-extra');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
+const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
 const client = path.join(__dirname, '..', 'client');
 const pages = path.join(client, 'pages');
@@ -57,7 +59,8 @@ exports.usableStyleRule = {
 exports.resolve = {
   alias: {
     redux: 'redux/es'
-  }
+  },
+  extensions: ['.js', '.ts', '.tsx', '.json']
 };
 
 exports.styleLintPlugin = new StyleLintPlugin({
@@ -182,3 +185,26 @@ class PrismLanguageGenerationPlugin {
 }
 
 exports.prismLanguageGenerationPlugin = new PrismLanguageGenerationPlugin();
+
+exports.tsCheckPlugin = new ForkTsCheckerWebpackPlugin({
+  async: process.env.NODE_ENV === 'development',
+  checkSyntacticErrors: true,
+  reportFiles: ['**', '!**/*.js', '!**/*.json'],
+  watch: path.join(client),
+  silent: true,
+  formatter: typescriptFormatter
+});
+
+exports.tsRule = {
+  test: /\.(ts|tsx)$/,
+  loader: 'babel-loader',
+  options: {
+    babelrc: false,
+    presets: [
+      'brookjs',
+      '@babel/preset-typescript',
+      ['@babel/preset-env', { modules: false }]
+    ],
+    plugins: ['@babel/plugin-syntax-dynamic-import', 'ramda']
+  }
+};

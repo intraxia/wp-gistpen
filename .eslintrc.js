@@ -1,7 +1,8 @@
 module.exports = {
   root: true,
-  parser: 'babel-eslint',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
+    project: './tsconfig.json',
     ecmaVersion: 6,
     sourceType: 'module',
     ecmaFeatures: {
@@ -18,26 +19,26 @@ module.exports = {
     node: true,
     browser: true
   },
-  plugins: ['flowtype', 'react'],
+  plugins: ['react', '@typescript-eslint'],
   extends: ['valtech', 'prettier'],
   rules: {
     // default rules overrides
     eqeqeq: [2, 'smart'],
     'rest-spread-spacing': [2, 'never'],
 
-    // flowtype
-    'flowtype/define-flow-type': 'error',
-
     // react
     'react/jsx-uses-react': 2,
-    'react/jsx-uses-vars': 2
-  },
-  settings: {
-    flowtype: {
-      onlyFilesWithFlowAnnotation: true
-    },
-    react: {
-      pragma: 'h'
-    }
+    'react/jsx-uses-vars': 2,
+
+    // These rules don't work well
+    camelcase: 0,
+    indent: 0,
+    'no-array-constructor': 0,
+    'no-unused-vars': 0,
+
+    '@typescript-eslint/no-angle-bracket-type-assertion': 2,
+    '@typescript-eslint/no-array-constructor': 2,
+    '@typescript-eslint/no-namespace': 2,
+    '@typescript-eslint/no-unused-vars': 2
   }
 };

@@ -2,11 +2,14 @@ import path from 'path';
 import {
   devtool,
   styleRule,
+  tsRule,
   usableStyleRule,
   styleLintPlugin,
   notifierPlugin,
+  resolve,
   copyPlugin,
-  prismLanguageGenerationPlugin
+  prismLanguageGenerationPlugin,
+  tsCheckPlugin
 } from './webpack';
 
 export const dir = 'client';
@@ -17,13 +20,18 @@ export const dir = 'client';
 export const mocha = {
   reporter: 'spec',
   ui: 'bdd',
-  requires: ['@babel/register', 'esm', 'jsdom-global/register']
+  requires: [
+    '@babel/register',
+    'ts-node/register/transpile-only',
+    'esm',
+    'jsdom-global/register'
+  ]
 };
 
 const client = path.resolve(__dirname, dir);
 const pages = path.resolve(client, 'pages');
 
-const isProd = state => state.command.opts.env === 'production';
+const isProd = state => state.env === 'production';
 
 /**
  * Webpack build configuration.
@@ -44,6 +52,12 @@ export const webpack = {
       config.devtool = devtool;
     }
 
+    config.resolve = {
+      ...config.resolve,
+      ...resolve
+    };
+
+    config.module.rules.push(tsRule);
     config.module.rules.push(styleRule);
     config.module.rules.push(usableStyleRule);
 
@@ -51,6 +65,7 @@ export const webpack = {
     config.plugins.push(notifierPlugin);
     config.plugins.push(copyPlugin);
     config.plugins.push(prismLanguageGenerationPlugin);
+    config.plugins.push(tsCheckPlugin);
 
     return config;
   }

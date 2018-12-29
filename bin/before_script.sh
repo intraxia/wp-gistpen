@@ -5,7 +5,8 @@ if [[ $FRONT_END == 'true' ]]; then
 	npm install -g gulp
 	npm install -g greenkeeper-lockfile@1
 	greenkeeper-lockfile-update
-	npm run build
+	# Disable build during TS conversion
+	# npm run build
 else
 	if [[ $TRAVIS_PHP_VERSION != '5.4' && $TRAVIS_PHP_VERSION != 'nightly' ]]; then
 		phpenv config-rm xdebug.ini;
