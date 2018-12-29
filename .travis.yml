@@ -8,6 +8,11 @@ php:
     - nightly
 
 matrix:
+    include:
+        - name: "Front-End"
+          language: node_js
+          node_js: 8
+          env: FRONT_END=true
     allow_failures:
         - php: nightly
 
@@ -25,26 +30,11 @@ env:
     - WP_VERSION=4.6 WP_MULTISITE=1
 
 before_script:
-    - if [[ $TRAVIS_PHP_VERSION != 'hhvm' && $TRAVIS_PHP_VERSION != '5.4' && $TRAVIS_PHP_VERSION != 'nightly' ]]; then phpenv config-rm xdebug.ini; fi
-    - travis_retry composer self-update
-    - travis_retry composer install
-    - travis_retry nvm install 8
-    - travis_retry npm install
-    - travis_retry npm install -g gulp
-    - travis_retry npm install -g greenkeeper-lockfile@1
-    - greenkeeper-lockfile-update
-    - travis_retry bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-    - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    - chmod +x wp-cli.phar
-    - mkdir $PWD/.bin
-    - mv wp-cli.phar $PWD/.bin/wp
-    - export PATH=$PATH:$PWD/.bin/
-    - wp --version
-    - npm run build
+    - bash bin/before_script.sh
 
 script:
-    - composer test
-    - npm test
+    - if [[ $FRONT_END != 'true' ]]; then composer test; fi
+    - if [[ $FRONT_END == 'true' ]]; then npm test; fi
 
 after_script:
-    - greenkeeper-lockfile-upload
+    - if [[ $FRONT_END == 'true' ]]; then greenkeeper-lockfile-upload; fi
