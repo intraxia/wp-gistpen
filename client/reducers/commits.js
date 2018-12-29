@@ -1,7 +1,7 @@
 // @flow
 import type { CommitsFetchSucceededAction, CommitsState } from '../types';
 import type { CommitClickAction } from '../actions';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { COMMITS_FETCH_SUCCEEDED, COMMIT_CLICK } from '../actions';
 
 const cond = [

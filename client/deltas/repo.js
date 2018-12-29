@@ -3,7 +3,7 @@ import type { Action, EditorPageState, EditorInstance, RepoApiResponse, EditorSt
 import type { Observable } from 'kefir';
 import type { ObsResponse } from '../services';
 import R from 'ramda';
-import { Kefir } from 'brookjs';
+import Kefir from 'kefir';
 import { ajax$ } from '../services';
 import { EDITOR_UPDATE_CLICK, ajaxStartedAction, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../actions';
 

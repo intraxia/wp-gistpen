@@ -1,9 +1,8 @@
 // @flow
 // @jsx h
 import { storiesOf } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import { Kefir } from 'brookjs';
-import { h, Aggregator } from 'brookjs-silt';
+import Kefir from 'kefir';
+import { h } from 'brookjs-silt';
 import Controls from './Controls';
 
 const statuses = {
@@ -50,20 +49,18 @@ const invisibles = 'on';
 
 storiesOf('Controls', module)
     .add('default', () => (
-        <Aggregator action$={action$ => action$.observe(a => action('Controls')(a))}>
-            <div id="wpbody">
-                <Controls stream$={Kefir.constant({
-                    statuses,
-                    themes,
-                    widths,
-                    gist,
-                    sync,
-                    tabs,
-                    invisibles,
-                    selectedTheme: 'twilight',
-                    selectedStatus: 'publish',
-                    selectedWidth: '4'
-                })}/>
-            </div>
-        </Aggregator>
+        <div id="wpbody">
+            <Controls stream$={Kefir.constant({
+                statuses,
+                themes,
+                widths,
+                gist,
+                sync,
+                tabs,
+                invisibles,
+                selectedTheme: 'twilight',
+                selectedStatus: 'publish',
+                selectedWidth: '4'
+            })}/>
+        </div>
     ));

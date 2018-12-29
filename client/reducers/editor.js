@@ -6,7 +6,7 @@ import type { HasMetaKey, EditorInstance, EditorValue, EditorIndentValue, Editor
     EditorFilenameChangeAction, EditorLanguageChangeAction, EditorIndentAction,
     EditorMakeNewLineAction, EditorValueChangeAction, RepoSaveSucceededAction, Blob, Toggle } from '../types';
 import R from 'ramda';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { EDITOR_INVISIBLES_TOGGLE, EDITOR_THEME_CHANGE,
     EDITOR_TABS_TOGGLE, EDITOR_WIDTH_CHANGE, EDITOR_VALUE_CHANGE, EDITOR_DELETE_CLICK,
     EDITOR_CURSOR_MOVE, EDITOR_INDENT, EDITOR_MAKE_NEWLINE, REPO_SAVE_SUCCEEDED,

@@ -1,7 +1,7 @@
 // @flow
 import type { MessagesState, MessagesFetchSucceededAction } from '../types';
 import R from 'ramda';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { MESSAGES_FETCH_SUCCEEDED } from '../actions';
 
 const defaults : MessagesState = [];

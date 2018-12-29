@@ -1,5 +1,5 @@
 const { eslintRule, styleRule, usableStyleRule,
-    flowPlugin, styleLintPlugin, notifierPlugin, resolve,
+    styleLintPlugin, notifierPlugin, resolve,
     prismLanguageGenerationPlugin } = require('../webpack');
 
 module.exports = {
@@ -12,7 +12,6 @@ module.exports = {
     },
     resolve,
     plugins: [
-        flowPlugin,
         styleLintPlugin,
         notifierPlugin,
         prismLanguageGenerationPlugin

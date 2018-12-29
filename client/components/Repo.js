@@ -2,7 +2,7 @@
 import type { Observable } from 'kefir';
 import { h } from 'brookjs-silt';
 import { Fragment } from 'react';
-import Blob from './Blob.component';
+import Blob from './Blob';
 
 type RepoProps = {
     blobs: {

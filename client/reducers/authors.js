@@ -1,7 +1,7 @@
 // @flow
 import type { AuthorsState } from '../types';
 import type { FetchAuthorSucceeded } from '../actions';
-import { combineActionReducers } from 'brookjs';
+import combineActionReducers from './combineActionReducers';
 import { FETCH_AUTHOR_SUCCEEDED } from '../actions';
 
 const defaults : AuthorsState = {

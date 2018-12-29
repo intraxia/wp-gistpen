@@ -6,7 +6,7 @@ import '../../polyfills';
 import { expect, use } from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import { Kefir } from 'brookjs';
+import Kefir from 'kefir';
 import { chaiPlugin } from 'brookjs-desalinate';
 import { routeChangeAction } from '../../actions';
 import commitsDelta from '../commitsDelta';

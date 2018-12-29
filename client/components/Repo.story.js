@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
-import { Kefir } from 'brookjs';
+import Kefir from 'kefir';
 import { h } from 'brookjs-silt';
-import Repo from './Repo.component';
+import Repo from './Repo';
 
 const blobs = {
     order: ['1', '2'],

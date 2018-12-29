@@ -3,8 +3,8 @@
 import type { Emitter, Observable } from 'kefir';
 import type { ObservableProps } from '../../../types';
 import R from 'ramda';
-import { Kefir } from 'brookjs';
-import { Collector, h, view, withRef$ } from 'brookjs-silt';
+import Kefir from 'kefir';
+import { h, view, withRef$ } from 'brookjs-silt';
 import { prismSlug } from '../../../helpers';
 import { lineNumberIsEqual } from './util';
 import type { Props } from './types';
@@ -37,12 +37,10 @@ function updateLineNumber(/*pre, start, end*/): Observable<void> {
 }
 
 const Pre = ({ stream$, children }: ObservableProps<Props> & { children: any }) => (
-    <Collector>
-        <pre className={stream$.thru(view((props: Props) => `language-${prismSlug(props.language)}`))}
-            spellCheck="false" >
-            {children}
-        </pre>
-    </Collector>
+    <pre className={stream$.thru(view((props: Props) => `language-${prismSlug(props.language)}`))}
+        spellCheck="false">
+        {children}
+    </pre>
 );
 
 const ref = (ref$, { stream$ }) => ref$.flatMap((/* el */) => {
