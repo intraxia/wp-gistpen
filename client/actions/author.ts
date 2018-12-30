@@ -1,16 +1,5 @@
 import { createAction } from 'typesafe-actions';
-
-type Author = {
-  id: number;
-  name: string;
-  url: string;
-  description: string;
-  link: string;
-  slug: string;
-  avatar_urls: {
-    [key: string]: string;
-  };
-};
+import { Author } from '../reducers';
 
 export const fetchAuthorSucceeded = createAction(
   'FETCH_AUTHOR_SUCCEEDED',

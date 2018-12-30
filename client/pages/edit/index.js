@@ -8,7 +8,7 @@ import { h, view, RootJunction } from 'brookjs-silt';
 import Kefir from 'kefir';
 import ReactDOM from 'react-dom';
 import { applyDelta, authorDelta, repoDelta, commitsDelta, routerDelta, userDelta } from '../../deltas';
-import { ajaxReducer, authors, globalsReducer, editor, repo, commits, route } from '../../reducers';
+import { ajaxReducer, authorsReducer, globalsReducer, editorReducer, repoReducer, commitsReducer, routeReducer } from '../../reducers';
 import { selectEditorProps as selectProps } from '../../selectors';
 import { ajax$ } from '../../services';
 import { Editor, Commits } from '../../components';
@@ -21,12 +21,12 @@ __webpack_public_path__ = __GISTPEN_EDITOR__.globals.url + 'assets/js/';
 
 const reducer : Reducer<EditorPageState, Action> = combineReducers({
     ajax: ajaxReducer,
-    authors,
+    authors: authorsReducer,
     globals: globalsReducer,
-    editor,
-    commits,
-    repo,
-    route
+    editor: editorReducer,
+    commits: commitsReducer,
+    repo: repoReducer,
+    route: routeReducer
 });
 
 const initialState: EditorPageState = {

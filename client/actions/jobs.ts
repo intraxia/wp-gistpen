@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import { Run, Message, Job } from '../util';
+import { Job, Run, Message } from '../reducers';
 
 export const jobFetchStarted = createAction('JOB_FETCH_STARTED');
 
