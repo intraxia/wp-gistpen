@@ -1,7 +1,7 @@
 // @flow
 /* eslint-env mocha */
-import type { AjaxOptions } from '../../services';
-import { ObsResponse } from '../../services';
+import type { AjaxOptions } from '../../ajax';
+import { ObsResponse } from '../../ajax';
 import '../../polyfills';
 import { expect, use } from 'chai';
 import sinonChai from 'sinon-chai';
