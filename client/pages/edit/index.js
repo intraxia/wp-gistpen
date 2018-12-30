@@ -10,7 +10,7 @@ import ReactDOM from 'react-dom';
 import { applyDelta, authorDelta, repoDelta, commitsDelta, routerDelta, userDelta } from '../../deltas';
 import { ajaxReducer, authorsReducer, globalsReducer, editorReducer, repoReducer, commitsReducer, routeReducer } from '../../reducers';
 import { selectEditorProps as selectProps } from '../../selectors';
-import { ajax$ } from '../../services';
+import { ajax$ } from '../../ajax';
 import { Editor, Commits } from '../../components';
 import router from './router';
 

@@ -4,7 +4,7 @@ import type { Observable } from 'kefir';
 import type { ObsResponse } from '../services';
 import Kefir from 'kefir';
 import { ofType } from 'brookjs';
-import { ajax$ } from '../services';
+import { ajax$ } from '../ajax';
 import { editorUpdateClick, ajaxStarted, ajaxFailed, ajaxFinished, repoSaveSucceeded } from '../actions';
 
 type ApiRequestBlob = {

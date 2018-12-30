@@ -1,3 +1,7 @@
+/// <reference path="./brookjs.d.ts"/>
+/// <reference path="./brookjs-desalinate.d.ts"/>
+/// <reference path="./chai.d.ts"/>
+/// <reference path="./kefir.d.ts"/>
 import 'core-js/fn/promise';
 import 'core-js/fn/symbol';
 import 'core-js/fn/weak-map';

@@ -1,6 +1,6 @@
 // @flow
 import type { Action, Commit, CommitsState, GlobalsState } from '../types';
-import type { AjaxService, ObsResponse } from '../services';
+import type { AjaxService, ObsResponse } from '../ajax';
 import type { Author } from '../types';
 import Kefir from 'kefir';
 import { ofType } from 'brookjs';

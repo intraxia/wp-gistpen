@@ -1,16 +1,3 @@
-declare module 'brookjs' {
-  import { Observable } from 'kefir';
-
-  type AC<T extends { type: string }> = (...args: any[]) => T;
-
-  export function ofType(
-    ...types: string[]
-  ): <V, E>(obs: Observable<V, E>) => Observable<V, E>;
-  export function ofType<R extends { type: string }>(
-    type: AC<R>
-  ): <V, E>(obs: Observable<V, E>) => Observable<R, E>;
-}
-
 declare module 'kefir' {
   export type ValueOfAnObservable<T extends Observable<any, any>> = T[''];
 
@@ -235,7 +222,9 @@ declare module 'kefir' {
   export function combine<T extends { [name: string]: Observable<any, any> }>(
     obss: T
   ): Stream<{ [P in keyof T]: ValueOfAnObservable<T[P]> }, any>;
-  // export function combine<T extends [Observable<any, any>], P extends keyof T>(obss: T): Stream<[ValueOfAnObservable<T[0]>, ValueOfAnObservable<T[1]>], any>;
+  export function combine<T extends [Observable<any, any>], P extends keyof T>(
+    obss: T
+  ): Stream<[ValueOfAnObservable<T[0]>], any>;
   export function combine<
     T extends [
       Observable<any, any>,
@@ -367,6 +356,15 @@ declare module 'kefir' {
     obss: T
   ): Stream<[ValueOfAnObservable<T[0]>], any>;
   export function combine<T extends never[]>(obss: T): Stream<never, never>;
+  export function combine<
+    T extends [Observable<any, any>],
+    P extends [Observable<any, any>],
+    K
+  >(
+    obss: T,
+    obssP: P,
+    combinator: (a: T[0][''], b: P[0]['']) => K
+  ): Observable<K, any>;
   export function zip<T, S, U>(
     obss: Observable<T, S>[],
     passiveObss?: Observable<T, S>[],
@@ -379,12 +377,17 @@ declare module 'kefir' {
     generator: (i: number) => Observable<T, S> | boolean
   ): Observable<T, S>;
 
-  class Kefir {
-    static constant: typeof constant;
-    static merge: typeof merge;
-    static stream: typeof stream;
-    static constantError: typeof constantError;
-  }
+  type Kefir = {
+    concat: typeof concat;
+    constant: typeof constant;
+    combine: typeof combine;
+    merge: typeof merge;
+    never: typeof never;
+    stream: typeof stream;
+    constantError: typeof constantError;
+  };
 
-  export default Kefir;
+  const kefir: Kefir;
+
+  export default kefir;
 }

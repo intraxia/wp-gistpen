@@ -10,7 +10,7 @@ import { selectSettingsProps as selectProps } from '../../selectors';
 import router from './router';
 import { applyDelta, jobsDelta, routerDelta, siteDelta, webpackDelta } from '../../deltas';
 import { ajaxReducer, globalsReducer, routeReducer, prismReducer, gistReducer, jobsReducer, runsReducer, messagesReducer } from '../../reducers';
-import { ajax$ } from '../../services';
+import { ajax$ } from '../../ajax';
 import { SettingsPage } from '../../components';
 
 const { __GISTPEN_SETTINGS__ } = global;

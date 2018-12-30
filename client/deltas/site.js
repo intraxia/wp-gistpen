@@ -1,10 +1,10 @@
 // @flow
 import type { Observable } from 'kefir';
 import type { Action, SettingsState } from '../types';
-import type { AjaxOptions, ObsResponse } from '../services';
+import type { AjaxOptions, ObsResponse } from '../ajax';
 import R from 'ramda';
 import Kefir from 'kefir';
-import { ajax$ } from '../services';
+import { ajax$ } from '../ajax';
 import { ajaxStarted, ajaxFailed, ajaxFinished } from '../actions';
 
 const optionsAjax$ : (state: SettingsState) => Observable<ObsResponse> = R.converge(ajax$, [

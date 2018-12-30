@@ -4,7 +4,7 @@ import type { TinyMCEState } from '../reducers';
 import type { Action } from '../types';
 import type { ObsResponse } from '../services';
 import { ofType } from 'brookjs';
-import { ajax$ } from '../services';
+import { ajax$ } from '../ajax';
 import { searchInput, searchResultsSucceeded } from '../actions';
 
 function getSearchUrl(state: TinyMCEState): string {

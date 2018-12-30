@@ -39,6 +39,7 @@
     "@storybook/react": "^4.0.0",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.6",
+    "@types/sinon": "^7.0.2",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",
     "babel-plugin-ramda": "^2.0.0",

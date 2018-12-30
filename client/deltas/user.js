@@ -3,7 +3,7 @@ import type { Action, EditorPageState, UserApiResponse } from '../types';
 import type { Observable } from 'kefir';
 import type { ObsResponse } from '../services';
 import { ofType } from 'brookjs';
-import { ajax$ } from '../services';
+import { ajax$ } from '../ajax';
 import { ajaxFinished, ajaxFailed, userSaveSucceeded, editorWidthChange,
     editorInvisiblesToggle, editorTabsToggle, editorThemeChange } from '../actions';
 import { selectUserAjaxOpts } from '../selectors';
