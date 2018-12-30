@@ -8,7 +8,7 @@ import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
 import Kefir from 'kefir';
 import { chaiPlugin } from 'brookjs-desalinate';
-import { routeChangeAction } from '../../actions';
+import { routeChange } from '../../actions';
 import commitsDelta from '../commitsDelta';
 
 const { plugin, stream, prop, value, error, end, send } = chaiPlugin({ Kefir });
@@ -89,7 +89,7 @@ describe('commitsDelta', () => {
 
         expect(commitsDelta(services, actions$, state$)).to.emit([], () => {
             send(state$, [value(stateWithId)]);
-            send(actions$, [value(routeChangeAction('random'))]);
+            send(actions$, [value(routeChange('random'))]);
         });
     });
 
@@ -100,7 +100,7 @@ describe('commitsDelta', () => {
 
         expect(commitsDelta(services, actions$, state$)).to.emit([], () => {
             send(state$, [value(stateNoId)]);
-            send(actions$, [value(routeChangeAction('commits'))]);
+            send(actions$, [value(routeChange('commits'))]);
         });
     });
 
@@ -137,7 +137,7 @@ describe('commitsDelta', () => {
             })]
         ], tick => {
             send(state$, [value(stateWithId)]);
-            send(actions$, [value(routeChangeAction('commits'))]);
+            send(actions$, [value(routeChange('commits'))]);
             tick(10);
             send(effect$, [value(new ObsResponse(xhr)), end()]);
         });
@@ -175,7 +175,7 @@ describe('commitsDelta', () => {
             })]
         ], tick => {
             send(state$, [value(stateWithId)]);
-            send(actions$, [value(routeChangeAction('commits'))]);
+            send(actions$, [value(routeChange('commits'))]);
             tick(10);
             send(effect$, [error(payload), end()]);
         });

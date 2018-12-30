@@ -7,7 +7,7 @@ import './Search.scss';
 import R from 'ramda';
 import { h, toJunction, loop, view } from 'brookjs-silt';
 import { i18n } from '../helpers';
-import { searchInputAction, searchResultSelectionChangeAction } from '../actions';
+import { searchInput, searchResultSelectionChange } from '../actions';
 import Loader from './Loader';
 
 type ID = number | string;
@@ -29,7 +29,7 @@ export type SearchProps = {
 
 const HasResults = toJunction({
     events: {
-        onRadioChange: evt$ => evt$.map(searchResultSelectionChangeAction)
+        onRadioChange: evt$ => evt$.map(searchResultSelectionChange)
     }
 })(({ stream$, onRadioChange }: { stream$: Observable<ResultsProps> }) => (
     <ul className={'wpgp-search-results'}>
@@ -61,7 +61,7 @@ export const Search = toJunction({
         onSearchTyping: (evt$: Observable<SyntheticInputEvent<*>>): Observable<SearchInputAction> => evt$
             .map((e: SyntheticInputEvent<*>): string => e.target.value)
             .debounce(300)
-            .map(searchInputAction)
+            .map(searchInput)
     }
 })(({ stream$, onSearchTyping }: { stream$: Observable<SearchProps> }): Node => (
     <div className={'wpgp-search-container'}>

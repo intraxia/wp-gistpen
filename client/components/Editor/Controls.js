@@ -5,9 +5,9 @@ import './Controls.scss';
 import R from 'ramda';
 import { toJunction, loop, view, h } from 'brookjs-silt';
 import { i18n, link } from '../../helpers';
-import { editorTabsToggleAction, editorThemeChangeAction, editorInvisiblesToggleAction,
-    editorWidthChangeAction, editorStatusChangeAction, editorSyncToggleAction,
-    editorUpdateClickAction, editorAddClickAction } from '../../actions';
+import { editorTabsToggle, editorThemeChange, editorInvisiblesToggle,
+    editorWidthChange, editorStatusChange, editorSyncToggle,
+    editorUpdateClick, editorAddClick } from '../../actions';
 
 const mapCheckedToString : ((e: Event) => Toggle) = R.ifElse(
     R.path(['target', 'checked']),
@@ -151,13 +151,13 @@ const Controls = ({
 
 export default toJunction({
     events: {
-        onStatusChange: R.map(R.pipe(getTargetValue, editorStatusChangeAction)),
-        onSyncChange: R.map(R.pipe(mapCheckedToString, editorSyncToggleAction)),
-        onThemeChange: R.map(R.pipe(getTargetValue, editorThemeChangeAction)),
-        onTabsChange: R.map(R.pipe(mapCheckedToString, editorTabsToggleAction)),
-        onWidthChange: R.map(R.pipe(getTargetValue, editorWidthChangeAction)),
-        onInvisiblesChange: R.map(R.pipe(mapCheckedToString, editorInvisiblesToggleAction)),
-        onUpdateClick: R.map(R.pipe(R.tap(e => e.preventDefault()), editorUpdateClickAction)),
-        onAddClick: R.map(R.pipe(R.tap(e => e.preventDefault()), editorAddClickAction))
+        onStatusChange: R.map(R.pipe(getTargetValue, editorStatusChange)),
+        onSyncChange: R.map(R.pipe(mapCheckedToString, editorSyncToggle)),
+        onThemeChange: R.map(R.pipe(getTargetValue, editorThemeChange)),
+        onTabsChange: R.map(R.pipe(mapCheckedToString, editorTabsToggle)),
+        onWidthChange: R.map(R.pipe(getTargetValue, editorWidthChange)),
+        onInvisiblesChange: R.map(R.pipe(mapCheckedToString, editorInvisiblesToggle)),
+        onUpdateClick: R.map(R.pipe(R.tap(e => e.preventDefault()), editorUpdateClick)),
+        onAddClick: R.map(R.pipe(R.tap(e => e.preventDefault()), editorAddClick))
     }
 })(Controls);

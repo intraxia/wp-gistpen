@@ -6,9 +6,9 @@ import R from 'ramda';
 import Kefir from 'kefir';
 import { raf$ } from 'brookjs';
 import { toJunction, h, view, withRef$ } from 'brookjs-silt';
-import { editorCursorMoveAction, editorIndentAction, editorMakeCommentAction,
-    editorMakeNewlineAction, editorRedoAction, editorUndoAction,
-    editorValueChangeAction } from '../../../actions';
+import { editorCursorMove, editorIndent, editorMakeComment,
+    editorMakeNewline, editorRedo, editorUndo, editorValueChange
+} from '../../../actions';
 import { selectSelectionStart, selectSelectionEnd } from '../../../selectors';
 import Prism from '../../../prism';
 import type { Props } from './types';
@@ -17,7 +17,7 @@ import { prismSlug } from '../../../helpers';
 import findOffset from './findOffset';
 
 const elementToCursorMoveAction = (e: Element) =>
-    editorCursorMoveAction([selectSelectionStart(e), selectSelectionEnd(e)]);
+    editorCursorMove([selectSelectionStart(e), selectSelectionEnd(e)]);
 
 const mapToTargetCursorAction = (evt$: Observable<ProxyEvent>) =>
     evt$.map(e => elementToCursorMoveAction(e.target));
@@ -37,13 +37,13 @@ const mapKeydownToAction = (evt: ProxyEvent): Action => {
 
     switch (evt.keyCode) {
         case 9: // Tab
-            return editorIndentAction({ code, cursor, inverse });
+            return editorIndent({ code, cursor, inverse });
         case 13:
-            return editorMakeNewlineAction({ code, cursor });
+            return editorMakeNewline({ code, cursor });
         case 90:
-            return inverse ? editorRedoAction() : editorUndoAction();
+            return inverse ? editorRedo() : editorUndo();
         case 191:
-            return editorMakeCommentAction({ code, cursor });
+            return editorMakeComment({ code, cursor });
     }
 
     throw new Error('Keydown is missing matching actions case');
@@ -226,11 +226,11 @@ const refback = (ref$, { stream$ }: ObservableProps<Props>) => ref$.flatMap(el =
 
 export default toJunction({
     events: {
-        onBlur: R.map(R.always(editorCursorMoveAction(false))),
+        onBlur: R.map(R.always(editorCursorMove(false))),
         onClick: mapToTargetCursorAction,
         onFocus: mapToTargetCursorAction,
         onInput: R.map((evt: ProxyEvent) =>
-            editorValueChangeAction({
+            editorValueChange({
                 code: evt.target.textContent,
                 cursor: [selectSelectionStart(evt.target), selectSelectionEnd(evt.target)]
             })

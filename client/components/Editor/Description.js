@@ -5,7 +5,7 @@ import type { ObservableProps } from '../../types';
 import R from 'ramda';
 import { h, view, toJunction } from 'brookjs-silt';
 import { i18n } from '../../helpers';
-import { editorDescriptionChangeAction } from '../../actions';
+import { editorDescriptionChange } from '../../actions';
 import Loader from '../Loader';
 
 type Props = {
@@ -38,6 +38,6 @@ const Description = ({ stream$, onDescriptionChange }: ObservableProps<Props>) =
 
 export default toJunction({
     events: {
-        onDescriptionChange: R.map(R.pipe(R.path(['target', 'value']), editorDescriptionChangeAction))
+        onDescriptionChange: R.map(R.pipe(R.path(['target', 'value']), editorDescriptionChange))
     }
 })(Description);

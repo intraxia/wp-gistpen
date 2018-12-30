@@ -4,7 +4,7 @@ import type { AjaxService, ObsResponse } from '../services';
 import type { Author } from '../types';
 import Kefir from 'kefir';
 import { ofType } from 'brookjs';
-import { fetchAuthorSucceeded, fetchAuthorFailed, COMMITS_FETCH_SUCCEEDED } from '../actions';
+import { fetchAuthorSucceeded, fetchAuthorFailed, commitsFetchSucceeded } from '../actions';
 
 type AuthorServices = {
     ajax$: AjaxService
@@ -20,7 +20,7 @@ type AuthorDeltaState = {
 export default ({ ajax$ }: AuthorServices) =>
     (actions$: Kefir.Observable<Action>, state$: Kefir.Observable<AuthorDeltaState>) =>
         state$.sampledBy(
-            actions$.thru(ofType(COMMITS_FETCH_SUCCEEDED))
+            actions$.thru(ofType(commitsFetchSucceeded))
         )
             .flatMapLatest((state: AuthorDeltaState) => Kefir.merge(
                 state.commits.instances.map((instance: Commit) =>

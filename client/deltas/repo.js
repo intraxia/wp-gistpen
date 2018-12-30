@@ -2,10 +2,10 @@
 import type { Action, EditorPageState, EditorInstance, RepoApiResponse, EditorState } from '../types';
 import type { Observable } from 'kefir';
 import type { ObsResponse } from '../services';
-import R from 'ramda';
 import Kefir from 'kefir';
+import { ofType } from 'brookjs';
 import { ajax$ } from '../services';
-import { EDITOR_UPDATE_CLICK, ajaxStartedAction, ajaxFailedAction, ajaxFinishedAction, repoSaveSucceededAction } from '../actions';
+import { editorUpdateClick, ajaxStarted, ajaxFailed, ajaxFinished, repoSaveSucceeded } from '../actions';
 
 type ApiRequestBlob = {
     ID?: number,
@@ -40,10 +40,6 @@ const makeBody = (state: EditorPageState): string => JSON.stringify({
     })
 });
 
-const onlyEditorUpdateClicks = R.filter(R.pipe(
-    R.prop('type'), R.equals(EDITOR_UPDATE_CLICK)
-));
-
 /**
  * Creates a new options delta stream for options API actions.
  *
@@ -52,9 +48,9 @@ const onlyEditorUpdateClicks = R.filter(R.pipe(
  * @returns {Observable<T, U>} Options API stream.
  */
 export default function repoDelta(action$: Observable<Action>, state$: Observable<EditorPageState>): Observable<Action> {
-    return state$.sampledBy(onlyEditorUpdateClicks(action$))
+    return state$.sampledBy(action$.thru(ofType(editorUpdateClick)))
         .flatMapLatest((state: EditorPageState): Observable<Action> => Kefir.concat([
-            Kefir.constant(ajaxStartedAction()),
+            Kefir.constant(ajaxStarted()),
             ajax$(state.repo.rest_url, {
                 method: 'PUT',
                 body: makeBody(state),
@@ -65,7 +61,7 @@ export default function repoDelta(action$: Observable<Action>, state$: Observabl
                 }
             })
                 .flatMap((response: ObsResponse) => response.json())
-                .flatten((response: RepoApiResponse): Array<Action> => [ajaxFinishedAction(response), repoSaveSucceededAction(response)])
-                .flatMapErrors(err => Kefir.constant(ajaxFailedAction(err)))
+                .flatten((response: RepoApiResponse): Array<Action> => [ajaxFinished(response), repoSaveSucceeded(response)])
+                .flatMapErrors(err => Kefir.constant(ajaxFailed(err)))
         ]));
 }

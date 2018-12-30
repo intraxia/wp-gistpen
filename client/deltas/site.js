@@ -5,7 +5,7 @@ import type { AjaxOptions, ObsResponse } from '../services';
 import R from 'ramda';
 import Kefir from 'kefir';
 import { ajax$ } from '../services';
-import { ajaxStartedAction, ajaxFailedAction, ajaxFinishedAction } from '../actions';
+import { ajaxStarted, ajaxFailed, ajaxFinished } from '../actions';
 
 const optionsAjax$ : (state: SettingsState) => Observable<ObsResponse> = R.converge(ajax$, [
     (state: SettingsState): string => state.globals.root + 'site',
@@ -38,10 +38,10 @@ export default function siteDelta(action$: Observable<Action>, state$: Observabl
                 prev.gist === next.gist && prev.prism === next.prism)
         .debounce(1000)
         .flatMapLatest(state => Kefir.concat([
-            Kefir.constant(ajaxStartedAction()),
+            Kefir.constant(ajaxStarted()),
             optionsAjax$(state)
                 .flatMap((response: ObsResponse) => response.json())
-                .map(ajaxFinishedAction)
-                .mapErrors(ajaxFailedAction)
+                .map(ajaxFinished)
+                .mapErrors(ajaxFailed)
         ]));
 }

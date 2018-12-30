@@ -6,8 +6,7 @@ import type { Props } from './types';
 import { toJunction, h, view, loop } from 'brookjs-silt';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import R from 'ramda';
-import { editorFilenameChangeAction, editorDeleteClickAction,
-    editorLanguageChangeAction } from '../../../actions';
+import { editorFilenameChange, editorDeleteClick, editorLanguageChange } from '../../../actions';
 import { i18n } from '../../../helpers';
 import Pre from './Pre';
 import Code from './Code';
@@ -74,8 +73,8 @@ const Instance = ({ stream$, onFilenameChange, onLanguageChange, onDeleteClick }
 
 export default toJunction({
     events: {
-        onFilenameChange: R.map(R.pipe(R.path(['target', 'textContent']), editorFilenameChangeAction)),
-        onLanguageChange: R.map(R.pipe(R.path(['target', 'value']), editorLanguageChangeAction)),
-        onDeleteClick: R.map(editorDeleteClickAction)
+        onFilenameChange: R.map(R.pipe(R.path(['target', 'textContent']), editorFilenameChange)),
+        onLanguageChange: R.map(R.pipe(R.path(['target', 'value']), editorLanguageChange)),
+        onDeleteClick: R.map(editorDeleteClick)
     }
 })(Instance);

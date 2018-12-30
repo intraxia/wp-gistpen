@@ -5,9 +5,9 @@ import type { AjaxService, ObsResponse } from '../services';
 import R from 'ramda';
 import Kefir from 'kefir';
 import { ofType } from 'brookjs';
-import { MESSAGES_FETCH_STARTED, MESSAGES_FETCH_SUCCEEDED, MESSAGES_FETCH_FAILED,
-    ROUTE_CHANGE, JOB_FETCH_STARTED, JOB_FETCH_SUCCEEDED, JOB_FETCH_FAILED,
-    RUNS_FETCH_STARTED, RUNS_FETCH_SUCCEEDED, RUNS_FETCH_FAILED, JOB_DISPATCH_CLICK,
+import { messagesFetchStarted, messagesFetchSucceeded, messagesFetchFailed,
+    routeChange, jobFetchStarted, jobFetchSucceeded, jobFetchFailed,
+    runsFetchStarted, runsFetchSucceeded, runsFetchFailed, jobDispatchClick,
     jobDispatchStarted, jobDispatchSucceeded, jobDispatchFailed } from '../actions';
 
 type JobsServices = {
@@ -36,7 +36,7 @@ export default R.curry((
     state$: Kefir.Observable<JobProps>
 ): Kefir.Observable<Action> => {
     const fetch$ = state$.sampledBy(
-        actions$.thru(ofType(ROUTE_CHANGE))
+        actions$.thru(ofType(routeChange))
             .filter((action: RouteChangeAction) => action.payload.name === 'jobs')
     )
         .flatMapLatest(({ route, runs, globals, jobs }: JobProps): Kefir.Observable<Action> => {
@@ -48,9 +48,7 @@ export default R.curry((
                 }
 
                 return Kefir.concat([
-                    Kefir.constant({
-                        type: MESSAGES_FETCH_STARTED
-                    }),
+                    Kefir.constant(messagesFetchStarted()),
                     ajax$(run.console_url, {
                         method: 'GET',
                         credentials: 'include',
@@ -60,15 +58,8 @@ export default R.curry((
                         }
                     })
                         .flatMap((response: ObsResponse) => response.json())
-                        .map((response: GetConsoleResponse) => ({
-                            type: MESSAGES_FETCH_SUCCEEDED,
-                            payload: { response }
-                        }))
-                        .flatMapErrors((err: TypeError) => Kefir.constant({
-                            type: MESSAGES_FETCH_FAILED,
-                            payload: err,
-                            error: true
-                        })),
+                        .map((response: GetConsoleResponse) => messagesFetchSucceeded(response))
+                        .flatMapErrors((err: TypeError) => Kefir.constant(messagesFetchFailed(err))),
                 ]);
             }
 
@@ -80,9 +71,7 @@ export default R.curry((
                 }
 
                 const job$ = Kefir.concat([
-                    Kefir.constant({
-                        type: JOB_FETCH_STARTED
-                    }),
+                    Kefir.constant(jobFetchStarted()),
                     ajax$(job.rest_url, {
                         method: 'GET',
                         credentials: 'include',
@@ -92,21 +81,12 @@ export default R.curry((
                         }
                     })
                         .flatMap((response: ObsResponse) => response.json())
-                        .map((response: GetJobResponse) => ({
-                            type: JOB_FETCH_SUCCEEDED,
-                            payload: { response }
-                        }))
-                        .flatMapErrors((err: TypeError) => Kefir.constant({
-                            type: JOB_FETCH_FAILED,
-                            payload: err,
-                            error: true
-                        })),
+                        .map((response: GetJobResponse) => jobFetchSucceeded(response))
+                        .flatMapErrors((err: TypeError) => Kefir.constant(jobFetchFailed(err))),
                 ]);
 
                 const runs$ = Kefir.concat([
-                    Kefir.constant({
-                        type: RUNS_FETCH_STARTED
-                    }),
+                    Kefir.constant(runsFetchStarted()),
                     ajax$(job.runs_url, {
                         method: 'GET',
                         credentials: 'include',
@@ -116,15 +96,8 @@ export default R.curry((
                         }
                     })
                         .flatMap((response: ObsResponse) => response.json())
-                        .map((response: GetRunsResponse) => ({
-                            type: RUNS_FETCH_SUCCEEDED,
-                            payload: { response }
-                        }))
-                        .flatMapErrors((err: TypeError) => Kefir.constant({
-                            type: RUNS_FETCH_FAILED,
-                            payload: err,
-                            error: true
-                        })),
+                        .map((response: GetRunsResponse) => runsFetchSucceeded(response))
+                        .flatMapErrors((err: TypeError) => Kefir.constant(runsFetchFailed(err))),
                 ]);
 
                 return Kefir.merge([job$, runs$]);
@@ -136,9 +109,7 @@ export default R.curry((
                 const job = jobs[key];
 
                 const job$ = Kefir.concat([
-                    Kefir.constant({
-                        type: JOB_FETCH_STARTED
-                    }),
+                    Kefir.constant(jobFetchStarted()),
                     ajax$(job.rest_url, {
                         method: 'GET',
                         credentials: 'include',
@@ -148,15 +119,8 @@ export default R.curry((
                         }
                     })
                         .flatMap((response: ObsResponse) => response.json())
-                        .map((response: GetJobResponse) => ({
-                            type: JOB_FETCH_SUCCEEDED,
-                            payload: { response }
-                        }))
-                        .flatMapErrors((err: TypeError) => Kefir.constant({
-                            type: JOB_FETCH_FAILED,
-                            payload: err,
-                            error: true
-                        })),
+                        .map((response: GetJobResponse) => jobFetchSucceeded(response))
+                        .flatMapErrors((err: TypeError) => Kefir.constant(jobFetchFailed(err))),
                 ]);
 
                 jobs$.push(job$);
@@ -166,7 +130,7 @@ export default R.curry((
         });
 
     const start$ = Kefir.combine(
-        [actions$.thru(ofType(JOB_DISPATCH_CLICK))],
+        [actions$.thru(ofType(jobDispatchClick))],
         [state$],
         (action: JobDispatchClickAction & HasMetaKey, state: JobProps) => ({
             job: state.jobs[action.meta.key],

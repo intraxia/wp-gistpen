@@ -8,8 +8,7 @@ import type { TinyMCEAction as Action, TinyMCEEditor as Editor, Blob } from '../
 import R from 'ramda';
 import Kefir from 'kefir';
 import { ofType } from 'brookjs';
-import { tinymceButtonClickAction, tinymcePopupInsertClickAction, tinymcePopupCloseClickAction,
-    TINYMCE_BUTTON_CLICK, TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK } from '../actions';
+import { tinymceButtonClick, tinymcePopupInsertClick, tinymcePopupCloseClick } from '../actions';
 import { Search } from '../components';
 import { h, RootJunction, view } from 'brookjs-silt';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -21,7 +20,7 @@ const createTinyMCEPlugin = (): Observable<Editor> => Kefir.stream((emitter: Emi
 const createTinyMCEButton = (actions$: Observable<Action>, state$: Observable<TinyMCEState>, editor: Editor): Observable<Action> =>Kefir.merge([
     Kefir.stream((emitter: Emitter<Action, void>) => {
         // Bind command to stream.
-        editor.addCommand('wpgp_insert', () => void emitter.value(tinymceButtonClickAction()));
+        editor.addCommand('wpgp_insert', () => void emitter.value(tinymceButtonClick()));
 
         // Add the Insert Gistpen button
         editor.addButton('wp_gistpen', {
@@ -30,7 +29,7 @@ const createTinyMCEButton = (actions$: Observable<Action>, state$: Observable<Ti
             cmd: 'wpgp_insert'
         });
     }),
-    state$.sampledBy(actions$.thru(ofType(TINYMCE_POPUP_INSERT_CLICK)))
+    state$.sampledBy(actions$.thru(ofType(tinymcePopupInsertClick)))
         .flatMap((state: TinyMCEState) => Kefir.stream((emitter: Emitter<Action, void>) => {
             if (state.search.selection != null) {
                 editor.insertContent('[gistpen id="' + state.search.selection + '"]');
@@ -54,12 +53,12 @@ const emitTinyMCEWindow = R.curry((editor: Editor, emitter: Emitter<Action, Elem
             {
                 text: 'Insert',
                 id: 'wpgp-popup-insert',
-                onclick: R.pipe(tinymcePopupInsertClickAction, emitter.value)
+                onclick: R.pipe(tinymcePopupInsertClick, emitter.value)
             },
             {
                 text: 'Cancel',
                 id: 'wpgp-popup-cancel',
-                onclick: R.pipe(tinymcePopupCloseClickAction, emitter.value)
+                onclick: R.pipe(tinymcePopupCloseClick, emitter.value)
             }
         ]
     });
@@ -96,11 +95,11 @@ const createTinyMCEWindow = (actions$: Observable<Action>, state$: Observable<Ti
 
         return () => unmountComponentAtNode(el);
     }))
-    .takeUntilBy(actions$.thru(ofType(TINYMCE_POPUP_CLOSE_CLICK, TINYMCE_POPUP_INSERT_CLICK)));
+    .takeUntilBy(actions$.thru(ofType(tinymcePopupCloseClick, tinymcePopupInsertClick)));
 
 const mergeTinyMCEButtonAndPopup = R.curry((actions$: Observable<Action>, state$: Observable<TinyMCEState>, editor: Editor): Observable<Action> => Kefir.merge([
     createTinyMCEButton(actions$, state$, editor),
-    actions$.thru(ofType(TINYMCE_BUTTON_CLICK))
+    actions$.thru(ofType(tinymceButtonClick))
         .flatMapLatest((): Observable<Action> => createTinyMCEWindow(actions$, state$, editor))
 ]));
 

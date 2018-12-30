@@ -4,8 +4,8 @@ import type { AjaxService, ObsResponse } from '../services';
 import R from 'ramda';
 import Kefir from 'kefir';
 import { ofType } from 'brookjs';
-import { ROUTE_CHANGE, COMMITS_FETCH_SUCCEEDED, COMMITS_FETCH_STARTED,
-    COMMITS_FETCH_FAILED } from '../actions';
+import { routeChange, commitsFetchStarted, commitsFetchSucceeded,
+    commitsFetchFailed } from '../actions';
 
 type CommitsProps = HasRepo & HasGlobalsState;
 type CommitsServices = {
@@ -21,14 +21,12 @@ export default R.curry((
 ): Kefir.Observable<Action> => {
     const fetchCommits$ = state$.sampledBy(
         // sample when route changes to `commits`
-        actions$.thru(ofType(ROUTE_CHANGE)).filter((action: RouteChangeAction) => action.payload.name === 'commits')
+        actions$.thru(ofType(routeChange)).filter((action: RouteChangeAction) => action.payload.name === 'commits')
     )
         .filter((state: CommitsProps) => state.repo.ID)
         .flatMapFirst((state: CommitsProps) =>
             Kefir.concat([
-                Kefir.constant({
-                    type: COMMITS_FETCH_STARTED
-                }),
+                Kefir.constant(commitsFetchStarted()),
                 ajax$(state.repo.commits_url, {
                     method: 'GET',
                     credentials: 'include',
@@ -38,15 +36,8 @@ export default R.curry((
                     }
                 })
                     .flatMap((response: ObsResponse) => response.json())
-                    .map((response: GetCommitsResponse) => ({
-                        type: COMMITS_FETCH_SUCCEEDED,
-                        payload: { response }
-                    }))
-                    .flatMapErrors((err: TypeError) => Kefir.constant({
-                        type: COMMITS_FETCH_FAILED,
-                        payload: err,
-                        error: true
-                    })),
+                    .map((response: GetCommitsResponse) => commitsFetchSucceeded(response))
+                    .flatMapErrors((err: TypeError) => commitsFetchFailed(err)),
             ])
         );
 

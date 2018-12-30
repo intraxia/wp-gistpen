@@ -3,8 +3,8 @@
 import type { Theme, ObservableProps } from '../types';
 import { h, view, loop, toJunction } from 'brookjs-silt';
 import R from 'ramda';
-import { lineNumbersChangeAction, showInvisiblesChangeAction,
-    themeChangeAction } from '../actions';
+import { lineNumbersChange, showInvisiblesChange,
+    themeChange } from '../actions';
 import Repo from './Repo';
 
 type HighlightingProps = {
@@ -76,12 +76,12 @@ const Highlighting = ({ stream$, onThemeChange, onLineNumbersChange, onShowInvis
 
 export default toJunction({
     events: {
-        onThemeChange: R.map(R.pipe(R.path(['target', 'value']), themeChangeAction)),
+        onThemeChange: R.map(R.pipe(R.path(['target', 'value']), themeChange)),
         onLineNumbersChange: R.map(
-            R.pipe(R.path(['target', 'checked']), lineNumbersChangeAction)
+            R.pipe(R.path(['target', 'checked']), lineNumbersChange)
         ),
         onShowInvisiblesChange: R.map(
-            R.pipe(R.path(['target', 'checked']), showInvisiblesChangeAction)
+            R.pipe(R.path(['target', 'checked']), showInvisiblesChange)
         ),
     }
 })(Highlighting);
