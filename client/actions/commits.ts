@@ -1,14 +1,17 @@
 import { createAction } from 'typesafe-actions';
-import { GetCommitsResponse } from '../util';
+import { ApiCommits } from '../deltas/commitsDelta';
 
 export const commitsFetchStarted = createAction('COMMITS_FETCH_STARTED');
 
 export const commitsFetchSucceeded = createAction(
   'COMMITS_FETCH_SUCCEEDED',
-  resolve => (response: GetCommitsResponse) => resolve({ response })
+  resolve => (response: ApiCommits) => resolve({ response })
 );
 
-export const commitsFetchFailed = createAction('COMMITS_FETCH_FAILED');
+export const commitsFetchFailed = createAction(
+  'COMMITS_FETCH_FAILED',
+  resolve => (err: Error) => resolve(err)
+);
 
 export const commitClick = createAction(
   'COMMIT_CLICK',
