@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "bourbon": "^5.0.0",
-    "bourbon-neat": "^1.8.0",
+    "bourbon-neat": "^3.0.1",
     "brookjs": "1.0.0-alpha.6",
     "brookjs-silt": "1.0.0-alpha.7",
     "classnames": "^2.2.5",
