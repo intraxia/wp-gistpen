@@ -32,7 +32,7 @@
     "@babel/preset-env": "^7.2.3",
     "@babel/preset-flow": "^7.0.0",
     "@babel/register": "^7.0.0",
-    "@storybook/react": "^4.0.0",
+    "@storybook/react": "^5.0.0",
     "babel-eslint": "^9.0.0",
     "babel-plugin-ramda": "^2.0.0",
     "babel-preset-brookjs": "1.0.0-alpha.5",
