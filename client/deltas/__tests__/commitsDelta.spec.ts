@@ -14,7 +14,9 @@ import {
 import { commitsDelta } from '../commitsDelta';
 import { RootAction } from '../../util';
 
-const { plugin, stream, prop, value, error, end, send } = chaiPlugin({ Kefir });
+const { plugin, stream, prop, value, error, end, send } = chaiPlugin({
+  Kefir
+}) as any;
 
 use(plugin);
 

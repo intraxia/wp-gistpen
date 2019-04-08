@@ -1,4 +1,4 @@
-import Kefir, { Stream, Property } from 'kefir';
+import Kefir, { Stream, Property, Observable } from 'kefir';
 import { ofType } from 'brookjs';
 import * as t from 'io-ts';
 import {
@@ -32,9 +32,9 @@ const apiAuthor = t.type({
 export interface ApiAuthor extends t.TypeOf<typeof apiAuthor> {}
 
 export const authorDelta = ({ ajax$ }: AuthorServices) => (
-  actions$: Stream<RootAction, void>,
-  state$: Property<AuthorDeltaState, void>
-) =>
+  actions$: Stream<RootAction, never>,
+  state$: Property<AuthorDeltaState, never>
+): Observable<RootAction, never> =>
   state$
     .sampledBy(actions$.thru(ofType(commitsFetchSucceeded)))
     .flatMapLatest(state =>
