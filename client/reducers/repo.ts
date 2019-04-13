@@ -1,7 +1,8 @@
 import { Nullable } from 'typescript-nullable';
 import { getType } from 'typesafe-actions';
 import { repoSaveSucceeded } from '../actions';
-import { RootAction, ApiRepo } from '../util';
+import { RootAction } from '../util';
+import { ApiRepo } from '../deltas';
 
 export type RepoState = Nullable<ApiRepo>;
 
