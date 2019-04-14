@@ -2,8 +2,6 @@ import { Observable, stream } from 'kefir';
 import { GlobalsState } from '../reducers';
 import { RootAction } from '../util';
 
-declare let __webpack_public_path__: string;
-
 type WebpackDeltaState = {
   globals: GlobalsState;
 };
@@ -15,7 +13,7 @@ export const webpackDelta = (
   state$.take(1).flatMap(props =>
     stream(emitter => {
       // eslint-disable-next-line camelcase
-      __webpack_public_path__ = props.globals.url + 'assets/js/';
+      window.__webpack_public_path__ = props.globals.url + 'assets/js/';
 
       emitter.end();
     })

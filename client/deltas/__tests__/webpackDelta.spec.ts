@@ -10,7 +10,6 @@ use(plugin);
 
 describe('webpackDelta', () => {
   it('should set public path on initial state', () => {
-    (global as any).__webpack_public_path__ = null;
     const state = {
       globals: {
         url: 'https://test.dev/'
@@ -23,7 +22,7 @@ describe('webpackDelta', () => {
       send(action, state);
     });
 
-    expect((global as any).__webpack_public_path__).to.equal(
+    expect(window.__webpack_public_path__).to.equal(
       'https://test.dev/assets/js/'
     );
   });
