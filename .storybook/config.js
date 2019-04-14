@@ -2,9 +2,9 @@ import { configure, addDecorator } from '@storybook/react';
 import { withJunction } from 'brookjs-desalinate';
 
 function loadStories() {
-    const req = require.context('../client', true, /.*\.story\.js/);
+  const req = require.context('../client', true, /.*\.story\.js/);
 
-    req.keys().forEach(req);
+  req.keys().forEach(req);
 }
 
 addDecorator(withJunction);

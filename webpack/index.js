@@ -10,170 +10,175 @@ const pages = path.join(client, 'pages');
 exports.devtool = 'sourcemap';
 
 exports.eslintRule = {
-    test: /\.js$/,
-    use: ['eslint-loader'],
-    include: client,
-    enforce: 'pre'
+  test: /\.js$/,
+  use: ['eslint-loader'],
+  include: client,
+  enforce: 'pre'
 };
 
 exports.styleRule = {
-    test: /\.(scss|css)$/,
-    include: [
-        path.join(pages, 'editor'),
-        path.join(pages, 'tinymce'),
-        path.join(client, 'components')
-    ],
-    use: [{
-        loader: 'style-loader',
-        options: {
-            hmr: false
-        }
-    }, 'css-loader', 'sass-loader']
+  test: /\.(scss|css)$/,
+  include: [
+    path.join(pages, 'editor'),
+    path.join(pages, 'tinymce'),
+    path.join(client, 'components')
+  ],
+  use: [
+    {
+      loader: 'style-loader',
+      options: {
+        hmr: false
+      }
+    },
+    'css-loader',
+    'sass-loader'
+  ]
 };
 
 exports.usableStyleRule = {
-    test: /\.(scss|css)$/,
-    include: [
-        path.join(pages, 'settings'),
-        path.join(client, 'prism'),
-        /node_modules/
-    ],
-    use: [{
-        loader: 'style-loader/useable',
-        options: {
-            hmr: false
-        }
-    }, 'css-loader', 'sass-loader']
+  test: /\.(scss|css)$/,
+  include: [
+    path.join(pages, 'settings'),
+    path.join(client, 'prism'),
+    /node_modules/
+  ],
+  use: [
+    {
+      loader: 'style-loader/useable',
+      options: {
+        hmr: false
+      }
+    },
+    'css-loader',
+    'sass-loader'
+  ]
 };
 
 exports.resolve = {
-    alias: {
-        redux: 'redux/es'
-    }
+  alias: {
+    redux: 'redux/es'
+  }
 };
 
 exports.styleLintPlugin = new StyleLintPlugin({
-    syntax: 'scss'
+  syntax: 'scss'
 });
 
 exports.notifierPlugin = new WebpackNotifierPlugin({
-    alwaysNotify: true
+  alwaysNotify: true
 });
 
-exports.copyPlugin = new CopyWebpackPlugin([{
+exports.copyPlugin = new CopyWebpackPlugin([
+  {
     from: 'node_modules/prismjs/components/*.js',
-    flatten: true,
-}]);
+    flatten: true
+  }
+]);
 
 class PrismLanguageGenerationPlugin {
-    constructor() {
-        this.src = path.join(
-            __dirname,
-            '..',
-            'node_modules',
-            'prismjs',
-            'components.json'
-        );
-        this.dest = path.join(
-            __dirname,
-            '..',
-            'config',
-            'languages.json'
-        );
-        this.exclude = [
-            'meta',
-            'clike',
-            'css-extras',
-            'markup-templating',
-            'php-extras'
-        ];
-        this.prev = null;
+  constructor() {
+    this.src = path.join(
+      __dirname,
+      '..',
+      'node_modules',
+      'prismjs',
+      'components.json'
+    );
+    this.dest = path.join(__dirname, '..', 'config', 'languages.json');
+    this.exclude = [
+      'meta',
+      'clike',
+      'css-extras',
+      'markup-templating',
+      'php-extras'
+    ];
+    this.prev = null;
+  }
+
+  apply(compiler) {
+    const cb = (compilation, callback) => this.emit(compilation, callback);
+    compiler.plugin('watch-run', cb);
+    compiler.plugin('before-run', cb);
+  }
+
+  emit(compilation, callback) {
+    if (this.prev !== null) {
+      return callback();
     }
 
-    apply(compiler) {
-        const cb = (compilation, callback) => this.emit(compilation, callback);
-        compiler.plugin('watch-run', cb);
-        compiler.plugin('before-run', cb);
-    }
+    fs.readFile(this.src, (err, data) => {
+      if (err) {
+        throw err;
+      }
 
-    emit(compilation, callback) {
-        if (this.prev !== null) {
-            return callback();
+      const { languages } = JSON.parse(data.toString());
+      const dest = (this.prev = this.languagesToDest(languages));
+
+      fs.outputFile(this.dest, JSON.stringify(dest, null, '  '), err => {
+        if (err) {
+          throw err;
         }
 
-        fs.readFile(this.src, (err, data) => {
-            if (err) {
-                throw err;
-            }
+        callback();
+      });
+    });
+  }
 
-            const { languages } = JSON.parse(data.toString());
-            const dest = this.prev = this.languagesToDest(languages);
+  languagesToDest(languages) {
+    const dest = {
+      list: {
+        plaintext: 'PlainText'
+      },
+      aliases: {
+        plaintext: 'none',
+        jinja2: 'django'
+      }
+    };
 
-            fs.outputFile(this.dest, JSON.stringify(dest, null, '  '), err => {
-                if (err) {
-                    throw err;
-                }
+    for (const language in languages) {
+      if (this.exclude.includes(language)) {
+        continue;
+      }
 
-                callback();
-            });
-        });
+      this.setLanguageToDest(dest, language, languages[language]);
     }
 
-    languagesToDest(languages) {
-        const dest = {
-            list: {
-                plaintext: 'PlainText',
-            },
-            aliases: {
-                plaintext: 'none',
-                jinja2: 'django'
-            }
-        };
+    // Alphabetize the object before stringify'ing.
+    dest.list = this.sortObject(dest.list);
+    dest.aliases = this.sortObject(dest.aliases);
 
-        for (const language in languages) {
-            if (this.exclude.includes(language)) {
-                continue;
-            }
+    return dest;
+  }
 
-            this.setLanguageToDest(dest, language, languages[language]);
-        }
-
-        // Alphabetize the object before stringify'ing.
-        dest.list = this.sortObject(dest.list);
-        dest.aliases = this.sortObject(dest.aliases);
-
-        return dest;
+  setLanguageToDest(dest, language, { title, aliasTitles }) {
+    // Backwards compatibility with BE
+    switch (language) {
+      case 'javascript':
+        dest.list.js = title;
+        dest.aliases.js = language;
+        break;
+      case 'python':
+        dest.list.py = title;
+        dest.aliases.py = language;
+        break;
+      default:
+        dest.list[language] = title;
+        break;
     }
 
-    setLanguageToDest(dest, language, { title, aliasTitles }) {
-        // Backwards compatibility with BE
-        switch (language) {
-            case 'javascript':
-                dest.list.js = title;
-                dest.aliases.js = language;
-                break;
-            case 'python':
-                dest.list.py = title;
-                dest.aliases.py = language;
-                break;
-            default:
-                dest.list[language] = title;
-                break;
-        }
-
-        if (aliasTitles) {
-            for (const alias in aliasTitles) {
-                dest.list[alias] = aliasTitles[alias];
-                dest.aliases[alias] = language;
-            }
-        }
+    if (aliasTitles) {
+      for (const alias in aliasTitles) {
+        dest.list[alias] = aliasTitles[alias];
+        dest.aliases[alias] = language;
+      }
     }
+  }
 
-    sortObject(obj) {
-        return Object.keys(obj).sort()
-            .reduce((acc, key) =>
-                Object.assign(acc, { [key]: obj[key] }), {});
-    }
+  sortObject(obj) {
+    return Object.keys(obj)
+      .sort()
+      .reduce((acc, key) => Object.assign(acc, { [key]: obj[key] }), {});
+  }
 }
 
 exports.prismLanguageGenerationPlugin = new PrismLanguageGenerationPlugin();
