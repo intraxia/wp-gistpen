@@ -28,3 +28,8 @@ export const searchResultsSucceeded = createAction(
   'SEARCH_RESULTS_SUCCEEDED',
   resolve => (response: SearchApiResponse) => resolve({ response })
 );
+
+export const searchsResultsFailed = createAction(
+  'SEARCH_RESULTS_FAILED',
+  resolve => (err: Error) => resolve(err)
+);

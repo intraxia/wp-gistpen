@@ -6,6 +6,7 @@ export * from './authorDelta';
 export * from './commitsDelta';
 export * from './jobsDelta';
 export * from './repoDelta';
+export * from './searchDelta';
 
 export const applyDelta = (...args: Array<any>) =>
   composeWithDevTools(applyMiddleware(observeDelta(...args)));
