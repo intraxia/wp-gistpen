@@ -126,7 +126,7 @@ export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
                   )
               )
               .flatten(response => [
-                ajaxFinished(response),
+                ajaxFinished(),
                 repoSaveSucceeded(response)
               ])
               .flatMapErrors(err => Kefir.constant(ajaxFailed(err)))

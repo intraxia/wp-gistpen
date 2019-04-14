@@ -1,13 +1,10 @@
 import { createAction } from 'typesafe-actions';
-import { ApiResponse, UserApiResponse, SearchApiResponse } from '../util';
+import { UserApiResponse, SearchApiResponse } from '../util';
 import { ApiRepo } from '../deltas';
 
 export const ajaxStarted = createAction('AJAX_STARTED');
 
-export const ajaxFinished = createAction(
-  'AJAX_FINISHED',
-  resolve => (response: ApiResponse) => resolve({ response })
-);
+export const ajaxFinished = createAction('AJAX_FINISHED');
 
 export const ajaxFailed = createAction(
   'AJAX_FAILED',
