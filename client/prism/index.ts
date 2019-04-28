@@ -24,7 +24,7 @@ const extension = {
   setAutoloaderPath: (path: string) =>
     (Prism.plugins.autoloader.languages_path = path),
   setTheme: (theme: string) =>
-    import(`./themes/${theme}.js`).then(
+    import(`./themes/${theme}.ts`).then(
       ({ theme }: { theme: Theme }) =>
         new Promise(resolve =>
           requestAnimationFrame(() => {
@@ -43,7 +43,7 @@ const extension = {
         )
     ),
   togglePlugin: (pluginKey: string, toggle: boolean) =>
-    import(`./plugins/${pluginKey}.js`).then(
+    import(`./plugins/${pluginKey}.ts`).then(
       ({ plugin }) =>
         new Promise(resolve =>
           requestAnimationFrame(() => {

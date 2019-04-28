@@ -20,6 +20,11 @@ declare module 'prismjs/components/prism-core' {
 
   interface PrismCore {
     highlightAll(): void;
+    highlightElement(
+      element: Element,
+      async?: boolean,
+      callback?: Function
+    ): void;
     plugins: Plugins;
     languages: Languages;
   }

@@ -6,7 +6,7 @@
   ],
   "presets": [
     "brookjs",
-    ["@babel/preset-env", { "modules": false}],
+    ["@babel/preset-env", { "modules": false }],
     "@babel/preset-flow"
   ]
 }
