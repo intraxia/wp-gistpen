@@ -15,7 +15,13 @@ const updatePrism = (prism: Props['prism']) =>
   ]);
 
 const Code: React.RefForwardingComponent<HTMLElement, Props> = (props, ref) => (
-  <code ref={ref} className={`language-${prismSlug(props.blob.language)}`}>
+  <code
+    ref={ref}
+    className={`language-${prismSlug(props.blob.language)}`}
+    style={{
+      padding: '0'
+    }}
+  >
     {props.blob.code}
   </code>
 );
