@@ -1,6 +1,6 @@
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
-import { gistTokenChange } from '../../actions';
+import { gistTokenChange } from '../../../actions';
 import { Observable } from 'kefir';
 
 type AccountProps = {

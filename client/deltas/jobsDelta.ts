@@ -54,29 +54,29 @@ const consoleResponse = t.type({
   )
 });
 
-const jobResponse = t.intersection([
-  t.type({
-    name: t.string,
-    slug: t.string,
-    description: t.string,
-    rest_url: t.string,
-    runs_url: t.string
-  }),
-  t.partial({
-    status: t.union([t.literal('idle'), t.literal('processing')])
-  })
+const jobStatus = t.union([t.literal('idle'), t.literal('processing')]);
+
+const jobResponse = t.type({
+  name: t.string,
+  slug: t.string,
+  description: t.string,
+  rest_url: t.string,
+  runs_url: t.string,
+  status: jobStatus
+});
+
+const runStatus = t.union([
+  t.literal('scheduled'),
+  t.literal('running'),
+  t.literal('paused'),
+  t.literal('finished'),
+  t.literal('error')
 ]);
 
 const runEntity = t.type({
   ID: t.string,
   job: t.string,
-  status: t.union([
-    t.literal('scheduled'),
-    t.literal('running'),
-    t.literal('paused'),
-    t.literal('finished'),
-    t.literal('error')
-  ]),
+  status: runStatus,
   scheduled_at: t.string,
   started_at: t.union([t.string, t.null]),
   finished_at: t.union([t.string, t.null]),

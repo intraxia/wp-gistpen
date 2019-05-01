@@ -40,7 +40,7 @@ export type Job = {
   description: string;
   rest_url: string;
   runs_url: string;
-  status?: JobStatus;
+  status: JobStatus;
   runs?: Loopable<string, Run>;
 };
 

@@ -4,7 +4,7 @@ import { getType } from 'typesafe-actions';
 import { Nullable } from 'typescript-nullable';
 
 export type RouteParts = {
-  [key: string]: string | number;
+  [key: string]: string;
 };
 
 export type Route = {

@@ -1,7 +1,7 @@
 import { createAction } from 'typesafe-actions';
 
 type RouteParts = {
-  [key: string]: string | number;
+  [key: string]: string;
 };
 
 type Routes = string;

@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import jss from 'jss';
 import nested from 'jss-nested';
 import injectSheet from 'react-jss';
-import { i18n, link } from '../../helpers';
-import Loader from '../Loader';
+import { i18n, link } from '../../../helpers';
+import Loader from '../../Loader';
 
 type HeaderProps = {
   loading: boolean;

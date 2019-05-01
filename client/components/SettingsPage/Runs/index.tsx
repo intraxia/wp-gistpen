@@ -1,6 +1,6 @@
 import React from 'react';
-import { link, i18n } from '../../helpers';
-import { Run as RunEntity, JobStatus } from '../../reducers';
+import { link, i18n } from '../../../helpers';
+import { Run as RunEntity, JobStatus } from '../../../reducers';
 
 type RunsProps = {
   name: string;

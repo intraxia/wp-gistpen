@@ -1,7 +1,7 @@
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
-import { i18n, link } from '../../helpers';
-import { jobDispatchClick } from '../../actions';
+import { i18n, link } from '../../../helpers';
+import { jobDispatchClick } from '../../../actions';
 import { Observable } from 'kefir';
 import { Job } from './types';
 

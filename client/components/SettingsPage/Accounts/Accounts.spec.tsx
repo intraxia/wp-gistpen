@@ -4,7 +4,7 @@ import { expect, use } from 'chai';
 import Kefir from 'kefir';
 import { chaiPlugin } from 'brookjs-desalinate';
 import { fireEvent } from 'react-testing-library';
-import { gistTokenChange } from '../../actions';
+import { gistTokenChange } from '../../../actions';
 import Accounts from './';
 
 const { value, plugin } = chaiPlugin({ Kefir });

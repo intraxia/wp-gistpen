@@ -5,8 +5,8 @@ import {
   lineNumbersChange,
   showInvisiblesChange,
   themeChange
-} from '../../actions';
-import Blob from '../Blob';
+} from '../../../actions';
+import Blob from '../../Blob';
 
 type Theme = {
   name: string;

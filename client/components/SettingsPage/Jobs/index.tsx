@@ -1,5 +1,5 @@
 import React from 'react';
-import { i18n } from '../../helpers';
+import { i18n } from '../../../helpers';
 import Row from './Row';
 import { Job } from './types';
 

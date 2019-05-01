@@ -1,6 +1,6 @@
 import React from 'react';
-import { link } from '../../helpers';
-import { RunStatus, Message as MessageEntity } from '../../reducers';
+import { link } from '../../../helpers';
+import { RunStatus, Message as MessageEntity } from '../../../reducers';
 
 type Props = {
   job: string;
