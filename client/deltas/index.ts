@@ -1,6 +1,6 @@
 import { applyMiddleware } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { observeDelta } from 'brookjs';
+import { observeDelta, Delta } from 'brookjs';
 
 export * from './authorDelta';
 export * from './commitsDelta';
@@ -12,5 +12,6 @@ export * from './siteDelta';
 export * from './userDelta';
 export * from './webpackDelta';
 
-export const applyDelta = (...args: Array<any>) =>
-  composeWithDevTools(applyMiddleware(observeDelta(...args)));
+export const applyDelta = <A extends { type: string }, S>(
+  ...args: Delta<A, S>[]
+) => composeWithDevTools(applyMiddleware(observeDelta(...args)));

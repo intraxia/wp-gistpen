@@ -4,7 +4,7 @@ if [[ $FRONT_END == 'true' ]]; then
 	npm install -g greenkeeper-lockfile@1
 	greenkeeper-lockfile-update
 	# Disable build during TS conversion
-	# npm run build
+	npm run build
 else
 	# If it's not nightly
 	if [[ ($TRAVIS_PHP_VERSION != 'nightly') ||

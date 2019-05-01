@@ -58,7 +58,7 @@ exports.usableStyleRule = {
 
 exports.resolve = {
   alias: {
-    redux: 'redux/es'
+    redux: 'redux/es/redux.js'
   },
   extensions: ['.js', '.ts', '.tsx', '.json']
 };

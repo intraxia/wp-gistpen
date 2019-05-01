@@ -18,7 +18,7 @@ import {
   jobDispatchSucceeded,
   jobDispatchFailed
 } from '../actions';
-import { Route, Run, GlobalsState, Job } from '../reducers';
+import { GlobalsState, RouteState, RunsState, JobsState } from '../reducers';
 import { RootAction } from '../util';
 import { Nullable } from 'typescript-nullable';
 
@@ -27,12 +27,10 @@ type JobsServices = {
 };
 
 type JobsDeltaState = {
-  route: Route;
-  runs: Array<Run>;
+  route: RouteState;
+  runs: RunsState;
   globals: GlobalsState;
-  jobs: {
-    [key: string]: Job;
-  };
+  jobs: JobsState;
 };
 
 const consoleResponse = t.type({
@@ -100,8 +98,12 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
         .filter(action => action.payload.name === 'jobs')
     )
     .flatMapLatest(({ route, runs, globals, jobs }) => {
+      if (Nullable.isNone(route)) {
+        return Kefir.never();
+      }
+
       if (typeof route.parts.run === 'string') {
-        const run = runs.find((run: Run) => route.parts.run === run.ID);
+        const run = runs.items[route.parts.run];
 
         if (Nullable.isNone(run)) {
           return Kefir.never();

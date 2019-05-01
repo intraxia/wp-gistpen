@@ -6,7 +6,7 @@ import Highlighting from './Highlighting';
 import Messages from './Messages';
 import Jobs from './Jobs';
 import Runs from './Runs';
-import { Route, Job, RunStatus, Message, JobStatus, Run } from '../../reducers';
+import { Route, RunStatus, Message, JobStatus, Run } from '../../reducers';
 
 type Theme = {
   name: string;
@@ -23,7 +23,13 @@ type Props = {
   'line-numbers': boolean;
   'show-invisibles': boolean;
   token: string;
-  jobs: Job[];
+  jobs: {
+    name: string;
+    slug: string;
+    description: string;
+    status: JobStatus;
+    runs: Run[];
+  }[];
   selectedJobName: string;
   selectedJobStatus: JobStatus;
   selectedJobRuns: Run[];
