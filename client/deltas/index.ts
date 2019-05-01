@@ -1,5 +1,5 @@
 import { applyMiddleware } from 'redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly';
 import { observeDelta, Delta } from 'brookjs';
 
 export * from './authorDelta';
