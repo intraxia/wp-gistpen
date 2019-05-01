@@ -6,6 +6,7 @@ export * from './authorDelta';
 export * from './commitsDelta';
 export * from './jobsDelta';
 export * from './repoDelta';
+export * from './routerDelta';
 export * from './searchDelta';
 export * from './siteDelta';
 export * from './userDelta';
