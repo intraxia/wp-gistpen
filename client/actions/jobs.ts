@@ -10,7 +10,7 @@ export const jobFetchSucceeded = createAction(
 
 export const jobFetchFailed = createAction(
   'JOB_FETCH_FAILED',
-  resolve => (err: TypeError) => resolve(err)
+  resolve => (slug, error: TypeError) => resolve({ slug, error })
 );
 
 export const runsFetchStarted = createAction('RUNS_FETCH_STARTED');

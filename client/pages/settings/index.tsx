@@ -18,10 +18,19 @@ import mapStateToProps from './mapStateToProps';
 import { connect, Provider } from 'react-redux';
 import { eddy } from 'brookjs';
 import { RootAction } from '../../util';
+import { Job } from '../../reducers';
+
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+interface WindowState extends Omit<State, 'jobs'> {
+  jobs: {
+    [key: string]: Job;
+  };
+}
 
 declare global {
   interface Window {
-    __GISTPEN_SETTINGS__: State;
+    __GISTPEN_SETTINGS__: WindowState;
   }
 }
 
@@ -30,7 +39,16 @@ __webpack_public_path__ = __GISTPEN_SETTINGS__.globals.url + 'assets/js/';
 
 const store = eddy()(createStore)(
   reducer,
-  __GISTPEN_SETTINGS__,
+  {
+    ...__GISTPEN_SETTINGS__,
+    jobs: Object.values(__GISTPEN_SETTINGS__.jobs).reduce(
+      (jobs, job) => ({
+        ...jobs,
+        [job.slug]: { result: 'success', response: job }
+      }),
+      {}
+    )
+  },
   applyDelta<RootAction, State>(
     jobsDelta({ ajax$ }),
     routerDelta({

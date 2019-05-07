@@ -10,7 +10,11 @@ export type GlobalsState = {
   ace_widths: Array<number>;
   statuses: { [key: string]: string };
   themes: { [key: string]: string };
-  repo?: object;
+  demo: {
+    filename: string;
+    language: string;
+    code: string;
+  };
 };
 
 const defaultState: GlobalsState = {
@@ -20,7 +24,12 @@ const defaultState: GlobalsState = {
   url: '',
   ace_widths: [],
   statuses: {},
-  themes: {}
+  themes: {},
+  demo: {
+    filename: '',
+    language: '',
+    code: ''
+  }
 };
 
 export const globalsReducer = (

@@ -2,6 +2,7 @@ import { State } from './state';
 import { Route, Run, Job, JobStatus, RunStatus } from '../../reducers';
 import { Nullable } from 'typescript-nullable';
 import { SettingsPage } from '../../components';
+import { jobIsSuccess } from '../../selectors';
 
 const selectRoute = (state: { route: Nullable<Route> }) =>
   Nullable.withDefault({ name: 'highlighting', parts: {} }, state.route);
@@ -24,10 +25,12 @@ const selectRunsForJob = (state: State, job: Job): Run[] =>
   Object.values(state.runs.items).filter(run => run.job === job.slug);
 
 const selectJobs = (state: State) =>
-  Object.values(state.jobs).map(job => ({
-    ...job,
-    runs: selectRunsForJob(state, job)
-  }));
+  Object.values(state.jobs)
+    .filter(jobIsSuccess)
+    .map(({ response: job }) => ({
+      ...job,
+      runs: selectRunsForJob(state, job)
+    }));
 
 const selectLoading = (state: State) => state.ajax.running;
 
@@ -38,7 +41,13 @@ const selectViewedJob = (state: State): Nullable<Job> => {
     return null;
   }
 
-  return state.jobs[slug];
+  const job = state.jobs[slug];
+
+  if (job.result === 'error') {
+    return null;
+  }
+
+  return job.response;
 };
 
 const selectJobName = (state: State) =>
@@ -85,6 +94,7 @@ const mapStateToProps = (
   theme: selectThemes(state),
   'line-numbers': selectLineNumbers(state),
   'show-invisibles': selectShowInvisibles(state),
+  demo: state.globals.demo,
   token: selectToken(state),
   jobs: selectJobs(state),
   selectedJobName: selectJobName(state),

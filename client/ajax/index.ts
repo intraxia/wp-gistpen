@@ -1,7 +1,9 @@
 import Kefir, { Emitter, Stream } from 'kefir';
 
 export class ObsResponse {
-  constructor(private xhr: XMLHttpRequest) {}
+  constructor(private xhr: XMLHttpRequest) {
+    this.xhr = xhr;
+  }
 
   json(): Stream<unknown, TypeError> {
     const xhr = this.xhr;

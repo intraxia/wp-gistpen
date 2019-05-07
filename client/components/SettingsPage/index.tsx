@@ -23,13 +23,18 @@ type Props = {
   'line-numbers': boolean;
   'show-invisibles': boolean;
   token: string;
-  jobs: {
+  jobs: Array<{
     name: string;
     slug: string;
     description: string;
     status: JobStatus;
     runs: Run[];
-  }[];
+  }>;
+  demo: {
+    code: string;
+    filename: string;
+    language: string;
+  };
   selectedJobName: string;
   selectedJobStatus: JobStatus;
   selectedJobRuns: Run[];
@@ -37,18 +42,12 @@ type Props = {
   selectedRunMessages: Message[];
 };
 
-// @TODO(James) add demo code
-const demo = {
-  code: "console.log('hello')",
-  filename: '',
-  language: 'javascript'
-};
-
 const Page: React.FC<Props> = ({
   route,
   theme,
   ['line-numbers']: lineNumbers,
   ['show-invisibles']: showInvisibles,
+  demo,
   token,
   jobs,
   selectedJobName,

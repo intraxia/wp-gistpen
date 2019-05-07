@@ -8,10 +8,10 @@ type AccountProps = {
 };
 
 type Props = AccountProps & {
-  onInput: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const Accounts: React.FC<Props> = ({ onInput, token }) => (
+const Accounts: React.FC<Props> = ({ onChange, token }) => (
   <div className="table">
     <h3 className="title">Sync Account Settings</h3>
     <table className="form-table">
@@ -26,7 +26,7 @@ const Accounts: React.FC<Props> = ({ onInput, token }) => (
               name="wpgp-token"
               id="wpgp-token"
               className="regular-text"
-              onInput={onInput}
+              onChange={onChange}
               value={token}
               data-testid="token-input"
             />
@@ -45,7 +45,7 @@ const Accounts: React.FC<Props> = ({ onInput, token }) => (
 );
 
 const events = {
-  onInput: (evt$: Observable<React.ChangeEvent<HTMLInputElement>, Error>) =>
+  onChange: (evt$: Observable<React.ChangeEvent<HTMLInputElement>, Error>) =>
     evt$.map(e => gistTokenChange(e.target.value))
 };
 export default toJunction<Props, typeof events>(events)(Accounts);

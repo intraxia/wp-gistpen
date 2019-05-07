@@ -54,11 +54,13 @@ const Highlighting: React.FC<Props> = ({
             <select
               name="wpgp-theme"
               id="wpgp-theme"
-              onInput={onThemeChange}
+              onChange={onThemeChange}
               value={theme.selected}
             >
               {theme.options.map(option => (
-                <option value={option.slug}>{option.name}</option>
+                <option value={option.slug} key={option.slug}>
+                  {option.name}
+                </option>
               ))}
             </select>
           </td>

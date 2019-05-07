@@ -51,7 +51,12 @@ const props = {
   selectedJobStatus: 'idle' as JobStatus,
   selectedJobRuns: [],
   selectedRunStatus: 'finished' as RunStatus,
-  selectedRunMessages: []
+  selectedRunMessages: [],
+  demo: {
+    code: "console.log('hello')",
+    filename: '',
+    language: 'javascript'
+  }
 };
 
 storiesOf('SettingsPage', module)

@@ -12,7 +12,12 @@ describe('globalsReducer', () => {
       url: '',
       ace_widths: [],
       statuses: {},
-      themes: {}
+      themes: {},
+      demo: {
+        filename: '',
+        code: '',
+        language: ''
+      }
     };
     const action = {
       type: 'RANDOM'
@@ -28,7 +33,12 @@ describe('globalsReducer', () => {
       url: '',
       ace_widths: [],
       statuses: {},
-      themes: {}
+      themes: {},
+      demo: {
+        filename: '',
+        code: '',
+        language: ''
+      }
     };
     const action = init({
       globals: {
@@ -43,7 +53,12 @@ describe('globalsReducer', () => {
       url: '',
       ace_widths: [],
       statuses: {},
-      themes: {}
+      themes: {},
+      demo: {
+        filename: '',
+        code: '',
+        language: ''
+      }
     });
   });
 });

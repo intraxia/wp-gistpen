@@ -1,5 +1,5 @@
 import { getType } from 'typesafe-actions';
-import { jobFetchSucceeded } from '../actions';
+import { jobFetchSucceeded, jobFetchFailed } from '../actions';
 import { RootAction, Loopable } from '../util';
 
 export type MessageLevel = 'error' | 'warning' | 'success' | 'info' | 'debug';
@@ -44,8 +44,12 @@ export type Job = {
   runs?: Loopable<string, Run>;
 };
 
+export type JobError = { result: 'error'; error: Error };
+export type JobSuccess = { result: 'success'; response: Job };
+export type JobResult = JobError | JobSuccess;
+
 export type JobsState = {
-  [key: string]: Job;
+  [key: string]: JobResult;
 };
 
 const defaultState: JobsState = {};
@@ -53,12 +57,23 @@ const defaultState: JobsState = {};
 export const jobsReducer = (
   state: JobsState = defaultState,
   action: RootAction
-) => {
+): JobsState => {
   switch (action.type) {
     case getType(jobFetchSucceeded):
       return {
         ...state,
-        [action.payload.response.slug]: action.payload.response
+        [action.payload.response.slug]: {
+          result: 'success',
+          response: action.payload.response
+        }
+      };
+    case getType(jobFetchFailed):
+      return {
+        ...state,
+        [action.payload.slug]: {
+          result: 'error',
+          error: action.payload.error
+        }
       };
     default:
       return state;
