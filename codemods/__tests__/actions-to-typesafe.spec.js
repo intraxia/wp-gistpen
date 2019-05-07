@@ -1,7 +1,7 @@
 /* eslint-env mocha */
-import path from 'path';
-import fs from 'fs';
-import { expect } from 'chai';
+const path = require('path');
+const fs = require('fs');
+const { expect } = require('chai');
 
 function defineTest(dirName, transformName) {
   describe(transformName, () => {

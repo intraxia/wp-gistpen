@@ -194,17 +194,3 @@ exports.tsCheckPlugin = new ForkTsCheckerWebpackPlugin({
   silent: true,
   formatter: typescriptFormatter
 });
-
-exports.tsRule = {
-  test: /\.(ts|tsx)$/,
-  loader: 'babel-loader',
-  options: {
-    babelrc: false,
-    presets: [
-      'brookjs',
-      '@babel/preset-typescript',
-      ['@babel/preset-env', { modules: false }]
-    ],
-    plugins: ['@babel/plugin-syntax-dynamic-import', 'ramda']
-  }
-};

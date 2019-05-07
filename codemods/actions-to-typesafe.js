@@ -96,7 +96,7 @@ function handleArrowFunctionExpression(j, root, node, $d, func) {
   $d.replaceWith(replacement);
 }
 
-export default function transform(file, { jscodeshift: j }) {
+module.exports = function transform(file, { jscodeshift: j }) {
   const root = j(file.source);
 
   // Add type-actions import
@@ -145,6 +145,6 @@ export default function transform(file, { jscodeshift: j }) {
   return prettier.format(root.toSource(), {
     singleQuote: true
   });
-}
+};
 
-export const parser = 'flow';
+module.exports.parser = 'flow';

@@ -2,7 +2,6 @@ import path from 'path';
 import {
   devtool,
   styleRule,
-  tsRule,
   usableStyleRule,
   styleLintPlugin,
   notifierPlugin,
@@ -20,12 +19,7 @@ export const dir = 'client';
 export const mocha = {
   reporter: 'spec',
   ui: 'bdd',
-  requires: [
-    '@babel/register',
-    'ts-node/register/transpile-only',
-    'esm',
-    'jsdom-global/register'
-  ]
+  requires: ['react-testing-library', './setupTests.js']
 };
 
 const client = path.resolve(__dirname, dir);
@@ -57,15 +51,17 @@ export const webpack = {
       ...resolve
     };
 
-    config.module.rules.push(tsRule);
     config.module.rules.push(styleRule);
     config.module.rules.push(usableStyleRule);
 
     config.plugins.push(styleLintPlugin);
     config.plugins.push(notifierPlugin);
-    config.plugins.push(copyPlugin);
     config.plugins.push(prismLanguageGenerationPlugin);
     config.plugins.push(tsCheckPlugin);
+
+    if (isProd(state)) {
+      config.plugins.push(copyPlugin);
+    }
 
     return config;
   }
