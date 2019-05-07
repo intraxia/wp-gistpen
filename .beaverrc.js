@@ -32,8 +32,8 @@ const isProd = state => state.env === 'production';
  */
 export const webpack = {
   entry: {
-    settings: 'pages/settings'
-    // content: 'pages/content',
+    settings: 'pages/settings',
+    content: 'pages/content'
     // editor: 'pages/edit',
     // tinymce: 'pages/tinymce'
   },

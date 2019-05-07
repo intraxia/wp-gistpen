@@ -23,7 +23,7 @@ const plugins = {} as { [key: string]: boolean };
 const extension = {
   setAutoloaderPath: (path: string) =>
     (Prism.plugins.autoloader.languages_path = path),
-  setTheme: (theme: string) =>
+  setTheme: (theme: string): Promise<Theme> =>
     import(`./themes/${theme}.ts`).then(
       ({ theme }: { theme: Theme }) =>
         new Promise(resolve =>
@@ -42,7 +42,7 @@ const extension = {
           })
         )
     ),
-  togglePlugin: (pluginKey: string, toggle: boolean) =>
+  togglePlugin: (pluginKey: string, toggle: boolean): Promise<Theme> =>
     import(`./plugins/${pluginKey}.ts`).then(
       ({ plugin }) =>
         new Promise(resolve =>

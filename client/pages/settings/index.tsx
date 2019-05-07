@@ -22,7 +22,7 @@ import { Job } from '../../reducers';
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
-interface WindowState extends Omit<State, 'jobs'> {
+interface SettingsWindowState extends Omit<State, 'jobs'> {
   jobs: {
     [key: string]: Job;
   };
@@ -30,7 +30,7 @@ interface WindowState extends Omit<State, 'jobs'> {
 
 declare global {
   interface Window {
-    __GISTPEN_SETTINGS__: WindowState;
+    __GISTPEN_SETTINGS__: SettingsWindowState;
   }
 }
 
