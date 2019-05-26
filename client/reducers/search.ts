@@ -6,6 +6,22 @@ import {
 import { RootAction } from '../util';
 import { getType } from 'typesafe-actions';
 
+type Language = {
+  ID: number;
+  display_name: string;
+  slug: string;
+};
+
+type Blob = {
+  filename: string;
+  code: string;
+  language: Language;
+  ID: number;
+  size?: number;
+  raw_url?: string;
+  edit_url?: string;
+};
+
 export type SearchState = {
   term: string;
   selection: number | null;
