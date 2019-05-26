@@ -17,12 +17,3 @@ export type Toggle = t.TypeOf<typeof toggle>;
 export type Cursor = false | [number, number];
 
 export type RootAction = ActionType<typeof actions>;
-
-export type UserApiResponse = {};
-export type SearchApiResponse = {};
-export type GetCommitsResponse = {};
-
-export type ApiResponse =
-  | UserApiResponse
-  | SearchApiResponse
-  | GetCommitsResponse;

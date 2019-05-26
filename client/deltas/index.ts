@@ -15,4 +15,11 @@ export * from './webpackDelta';
 
 export const applyDelta = <A extends { type: string }, S>(
   ...args: Delta<A, S>[]
-) => composeWithDevTools(applyMiddleware(observeDelta(...args)));
+) =>
+  composeWithDevTools({
+    serialize: {
+      options: {
+        error: true
+      }
+    }
+  } as object)(applyMiddleware(observeDelta(...args)));

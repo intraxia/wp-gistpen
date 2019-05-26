@@ -26,6 +26,8 @@ type UserDeltaServices = {
 
 const userResponse = t.type({});
 
+export type UserApiResponse = t.TypeOf<typeof userResponse>;
+
 export const userDelta = ({ ajax$ }: UserDeltaServices) => (
   actions$: Observable<RootAction, never>,
   state$: Observable<UserDeltaState, never>

@@ -12,7 +12,8 @@ module.exports = {
     }
   },
   globals: {
-    __webpack_public_path__: true
+    __webpack_public_path__: true,
+    jQuery: true
   },
   env: {
     es6: true,
@@ -20,7 +21,7 @@ module.exports = {
     browser: true
   },
   plugins: ['react', '@typescript-eslint'],
-  extends: ['valtech', 'prettier'],
+  extends: ['valtech', 'prettier', 'prettier/@typescript-eslint'],
   rules: {
     // default rules overrides
     eqeqeq: [2, 'smart'],

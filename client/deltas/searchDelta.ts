@@ -20,7 +20,20 @@ type SearchDeltaServices = {
   ajax$: AjaxService;
 };
 
-const searchResponse = t.type({});
+const searchResponse = t.array(
+  t.type({
+    ID: t.number,
+    filename: t.string,
+    code: t.string,
+    language: t.type({
+      ID: t.number,
+      display_name: t.string,
+      slug: t.string
+    })
+  })
+);
+
+export type SearchApiResponse = t.TypeOf<typeof searchResponse>;
 
 const getSearchUrl = (state: SearchDeltaState) =>
   `${state.globals.root}search?s=${state.search.term}`;
@@ -42,11 +55,21 @@ export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
     )
     .flatMap(response => response.json())
     .flatMap(response =>
-      searchResponse
-        .validate(response, [])
-        .fold<Observable<RootAction, Error>>(
-          res => Kefir.constant(searchResultsSucceeded(res)),
-          () => Kefir.constantError(new Error('API response validation failed'))
-        )
+      searchResponse.validate(response, []).fold<Observable<RootAction, Error>>(
+        errs =>
+          Kefir.constantError(
+            new Error(`Search API response validation failed:
+
+${errs
+  .map(
+    err =>
+      `* Invalid value ${JSON.stringify(
+        err.value
+      )} supplied to ${err.context.map(x => x.key).join('/')}`
+  )
+  .join('\n')}`)
+          ),
+        res => Kefir.constant(searchResultsSucceeded(res))
+      )
     )
     .flatMapErrors(err => Kefir.constant(searchsResultsFailed(err)));

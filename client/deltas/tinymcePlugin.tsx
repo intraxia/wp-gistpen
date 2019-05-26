@@ -1,4 +1,3 @@
-/* global jQuery, tinymce */
 import Kefir, { Emitter, Observable, Property, Stream } from 'kefir';
 import { ofType } from 'brookjs';
 import React from 'react';
@@ -16,6 +15,7 @@ import { SearchState, AjaxState } from '../reducers';
 
 declare global {
   interface Window {
+    // eslint-disable-next-line
     tinymce: typeof tmce;
   }
 }
