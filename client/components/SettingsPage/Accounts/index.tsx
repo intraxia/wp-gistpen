@@ -48,4 +48,4 @@ const events = {
   onChange: (evt$: Observable<React.ChangeEvent<HTMLInputElement>, Error>) =>
     evt$.map(e => gistTokenChange(e.target.value))
 };
-export default toJunction<Props, typeof events>(events)(Accounts);
+export default toJunction(events)(Accounts);

@@ -120,4 +120,4 @@ const events = {
   ) => e$.map(e => showInvisiblesChange(e.target.checked))
 };
 
-export default toJunction<Props, typeof events>(events)(Highlighting);
+export default toJunction(events)(Highlighting);

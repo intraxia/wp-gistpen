@@ -34,4 +34,4 @@ const events = {
     evt$.map(jobDispatchClick).debounce(200)
 };
 
-export default toJunction<Props, typeof events>(events)(Row);
+export default toJunction(events)(Row);

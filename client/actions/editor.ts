@@ -36,7 +36,7 @@ export const editorAddClick = createAction('EDITOR_ADD_CLICK');
 
 export const editorDeleteClick = createAction(
   'EDITOR_DELETE_CLICK',
-  resolve => (key: string) => resolve(undefined, { key })
+  resolve => (key: string | null) => resolve(undefined, { key })
 );
 
 export const editorDescriptionChange = createAction(
@@ -56,22 +56,23 @@ export const editorSyncToggle = createAction(
 
 export const editorFilenameChange = createAction(
   'EDITOR_FILENAME_CHANGE',
-  resolve => (value: string, key: string) => resolve({ value }, { key })
+  resolve => (value: string, key: string | null) => resolve({ value }, { key })
 );
 
 export const editorLanguageChange = createAction(
   'EDITOR_LANGUAGE_CHANGE',
-  resolve => (value: string, key: string) => resolve({ value }, { key })
+  resolve => (value: string, key: string | null) => resolve({ value }, { key })
 );
 
 export const editorValueChange = createAction(
   'EDITOR_VALUE_CHANGE',
-  resolve => (value: EditorValue, key: string) => resolve(value, { key })
+  resolve => (value: EditorValue, key: string | null) => resolve(value, { key })
 );
 
 export const editorIndent = createAction(
   'EDITOR_INDENT_ACTION',
-  resolve => (value: EditorIndentValue, key: string) => resolve(value, { key })
+  resolve => (value: EditorIndentValue, key: string | null) =>
+    resolve(value, { key })
 );
 
 export const editorMakeComment = createAction(
@@ -81,7 +82,7 @@ export const editorMakeComment = createAction(
 
 export const editorMakeNewline = createAction(
   'EDITOR_MAKE_NEWLINE',
-  resolve => (value: EditorValue, key: string) => resolve(value, { key })
+  resolve => (value: EditorValue, key: string | null) => resolve(value, { key })
 );
 
 export const editorRedo = createAction('EDITOR_REDO');
@@ -90,5 +91,6 @@ export const editorUndo = createAction('EDITOR_UNDO');
 
 export const editorCursorMove = createAction(
   'EDITOR_CURSOR_MOVE',
-  resolve => (cursor: Cursor, key: string) => resolve({ cursor }, { key })
+  resolve => (cursor: Cursor, key: string | null) =>
+    resolve({ cursor }, { key })
 );

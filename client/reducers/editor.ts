@@ -218,9 +218,12 @@ export const editorReducer = (
  * @returns {Instance[]} Update instances.
  */
 function rejectWithKey(
-  key: string,
+  key: string | null,
   instances: Array<EditorInstance>
 ): Array<EditorInstance> {
+  if (key == null) {
+    return instances;
+  }
   return instances.filter((instance: EditorInstance) => key !== instance.key);
 }
 
@@ -234,9 +237,12 @@ function rejectWithKey(
  */
 function mapInstanceWithKey(
   state: EditorState,
-  key: string,
+  key: string | null,
   fn: (i: EditorInstance) => EditorInstance
 ): EditorState {
+  if (key == null) {
+    return state;
+  }
   return {
     ...state,
     instances: state.instances.map((instance: EditorInstance) =>

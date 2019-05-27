@@ -98,4 +98,4 @@ const events = {
     evt$.map(searchResultSelectionChange)
 };
 
-export default toJunction<Props, typeof events>(events)(Search);
+export default toJunction(events)(Search);
