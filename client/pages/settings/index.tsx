@@ -17,6 +17,7 @@ import { reducer, State } from './state';
 import mapStateToProps from './mapStateToProps';
 import { connect, Provider } from 'react-redux';
 import { eddy } from 'brookjs';
+import Prism from '../../prism';
 import { RootAction } from '../../util';
 import { Job } from '../../reducers';
 
@@ -35,7 +36,11 @@ declare global {
 }
 
 const { __GISTPEN_SETTINGS__ } = window;
-__webpack_public_path__ = __GISTPEN_SETTINGS__.globals.url + 'assets/js/';
+
+// eslint-disable-next-line camelcase
+Prism.setAutoloaderPath(
+  (__webpack_public_path__ = __GISTPEN_SETTINGS__.globals.url + 'assets/js/')
+);
 
 const store = eddy()(createStore)(
   reducer,

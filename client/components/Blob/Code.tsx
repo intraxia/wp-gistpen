@@ -7,8 +7,6 @@ import { Props } from './types';
 
 const updatePrism = (prism: Props['prism']) =>
   Promise.all([
-    window.__webpack_public_path__ &&
-      Prism.setAutoloaderPath(window.__webpack_public_path__),
     Prism.setTheme(prism.theme),
     Prism.togglePlugin('line-numbers', prism['line-numbers']),
     Prism.togglePlugin('show-invisibles', prism['show-invisibles'])

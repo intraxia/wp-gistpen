@@ -153,14 +153,6 @@ const refback: Refback<Props, HTMLElement> = (ref$, props$) =>
     ).setName('keyDown$');
 
     /**
-     * Ensure the autoload path is set correctly on startup.
-     */
-    const setAutoloader$ = Kefir.stream<never, never>(emitter => {
-      Prism.setAutoloaderPath(__webpack_public_path__);
-      emitter.end();
-    }).setName('setAutoloader$');
-
-    /**
      * Create initial render stream.
      *
      * This handles the render on pages load, making sure the editor
@@ -227,7 +219,6 @@ const refback: Refback<Props, HTMLElement> = (ref$, props$) =>
       .setName('language$');
 
     return Kefir.merge<RootAction, never>([
-      setAutoloader$,
       initial$,
       options$,
       typing$,
