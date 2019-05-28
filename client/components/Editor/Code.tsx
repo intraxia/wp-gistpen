@@ -192,8 +192,13 @@ const refback: Refback<Props, HTMLElement> = (ref$, props$) =>
     const typing$ = props$
       .sampledBy(keyUp$.debounce(10))
       .skipDuplicates((prev, next) => prev.code === next.code)
-      .flatMapLatest(props =>
-        createDOMUpdateStream(el, props).takeUntilBy(keyDown$)
+      .flatMapLatest(
+        props =>
+          // @TODO(James) remove when updated typings
+          createDOMUpdateStream(el, props).takeUntilBy(keyDown$) as Observable<
+            never,
+            never
+          >
       )
       .setName('typing$');
 
