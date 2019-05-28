@@ -2,6 +2,10 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [1.1.1][] - 2018-06-28 ###
+
+* Fixed buggy deploy
+
 ### [1.1.0][] - 2018-06-22 ###
 
 * Upgrade the editor into React

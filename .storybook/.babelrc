@@ -1,0 +1,10 @@
+{
+   "presets": [
+     "brookjs",
+     "@babel/typescript",
+     ["@babel/env", { "modules": false }]
+   ],
+   "plugins": [
+     "@babel/syntax-dynamic-import"
+   ]
+ }

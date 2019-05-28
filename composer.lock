@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b7152f9a5fe294fcf29e4858ff05e679",
+    "content-hash": "9a55f26f889111dd895e4292c562d1d8",
     "packages": [
         {
             "name": "intraxia/jaxion",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "56928c915e69688539e732ce11587bc8cd8c6d71"
+                "reference": "f45a869720067f597afe64d397a23155e412742d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/56928c915e69688539e732ce11587bc8cd8c6d71",
-                "reference": "56928c915e69688539e732ce11587bc8cd8c6d71",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/f45a869720067f597afe64d397a23155e412742d",
+                "reference": "f45a869720067f597afe64d397a23155e412742d",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2018-01-07T18:28:19+00:00"
+            "time": "2018-12-29T17:49:31+00:00"
         },
         {
             "name": "myclabs/php-enum",
@@ -1481,7 +1481,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "stability-flags": {
         "intraxia/jaxion": 20,
         "intraxia/codestyle": 20
