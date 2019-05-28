@@ -1,4 +1,5 @@
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import { RootAction } from '../util';
 import {
   themeChange,
@@ -18,9 +19,9 @@ const defaultState: PrismState = {
   'show-invisibles': false
 };
 
-export const prismReducer = (
-  state: PrismState = defaultState,
-  action: RootAction
+export const prismReducer: EddyReducer<PrismState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(themeChange):

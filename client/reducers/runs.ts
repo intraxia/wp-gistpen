@@ -1,4 +1,5 @@
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import { runsFetchSucceeded } from '../actions';
 import { RootAction } from '../util';
 import { Run } from './jobs';
@@ -13,9 +14,9 @@ const defaultState: RunsState = {
   items: {}
 };
 
-export const runsReducer = (
-  state: RunsState = defaultState,
-  action: RootAction
+export const runsReducer: EddyReducer<RunsState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(runsFetchSucceeded):

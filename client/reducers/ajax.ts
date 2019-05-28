@@ -7,6 +7,7 @@ import {
   searchResultsSucceeded
 } from '../actions';
 import { RootAction } from '../util';
+import { EddyReducer } from 'brookjs';
 
 export type AjaxState = {
   running: boolean;
@@ -16,9 +17,9 @@ const defaultState: AjaxState = {
   running: false
 };
 
-export const ajaxReducer = (
-  state: AjaxState = defaultState,
-  action: RootAction
+export const ajaxReducer: EddyReducer<AjaxState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(ajaxStarted):

@@ -20,6 +20,7 @@ import {
   repoSaveSucceeded
 } from '../actions';
 import { RootAction, Cursor, Toggle } from '../util';
+import { EddyReducer } from 'brookjs';
 
 export type EditorSnapshot = {
   code: string;
@@ -32,7 +33,7 @@ export type EditorHistory = {
 };
 
 export type EditorInstance = {
-  key?: string;
+  key: string;
   filename: string;
   code: string;
   language: string;
@@ -54,6 +55,7 @@ export type EditorState = {
 };
 
 const defaultInstance: EditorInstance = {
+  key: 'new0',
   filename: '',
   code: '\n',
   language: 'plaintext',
@@ -74,12 +76,12 @@ const defaultState: EditorState = {
   password: '',
   gist_id: '',
   sync: 'off',
-  instances: [{ ...defaultInstance, key: 'new0' }]
+  instances: [defaultInstance]
 };
 
-export const editorReducer = (
-  state: EditorState = defaultState,
-  action: RootAction
+export const editorReducer: EddyReducer<EditorState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(editorThemeChange):

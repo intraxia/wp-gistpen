@@ -1,3 +1,4 @@
+import { EddyReducer } from 'brookjs';
 import { getType } from 'typesafe-actions';
 import { fetchAuthorSucceeded } from '../actions';
 import { RootAction } from '../util';
@@ -24,9 +25,9 @@ const defaultState: AuthorsState = {
   items: {}
 };
 
-export const authorsReducer = (
-  state: AuthorsState = defaultState,
-  action: RootAction
+export const authorsReducer: EddyReducer<AuthorsState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(fetchAuthorSucceeded):

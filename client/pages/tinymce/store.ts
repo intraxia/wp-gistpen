@@ -1,5 +1,6 @@
-import { combineReducers, createStore } from 'redux';
+import { createStore } from 'redux';
 import { StateType } from 'typesafe-actions';
+import { combineReducers, eddy } from 'brookjs';
 import { ajax$ } from '../../ajax';
 import {
   applyDelta,
@@ -16,9 +17,9 @@ const reducer = combineReducers({
   search: searchReducer
 });
 
-export type State = StateType<typeof reducer>;
+export type State = StateType<typeof reducer>[0];
 
-export default createStore(
+export default eddy()(createStore)(
   reducer,
   applyDelta<RootAction, State>(
     searchDelta({ ajax$ }),

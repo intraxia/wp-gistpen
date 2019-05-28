@@ -1,4 +1,5 @@
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import { RootAction } from '../util';
 import { gistTokenChange } from '../actions';
 
@@ -10,9 +11,9 @@ const defaultState: GistState = {
   token: ''
 };
 
-export const gistReducer = (
-  state: GistState = defaultState,
-  action: RootAction
+export const gistReducer: EddyReducer<GistState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(gistTokenChange):

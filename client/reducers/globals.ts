@@ -1,4 +1,5 @@
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import { RootAction } from '../util';
 import { init } from '../actions';
 
@@ -32,9 +33,9 @@ const defaultState: GlobalsState = {
   }
 };
 
-export const globalsReducer = (
-  state: GlobalsState = defaultState,
-  action: RootAction
+export const globalsReducer: EddyReducer<GlobalsState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(init):

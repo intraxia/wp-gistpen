@@ -1,10 +1,11 @@
+import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import {
   searchInput,
   searchResultsSucceeded,
   searchResultSelectionChange
 } from '../actions';
 import { RootAction } from '../util';
-import { getType } from 'typesafe-actions';
 
 type Language = {
   ID: number;
@@ -30,9 +31,9 @@ export type SearchState = {
 
 const defaultState: SearchState = { term: '', results: [], selection: null };
 
-export const searchReducer = (
-  state: SearchState = defaultState,
-  action: RootAction
+export const searchReducer: EddyReducer<SearchState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(searchInput):

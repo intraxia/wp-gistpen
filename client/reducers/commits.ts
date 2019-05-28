@@ -1,5 +1,6 @@
 import { Nullable } from 'typescript-nullable';
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import { commitsFetchSucceeded, commitClick } from '../actions';
 import { RootAction } from '../util';
 
@@ -28,9 +29,9 @@ const defaultState: CommitsState = {
   selected: null
 };
 
-export const commitsReducer = (
-  state: CommitsState = defaultState,
-  action: RootAction
+export const commitsReducer: EddyReducer<CommitsState, RootAction> = (
+  state = defaultState,
+  action
 ) => {
   switch (action.type) {
     case getType(commitsFetchSucceeded):

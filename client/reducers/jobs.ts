@@ -1,4 +1,5 @@
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import { jobFetchSucceeded, jobFetchFailed } from '../actions';
 import { RootAction, Loopable } from '../util';
 
@@ -54,10 +55,10 @@ export type JobsState = {
 
 const defaultState: JobsState = {};
 
-export const jobsReducer = (
-  state: JobsState = defaultState,
-  action: RootAction
-): JobsState => {
+export const jobsReducer: EddyReducer<JobsState, RootAction> = (
+  state = defaultState,
+  action
+) => {
   switch (action.type) {
     case getType(jobFetchSucceeded):
       return {
