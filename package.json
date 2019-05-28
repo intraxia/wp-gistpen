@@ -65,7 +65,7 @@
     "eslint-config-valtech": "^1.0.0",
     "eslint-plugin-react": "^7.6.1",
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
-    "jscodeshift": "^0.6.3",
+    "jscodeshift": "^0.6.4",
     "jsdom": "^13.0.0",
     "jsdom-global": "^3.0.2",
     "node-sass": "^4.9.0",
