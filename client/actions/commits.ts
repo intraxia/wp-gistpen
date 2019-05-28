@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import { ApiCommits } from '../deltas/commitsDelta';
+import { ApiCommits } from '../deltas';
 
 export const commitsFetchStarted = createAction('COMMITS_FETCH_STARTED');
 

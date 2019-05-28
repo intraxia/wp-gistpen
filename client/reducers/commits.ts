@@ -6,6 +6,9 @@ import { RootAction } from '../util';
 
 // @todo flesh out & dedupe
 export type BlobState = {
+  ID: number;
+  code: string;
+  filename: string;
   language: {
     slug: string;
   };

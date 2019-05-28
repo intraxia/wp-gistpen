@@ -1,3 +1,4 @@
+import { Nullable } from 'typescript-nullable';
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
 import injectSheet from 'react-jss';
@@ -56,15 +57,15 @@ const Commits: React.FC<{
   classes: ClassMap;
   commits: Array<{
     ID: string;
-    author?: {
+    author: Nullable<{
       avatar: string;
       name: string;
-    };
+    }>;
     selected: boolean;
     description: string;
     committedAt: string;
   }>;
-  selectedCommit: {
+  selectedCommit: Nullable<{
     description: string;
     states: Array<{
       ID: string;
@@ -72,7 +73,7 @@ const Commits: React.FC<{
       filename: string;
       language: string;
     }>;
-  };
+  }>;
   prism: {
     theme: string;
     'show-invisibles': boolean;

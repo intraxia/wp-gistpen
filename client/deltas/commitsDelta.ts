@@ -21,8 +21,24 @@ type CommitsDeltaState = {
   repo: RepoState;
 };
 
-// @todo fill out this type
-const apiCommits = t.type({});
+const apiCommits = t.array(
+  t.type({
+    ID: t.number,
+    description: t.string,
+    committed_at: t.string,
+    author: t.string,
+    states: t.array(
+      t.type({
+        ID: t.number,
+        code: t.string,
+        filename: t.string,
+        language: t.type({
+          slug: t.string
+        })
+      })
+    )
+  })
+);
 
 export interface ApiCommits extends t.TypeOf<typeof apiCommits> {}
 

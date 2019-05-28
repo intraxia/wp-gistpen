@@ -49,9 +49,9 @@ const makeBody = (state: RepoDeltaState) =>
         ID?: number;
       };
 
-      if (Nullable.maybe(false, key => key.includes('new'), instance.key)) {
+      if (!instance.key.includes('new')) {
         // If key includes new, then we know it exists.
-        blob.ID = parseInt(instance.key!, 10);
+        blob.ID = parseInt(instance.key, 10);
       }
 
       return blob;

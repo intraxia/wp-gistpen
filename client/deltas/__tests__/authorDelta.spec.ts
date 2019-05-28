@@ -57,7 +57,7 @@ describe('authorDelta', () => {
     expect(authorDelta(services)).to.emitFromDelta(
       [[0, value(fetchAuthorFailed(error))]],
       send => {
-        send(commitsFetchSucceeded({}), state);
+        send(commitsFetchSucceeded({} as any), state);
       }
     );
   });
@@ -74,7 +74,7 @@ describe('authorDelta', () => {
     expect(authorDelta(services)).to.emitFromDelta(
       [[0, value(fetchAuthorFailed(error))]],
       send => {
-        send(commitsFetchSucceeded({}), state);
+        send(commitsFetchSucceeded({} as any), state);
       }
     );
   });
@@ -94,7 +94,7 @@ describe('authorDelta', () => {
     expect(authorDelta(services)).to.emitFromDelta(
       [[0, value(fetchAuthorFailed(error))]],
       send => {
-        send(commitsFetchSucceeded({}), state);
+        send(commitsFetchSucceeded({} as any), state);
       }
     );
   });
@@ -119,7 +119,7 @@ describe('authorDelta', () => {
     expect(authorDelta(services)).to.emitFromDelta(
       [[0, value(fetchAuthorSucceeded(response))]],
       send => {
-        send(commitsFetchSucceeded({}), state);
+        send(commitsFetchSucceeded({} as any), state);
       }
     );
   });

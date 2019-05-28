@@ -17,7 +17,7 @@ export const editorThemeChange = createAction(
 
 export const editorTabsToggle = createAction(
   'EDITOR_TABS_TOGGLE',
-  resolve => (value: string) => resolve({ value })
+  resolve => (value: Toggle) => resolve({ value })
 );
 
 export const editorWidthChange = createAction(

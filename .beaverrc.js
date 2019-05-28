@@ -34,7 +34,7 @@ export const webpack = {
   entry: {
     settings: 'pages/settings',
     content: 'pages/content',
-    // editor: 'pages/edit',
+    editor: 'pages/edit',
     tinymce: 'pages/tinymce'
   },
   output: {
