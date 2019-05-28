@@ -24,8 +24,10 @@ branches:
         - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 env:
-    - WP_VERSION=latest WP_MULTISITE=0
-    - WP_VERSION=latest WP_MULTISITE=1
+    # - WP_VERSION=latest WP_MULTISITE=0
+    # - WP_VERSION=latest WP_MULTISITE=1
+    - WP_VERSION=5.1 WP_MULTISITE=0
+    - WP_VERSION=5.1 WP_MULTISITE=1
     - WP_VERSION=4.6 WP_MULTISITE=0
     - WP_VERSION=4.6 WP_MULTISITE=1
 
