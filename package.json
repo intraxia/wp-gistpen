@@ -111,7 +111,7 @@
     "typesafe-actions": "^4.0.0",
     "typescript-nullable": "^0.6.0",
     "util": "^0.10.0",
-    "whatwg-fetch": "^2.0.2"
+    "whatwg-fetch": "^3.0.0"
   },
   "esm": {
     "mode": "auto",
