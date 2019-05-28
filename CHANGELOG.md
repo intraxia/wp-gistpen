@@ -2,6 +2,10 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [1.1.2][] - 2019-05-27 ###
+
+* Rewrite & stabilize FE into TypeScript & latest brookjs
+
 ### [1.1.1][] - 2018-06-28 ###
 
 * Fixed buggy deploy
