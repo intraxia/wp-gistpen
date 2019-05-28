@@ -1,12 +1,10 @@
 {
-  "plugins": [
-    "@babel/plugin-syntax-flow",
-    "@babel/plugin-transform-flow-strip-types",
-    "@babel/plugin-syntax-dynamic-import"
-  ],
-  "presets": [
-    "brookjs",
-    ["@babel/preset-env", { "modules": false}],
-    "@babel/preset-flow"
-  ]
-}
+   "presets": [
+     "brookjs",
+     "@babel/typescript",
+     ["@babel/env", { "modules": false }]
+   ],
+   "plugins": [
+     "@babel/syntax-dynamic-import"
+   ]
+ }

@@ -1,3 +1,1 @@
-import { register } from 'brookjs-desalinate';
-
-register();
+import 'brookjs-desalinate/register';

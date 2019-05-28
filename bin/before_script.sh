@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 if [[ $FRONT_END == 'true' ]]; then
-	npm install
-	npm install -g gulp
 	npm install -g greenkeeper-lockfile@1
 	greenkeeper-lockfile-update
 	npm run build
 else
-	if [[ $TRAVIS_PHP_VERSION != '5.4' && $TRAVIS_PHP_VERSION != 'nightly' ]]; then
+	# If it's not nightly
+	if [[ ($TRAVIS_PHP_VERSION != 'nightly') ||
+		# or it's not this specific version.
+		!($TRAVIS_PHP_VERSION == '5.4' && $WP_VERSION == 'latest' && $WP_MULTISITE == '0') ]]; then
 		phpenv config-rm xdebug.ini;
 	fi
 
