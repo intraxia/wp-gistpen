@@ -70,6 +70,10 @@ const mapKeydownToAction = (
 
 const setSelectionRange = (node: Element, ss: number, se: number) =>
   Kefir.stream<never, never>(emitter => {
+    if (ss === selectSelectionStart(node) && se === selectSelectionEnd(node)) {
+      return emitter.end();
+    }
+
     const range = document.createRange();
     const offsetStart = findOffset(node, ss);
     let offsetEnd = offsetStart;
