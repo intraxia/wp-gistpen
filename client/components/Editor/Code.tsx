@@ -103,11 +103,41 @@ const highlightElement = (el: Element) =>
     emitter.end();
   }).setName('highlightElement$');
 
+let init = false;
+
 const createPrismUpdateStream = (props: Props) =>
   // Since we're igonring the values anyway, I don't mind casting to `any`.
   Kefir.fromPromise<any, never>(
     Promise.all([
       Prism.setTheme(props.theme),
+      Prism.togglePlugin('line-numbers', true).then(() => {
+        // We only need to register this callback once, but only after the
+        // plugin has been loaded once.
+        if (!init) {
+          init = true;
+          Prism.hooks.add('line-numbers', env => {
+            const code = env.element;
+            const pre = code.parentNode as HTMLPreElement | null;
+
+            if (pre == null) {
+              return;
+            }
+
+            const incoming = code.querySelector('.line-numbers-rows');
+            const outgoings = pre.querySelectorAll('.line-numbers-rows');
+
+            for (let i = 0; i < outgoings.length; i++) {
+              const outgoing = outgoings[i];
+
+              if (outgoing !== incoming) {
+                outgoing.remove();
+              }
+            }
+
+            incoming != null && pre.appendChild(incoming);
+          });
+        }
+      }),
       Prism.togglePlugin('show-invisibles', props.invisibles === 'on')
     ])
   )

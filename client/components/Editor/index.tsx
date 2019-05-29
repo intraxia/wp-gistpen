@@ -85,7 +85,7 @@ const Editor: React.FC<Props> = ({
   onLanguageChange,
   onDeleteClick
 }) => (
-  <div className="editor page">
+  <div className={`editor page wpgp-editor-theme-${theme}`}>
     <div className="code-toolbar">
       <Toolbar>
         <Filename filename={filename} onInput={onFilenameChange} />

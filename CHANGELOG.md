@@ -2,6 +2,12 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [Unreleased][unreleased] ###
+
+#### Added ####
+
+* Added line numbers to the editor
+
 ### [1.1.1][] - 2018-06-28 ###
 
 * Fixed buggy deploy
