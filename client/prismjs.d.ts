@@ -18,6 +18,10 @@ declare module 'prismjs/components/prism-core' {
     [key: string]: {};
   }
 
+  interface Environment {
+    element: HTMLElement;
+  }
+
   interface PrismCore {
     highlightAll(): void;
     highlightElement(
@@ -25,6 +29,9 @@ declare module 'prismjs/components/prism-core' {
       async?: boolean,
       callback?: Function
     ): void;
+    hooks: {
+      add(event: string, callback: (env: Environment) => void): void;
+    };
     plugins: Plugins;
     languages: Languages;
   }

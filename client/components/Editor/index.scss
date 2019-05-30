@@ -43,4 +43,44 @@
             display: initial;
         }
     }
+
+    .line-numbers .line-numbers-rows {
+        font-size: 16px;
+        top: 50%;
+        left: -0.25em;
+        transform: translateY(-50%);
+    }
+
+    &.wpgp-editor-theme- {
+        &cb {
+            .line-numbers-rows span {
+                padding-right: 0;
+            }
+        }
+
+        &ghcolors {
+            .line-numbers .line-numbers-rows {
+                line-height: 1.2;
+            }
+        }
+
+        &coy {
+            pre[class*="language-"].line-numbers.line-numbers code {
+                padding-left: 3.8em;
+                display: block;
+            }
+
+            pre[class*="language-"].line-numbers.line-numbers {
+                position: relative;
+            }
+
+            .line-numbers .line-numbers-rows {
+                left: 0.75em;
+            }
+        }
+    }
+
+    pre[class*="language-"].line-numbers {
+        position: static;
+    }
 }
