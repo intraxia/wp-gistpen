@@ -73,7 +73,7 @@
     "react-dev-utils": "^9.0.1",
     "react-testing-library": "^7.0.0",
     "sass-loader": "^7.0.0",
-    "shelljs": "^0.8.1",
+    "shelljs": "^0.8.3",
     "sinon": "^6.0.0",
     "sinon-chai": "^3.0.0",
     "style-loader": "^0.23.0",
