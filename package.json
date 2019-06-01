@@ -89,7 +89,7 @@
     "brookjs": "1.0.0-alpha.19",
     "brookjs-silt": "1.0.0-alpha.22",
     "classnames": "^2.2.5",
-    "clipboard": "^2.0.0",
+    "clipboard": "^2.0.4",
     "core-js": "^2.5.3",
     "io-ts": "^1.5.1",
     "jss": "^9.6.0",
