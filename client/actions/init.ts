@@ -1,6 +1,7 @@
 import { createAction } from 'typesafe-actions';
+import { GlobalsState } from '../reducers';
 
 export const init = createAction(
   'INIT',
-  resolve => (initial: { globals: object }) => resolve(initial)
+  resolve => (initial: { globals: Partial<GlobalsState> }) => resolve(initial)
 );

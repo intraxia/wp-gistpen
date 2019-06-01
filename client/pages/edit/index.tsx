@@ -19,6 +19,7 @@ import View from './View';
 import { State, mapStateToProps, reducer } from './state';
 import { eddy } from 'brookjs';
 import Prism from '../../prism';
+import { init } from '../../actions';
 
 interface EditWindowState extends State {}
 
@@ -35,34 +36,9 @@ Prism.setAutoloaderPath(
   (__webpack_public_path__ = __GISTPEN_EDITOR__.globals.url + 'assets/js/')
 );
 
-const initialState: State = {
-  ajax: { running: false },
-  authors: { items: {} },
-  ...__GISTPEN_EDITOR__,
-  editor: {
-    ...__GISTPEN_EDITOR__.editor,
-    instances:
-      __GISTPEN_EDITOR__.editor.instances.length > 0
-        ? __GISTPEN_EDITOR__.editor.instances
-        : [
-            {
-              key: 'new0',
-              filename: '',
-              code: '\n',
-              language: 'plaintext',
-              cursor: false,
-              history: {
-                undo: [],
-                redo: []
-              }
-            }
-          ]
-  }
-};
-
 const store = eddy()(createStore)(
   reducer,
-  initialState,
+  __GISTPEN_EDITOR__,
   applyDelta<RootAction, State>(
     authorDelta({ ajax$ }),
     repoDelta({ ajax$ }),
@@ -77,14 +53,14 @@ const store = eddy()(createStore)(
   )
 );
 
+const App = connect(mapStateToProps)(View);
+
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.getElementById('edit-app');
 
-  if (!el) {
+  if (el == null) {
     throw new Error('edit-app not found');
   }
-
-  const App = connect(mapStateToProps)(View);
 
   ReactDOM.render(
     <Provider store={store}>
@@ -95,5 +71,5 @@ document.addEventListener('DOMContentLoaded', () => {
     el
   );
 
-  // store.dispatch({ type: 'INIT' });
+  store.dispatch(init(__GISTPEN_EDITOR__));
 });
