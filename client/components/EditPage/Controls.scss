@@ -1,8 +1,9 @@
 @import "./common";
 
 #wpbody .wpgp-editor-controls {
-    @include outer-container(100%);
-
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px;
     font-family: $monospace-font;
 

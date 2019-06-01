@@ -86,8 +86,6 @@
     "wp-pot-cli": "^1.0.3"
   },
   "dependencies": {
-    "bourbon": "^5.0.0",
-    "bourbon-neat": "^1.8.0",
     "brookjs": "1.0.0-alpha.19",
     "brookjs-silt": "1.0.0-alpha.22",
     "classnames": "^2.2.5",
@@ -111,9 +109,5 @@
     "typesafe-actions": "^4.4.0",
     "typescript-nullable": "^0.6.0",
     "whatwg-fetch": "^3.0.0"
-  },
-  "esm": {
-    "mode": "auto",
-    "cjs": true
   }
 }
