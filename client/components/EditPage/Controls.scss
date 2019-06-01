@@ -1,5 +1,9 @@
 @import "./common";
 
+body.post-type-gistpen {
+    background: #FFF;
+}
+
 #wpbody .wpgp-editor-controls {
     max-width: 100%;
     margin-left: auto;
@@ -44,6 +48,7 @@
         font-weight: inherit;
         margin-left: 4px;
         margin-right: 4px;
+        outline: none;
 
         &::before {
             margin-right: 0.25em;
@@ -291,6 +296,7 @@
         $select-text: #1d1f21,
         $select-background: #A8FF60,
         $checkbox-border: #FFF,
-        $checked-color: #DAD085
+        $checked-color: #DAD085,
+        $controls-radius: true
     );
 }

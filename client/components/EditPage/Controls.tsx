@@ -164,12 +164,16 @@ const Controls: React.FC<Props> = ({
       >
         {i18n('editor.update')}
       </button>
+    </div>
+    <div className="wpgp-editor-control">
       <button
         className="dashicons-before wpgp-button wpgp-button-add"
         onClick={onAddClick}
       >
         {i18n('editor.file.add')}
       </button>
+    </div>
+    <div className="wpgp-editor-control">
       <a
         href={link('wpgp_route', 'commits')}
         className="dashicons-before wpgp-button wpgp-button-add"
