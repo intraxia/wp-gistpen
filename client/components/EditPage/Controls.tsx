@@ -59,6 +59,21 @@ type Props = {
 
 const toggleToBoolean = (toggle: Toggle): boolean => toggle === 'on';
 
+const ButtonControl: React.FC<{
+  className: string;
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  children: React.ReactNode;
+}> = ({ className, onClick, children }) => (
+  <div className="wpgp-editor-control">
+    <button
+      className={`dashicons-before wpgp-button ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  </div>
+);
+
 const Controls: React.FC<Props> = ({
   selectedTheme,
   selectedStatus,
@@ -157,19 +172,15 @@ const Controls: React.FC<Props> = ({
       />
     </div>
 
+    <ButtonControl className="wpgp-button-update" onClick={onUpdateClick}>
+      {i18n('editor.update')}
+    </ButtonControl>
+
+    <ButtonControl className="wpgp-button-add" onClick={onAddClick}>
+      {i18n('editor.file.add')}
+    </ButtonControl>
+
     <div className="wpgp-editor-control">
-      <button
-        className="dashicons-before wpgp-button wpgp-button-update"
-        onClick={onUpdateClick}
-      >
-        {i18n('editor.update')}
-      </button>
-      <button
-        className="dashicons-before wpgp-button wpgp-button-add"
-        onClick={onAddClick}
-      >
-        {i18n('editor.file.add')}
-      </button>
       <a
         href={link('wpgp_route', 'commits')}
         className="dashicons-before wpgp-button wpgp-button-add"

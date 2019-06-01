@@ -6,11 +6,6 @@ $dark-blue: #1E8CBE;
 $light-blue: #5B9DD9;
 
 // Mixins
-
-@mixin focus-border {
-    box-shadow: 0 0 2px $dark-blue;
-}
-
 @mixin editor-controls-theme(
     $theme,
     $controls-background,
@@ -31,14 +26,19 @@ $light-blue: #5B9DD9;
 
         @if $controls-border {
             border: 0.3em solid $controls-border;
+        }
 
-            @if $controls-radius {
-                border-radius: 0.5em;
-            }
+        @if $controls-radius {
+            border-radius: 0.5em;
         }
 
         .wpgp-editor-control {
             background-color: $control-background;
+            border: 2px solid transparent;
+
+            &:focus-within {
+                border-color: $controls-text;
+            }
         }
 
         .wpgp-button {
