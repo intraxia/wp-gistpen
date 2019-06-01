@@ -27,7 +27,7 @@ export function isSpecialEvent(
 
   switch (evt.keyCode) {
     case 9: // Tab
-      if (!cmdOrCtrl) {
+      if (!cmdOrCtrl && !altKey) {
         return true;
       }
       break;
