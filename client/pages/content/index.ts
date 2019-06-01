@@ -1,5 +1,4 @@
-// @flow
-import 'core-js/fn/promise';
+import 'core-js/es/promise';
 import Prism from '../../prism';
 import { plugin as p1 } from '../../prism/plugins/toolbar';
 import { plugin as p2 } from '../../prism/plugins/line-highlight';
