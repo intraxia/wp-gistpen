@@ -2,11 +2,16 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [Unreleased][unreleased] ###
+### [1.1.3][1.1.3] ###
 
-#### Added ####
+#### Fixed ####
 
-* Added line numbers to the editor
+* Escape filename on FE & BE
+* Accessibility improvements
+	* Add line numbers to the editor
+	* Allow alt + tab to escape the editor
+	* Improve border of focused controls
+	* Fix toolbar colors
 
 ### [1.1.2][] - 2019-05-27 ###
 
@@ -256,6 +261,10 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.1.3]: https://github.com/intraxia/WP-Gistpen/tree/1.1.3
+[1.1.2]: https://github.com/intraxia/WP-Gistpen/tree/1.1.2
+[1.1.1]: https://github.com/intraxia/WP-Gistpen/tree/1.1.1
+[1.1.0]: https://github.com/intraxia/WP-Gistpen/tree/1.1.0
 [1.0.3]: https://github.com/intraxia/WP-Gistpen/tree/1.0.3
 [1.0.2]: https://github.com/intraxia/WP-Gistpen/tree/1.0.2
 [1.0.1]: https://github.com/intraxia/WP-Gistpen/tree/1.0.1
