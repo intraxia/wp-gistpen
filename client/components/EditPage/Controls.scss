@@ -97,206 +97,38 @@ body.post-type-gistpen {
         border: 1px solid;
     }
 
-    @include editor-controls-theme(
-        $theme: 'default',
-        $controls-background: #f5f2f0,
-        $controls-text: #545454,
-        $control-background: darken(#f5f2f0, 5%),
-        $button-text: darken(#f5f2f0, 5%),
-        $button-background: #07a,
-        $select-text: darken(#f5f2f0, 5%),
-        $select-background: #690,
-        $checkbox-border: #bbb,
-        $checked-color: #DD4A68
-    );
+    @each $theme, $variables in $themes {
+        @include editor-controls-theme(
+            $theme: $theme,
+            $controls-background: map-get($variables, "controls-background"),
+            $controls-text: map-get($variables, "controls-text"),
+            $control-background: map-get($variables, "control-background"),
+            $button-text: map-get($variables, "button-text"),
+            $button-background: map-get($variables, "button-background"),
+            $select-text: map-get($variables, "select-text"),
+            $select-background: map-get($variables, "select-background"),
+            $checkbox-border: map-get($variables, "checkbox-border"),
+            $checked-color: map-get($variables, "checked-color"),
+            $controls-border: map-get($variables, "controls-border"),
+            $controls-border-width: map-get($variables, "controls-border-width"),
+            $controls-radius: map-get($variables, "controls-radius")
+        ) {
+            @if $theme == 'funky' {
+                background: url('data:image/svg+xml;charset=utf-8,<svg%20version%3D"1.1"%20xmlns%3D"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg"%20width%3D"100"%20height%3D"100"%20fill%3D"rgba(0%2C0%2C0%2C.2)">%0D%0A<polygon%20points%3D"0%2C50%2050%2C0%200%2C0"%20%2F>%0D%0A<polygon%20points%3D"0%2C100%2050%2C100%20100%2C50%20100%2C0"%20%2F>%0D%0A<%2Fsvg>');
+                background-size: 1em 1em;
 
-    @include editor-controls-theme(
-        $theme: 'dark',
-        $controls-background: #4d4033,
-        $controls-text: #FFF,
-        $control-background: #4d4033,
-        $button-text: #4d4033,
-        $button-background: #f5b83d,
-        $select-text: #4d4033,
-        $select-background: #bde052,
-        $checkbox-border: #bbb,
-        $checked-color: #d1949e,
-        $controls-border: #7a6652
-    );
+                .wpgp-editor-control {
+                    border-radius: 0;
+                }
+            }
 
-    @include editor-controls-theme(
-        $theme: 'funky',
-        $controls-background: #fdfdfd,
-        $controls-text: #FFF,
-        $control-background: black,
-        $button-text: black,
-        $button-background: yellow,
-        $select-text: black,
-        $select-background: yellowgreen,
-        $checkbox-border: #FFF,
-        $checked-color: deeppink
-    ) {
-        background: url('data:image/svg+xml;charset=utf-8,<svg%20version%3D"1.1"%20xmlns%3D"http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg"%20width%3D"100"%20height%3D"100"%20fill%3D"rgba(0%2C0%2C0%2C.2)">%0D%0A<polygon%20points%3D"0%2C50%2050%2C0%200%2C0"%20%2F>%0D%0A<polygon%20points%3D"0%2C100%2050%2C100%20100%2C50%20100%2C0"%20%2F>%0D%0A<%2Fsvg>');
-        background-size: 1em 1em;
+            @if $theme == 'coy' {
+                background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
+            }
 
-        .wpgp-editor-control {
-            border-radius: 0;
+            @if $theme == 'xonokai' {
+                font-family: Menlo, Monaco, "Courier New", monospace;
+            }
         }
     }
-
-    @include editor-controls-theme(
-        $theme: 'okaidia',
-        $controls-background: #272822,
-        $controls-text: #FFF,
-        $control-background: rgba(224, 224, 224, 0.2),
-        $button-text: #4d4033,
-        $button-background: #66d9ef,
-        $select-text: #4d4033,
-        $select-background: #a6e22e,
-        $checkbox-border: #bbb,
-        $checked-color: #f92672,
-        $controls-border: #272822
-    );
-
-    @include editor-controls-theme(
-        $theme: 'tomorrow',
-        $controls-background: #2d2d2d,
-        $controls-text: #FFF,
-        $control-background: #4d4033,
-        $button-text: #4d4033,
-        $button-background: #f08d49,
-        $select-text: #4d4033,
-        $select-background: #7ec699,
-        $checkbox-border: #bbb,
-        $checked-color: #e2777a,
-        $controls-border: #7a6652
-    );
-
-    @include editor-controls-theme(
-        $theme: 'twilight',
-        $controls-background: #141414,
-        $controls-text: #bbb,
-        $control-background: rgba(224, 224, 224, 0.2),
-        $button-text: #141414,
-        $button-background: #f9ee9a,
-        $select-text: #141414,
-        $select-background: #919e6b,
-        $checkbox-border: #bbb,
-        $checked-color: #000,
-        $controls-border: #545454
-    );
-
-    @include editor-controls-theme(
-        $theme: 'coy',
-        $controls-background: #fdfdfd,
-        $controls-text: #000,
-        $control-background: rgba(69, 142, 209, 0.04),
-        $button-text: #4d4033,
-        $button-background: #ffd893,
-        $select-text: #fdfdfd,
-        $select-background: #2f9c0a,
-        $checkbox-border: #bbb,
-        $checked-color: #c92c2c
-    ) {
-        background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
-    }
-
-    @include editor-controls-theme(
-        $theme: 'cb',
-        $controls-background: #222,
-        $controls-text: #FFF,
-        $control-background: lighten(#222, 10%),
-        $button-text: #4d4033,
-        $button-background: #1990b8,
-        $select-text: #4d4033,
-        $select-background: #B0C975,
-        $checkbox-border: #bbb,
-        $checked-color: #c27628,
-        $controls-border: #222
-    );
-
-    @include editor-controls-theme(
-        $theme: 'ghcolors',
-        $controls-background: white,
-        $controls-text: #000,
-        $control-background: darken(white, 5%),
-        $button-text: #EEE,
-        $button-background: #9a050f,
-        $select-text: #FFF,
-        $select-background: #00a4db,
-        $checkbox-border: #FFF,
-        $checked-color: #e3116c,
-        $controls-border: 1px #ddd,
-        $controls-radius: false
-    );
-
-    @include editor-controls-theme(
-        $theme: 'pojoaque',
-        $controls-background: #181914,
-        $controls-text: #FFF,
-        $control-background: rgba(224, 224, 224, 0.2),
-        $button-text: #181914,
-        $button-background: #ffb03b,
-        $select-text: #181914,
-        $select-background: #468966,
-        $checkbox-border: #FFF,
-        $checked-color: #cb4b16,
-        $controls-border: 1px #ddd
-    );
-
-    @include editor-controls-theme(
-        $theme: 'xonokai',
-        $controls-background: #2a2a2a,
-        $controls-text: #bbb,
-        $control-background: lighten(#2a2a2a, 5%),
-        $button-text: #181914,
-        $button-background: #e6d06c,
-        $select-text: #181914,
-        $select-background: #76d9e6,
-        $checkbox-border: #FFF,
-        $checked-color: #ef3b7d,
-        $controls-border: 1px #e1e1e8
-    ) {
-        font-family: Menlo, Monaco, "Courier New", monospace;
-    }
-
-    @include editor-controls-theme(
-        $theme: 'base16-ateliersulphurpool-light',
-        $controls-background: #f5f7ff,
-        $controls-text: #5e6687,
-        $control-background: #f5f7ff,
-        $button-text: #f5f7ff,
-        $button-background: #ac9739,
-        $select-text: #181914,
-        $select-background: #22a2c9,
-        $checkbox-border: #000,
-        $checked-color: #c76b29
-    );
-
-    @include editor-controls-theme(
-        $theme: 'hopscotch',
-        $controls-background: #322931,
-        $controls-text: #b9b5b8,
-        $control-background: rgba(224, 224, 224, 0.2),
-        $button-text: #181914,
-        $button-background: #149b93,
-        $select-text: #181914,
-        $select-background: #8fc13e,
-        $checkbox-border: #FFF,
-        $checked-color: #fd8b19
-    );
-
-    @include editor-controls-theme(
-        $theme: 'atom-dark',
-        $controls-background: #1d1f21,
-        $controls-text: #c5c8c6,
-        $control-background: lighten(#1d1f21, 5%),
-        $button-text: #1d1f21,
-        $button-background: #96CBFE,
-        $select-text: #1d1f21,
-        $select-background: #A8FF60,
-        $checkbox-border: #FFF,
-        $checked-color: #DAD085,
-        $controls-radius: true
-    );
 }
