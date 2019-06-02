@@ -5,6 +5,185 @@ $monospace-font: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 $dark-blue: #1E8CBE;
 $light-blue: #5B9DD9;
 
+$themes: (
+    default: (
+        controls-background: #F5F2F0,
+        controls-text: #545454,
+        control-background: darken(#F5F2F0, 5%),
+        button-text: darken(#F5F2F0, 5%),
+        button-background: #07A,
+        select-text: darken(#F5F2F0, 5%),
+        select-background: #690,
+        checkbox-border: #BBB,
+        checked-color: #DD4A68,
+        controls-radius: false
+    ),
+    dark: (
+        controls-background: #4D4033,
+        controls-text: #FFF,
+        control-background: lighten(#4D4033, 15%),
+        button-text: #4D4033,
+        button-background: #F5B83D,
+        select-text: #4D4033,
+        select-background: #BDE052,
+        checkbox-border: #BBB,
+        checked-color: #D1949E,
+        controls-border: #7A6652,
+        controls-radius: true
+    ),
+    funky: (
+        controls-background: #FDFDFD,
+        controls-text: #FFF,
+        control-background: black,
+        button-text: black,
+        button-background: yellow,
+        select-text: black,
+        select-background: yellowgreen,
+        checkbox-border: #FFF,
+        checked-color: deeppink,
+        controls-radius: false
+    ),
+    okaidia: (
+        controls-background: #272822,
+        controls-text: #FFF,
+        control-background: rgba(224, 224, 224, 0.2),
+        button-text: #4D4033,
+        button-background: #66D9EF,
+        select-text: #4D4033,
+        select-background: #A6E22E,
+        checkbox-border: #BBB,
+        checked-color: #F92672,
+        controls-border: #272822,
+        controls-radius: true
+    ),
+    tomorrow: (
+        controls-background: #2D2D2D,
+        controls-text: #FFF,
+        control-background: #4D4033,
+        button-text: #4D4033,
+        button-background: #F08D49,
+        select-text: #4D4033,
+        select-background: #7EC699,
+        checkbox-border: #BBB,
+        checked-color: #E2777A,
+        controls-border: #7A6652,
+        controls-radius: false
+    ),
+    twilight: (
+        controls-background: #141414,
+        controls-text: #BBB,
+        control-background: rgba(224, 224, 224, 0.2),
+        button-text: #141414,
+        button-background: #F9EE9A,
+        select-text: #141414,
+        select-background: #919E6B,
+        checkbox-border: #BBB,
+        checked-color: #000,
+        controls-border: #545454,
+        controls-radius: true
+    ),
+    coy: (
+        controls-background: #FDFDFD,
+        controls-text: #000,
+        control-background: rgba(69, 142, 209, 0.04),
+        button-text: #4D4033,
+        button-background: #FFD893,
+        select-text: #FDFDFD,
+        select-background: #2F9C0A,
+        checkbox-border: #BBB,
+        checked-color: #C92C2C
+    ),
+    cb: (
+        controls-background: #222,
+        controls-text: #FFF,
+        control-background: lighten(#222, 10%),
+        button-text: #4D4033,
+        button-background: #1990B8,
+        select-text: #4D4033,
+        select-background: #B0C975,
+        checkbox-border: #BBB,
+        checked-color: #C27628,
+        controls-border: #222,
+        controls-radius: true
+    ),
+    ghcolors: (
+        controls-background: white,
+        controls-text: #000,
+        control-background: darken(white, 5%),
+        button-text: #EEE,
+        button-background: #9A050F,
+        select-text: #FFF,
+        select-background: #00A4DB,
+        checkbox-border: #FFF,
+        checked-color: #E3116C,
+        controls-border: #DDD,
+        controls-border-width: 1px,
+        controls-radius: false
+    ),
+    pojoaque: (
+        controls-background: #181914,
+        controls-text: #FFF,
+        control-background: rgba(224, 224, 224, 0.2),
+        button-text: #181914,
+        button-background: #FFB03B,
+        select-text: #181914,
+        select-background: #468966,
+        checkbox-border: #FFF,
+        checked-color: #CB4B16,
+        controls-border: #DDD,
+        controls-border-width: 1px,
+        controls-radius: true
+    ),
+    xonokai: (
+        controls-background: #2A2A2A,
+        controls-text: #BBB,
+        control-background: lighten(#2A2A2A, 5%),
+        button-text: #181914,
+        button-background: #E6D06C,
+        select-text: #181914,
+        select-background: #76D9E6,
+        checkbox-border: #FFF,
+        checked-color: #EF3B7D,
+        controls-border: #E1E1E8,
+        controls-border-width: 1px,
+        controls-radius: true
+    ),
+    base16-ateliersulphurpool-light: (
+        controls-background: #F5F7FF,
+        controls-text: #5E6687,
+        control-background: darken(#F5F7FF, 5%),
+        button-text: #F5F7FF,
+        button-background: #AC9739,
+        select-text: #F5F7FF,
+        select-background: #22A2C9,
+        checkbox-border: #000,
+        checked-color: #C76B29
+    ),
+    hopscotch: (
+        controls-background: #322931,
+        controls-text: #B9B5B8,
+        control-background: rgba(224, 224, 224, 0.2),
+        button-text: #181914,
+        button-background: #149B93,
+        select-text: #181914,
+        select-background: #8FC13E,
+        checkbox-border: #FFF,
+        checked-color: #FD8B19
+    ),
+    atom-dark: (
+        controls-background: #1D1F21,
+        controls-text: #C5C8C6,
+        control-background: lighten(#1D1F21, 15%),
+        button-text: #1D1F21,
+        button-background: #96CBFE,
+        select-text: #1D1F21,
+        select-background: #A8FF60,
+        checkbox-border: #FFF,
+        checked-color: #DAD085,
+        controls-radius: true
+    )
+);
+
 // Mixins
 @mixin editor-controls-theme(
     $theme,
@@ -17,15 +196,16 @@ $light-blue: #5B9DD9;
     $select-background,
     $checkbox-border,
     $checked-color,
-    $controls-border: false,
-    $controls-radius: true
+    $controls-border,
+    $controls-border-width: 0.3em,
+    $controls-radius: false
 ) {
     &.wpgp-editor-controls-#{$theme} {
         background-color: $controls-background;
         color: $controls-text;
 
         @if $controls-border {
-            border: 0.3em solid $controls-border;
+            border: $controls-border-width solid $controls-border;
         }
 
         @if $controls-radius {
