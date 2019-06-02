@@ -1,3 +1,5 @@
+@import "../EditPage/common";
+
 #wpbody .editor.page {
     box-sizing: border-box;
     overflow: auto;
@@ -42,5 +44,64 @@
             outline: none;
             display: initial;
         }
+    }
+
+    .line-numbers .line-numbers-rows {
+        font-size: 16px;
+        top: 50%;
+        left: -0.25em;
+        transform: translateY(-50%);
+    }
+
+    @each $theme, $variables in $themes {
+        &.wpgp-editor-theme-#{$theme} {
+            > div.code-toolbar .toolbar .toolbar-item {
+                span, select, button {
+                    border: 0.15em solid transparent;
+                    color: map-get($variables, "controls-text");
+                    background: map-get($variables, "control-background");
+
+                    &:focus {
+                        border-color: map-get($variables, "controls-text");
+                        outline: none;
+                    }
+                }
+            }
+
+            @if $theme == 'cb' {
+                .line-numbers-rows span {
+                    padding-right: 0;
+                }
+            }
+
+            @if $theme == 'ghcolors' {
+                .line-numbers .line-numbers-rows {
+                    line-height: 1.2;
+                }
+
+                code {
+                    background: map-get($variables, "controls-background");
+                }
+            }
+
+            @if $theme == 'coy' {
+                pre[class*="language-"].line-numbers.line-numbers code {
+                    padding-left: 3.8em;
+                    display: block;
+                }
+
+                pre[class*="language-"].line-numbers.line-numbers {
+                    position: relative;
+                }
+
+                .line-numbers .line-numbers-rows {
+                    left: 0.75em;
+                }
+            }
+        }
+    }
+
+    pre[class*="language-"].line-numbers {
+        position: static;
     }
 }

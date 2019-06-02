@@ -3,5 +3,9 @@
 .wpgp-editor-row {
     width: 100%;
 
-    @include clearfix();
+    &::after {
+        clear: both;
+        content: "";
+        display: block;
+    }
 }

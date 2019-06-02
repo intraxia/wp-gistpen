@@ -20,7 +20,6 @@ branches:
     only:
         - latest
         - next
-        - /^greenkeeper/.*$/
         - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 env:
@@ -37,6 +36,3 @@ before_script:
 script:
     - if [[ $FRONT_END != 'true' ]]; then composer test; fi
     - if [[ $FRONT_END == 'true' ]]; then npm test; fi
-
-after_script:
-    - if [[ $FRONT_END == 'true' ]]; then greenkeeper-lockfile-upload; fi

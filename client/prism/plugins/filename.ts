@@ -14,13 +14,13 @@ Prism.plugins.toolbar.registerButton('filename', function filenameButton(env) {
     return;
   }
 
-  const text = pre.getAttribute('data-filename') || null;
+  const text = pre.getAttribute('data-filename');
 
   if (text == null) {
     return;
   }
 
-  filename.innerHTML = text;
+  filename.textContent = text;
 
   return filename;
 });

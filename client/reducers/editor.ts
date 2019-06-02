@@ -17,7 +17,8 @@ import {
   EditorValue,
   EditorIndentValue,
   editorValueChange,
-  repoSaveSucceeded
+  repoSaveSucceeded,
+  init
 } from '../actions';
 import { RootAction, Cursor, Toggle } from '../util';
 import { EddyReducer } from 'brookjs';
@@ -206,6 +207,14 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
               ? blob.language
               : blob.language.slug
         }))
+      };
+    case getType(init):
+      return {
+        ...state,
+        instances:
+          state.instances.length === 0
+            ? defaultState.instances
+            : state.instances
       };
     default:
       return state;
