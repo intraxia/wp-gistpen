@@ -55,6 +55,15 @@ class Globals implements HasFilters {
 				'base16-ateliersulphurpool-light' => __( 'Ateliersulphurpool-Light', 'wp-gistpen' ),
 				'hopscotch'                       => __( 'Hopscotch', 'wp-gistpen' ),
 				'atom-dark'                       => __( 'Atom Dark', 'wp-gistpen' ),
+				'duotone-dark'                    => __( 'Duotone Dark', 'wp-gistpen' ),
+				'duotone-sea'                     => __( 'Duotone Sea', 'wp-gistpen' ),
+				'duotone-space'                   => __( 'Duotone Space', 'wp-gistpen' ),
+				'duotone-earth'                   => __( 'Duotone Earth', 'wp-gistpen' ),
+				'duotone-forest'                  => __( 'Duotone Forest', 'wp-gistpen' ),
+				'duotone-light'                   => __( 'Duotone Light', 'wp-gistpen' ),
+				'vs'                              => __( 'VS', 'wp-gistpen' ),
+				'darcula'                         => __( 'Darcula', 'wp-gistpen' ),
+				'a11y-dark'                       => __( 'a11y Dark', 'wp-gistpen' ),
 			),
 		);
 
