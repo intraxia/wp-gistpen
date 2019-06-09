@@ -1,4 +1,5 @@
 import path from 'path';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import {
   devtool,
   styleRule,
@@ -61,6 +62,15 @@ export const webpack = {
 
     if (isProd(state)) {
       config.plugins.push(copyPlugin);
+    }
+
+    if (process.env.ANALYZE_GISTPEN === 'true') {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          openAnalyzer: false
+        })
+      );
     }
 
     return config;
