@@ -22,7 +22,6 @@
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Domain Path:       /languages
  * GitHub Plugin URI: https://github.com/intraxia/wp-gistpen
- * WordPress-Plugin-Boilerplate: v3.0.0
  */
 
 // Protect File.
