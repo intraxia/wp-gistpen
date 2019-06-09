@@ -33,7 +33,14 @@ const _Filename: React.FC<{
 
   return (
     <ToolbarButton>
-      <span ref={ref} contentEditable spellCheck={false} onInput={onInput} />
+      <span
+        ref={ref}
+        contentEditable
+        spellCheck={false}
+        onInput={onInput}
+        className="wpgp-filename-input"
+        aria-label="filename"
+      />
     </ToolbarButton>
   );
 };

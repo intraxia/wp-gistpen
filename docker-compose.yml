@@ -1,0 +1,30 @@
+version: '3.1'
+
+services:
+  app:
+    env_file:
+        - .env
+    build:
+        context: .
+        args:
+            PHP_VERSION: $PHP_VERSION
+            WORDPRESS_VERSION: $WORDPRESS_VERSION
+    restart: always
+    environment:
+        WORDPRESS_DB_HOST: db
+        WORDPRESS_DB_USER: wordpress
+        WORDPRESS_DB_PASSWORD: dbpass
+        WORDPRESS_DB_NAME: wordpress
+    ports:
+        - "3000:80"
+    depends_on:
+        - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+        MYSQL_DATABASE: wordpress
+        MYSQL_USER: wordpress
+        MYSQL_PASSWORD: dbpass
+        MYSQL_RANDOM_ROOT_PASSWORD: '1'

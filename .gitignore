@@ -46,5 +46,7 @@ build/
 report.md
 config/languages.json
 
-# Local phpunit config
+# Local config
 phpunit.xml
+.env
+docker-compose.override.yml

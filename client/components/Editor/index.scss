@@ -35,6 +35,16 @@
                     border-radius: 0.5em;
                     border: none;
                 }
+
+                .wpgp-filename-input {
+                    min-width: 5em;
+                    display: block;
+
+                    &:empty::before {
+                        content: 'filename';
+                        filter: brightness(65%);
+                    }
+                }
             }
         }
 
