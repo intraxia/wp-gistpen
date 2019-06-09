@@ -5,6 +5,7 @@ import { editorReducer, EditorState } from '../editor';
 
 describe('editorReducer', () => {
   const initial: EditorState = {
+    errors: [],
     theme: 'default',
     tabs: 'on',
     width: '4',
@@ -40,6 +41,7 @@ describe('editorReducer', () => {
     );
     const before = initial;
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'on',
       width: '4',
@@ -83,6 +85,7 @@ describe('editorReducer', () => {
     );
     const before: EditorState = { ...initial, tabs: 'off' };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'off',
       width: '4',
@@ -126,6 +129,7 @@ describe('editorReducer', () => {
     );
     const before: EditorState = { ...initial, tabs: 'off' };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'off',
       width: '4',
@@ -179,6 +183,7 @@ describe('editorReducer', () => {
       ]
     };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'on',
       width: '4',
@@ -231,6 +236,7 @@ describe('editorReducer', () => {
       ]
     };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'on',
       width: '4',
@@ -284,6 +290,7 @@ describe('editorReducer', () => {
       ]
     };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'off',
       width: '4',
@@ -337,6 +344,7 @@ describe('editorReducer', () => {
       ]
     };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'off',
       width: '4',
@@ -389,6 +397,7 @@ describe('editorReducer', () => {
       ]
     };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'off',
       width: '4',
@@ -442,6 +451,7 @@ describe('editorReducer', () => {
       ]
     };
     const after = {
+      errors: [],
       theme: 'default',
       tabs: 'off',
       width: '4',

@@ -18,10 +18,12 @@ import {
   EditorIndentValue,
   editorValueChange,
   repoSaveSucceeded,
-  init
+  init,
+  ajaxFailed
 } from '../actions';
 import { RootAction, Cursor, Toggle } from '../util';
 import { EddyReducer } from 'brookjs';
+import { AjaxError } from '../ajax';
 
 export type EditorSnapshot = {
   code: string;
@@ -53,6 +55,7 @@ export type EditorState = {
   theme: string;
   invisibles: Toggle;
   tabs: Toggle;
+  errors: AjaxError[];
 };
 
 const defaultInstance: EditorInstance = {
@@ -77,7 +80,8 @@ const defaultState: EditorState = {
   password: '',
   gist_id: '',
   sync: 'off',
-  instances: [defaultInstance]
+  instances: [defaultInstance],
+  errors: []
 };
 
 export const editorReducer: EddyReducer<EditorState, RootAction> = (
@@ -207,6 +211,11 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
               ? blob.language
               : blob.language.slug
         }))
+      };
+    case getType(ajaxFailed):
+      return {
+        ...state,
+        errors: [...state.errors, action.payload.error]
       };
     case getType(init):
       return {

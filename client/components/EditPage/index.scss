@@ -9,3 +9,49 @@
         display: block;
     }
 }
+
+.wpgp-editor-errors-container {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    background: white;
+    overflow: hidden;
+    border-right: 4px solid #DC3232;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+}
+
+.wpgp-editor-error {
+    animation-name: wpgp-error-animate-in;
+    animation-duration: 8s;
+    width: 0;
+
+    h3, p {
+        text-align: center;
+    }
+
+    h3 {
+        padding: 10px 20px 0;
+    }
+
+    p {
+        padding: 0 20px 10px;
+    }
+}
+
+@keyframes wpgp-error-animate-in {
+    0% {
+        width: 0;
+    }
+
+    15% {
+        width: 300px;
+    }
+
+    85% {
+        width: 300px;
+    }
+
+    100% {
+        width: 0;
+    }
+}
