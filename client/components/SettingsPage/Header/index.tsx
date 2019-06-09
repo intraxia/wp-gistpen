@@ -1,36 +1,16 @@
+import './index.scss';
 import React from 'react';
 import classNames from 'classnames';
-import jss from 'jss';
-import nested from 'jss-nested';
-import injectSheet from 'react-jss';
 import { i18n, link } from '../../../helpers';
 import Loader from '../../Loader';
 
-type HeaderProps = {
+type Props = {
   loading: boolean;
   route: string;
 };
 
-type HeaderClasses = {
-  classes: {
-    header: string;
-  };
-};
-
-jss.use(nested());
-
-const styles = {
-  header: {
-    '& .loader': {
-      float: 'right'
-    }
-  }
-};
-
-type Props = HeaderProps & HeaderClasses;
-
-const Header: React.FC<Props> = ({ route, loading, classes }) => (
-  <div className={classes.header}>
+const Header: React.FC<Props> = ({ route, loading }) => (
+  <div className="wpgp-settings-header">
     <h1>Gistpen Settings</h1>
     <h2 className="nav-tab-wrapper">
       <a
@@ -65,4 +45,4 @@ const Header: React.FC<Props> = ({ route, loading, classes }) => (
   </div>
 );
 
-export default injectSheet(styles)(Header);
+export default Header;
