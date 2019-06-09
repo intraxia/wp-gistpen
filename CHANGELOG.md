@@ -2,6 +2,14 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [1.1.4][1.1.4] ###
+
+#### Fixed ####
+
+* Added label to filename input
+* Bumped dependencies
+
+
 ### [1.1.3][1.1.3] ###
 
 #### Fixed ####
@@ -261,6 +269,7 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.1.4]: https://github.com/intraxia/WP-Gistpen/tree/1.1.4
 [1.1.3]: https://github.com/intraxia/WP-Gistpen/tree/1.1.3
 [1.1.2]: https://github.com/intraxia/WP-Gistpen/tree/1.1.2
 [1.1.1]: https://github.com/intraxia/WP-Gistpen/tree/1.1.1
