@@ -3,7 +3,7 @@ import React from 'react';
 import { expect, use } from 'chai';
 import Kefir from 'kefir';
 import { chaiPlugin } from 'brookjs-desalinate';
-import { fireEvent } from 'react-testing-library';
+import { fireEvent } from '@testing-library/react';
 import { jobDispatchClick } from '../../../actions';
 import Jobs from './';
 
