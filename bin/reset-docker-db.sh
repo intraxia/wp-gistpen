@@ -8,3 +8,5 @@ docker-compose exec app wp core install --allow-root \
 	--admin_email="admin@example.test"\
 	--admin_password="wpgppass1";
 docker-compose exec app wp plugin activate wp-gistpen --allow-root
+docker-compose exec app wp plugin delete akismet --allow-root
+docker-compose exec app wp plugin delete hello.php --allow-root
