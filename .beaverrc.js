@@ -19,7 +19,7 @@ export const dir = 'client';
 export const mocha = {
   reporter: 'spec',
   ui: 'bdd',
-  requires: ['react-testing-library', './setupTests.js']
+  requires: ['@testing-library/react', './setupTests.js']
 };
 
 const client = path.resolve(__dirname, dir);
