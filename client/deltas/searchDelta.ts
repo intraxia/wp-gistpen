@@ -3,7 +3,7 @@ import Kefir, { Observable } from 'kefir';
 import { RootAction } from '../util';
 import { ofType } from 'brookjs';
 import * as t from 'io-ts';
-import { AjaxService } from '../ajax';
+import { AjaxService, AjaxError } from '../ajax';
 import {
   searchInput,
   searchResultsSucceeded,
@@ -55,10 +55,12 @@ export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
     )
     .flatMap(response => response.json())
     .flatMap(response =>
-      searchResponse.validate(response, []).fold<Observable<RootAction, Error>>(
-        errs =>
-          Kefir.constantError(
-            new Error(`Search API response validation failed:
+      searchResponse
+        .validate(response, [])
+        .fold<Observable<RootAction, AjaxError>>(
+          errs =>
+            Kefir.constantError(
+              new AjaxError(`Search API response validation failed:
 
 ${errs
   .map(
@@ -68,8 +70,8 @@ ${errs
       )} supplied to ${err.context.map(x => x.key).join('/')}`
   )
   .join('\n')}`)
-          ),
-        res => Kefir.constant(searchResultsSucceeded(res))
-      )
+            ),
+          res => Kefir.constant(searchResultsSucceeded(res))
+        )
     )
     .flatMapErrors(err => Kefir.constant(searchsResultsFailed(err)));

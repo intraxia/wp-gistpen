@@ -35,4 +35,4 @@ before_script:
 
 script:
     - if [[ $FRONT_END != 'true' ]]; then composer test; fi
-    - if [[ $FRONT_END == 'true' ]]; then npm test && npm run build; fi
+    - if [[ $FRONT_END == 'true' ]]; then npm test; fi
