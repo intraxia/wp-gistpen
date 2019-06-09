@@ -80,7 +80,7 @@
     "stylelint": "^10.0.1",
     "stylelint-webpack-plugin": "^0.10.1",
     "symbol-observable": "^1.2.0",
-    "typescript": "^3.2.2",
+    "typescript": "^3.5.0",
     "weallbehave": "^1.2.0",
     "webpack-notifier": "^1.7.0",
     "wp-pot-cli": "^1.0.3"
