@@ -10,4 +10,5 @@ docker-compose exec app wp core install --allow-root \
 docker-compose exec app wp plugin activate wp-gistpen --allow-root
 docker-compose exec app wp plugin delete akismet --allow-root
 docker-compose exec app wp plugin delete hello.php --allow-root
+docker-compose exec app wp plugin install classic-editor --allow-root
 docker-compose exec app wp rewrite structure '/%postname%/' --allow-root
