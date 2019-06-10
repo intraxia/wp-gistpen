@@ -2,6 +2,15 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [1.1.5][1.1.5] ###
+
+#### Fixed ####
+
+* Add PHP version requirement
+	* This was previously handled in code only, but will now appear in wp.org
+* Render BE error messages in UI
+* Remove JSS for smaller bundle
+
 ### [1.1.4][1.1.4] ###
 
 #### Fixed ####
@@ -269,6 +278,7 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.1.5]: https://github.com/intraxia/WP-Gistpen/tree/1.1.5
 [1.1.4]: https://github.com/intraxia/WP-Gistpen/tree/1.1.4
 [1.1.3]: https://github.com/intraxia/WP-Gistpen/tree/1.1.3
 [1.1.2]: https://github.com/intraxia/WP-Gistpen/tree/1.1.2
