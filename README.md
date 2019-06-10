@@ -4,6 +4,7 @@
 **Donate link:** http://jamesdigioia.com/  
 **Tags:** gist, code snippets, codepen  
 **Requires at least:** 4.6  
+**Requires PHP**: 5.4  
 **Tested up to:** 5.1  
 **Stable tag:** 1.1.4  
 **License:** GPLv2  

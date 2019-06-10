@@ -38,23 +38,40 @@ export type AjaxOptions = {
   };
 };
 
+export class AjaxError extends Error {
+  body: string;
+  status: number;
+
+  constructor(message: string, status: number = 0, body: string = '') {
+    super(message);
+    this.status = status;
+    this.body = body;
+  }
+}
+
 export const ajax$ = (
   url: string,
   { method = 'GET', headers = {}, credentials, body }: AjaxOptions = {}
 ): Stream<ObsResponse, TypeError> =>
-  Kefir.stream((emitter: Emitter<ObsResponse, TypeError>) => {
+  Kefir.stream((emitter: Emitter<ObsResponse, AjaxError>) => {
     const xhr = new XMLHttpRequest();
 
     xhr.onload = () => {
       if (xhr.status >= 200 && xhr.status < 400) {
         emitter.value(new ObsResponse(xhr));
       } else {
-        emitter.error(new TypeError(`${xhr.status} - ${xhr.statusText}`));
+        emitter.error(
+          new AjaxError(
+            `${xhr.status} - ${xhr.statusText}`,
+            xhr.status,
+            xhr.response || xhr.responseText
+          )
+        );
       }
     };
 
     xhr.ontimeout = xhr.onerror = () =>
-      emitter.error(new TypeError('Network request failed'));
+      emitter.error(new AjaxError('Network request failed'));
 
     xhr.open(method, url, true);
 

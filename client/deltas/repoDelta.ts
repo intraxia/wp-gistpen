@@ -16,7 +16,7 @@ import {
   EditorInstance
 } from '../reducers';
 import { Nullable } from 'typescript-nullable';
-import { AjaxService } from '../ajax';
+import { AjaxService, AjaxError } from '../ajax';
 
 type RepoDeltaState = {
   repo: RepoState;
@@ -118,10 +118,10 @@ export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
               .flatMap(response =>
                 apiRepo
                   .validate(response, [])
-                  .fold<Observable<t.TypeOf<typeof apiRepo>, Error>>(
+                  .fold<Observable<t.TypeOf<typeof apiRepo>, AjaxError>>(
                     () =>
                       Kefir.constantError(
-                        new Error('API response was invalid')
+                        new AjaxError('API response was invalid')
                       ),
                     Kefir.constant
                   )

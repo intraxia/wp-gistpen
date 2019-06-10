@@ -1,4 +1,5 @@
 import path from 'path';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import {
   devtool,
   styleRule,
@@ -19,7 +20,7 @@ export const dir = 'client';
 export const mocha = {
   reporter: 'spec',
   ui: 'bdd',
-  requires: ['react-testing-library', './setupTests.js']
+  requires: ['@testing-library/react', './setupTests.js']
 };
 
 const client = path.resolve(__dirname, dir);
@@ -61,6 +62,15 @@ export const webpack = {
 
     if (isProd(state)) {
       config.plugins.push(copyPlugin);
+    }
+
+    if (process.env.ANALYZE_GISTPEN === 'true') {
+      config.plugins.push(
+        new BundleAnalyzerPlugin({
+          analyzerMode: 'static',
+          openAnalyzer: false
+        })
+      );
     }
 
     return config;

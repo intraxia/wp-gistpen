@@ -1,9 +1,10 @@
 import './index.scss';
-import React from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import Controls from './Controls';
 import Description from './Description';
 import Editor from '../Editor';
 import { Toggle, Cursor } from '../../util';
+import { AjaxError } from '../../ajax';
 
 type Instance = {
   ID: string;
@@ -38,6 +39,48 @@ type Language = {
   label: string;
 };
 
+const ErrorMsg: React.FC<{ error: AjaxError }> = ({ error }) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setTimeout(() => {
+      requestAnimationFrame(() => {
+        ref.current && (ref.current.style.display = 'none');
+      });
+    }, 7999);
+  }, [error]);
+
+  const message = useMemo(() => {
+    try {
+      // @TODO(mAAdhaTTah) this is tied to the API response BOOOO.
+      const body = JSON.parse(error.body);
+
+      if (body.message) {
+        return <p>{body.message}</p>;
+      }
+    } catch (e) {
+      // do nothing
+    }
+
+    return <p>{error.message}</p>;
+  }, [error]);
+
+  return (
+    <div className="wpgp-editor-error" ref={ref}>
+      <h3>An error occurred!</h3>
+      {message}
+    </div>
+  );
+};
+
+const Errors: React.FC<{ errors: AjaxError[] }> = ({ errors }) => (
+  <div className="wpgp-editor-errors-container">
+    {errors.map((error, i) => (
+      <ErrorMsg key={i} error={error} />
+    ))}
+  </div>
+);
+
 const EditPage: React.FC<{
   description: string;
   loading: boolean;
@@ -53,7 +96,7 @@ const EditPage: React.FC<{
   tabs: Toggle;
   instances: Instance[];
   languages: Language[];
-  theme: string;
+  errors: AjaxError[];
 }> = ({
   description,
   loading,
@@ -69,7 +112,7 @@ const EditPage: React.FC<{
   selectedWidth,
   instances,
   languages,
-  theme
+  errors
 }) => {
   return (
     <div data-brk-container="editor" className="wpgp-editor">
@@ -97,7 +140,7 @@ const EditPage: React.FC<{
           <Editor
             invisibles={invisibles}
             languages={languages}
-            theme={theme}
+            theme={selectedTheme}
             {...instance}
             preplug={instance$ =>
               instance$.map(action => ({
@@ -108,6 +151,7 @@ const EditPage: React.FC<{
           />
         </div>
       ))}
+      <Errors errors={errors} />
     </div>
   );
 };

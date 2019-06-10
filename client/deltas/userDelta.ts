@@ -13,7 +13,7 @@ import {
 import { selectUserAjaxOpts } from '../selectors';
 import { RootAction } from '../util';
 import { GlobalsState, EditorState } from '../reducers';
-import { AjaxService } from '../ajax';
+import { AjaxService, AjaxError } from '../ajax';
 
 export type UserDeltaState = {
   globals: GlobalsState;
@@ -51,8 +51,9 @@ export const userDelta = ({ ajax$ }: UserDeltaServices) => (
     .flatMap(response =>
       userResponse
         .validate(response, [])
-        .fold<Observable<t.TypeOf<typeof userResponse>, Error>>(
-          () => Kefir.constantError(new Error('User response was not valid')),
+        .fold<Observable<t.TypeOf<typeof userResponse>, AjaxError>>(
+          () =>
+            Kefir.constantError(new AjaxError('User response was not valid')),
           response => Kefir.constant(response)
         )
     )

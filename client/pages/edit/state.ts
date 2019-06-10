@@ -64,7 +64,7 @@ export const mapStateToProps = (
       value: key,
       label: state.globals.languages[key]
     })),
-    theme: state.editor.theme
+    errors: state.editor.errors
   },
   commits: {
     prism: {
