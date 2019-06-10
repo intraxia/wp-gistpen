@@ -16,7 +16,7 @@ webpack
 .travis.yml
 babel.config.js
 Dockerfile
-setupTests.ts
+setupTests.js
 stylelint.config.js
 *.json
 *.lock
