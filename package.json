@@ -48,7 +48,7 @@
     "@types/recompose": "^0.30.6",
     "@types/sinon": "^7.0.12",
     "@types/sprintf-js": "^1.1.2",
-    "@types/storybook__addon-actions": "^3.4.2",
+    "@types/storybook__addon-actions": "^3.4.3",
     "@types/storybook__react": "^4.0.2",
     "@types/tinymce": "^4.5.22",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
