@@ -46,7 +46,7 @@
     "@types/react-dom": "^16.8.4",
     "@types/react-redux": "^7.0.8",
     "@types/recompose": "^0.30.6",
-    "@types/sinon": "^7.0.12",
+    "@types/sinon": "^7.0.13",
     "@types/sprintf-js": "^1.1.2",
     "@types/storybook__addon-actions": "^3.4.3",
     "@types/storybook__react": "^4.0.2",
