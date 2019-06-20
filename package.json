@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-typescript": "^7.3.3",
     "@babel/register": "^7.4.4",
-    "@storybook/addon-actions": "^5.1.8",
+    "@storybook/addon-actions": "^5.1.9",
     "@storybook/react": "^5.1.8",
     "@testing-library/react": "^8.0.0",
     "@types/chai": "^4.1.7",
