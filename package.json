@@ -51,7 +51,7 @@
     "@types/storybook__addon-actions": "^3.4.3",
     "@types/storybook__react": "^4.0.2",
     "@types/tinymce": "^4.5.22",
-    "@typescript-eslint/eslint-plugin": "^1.10.2",
+    "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
     "acorn": "6.1.1",
     "babel-preset-brookjs": "1.0.0-alpha.12",
