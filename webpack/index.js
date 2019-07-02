@@ -68,7 +68,8 @@ exports.styleLintPlugin = new StyleLintPlugin({
 });
 
 exports.notifierPlugin = new WebpackNotifierPlugin({
-  alwaysNotify: true
+  alwaysNotify: true,
+  emoji: true
 });
 
 exports.copyPlugin = new CopyWebpackPlugin([
