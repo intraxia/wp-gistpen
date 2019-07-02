@@ -90,7 +90,7 @@
     "classnames": "^2.2.5",
     "clipboard": "^2.0.4",
     "core-js": "^3.1.4",
-    "io-ts": "^1.10.2",
+    "io-ts": "^1.10.3",
     "kefir": "^3.8.6",
     "mutationobserver-shim": "^0.3.3",
     "prism-themes": "^1.0.0",
