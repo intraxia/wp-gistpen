@@ -27,7 +27,7 @@
     "gen:pot": "wp-pot --bug-report http://github.com/intraxia/wp-gistpen --domain wp-gistpen --package wp-gistpen --src 'app/**/*.php' --relative-to . --dest-file languages/wp-gistpen.pot"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.0",
+    "@babel/core": "^7.5.4",
     "@babel/plugin-proposal-class-properties": "^7.5.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/plugin-transform-modules-commonjs": "^7.5.0",
