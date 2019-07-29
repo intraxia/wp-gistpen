@@ -36,7 +36,7 @@
     "@babel/register": "^7.5.5",
     "@storybook/addon-actions": "^5.1.9",
     "@storybook/react": "^5.1.9",
-    "@testing-library/react": "^8.0.5",
+    "@testing-library/react": "^8.0.7",
     "@types/chai": "^4.1.7",
     "@types/classnames": "^2.2.9",
     "@types/kefir": "^3.8.2",
