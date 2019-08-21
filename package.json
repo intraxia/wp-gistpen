@@ -52,7 +52,7 @@
     "@types/tinymce": "^4.5.22",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
-    "acorn": "6.2.1",
+    "acorn": "7.0.0",
     "babel-preset-brookjs": "1.0.0-alpha.12",
     "brookjs-cli": "1.0.0-alpha.23",
     "brookjs-desalinate": "1.0.0-alpha.23",
