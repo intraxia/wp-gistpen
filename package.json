@@ -60,7 +60,7 @@
     "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.2.0",
     "eslint": "^5.16.0",
-    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-prettier": "^6.3.0",
     "eslint-config-valtech": "^1.0.0",
     "eslint-plugin-react": "^7.14.3",
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
