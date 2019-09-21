@@ -28,6 +28,8 @@ class RepoCollectionTest extends ApiTestCase {
 
 		$this->assertResponseStatus( 200, $response );
 		$this->assertResponseData( array( $repo->serialize() ), $response );
+		// @TODO(mAAdhaTTah) spell out expected response
+		$this->assertEquals( $repo->slug, $response->get_data()[0]['slug'] );
 	}
 
 	public function test_returns_error_with_invalid_blobs() {
