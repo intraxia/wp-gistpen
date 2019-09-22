@@ -27,7 +27,8 @@ export const webpack = {
     settings: 'pages/settings',
     content: 'pages/content',
     editor: 'pages/edit',
-    tinymce: 'pages/tinymce'
+    tinymce: 'pages/tinymce',
+    block: 'pages/block'
   },
   output: {
     path: 'assets/js/',

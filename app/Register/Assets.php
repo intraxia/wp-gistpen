@@ -156,5 +156,17 @@ class Assets {
 				);
 			},
 		) );
+
+		/**
+		 * Block Assets
+		 */
+		$assets->register_script( array(
+			'type'   => 'block',
+			'deps'   => static::$deps,
+			'handle' => $slug . '-block-script',
+			'src'    => 'assets/js/block',
+			'footer' => true,
+			'block'  => 'intraxia/gistpen',
+		) );
 	}
 }
