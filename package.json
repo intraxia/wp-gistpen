@@ -80,7 +80,7 @@
     "symbol-observable": "^1.2.0",
     "typescript": "^3.5.3",
     "weallbehave": "^1.2.0",
-    "webpack-bundle-analyzer": "^3.5.0",
+    "webpack-bundle-analyzer": "^3.5.1",
     "webpack-notifier": "^1.8.0",
     "wp-pot-cli": "^1.2.4"
   },
