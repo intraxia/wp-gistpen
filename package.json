@@ -62,7 +62,7 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-config-valtech": "^1.0.0",
-    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react": "^7.15.1",
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
     "jscodeshift": "^0.6.4",
     "jsdom": "^15.1.1",
