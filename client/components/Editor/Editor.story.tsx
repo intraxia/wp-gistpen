@@ -8,6 +8,7 @@ const props: React.ComponentProps<typeof Editor> = {
   cursor: false,
   theme: 'twilight',
   invisibles: 'off',
+  embedCode: '[gistpen id="2"]',
   languages: [
     {
       label: 'JavaScript',

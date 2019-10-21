@@ -20,6 +20,7 @@ class Translator implements TranslatorContract, HasActions {
 	public function __construct() {
 		$this->translations = array(
 			'editor.commits'     => __( 'View Commits', 'wp-gistpen' ),
+			'editor.shortcode'   => __( 'Copy shortcode', 'wp-gistpen' ),
 			'editor.delete'      => __( 'Delete', 'wp-gistpen' ),
 			'editor.description' => __( 'Description...', 'wp-gistpen' ),
 			'editor.file.add'    => __( 'Add File', 'wp-gistpen' ),

@@ -141,6 +141,11 @@ const EditPage: React.FC<{
             invisibles={invisibles}
             languages={languages}
             theme={selectedTheme}
+            embedCode={
+              !instance.ID.includes('new')
+                ? `[gistpen id="${instance.ID}"]`
+                : undefined
+            }
             {...instance}
             preplug={instance$ =>
               instance$.map(action => ({
