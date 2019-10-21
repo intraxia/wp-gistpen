@@ -3,6 +3,7 @@ import React, { memo, useRef, useEffect } from 'react';
 import { Props } from './types';
 import { toJunction } from 'brookjs-silt';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
+import ClipboardJS from 'clipboard';
 import {
   editorFilenameChange,
   editorDeleteClick,
@@ -76,6 +77,34 @@ const Delete: React.FC<{
   </ToolbarButton>
 );
 
+const CopyEmbedCode: React.FC<{
+  embedCode: string;
+}> = ({ embedCode }) => {
+  const buttonRef = useRef(null);
+
+  useEffect(() => {
+    const el = buttonRef.current;
+
+    if (!el) {
+      return;
+    }
+
+    const clipboard = new ClipboardJS(el, {
+      text: () => embedCode
+    });
+
+    return () => clipboard.destroy();
+  }, [embedCode]);
+
+  return (
+    <ToolbarButton>
+      <button type="button" ref={buttonRef}>
+        {i18n('editor.shortcode')}
+      </button>
+    </ToolbarButton>
+  );
+};
+
 const Toolbar: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="toolbar">{children}</div>
 );
@@ -88,6 +117,7 @@ const Editor: React.FC<Props> = ({
   invisibles,
   cursor,
   theme,
+  embedCode,
   onFilenameChange,
   onLanguageChange,
   onDeleteClick
@@ -102,6 +132,7 @@ const Editor: React.FC<Props> = ({
           onChange={onLanguageChange}
         />
         <Delete onClick={onDeleteClick} />
+        {embedCode && <CopyEmbedCode embedCode={embedCode} />}
       </Toolbar>
       <Pre language={language}>
         <Code
