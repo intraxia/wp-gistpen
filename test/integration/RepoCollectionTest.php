@@ -32,6 +32,16 @@ class RepoCollectionTest extends ApiTestCase {
 		$this->assertEquals( $repo->slug, $response->get_data()[0]['slug'] );
 	}
 
+	public function test_returns_error_invalid_page() {
+		$this->create_post_and_children( true );
+		$request = WP_REST_Request::from_url( rest_url() . 'intraxia/v1/gistpen/repos?page=xyz' );
+
+		$response = $this->server->dispatch( $request );
+
+		$this->assertResponseStatus( 400, $response );
+		$this->assertResponseData( array( 'message' => 'Invalid parameter(s): page', ), $response );
+	}
+
 	public function test_returns_error_with_invalid_blobs() {
 		$this->set_role( 'administrator' );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );

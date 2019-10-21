@@ -6,6 +6,7 @@ use Intraxia\Jaxion\Http\Guard;
 use Intraxia\Jaxion\Http\Router;
 use Intraxia\Jaxion\Http\ServiceProvider;
 use Intraxia\Gistpen\Http\Filter\Repo as RepoFilter;
+use Intraxia\Gistpen\Http\Filter\RepoRequest as RepoRequestFilter;
 
 /**
  * Class RouterServiceProvider
@@ -36,7 +37,9 @@ class RouterServiceProvider extends ServiceProvider {
 			/**
 			 * /repos endpoints
 			 */
-			$router->get( '/repos', array( $controllers['repo'], 'index' ) );
+			$router->get( '/repos', array( $controllers['repo'], 'index' ), array(
+				'filter' => new RepoRequestFilter,
+			) );
 			$router->post( '/repos', array( $controllers['repo'], 'create' ), array(
 				'filter' => new RepoFilter,
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),

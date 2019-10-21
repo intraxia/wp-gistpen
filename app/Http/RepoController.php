@@ -43,13 +43,13 @@ class RepoController {
 	public function index( WP_REST_Request $request ) {
 		$collection = $this->em->find_by(
 			EntityManager::REPO_CLASS,
-			array_merge( $request->get_params(), array(
-				'with' => array(
+			array(
+				'with'   => array(
 					'blobs' => array(
 						'with' => 'language',
 					),
 				),
-			) )
+			)
 		);
 
 		if ( is_wp_error( $collection ) ) {

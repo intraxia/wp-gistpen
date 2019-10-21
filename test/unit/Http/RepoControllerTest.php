@@ -33,11 +33,6 @@ class RepoControllerTest extends TestCase {
 
 	public function test_should_return_collection_error_from_database() {
 		$error = new WP_Error;
-		$this->request
-			->shouldReceive( 'get_params' )
-			->once()
-			->withNoArgs()
-			->andReturn( array() );
 		$this->database
 			->shouldReceive( 'find_by' )
 			->with( EntityManager::REPO_CLASS, array(
@@ -56,11 +51,6 @@ class RepoControllerTest extends TestCase {
 	public function test_should_return_collection_in_response() {
 		$collection = Mockery::mock( 'Intraxia\Jaxion\Axolotl\Collection' );
 		$attrs = array( array( 'description' => 'Repo description' ) );
-		$this->request
-			->shouldReceive( 'get_params' )
-			->once()
-			->withNoArgs()
-			->andReturn( array() );
 		$this->database
 			->shouldReceive( 'find_by' )
 			->with( EntityManager::REPO_CLASS, array(
