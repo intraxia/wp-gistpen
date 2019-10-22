@@ -140,8 +140,15 @@ class WordPressPost extends AbstractRepository {
 			);
 		}
 
+		// Whitelist params send to WP_Query.
+		foreach ( array( 'post_status', 'order', 'orderby', 'offset' ) as $param ) {
+			if ( isset( $params[ $param ] ) ) {
+				$query_args[ $param ] = $params[ $param ];
+			}
+		}
+
 		$collection = new Collection( $class );
-		$query      = new WP_Query( array_merge( $params, $query_args ) );
+		$query      = new WP_Query( $query_args );
 
 		foreach ( $query->get_posts() as $id ) {
 			$model = $this->find( $class, $id, $params );
@@ -150,6 +157,9 @@ class WordPressPost extends AbstractRepository {
 				$collection = $collection->add( $model );
 			}
 		}
+
+		// @todo this is dumb and bad
+		$collection->query = $query;
 
 		return $collection;
 	}

@@ -42,6 +42,56 @@ class RepoCollectionTest extends ApiTestCase {
 		$this->assertResponseData( array( 'message' => 'Invalid parameter(s): page', ), $response );
 	}
 
+	public function test_page_parameter() {
+		$count = 0;
+
+		// Create 15 Repos in the db.
+		while ($count < 15) {
+			$this->create_post_and_children( true );
+			$count++;
+		}
+
+		// Do a basic request.
+		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
+		$response = $this->server->dispatch( $request );
+
+		// Check we get the correct headers for the number of pages.
+		$this->assertResponseStatus( 200, $response );
+		$this->assertCount( 10, $response->get_data() );
+		$this->assertResponseHeader( 'X-WP-Total', 15 , $response );
+		$this->assertResponseHeader( 'X-WP-TotalPages', 2 , $response );
+
+		// Check we get the first 10 posts when page is 1.
+		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
+		$request->set_query_params( array(
+			'page' => '1',
+		) );
+
+		$response = $this->server->dispatch( $request );
+		$this->assertResponseStatus( 200, $response );
+		$this->assertCount( 10, $response->get_data() );
+
+		// Check we get the next 5 posts when page is 2.
+		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
+		$request->set_query_params( array(
+			'page' => '2',
+		) );
+
+		$response = $this->server->dispatch( $request );
+		$this->assertResponseStatus( 200, $response );
+		$this->assertCount( 5, $response->get_data() );
+
+		// Check we get no posts when page is 3.
+		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
+		$request->set_query_params( array(
+			'page' => '3',
+		) );
+
+		$response = $this->server->dispatch( $request );
+		$this->assertResponseStatus( 200, $response );
+		$this->assertCount( 0, $response->get_data() );
+	}
+
 	public function test_returns_error_with_invalid_blobs() {
 		$this->set_role( 'administrator' );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );

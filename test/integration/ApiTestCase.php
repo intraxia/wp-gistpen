@@ -49,4 +49,10 @@ abstract class ApiTestCase extends TestCase {
 		}
 		$this->assertSame( $data, $tested_data );
 	}
+
+	protected function assertResponseHeader( $header, $value, WP_REST_Response $response ) {
+		$headers = $response->get_headers();
+
+		$this->assertSame( isset( $headers[ $header ] ) ? $headers[ $header ] : null, $value );
+	}
 }
