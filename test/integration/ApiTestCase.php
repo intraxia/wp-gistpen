@@ -15,6 +15,8 @@ abstract class ApiTestCase extends TestCase {
 		$this->server = $wp_rest_server = new WP_REST_Server;
 		do_action( 'plugins_loaded' );
 		do_action( 'rest_api_init' );
+
+		$this->set_permalink_structure( '/%postname%/' );
 	}
 
 	public function tearDown() {
@@ -46,5 +48,11 @@ abstract class ApiTestCase extends TestCase {
 			}
 		}
 		$this->assertSame( $data, $tested_data );
+	}
+
+	protected function assertResponseHeader( $header, $value, WP_REST_Response $response ) {
+		$headers = $response->get_headers();
+
+		$this->assertSame( isset( $headers[ $header ] ) ? $headers[ $header ] : null, $value );
 	}
 }

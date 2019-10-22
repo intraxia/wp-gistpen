@@ -41,15 +41,18 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
+		$page = $request->get_param( 'page' );
+
 		$collection = $this->em->find_by(
 			EntityManager::REPO_CLASS,
-			array_merge( $request->get_params(), array(
-				'with' => array(
+			array(
+				'offset' => ($page - 1) * 10,
+				'with'   => array(
 					'blobs' => array(
 						'with' => 'language',
 					),
 				),
-			) )
+			)
 		);
 
 		if ( is_wp_error( $collection ) ) {
@@ -58,7 +61,12 @@ class RepoController {
 			return $collection;
 		}
 
-		return new WP_REST_Response( $collection->serialize(), 200 );
+		$response = new WP_REST_Response( $collection->serialize(), 200 );
+
+		$response->header( 'X-WP-Total', (int) $collection->query->found_posts );
+		$response->header( 'X-WP-TotalPages', (int) $collection->query->max_num_pages );
+
+		return $response;
 	}
 
 	/**
