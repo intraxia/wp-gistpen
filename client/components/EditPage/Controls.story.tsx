@@ -16,7 +16,23 @@ const themes = [
   { slug: 'okaidia', name: 'Okaidia' },
   { slug: 'tomorrow', name: 'Tomorrow' },
   { slug: 'twilight', name: 'Twilight' },
-  { slug: 'coy', name: 'Coy' }
+  { slug: 'coy', name: 'Coy' },
+  { slug: 'cb', name: 'CB' },
+  { slug: 'ghcolors', name: 'GHColors' },
+  { slug: 'pojoaque', name: 'Projoaque' },
+  { slug: 'xonokai', name: 'Xonokai' },
+  { slug: 'base16-ateliersulphurpool-light', name: 'Ateliersulphurpool-Light' },
+  { slug: 'hopscotch', name: 'Hopscotch' },
+  { slug: 'atom-dark', name: 'Atom Dark' },
+  { slug: 'duotone-dark', name: 'Duotone Dark' },
+  { slug: 'duotone-sea', name: 'Duotone Sea' },
+  { slug: 'duotone-space', name: 'Duotone Space' },
+  { slug: 'duotone-earth', name: 'Duotone Earth' },
+  { slug: 'duotone-forest', name: 'Duotone Forest' },
+  { slug: 'duotone-light', name: 'Duotone Light' },
+  { slug: 'vs', name: 'VS' },
+  { slug: 'darcula', name: 'Darcula' },
+  { slug: 'a11y-dark', name: 'a11y Dark' }
 ];
 
 const widths = [
@@ -32,24 +48,28 @@ const gist = {
 };
 
 const sync = 'on';
-const tabs = 'on';
+const tabs = 'off';
 const invisibles = 'on';
 
-storiesOf('Controls', module).add('default', () => (
-  <div id="wpbody">
-    <Controls
-      {...{
-        statuses,
-        themes,
-        widths,
-        gist,
-        sync,
-        tabs,
-        invisibles,
-        selectedTheme: 'twilight',
-        selectedStatus: 'publish',
-        selectedWidth: '4'
-      }}
-    />
-  </div>
-));
+const stories = storiesOf('Controls', module);
+
+themes.forEach(theme => {
+  stories.add(theme.name, () => (
+    <div id="wpbody">
+      <Controls
+        {...{
+          statuses,
+          themes,
+          widths,
+          gist,
+          sync,
+          tabs,
+          invisibles,
+          selectedTheme: theme.slug,
+          selectedStatus: 'publish',
+          selectedWidth: '4'
+        }}
+      />
+    </div>
+  ));
+});
