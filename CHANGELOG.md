@@ -2,11 +2,43 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [Unreleased][unreleased] ###
+### [1.1.6][1.1.6] ###
 
-#### Added ####
+#### Fixed ####
 
-* Added line numbers to the editor
+* Busted deploy
+
+### [1.1.5][1.1.5] ###
+
+#### Fixed ####
+
+* Add PHP version requirement
+	* This was previously handled in code only, but will now appear in wp.org
+* Render BE error messages in UI
+* Remove JSS for smaller bundle
+
+### [1.1.4][1.1.4] ###
+
+#### Fixed ####
+
+* Added label to filename input
+* Bumped dependencies
+
+
+### [1.1.3][1.1.3] ###
+
+#### Fixed ####
+
+* Escape filename on FE & BE
+* Accessibility improvements
+	* Add line numbers to the editor
+	* Allow alt + tab to escape the editor
+	* Improve border of focused controls
+	* Fix toolbar colors
+
+### [1.1.2][] - 2019-05-27 ###
+
+* Rewrite & stabilize FE into TypeScript & latest brookjs
 
 ### [1.1.1][] - 2018-06-28 ###
 
@@ -252,6 +284,13 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.1.6]: https://github.com/intraxia/WP-Gistpen/tree/1.1.6
+[1.1.5]: https://github.com/intraxia/WP-Gistpen/tree/1.1.5
+[1.1.4]: https://github.com/intraxia/WP-Gistpen/tree/1.1.4
+[1.1.3]: https://github.com/intraxia/WP-Gistpen/tree/1.1.3
+[1.1.2]: https://github.com/intraxia/WP-Gistpen/tree/1.1.2
+[1.1.1]: https://github.com/intraxia/WP-Gistpen/tree/1.1.1
+[1.1.0]: https://github.com/intraxia/WP-Gistpen/tree/1.1.0
 [1.0.3]: https://github.com/intraxia/WP-Gistpen/tree/1.0.3
 [1.0.2]: https://github.com/intraxia/WP-Gistpen/tree/1.0.2
 [1.0.1]: https://github.com/intraxia/WP-Gistpen/tree/1.0.1
