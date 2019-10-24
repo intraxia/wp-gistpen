@@ -78,7 +78,7 @@
     "stylelint": "^11.1.1",
     "stylelint-webpack-plugin": "^1.0.2",
     "symbol-observable": "^1.2.0",
-    "typescript": "^3.5.3",
+    "typescript": "^3.6.4",
     "weallbehave": "^1.2.0",
     "webpack-bundle-analyzer": "^3.6.0",
     "webpack-notifier": "^1.8.0",
