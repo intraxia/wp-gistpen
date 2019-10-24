@@ -97,7 +97,7 @@
     "mutationobserver-shim": "^0.3.3",
     "prism-themes": "^1.1.0",
     "prismjs": "1.17.1",
-    "react": "^16.10.2",
+    "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
