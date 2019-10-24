@@ -1,5 +1,5 @@
 import Kefir, { Observable } from 'kefir';
-import { raf$ } from 'brookjs';
+import { raf$ } from 'brookjs-flow';
 import { toJunction, withRef$, Refback } from 'brookjs-silt';
 import React, { memo, forwardRef } from 'react';
 import {
