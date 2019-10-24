@@ -1,5 +1,5 @@
 import Kefir, { Emitter, Observable, Property, Stream } from 'kefir';
-import { ofType } from 'brookjs';
+import { ofType } from 'brookjs-flow';
 import React from 'react';
 import {
   tinymceButtonClick,

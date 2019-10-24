@@ -1,5 +1,5 @@
 import Kefir, { Stream, Property, Observable } from 'kefir';
-import { ofType } from 'brookjs';
+import { ofType } from 'brookjs-flow';
 import * as t from 'io-ts';
 import {
   fetchAuthorSucceeded,
