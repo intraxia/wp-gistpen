@@ -93,7 +93,7 @@
     "io-ts": "^1.10.4",
     "kefir": "^3.8.6",
     "mutationobserver-shim": "^0.3.3",
-    "prism-themes": "^1.0.0",
+    "prism-themes": "^1.1.0",
     "prismjs": "1.17.1",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",

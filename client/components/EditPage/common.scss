@@ -181,7 +181,177 @@ $themes: (
         checkbox-border: #FFF,
         checked-color: #DAD085,
         controls-radius: true
-    )
+    ),
+    duotone-dark: (
+        controls-background: #2A2734,
+        controls-text: #2A2734,
+        control-background: #EBF,
+        button-text: #EBF,
+        button-background: #6A51E6,
+        select-text: #2A2734,
+        select-background: #E09142,
+        checkbox-border: #C4B9FE,
+        checked-color: #E09142,
+        controls-border: #2C2937,
+        controls-radius: false
+    ),
+    duotone-sea: (
+        controls-background: #1D262F,
+        controls-text: #47EBB4,
+        control-background: #57718E,
+        button-text: #2C3847,
+        button-background: #47EBB4,
+        select-text: #EBF4FF,
+        select-background: #0AA370,
+        checkbox-border: #57718E,
+        checked-color: #47EBB4,
+        controls-border: #1F2932,
+        controls-radius: false
+    ),
+    duotone-space: (
+        controls-background: #24242E,
+        controls-text: #FE8C52,
+        control-background: #5151E6,
+        button-text: #EBEBFF,
+        button-background: #DD672C,
+        select-text: #FE8C52,
+        select-background: #24242E,
+        checkbox-border: #262631,
+        checked-color: #FE8C52,
+        controls-border: #262631,
+        controls-border-width: 0.3em,
+        controls-radius: false
+    ),
+    duotone-earth: (
+        controls-background: #322D29,
+        controls-text: #322D29,
+        control-background: #FCC440,
+        button-text: #FFF3EB,
+        button-background: #35302B,
+        select-text: #FFF3EB,
+        select-background: #35302B,
+        checkbox-border: #46403D,
+        checked-color: #BFA05A,
+        controls-border: #BFA05A,
+        controls-border-width: 0.3em,
+        controls-radius: false
+    ),
+    duotone-forest: (
+        controls-background: #2A2D2A,
+        controls-text: #2C302C,
+        control-background: #A2B34D,
+        button-text: #F0FFF0,
+        button-background: #435643,
+        select-text: #E5FB79,
+        select-background: #2C302C,
+        checkbox-border: #B3D6B3,
+        checked-color: #5C705C,
+        controls-border: #2C302C,
+        controls-border-width: 0.3em,
+        controls-radius: false
+    ),
+    duotone-light: (
+        // #FAF8F5
+        // #728FCB
+        // #B6AD9A
+        // #063289
+        // #B29762
+        // #2D2006
+        // #896724
+        // #93ABDC
+        // #ECE8DE
+        // #CDC4B1
+        controls-background: #FAF8F5,
+        controls-text: #FAF8F5,
+        control-background: #896724,
+        button-text: #063289,
+        button-background: #CDC4B1,
+        select-text: #ECE8DE,
+        select-background: #896724,
+        checkbox-border: #2D2006,
+        checked-color: #93ABDC,
+        controls-border: #CDC4B1,
+        controls-border-width: 0.3em,
+        controls-radius: false
+    ),
+    vs: (
+        // #000
+        // #FFF
+        // #C1DEF1
+        // #DDD
+        // #008000
+        // #A31515
+        // #393A34
+        // #36ACAA
+        // #00009F
+        // #2B91AF
+        // #800000
+        // #FF0000
+        // #A5A5A5
+        controls-background: #000,
+        controls-text: #DDD,
+        control-background: #36ACAA,
+        button-text: #36ACAA,
+        button-background: #393A34,
+        select-text: #00009F,
+        select-background: #DDD,
+        checkbox-border: #800000,
+        checked-color: #F00,
+        controls-border: #DDD,
+        controls-border-width: 0.3em,
+        controls-radius: false
+    ),
+    darcula: (
+        // #000
+        // #A9B7C6
+        // #214283
+        // #2B2B2B
+        // #808080
+        // #CC7832
+        // #A9B7C6
+        // #E8BF6A
+        // #6897BB
+        // #9876AA
+        // #6A8759
+        // #A5C261
+        // #287BDE
+        // #FFC66D
+        // #364135
+        // #294436
+        // #484A4A
+        controls-background: #000,
+        controls-text: #287BDE,
+        control-background: #A9B7C6,
+        button-text: #A5C261,
+        button-background: #364135,
+        select-text: #FFC66D,
+        select-background: #484A4A,
+        checkbox-border: #CC7832,
+        checked-color: #FFC66D,
+        controls-radius: false
+    ),
+    a11y-dark: (
+        // #F8F8F2
+        // #2B2B2B
+        // #D4D0AB
+        // #FEFEFE
+        // #FFA07A
+        // #00E0E0
+        // #ABE338
+        // #FFD700
+        controls-background: #2B2B2B,
+        controls-text: #2B2B2B,
+        control-background: #D4D0AB,
+        button-text: #00E0E0,
+        button-background: #FEFEFE,
+        select-text: #FFA07A,
+        select-background: #FEFEFE,
+        checkbox-border: #00E0E0,
+        checked-color: #ABE338,
+        controls-border: #FFD700,
+        controls-border-width: 0.3em,
+        controls-radius: false
+    ),
 );
 
 // Mixins
