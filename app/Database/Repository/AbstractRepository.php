@@ -57,7 +57,7 @@ abstract class AbstractRepository implements Repository {
 			switch ( $key ) {
 				case 'blobs';
 					$value = $this->em->find_by( \Intraxia\Gistpen\Database\EntityManager::BLOB_CLASS, array_merge( $params, array(
-						'post_parent' => $model->get_primary_id(),
+						'repo_id'     => $model->get_primary_id(),
 						'post_status' => 'any',
 						'order'       => 'ASC',
 						'orderby'     => 'date',

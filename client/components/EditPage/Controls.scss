@@ -5,6 +5,8 @@ body.post-type-gistpen {
 }
 
 #wpbody .wpgp-editor-controls {
+    display: flex;
+    flex-wrap: wrap;
     max-width: 100%;
     margin-left: auto;
     margin-right: auto;
@@ -12,7 +14,8 @@ body.post-type-gistpen {
     font-family: $monospace-font;
 
     .wpgp-editor-control {
-        display: inline-block;
+        display: flex;
+        align-items: center;
         padding: 0.5em;
         margin-bottom: 1em;
         margin-right: 4px;
@@ -34,6 +37,8 @@ body.post-type-gistpen {
     }
 
     .wpgp-button {
+        display: flex;
+        align-items: center;
         height: 2em;
         border: none;
         border-radius: 0.5em;
@@ -41,7 +46,6 @@ body.post-type-gistpen {
         text-decoration: none;
         letter-spacing: normal;
         word-spacing: normal;
-        display: inline-block;
         text-align: start;
         font-family: inherit;
         font-size: inherit;
@@ -49,9 +53,11 @@ body.post-type-gistpen {
         margin-left: 4px;
         margin-right: 4px;
         outline: none;
+        padding: 0 1em;
+        line-height: 2;
 
         &::before {
-            margin-right: 0.25em;
+            margin-right: 0.5em;
             vertical-align: bottom;
             height: 1em;
             width: 1em;

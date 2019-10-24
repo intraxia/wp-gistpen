@@ -13,6 +13,7 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @subpackage Model
  *
  * @property int        $ID
+ * @property string     $slug
  * @property string     $description
  * @property string     $status
  * @property string     $password
@@ -39,6 +40,7 @@ class Repo extends Model implements UsesWordPressPost {
 	 */
 	protected $defaults = array(
 		'description' => '',
+		'slug'        => '',
 		'status'      => 'draft',
 		'password'    => '',
 		'sync'        => 'off',
@@ -66,6 +68,7 @@ class Repo extends Model implements UsesWordPressPost {
 	 * @var array
 	 */
 	protected $guarded = array(
+		'slug',
 		'gist_id',
 		'created_at',
 		'updated_at',
@@ -79,6 +82,7 @@ class Repo extends Model implements UsesWordPressPost {
 	protected $visible = array(
 		'ID',
 		'description',
+		'slug',
 		'status',
 		'password',
 		'gist_id',
@@ -117,6 +121,15 @@ class Repo extends Model implements UsesWordPressPost {
 	 */
 	protected function map_description() {
 		return 'post_title';
+	}
+
+	/**
+	 * Maps the Repo's description to WP_Posts's post_name.
+	 *
+	 * @return string
+	 */
+	protected function map_slug() {
+		return 'post_name';
 	}
 
 	/**
