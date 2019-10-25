@@ -67,7 +67,7 @@
     "jscodeshift": "^0.6.4",
     "jsdom": "^15.1.1",
     "jsdom-global": "^3.0.2",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.0",
     "prettier": "^1.18.2",
     "react-dev-utils": "^9.1.0",
     "sass-loader": "^7.3.1",
