@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-import '../../polyfills';
 import { expect, use } from 'chai';
 import sinon from 'sinon';
 import Kefir from 'kefir';

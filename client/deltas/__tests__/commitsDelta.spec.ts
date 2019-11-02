@@ -1,6 +1,5 @@
 /* eslint-env mocha */
 import { ObsResponse } from '../../ajax';
-import '../../polyfills';
 import { expect, use } from 'chai';
 import sinon from 'sinon';
 import Kefir from 'kefir';

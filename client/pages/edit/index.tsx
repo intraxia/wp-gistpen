@@ -1,4 +1,3 @@
-import '../../polyfills';
 import { createStore } from 'redux';
 import { RootJunction } from 'brookjs-silt';
 import ReactDOM from 'react-dom';
