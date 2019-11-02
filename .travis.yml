@@ -3,19 +3,15 @@ sudo: false
 dist: trusty
 
 php:
-    - 5.4
     - 5.6
-    - 7.1
-    - nightly
+    - 7.3
 
 matrix:
     include:
         - name: "Front-End"
           language: node_js
-          node_js: 8
+          node_js: 12
           env: FRONT_END=true
-    allow_failures:
-        - php: nightly
 
 branches:
     only:
@@ -24,12 +20,10 @@ branches:
         - /^\d+\.\d+(\.\d+)?(-\S*)?$/
 
 env:
-    # - WP_VERSION=latest WP_MULTISITE=0
-    # - WP_VERSION=latest WP_MULTISITE=1
-    - WP_VERSION=5.1 WP_MULTISITE=0
-    - WP_VERSION=5.1 WP_MULTISITE=1
-    - WP_VERSION=4.7 WP_MULTISITE=0
-    - WP_VERSION=4.7 WP_MULTISITE=1
+    - WP_VERSION=latest WP_MULTISITE=0
+    - WP_VERSION=latest WP_MULTISITE=1
+    - WP_VERSION=5.2 WP_MULTISITE=0
+    - WP_VERSION=5.2 WP_MULTISITE=1
 
 before_script:
     - bash bin/before_script.sh
