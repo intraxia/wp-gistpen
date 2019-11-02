@@ -1,5 +1,4 @@
 import './index.scss';
-import '../../polyfills';
 import { init } from '../../actions';
 import store, { State } from './store';
 

@@ -1,5 +1,4 @@
 /* eslint-env mocha */
-import '../../polyfills';
 import { expect, use } from 'chai';
 import Kefir from 'kefir';
 import { chaiPlugin } from 'brookjs-desalinate';
