@@ -64,7 +64,8 @@ exports.resolve = {
 };
 
 exports.styleLintPlugin = new StyleLintPlugin({
-  syntax: 'scss'
+  syntax: 'scss',
+  context: client
 });
 
 exports.notifierPlugin = new WebpackNotifierPlugin({
