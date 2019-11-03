@@ -1,8 +1,0 @@
-version: '3.1'
-
-services:
-    app:
-        volumes:
-            - ./:/var/www/html/wp-content/plugins/wp-gistpen
-        environment:
-            WORDPRESS_CONFIG_EXTRA: $WORDPRESS_CONFIG_EXTRA

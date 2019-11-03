@@ -22,6 +22,10 @@
     "dev:tdd": "beaver test --env test --watch",
     "dev:storybook": "start-storybook -s ./assets/js -p 9001 -c .storybook",
     "dev:format": "prettier --write \"client/**/*.{json,ts,tsx}\" && eslint \"client/**/*.{json,ts,tsx}\" --fix",
+    "env:install": "wp-scripts env install",
+    "env:connect": "wp-scripts env connect",
+    "env:start": "wp-scripts env start",
+    "env:stop": "wp-scripts env stop",
     "gen": "npm run gen:coc && npm run gen:pot",
     "gen:coc": "weallbehave -o .",
     "gen:pot": "wp-pot --bug-report http://github.com/intraxia/wp-gistpen --domain wp-gistpen --package wp-gistpen --src 'app/**/*.php' --relative-to . --dest-file languages/wp-gistpen.pot"
@@ -50,8 +54,14 @@
     "@types/sprintf-js": "^1.1.2",
     "@types/tinymce": "^4.5.23",
     "@types/webpack-env": "^1.14.1",
+    "@types/wordpress__blocks": "^6.4.3",
+    "@types/wordpress__components": "^7.4.4",
+    "@types/wordpress__compose": "^3.4.0",
+    "@types/wordpress__element": "^2.4.0",
+    "@types/wordpress__i18n": "^3.4.0",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
+    "@wordpress/scripts": "^5.1.0",
     "acorn": "6.2.1",
     "babel-preset-brookjs": "1.0.0-alpha.12",
     "brookjs-cli": "1.0.0-alpha.24",
@@ -106,5 +116,11 @@
     "typesafe-actions": "^4.4.2",
     "typescript-nullable": "^0.6.0",
     "whatwg-fetch": "^3.0.0"
+  },
+  "wp-env": {
+    "plugin-dir": "wp-gistpen",
+    "plugin-name": "WP-Gistpen",
+    "docker-template": "./bin/docker-compose.override.yml.template",
+    "welcome-build-command": "npm run dev:app"
   }
 }

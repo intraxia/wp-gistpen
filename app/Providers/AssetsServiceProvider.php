@@ -15,6 +15,22 @@ use Intraxia\Jaxion\Assets\ServiceProvider;
  * @subpackage Providers
  */
 class AssetsServiceProvider extends ServiceProvider {
+
+	/**
+	 * Common dependencies
+	 *
+	 * @var string[]
+	 */
+	static $deps = array(
+		'react',
+		'react-dom',
+		'wp-blocks',
+		'wp-i18n',
+		'wp-components',
+		'wp-element',
+		'wp-compose',
+	);
+
 	/**
 	 * {@inheritDoc}
 	 *
@@ -30,6 +46,7 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
+			'deps'      => static::$deps,
 			'condition' => function () {
 				$cond = 'gistpen' === get_current_screen()->id;
 
@@ -58,6 +75,7 @@ class AssetsServiceProvider extends ServiceProvider {
 		 */
 		$assets->register_script( array(
 			'type'      => 'admin',
+			'deps'      => static::$deps,
 			'condition' => function () {
 				return 'settings_page_wp-gistpen' === get_current_screen()->id;
 			},

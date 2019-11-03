@@ -73,6 +73,16 @@ export const webpack = {
       );
     }
 
+    config.externals = {
+      react: 'React',
+      'react-dom': 'ReactDOM',
+      '@wordpress/blocks': 'wp.blocks',
+      '@wordpress/components': 'wp.components',
+      '@wordpress/compose': 'wp.compose',
+      '@wordpress/element': 'wp.element',
+      '@wordpress/i18n': 'wp.i18n'
+    };
+
     return config;
   }
 };

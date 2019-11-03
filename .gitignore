@@ -50,3 +50,4 @@ config/languages.json
 phpunit.xml
 .env
 docker-compose.override.yml
+wordpress
