@@ -64,7 +64,7 @@
     "@wordpress/scripts": "^5.1.0",
     "acorn": "6.2.1",
     "babel-preset-brookjs": "1.0.0-alpha.12",
-    "brookjs-cli": "1.0.0-alpha.24",
+    "brookjs-cli": "1.0.0-alpha.25",
     "brookjs-desalinate": "1.0.0-alpha.24",
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^5.0.5",
