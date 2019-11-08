@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 import { globalsReducer } from '../globals';
 import { expect } from 'chai';
 import { init } from '../../actions';
