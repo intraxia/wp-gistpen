@@ -1,15 +1,9 @@
 /* eslint-env jest */
-import { expect, use } from 'chai';
 import sinon, {
   SinonFakeXMLHttpRequestStatic,
   SinonFakeXMLHttpRequest
 } from 'sinon';
-import Kefir from 'kefir';
-import { chaiPlugin } from 'brookjs-desalinate';
 import { ajax$, ObsResponse } from '../';
-
-const { plugin, value, error, end } = chaiPlugin({ Kefir });
-use(plugin);
 
 describe('ajax$', () => {
   const url = 'http://example.com/api';
@@ -30,22 +24,21 @@ describe('ajax$', () => {
   });
 
   it('should be a function', () => {
-    expect(ajax$).to.be.a('function');
+    expect(ajax$).toBeInstanceOf(Function);
   });
 
   it('should make an xhr request', () => {
     ajax$(url).observe();
-    expect(requests).to.have.lengthOf(1);
+    expect(requests).toHaveLength(1);
     const [request] = requests;
-    expect(request.url).to.equal(url);
+    expect(request.url).toBe(url);
   });
 
-  it.skip('should emit an error on failure', () => {
-    expect(ajax$(url)).to.emit(
+  it('should emit an error on failure', () => {
+    expect(ajax$(url)).toEmit(
       [
-        // @todo doesn't pass on current version of deep-eql
-        error(new TypeError('Network request failed')),
-        end()
+        global.Kutil.error(new TypeError('Network request failed')),
+        global.Kutil.end()
       ],
       () => {
         requests[0].error();
@@ -55,11 +48,11 @@ describe('ajax$', () => {
 
   it('should emit response on success', () => {
     const ajax = ajax$(url);
-    const expected = [value({}), end()];
+    const expected = [global.Kutil.value({}), global.Kutil.end()];
 
-    expect(ajax).to.emit(expected, () => {
+    expect(ajax).toEmit(expected, () => {
       const request = requests[0];
-      expected[0] = value(new ObsResponse(request as any));
+      expected[0] = global.Kutil.value(new ObsResponse(request as any));
       request.respond(200, null, '');
     });
   });

@@ -1,9 +1,6 @@
 /* eslint-env jest */
 import { ObsResponse } from '../../ajax';
-import { expect, use } from 'chai';
 import sinon from 'sinon';
-import Kefir from 'kefir';
-import { chaiPlugin } from 'brookjs-desalinate';
 import {
   routeChange,
   commitsFetchStarted,
@@ -11,13 +8,6 @@ import {
   commitsFetchSucceeded
 } from '../../actions';
 import { commitsDelta } from '../commitsDelta';
-import { RootAction } from '../../util';
-
-const { plugin, stream, prop, value, error, end, send } = chaiPlugin({
-  Kefir
-}) as any;
-
-use(plugin);
 
 const createServices = () => ({ ajax$: sinon.stub() });
 const globals = {
@@ -66,33 +56,33 @@ const stateWithId = {
 
 describe('commitsDelta', () => {
   it('should be a function', () => {
-    expect(commitsDelta).to.be.a('function');
+    expect(commitsDelta).toBeInstanceOf(Function);
   });
 
   it('should not respond to random actions', () => {
     const services = createServices();
 
-    expect(commitsDelta(services)).to.emitFromDelta([], send => {
+    expect(commitsDelta(services)).toEmitFromDelta([], send => {
       send({ type: 'RANDOM_ACTION' }, stateNoId);
     });
   });
 
   it('should not respond to random routes', () => {
     const services = createServices();
-    const actions$ = stream();
-    const state$ = prop();
+    const actions$ = global.Kutil.stream();
+    const state$ = global.Kutil.prop();
 
-    expect(commitsDelta(services)).to.emitFromDelta([], () => {
-      send(state$, [value(stateWithId)]);
-      send(actions$, [value(routeChange('random'))]);
+    expect(commitsDelta(services)).toEmitFromDelta([], () => {
+      global.Kutil.send(state$, [global.Kutil.value(stateWithId)]);
+      global.Kutil.send(actions$, [global.Kutil.value(routeChange('random'))]);
     });
   });
 
   it('should not respond to commits click for new repo', () => {
     const services = createServices();
 
-    expect(commitsDelta(services)).to.emitFromDelta([], send => {
-      send(routeChange('commits'), value(stateNoId));
+    expect(commitsDelta(services)).toEmitFromDelta([], send => {
+      send(routeChange('commits'), global.Kutil.value(stateNoId));
     });
   });
 
@@ -108,22 +98,25 @@ describe('commitsDelta', () => {
     };
     const xhr = { response: JSON.stringify([]) } as any;
     const services = createServices();
-    const effect$ = stream();
+    const effect$ = global.Kutil.stream();
 
     services.ajax$
       .withArgs(commitsUrl, options)
       .onFirstCall()
       .returns(effect$);
 
-    expect(commitsDelta(services)).to.emitFromDelta<RootAction, never>(
+    expect(commitsDelta(services)).toEmitFromDelta(
       [
-        [0, value(commitsFetchStarted())],
-        [10, value(commitsFetchSucceeded([]))]
+        [0, global.Kutil.value(commitsFetchStarted())],
+        [10, global.Kutil.value(commitsFetchSucceeded([]))]
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
-        send(effect$, [value(new ObsResponse(xhr)), end()]);
+        global.Kutil.send(effect$, [
+          global.Kutil.value(new ObsResponse(xhr)),
+          global.Kutil.end()
+        ]);
       }
     );
   });
@@ -140,22 +133,25 @@ describe('commitsDelta', () => {
     };
     const payload = new TypeError('Network request failed');
     const services = createServices();
-    const effect$ = stream();
+    const effect$ = global.Kutil.stream();
 
     services.ajax$
       .withArgs(commitsUrl, options)
       .onFirstCall()
       .returns(effect$);
 
-    expect(commitsDelta(services)).to.emitFromDelta<RootAction, never>(
+    expect(commitsDelta(services)).toEmitFromDelta(
       [
-        [0, value(commitsFetchStarted())],
-        [10, value(commitsFetchFailed(payload))]
+        [0, global.Kutil.value(commitsFetchStarted())],
+        [10, global.Kutil.value(commitsFetchFailed(payload))]
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
-        send(effect$, [error(payload), end()]);
+        global.Kutil.send(effect$, [
+          global.Kutil.error(payload),
+          global.Kutil.end()
+        ]);
       }
     );
   });

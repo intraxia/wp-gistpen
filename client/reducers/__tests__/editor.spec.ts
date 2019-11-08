@@ -1,5 +1,4 @@
 /* eslint-env jest */
-import { expect } from 'chai';
 import { editorIndent, editorMakeNewline } from '../../actions';
 import { editorReducer, EditorState } from '../editor';
 
@@ -71,7 +70,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should space indent by width line the cursor is on', () => {
@@ -115,7 +114,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should space indent by width when cursor is on multiple lines', () => {
@@ -160,7 +159,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should delete tab next to cursor if inverse', () => {
@@ -213,7 +212,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should delete tab from line the cursor is on if inverse', () => {
@@ -266,7 +265,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should delete spaces before the cursor if inverse', () => {
@@ -320,7 +319,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should delete spaces at start of line cursor is on if inverse', () => {
@@ -374,7 +373,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should add newline and indentation', () => {
@@ -427,7 +426,7 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 
   it('should remove indentation when cursor at beginning of line', () => {
@@ -481,6 +480,6 @@ describe('editorReducer', () => {
       ]
     };
 
-    expect(editorReducer(before, action)).to.eql(after);
+    expect(editorReducer(before, action)).toEqual(after);
   });
 });

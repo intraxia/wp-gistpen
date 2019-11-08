@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import { globalsReducer } from '../globals';
-import { expect } from 'chai';
 import { init } from '../../actions';
 
 describe('globalsReducer', () => {
@@ -22,7 +21,7 @@ describe('globalsReducer', () => {
     const action = {
       type: 'RANDOM'
     } as any;
-    expect(globalsReducer(state, action)).to.equal(state);
+    expect(globalsReducer(state, action)).toBe(state);
   });
 
   it('should merge globals from init action', () => {
@@ -46,7 +45,7 @@ describe('globalsReducer', () => {
       }
     });
 
-    expect(globalsReducer(state, action)).to.deep.equal({
+    expect(globalsReducer(state, action)).toEqual({
       languages: {},
       root: 'the-root',
       nonce: '',

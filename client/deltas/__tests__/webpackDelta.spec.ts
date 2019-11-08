@@ -1,12 +1,5 @@
 /* eslint-env jest */
-import { expect, use } from 'chai';
-import Kefir from 'kefir';
-import { chaiPlugin } from 'brookjs-desalinate';
 import { webpackDelta } from '../webpackDelta';
-
-const { plugin, end } = chaiPlugin({ Kefir }) as any;
-
-use(plugin);
 
 describe('webpackDelta', () => {
   it('should set public path on initial state', () => {
@@ -18,12 +11,10 @@ describe('webpackDelta', () => {
     const action = {
       type: 'INIT'
     };
-    expect(webpackDelta).to.emitFromDelta([[0, end()]], send => {
+    expect(webpackDelta).toEmitFromDelta([[0, global.Kutil.end()]], send => {
       send(action, state);
     });
 
-    expect(window.__webpack_public_path__).to.equal(
-      'https://test.dev/assets/js/'
-    );
+    expect(window.__webpack_public_path__).toBe('https://test.dev/assets/js/');
   });
 });
