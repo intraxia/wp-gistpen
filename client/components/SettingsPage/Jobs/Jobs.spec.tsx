@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 import React from 'react';
 import { expect, use } from 'chai';
 import Kefir from 'kefir';

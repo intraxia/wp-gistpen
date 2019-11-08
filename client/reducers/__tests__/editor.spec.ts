@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 import { expect } from 'chai';
 import { editorIndent, editorMakeNewline } from '../../actions';
 import { editorReducer, EditorState } from '../editor';

@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 import { expect } from 'chai';
 import prismSlug from '../prismSlug';
 

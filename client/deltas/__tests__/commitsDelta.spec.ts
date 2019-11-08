@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 import { ObsResponse } from '../../ajax';
 import { expect, use } from 'chai';
 import sinon from 'sinon';

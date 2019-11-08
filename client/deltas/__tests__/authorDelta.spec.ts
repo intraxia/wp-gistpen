@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+/* eslint-env jest */
 import { expect, use } from 'chai';
 import sinon, { SinonStub } from 'sinon';
 import Kefir from 'kefir';

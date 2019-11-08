@@ -14,15 +14,6 @@ import {
 
 export const dir = 'client';
 
-/**
- * Mocha testing configuration.
- */
-export const mocha = {
-  reporter: 'spec',
-  ui: 'bdd',
-  requires: ['@testing-library/react', './setupTests.js']
-};
-
 const client = path.resolve(__dirname, dir);
 const pages = path.resolve(client, 'pages');
 
