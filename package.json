@@ -97,7 +97,7 @@
   "dependencies": {
     "brookjs": "1.0.0-alpha.25",
     "brookjs-flow": "^1.0.0-alpha.24",
-    "brookjs-silt": "1.0.0-alpha.24",
+    "brookjs-silt": "1.0.0-alpha.25",
     "brookjs-types": "^1.0.0-alpha.24",
     "classnames": "^2.2.5",
     "clipboard": "^2.0.4",
