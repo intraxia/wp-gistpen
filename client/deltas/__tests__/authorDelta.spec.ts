@@ -1,8 +1,6 @@
 /* eslint-env jest */
-import { expect, use } from 'chai';
 import sinon, { SinonStub } from 'sinon';
 import Kefir from 'kefir';
-import { chaiPlugin } from 'brookjs-desalinate';
 import { authorDelta } from '../authorDelta';
 import { AjaxService } from '../../ajax';
 import {
@@ -10,9 +8,6 @@ import {
   fetchAuthorFailed,
   fetchAuthorSucceeded
 } from '../../actions';
-
-const { plugin, value } = chaiPlugin({ Kefir });
-use(plugin);
 
 describe('authorDelta', () => {
   const state = {
@@ -36,15 +31,15 @@ describe('authorDelta', () => {
   });
 
   it('should be a function', () => {
-    expect(authorDelta).to.be.a('function');
+    expect(authorDelta).toBeInstanceOf(Function);
   });
 
   it('should return a function', () => {
-    expect(authorDelta(services)).to.be.a('function');
+    expect(authorDelta(services)).toBeInstanceOf(Function);
   });
 
   it('should not emit anything on random action', () => {
-    expect(authorDelta(services)).to.emitFromDelta([], send => {
+    expect(authorDelta(services)).toEmitFromDelta([], send => {
       send({ type: 'ANYTHING' }, state);
     });
   });
@@ -54,8 +49,8 @@ describe('authorDelta', () => {
 
     stub.returns(Kefir.constantError(error));
 
-    expect(authorDelta(services)).to.emitFromDelta(
-      [[0, value(fetchAuthorFailed(error))]],
+    expect(authorDelta(services)).toEmitFromDelta(
+      [[0, global.Kutil.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       }
@@ -71,15 +66,15 @@ describe('authorDelta', () => {
       })
     );
 
-    expect(authorDelta(services)).to.emitFromDelta(
-      [[0, value(fetchAuthorFailed(error))]],
+    expect(authorDelta(services)).toEmitFromDelta(
+      [[0, global.Kutil.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       }
     );
   });
 
-  it.skip('should emit an error if response does not match expected', () => {
+  it('should emit an error if response does not match expected', () => {
     const error = new TypeError('Author response was not the expected shape');
 
     stub.returns(
@@ -91,8 +86,8 @@ describe('authorDelta', () => {
       })
     );
 
-    expect(authorDelta(services)).to.emitFromDelta(
-      [[0, value(fetchAuthorFailed(error))]],
+    expect(authorDelta(services)).toEmitFromDelta(
+      [[0, global.Kutil.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       }
@@ -116,8 +111,8 @@ describe('authorDelta', () => {
       })
     );
 
-    expect(authorDelta(services)).to.emitFromDelta(
-      [[0, value(fetchAuthorSucceeded(response))]],
+    expect(authorDelta(services)).toEmitFromDelta(
+      [[0, global.Kutil.value(fetchAuthorSucceeded(response))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       }

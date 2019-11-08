@@ -1,13 +1,12 @@
 /* eslint-env jest */
-import { expect } from 'chai';
 import prismSlug from '../prismSlug';
 
 describe('prismSlug', () => {
   it('should use the alias', () => {
-    expect(prismSlug('js')).to.equal('javascript');
+    expect(prismSlug('js')).toBe('javascript');
   });
 
   it('should return the slug if no alias found', () => {
-    expect(prismSlug('hs')).to.equal('hs');
+    expect(prismSlug('hs')).toBe('hs');
   });
 });

@@ -1,13 +1,6 @@
 /* eslint-env jest */
-import { expect, use } from 'chai';
-import Kefir from 'kefir';
-import { chaiPlugin } from 'brookjs-desalinate';
 import { routerDelta } from '../routerDelta';
 import { routeChange } from '../../actions';
-
-const { plugin, value } = chaiPlugin({ Kefir }) as any;
-
-use(plugin);
 
 const createLocation = (search: string) => {
   const location = {} as any;
@@ -49,8 +42,11 @@ describe('routerDelta', () => {
     const history = createHistory();
     expect(
       routerDelta({ router, param: 'wpgp', location, history })
-    ).to.emitFromDelta([[0, value(routeChange('/start'))]], (_send, tick) => {
-      tick(10);
-    });
+    ).toEmitFromDelta(
+      [[0, global.Kutil.value(routeChange('/start'))]],
+      (_send, tick) => {
+        tick(10);
+      }
+    );
   });
 });

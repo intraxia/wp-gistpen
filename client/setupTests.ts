@@ -1,7 +1,38 @@
+/* @TODO(mAAdhaTTah) figure out why eslint TS is complaining.
 /* eslint-env jest */
-import { chaiPlugin } from 'brookjs-desalinate';
+/* eslint-disable */
+import { jestPlugin } from 'brookjs-desalinate';
 import Kefir from 'kefir';
-import { use } from 'chai';
 
-const { plugin } = chaiPlugin({ Kefir });
-use(plugin);
+const { extensions, ...obs } = jestPlugin({ Kefir });
+expect.extend(extensions);
+
+Object.assign(global, { Kutil: obs });
+
+declare global {
+  namespace NodeJS {
+    interface Global {
+      Kutil: typeof obs;
+    }
+  }
+
+  namespace jest {
+    interface Matchers<R, T> {
+      toEmit(expected: any, callback: any): R;
+      toEmitFromDelta(
+        expected: any,
+        cb?: (a: any, b: any, c: any) => void,
+        opts?: {
+          timeLimit?: number | undefined;
+        }
+      ): R;
+      toEmitFromJunction(
+        expected: any,
+        cb?: (a: any, b: any, c: any) => void,
+        opt?: {
+          timeLimit?: number | undefined;
+        }
+      ): R;
+    }
+  }
+}

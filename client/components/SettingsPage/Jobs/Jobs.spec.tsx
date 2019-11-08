@@ -1,14 +1,8 @@
 /* eslint-env jest */
 import React from 'react';
-import { expect, use } from 'chai';
-import Kefir from 'kefir';
-import { chaiPlugin } from 'brookjs-desalinate';
 import { fireEvent } from '@testing-library/react';
 import { jobDispatchClick } from '../../../actions';
 import Jobs from './';
-
-const { value, plugin } = chaiPlugin({ Kefir });
-use(plugin);
 
 describe('Jobs', () => {
   it('should emit action when clicked', () => {
@@ -23,8 +17,8 @@ describe('Jobs', () => {
           }
         ]}
       />
-    ).to.emitFromJunction(
-      [[350, value(jobDispatchClick('export'))]],
+    ).toEmitFromJunction(
+      [[350, global.Kutil.value(jobDispatchClick('export'))]],
       ({ getByTestId }, tick) => {
         const button = getByTestId('dispatch-job-export') as Element;
 
