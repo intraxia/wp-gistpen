@@ -9,9 +9,10 @@
   "homepage": "http://www.jamesdigioia.com/wp-gistpen/",
   "license": "GPL-2.0+",
   "scripts": {
-    "test": "npm run test:typecheck && npm run test:lint && npm run test:unit",
+    "test": "npm run test:typecheck && npm run test:format && npm run test:lint && npm run test:unit",
     "test:typecheck": "tsc --noEmit",
-    "test:lint": "eslint \"client/**/*.{json,ts,tsx}\" && prettier --check \"client/**/*.{json,ts,tsx}\"",
+    "test:format": "prettier --check \"client/**/*.{json,ts,tsx}\"",
+    "test:lint": "eslint \"client/**/*.{json,ts,tsx}\"",
     "test:unit": "beaver test unit",
     "build": "npm run build:dev && npm run build:prod",
     "build:dev": "beaver build --env development",
