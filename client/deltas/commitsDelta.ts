@@ -57,14 +57,17 @@ export const commitsDelta = ({ ajax$ }: CommitsServices) => (
     .flatMapFirst(state =>
       Kefir.concat<RootAction, never>([
         Kefir.constant(commitsFetchStarted()),
-        ajax$(Nullable.maybe('', repo => repo.commits_url, state.repo), {
-          method: 'GET',
-          credentials: 'include',
-          headers: {
-            'X-WP-Nonce': state.globals.nonce,
-            'Content-Type': 'application/json'
+        ajax$(
+          Nullable.maybe('', repo => repo.commits_url, state.repo),
+          {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+              'X-WP-Nonce': state.globals.nonce,
+              'Content-Type': 'application/json'
+            }
           }
-        })
+        )
           .flatMap(response => response.json())
           .flatMap(response =>
             apiCommits.is(response)
