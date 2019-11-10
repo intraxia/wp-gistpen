@@ -17,6 +17,7 @@
   },
   "include": [
     "client",
-    "commands"
+    "commands",
+    "e2e"
   ]
 }
