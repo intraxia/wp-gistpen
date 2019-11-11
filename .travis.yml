@@ -12,6 +12,10 @@ matrix:
           language: node_js
           node_js: 12
           env: FRONT_END=true
+        - name: "E2E"
+          language: node_js
+          node_js: 12
+          env: E2E=true
 
 branches:
     only:
@@ -29,5 +33,6 @@ before_script:
     - bash bin/before_script.sh
 
 script:
-    - if [[ $FRONT_END != 'true' ]]; then composer test; fi
+    - if [[ $FRONT_END != 'true' && $E2E != 'true'  ]]; then composer test; fi
     - if [[ $FRONT_END == 'true' ]]; then npm test; fi
+    - if [[ $E2E == 'true' ]]; then npx beaver e2e; fi
