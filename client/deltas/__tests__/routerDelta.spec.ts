@@ -6,7 +6,7 @@ const createLocation = (search: string) => {
   const location = {} as any;
   const parser = document.createElement('a');
   parser.href = `http://test.dev/editor?${search}`;
-  [
+  ([
     'href',
     'protocol',
     'host',
@@ -16,12 +16,9 @@ const createLocation = (search: string) => {
     'pathname',
     'search',
     'hash'
-    // @TODO(mAAdhaTTah) should be as const but bug in TS
-    // https://github.com/Microsoft/TypeScript/issues/30664
-  ] /* as const */
-    .forEach(prop => {
-      location[prop] = (parser as any)[prop];
-    });
+  ] as const).forEach(prop => {
+    location[prop] = parser[prop];
+  });
 
   return location as Location;
 };

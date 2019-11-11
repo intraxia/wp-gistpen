@@ -11,7 +11,6 @@ describe('Accounts', () => {
       ({ queryByTestId }) => {
         const input = queryByTestId('token-input') as Element;
 
-        // @TODO(James) doesn't fire correctly
         fireEvent.change(input, { target: { value: 'abc' } });
       }
     );
