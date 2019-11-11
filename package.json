@@ -115,7 +115,7 @@
     "redux-devtools-extension": "^2.13.8",
     "sheet-router": "^4.0.0-0",
     "sprintf-js": "^1.1.2",
-    "typesafe-actions": "^4.4.2",
+    "typesafe-actions": "^5.1.0",
     "typescript-nullable": "^0.6.0",
     "whatwg-fetch": "^3.0.0"
   },
