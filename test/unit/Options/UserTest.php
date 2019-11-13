@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Test\Options;
 
 use Intraxia\Gistpen\Options\User;
 use Intraxia\Gistpen\Test\TestCase;
+use InvalidArgumentException;
 
 class UserTest extends TestCase {
 	/**
@@ -102,31 +103,31 @@ class UserTest extends TestCase {
 	}
 
 	public function test_should_throw_exception_getting_unknown_option() {
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( InvalidArgumentException::class );
 
 		$this->user->get( 'unknown_option' );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( InvalidArgumentException::class );
 
 		$this->user->get( 'editor.unknown_option' );
 	}
 
 	public function test_should_throw_exception_setting_unknown_option() {
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( InvalidArgumentException::class );
 
 		$this->user->set( 'unknown_option', 'test' );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( InvalidArgumentException::class );
 
 		$this->user->set( 'editor.unknown_option', 'test' );
 	}
 
 	public function test_should_throw_exception_patching_unknown_option() {
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( InvalidArgumentException::class );
 
 		$this->user->patch( array( 'unknown_option' => 'test' ) );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( InvalidArgumentException::class );
 
 		$this->user->patch( array( 'editor' => array( 'unknown_option' => 'test' ) ) );
 	}

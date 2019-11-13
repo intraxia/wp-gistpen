@@ -82,7 +82,7 @@ class SiteTest extends TestCase {
 	public function test_should_throw_on_invalid_key() {
 		$this->set_role( 'administrator' );
 
-		$this->setExpectedException( 'InvalidArgumentException' );
+		$this->expectException( \InvalidArgumentException::class );
 
 		$this->site->get( 'random' );
 	}
