@@ -69,12 +69,12 @@ describe('commitsDelta', () => {
 
   it('should not respond to random routes', () => {
     const services = createServices();
-    const actions$ = global.Kutil.stream();
-    const state$ = global.Kutil.prop();
+    const actions$ = Kutil.stream();
+    const state$ = Kutil.prop();
 
     expect(commitsDelta(services)).toEmitFromDelta([], () => {
-      global.Kutil.send(state$, [global.Kutil.value(stateWithId)]);
-      global.Kutil.send(actions$, [global.Kutil.value(routeChange('random'))]);
+      Kutil.send(state$, [Kutil.value(stateWithId)]);
+      Kutil.send(actions$, [Kutil.value(routeChange('random'))]);
     });
   });
 
@@ -82,7 +82,7 @@ describe('commitsDelta', () => {
     const services = createServices();
 
     expect(commitsDelta(services)).toEmitFromDelta([], send => {
-      send(routeChange('commits'), global.Kutil.value(stateNoId));
+      send(routeChange('commits'), Kutil.value(stateNoId));
     });
   });
 
@@ -98,7 +98,7 @@ describe('commitsDelta', () => {
     };
     const xhr = { response: JSON.stringify([]) } as any;
     const services = createServices();
-    const effect$ = global.Kutil.stream();
+    const effect$ = Kutil.stream();
 
     services.ajax$
       .withArgs(commitsUrl, options)
@@ -107,16 +107,13 @@ describe('commitsDelta', () => {
 
     expect(commitsDelta(services)).toEmitFromDelta(
       [
-        [0, global.Kutil.value(commitsFetchStarted())],
-        [10, global.Kutil.value(commitsFetchSucceeded([]))]
+        [0, Kutil.value(commitsFetchStarted())],
+        [10, Kutil.value(commitsFetchSucceeded([]))]
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
-        global.Kutil.send(effect$, [
-          global.Kutil.value(new ObsResponse(xhr)),
-          global.Kutil.end()
-        ]);
+        Kutil.send(effect$, [Kutil.value(new ObsResponse(xhr)), Kutil.end()]);
       }
     );
   });
@@ -133,7 +130,7 @@ describe('commitsDelta', () => {
     };
     const payload = new TypeError('Network request failed');
     const services = createServices();
-    const effect$ = global.Kutil.stream();
+    const effect$ = Kutil.stream();
 
     services.ajax$
       .withArgs(commitsUrl, options)
@@ -142,16 +139,13 @@ describe('commitsDelta', () => {
 
     expect(commitsDelta(services)).toEmitFromDelta(
       [
-        [0, global.Kutil.value(commitsFetchStarted())],
-        [10, global.Kutil.value(commitsFetchFailed(payload))]
+        [0, Kutil.value(commitsFetchStarted())],
+        [10, Kutil.value(commitsFetchFailed(payload))]
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
-        global.Kutil.send(effect$, [
-          global.Kutil.error(payload),
-          global.Kutil.end()
-        ]);
+        Kutil.send(effect$, [Kutil.error(payload), Kutil.end()]);
       }
     );
   });
