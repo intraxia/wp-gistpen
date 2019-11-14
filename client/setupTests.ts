@@ -10,11 +10,7 @@ expect.extend(extensions);
 Object.assign(global, { Kutil: obs });
 
 declare global {
-  namespace NodeJS {
-    interface Global {
-      Kutil: typeof obs;
-    }
-  }
+  var Kutil: typeof obs;
 
   namespace jest {
     interface Matchers<R, T> {

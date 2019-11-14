@@ -14,7 +14,8 @@ module.exports = {
   globals: {
     __webpack_public_path__: true,
     page: true,
-    jQuery: true
+    jQuery: true,
+    Kutil: true
   },
   env: {
     es6: true,

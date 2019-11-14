@@ -18,7 +18,7 @@ describe('Jobs', () => {
         ]}
       />
     ).toEmitFromJunction(
-      [[350, global.Kutil.value(jobDispatchClick('export'))]],
+      [[350, Kutil.value(jobDispatchClick('export'))]],
       ({ getByTestId }, tick) => {
         const button = getByTestId('dispatch-job-export') as Element;
 
