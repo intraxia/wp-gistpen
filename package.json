@@ -62,7 +62,7 @@
     "@types/wordpress__i18n": "^3.4.0",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
-    "@wordpress/e2e-test-utils": "^2.4.3",
+    "@wordpress/e2e-test-utils": "^3.0.0",
     "@wordpress/scripts": "^5.1.0",
     "acorn": "6.2.1",
     "babel-preset-brookjs": "1.0.0-alpha.26",
