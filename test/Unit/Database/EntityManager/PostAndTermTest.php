@@ -1,6 +1,6 @@
 <?php
 
-namespace Intraxia\Gistpen\Test\Database\EntityManager;
+namespace Intraxia\Gistpen\Test\Unit\Database\EntityManager;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
@@ -9,7 +9,7 @@ use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use Intraxia\Jaxion\Axolotl\Collection;
 
 class PostAndTermTest extends TestCase {

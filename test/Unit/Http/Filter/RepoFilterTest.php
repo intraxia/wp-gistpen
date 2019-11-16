@@ -1,9 +1,9 @@
 <?php
-namespace Intraxia\Gistpen\Test\Http\Filter;
+namespace Intraxia\Gistpen\Test\Unit\Http\Filter;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Http\Filter\Repo;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use Mockery;
 use Mockery\MockInterface;
 use WP_Error;

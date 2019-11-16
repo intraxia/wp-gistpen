@@ -1,9 +1,9 @@
 <?php
-namespace Intraxia\Gistpen\Test\Model;
+namespace Intraxia\Gistpen\Test\Unit\Model;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Language;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use WP_Query;
 
 class LanguageTest extends TestCase {

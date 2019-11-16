@@ -1,8 +1,8 @@
 <?php
-namespace Intraxia\Gistpen\Test\Options;
+namespace Intraxia\Gistpen\Test\Unit\Options;
 
 use Intraxia\Gistpen\Options\User;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use InvalidArgumentException;
 
 class UserTest extends TestCase {

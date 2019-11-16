@@ -1,6 +1,10 @@
 <?php
+namespace Intraxia\Gistpen\Test\Integration;
 
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
+use WP_REST_Server;
+use WP_REST_Request;
+use WP_REST_Response;
 
 abstract class ApiTestCase extends TestCase {
 	/**

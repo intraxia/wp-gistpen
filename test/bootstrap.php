@@ -3,7 +3,7 @@
 /**
  * PHPUnit bootstrap file
  *
- * @package Intraxia\Gistpen
+ * @package Intraxia\Gistpen\Test
  */
 
 use Intraxia\Gistpen\App;

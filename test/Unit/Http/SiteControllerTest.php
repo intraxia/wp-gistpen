@@ -1,39 +1,37 @@
 <?php
-namespace Intraxia\Gistpen\Test\Http;
+namespace Intraxia\Gistpen\Test\Unit\Http;
 
-use Intraxia\Gistpen\Http\UserController;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Http\SiteController;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use InvalidArgumentException;
 use Mockery;
-use WP_Error;
-use WP_UnitTestCase;
 
-class UserControllerTest extends TestCase {
+class SiteControllerTest extends TestCase {
 	/**
-	 * @var UserController
+	 * @var SiteController
 	 */
 	protected $controller;
 
 	/**
 	 * @var Mockery\MockInterface
 	 */
-	protected $user;
+	protected $site;
 
 	/**
 	 * @var Mockery\MockInterface
 	 */
 	protected $request;
 
-	protected $data = array( 'ace_theme' => 'test' );
+	protected $data = array( 'prism' => array( 'key' => 'value' ) );
 
 	public function setUp() {
 		parent::setUp();
-		$this->controller = new UserController( $this->user = $this->mock( 'options.user' ) );
+		$this->controller = new SiteController( $this->site = $this->mock( 'options.site' ) );
 		$this->request    = $this->mock( 'WP_REST_Request' );
 	}
 
 	public function test_should_return_all_options_in_response() {
-		$this->user
+		$this->site
 			->shouldReceive( 'all' )
 			->once()
 			->andReturn( $this->data );
@@ -49,9 +47,12 @@ class UserControllerTest extends TestCase {
 			->shouldReceive( 'get_params' )
 			->once()
 			->andReturn( $this->data );
-		$this->user
+		$this->site
 			->shouldReceive( 'patch' )
 			->with( $this->data )
+			->once();
+		$this->site
+			->shouldReceive( 'all' )
 			->once()
 			->andReturn( $this->data );
 
@@ -60,24 +61,6 @@ class UserControllerTest extends TestCase {
 		$this->assertInstanceOf( 'WP_REST_Response', $response );
 		$this->assertSame( $this->data, $response->get_data() );
 		$this->assertSame( 200, $response->get_status() );
-	}
-
-	public function test_should_return_invalid_key_when_update_fails() {
-		$this->request
-			->shouldReceive( 'get_params' )
-			->once()
-			->andReturn( $this->data );
-		$this->user
-			->shouldReceive( 'patch' )
-			->with( $this->data )
-			->once()
-			->andThrow( new InvalidArgumentException );
-
-		/** @var WP_Error $response */
-		$response = $this->controller->update( $this->request );
-
-		$this->assertInstanceOf( 'WP_Error', $response );
-		$this->assertSame( array( 'status' => 400 ), $response->get_error_data() );
 	}
 
 	public function tearDown() {

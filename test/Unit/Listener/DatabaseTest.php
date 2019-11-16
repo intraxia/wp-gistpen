@@ -1,6 +1,6 @@
 <?php
 
-namespace Intraxia\Jaxion\Test\Listener;
+namespace Intraxia\Jaxion\Test\Unit\Listener;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Listener\Database;
@@ -8,7 +8,7 @@ use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use Mockery\Mock;
 
 class DatabaseTest extends TestCase {

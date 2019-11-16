@@ -1,8 +1,8 @@
 <?php
-namespace Intraxia\Jaxion\Test;
+namespace Intraxia\Jaxion\Test\Unit;
 
 use Intraxia\Gistpen\Listener\Migration;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use Mockery\Mock;
 
 class MigrationTest extends TestCase {

@@ -1,4 +1,7 @@
 <?php
+namespace Intraxia\Gistpen\Test\Integration;
+
+use WP_REST_Request;
 
 class RepoCollectionTest extends ApiTestCase {
 	public function test_returns_no_repos() {

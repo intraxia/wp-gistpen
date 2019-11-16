@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Gistpen\Test;
+namespace Intraxia\Gistpen\Test\Unit;
 
 use Intraxia\Gistpen\App;
 use Intraxia\Jaxion\Core\UndefinedAliasException;

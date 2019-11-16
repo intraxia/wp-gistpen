@@ -1,6 +1,6 @@
 <?php
 
-namespace Intraxia\Gistpen\Test\Database\EntityManager;
+namespace Intraxia\Gistpen\Test\Unit\Database\EntityManager;
 
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Jobs\Level;
@@ -8,7 +8,7 @@ use Intraxia\Gistpen\Jobs\Status;
 use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Message;
 use Intraxia\Gistpen\Model\Run;
-use Intraxia\Gistpen\Test\TestCase;
+use Intraxia\Gistpen\Test\Unit\TestCase;
 use Intraxia\Jaxion\Axolotl\Collection;
 
 class CustomTableTest extends TestCase {
