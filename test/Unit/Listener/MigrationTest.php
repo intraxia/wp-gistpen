@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Jaxion\Test\Unit;
+namespace Intraxia\Jaxion\Test\Unit\Listener;
 
 use Intraxia\Gistpen\Listener\Migration;
 use Intraxia\Gistpen\Test\Unit\TestCase;
