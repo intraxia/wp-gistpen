@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Gistpen\Test\Unit;
+namespace Intraxia\Gistpen\Test;
 
 use WP_UnitTest_Factory;
 use WP_UnitTest_Factory_For_Post;

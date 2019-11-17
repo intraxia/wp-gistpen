@@ -2,21 +2,12 @@
 namespace Intraxia\Gistpen\Test\Unit;
 
 use Intraxia\Gistpen\App;
+use Intraxia\Gistpen\Test\TestCase as BaseTestCase;
 use Intraxia\Jaxion\Core\UndefinedAliasException;
 use Mockery;
 use WP_UnitTestCase;
 
-abstract class TestCase extends WP_UnitTestCase {
-	/**
-	 * @var Factory
-	 */
-	protected $factory;
-
-	/**
-	 * @var App
-	 */
-	protected $app;
-
+abstract class TestCase extends BaseTestCase {
 	/**
 	 * @var \WP_Post
 	 */
@@ -47,17 +38,6 @@ abstract class TestCase extends WP_UnitTestCase {
 	 */
 	protected $states;
 
-	public function setUp() {
-		parent::setUp();
-		$this->factory = new Factory;
-		$this->app     = App::instance();
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-		Mockery::close();
-	}
-
 	public function mock( $alias ) {
 		try {
 			$to_mock = $this->app->fetch( $alias );
@@ -66,11 +46,6 @@ abstract class TestCase extends WP_UnitTestCase {
 		} catch ( UndefinedAliasException $e ) {
 			return Mockery::mock( $alias );
 		}
-	}
-
-	public function set_role( $role ) {
-		$this->user_id = $this->factory->user->create( array( 'role' => $role ) );
-		wp_set_current_user( $this->user_id );
 	}
 
 	public function create_post_and_children( $with_revision = true ) {
@@ -119,5 +94,4 @@ abstract class TestCase extends WP_UnitTestCase {
 		update_post_meta( $this->repo->ID, '_wpgp_gist_id', 'none' );
 		update_post_meta( $this->repo->ID, '_wpgp_sync', 'off' );
 	}
-
 }
