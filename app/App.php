@@ -30,20 +30,20 @@ class App extends Application {
 	 * @var string[]
 	 */
 	protected $providers = array(
-		'Intraxia\Gistpen\Providers\ClientServiceProvider',
-		'Intraxia\Gistpen\Providers\ViewServiceProvider',
-		'Intraxia\Gistpen\Providers\TranslatorServiceProvider',
-		'Intraxia\Gistpen\Providers\TemplatingServiceProvider',
-		'Intraxia\Gistpen\Providers\OptionsServiceProvider',
-		'Intraxia\Gistpen\Providers\AssetsServiceProvider',
-		'Intraxia\Gistpen\Providers\DatabaseServiceProvider',
-		'Intraxia\Gistpen\Providers\JobsServiceProvider',
-		'Intraxia\Gistpen\Providers\ControllerServiceProvider',
-		'Intraxia\Gistpen\Providers\CoreServiceProvider',
-		'Intraxia\Gistpen\Providers\EmbedServiceProvider',
-		'Intraxia\Gistpen\Providers\RouterServiceProvider',
-		'Intraxia\Gistpen\Providers\ParamsServiceProvider',
-		'Intraxia\Gistpen\Providers\ListenerServiceProvider',
+		\Intraxia\Gistpen\Providers\ClientServiceProvider::class,
+		\Intraxia\Gistpen\Providers\ViewServiceProvider::class,
+		\Intraxia\Gistpen\Providers\TranslationsServiceProvider::class,
+		\Intraxia\Gistpen\Providers\TemplatingServiceProvider::class,
+		\Intraxia\Gistpen\Providers\OptionsServiceProvider::class,
+		\Intraxia\Gistpen\Providers\AssetsServiceProvider::class,
+		\Intraxia\Gistpen\Providers\DatabaseServiceProvider::class,
+		\Intraxia\Gistpen\Providers\JobsServiceProvider::class,
+		\Intraxia\Gistpen\Providers\ControllerServiceProvider::class,
+		\Intraxia\Gistpen\Providers\CoreServiceProvider::class,
+		\Intraxia\Gistpen\Providers\EmbedServiceProvider::class,
+		\Intraxia\Gistpen\Providers\RouterServiceProvider::class,
+		\Intraxia\Gistpen\Providers\ParamsServiceProvider::class,
+		\Intraxia\Gistpen\Providers\ListenerServiceProvider::class,
 	);
 
 	/**

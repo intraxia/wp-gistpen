@@ -1,11 +1,20 @@
 <?php
 
-namespace Intraxia\Gistpen;
+namespace Intraxia\Gistpen\View;
 
-use Intraxia\Gistpen\Contract\Translator as TranslatorContract;
+use Intraxia\Gistpen\Contract\Translations as TranslationsContract;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 
-class Translator implements TranslatorContract, HasActions {
+/**
+ * Maintains & outputs all the translations used by the FE.
+ *
+ * @package    Intraxia\Gistpen
+ * @subpackage View
+ * @author     James DiGioia <jamesorodig@gmail.com>
+ * @link       http://jamesdigioia.com/wp-gistpen/
+ * @since      2.0.0
+ */
+class Translations implements TranslationsContract, HasActions {
 
 	/**
 	 * Translations.
@@ -15,7 +24,7 @@ class Translator implements TranslatorContract, HasActions {
 	protected $translations = array();
 
 	/**
-	 * Translator constructor.
+	 * Translations constructor.
 	 */
 	public function __construct() {
 		$this->translations = array(
@@ -56,7 +65,7 @@ class Translator implements TranslatorContract, HasActions {
 			'search.results.no'  => __( 'No results found for term %s', 'wp-gistpen' ),
 			'search.term.no'     => __( 'Please enter a search term ', 'wp-gistpen' ),
 			'search.title'       => __( 'Search Gistpens', 'wp-gistpen' ),
-			'settings.saving'    => __( 'Saving settings...', 'wp-gistpen'),
+			'settings.saving'    => __( 'Saving settings...', 'wp-gistpen' ),
 		);
 	}
 
@@ -87,6 +96,9 @@ class Translator implements TranslatorContract, HasActions {
 		return $this->translations;
 	}
 
+	/**
+	 * Output the script tag with the translations used by the FE.
+	 */
 	public function output_translations() {
 		echo '<script type="application/javascript">';
 		echo 'window.__GISTPEN_I18N__ = ' . wp_json_encode( $this->serialize() );

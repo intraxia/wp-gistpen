@@ -4,9 +4,9 @@ namespace Intraxia\Gistpen\Providers;
 
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
-use Intraxia\Gistpen\Translator;
+use Intraxia\Gistpen\View\Translations;
 
-class TranslatorServiceProvider implements ServiceProvider {
+class TranslationsServiceProvider implements ServiceProvider {
 
 	/**
 	 * Register the provider's services on the container.
@@ -17,8 +17,8 @@ class TranslatorServiceProvider implements ServiceProvider {
 	 * @param Container $container
 	 */
 	public function register( Container $container ) {
-		$container->share( 'translator', function () {
-			return new Translator();
+		$container->share( 'translations', function () {
+			return new Translations();
 		} );
 	}
 }
