@@ -8,10 +8,15 @@
 
 use Intraxia\Gistpen\App;
 
+$plugin_root = dirname( dirname( __FILE__ ) );
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
 if ( ! $_tests_dir ) {
 	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
+
+	if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
+		$_tests_dir = $plugin_root . '/wordpress/tests/phpunit';
+	}
 }
 
 if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
@@ -21,8 +26,6 @@ if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
 
 // Give access to tests_add_filter() function.
 require_once $_tests_dir . '/includes/functions.php';
-
-$plugin_root = dirname( dirname( __FILE__ ) );
 
 /**
  * Manually load the plugin being tested.
