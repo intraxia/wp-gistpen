@@ -46,8 +46,9 @@ $exists = file_exists( $languages_config );
 if ( ! $exists ) {
 	$dummy = array(
 		'list' =>  array(
-			'js'  => 'JavaScript',
-			'php' => 'PHP',
+			'js'        => 'JavaScript',
+			'php'       => 'PHP',
+			'plaintext' => 'PlainText',
 		),
 		'aliases' => array(
 			'js'  => 'javascript',
