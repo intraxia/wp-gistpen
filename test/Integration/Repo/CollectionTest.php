@@ -1,12 +1,13 @@
 <?php
-namespace Intraxia\Gistpen\Test\Integration;
+namespace Intraxia\Gistpen\Test\Integration\Repo;
 
 use WP_REST_Request;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Gistpen\Test\Integration\TestCase;
 
-class RepoCollectionTest extends TestCase {
+class CollectionTest extends TestCase {
 	public function test_returns_no_repos() {
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 
@@ -174,21 +175,5 @@ class RepoCollectionTest extends TestCase {
 		$response = $this->server->dispatch( $request );
 		$this->assertResponseStatus( $response, 200 );
 		$this->assertCount( 0, $response->get_data() );
-	}
-
-	public function test_returns_error_with_invalid_blobs() {
-		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
-
-		$response = $this->server->dispatch( $request );
-
-		$this->assertResponseStatus( $response, 400 );
-		$this->assertResponseData( $response, [
-			'code' => 'rest_missing_callback_param',
-			'message' => 'Missing parameter(s): blobs',
-			'data' => [
-				'status' => 400,
-				'params' => [ 'blobs' ],
-			]
-		] );
 	}
 }

@@ -44,7 +44,7 @@ abstract class TestCase extends WP_UnitTestCase {
 			Repo::class => [
 				'description' => Faker::sentence(),
 				'slug'        => Faker::slug(),
-				'status'      => Faker::randomElement( get_post_statuses() ),
+				'status'      => Faker::randomElement( array_keys( get_post_statuses() ) ),
 				'password'    => function() {
 					return '';
 				},
@@ -88,7 +88,6 @@ abstract class TestCase extends WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 		Mockery::close();
-		$this->fm->deleteSaved();
 	}
 
 	public function set_role( $role ) {

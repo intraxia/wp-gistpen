@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6ec2389b2a6e5b200abaf68f4b3b0258",
+    "content-hash": "d07d5fc5bd4aa692070d6e50de9fb0b2",
     "packages": [
         {
             "name": "intraxia/jaxion",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:intraxia/jaxion.git",
-                "reference": "3dc81b81ab7e50cf592a4cc820f330950d53f90b"
+                "reference": "177698e49c31da3ce2f2279d1e72ade7f7a98277"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/3dc81b81ab7e50cf592a4cc820f330950d53f90b",
-                "reference": "3dc81b81ab7e50cf592a4cc820f330950d53f90b",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/177698e49c31da3ce2f2279d1e72ade7f7a98277",
+                "reference": "177698e49c31da3ce2f2279d1e72ade7f7a98277",
                 "shasum": ""
             },
             "require": {
@@ -2021,9 +2021,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "intraxia/jaxion": 20,
-        "intraxia/codestyle": 20,
-        "league/factory-muffin-faker": 20,
-        "league/factory-muffin": 20
+        "intraxia/codestyle": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
