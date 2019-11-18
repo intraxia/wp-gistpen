@@ -22,6 +22,9 @@
     "dev:storybook": "start-storybook -s ./assets/js -p 9001 -c .storybook",
     "dev:format": "prettier --write \"{client,.storybook,commands,e2e}/**/*.{json,js,ts,tsx}\" && eslint \"{client,.storybook,commands,e2e}/**/*.{json,js,ts,tsx}\" --fix",
     "env": "wp-scripts env",
+    "env:php:clean": "npm run env docker-run php composer clean",
+    "env:php:sniff": "npm run env docker-run php composer sniff",
+    "env:php:test": "npm run env docker-run php composer test",
     "gen": "npm run gen:coc && npm run gen:pot",
     "gen:coc": "weallbehave -o .",
     "gen:pot": "wp-pot --bug-report http://github.com/intraxia/wp-gistpen --domain wp-gistpen --package wp-gistpen --src 'app/**/*.php' --relative-to . --dest-file languages/wp-gistpen.pot"

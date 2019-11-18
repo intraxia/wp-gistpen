@@ -1,5 +1,5 @@
 <phpunit
-	bootstrap="test/includes/bootstrap.php"
+	bootstrap="test/bootstrap.php"
 	backupGlobals="false"
 	colors="true"
 	verbose="true"
@@ -12,10 +12,10 @@
 	>
 	<testsuites>
 		<testsuite name="WP-Gistpen Unit Test Suite">
-			<directory suffix=".php">test/unit/</directory>
+			<directory suffix=".php">test/Unit/</directory>
 		</testsuite>
 		<testsuite name="WP-Gistpen Integration Test Suite">
-			<directory suffix=".php">test/integration/</directory>
+			<directory suffix=".php">test/Integration/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>

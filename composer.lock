@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f5806f8eb6d3c95625d494b84fd10cdd",
+    "content-hash": "d07d5fc5bd4aa692070d6e50de9fb0b2",
     "packages": [
         {
             "name": "intraxia/jaxion",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:intraxia/jaxion.git",
-                "reference": "3dc81b81ab7e50cf592a4cc820f330950d53f90b"
+                "reference": "177698e49c31da3ce2f2279d1e72ade7f7a98277"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/3dc81b81ab7e50cf592a4cc820f330950d53f90b",
-                "reference": "3dc81b81ab7e50cf592a4cc820f330950d53f90b",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/177698e49c31da3ce2f2279d1e72ade7f7a98277",
+                "reference": "177698e49c31da3ce2f2279d1e72ade7f7a98277",
                 "shasum": ""
             },
             "require": {
@@ -265,6 +265,56 @@
             "time": "2018-09-01T02:07:49+00:00"
         },
         {
+            "name": "fzaninotto/faker",
+            "version": "v1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "f72816b43e74063c8b10357394b6bba8cb1c10de"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/f72816b43e74063c8b10357394b6bba8cb1c10de",
+                "reference": "f72816b43e74063c8b10357394b6bba8cb1c10de",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^5.3.3 || ^7.0"
+            },
+            "require-dev": {
+                "ext-intl": "*",
+                "phpunit/phpunit": "^4.8.35 || ^5.7",
+                "squizlabs/php_codesniffer": "^1.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2018-07-12T10:23:15+00:00"
+        },
+        {
             "name": "hamcrest/hamcrest-php",
             "version": "1.2.x-dev",
             "source": {
@@ -346,6 +396,121 @@
             ],
             "description": "The Intraxia PHP Coding Standards.",
             "time": "2016-10-01T19:46:52+00:00"
+        },
+        {
+            "name": "league/factory-muffin",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/factory-muffin.git",
+                "reference": "048d57a41191b66fa797aaffb84acab0ffd01e54"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/factory-muffin/zipball/048d57a41191b66fa797aaffb84acab0ffd01e54",
+                "reference": "048d57a41191b66fa797aaffb84acab0ffd01e54",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "replace": {
+                "zizaco/factory-muff": "self.version"
+            },
+            "require-dev": {
+                "doctrine/orm": "2.5.*",
+                "illuminate/database": "5.0.*|5.1.*",
+                "league/factory-muffin-faker": "^2.0",
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "suggest": {
+                "doctrine/orm": "Factory Muffin supports doctrine through the repository store.",
+                "illuminate/database": "Factory Muffin supports eloquent through the model store.",
+                "league/factory-muffin-faker": "Factory Muffin is very powerful together with faker."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.0-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\FactoryMuffin\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Scott Robertson",
+                    "email": "scottymeuk@gmail.com"
+                },
+                {
+                    "name": "Graham Campbell",
+                    "email": "graham@alt-three.com"
+                }
+            ],
+            "description": "The goal of this package is to enable the rapid creation of objects for the purpose of testing.",
+            "homepage": "http://factory-muffin.thephpleague.com/",
+            "keywords": [
+                "factory",
+                "testing"
+            ],
+            "time": "2019-06-29T23:04:51+00:00"
+        },
+        {
+            "name": "league/factory-muffin-faker",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/factory-muffin-faker.git",
+                "reference": "0027e81d16a36038dedf4da77ae6be94d109b264"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/factory-muffin-faker/zipball/0027e81d16a36038dedf4da77ae6be94d109b264",
+                "reference": "0027e81d16a36038dedf4da77ae6be94d109b264",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "1.6.*|1.7.*|1.8.*",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8|^5.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "League\\FactoryMuffin\\Faker\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graham Campbell",
+                    "email": "graham@alt-three.com"
+                }
+            ],
+            "description": "The goal of this package is to wrap faker to make it super easy to use with factory muffin.",
+            "homepage": "http://factory-muffin.thephpleague.com/",
+            "keywords": [
+                "factory",
+                "faker",
+                "testing"
+            ],
+            "time": "2019-06-28T09:12:37+00:00"
         },
         {
             "name": "mockery/mockery",

@@ -88,7 +88,7 @@ class Language extends Model implements UsesWordPressTerm {
 		$languages = App::instance()->fetch( 'config' )->get_config_json( 'languages' );
 
 		if ( $languages === null ) {
-			return 'Plaintext';
+			return 'Language config not found';
 		}
 
 		return isset( $languages['list'][ $this->get_attribute( 'slug' ) ] ) ?

@@ -3,7 +3,7 @@ namespace Intraxia\Gistpen\Templating;
 
 use Exception;
 use Intraxia\Jaxion\Core\Config;
-use Intraxia\Gistpen\Contract\Translator;
+use Intraxia\Gistpen\Contract\Translations;
 use Intraxia\Gistpen\Contract\Templating;
 
 /**
@@ -27,7 +27,7 @@ class File implements Templating {
 	 *
 	 * @var Translator
 	 */
-	protected $translator;
+	protected $translations;
 
 	/**
 	 * App Config service.
@@ -40,13 +40,13 @@ class File implements Templating {
 	 * Handlebars constructor.
 	 *
 	 * @param Config     $config
-	 * @param Translator $translator
+	 * @param Translator $translations
 	 * @param string     $views
 	 */
-	public function __construct( Config $config, Translator $translator, $views ) {
+	public function __construct( Config $config, Translations $translations, $views ) {
 		$this->config     = $config;
 		$this->views        = $views;
-		$this->translator = $translator;
+		$this->translations = $translations;
 	}
 
 	/**

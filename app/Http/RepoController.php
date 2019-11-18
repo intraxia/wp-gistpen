@@ -5,6 +5,7 @@ namespace Intraxia\Gistpen\Http;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -77,8 +78,12 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create( WP_REST_Request $request ) {
-		/** @var Repo|WP_Error $model */
-		$model = $this->em->create( EntityManager::REPO_CLASS, $request->get_params() );
+		try {
+			/** @var Repo|WP_Error $model */
+			$model = $this->em->create( EntityManager::REPO_CLASS, $request->get_params() );
+		} catch( GuardedPropertyException $e ) {
+			return $this->guarded_exception_to_error( $e );
+		}
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );
@@ -250,5 +255,30 @@ class RepoController {
 		}
 
 		return new WP_REST_Response( null, 204 );
+	}
+
+	/**
+	 * Convert the GuardedPropertyException to a WP_Error.
+	 *
+	 * @param  GuardedPropertyException $e Thrown exception.
+	 * @return WP_Error                    Mapped error.
+	 */
+	private function guarded_exception_to_error( GuardedPropertyException $e ) {
+		return new WP_Error(
+			'rest_invalid_param',
+			sprintf(
+				__( 'Invalid parameter: %s', 'wp-gistpen' ),
+				$e->property
+			),
+			[
+				'status' => 400,
+				'params' => [
+					$e->property => sprintf(
+						__( 'Param "%s" is not valid.', 'wp-gistpen' ),
+						$e->property
+					),
+				]
+			]
+		);
 	}
 }
