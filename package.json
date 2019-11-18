@@ -13,7 +13,7 @@
     "test:typecheck": "tsc --noEmit",
     "test:format": "prettier --check \"{client,.storybook,commands,e2e}/**/*.{json,js,ts,tsx}\"",
     "test:lint": "eslint \"{client,.storybook,commands,e2e}/**/*.{json,js,ts,tsx}\"",
-    "test:unit": "beaver test unit",
+    "test:unit": "beaver test unit --coverage",
     "build": "npm run build:dev && npm run build:prod",
     "build:dev": "beaver build --env development",
     "build:prod": "beaver build --env production",

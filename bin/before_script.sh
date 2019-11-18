@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
+download_reporter () {
+	# We're generating code coverage, so download the reporter.
+	curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+	chmod +x ./cc-test-reporter
+	./cc-test-reporter before-build
+}
+
 set -ex
 
 if [[ $FRONT_END == 'true' ]]; then
 	npm run build
+	download_reporter
 elif [[ $E2E == 'true' ]]; then
 	# Upgrade docker-compose.
 	sudo rm /usr/local/bin/docker-compose
@@ -55,10 +63,7 @@ else
 		# Remove xdebug (makes the build slow).
 		phpenv config-rm xdebug.ini;
 	else
-		# We're generating code coverage, so download the reporter.
-		curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-		chmod +x ./cc-test-reporter
-		./cc-test-reporter before-build
+		download_reporter
 	fi
 
 	composer self-update
