@@ -94,11 +94,37 @@ class CreateTest extends TestCase {
 		$this->assertResponseStatus( $response, 400 );
 		$this->assertResponseData( $response, [
 			'code' => 'rest_invalid_param',
-			'message' => 'Invalid parameter: extra',
+			'message' => 'Invalid parameter(s): extra',
 			'data' => [
 				'status' => 400,
 				'params' => [
-					'extra' => 'Param "extra" is not valid.'
+					'extra' => 'Param "extra" is not a valid request param.',
+				]
+			]
+		] );
+	}
+
+	public function test_returns_combines_errors_of_extra_and_invalid_params() {
+		$this->set_role( 'administrator' );
+		$repo = $this->fm->instance( Repo::class );
+		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
+		$request->set_body_params( [
+			'description' => 123,
+			'status'      => $repo->status,
+			'extra'       => 'value',
+		] );
+
+		$response = $this->server->dispatch( $request );
+
+		$this->assertResponseStatus( $response, 400 );
+		$this->assertResponseData( $response, [
+			'code' => 'rest_invalid_param',
+			'message' => 'Invalid parameter(s): description, extra',
+			'data' => [
+				'status' => 400,
+				'params' => [
+					'description' => 'Param "description" must be a string.',
+					'extra' => 'Param "extra" is not a valid request param.',
 				]
 			]
 		] );
