@@ -2,18 +2,20 @@
 namespace Intraxia\Gistpen\Test\Unit\View;
 
 use Intraxia\Gistpen\Test\Unit\TestCase;
+use Intraxia\Gistpen\View\Translations;
+
 
 class TranslationsTest extends TestCase {
 
 	/**
-	 * @var \Intraxia\Gistpen\View\Translations
+	 * @var Translations
 	 */
 	private $translations;
 
 	public function setUp() {
 		parent::setUp();
 
-		$this->translations = $this->app->fetch( 'translations' );
+		$this->translations = $this->app->make( Translations::class );
 	}
 
 	public function test_translate_returns_translation_correct_key() {

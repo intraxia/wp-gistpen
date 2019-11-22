@@ -20,7 +20,7 @@ class TemplatingServiceProvider implements ServiceProvider {
 			return new FileTemplating(
 				$container->fetch( 'config' ),
 				$container->fetch( 'translations' ),
-				$container->fetch( 'path' ) . 'views/'
+				$container->fetch( 'path' ) . 'resources/views/'
 			);
 		} );
 	}

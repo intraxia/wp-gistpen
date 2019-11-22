@@ -140,7 +140,7 @@ class CreateTest extends TestCase {
 		] );
 
 		$response = $this->server->dispatch( $request );
-		$repo = $this->app->fetch( 'database' )
+		$repo = $this->app->make( 'database' )
 			->find( Repo::class, $response->get_data()['ID'] );
 		$this->assertResponseStatus( $response, 201 );
 		$this->assertResponseData( $response, [
@@ -178,7 +178,7 @@ class CreateTest extends TestCase {
 		] );
 
 		$response = $this->server->dispatch( $request );
-		$repo = $this->app->fetch( 'database' )
+		$repo = $this->app->make( 'database' )
 			->find( Repo::class, $response->get_data()['ID'], [
 				'with' => [
 					'blobs' => [

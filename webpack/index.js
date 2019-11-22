@@ -89,7 +89,7 @@ class PrismLanguageGenerationPlugin {
       'prismjs',
       'components.json'
     );
-    this.dest = path.join(__dirname, '..', 'config', 'languages.json');
+    this.dest = path.join(__dirname, '..', 'resources', 'languages.json');
     this.exclude = [
       'meta',
       'clike',

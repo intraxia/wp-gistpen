@@ -30,14 +30,14 @@ abstract class TestCase extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->app     = App::instance();
+		$this->app     = \Intraxia\Gistpen\container();
 		$this->factory = new Factory;
 		$this->fm      = new FactoryMuffin(
-			new MuffinStore( $this->app->fetch( 'database' ) )
+			new MuffinStore( $this->app->get( 'database' ) )
 		);
 
 		$language_slugs = array_keys(
-			$this->app->fetch( 'config' )->get_config_json( 'languages' )['list']
+			$this->app->get( 'config' )->get_json_resource( 'languages' )['list']
 		);
 
 		$definitions = [

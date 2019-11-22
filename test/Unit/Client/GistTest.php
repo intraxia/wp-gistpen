@@ -13,7 +13,7 @@ class GistTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->gist = $this->app->fetch( 'client.gist' );
+		$this->gist = $this->app->make( 'client.gist' );
 	}
 
 	public function test_all_returns_error_with_no_token() {

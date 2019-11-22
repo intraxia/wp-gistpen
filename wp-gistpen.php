@@ -29,7 +29,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Autoload Classes & CMB2.
+// Register autoloader.
 $autoload = __DIR__ . '/lib/autoload.php';
 if ( file_exists( $autoload ) ) {
 	require_once $autoload;
@@ -37,10 +37,9 @@ if ( file_exists( $autoload ) ) {
 
 // Validate PHP Version.
 $update_php = new WPUpdatePhp( '5.6.0' );
-
 if ( ! $update_php->does_it_meet_required_php_version( PHP_VERSION ) ) {
 	return;
 }
 
 // Boot!
-call_user_func( array( new Intraxia\Gistpen\App( new Intraxia\Jaxion\Core\Config( Intraxia\Jaxion\Core\ConfigType::PLUGIN, __FILE__ ) ), 'boot' ) );
+Intraxia\Gistpen\boot( Intraxia\Jaxion\Core\ConfigType::PLUGIN, __FILE__ );

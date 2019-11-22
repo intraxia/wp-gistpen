@@ -19,12 +19,7 @@ class MigrationTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->migration = new Migration(
-			$this->em = $this->mock( 'database' )->makePartial(),
-			'wpgp',
-			$this->app->fetch( 'slug' ),
-			'1.0.0'
-		);
+		$this->migration = $this->app->make( 'listener.migration' );
 	}
 
 	public function test_should_update_to_1_0_0() {
@@ -33,14 +28,17 @@ class MigrationTest extends TestCase {
 			'_wpgp_gistpen_line_numbers'      => 'on',
 			'_wpgp_gist_token'                => '123456789zxcvbnmasdfghjklqwertyuiop'
 		);
-		$slug = $this->app->fetch( 'slug' );
+		$slug = $this->app->get( 'slug' );
 
 		update_option( 'wp_gistpen_version', '0.5.8' );
 		update_option( 'wp-gistpen', $old_opts );
 
 		$this->migration->run();
 
-		$this->assertEquals( get_option( 'wp_gistpen_version' ), '1.0.0' );
+		$this->assertEquals(
+			get_option( 'wp_gistpen_version' ),
+			$this->app->get( 'version' )
+		);
 		$this->assertEquals( array(
 			'prism' => array(
 				'theme'           => $old_opts['_wpgp_gistpen_highlighter_theme'],
