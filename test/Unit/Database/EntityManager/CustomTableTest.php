@@ -8,6 +8,7 @@ use Intraxia\Gistpen\Jobs\Status;
 use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Message;
 use Intraxia\Gistpen\Model\Run;
+use Intraxia\Gistpen\Lifecycle;
 use Intraxia\Gistpen\Test\Unit\TestCase;
 use Intraxia\Jaxion\Axolotl\Collection;
 
@@ -52,7 +53,8 @@ class CustomTableTest extends TestCase {
 
 		global $wpdb;
 
-		$this->em = new EntityManager( 'wpgp' );
+		$this->em = $this->app->make( EntityManager::class );
+		$this->app->make( Lifecycle::class )->activate();
 
 		$wpdb->insert(
 			$this->em->make_table_name( Klass::RUN ),

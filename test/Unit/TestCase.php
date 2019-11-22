@@ -40,7 +40,7 @@ abstract class TestCase extends BaseTestCase {
 
 	public function mock( $alias ) {
 		try {
-			$to_mock = $this->app->fetch( $alias );
+			$to_mock = $this->app->get( $alias );
 
 			return Mockery::mock( get_class( $to_mock ) );
 		} catch ( UndefinedAliasException $e ) {

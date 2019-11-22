@@ -85,7 +85,7 @@ class Language extends Model implements UsesWordPressTerm {
 	 */
 	public function compute_display_name() {
 		// @todo move serialization out of the model into a serializer?
-		$languages = App::instance()->fetch( 'config' )->get_config_json( 'languages' );
+		$languages = \Intraxia\Gistpen\container()->get( 'config' )->get_json_resource( 'languages' );
 
 		if ( $languages === null ) {
 			return 'Language config not found';

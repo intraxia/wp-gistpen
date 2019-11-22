@@ -6,8 +6,6 @@
  * @package Intraxia\Gistpen\Test
  */
 
-use Intraxia\Gistpen\App;
-
 $plugin_root = dirname( dirname( __FILE__ ) );
 $_tests_dir = getenv( 'WP_TESTS_DIR' );
 
@@ -39,7 +37,7 @@ tests_add_filter( 'muplugins_loaded', $_manually_load_plugin );
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
 
-$languages_config = $plugin_root . '/config/languages.json';
+$languages_config = $plugin_root . '/resources/languages.json';
 
 $exists = file_exists( $languages_config );
 
@@ -57,8 +55,6 @@ if ( ! $exists ) {
 
 	file_force_contents( $languages_config, json_encode( $dummy ) );
 }
-
-App::instance()->activate();
 
 function file_force_contents( $dir, $contents ) {
 	$parts = explode( '/', $dir );

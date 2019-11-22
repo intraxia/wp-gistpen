@@ -33,8 +33,8 @@ class DatabaseTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->em       = $this->app->fetch( 'database' );
-		$this->database = $this->app->fetch( 'listener.database' );
+		$this->em       = $this->app->make( 'database' );
+		$this->database = $this->app->make( 'listener.database' );
 	}
 
 	public function test_should_save_when_no_commits_saved() {
