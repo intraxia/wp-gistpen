@@ -3,7 +3,6 @@
 namespace Intraxia\Gistpen\Http;
 
 use Intraxia\Gistpen\Database\EntityManager;
-use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use WP_Error;
@@ -45,7 +44,7 @@ class RepoController {
 		$page = $request->get_param( 'page' );
 
 		$collection = $this->em->find_by(
-			EntityManager::REPO_CLASS,
+			Repo::class,
 			array(
 				'offset' => ($page - 1) * 10,
 				'with'   => array(
@@ -78,7 +77,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create( WP_REST_Request $request ) {
-		$model = $this->em->create( EntityManager::REPO_CLASS, $request->get_params() );
+		$model = $this->em->create( Repo::class, $request->get_params() );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );
@@ -100,7 +99,7 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function view( WP_REST_Request $request ) {
-		$model = $this->em->find( EntityManager::REPO_CLASS, $request->get_param( 'id' ), array(
+		$model = $this->em->find( Repo::class, $request->get_param( 'id' ), array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -128,7 +127,7 @@ class RepoController {
 		$id = $request->get_param( 'id' );
 
 		/** @var Repo|WP_Error $model */
-		$model = $this->em->find( EntityManager::REPO_CLASS, $id, array(
+		$model = $this->em->find( Repo::class, $id, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -151,7 +150,7 @@ class RepoController {
 			return $model;
 		}
 
-		$model = $this->em->find( EntityManager::REPO_CLASS, $id, array(
+		$model = $this->em->find( Repo::class, $id, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -177,7 +176,7 @@ class RepoController {
 	 */
 	public function apply( WP_REST_Request $request ) {
 		$id    = $request->get_param( 'id' );
-		$model = $this->em->find( EntityManager::REPO_CLASS, $id, array(
+		$model = $this->em->find( Repo::class, $id, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -200,7 +199,7 @@ class RepoController {
 			return $model;
 		}
 
-		$model = $this->em->find( EntityManager::REPO_CLASS, $id, array(
+		$model = $this->em->find( Repo::class, $id, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -227,7 +226,7 @@ class RepoController {
 	public function trash( WP_REST_Request $request ) {
 		$id = $request->get_param( 'id' );
 
-		$model = $this->em->find( EntityManager::REPO_CLASS, $id, array(
+		$model = $this->em->find( Repo::class, $id, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',

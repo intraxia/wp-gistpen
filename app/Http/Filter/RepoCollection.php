@@ -5,12 +5,12 @@ use Intraxia\Jaxion\Contract\Http\Filter as FilterContract;
 use WP_Error;
 
 /**
- * Class Filter\RepoRequest
+ * Class Filter\RepoCollection
  *
  * @package Intraxia\Gistpen\Http
  * @subpackage Filters
  */
-class RepoRequest implements FilterContract {
+class RepoCollection implements FilterContract {
 	/**
 	 * Generates argument rules.
 	 *
