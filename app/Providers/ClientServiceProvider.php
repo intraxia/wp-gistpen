@@ -6,6 +6,9 @@ use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 use Requests_Session;
 
+/**
+ * {@inheritDoc}
+ */
 class ClientServiceProvider implements ServiceProvider {
 
 	/**

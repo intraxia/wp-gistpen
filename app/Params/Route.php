@@ -4,6 +4,9 @@ namespace Intraxia\Gistpen\Params;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 use stdClass;
 
+/**
+ * Paramaters service for the route slice of the state.
+ */
 class Route implements HasFilters {
 
 	/**

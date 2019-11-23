@@ -4,6 +4,9 @@ namespace Intraxia\Gistpen\Params;
 use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
+/**
+ * Prism service for managing the prism slice of state.
+ */
 class Prism implements HasFilters {
 
 	/**
@@ -34,8 +37,9 @@ class Prism implements HasFilters {
 
 		return $params;
 	}
+
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public function filter_hooks() {
 		return array(

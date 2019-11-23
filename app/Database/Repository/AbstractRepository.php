@@ -13,6 +13,9 @@ use stdClass;
 use WP_Error;
 use WP_Term;
 
+/**
+ * Base repository with shared functionality.
+ */
 abstract class AbstractRepository implements Repository {
 
 	/**
@@ -23,6 +26,8 @@ abstract class AbstractRepository implements Repository {
 	protected $prefix;
 
 	/**
+	 * EntityManager service.
+	 *
 	 * @var EntityManager
 	 */
 	protected $em;
@@ -38,6 +43,14 @@ abstract class AbstractRepository implements Repository {
 		$this->em = $em;
 	}
 
+	/**
+	 * Fill the related models to its properties.
+	 *
+	 * @param  Model $model
+	 * @param  array $params
+	 * @return Model
+	 * @throws InvalidArgumentException
+	 */
 	protected function fill_relations( Model $model, array $params ) {
 		if ( ! isset( $params['with'] ) ) {
 			$params['with'] = array();
@@ -79,7 +92,6 @@ abstract class AbstractRepository implements Repository {
 					$value = new Collection( \Intraxia\Gistpen\Database\EntityManager::STATE_CLASS );
 
 					foreach ( $model->state_ids as $state_id ) {
-						/** @var State|WP_Error $state */
 						$state = $this->find( \Intraxia\Gistpen\Database\EntityManager::STATE_CLASS, $state_id, $params );
 
 						if ( ! is_wp_error( $state ) ) {

@@ -5,6 +5,9 @@ use Intraxia\Jaxion\Core\Config;
 use Intraxia\Gistpen\View\Edit;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
+/**
+ * Globals service to manage its slice of state.
+ */
 class Globals implements HasFilters {
 
 	/**
@@ -74,7 +77,7 @@ class Globals implements HasFilters {
 	 * Adds extra information to the globals required for the Settings page.
 	 * Specifically, we need dummy repo to render the example.
 	 *
-	 * @param $params
+	 * @param array $params Current params array.
 	 *
 	 * @return array
 	 */
@@ -84,31 +87,14 @@ class Globals implements HasFilters {
 		$params['globals']['demo'] = array(
 			'filename' => 'dummy.js',
 			'language' => 'javascript',
-			'code'     => /** @lang javascript */<<<JS
-function initHighlight(block, flags) {
-	try {
-		if (block.className.search(/\bno\-highlight\b/) != -1)
-			return processBlock(block.function, true, 0x0F) + ' class=""';
-	} catch (e) {
-		/* handle exception */
-		var e4x =
-		        `<div>Example
-		            <p>1234</p></div>`;
-	}
-	for (var i = 0 / 2; i < classes.length; i++) { // "0 / 2" should not be parsed as regexp
-		if (checkCondition(classes[i]) === undefined)
-			return /\d+[\s/]/g;
-	}
-	console.log(Array.every(classes, Boolean));
-}
-JS
+			'code'     => file_get_contents( __DIR__ . '/demo-code' ),
 		);
 
 		return $params;
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public function filter_hooks() {
 		return array(

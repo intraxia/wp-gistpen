@@ -68,7 +68,7 @@ class RepoCreate implements FilterContract {
 	 * @return string|WP_Error The status, or an error if invalid.
 	 */
 	public function sanitize_status( $status ) {
-		if( ! in_array( $status, array_keys( get_post_statuses() ) ) ) {
+		if ( ! in_array( $status, array_keys( get_post_statuses() ) ) ) {
 			return $this->create_error( __( 'Param "status" must be a valid post status.', 'wp-gistpen' ) );
 		}
 
@@ -118,7 +118,8 @@ class RepoCreate implements FilterContract {
 	/**
 	 * Ensures the individual blob passed to blobs is valid.
 	 *
-	 * @param  array          $blob Blob to sanitize.
+	 * @param  array $blob Blob to sanitize.
+	 * @param  int   $index Current loop index.
 	 * @return WP_Error|array       Sanitized blob.
 	 */
 	public function sanitize_blob( $blob, $index ) {
@@ -135,7 +136,7 @@ class RepoCreate implements FilterContract {
 			// is a string
 			! is_string( $blob['filename'] ) ||
 			// and is not empty.
-			$blob['filename'] === ''
+			'' === $blob['filename']
 			// @todo simplyify logic?
 		) {
 			return $this->create_error( sprintf(
@@ -163,6 +164,7 @@ class RepoCreate implements FilterContract {
 
 	/**
 	 * Create validation error to return.
+	 *
 	 * @param  string $message Validation message.
 	 * @return WP_Error        Validation error.
 	 */

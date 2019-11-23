@@ -6,6 +6,9 @@ use Intraxia\Gistpen\Model\Blob as BlobModel;
 use Intraxia\Gistpen\Model\Repo as RepoModel;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
+/**
+ * Params service for Repo slice of state.
+ */
 class Repo implements HasFilters {
 
 	/**
@@ -34,7 +37,11 @@ class Repo implements HasFilters {
 	 * @return array
 	 */
 	public function apply_repo( $params ) {
-		/** @var RepoModel $repo */
+		/**
+		 * Model building state for.
+		 *
+		 * @var RepoModel
+		 */
 		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID(), array(
 			'with' => array(
 				'blobs' => array(
@@ -43,16 +50,19 @@ class Repo implements HasFilters {
 			),
 		) );
 
-		if ( is_wp_error( $repo ) ) {
-			// @todo
-		} else {
+		if ( ! is_wp_error( $repo ) ) {
 			$params['repo'] = $repo->serialize();
+		} else {
+			$params['repo'] = [
+				'error'   => true,
+				'message' => $repo->get_error_message(),
+			];
 		}
 
 		return $params;
 	}
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public function filter_hooks() {
 		return array(

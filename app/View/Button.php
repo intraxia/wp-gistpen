@@ -92,7 +92,7 @@ class Button implements HasFilters {
 	 * Output the default state used by the TinyMCE plugin in a script tag.
 	 */
 	public function output_tinymce_state() {
-		echo $this->tmpl->render( 'tinymce', $this->params->state( 'button' ) );
+		echo $this->tmpl->render( 'tinymce', $this->params->state( 'button' ) );  // @codingStandardsIgnoreLine
 	}
 
 	/**
@@ -112,10 +112,10 @@ class Button implements HasFilters {
 			),
 		);
 
-		foreach ( array('post.php','post-new.php') as $hook ) {
+		foreach ( array( 'post.php', 'post-new.php' ) as $hook ) {
 			$hooks[] = array(
 				'hook'   => "admin_head-$hook",
-				'method' => 'output_tinymce_state'
+				'method' => 'output_tinymce_state',
 			);
 		}
 

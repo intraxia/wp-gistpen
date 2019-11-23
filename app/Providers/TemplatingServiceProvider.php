@@ -5,6 +5,9 @@ use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 use Intraxia\Gistpen\Templating\File as FileTemplating;
 
+/**
+ * {@inheritDoc}
+ */
 class TemplatingServiceProvider implements ServiceProvider {
 
 	/**

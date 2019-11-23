@@ -5,6 +5,9 @@ use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob as BlobModel;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
+/**
+ * [Blob description]
+ */
 class Blob implements HasFilters {
 
 	/**
@@ -29,29 +32,37 @@ class Blob implements HasFilters {
 	 * Add prism key to params array.
 	 *
 	 * @param array $params Current params array.
+	 * @param array $data   Additional data.
 	 *
 	 * @return array
 	 */
 	public function apply_blob( $params, array $data = array() ) {
-		/** @var BlobModel $blob */
+		/**
+		 * Returned blob.
+		 *
+		 * @var BlobModel
+		 */
 		$blob = $this->em->find( EntityManager::BLOB_CLASS, get_the_ID(), array(
-			'with' => 'language'
+			'with' => 'language',
 		) );
 
-		if ( is_wp_error( $blob ) ) {
-			// @todo
-		} else {
+		if ( ! is_wp_error( $blob ) ) {
 			$params['blob'] = $blob->serialize();
 
 			if ( isset( $data['highlight'] ) ) {
 				$params['blob']['highlight'] = $data['highlight'];
 			}
+		} else {
+			$params['blobs'] = [
+				'error'   => true,
+				'message' => $blob->get_error_message(),
+			];
 		}
 
 		return $params;
 	}
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public function filter_hooks() {
 		return array(

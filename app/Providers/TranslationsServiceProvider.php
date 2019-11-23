@@ -6,6 +6,9 @@ use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 use Intraxia\Gistpen\View\Translations;
 
+/**
+ * {@inheritDoc}
+ */
 class TranslationsServiceProvider implements ServiceProvider {
 
 	/**

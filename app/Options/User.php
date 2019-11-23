@@ -35,7 +35,7 @@ class User {
 		'ace_theme'      => 'editor.theme',
 		'ace_invisibles' => 'editor.invisibles_enabled',
 		'ace_tabs'       => 'editor.tabs_enabled',
-		'ace_width'      => 'editor.indent_width'
+		'ace_width'      => 'editor.indent_width',
 	);
 
 	/**
@@ -173,6 +173,7 @@ class User {
 	 * @param string $path    Path to update.
 	 *
 	 * @return array Updated options array.
+	 * @throws InvalidArgumentException
 	 */
 	private function set_by_path( $options, $value, $path ) {
 		$exploded = explode( '.', $path );

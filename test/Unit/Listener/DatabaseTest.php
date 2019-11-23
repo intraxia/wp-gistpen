@@ -28,7 +28,7 @@ class DatabaseTest extends TestCase {
 	protected $repo;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public function setUp() {
 		parent::setUp();
@@ -51,7 +51,7 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language,'
+					'with' => 'language,',
 				),
 			),
 		) );
@@ -94,8 +94,8 @@ class DatabaseTest extends TestCase {
 		$repo             = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 		$existing_commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
@@ -120,7 +120,7 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
+					'with' => 'language',
 				),
 			),
 		) );
@@ -160,8 +160,8 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 
@@ -223,8 +223,8 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 
@@ -269,8 +269,8 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 
@@ -338,8 +338,8 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 
@@ -395,8 +395,8 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 
@@ -452,8 +452,8 @@ class DatabaseTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 

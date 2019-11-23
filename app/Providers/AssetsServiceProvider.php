@@ -48,7 +48,7 @@ class AssetsServiceProvider extends ServiceProvider {
 			'type'      => 'admin',
 			'deps'      => static::$deps,
 			'condition' => function () {
-				$cond = 'gistpen' === get_current_screen()->id;
+				$cond = get_current_screen()->id === 'gistpen';
 
 				if ( $cond ) {
 					wp_dequeue_script( 'autosave' );
@@ -60,7 +60,11 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/editor',
 			'footer'    => false,
 			'localize'  => function () {
-				/** @var Params $settings */
+				/**
+				 * Params service.
+				 *
+				 * @var Params
+				 */
 				$params = $this->container->fetch( 'params' );
 
 				return array(
@@ -83,7 +87,11 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/settings',
 			'footer'    => true,
 			'localize'  => function () {
-				/** @var Params $settings */
+				/**
+				 * Params service.
+				 *
+				 * @var Params
+				 */
 				$params = $this->container->fetch( 'params' );
 
 				return array(
@@ -119,8 +127,12 @@ class AssetsServiceProvider extends ServiceProvider {
 			'src'       => 'assets/js/content',
 			'footer'    => true,
 			'localize'  => function() {
-				/** @var Params $params */
-				$params= $this->container->fetch( 'params' );
+				/**
+				 * Params service.
+				 *
+				 * @var Params
+				 */
+				$params = $this->container->fetch( 'params' );
 
 				return array(
 					'name' => '__GISTPEN_CONTENT__',

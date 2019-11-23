@@ -26,8 +26,7 @@ class WP_UnitTest_Factory_For_Gistpen extends WP_UnitTest_Factory_For_Post {
 			'post_title' => new WP_UnitTest_Generator_Sequence( 'Post title %s' ),
 			'post_content' => new WP_UnitTest_Generator_Sequence( 'Post content %s' ),
 			'post_excerpt' => new WP_UnitTest_Generator_Sequence( 'Post excerpt %s' ),
-			'post_type' => 'gistpen'
+			'post_type' => 'gistpen',
 		);
 	}
-
 }

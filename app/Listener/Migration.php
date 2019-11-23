@@ -60,7 +60,7 @@ class Migration implements HasActions {
 	 * @since    0.5.0
 	 *
 	 * @param EntityManager $em
-	 * @param               $prefix
+	 * @param string        $prefix
 	 * @param string        $slug
 	 * @param string        $version
 	 */
@@ -72,7 +72,7 @@ class Migration implements HasActions {
 	}
 
 	/**
-	 * Check current version and run migration if necessary
+	 * Check current version and run migration if necessary.
 	 *
 	 * @since 0.3.0
 	 */
@@ -87,9 +87,9 @@ class Migration implements HasActions {
 	}
 
 	/**
-	 * Checks current version and updates the database accordingly
+	 * Checks current version and updates the database accordingly.
 	 *
-	 * @param  string $version Current version number
+	 * @param  string $version Current version number.
 	 * @since  0.3.0
 	 */
 	public function update( $version ) {
@@ -104,7 +104,7 @@ class Migration implements HasActions {
 	 * @since 1.0.0
 	 */
 	public function update_to_1_0_0() {
-		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
 		$runs_table = $this->em->make_table_name( Klass::RUN );
 		$messages_table = $this->em->make_table_name( Klass::MESSAGE );
@@ -146,7 +146,7 @@ class Migration implements HasActions {
 				'theme'           => $old_opts['_wpgp_gistpen_highlighter_theme'],
 				'line-numbers'    => $old_opts['_wpgp_gistpen_line_numbers'],
 				'show-invisibles' => 'off',
-			)
+			),
 		));
 		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ) );
 	}

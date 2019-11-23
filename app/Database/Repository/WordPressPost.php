@@ -18,6 +18,9 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
 use WP_Error;
 use WP_Query;
 
+/**
+ * Repository for managing Model backed by a WordPress Post.
+ */
 class WordPressPost extends AbstractRepository {
 
 	/**
@@ -30,7 +33,6 @@ class WordPressPost extends AbstractRepository {
 	 * @return WP_Error|Model
 	 */
 	public function find( $class, $id, array $params = array() ) {
-		/** @var UsesWordPressPost $class */
 		$post_type = $class::get_post_type();
 		$post      = get_post( $id );
 
@@ -44,7 +46,7 @@ class WordPressPost extends AbstractRepository {
 			);
 		}
 
-		if ( $class === EntityManager::BLOB_CLASS && $post->post_parent === 0 ) {
+		if ( EntityManager::BLOB_CLASS === $class && 0 === $post->post_parent ) {
 			return new WP_Error(
 				'invalid_data',
 				sprintf(
@@ -54,7 +56,6 @@ class WordPressPost extends AbstractRepository {
 			);
 		}
 
-		/** @var UsesWordPressPost|Model $model */
 		$model = new $class( array( Model::OBJECT_KEY => $post ) );
 		$table = array();
 
@@ -71,13 +72,13 @@ class WordPressPost extends AbstractRepository {
 			$value = $table[ $key ] = get_post_meta( $id, $this->make_meta_key( $key ), true );
 
 			// @todo enable custom getter/setter in models
-			if ( $key === 'sync' && ! $value ) {
+			if ( 'sync' === $key && ! $value ) {
 				$table[ $key ] = 'off';
 			}
 
 			// Fallback for legacy metadata
 			// @todo move to migration
-			if ( $key === 'state_ids' ) {
+			if ( 'state_ids' === $key ) {
 				$value = get_post_meta( $id, '_wpgp_commit_meta', true );
 
 				if ( is_array( $value ) && isset( $value['state_ids'] ) ) {
@@ -105,11 +106,10 @@ class WordPressPost extends AbstractRepository {
 	 * @return Collection
 	 */
 	public function find_by( $class, array $params = array() ) {
-		/** @var UsesWordPressPost $class */
 		$post_type     = $class::get_post_type();
 		$parent_search = 'post_parent__in';
 
-		if ( $class === EntityManager::BLOB_CLASS ) {
+		if ( EntityManager::BLOB_CLASS === $class ) {
 			$parent_search = 'post_parent__not_in';
 		}
 
@@ -119,15 +119,15 @@ class WordPressPost extends AbstractRepository {
 			'fields'       => 'ids',
 		);
 
-		if ( $class === EntityManager::COMMIT_CLASS ) {
+		if ( EntityManager::COMMIT_CLASS === $class ) {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
-		if ( $class === Klass::BLOB && isset( $params['repo_id'] ) ) {
+		if ( Klass::BLOB === $class  && isset( $params['repo_id'] ) ) {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
-		if ( $class === EntityManager::STATE_CLASS ) {
+		if ( EntityManager::STATE_CLASS === $class ) {
 			$query_args['post_parent'] = $params['blob_id'];
 		}
 
@@ -136,7 +136,7 @@ class WordPressPost extends AbstractRepository {
 				array(
 					'key' => $this->make_meta_key( 'gist_id' ),
 					'value' => $params['gist_id'],
-				)
+				),
 			);
 		}
 
@@ -165,10 +165,13 @@ class WordPressPost extends AbstractRepository {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param string $class
+	 * @param array  $data
+	 * @param array  $options
 	 */
 	public function create( $class, array $data = array(), array $options = array() ) {
-		/** @var Model $model */
 		$model = new $class;
 
 		/**
@@ -265,7 +268,10 @@ class WordPressPost extends AbstractRepository {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param Model $model
+	 * @return Model
 	 */
 	public function persist( Model $model ) {
 		$result = $model->get_primary_id() ?
@@ -297,7 +303,6 @@ class WordPressPost extends AbstractRepository {
 		if ( $model instanceof Repo ) {
 			$deleted_blobs = $model->get_original_attribute( 'blobs' )
 				->filter( function ( Model $original_blob ) use ( &$model ) {
-					/** @var Model $blob */
 					foreach ( $model->blobs as $blob ) {
 						if ( $blob->get_primary_id() === $original_blob->get_primary_id() ) {
 							return false;
@@ -307,7 +312,6 @@ class WordPressPost extends AbstractRepository {
 					return true;
 				} );
 
-			/** @var Model $blob */
 			foreach ( $model->blobs as $blob ) {
 				$blob->unguard();
 				$blob->repo_id = $model->get_primary_id();
@@ -317,7 +321,6 @@ class WordPressPost extends AbstractRepository {
 				$this->em->persist( $blob );
 			}
 
-			/** @var Model $deleted_blob */
 			foreach ( $deleted_blobs as $deleted_blob ) {
 				wp_trash_post( $deleted_blob->get_primary_id() );
 			}
@@ -361,7 +364,11 @@ class WordPressPost extends AbstractRepository {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param Model $model
+	 * @param bool  $force
+	 * @return Model
 	 */
 	public function delete( Model $model, $force = false ) {
 		$id = $model->get_primary_id();
@@ -373,7 +380,7 @@ class WordPressPost extends AbstractRepository {
 		$result = wp_delete_post( $id, $force );
 
 		if ( ! $result ) {
-			return new WP_Error( __( 'Failed to delete Repo from the Database.', 'wp-gistpen'  ) );
+			return new WP_Error( __( 'Failed to delete Repo from the Database.', 'wp-gistpen' ) );
 		}
 
 		if ( $model instanceof Repo ) {

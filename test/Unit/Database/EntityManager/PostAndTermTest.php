@@ -120,13 +120,13 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_create_new_repo_with_blobs_and_languages() {
 		$language = array(
-			'slug' => 'php'
+			'slug' => 'php',
 		);
 		$blobs    = array(
 			array(
 				'filename' => 'new-file.txt',
 				'code'     => 'Some code goes here',
-			)
+			),
 		);
 		$repo     = array(
 			'description' => 'New Repo',
@@ -144,8 +144,8 @@ class PostAndTermTest extends TestCase {
 		$model = $this->em->find( EntityManager::REPO_CLASS, $model->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 
@@ -221,8 +221,8 @@ class PostAndTermTest extends TestCase {
 		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
+					'with' => 'language',
+				),
 			),
 		) );
 		$blob = $repo->blobs->at( 0 );
@@ -409,7 +409,7 @@ class PostAndTermTest extends TestCase {
 	public function test_should_return_single_commit_with_states() {
 		/** @var Commit $commit */
 		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID, array(
-			'with' => 'states'
+			'with' => 'states',
 		) );
 
 		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
@@ -427,7 +427,7 @@ class PostAndTermTest extends TestCase {
 	public function test_should_return_full_list_of_states() {
 		foreach ( $this->blobs as $idx => $blob_id ) {
 			$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
-				'blob_id' => $blob_id
+				'blob_id' => $blob_id,
 			) );
 
 			$this->assertCount( 1, $states );
@@ -494,7 +494,7 @@ class PostAndTermTest extends TestCase {
 		);
 
 		foreach ( $state as $key => $value ) {
-			if ( $key === 'language' ) {
+			if ( 'language' === $key  ) {
 				$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model->language );
 
 				foreach ( $language as $key => $value ) {

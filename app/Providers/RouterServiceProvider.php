@@ -23,7 +23,8 @@ class RouterServiceProvider extends ServiceProvider {
 	 */
 	protected function add_routes( Router $router ) {
 		$router->set_vendor( 'intraxia' )->set_version( 1 );
-		$controllers = array( // @todo this sucks, pass controller into router? how does router access the controllers?
+		$controllers = array(
+		// @todo this sucks, pass controller into router? how does router access the controllers?
 			'search' => $this->container->fetch( 'controller.search' ),
 			'user'   => $this->container->fetch( 'controller.user' ),
 			'job'    => $this->container->fetch( 'controller.job' ),

@@ -87,14 +87,22 @@ class Edit implements HasActions, HasFilters {
 	}
 
 	/**
-	 * Force the Gistpen layout to one column
+	 * Set layout of the post table view to one column.
 	 *
+	 * @param array $columns The number of columns in a given list page.
+	 * @return array
 	 * @since  0.4.0
 	 */
 	public function screen_layout_columns( $columns ) {
 		$columns['gistpen'] = 1;
 		return $columns;
 	}
+
+	/**
+	 * Set the number of columns on the edit view.
+	 *
+	 * @return int
+	 */
 	public function screen_layout_gistpen() {
 		return 1;
 	}
@@ -142,14 +150,22 @@ class Edit implements HasActions, HasFilters {
 	 */
 	public function manage_posts_custom_column( $column_name, $post_id ) {
 		if ( 'wpgp_blobs' === $column_name ) {
-			/** @var Repo $repo */
+			/**
+			 * The repo in the column.
+			 *
+			 * @var Repo
+			 */
 			$repo = $this->em->find( EntityManager::REPO_CLASS,  $post_id, array(
 				'with' => 'blobs',
 			) );
 
-			/** @var Blob $blob */
+			/**
+			 * Individual blob.
+			 *
+			 * @var Blob
+			 */
 			foreach ( $repo->blobs as $blob ) {
-				echo $blob->filename;
+				echo esc_html( $blob->filename );
 				echo '<br>';
 			}
 		}

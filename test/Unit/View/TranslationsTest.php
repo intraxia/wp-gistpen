@@ -4,12 +4,8 @@ namespace Intraxia\Gistpen\Test\Unit\View;
 use Intraxia\Gistpen\Test\Unit\TestCase;
 use Intraxia\Gistpen\View\Translations;
 
-
 class TranslationsTest extends TestCase {
 
-	/**
-	 * @var Translations
-	 */
 	private $translations;
 
 	public function setUp() {

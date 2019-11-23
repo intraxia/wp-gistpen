@@ -9,13 +9,21 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm;
 use WP_Error;
 use WP_Term_Query;
 
+/**
+ * Repository for managing a Model backed by a WordPress term object.
+ */
 class WordPressTerm extends AbstractRepository {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param string $class
+	 * @param int    $id
+	 * @param array  $params
+	 *
+	 * @return Collection|WP_Error
 	 */
 	public function find( $class, $id, array $params = array() ) {
-		/** @var UsesWordPressTerm $class */
 		$taxonomy = $class::get_taxonomy();
 		$term  = get_term( $id, $taxonomy );
 
@@ -27,7 +35,6 @@ class WordPressTerm extends AbstractRepository {
 			return $term;
 		}
 
-		/** @var Model|UsesWordPressTerm $model */
 		$model = new $class( array( Model::OBJECT_KEY => $term ) );
 		$table = array();
 
@@ -41,10 +48,12 @@ class WordPressTerm extends AbstractRepository {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param string $class
+	 * @param array  $params
 	 */
 	public function find_by( $class, array $params = array() ) {
-		/** @var UsesWordPressTerm $class */
 		$taxonomy = $class::get_taxonomy();
 		$collection = new Collection( $class );
 
@@ -54,7 +63,6 @@ class WordPressTerm extends AbstractRepository {
 			'fields'     => 'ids',
 		) ) );
 
-		/** WP_Term $term */
 		foreach ( $query->get_terms() as $id ) {
 			$model = $this->find( $class, $id );
 
@@ -76,13 +84,12 @@ class WordPressTerm extends AbstractRepository {
 	 * @return Model|WP_Error
 	 */
 	public function create( $class, array $data = array(), array $options = array() ) {
-		/** @var Model $model */
 		$model = new $class;
 
 		foreach ( $data as $key => $value ) {
 			$model->set_attribute( $key, $value );
 		}
-		/** @var UsesWordPressTerm $class */
+
 		$taxonomy = $class::get_taxonomy();
 		$result   = wp_insert_term( $model->slug, $taxonomy );
 
@@ -104,7 +111,11 @@ class WordPressTerm extends AbstractRepository {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param Model $model
+	 *
+	 * @return Model
 	 */
 	public function persist( Model $model ) {
 		$result  = $model->get_primary_id() ?
@@ -136,7 +147,12 @@ class WordPressTerm extends AbstractRepository {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param Model $model
+	 * @param bool  $force
+	 *
+	 * @return Model
 	 */
 	public function delete( Model $model, $force = false ) {
 		return new WP_Error( 'not_impl', __( 'This method is not yet implemented.', 'wp-gistpen' ) );

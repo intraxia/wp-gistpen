@@ -3,6 +3,9 @@ namespace Intraxia\Gistpen\Jobs;
 
 use MyCLabs\Enum\Enum;
 
+/**
+ * Status types.
+ */
 class Status extends Enum {
 	// Job Status
 	const IDLE = 'idle';

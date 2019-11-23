@@ -93,13 +93,12 @@ class ExportJob extends AbstractJob {
 			return null;
 		}
 
-		/** @var Repo|WP_Error $repo */
 		$repo = $this->em->find( Klass::REPO, $repo->ID, array(
 			'with' => array(
 				'blobs' => array(
-					'with' => 'language'
-				)
-			)
+					'with' => 'language',
+				),
+			),
 		) );
 
 		if ( ! $repo->gist_id ) {
@@ -150,7 +149,7 @@ class ExportJob extends AbstractJob {
 		if ( is_wp_error( $repo ) ) {
 			$this->log(
 				sprintf(
-					__('Error saving gist_id for Repo %s. Error: %s', 'wp-gistpen' ),
+					__( 'Error saving gist_id for Repo %s. Error: %s', 'wp-gistpen' ),
 					$repo->ID,
 					$repo->get_error_message()
 				),
@@ -165,9 +164,8 @@ class ExportJob extends AbstractJob {
 				__( 'Successfully exported Repo %s to Gist. Created with gist id %s.', 'wp-gistpen' ),
 				$repo->ID,
 				$repo->gist_id
-
 			),
-			Level::SUCCESS );
+		Level::SUCCESS );
 
 		return null;
 	}
@@ -175,12 +173,12 @@ class ExportJob extends AbstractJob {
 	/**
 	 * Update the gist with the provided Repo.
 	 *
-	 * @param Repo $repo
-	 * @param      $gist
+	 * @param Repo     $repo
+	 * @param stdClass $gist
 	 *
 	 * @return null
 	 */
-	private function update_gist_for_repo( Repo $repo, $gist ) {
+	private function update_gist_for_repo( Repo $repo, stdClass $gist ) {
 		$entity = $this->map_repo_to_new_entity( $repo );
 
 		if ( $this->entity_matches_gist( $entity, $gist ) ) {
@@ -197,7 +195,6 @@ class ExportJob extends AbstractJob {
 		$files      = array();
 		$gist_files = (array) $gist->files;
 
-		/** @var Blob $blob */
 		foreach ( $repo->blobs as $blob ) {
 			$states = $this->em->find_by( Klass::STATE, array(
 				'blob_id'        => $blob->ID,
@@ -206,9 +203,7 @@ class ExportJob extends AbstractJob {
 				'orderby'        => 'ID',
 			) );
 
-			/** @var State $current_state */
 			$current_state = $states->first();
-			/** @var State $previous_state */
 			$previous_state = $states->last();
 
 			$file = array();
@@ -266,7 +261,6 @@ class ExportJob extends AbstractJob {
 	private function map_repo_to_new_entity( Repo $repo ) {
 		$files = array();
 
-		/** @var Blob $blob */
 		foreach ( $repo->blobs as $blob ) {
 			$files[ $blob->filename ] = array(
 				'content' => $blob->code,
@@ -283,7 +277,7 @@ class ExportJob extends AbstractJob {
 	/**
 	 * Determines whether the provided entity matches the provided gist.
 	 *
-	 * @param array $entity
+	 * @param array     $entity
 	 * @param \stdClass $gist
 	 *
 	 * @return bool
@@ -329,13 +323,13 @@ class ExportJob extends AbstractJob {
 	/**
 	 * Log the provided error.
 	 *
-	 * @param Repo $repo
-	 * @param      $response
+	 * @param Repo     $repo
+	 * @param WP_Error $response
 	 */
 	private function log_reponse_error( Repo $repo, WP_Error $response ) {
 		$this->log(
 			sprintf(
-				__( 'Error creating new gist for Repo %s. Error: %s', 'wp-gistpen'),
+				__( 'Error creating new gist for Repo %s. Error: %s', 'wp-gistpen' ),
 				$repo->ID,
 				$response->get_error_message()
 			),

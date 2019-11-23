@@ -13,10 +13,15 @@ use Intraxia\Gistpen\Params\Route;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 
+/**
+ * {@inheritDoc}
+ */
 class ParamsServiceProvider implements ServiceProvider {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param Container $container
 	 */
 	public function register( Container $container ) {
 		$container->define( 'params', function() {
@@ -54,7 +59,7 @@ class ParamsServiceProvider implements ServiceProvider {
 		$container->define( 'params.editor', function ( Container $container ) {
 			return new Editor(
 				$container->fetch( 'config' ),
-				$container->fetch('database' ),
+				$container->fetch( 'database' ),
 				$container->fetch( 'options.user' )
 			);
 		} );

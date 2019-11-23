@@ -26,7 +26,7 @@ class BlobController implements HasFilters {
 	/**
 	 * RepoController constructor.
 	 *
-	 * @param EntityManager $database
+	 * @param EntityManager $em
 	 */
 	public function __construct( EntityManager $em ) {
 		$this->em = $em;
@@ -40,7 +40,6 @@ class BlobController implements HasFilters {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function raw( WP_REST_Request $request ) {
-		/** @var Repo|WP_Error $repo */
 		$blob = $this->em->find( EntityManager::BLOB_CLASS, $request->get_param( 'blob_id' ), array(
 			'repo_id' => $request->get_param( 'repo_id' ),
 		) );
@@ -71,12 +70,12 @@ class BlobController implements HasFilters {
 	public function serve_raw( $served, WP_REST_Response $response, WP_REST_Request $request ) {
 		if ( $served ||
 			$request->get_method() !== 'GET' ||
-			! preg_match('/\/intraxia\/v1\/gistpen\/repos\/\d+\/blobs\/\d+\/raw/', $request->get_route() )
+			! preg_match( '/\/intraxia\/v1\/gistpen\/repos\/\d+\/blobs\/\d+\/raw/', $request->get_route() )
 		) {
 			return $served;
 		}
 
-		echo $response->get_data();
+		echo $response->get_data(); // @codingStandardsIgnoreLine
 
 		return true;
 	}
@@ -92,7 +91,7 @@ class BlobController implements HasFilters {
 				'hook'   => 'rest_pre_serve_request',
 				'method' => 'serve_raw',
 				'args'   => 3,
-			)
+			),
 		);
 	}
 }

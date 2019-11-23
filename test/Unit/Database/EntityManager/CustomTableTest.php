@@ -339,7 +339,7 @@ class CustomTableTest extends TestCase {
 
 		$text = $message->text = 'New text for message';
 		$message->level = Level::DEBUG;
-		$this->logged= $message->logged_at = current_time( 'mysql' );
+		$this->logged = $message->logged_at = current_time( 'mysql' );
 
 		$message = $this->em->persist( $message );
 

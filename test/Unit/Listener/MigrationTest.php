@@ -26,7 +26,7 @@ class MigrationTest extends TestCase {
 		$old_opts = array(
 			'_wpgp_gistpen_highlighter_theme' => 'okaidia',
 			'_wpgp_gistpen_line_numbers'      => 'on',
-			'_wpgp_gist_token'                => '123456789zxcvbnmasdfghjklqwertyuiop'
+			'_wpgp_gist_token'                => '123456789zxcvbnmasdfghjklqwertyuiop',
 		);
 		$slug = $this->app->get( 'slug' );
 
@@ -44,7 +44,7 @@ class MigrationTest extends TestCase {
 				'theme'           => $old_opts['_wpgp_gistpen_highlighter_theme'],
 				'line-numbers'    => $old_opts['_wpgp_gistpen_line_numbers'],
 				'show-invisibles' => 'off',
-			)
+			),
 		), get_option( $slug . '_no_priv' ) );
 		$this->assertEquals(
 			array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ),
