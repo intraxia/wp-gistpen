@@ -101,7 +101,7 @@ class ImportJob extends AbstractJob {
 		$response = $this->client->one( $gist->id );
 
 		if ( is_wp_error( $response ) ) {
-			$this->log_reponse_error( $gist, $response );
+			$this->log_response_error( $gist, $response );
 
 			return null;
 		} else {
@@ -139,7 +139,7 @@ class ImportJob extends AbstractJob {
 		$response = $this->em->persist( $this->map_gist_to_new_entity( $gist ) );
 
 		if ( is_wp_error( $response ) ) {
-			$this->log_reponse_error( $gist, $response );
+			$this->log_response_error( $gist, $response );
 		} else {
 			$this->log(
 				sprintf(
@@ -290,32 +290,13 @@ class ImportJob extends AbstractJob {
 	 * @param stdClass $gist
 	 * @param WP_Error $response
 	 */
-	private function log_reponse_error( stdClass $gist, WP_Error $response ) {
-		$this->log(
-			sprintf(
-				__( 'Error fetching gist %s. Error: %s', 'wp-gistpen' ),
-				$gist->id,
-				$response->get_error_message()
-			),
-		Level::ERROR );
-
-		if ( $response->get_error_code() === 'auth_error' ) {
-			$this->log(
-				sprintf(
-					__( 'Will not reprocess gist %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
-					$gist->id
-				),
-			Level::WARNING );
-		}
-
-		if ( $response->get_error_code() === 'client_error' ) {
-			$this->log(
-				sprintf(
-					__( 'Will not reprocess gist %s. Client error. Please report to the developer.', 'wp-gistpen' ),
-					$gist->id
-				),
-				Level::WARNING
-			);
-		}
+	private function log_response_error( stdClass $gist, WP_Error $response ) {
+		$this->log_response_error_impl(
+			__( 'Error fetching gist %s. Error: %s', 'wp-gistpen' ),
+			__( 'Will not reprocess gist %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
+			__( 'Will not reprocess gist %s. Client error. Please report to the developer.', 'wp-gistpen' ),
+			$gist->id,
+			$response
+		);
 	}
 }

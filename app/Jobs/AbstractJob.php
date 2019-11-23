@@ -475,4 +475,44 @@ abstract class AbstractJob implements Job {
 
 		return $runs;
 	}
+
+	/**
+	 * Implementation of response error logging conditional logic.
+	 *
+	 * @param  string   $error_message  Error message to log out.
+	 * @param  string   $auth_message   Message to log on auth failure.
+	 * @param  string   $client_message Message to log on client error.
+	 * @param  int      $id             Elent ID.
+	 * @param  WP_Error $response       Error object.
+	 */
+	protected function log_response_error_impl( $error_message, $auth_message, $client_message, $id, WP_Error $response ) {
+		$this->log(
+			sprintf(
+				$error_message,
+				$id,
+				$response->get_error_message()
+			),
+			Level::ERROR
+		);
+
+		if ( $response->get_error_code() === 'auth_error' ) {
+			$this->log(
+				sprintf(
+					$auth_message,
+					$id
+				),
+				Level::WARNING
+			);
+		}
+
+		if ( $response->get_error_code() === 'client_error' ) {
+			$this->log(
+				sprintf(
+					$client_message,
+					$id
+				),
+				Level::WARNING
+			);
+		}
+	}
 }

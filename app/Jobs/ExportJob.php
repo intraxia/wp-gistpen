@@ -134,7 +134,7 @@ class ExportJob extends AbstractJob {
 		$response = $this->client->create( $this->map_repo_to_new_entity( $repo ) );
 
 		if ( is_wp_error( $response ) ) {
-			$this->log_reponse_error( $repo, $response );
+			$this->log_response_error( $repo, $response );
 
 			return null;
 		}
@@ -235,7 +235,7 @@ class ExportJob extends AbstractJob {
 		$response = $this->client->update( $repo->gist_id, $entity );
 
 		if ( is_wp_error( $response ) ) {
-			$this->log_reponse_error( $repo, $response );
+			$this->log_response_error( $repo, $response );
 
 			return null;
 		}
@@ -326,34 +326,13 @@ class ExportJob extends AbstractJob {
 	 * @param Repo     $repo
 	 * @param WP_Error $response
 	 */
-	private function log_reponse_error( Repo $repo, WP_Error $response ) {
-		$this->log(
-			sprintf(
-				__( 'Error creating new gist for Repo %s. Error: %s', 'wp-gistpen' ),
-				$repo->ID,
-				$response->get_error_message()
-			),
-			Level::ERROR
+	private function log_response_error( Repo $repo, WP_Error $response ) {
+		$this->log_response_error_impl(
+			__( 'Error creating new gist for Repo %s. Error: %s', 'wp-gistpen' ),
+			__( 'Will not reprocess Repo %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
+			__( 'Will not reprocess Repo %s. Client error. Please report to the developer.', 'wp-gistpen' ),
+			$repo->ID,
+			$response
 		);
-
-		if ( $response->get_error_code() === 'auth_error' ) {
-			$this->log(
-				sprintf(
-					__( 'Will not reprocess Repo %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
-					$repo->ID
-				),
-				Level::WARNING
-			);
-		}
-
-		if ( $response->get_error_code() === 'client_error' ) {
-			$this->log(
-				sprintf(
-					__( 'Will not reprocess Repo %s. Client error. Please report to the developer.', 'wp-gistpen' ),
-					$repo->ID
-				),
-				Level::WARNING
-			);
-		}
 	}
 }
