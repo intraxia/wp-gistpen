@@ -151,6 +151,4 @@ class SiteTest extends TestCase {
 
 		delete_option( 'wp-gistpen' );
 	}
-
-
 }

@@ -168,7 +168,6 @@ class Site {
 			$option['prism'] = array();
 		}
 		// @codeCoverageIgnoreEnd
-
 		$option['prism']['theme']           = ! empty( $option['prism']['theme'] ) ? $option['prism']['theme'] : 'default';
 		$option['prism']['line-numbers']    = ! empty( $option['prism']['line-numbers'] ) ? 'on' : 'off';
 		$option['prism']['show-invisibles'] = ! empty( $option['prism']['show-invisibles'] ) ? 'on' : 'off';

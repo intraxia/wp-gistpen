@@ -6,6 +6,9 @@ use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 use Intraxia\Gistpen\Database\EntityManager;
 use WP_Query;
 
+/**
+ * {@inheritDoc}
+ */
 class DatabaseServiceProvider implements ServiceProvider {
 	/**
 	 * {@inheritDoc}

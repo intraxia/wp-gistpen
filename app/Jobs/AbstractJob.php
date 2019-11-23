@@ -10,6 +10,9 @@ use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use WP_Error;
 
+/**
+ * Base Job class.
+ */
 abstract class AbstractJob implements Job {
 	/**
 	 * EntityManager service.
@@ -98,7 +101,6 @@ abstract class AbstractJob implements Job {
 			);
 		}
 
-		/** @var WP_Error|Run $run */
 		$run = $this->em->create( Klass::RUN, array(
 			'scheduled_at' => $this->make_timestamp(),
 			'items'        => $items,
@@ -175,7 +177,7 @@ abstract class AbstractJob implements Job {
 	/**
 	 * {@inheritdoc}
 	 *
-	 * @param $run_id
+	 * @param int $run_id
 	 *
 	 * @return Run|WP_Error
 	 */
@@ -198,6 +200,8 @@ abstract class AbstractJob implements Job {
 	/**
 	 * {@inheritdoc}
 	 *
+	 * @param int $run_id
+	 *
 	 * @return Run|WP_Error
 	 */
 	public function run( $run_id ) {
@@ -208,6 +212,8 @@ abstract class AbstractJob implements Job {
 
 	/**
 	 * {@inheritdoc}
+	 *
+	 * @param int $run_id
 	 *
 	 * @return Collection|WP_Error
 	 */
@@ -308,14 +314,14 @@ abstract class AbstractJob implements Job {
 			'sslverify' => apply_filters( 'https_local_ssl_verify', false ),
 			'headers'   => array(
 				'X-WP-Nonce' => wp_create_nonce( 'wp_rest' ),
-			)
+			),
 		);
 	}
 
 	/**
 	 * Set the current status of the Job.
 	 *
-	 * @param $status
+	 * @param string $status
 	 */
 	private function set_status( $status ) {
 		if ( Status::isValid( $status ) ) {
@@ -396,7 +402,8 @@ abstract class AbstractJob implements Job {
 	 * @return bool
 	 */
 	private function memory_exceeded() {
-		$memory_limit   = $this->get_memory_limit() * 0.9; // 90% of max memory
+		$memory_limit   = $this->get_memory_limit() * 0.9;
+		// 90% of max memory
 		$current_memory = memory_get_usage( true );
 
 		return $current_memory >= $memory_limit;
@@ -469,4 +476,43 @@ abstract class AbstractJob implements Job {
 		return $runs;
 	}
 
+	/**
+	 * Implementation of response error logging conditional logic.
+	 *
+	 * @param  string   $error_message  Error message to log out.
+	 * @param  string   $auth_message   Message to log on auth failure.
+	 * @param  string   $client_message Message to log on client error.
+	 * @param  int      $id             Elent ID.
+	 * @param  WP_Error $response       Error object.
+	 */
+	protected function log_response_error_impl( $error_message, $auth_message, $client_message, $id, WP_Error $response ) {
+		$this->log(
+			sprintf(
+				$error_message,
+				$id,
+				$response->get_error_message()
+			),
+			Level::ERROR
+		);
+
+		if ( $response->get_error_code() === 'auth_error' ) {
+			$this->log(
+				sprintf(
+					$auth_message,
+					$id
+				),
+				Level::WARNING
+			);
+		}
+
+		if ( $response->get_error_code() === 'client_error' ) {
+			$this->log(
+				sprintf(
+					$client_message,
+					$id
+				),
+				Level::WARNING
+			);
+		}
+	}
 }

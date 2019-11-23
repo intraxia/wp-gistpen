@@ -27,7 +27,7 @@ class RepoController {
 	/**
 	 * RepoController constructor.
 	 *
-	 * @param EntityManager $database
+	 * @param EntityManager $em
 	 */
 	public function __construct( EntityManager $em ) {
 		$this->em = $em;
@@ -126,7 +126,6 @@ class RepoController {
 	public function update( WP_REST_Request $request ) {
 		$id = $request->get_param( 'id' );
 
-		/** @var Repo|WP_Error $model */
 		$model = $this->em->find( Repo::class, $id, array(
 			'with' => array(
 				'blobs' => array(

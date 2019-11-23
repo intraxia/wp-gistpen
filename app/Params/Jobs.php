@@ -5,6 +5,9 @@ namespace Intraxia\Gistpen\Params;
 use Intraxia\Gistpen\Jobs\Manager;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
+/**
+ * Jobs service for managing jobs slice of state.
+ */
 class Jobs implements HasFilters {
 	/**
 	 * Jobs Manager service.
@@ -33,13 +36,13 @@ class Jobs implements HasFilters {
 		$params['jobs'] = $this->jobs->serialize();
 		$parts          = $params['route']['parts'];
 
-		if ( $params['route']['name'] === 'jobs' && ! isset( $parts->run ) && ! isset( $parts->job ) ) {
+		if ( 'jobs' === $params['route']['name'] && ! isset( $parts->run ) && ! isset( $parts->job ) ) {
 			foreach ( $params['jobs'] as $key => $job ) {
 				$params['jobs'][ $key ]['status'] = $this->jobs->get( $job['slug'] )->get_status();
 			}
 		}
 
-		if ( $params['route']['name'] === 'jobs' && isset( $parts->job ) ) {
+		if ( 'jobs' === $params['route']['name'] && isset( $parts->job ) ) {
 			$params['jobs'][ $parts->job ]['status'] = $this->jobs->get( $parts->job )->get_status();
 			$params['runs'] = $this->jobs->get( $parts->job )->runs()->serialize();
 
@@ -52,11 +55,18 @@ class Jobs implements HasFilters {
 		return $params;
 	}
 
+	/**
+	 * Add jobs key to params array.
+	 *
+	 * @param array $params Current params array.
+	 *
+	 * @return array
+	 */
 	public function apply_jobs_props( $params ) {
 		$params = $this->apply_jobs( $params );
 		$parts  = $params['route']['parts'];
 
-		if ( $params['route']['name'] === 'jobs' && isset( $parts->job ) ) {
+		if ( 'jobs' === $params['route']['name'] && isset( $parts->job ) ) {
 			$job = $this->jobs->get( $parts->job );
 
 			if ( ! isset( $parts->run ) ) {
@@ -67,17 +77,13 @@ class Jobs implements HasFilters {
 				$params['run'] = $job->run( $parts->run )->serialize();
 				$params['run']['messages'] = $job->messages( $parts->run )->serialize();
 			}
-
-			if ( isset( $parts->run ) && isset( $parts->job ) ) {
-
-			}
 		}
 
 		return $params;
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public function filter_hooks() {
 		return array(

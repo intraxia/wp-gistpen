@@ -26,7 +26,7 @@ class MuffinStore implements StoreInterface {
 	 * @param EntityManager $em Jaxion EntityManager impelementation.
 	 */
 	public function __construct( EntityManager $em ) {
-	  $this->em = $em;
+		$this->em = $em;
 	}
 
 	/**
@@ -38,8 +38,8 @@ class MuffinStore implements StoreInterface {
 	 *
 	 * @return void
 	 */
-	public function persist($model) {
-		$ret = $this->em->persist($model);
+	public function persist( $model ) {
+		$ret = $this->em->persist( $model );
 
 		if ( is_wp_error( $ret ) ) {
 			throw new SaveFailedException( get_class( $model ) );
@@ -64,7 +64,7 @@ class MuffinStore implements StoreInterface {
 	 *
 	 * @return void
 	 */
-	public function markPending($model) {
+	public function markPending( $model ) {
 		$this->pending[] = $model;
 	}
 
@@ -75,7 +75,7 @@ class MuffinStore implements StoreInterface {
 	 *
 	 * @return bool
 	 */
-	public function isPending($model) {
+	public function isPending( $model ) {
 		return in_array( $model, $this->pending );
 	}
 
@@ -95,7 +95,7 @@ class MuffinStore implements StoreInterface {
 	 *
 	 * @return void
 	 */
-	public function markSaved($model) {
+	public function markSaved( $model ) {
 		$this->saved[] = $model;
 	}
 
@@ -106,7 +106,7 @@ class MuffinStore implements StoreInterface {
 	 *
 	 * @return bool
 	 */
-	public function isSaved($model) {
+	public function isSaved( $model ) {
 		return in_array( $model, $this->saved );
 	}
 

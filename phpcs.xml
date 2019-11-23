@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<ruleset name="WP-Gistpen">
+	<description>WP-Gistpen Coding Standards</description>
+
+	<!-- Scan these files -->
+	<file>wp-gistpen.php</file>
+	<file>app</file>
+	<file>test</file>
+	<file>resources/config</file>
+	<file>resources/views</file>
+
+	<!-- Show colors in console -->
+	<arg value="-colors"/>
+
+	<!-- Show sniff codes in all reports -->
+	<arg value="s"/>
+
+	<!-- Use Intraxia codestyle as a base -->
+	<rule ref="lib/intraxia/codestyle"/>
+
+	<!-- Make sure PHPCS can find the WPCS styles -->
+	<config name="installed_paths" value="lib/wp-coding-standards/wpcs" />
+
+	<!-- Ignore commenting rules for tests -->
+	<rule ref="Squiz.Commenting.FunctionComment.Missing">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Commenting.VariableComment.Missing">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Commenting.ClassComment.Missing">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+
+	<rule ref="Generic.Commenting.DocComment.MissingShort">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+
+	<!-- Ignore escaping rules for tests -->
+	<rule ref="WordPress.XSS.EscapeOutput.OutputNotEscaped">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+</ruleset>

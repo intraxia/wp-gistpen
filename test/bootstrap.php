@@ -43,7 +43,7 @@ $exists = file_exists( $languages_config );
 
 if ( ! $exists ) {
 	$dummy = array(
-		'list' =>  array(
+		'list' => array(
 			'js'        => 'JavaScript',
 			'php'       => 'PHP',
 			'plaintext' => 'PlainText',
@@ -53,17 +53,17 @@ if ( ! $exists ) {
 		),
 	);
 
-	file_force_contents( $languages_config, json_encode( $dummy ) );
+	file_force_contents( $languages_config, wp_json_encode( $dummy ) );
 }
 
 function file_force_contents( $dir, $contents ) {
 	$parts = explode( '/', $dir );
 	$file = array_pop( $parts );
 	$dir = '';
-	foreach( $parts as $part ) {
-		if( ! is_dir( $dir .= "/$part" ) ) {
-			mkdir($dir);
+	foreach ( $parts as $part ) {
+		if ( ! is_dir( $dir .= "/$part" ) ) {
+			mkdir( $dir );
 		}
 	}
-	file_put_contents("$dir/$file", $contents);
+	file_put_contents( "$dir/$file", $contents );
 }

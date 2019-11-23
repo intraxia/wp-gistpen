@@ -7,6 +7,9 @@ use Intraxia\Gistpen\Jobs\Manager as Jobs;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 
+/**
+ * {@inheritDoc}
+ */
 class JobsServiceProvider implements ServiceProvider {
 
 	/**

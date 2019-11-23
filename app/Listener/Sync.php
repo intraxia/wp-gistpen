@@ -7,6 +7,9 @@ use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 
+/**
+ * Service to sync a Repo with Gist.
+ */
 class Sync implements HasActions {
 
 	/**
@@ -14,7 +17,7 @@ class Sync implements HasActions {
 	 *
 	 * @var Manager
 	 */
-	private $jobs; 
+	private $jobs;
 
 	/**
 	 * Database constructor.
@@ -26,7 +29,7 @@ class Sync implements HasActions {
 	}
 
 	/**
-	 * Export the provided Repo to Gist if the
+	 * Export the provided Repo to Gist if the repo has sync enabled.
 	 *
 	 * @param Repo $repo
 	 */

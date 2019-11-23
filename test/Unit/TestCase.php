@@ -61,7 +61,7 @@ abstract class TestCase extends BaseTestCase {
 		}
 
 		$this->blobs = $this->factory->gistpen->create_many( 3, array(
-			'post_parent' => $this->repo->ID
+			'post_parent' => $this->repo->ID,
 		) );
 
 		if ( $with_revision ) {
@@ -82,7 +82,6 @@ abstract class TestCase extends BaseTestCase {
 
 				wp_set_object_terms( $state_id, 'php', 'wpgp_language', false );
 			}
-
 		}
 
 		if ( $with_revision ) {

@@ -11,6 +11,9 @@ use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 
+/**
+ * Database listener service.
+ */
 class Database implements HasActions {
 
 	/**
@@ -39,7 +42,7 @@ class Database implements HasActions {
 			'repo_id' => $repo->ID,
 			'with'    => array(
 				'states' => array(
-					'with' => 'language'
+					'with' => 'language',
 				),
 			),
 			'orderby' => 'date',
@@ -71,7 +74,6 @@ class Database implements HasActions {
 			return;
 		}
 
-		/** @var Commit $prev_commit */
 		$prev_commit = $commits->first();
 
 		// Get all the blobs that don't have a matching state in the previous commit.
@@ -93,7 +95,6 @@ class Database implements HasActions {
 			} );
 		} )
 			->map( function ( State $state ) use ( $repo ) {
-				/** @var Blob $blob */
 				$blob = $repo->blobs->find( function ( Blob $blob ) use ( $state ) {
 					return $state->blob_id === $blob->ID;
 				} );
@@ -137,7 +138,7 @@ class Database implements HasActions {
 	 *
 	 * Is this something that should be absorbed by Jaxion\Axolotl?
 	 *
-	 * @param  int $post_id post ID of the zip being deleted
+	 * @param  int $post_id post ID of the zip being deleted.
 	 *
 	 * @since  0.5.0
 	 */
@@ -150,7 +151,8 @@ class Database implements HasActions {
 				'post_status' => 'any',
 				'order'       => 'ASC',
 				'orderby'     => 'date',
-			) );;
+			) );
+			;
 
 			/* Blob $blob */
 			foreach ( $blobs as $blob ) {
@@ -179,11 +181,11 @@ class Database implements HasActions {
 	/**
 	 * Disables checking for changes when we save a post revision
 	 *
-	 * @param  bool     $check_for_changes whether we check for changes
-	 * @param  \WP_Post $last_revision previous revision object
-	 * @param  \WP_Post $post current revision
+	 * @param  bool     $check_for_changes whether we check for changes.
+	 * @param  \WP_Post $last_revision previous revision object.
+	 * @param  \WP_Post $post current revision.
 	 *
-	 * @return bool                        whether we check for changes
+	 * @return bool                        Whether we check for changes.
 	 * @since  0.5.0
 	 */
 	public function disable_check_for_change( $check_for_changes, $last_revision, $post ) {
@@ -264,16 +266,16 @@ class Database implements HasActions {
 		$has_changed_blobs = $repo->blobs->filter( function ( Blob $blob ) use ( $commit ) {
 				return ! $commit->states->contains( function ( State $state ) use ( $blob ) {
 					if ( $state->blob_id === $blob->ID &&
-					     $blob->filename === $state->filename &&
-					     $blob->code === $state->code &&
-					     $blob->language->slug === $state->language->slug
+						 $blob->filename === $state->filename &&
+						 $blob->code === $state->code &&
+						 $blob->language->slug === $state->language->slug
 					) {
 						return true;
 					}
 
 					return false;
 				} );
-			} )->count() > 0;
+		} )->count() > 0;
 
 		if ( $has_changed_blobs ) {
 			return false;

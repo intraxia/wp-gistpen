@@ -65,6 +65,8 @@ class Gist {
 	/**
 	 * Get a single remote gist.
 	 *
+	 * @param int $id
+	 *
 	 * @return WP_Error|Requests_Response
 	 */
 	public function one( $id ) {
@@ -99,7 +101,7 @@ class Gist {
 		$response = $this->http->post(
 			self::API,
 			$this->get_post_headers( $token ),
-			json_encode( $data )
+			wp_json_encode( $data )
 		);
 
 		return $this->process_response( $response );
@@ -123,7 +125,7 @@ class Gist {
 		$response = $this->http->patch(
 			self::API . '/' . $id,
 			$this->get_post_headers( $token ),
-			json_encode( $data )
+			wp_json_encode( $data )
 		);
 
 		return $this->process_response( $response );

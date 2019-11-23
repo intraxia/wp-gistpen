@@ -4,6 +4,9 @@ namespace Intraxia\Gistpen\Params;
 use Intraxia\Gistpen\Options\Site;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 
+/**
+ * Service for managing the gist slice of state.
+ */
 class Gist implements HasFilters {
 
 	/**
@@ -35,7 +38,7 @@ class Gist implements HasFilters {
 		return $params;
 	}
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 */
 	public function filter_hooks() {
 		return array(

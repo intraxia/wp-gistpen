@@ -39,9 +39,9 @@ class File implements Templating {
 	/**
 	 * Handlebars constructor.
 	 *
-	 * @param Config     $config
-	 * @param Translator $translations
-	 * @param string     $views
+	 * @param Config       $config
+	 * @param Translations $translations
+	 * @param string       $views
 	 */
 	public function __construct( Config $config, Translations $translations, $views ) {
 		$this->config     = $config;
@@ -53,7 +53,7 @@ class File implements Templating {
 	 * Generates a string from the handlebars partials and provided data.
 	 *
 	 * @param string $partial
-	 * @param array $data
+	 * @param array  $data
 	 *
 	 * @return string
 	 * @throws \Exception

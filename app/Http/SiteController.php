@@ -6,6 +6,9 @@ use InvalidArgumentException;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Controller for managing the site options.
+ */
 class SiteController {
 	/**
 	 * User options.

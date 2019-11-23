@@ -5,6 +5,9 @@ use Intraxia\Gistpen\Contract\Job;
 use Intraxia\Jaxion\Axolotl\Dictionary;
 use Intraxia\Jaxion\Contract\Axolotl\Serializes;
 
+/**
+ * [Manager description]
+ */
 class Manager implements Serializes {
 	/**
 	 * Jobs collection.
@@ -14,7 +17,7 @@ class Manager implements Serializes {
 	protected $jobs;
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
 	 *
 	 * @param Job[] $jobs
 	 */
@@ -25,8 +28,8 @@ class Manager implements Serializes {
 	/**
 	 * Add a job to the job manager.
 	 *
-	 * @param string $alias
-	 * @param Job    $job
+	 * @param string $alias Which Job type to run.
+	 * @param Job    $job   Jon to run.
 	 *
 	 * @return $this
 	 */
@@ -48,7 +51,7 @@ class Manager implements Serializes {
 	/**
 	 * Get job by name.
 	 *
-	 * @param $alias
+	 * @param string $alias Which Job type to get.
 	 *
 	 * @return Job|null
 	 */

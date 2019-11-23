@@ -99,7 +99,7 @@ class Settings implements HasActions, HasFilters {
 	public function add_action_links( $links ) {
 		return array_merge(
 			array(
-				'settings' => '<a href="' . admin_url( 'options-general.php?page=' . 'wp-gistpen' ) . '">' . __( 'Settings', 'wp-gistpen' ) . '</a>'
+				'settings' => '<a href="' . admin_url( 'options-general.php?page=wp-gistpen' ) . '">' . __( 'Settings', 'wp-gistpen' ) . '</a>',
 			),
 			$links
 		);
@@ -142,7 +142,7 @@ class Settings implements HasActions, HasFilters {
 			array(
 				'hook'   => 'plugin_action_links_' . $this->basename,
 				'method' => 'add_action_links',
-			)
+			),
 		);
 	}
 }

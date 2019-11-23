@@ -30,7 +30,7 @@ interface Job extends Serializes {
 	/**
 	 * Fetches a Run by its run id.
 	 *
-	 * @param $run_id
+	 * @param int $run_id
 	 *
 	 * @return Run|WP_Error
 	 */

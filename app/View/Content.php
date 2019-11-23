@@ -116,7 +116,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * @since    0.1.0
 	 */
 	public function post_content( $content = '' ) {
-		$post = get_post();
+		$post = get_post(); // @codingStandardsIgnoreLine
 
 		if ( Repo::get_post_type() !== $post->post_type ) {
 			return $content;
@@ -138,7 +138,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	/**
 	 * Filter the child posts from the main query
 	 *
-	 * @param  \WP_Query $query query object
+	 * @param  \WP_Query $query Query object.
 	 *
 	 * @return \WP_Query
 	 * @since  0.4.0
@@ -184,8 +184,8 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">' . __( 'No Gistpen ID was provided.', 'wp-gistpen' ) . '</div>';
 		}
 
-		$args['id'] = (int) str_replace('&quot;', '', $args['id']);
-		$args['highlight'] = str_replace('&quot;', '', $args['highlight']);
+		$args['id'] = (int) str_replace( '&quot;', '', $args['id'] );
+		$args['highlight'] = str_replace( '&quot;', '', $args['highlight'] );
 
 		if ( Repo::get_post_type() !== get_post_type( $args['id'] ) ) {
 			return '<div class="wp-gistpen-error">' . __( 'ID provided is not a Gistpen repo.', 'wp-gistpen' ) . '</div>';
@@ -193,7 +193,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 
 		global $post;
 		$post_bu = $post;
-		$post = get_post( $args['id'] );
+		$post = get_post( $args['id'] ); // @codingStandardsIgnoreLine
 
 		if ( ! $post->post_parent ) {
 			$content = $this->templating->render(
@@ -207,7 +207,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			);
 		}
 
-		$post = $post_bu;
+		$post = $post_bu; // @codingStandardsIgnoreLine
 
 		return $content;
 	}
@@ -216,7 +216,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * Enqueues the js required to highlight the embed.
 	 */
 	public function enqueue_embed_scripts() {
-		$post = get_post();
+		$post = get_post(); // @codingStandardsIgnoreLine
 
 		if ( Repo::get_post_type() !== $post->post_type ) {
 			return;
@@ -234,7 +234,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	 * @return string
 	 */
 	public function remove_embed_title( $title, $id ) {
-		$post = get_post( $id );
+		$post = get_post( $id ); // @codingStandardsIgnoreLine
 
 		if (
 			is_embed() &&
@@ -274,6 +274,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			remove_action( 'embed_footer', 'print_embed_sharing_dialog' );
 			remove_action( 'embed_footer', 'print_embed_scripts' );
 
+			// @codingStandardsIgnoreLine
 			echo <<<CSS
 <style>
 body {
@@ -346,7 +347,7 @@ CSS;
 				'hook'   => 'embed_html',
 				'method' => 'remove_embed_width',
 				'args'   => 2,
-			)
+			),
 		);
 	}
 }

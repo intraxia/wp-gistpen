@@ -10,12 +10,20 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Jobs http controller.
+ */
 class JobsController {
 	/**
+	 * Jobs service.
+	 *
 	 * @var Jobs
 	 */
 	private $jobs;
+
 	/**
+	 * EntityManager service.
+	 *
 	 * @var EntityManager
 	 */
 	private $em;
@@ -92,7 +100,6 @@ class JobsController {
 	public function dispatch( WP_REST_Request $request ) {
 		$name = $request->get_param( 'name' );
 
-		/** @var Job $job */
 		$job = $this->jobs->get( $name );
 
 		if ( ! $job ) {
@@ -133,7 +140,6 @@ class JobsController {
 	public function process( WP_REST_Request $request ) {
 		$name = $request->get_param( 'name' );
 
-		/** @var Job $job */
 		$job = $this->jobs->get( $name );
 
 		if ( ! $job ) {
@@ -168,7 +174,6 @@ class JobsController {
 	public function runs( WP_REST_Request $request ) {
 		$name = $request->get_param( 'name' );
 
-		/** @var Job $job */
 		$job = $this->jobs->get( $name );
 
 		if ( ! $job ) {
@@ -196,7 +201,6 @@ class JobsController {
 	public function console( WP_REST_Request $request ) {
 		$name = $request->get_param( 'name' );
 
-		/** @var Job $job */
 		$job = $this->jobs->get( $name );
 
 		if ( ! $job ) {

@@ -9,6 +9,9 @@ use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
 use WP_Error;
 
+/**
+ * Service for managing Models backed by a custom table.
+ */
 class WordPressCustomTable extends AbstractRepository {
 
 	/**
@@ -25,10 +28,12 @@ class WordPressCustomTable extends AbstractRepository {
 
 		$result = $wpdb->get_row(
 			$wpdb->prepare(
+				// @codingStandardsIgnoreStart
 				"
 					SELECT * FROM {$this->em->make_table_name( $class )}
 					WHERE {$class::get_primary_key()} = %d
 				",
+				// @codingStandardsIgnoreEnd
 				$id
 			),
 			ARRAY_A
@@ -48,7 +53,6 @@ class WordPressCustomTable extends AbstractRepository {
 			$result['items'] = maybe_unserialize( $result['items'] );
 		}
 
-		/** @var Model $model */
 		$model = new $class( $result );
 		$model->sync_original();
 
@@ -79,7 +83,7 @@ class WordPressCustomTable extends AbstractRepository {
 				default:
 					if ( $this->is_valid_key( $class, $key ) ) {
 						$query .= $wpdb->prepare(
-							" WHERE {$key} = %s",
+							" WHERE {$key} = %s",  // @codingStandardsIgnoreLine
 							$value
 						);
 					}
@@ -95,7 +99,7 @@ class WordPressCustomTable extends AbstractRepository {
 			}
 		}
 
-		$results = $wpdb->get_results( $query, ARRAY_A );
+		$results = $wpdb->get_results( $query, ARRAY_A );  // @codingStandardsIgnoreLine
 
 		if ( ! is_array( $results ) ) {
 			return new WP_Error(
@@ -112,7 +116,6 @@ class WordPressCustomTable extends AbstractRepository {
 				$result['items'] = maybe_unserialize( $result['items'] );
 			}
 
-			/** @var Model $model */
 			$model  = new $class( $result );
 			$model->sync_original();
 
@@ -184,7 +187,8 @@ class WordPressCustomTable extends AbstractRepository {
 
 		$results = $wpdb->update(
 			$this->em->make_table_name( $class ),
-			$valid, // @todo only update changed attributes
+			$valid,
+			// @todo only update changed attributes
 			/** UsesCustomTable $model */
 			array( $model->get_primary_key() => $model->get_primary_id() )
 		);
@@ -206,7 +210,7 @@ class WordPressCustomTable extends AbstractRepository {
 	 * Delete the provided model from the database.
 	 *
 	 * @param Model|UsesCustomTable $model
-	 * @param bool  $force
+	 * @param bool                  $force
 	 *
 	 * @return mixed
 	 */
@@ -295,10 +299,12 @@ class WordPressCustomTable extends AbstractRepository {
 
 				$count = (int) $wpdb->get_var(
 					$wpdb->prepare(
+						 // @codingStandardsIgnoreStart
 						"
 							SELECT COUNT(*) FROM {$this->em->make_table_name( Klass::RUN )}
 							WHERE ID = %d
 						",
+						 // @codingStandardsIgnoreEnd
 						$data['run_id']
 					)
 				);

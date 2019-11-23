@@ -14,6 +14,9 @@ use Intraxia\Jaxion\Contract\Axolotl\EntityManager as EntityManagerContract;
 use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
 use WP_Error;
 
+/**
+ * EntityManager class.
+ */
 class EntityManager implements EntityManagerContract {
 	/**
 	 * Model class for the Repo.
@@ -74,6 +77,7 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @param string $class Fully qualified class name of model.
 	 * @param int    $id    ID of the model.
+	 * @param array  $params
 	 *
 	 * @return Model|WP_Error
 	 */
@@ -134,6 +138,7 @@ class EntityManager implements EntityManagerContract {
 	 *
 	 * @param string $class
 	 * @param array  $data
+	 * @param array  $options
 	 *
 	 * @return Model|WP_Error
 	 */
@@ -166,7 +171,10 @@ class EntityManager implements EntityManagerContract {
 	}
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param Model $model
+	 * @return Model
 	 */
 	public function persist( Model $model ) {
 		foreach ( $this->repositories as $interface => $repository ) {

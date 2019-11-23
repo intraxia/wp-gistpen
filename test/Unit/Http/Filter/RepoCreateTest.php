@@ -94,13 +94,15 @@ class RepoCreateTest extends TestCase {
 	public function test_should_remove_extra_properties_and_set_defaults_on_blob() {
 		$blob = $this->fm->instance( Blob::class );
 		$this->assertSame( [
-			'filename' => $blob->filename,
-			'code'     => $blob->code,
-			'language' => null,
-		], $this->filter->sanitize_blob( [
-			'filename' => $blob->filename,
-			'code'     => $blob->code,
-			'extra'    => 'value',
-		], 0 ) );
+				'filename' => $blob->filename,
+				'code'     => $blob->code,
+				'language' => null,
+			],
+			$this->filter->sanitize_blob( [
+				'filename' => $blob->filename,
+				'code'     => $blob->code,
+				'extra'    => 'value',
+			], 0 )
+		);
 	}
 }

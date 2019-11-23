@@ -30,9 +30,9 @@ class RepoCollection implements FilterContract {
 	}
 
 	/**
-	 * Ensure the blobs passed to the request are valid.
+	 * Ensure the page value is a number.
 	 *
-	 * @param  array $blobs   Blobs parameter.
+	 * @param  array $page    Blobs parameter.
 	 * @return WP_Errpr|array Sanitized blobs.
 	 */
 	public function sanitize_page( $page ) {

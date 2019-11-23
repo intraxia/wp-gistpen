@@ -8,10 +8,15 @@ use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Contract\Core\Container;
 use Intraxia\Jaxion\Contract\Core\ServiceProvider;
 
+/**
+ * {@inheritDoc}
+ */
 class ViewServiceProvider implements ServiceProvider {
 
 	/**
-	 * @inheritDoc
+	 * {@inheritDoc}
+	 *
+	 * @param Container $container
 	 */
 	public function register( Container $container ) {
 		$container
@@ -40,7 +45,7 @@ class ViewServiceProvider implements ServiceProvider {
 				);
 			} )
 			->define( 'view.button', function ( Container $container ) {
-				return new Button( $container->fetch('templating'), $container->fetch( 'params' ), $container->fetch( 'url' ) );
+				return new Button( $container->fetch( 'templating' ), $container->fetch( 'params' ), $container->fetch( 'url' ) );
 			} );
 	}
 }

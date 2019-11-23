@@ -27,9 +27,9 @@ class CreateTest extends TestCase {
 			'data' => [
 				'status' => 400,
 				'params' => [
-					'blobs' => 'Param "blob" must be an array.'
-				]
-			]
+					'blobs' => 'Param "blob" must be an array.',
+				],
+			],
 		] );
 	}
 
@@ -51,7 +51,7 @@ class CreateTest extends TestCase {
 			'data' => [
 				'status' => 400,
 				'params' => [ 'description' ],
-			]
+			],
 		] );
 	}
 
@@ -73,9 +73,9 @@ class CreateTest extends TestCase {
 			'data' => [
 				'status' => 400,
 				'params' => [
-					'description' => 'Param "description" must be a string.'
-				]
-			]
+					'description' => 'Param "description" must be a string.',
+				],
+			],
 		] );
 	}
 
@@ -99,8 +99,8 @@ class CreateTest extends TestCase {
 				'status' => 400,
 				'params' => [
 					'extra' => 'Param "extra" is not a valid request param.',
-				]
-			]
+				],
+			],
 		] );
 	}
 
@@ -125,8 +125,8 @@ class CreateTest extends TestCase {
 				'params' => [
 					'description' => 'Param "description" must be a string.',
 					'extra' => 'Param "extra" is not a valid request param.',
-				]
-			]
+				],
+			],
 		] );
 	}
 
@@ -173,8 +173,8 @@ class CreateTest extends TestCase {
 				[
 					'code'     => $blob->code,
 					'filename' => $blob->filename,
-				]
-			]
+				],
+			],
 		] );
 
 		$response = $this->server->dispatch( $request );
@@ -182,9 +182,9 @@ class CreateTest extends TestCase {
 			->find( Repo::class, $response->get_data()['ID'], [
 				'with' => [
 					'blobs' => [
-						'with' => 'language'
-					]
-				]
+						'with' => 'language',
+					],
+				],
 			] );
 		$blob = $repo->blobs->first();
 		$this->assertResponseStatus( $response, 201 );
@@ -210,8 +210,8 @@ class CreateTest extends TestCase {
 							'ID' => $blob->language->ID,
 							'display_name' => $blob->language->display_name,
 							'slug' => $blob->language->slug,
-					]
-				]
+					],
+				],
 			],
 			'rest_url' => $repo->rest_url,
 			'commits_url' => $repo->commits_url,

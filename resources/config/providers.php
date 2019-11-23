@@ -1,4 +1,11 @@
 <?php
+/**
+ * Get the providers for the old container.
+ *
+ * @package Intraxia\Gistpen
+ * @var array
+ */
+
 namespace Intraxia\Gistpen;
 
 return [

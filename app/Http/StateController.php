@@ -8,6 +8,9 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Controller for access Repo state.
+ */
 class StateController {
 
 	/**
@@ -34,7 +37,6 @@ class StateController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
-		/** @var Commit|WP_Error $commit */
 		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $request->get_param( 'commit_id' ), array(
 			'with' => 'states',
 		) );

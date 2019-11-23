@@ -7,6 +7,9 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 
+/**
+ * Commit http controller.
+ */
 class CommitController {
 
 	/**
@@ -37,9 +40,9 @@ class CommitController {
 			'repo_id' => $request->get_param( 'repo_id' ),
 			'with'    => array(
 				'states' => array(
-					'with' => 'language'
-				)
-			)
+					'with' => 'language',
+				),
+			),
 		) );
 
 		if ( is_wp_error( $collection ) ) {

@@ -18,8 +18,8 @@ abstract class TestCase extends WP_UnitTestCase {
 	protected $factory;
 
 	/**
-	* @var FactoryMuffin
-	*/
+	 * @var FactoryMuffin
+	 */
 	protected $fm;
 
 	/**
@@ -91,9 +91,7 @@ abstract class TestCase extends WP_UnitTestCase {
 	}
 
 	public function set_role( $role ) {
-		$post = $_POST;
 		$user_id = $this->factory->user->create( array( 'role' => $role ) );
 		wp_set_current_user( $user_id );
-		$_POST = array_merge( $_POST, $post );
 	}
 }

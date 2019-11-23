@@ -40,7 +40,7 @@ class CollectionTest extends TestCase {
 				'html_url' => $repo->html_url,
 				'created_at' => $repo->created_at,
 				'updated_at' => $repo->updated_at,
-			]
+			],
 		] );
 	}
 
@@ -67,7 +67,7 @@ class CollectionTest extends TestCase {
 				'html_url' => $repo->html_url,
 				'created_at' => $repo->created_at,
 				'updated_at' => $repo->updated_at,
-			]
+			],
 		] );
 	}
 
@@ -93,25 +93,25 @@ class CollectionTest extends TestCase {
 				'sync' => $repo->sync,
 				'blobs' => [
 					[
-						'ID' =>$blob->ID,
-						'size' =>$blob->size,
-						'raw_url' =>$blob->raw_url,
-						'edit_url' =>$blob->edit_url,
-						'filename' =>$blob->filename,
-						'code' =>$blob->code,
+						'ID' => $blob->ID,
+						'size' => $blob->size,
+						'raw_url' => $blob->raw_url,
+						'edit_url' => $blob->edit_url,
+						'filename' => $blob->filename,
+						'code' => $blob->code,
 						'language' => [
 								'ID' => $blob->language->ID,
 								'display_name' => $blob->language->display_name,
 								'slug' => $blob->language->slug,
-						]
-					]
+						],
+					],
 				],
 				'rest_url' => $repo->rest_url,
 				'commits_url' => $repo->commits_url,
 				'html_url' => $repo->html_url,
 				'created_at' => $repo->created_at,
 				'updated_at' => $repo->updated_at,
-			]
+			],
 		] );
 	}
 
@@ -124,12 +124,12 @@ class CollectionTest extends TestCase {
 		$this->assertResponseData( $response, [
 			'code' => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): page',
-			'data' =>  [
+			'data' => [
 				'status' => 400,
 				'params' => [
-					'page' => 'Param "page" is not a number, received xyz'
-				]
-			]
+					'page' => 'Param "page" is not a number, received xyz',
+				],
+			],
 		] );
 	}
 

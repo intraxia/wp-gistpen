@@ -219,6 +219,8 @@ class Repo extends Model implements UsesWordPressPost {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @param array $attributes New attributes for the model.
 	 */
 	public function refresh( array $attributes ) {
 		try {
@@ -240,7 +242,6 @@ class Repo extends Model implements UsesWordPressPost {
 						$attribute['language'] = new Language( array( 'slug' => $attribute['language'] ) );
 					}
 
-					/** @var Blob $blob */
 					foreach ( $prev_blobs as $blob ) {
 						if ( (string) $blob->ID === (string) $attribute['ID'] ) {
 							unset( $attribute['ID'] );
@@ -258,7 +259,6 @@ class Repo extends Model implements UsesWordPressPost {
 				}
 			}
 
-
 			unset( $attributes['blobs'] );
 		}
 
@@ -269,6 +269,8 @@ class Repo extends Model implements UsesWordPressPost {
 
 	/**
 	 * {@inheritDoc}
+	 *
+	 * @param array $attributes Updated attributes for the model.
 	 */
 	public function merge( array $attributes ) {
 		try {
@@ -284,7 +286,6 @@ class Repo extends Model implements UsesWordPressPost {
 				foreach ( $attributes['blobs'] as $attribute ) {
 					$matched = false;
 
-					/** @var Blob $blob */
 					foreach ( $blobs as $blob ) {
 						if ( $blob->ID === $attribute['ID'] ) {
 							unset( $attribute['ID'] );

@@ -13,6 +13,9 @@ use Intraxia\Jaxion\Contract\Core\HasFilters;
 use stdClass;
 use WP_Term;
 
+/**
+ * Service for managing the editor slice of state.
+ */
 class Editor implements HasFilters {
 
 	/**
@@ -37,7 +40,11 @@ class Editor implements HasFilters {
 	private $user;
 
 	/**
-	 * @inheritDoc
+	 * Construct a new service.
+	 *
+	 * @param Config        $config Configuration service.
+	 * @param EntityManager $em     EntityManager service.
+	 * @param User          $user   User service.
 	 */
 	public function __construct( Config $config, EntityManager $em, User $user ) {
 		$this->config = $config;
@@ -53,7 +60,11 @@ class Editor implements HasFilters {
 	 * @return mixed
 	 */
 	public function apply_editor( $params ) {
-		/** @var RepoModel $repo */
+		/**
+		 * Returned model.
+		 *
+		 * @var RepoModel
+		 */
 		$repo = $this->em->find( Klass::REPO, get_the_ID(), array(
 			'with' => array(
 				'blobs' => array(
