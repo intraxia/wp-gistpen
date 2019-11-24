@@ -14,7 +14,7 @@ class RepoCreateTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->filter = new RepoCreate;
+		$this->filter = $this->app->make( RepoCreate::class );
 	}
 
 	public function test_should_invalidate_non_string_description() {
@@ -85,6 +85,7 @@ class RepoCreateTest extends TestCase {
 
 	public function test_should_invalidate_non_string_code_on_blob() {
 		$blob = $this->fm->instance( Blob::class );
+
 		$this->assertWPError( $this->filter->sanitize_blob( [
 			'filename' => $blob->filename,
 			'code'     => 123,
@@ -93,16 +94,17 @@ class RepoCreateTest extends TestCase {
 
 	public function test_should_remove_extra_properties_and_set_defaults_on_blob() {
 		$blob = $this->fm->instance( Blob::class );
-		$this->assertSame( [
-				'filename' => $blob->filename,
-				'code'     => $blob->code,
-				'language' => null,
-			],
-			$this->filter->sanitize_blob( [
-				'filename' => $blob->filename,
-				'code'     => $blob->code,
-				'extra'    => 'value',
-			], 0 )
-		);
+
+		$sanitized = $this->filter->sanitize_blob( [
+			'filename' => $blob->filename,
+			'code'     => $blob->code,
+			'extra'    => 'value',
+		], 0 );
+
+		$this->assertSame( $sanitized, [
+			'filename' => $blob->filename,
+			'code'     => $blob->code,
+			'language' => null,
+		] );
 	}
 }

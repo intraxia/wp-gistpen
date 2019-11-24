@@ -81,7 +81,7 @@ class Site {
 			$option = $this->fetch_no_priv();
 
 			foreach ( $patch['prism'] as $key => $value ) {
-				if ( in_array( $key, array( 'theme', 'line-numbers', 'show-invisibles' ) ) ) {
+				if ( in_array( $key, array( 'theme', 'line-numbers', 'show-invisibles' ), true ) ) {
 					$option['prism'][ $key ] = $value;
 				}
 			}
@@ -123,7 +123,7 @@ class Site {
 				$option = array( 'prism' => array() );
 			}
 
-			$option['prism']['theme'] = isset( $option['prism']['theme'] ) ? $option['prism']['theme'] : 'default';
+			$option['prism']['theme']           = isset( $option['prism']['theme'] ) ? $option['prism']['theme'] : 'default';
 			$option['prism']['line-numbers']    = isset( $option['prism']['line-numbers'] ) && 'on' === $option['prism']['line-numbers'] ? true : false;
 			$option['prism']['show-invisibles'] = isset( $option['prism']['show-invisibles'] ) && 'on' === $option['prism']['show-invisibles'] ? true : false;
 		}

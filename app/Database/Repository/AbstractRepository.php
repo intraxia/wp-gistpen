@@ -40,7 +40,7 @@ abstract class AbstractRepository implements Repository {
 	 */
 	public function __construct( EntityManager $em, $prefix ) {
 		$this->prefix = $prefix;
-		$this->em = $em;
+		$this->em     = $em;
 	}
 
 	/**
@@ -68,7 +68,7 @@ abstract class AbstractRepository implements Repository {
 			$value = null;
 
 			switch ( $key ) {
-				case 'blobs';
+				case 'blobs':
 					$value = $this->em->find_by( \Intraxia\Gistpen\Database\EntityManager::BLOB_CLASS, array_merge( $params, array(
 						'repo_id'     => $model->get_primary_id(),
 						'post_status' => 'any',
@@ -82,7 +82,7 @@ abstract class AbstractRepository implements Repository {
 					if ( $terms ) {
 						$term = array_pop( $terms );
 					} else {
-						$term       = new WP_Term( new stdClass );
+						$term       = new WP_Term( new stdClass() );
 						$term->slug = 'none';
 					}
 

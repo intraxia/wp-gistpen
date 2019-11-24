@@ -29,7 +29,7 @@ class UserTest extends TestCase {
 
 	public function setUp() {
 		parent::setUp();
-		$this->user = new User;
+		$this->user = new User();
 
 		$user_id = $this->factory->user->create( array( 'role' => 'administrator' ) );
 		wp_set_current_user( $user_id );

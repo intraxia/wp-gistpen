@@ -43,6 +43,7 @@ class WordPressCustomTable extends AbstractRepository {
 			return new WP_Error(
 				'db_error',
 				sprintf(
+					/* translators: %s: Query error. */
 					__( 'Query failed with error: %s', 'wp-gistpen' ),
 					$wpdb->last_error
 				)
@@ -105,6 +106,7 @@ class WordPressCustomTable extends AbstractRepository {
 			return new WP_Error(
 				'db_error',
 				sprintf(
+					/* translators: %s: Query error. */
 					__( 'Query failed with error: %s', 'wp-gistpen' ),
 					$wpdb->last_error
 				)
@@ -116,7 +118,7 @@ class WordPressCustomTable extends AbstractRepository {
 				$result['items'] = maybe_unserialize( $result['items'] );
 			}
 
-			$model  = new $class( $result );
+			$model = new $class( $result );
 			$model->sync_original();
 
 			$models = $models->add( $model );
@@ -154,6 +156,7 @@ class WordPressCustomTable extends AbstractRepository {
 			return new WP_Error(
 				'db_error',
 				sprintf(
+					/* translators: %s: Query error. */
 					__( 'Query failed with error: %s', 'wp-gistpen' ),
 					$wpdb->last_error
 				)
@@ -197,6 +200,7 @@ class WordPressCustomTable extends AbstractRepository {
 			return new WP_Error(
 				'db_error',
 				sprintf(
+					/* translators: %s: Query error. */
 					__( 'Query failed with error: %s', 'wp-gistpen' ),
 					$wpdb->last_error
 				)
@@ -226,6 +230,7 @@ class WordPressCustomTable extends AbstractRepository {
 			return new WP_Error(
 				'db_error',
 				sprintf(
+					/* translators: %s: Query error. */
 					__( 'Query failed with error: %s', 'wp-gistpen' ),
 					$wpdb->last_error
 				)
@@ -242,6 +247,7 @@ class WordPressCustomTable extends AbstractRepository {
 				return new WP_Error(
 					'db_error',
 					sprintf(
+						/* translators: %s: Query error. */
 						__( 'Query failed with error: %s', 'wp-gistpen' ),
 						$wpdb->last_error
 					)
@@ -313,6 +319,7 @@ class WordPressCustomTable extends AbstractRepository {
 					return new WP_Error(
 						'invalid_data',
 						sprintf(
+							/* translators: %s: Run ID. */
 							__( 'run_id %s is invalid', 'wp-gistpen' ),
 							$data['run_id']
 						)

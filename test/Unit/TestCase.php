@@ -49,8 +49,8 @@ abstract class TestCase extends BaseTestCase {
 	}
 
 	public function create_post_and_children( $with_revision = true ) {
-		$this->repo   = $this->factory->gistpen->create_and_get();
-		$repo         = (array) $this->repo;
+		$this->repo = $this->factory->gistpen->create_and_get();
+		$repo       = (array) $this->repo;
 		unset( $repo['ID'] );
 
 		if ( $with_revision ) {

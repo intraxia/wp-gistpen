@@ -13,36 +13,36 @@ class ResourceTest extends TestCase {
 
 		$this->assertResponseStatus( $response, 404 );
 		$this->assertResponseData( $response, [
-			'code' => 'invalid_data',
+			'code'    => 'invalid_data',
 			'message' => 'post id 123 is invalid',
-			'data' => [
+			'data'    => [
 				'status' => 404,
 			],
 		] );
 	}
 
 	public function test_returns_repo() {
-		$repo = $this->fm->create( Repo::class );
+		$repo    = $this->fm->create( Repo::class );
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos/' . $repo->ID );
 
 		$response = $this->server->dispatch( $request );
 
 		$this->assertResponseStatus( $response, 200 );
 		$this->assertResponseData( $response, [
-			'ID' => $repo->ID,
+			'ID'          => $repo->ID,
 			'description' => $repo->description,
-			'slug' => $repo->slug,
-			'status' => $repo->status,
-			'password' => $repo->password,
-			'gist_id' => $repo->gist_id,
-			'gist_url' => $repo->gist_url,
-			'sync' => $repo->sync,
-			'blobs' => [],
-			'rest_url' => $repo->rest_url,
+			'slug'        => $repo->slug,
+			'status'      => $repo->status,
+			'password'    => $repo->password,
+			'gist_id'     => $repo->gist_id,
+			'gist_url'    => $repo->gist_url,
+			'sync'        => $repo->sync,
+			'blobs'       => [],
+			'rest_url'    => $repo->rest_url,
 			'commits_url' => $repo->commits_url,
-			'html_url' => $repo->html_url,
-			'created_at' => $repo->created_at,
-			'updated_at' => $repo->updated_at,
+			'html_url'    => $repo->html_url,
+			'created_at'  => $repo->created_at,
+			'updated_at'  => $repo->updated_at,
 		] );
 	}
 }

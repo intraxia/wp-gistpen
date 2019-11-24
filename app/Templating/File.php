@@ -44,7 +44,7 @@ class File implements Templating {
 	 * @param string       $views
 	 */
 	public function __construct( Config $config, Translations $translations, $views ) {
-		$this->config     = $config;
+		$this->config       = $config;
 		$this->views        = $views;
 		$this->translations = $translations;
 	}

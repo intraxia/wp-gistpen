@@ -155,7 +155,7 @@ class Edit implements HasActions, HasFilters {
 			 *
 			 * @var Repo
 			 */
-			$repo = $this->em->find( EntityManager::REPO_CLASS,  $post_id, array(
+			$repo = $this->em->find( EntityManager::REPO_CLASS, $post_id, array(
 				'with' => 'blobs',
 			) );
 
@@ -180,7 +180,7 @@ class Edit implements HasActions, HasFilters {
 	 * @since  0.4.0
 	 */
 	public function edit_screen_orderby( $orderby, $query ) {
-		if ( is_admin() && $query->query_vars['post_type'] === 'gistpen' ) {
+		if ( is_admin() && 'gistpen' === $query->query_vars['post_type'] ) {
 			global $wpdb;
 			$orderby = $wpdb->posts . '.post_date DESC';
 		}
@@ -196,17 +196,17 @@ class Edit implements HasActions, HasFilters {
 	public function action_hooks() {
 		return array(
 			array(
-				'hook' => 'edit_form_top',
+				'hook'   => 'edit_form_top',
 				'method' => 'display_editor',
 			),
 			array(
-				'hook' => 'add_meta_boxes',
+				'hook'   => 'add_meta_boxes',
 				'method' => 'remove_meta_boxes',
 			),
 			array(
-				'hook' => 'manage_gistpen_posts_custom_column',
+				'hook'   => 'manage_gistpen_posts_custom_column',
 				'method' => 'manage_posts_custom_column',
-				'args' => 2,
+				'args'   => 2,
 			),
 		);
 	}
@@ -219,21 +219,21 @@ class Edit implements HasActions, HasFilters {
 	public function filter_hooks() {
 		return array(
 			array(
-				'hook' => 'screen_layout_columns',
+				'hook'   => 'screen_layout_columns',
 				'method' => 'screen_layout_columns',
 			),
 			array(
-				'hook' => 'get_user_option_screen_layout_gistpen',
+				'hook'   => 'get_user_option_screen_layout_gistpen',
 				'method' => 'screen_layout_gistpen',
 			),
 			array(
-				'hook' => 'manage_gistpen_posts_columns',
+				'hook'   => 'manage_gistpen_posts_columns',
 				'method' => 'manage_posts_columns',
 			),
 			array(
-				'hook' => 'posts_orderby',
+				'hook'   => 'posts_orderby',
 				'method' => 'edit_screen_orderby',
-				'args' => 2,
+				'args'   => 2,
 			),
 		);
 	}

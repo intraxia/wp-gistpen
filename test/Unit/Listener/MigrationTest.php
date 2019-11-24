@@ -28,7 +28,7 @@ class MigrationTest extends TestCase {
 			'_wpgp_gistpen_line_numbers'      => 'on',
 			'_wpgp_gist_token'                => '123456789zxcvbnmasdfghjklqwertyuiop',
 		);
-		$slug = $this->app->get( 'slug' );
+		$slug     = $this->app->get( 'slug' );
 
 		update_option( 'wp_gistpen_version', '0.5.8' );
 		update_option( 'wp-gistpen', $old_opts );

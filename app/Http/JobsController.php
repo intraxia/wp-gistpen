@@ -63,6 +63,7 @@ class JobsController {
 			return new WP_Error(
 				'invalid_job',
 				sprintf(
+					/* translators: %s: Job slug. */
 					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
 					$name
 				),
@@ -106,6 +107,7 @@ class JobsController {
 			return new WP_Error(
 				'invalid_job',
 				sprintf(
+					/* translators: %s: Job slug. */
 					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
 					$name
 				),
@@ -146,6 +148,7 @@ class JobsController {
 			return new WP_Error(
 				'invalid_job',
 				sprintf(
+					/* translators: %s: Job slug. */
 					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
 					$name
 				),
@@ -180,6 +183,7 @@ class JobsController {
 			return new WP_Error(
 				'invalid_job',
 				sprintf(
+					/* translators: %s: Job slug. */
 					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
 					$name
 				),
@@ -207,6 +211,7 @@ class JobsController {
 			return new WP_Error(
 				'invalid_job',
 				sprintf(
+					/* translators: %s: Job slug. */
 					__( 'Provided job %s is invalid.', 'wp-gistpen' ),
 					$name
 				),
@@ -229,7 +234,7 @@ class JobsController {
 		) );
 
 		return new WP_REST_Response( array(
-			'status' => $run->status,
+			'status'   => $run->status,
 			'messages' => $messages->serialize(),
 		) );
 	}

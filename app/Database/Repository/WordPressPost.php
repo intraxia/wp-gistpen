@@ -40,6 +40,7 @@ class WordPressPost extends AbstractRepository {
 			return new WP_Error(
 				'invalid_data',
 				sprintf(
+					/* translators: %s: Post ID. */
 					__( 'post id %s is invalid', 'wp-gistpen' ),
 					$id
 				)
@@ -50,6 +51,7 @@ class WordPressPost extends AbstractRepository {
 			return new WP_Error(
 				'invalid_data',
 				sprintf(
+					/* translators: %s: Post ID. */
 					__( 'post id %s is invalid', 'wp-gistpen' ),
 					$id
 				)
@@ -65,7 +67,7 @@ class WordPressPost extends AbstractRepository {
 			}
 
 			// @todo handle related keys specially for now.
-			if ( in_array( $key, array( 'blobs', 'language', 'states' ) ) ) {
+			if ( in_array( $key, array( 'blobs', 'language', 'states' ), true ) ) {
 				continue;
 			}
 
@@ -123,7 +125,7 @@ class WordPressPost extends AbstractRepository {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
-		if ( Klass::BLOB === $class  && isset( $params['repo_id'] ) ) {
+		if ( Klass::BLOB === $class && isset( $params['repo_id'] ) ) {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
@@ -134,7 +136,7 @@ class WordPressPost extends AbstractRepository {
 		if ( isset( $params['gist_id'] ) ) {
 			$query_args['meta_query'] = array(
 				array(
-					'key' => $this->make_meta_key( 'gist_id' ),
+					'key'   => $this->make_meta_key( 'gist_id' ),
 					'value' => $params['gist_id'],
 				),
 			);
@@ -172,7 +174,7 @@ class WordPressPost extends AbstractRepository {
 	 * @param array  $options
 	 */
 	public function create( $class, array $data = array(), array $options = array() ) {
-		$model = new $class;
+		$model = new $class();
 
 		/**
 		 * Set aside the `blobs` key for use.
@@ -285,7 +287,7 @@ class WordPressPost extends AbstractRepository {
 		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
 
 		foreach ( $model->get_table_attributes() as $key => $value ) {
-			if ( in_array( $key, array( 'blobs', 'language', 'repo' ) ) ) {
+			if ( in_array( $key, array( 'blobs', 'language', 'repo' ), true ) ) {
 				continue;
 			}
 

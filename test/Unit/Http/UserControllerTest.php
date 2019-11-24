@@ -71,7 +71,7 @@ class UserControllerTest extends TestCase {
 			->shouldReceive( 'patch' )
 			->with( $this->data )
 			->once()
-			->andThrow( new InvalidArgumentException );
+			->andThrow( new InvalidArgumentException() );
 
 		/** @var WP_Error $response */
 		$response = $this->controller->update( $this->request );

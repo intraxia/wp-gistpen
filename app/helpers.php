@@ -20,38 +20,38 @@ function container( $type = null, $file = null ) {
 	static $container;
 
 	if ( ! $container ) {
-		$builder = new \DI\ContainerBuilder();
-		$config = new Config( $type, $file );
-		$meta = $config->get_php_config( 'meta' );
+		$builder     = new \DI\ContainerBuilder();
+		$config      = new Config( $type, $file );
+		$meta        = $config->get_php_config( 'meta' );
 		$config_defs = [
-			'file' => $config->file,
-			'url' => $config->url,
-			'path' => $config->path,
-			'basename' => $config->basename,
-			'slug' => $config->slug,
-			'version' => $meta['version'],
-			'config' => $config,
+			'file'        => $config->file,
+			'url'         => $config->url,
+			'path'        => $config->path,
+			'basename'    => $config->basename,
+			'slug'        => $config->slug,
+			'version'     => $meta['version'],
+			'config'      => $config,
 			Config::class => $config,
 		];
 		$builder->addDefinitions( $config_defs );
 		$builder->addDefinitions( $config->get_php_config( 'container' ) );
 
 		// @TODO(mAAdhaTTah) remove when providers are eliminated.
-		$old_container = new Container;
+		$old_container = new Container();
 
 		foreach ( $config_defs as $key => $value ) {
 			$old_container->share( $key, $value );
 		}
 
 		$old_container->share( [ 'loader' => Loader::class ], function () {
-			return new Loader;
+			return new Loader();
 		} );
 		$old_container->share( [ 'i18n' => I18n::class ], function ( Container $app ) {
 			return new I18n( $app->fetch( 'basename' ), $app->fetch( 'path' ) );
 		} );
 
 		foreach ( $config->get_php_config( 'providers' ) as $provider ) {
-			$old_container->register( new $provider );
+			$old_container->register( new $provider() );
 		}
 
 		$definitions = [];
@@ -95,7 +95,7 @@ function container( $type = null, $file = null ) {
  */
 function boot( $type, $file ) {
 	$container = container( $type, $file );
-	$loader = $container->get( Loader::class );
+	$loader    = $container->get( Loader::class );
 	$loadables = $container->get( 'loadables' );
 
 	foreach ( $loadables as $loadable ) {

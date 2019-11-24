@@ -21,7 +21,7 @@ class AssetsServiceProvider extends ServiceProvider {
 	 *
 	 * @var string[]
 	 */
-	static $deps = array(
+	protected static $deps = array(
 		'react',
 		'react-dom',
 		'wp-blocks',

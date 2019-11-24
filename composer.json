@@ -10,11 +10,11 @@
       "email": "jamesorodig@gmail.com"
     }
   ],
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "require": {
     "php": ">=5.6.0",
     "wpupdatephp/wp-update-php": "~1.0",
-    "intraxia/jaxion": "dev-master",
+    "intraxia/jaxion": "0.0.2",
     "myclabs/php-enum": "^1.5",
     "php-di/php-di": "5.4.x"
   },
@@ -23,7 +23,7 @@
     "mockery/mockery": "~0.9",
     "10up/wp_mock": "0.2.*",
     "squizlabs/php_codesniffer": "^3.0",
-    "intraxia/codestyle": "dev-master",
+    "intraxia/codestyle": "0.0.2",
     "league/factory-muffin-faker": "^2.1",
     "league/factory-muffin": "^3.0"
   },

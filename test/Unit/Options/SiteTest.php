@@ -30,7 +30,7 @@ class SiteTest extends TestCase {
 			'line-numbers'    => false,
 			'show-invisibles' => false,
 		),
-		'gist' => array(
+		'gist'  => array(
 			'token' => '',
 		),
 	);
@@ -38,6 +38,12 @@ class SiteTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 		$this->site = new Site( 'wp-gistpen' );
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		delete_option( 'wp-gistpen' );
 	}
 
 	public function test_should_retrieve_public_user_options() {
@@ -144,11 +150,5 @@ class SiteTest extends TestCase {
 
 		$site = $this->site->all();
 		$this->assertSame( '123456789asghskdjfhka', $site['gist']['token'] );
-	}
-
-	function tearDown() {
-		parent::tearDown();
-
-		delete_option( 'wp-gistpen' );
 	}
 }

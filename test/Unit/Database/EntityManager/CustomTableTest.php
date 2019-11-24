@@ -56,6 +56,7 @@ class CustomTableTest extends TestCase {
 		$this->em = $this->app->make( EntityManager::class );
 		$this->app->make( Lifecycle::class )->activate();
 
+		// @codingStandardsIgnoreLine
 		$wpdb->insert(
 			$this->em->make_table_name( Klass::RUN ),
 			array(
@@ -69,6 +70,7 @@ class CustomTableTest extends TestCase {
 
 		$this->run_id = $wpdb->insert_id;
 
+		// @codingStandardsIgnoreLine
 		$wpdb->insert(
 			$this->em->make_table_name( Klass::MESSAGE ),
 			array(
@@ -265,7 +267,7 @@ class CustomTableTest extends TestCase {
 
 	public function test_should_persist_new_message_without_primary_id() {
 		global $wpdb;
-		$data = array(
+		$data    = array(
 			'run_id'    => $this->run_id,
 			'text'      => 'Another successful run.',
 			'level'     => Level::SUCCESS,
@@ -285,7 +287,7 @@ class CustomTableTest extends TestCase {
 	}
 
 	public function test_should_not_persist_new_message_with_no_run_id() {
-		$data = array(
+		$data    = array(
 			'text'      => 'Another successful run.',
 			'level'     => Level::SUCCESS,
 			'logged_at' => current_time( 'mysql' ),
@@ -298,7 +300,7 @@ class CustomTableTest extends TestCase {
 	}
 
 	public function test_should_not_persist_new_message_with_invalid_run_id() {
-		$data = array(
+		$data    = array(
 			'run_id'    => $this->run_id + 1,
 			'text'      => 'Another successful run.',
 			'level'     => Level::SUCCESS,
@@ -317,7 +319,7 @@ class CustomTableTest extends TestCase {
 
 		$run->job        = 'export';
 		$run->status     = Status::RUNNING;
-		$items = $run->items = new Collection( 'string', array( 'hello' ) );
+		$items           = $run->items = new Collection( 'string', array( 'hello' ) );
 		$this->scheduled = $run->scheduled_at = current_time( 'mysql' );
 		$this->started   = $run->started_at = current_time( 'mysql' );
 		$this->finished  = $run->finished_at = current_time( 'mysql' );
@@ -337,9 +339,9 @@ class CustomTableTest extends TestCase {
 		/** @var Message $message */
 		$message = $this->em->find( Klass::MESSAGE, $this->message_id );
 
-		$text = $message->text = 'New text for message';
+		$text           = $message->text = 'New text for message';
 		$message->level = Level::DEBUG;
-		$this->logged = $message->logged_at = current_time( 'mysql' );
+		$this->logged   = $message->logged_at = current_time( 'mysql' );
 
 		$message = $this->em->persist( $message );
 

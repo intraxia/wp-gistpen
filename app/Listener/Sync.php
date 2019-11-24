@@ -34,7 +34,7 @@ class Sync implements HasActions {
 	 * @param Repo $repo
 	 */
 	public function export_repo( Repo $repo ) {
-		if ( $repo->sync === 'on' ) {
+		if ( 'on' === $repo->sync ) {
 			$this->jobs->get( 'export' )->dispatch( new Collection( Klass::REPO, array( $repo ) ) );
 		}
 	}

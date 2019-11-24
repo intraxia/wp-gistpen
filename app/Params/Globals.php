@@ -87,6 +87,7 @@ class Globals implements HasFilters {
 		$params['globals']['demo'] = array(
 			'filename' => 'dummy.js',
 			'language' => 'javascript',
+			// @codingStandardsIgnoreLine
 			'code'     => file_get_contents( __DIR__ . '/demo-code' ),
 		);
 

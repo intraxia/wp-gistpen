@@ -84,6 +84,7 @@ class User {
 		$value = $this->all();
 		$parts = explode( '.', $name );
 
+		// @codingStandardsIgnoreLine
 		while ( $part = array_shift( $parts ) ) {
 			if ( ! isset( $value[ $part ] ) ) {
 				throw new InvalidArgumentException( $name );

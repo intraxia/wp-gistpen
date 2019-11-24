@@ -22,42 +22,42 @@ class Data implements HasActions {
 	 */
 	public function post_type_gistpen() {
 		$labels = array(
-			'name'                => _x( 'Gistpens', 'Post Type General Name', 'wp-gistpen' ),
-			'singular_name'       => _x( 'Gistpen', 'Post Type Singular Name', 'wp-gistpen' ),
-			'menu_name'           => __( 'Gistpens', 'wp-gistpen' ),
-			'parent_item_colon'   => __( 'Parent Gistpen:', 'wp-gistpen' ),
-			'all_items'           => __( 'All Gistpens', 'wp-gistpen' ),
-			'view_item'           => __( 'View Gistpen', 'wp-gistpen' ),
-			'add_new_item'        => __( 'Add New Gistpen', 'wp-gistpen' ),
-			'add_new'             => __( 'Add New', 'wp-gistpen' ),
-			'edit_item'           => __( 'Edit Gistpen', 'wp-gistpen' ),
-			'update_item'         => __( 'Update Gistpen', 'wp-gistpen' ),
-			'search_items'        => __( 'Search Gistpens', 'wp-gistpen' ),
-			'not_found'           => __( 'Gistpen not found', 'wp-gistpen' ),
-			'not_found_in_trash'  => __( 'No Gistpens found in Trash', 'wp-gistpen' ),
+			'name'               => _x( 'Gistpens', 'Post Type General Name', 'wp-gistpen' ),
+			'singular_name'      => _x( 'Gistpen', 'Post Type Singular Name', 'wp-gistpen' ),
+			'menu_name'          => __( 'Gistpens', 'wp-gistpen' ),
+			'parent_item_colon'  => __( 'Parent Gistpen:', 'wp-gistpen' ),
+			'all_items'          => __( 'All Gistpens', 'wp-gistpen' ),
+			'view_item'          => __( 'View Gistpen', 'wp-gistpen' ),
+			'add_new_item'       => __( 'Add New Gistpen', 'wp-gistpen' ),
+			'add_new'            => __( 'Add New', 'wp-gistpen' ),
+			'edit_item'          => __( 'Edit Gistpen', 'wp-gistpen' ),
+			'update_item'        => __( 'Update Gistpen', 'wp-gistpen' ),
+			'search_items'       => __( 'Search Gistpens', 'wp-gistpen' ),
+			'not_found'          => __( 'Gistpen not found', 'wp-gistpen' ),
+			'not_found_in_trash' => __( 'No Gistpens found in Trash', 'wp-gistpen' ),
 		);
-		$args = array(
-			'label'                => __( 'gistpens', 'wp-gistpen' ),
-			'description'          => __( 'A collection of code snippets.', 'wp-gistpen' ),
-			'labels'               => $labels,
-			'supports'             => array( 'author', 'comments', 'revisions' ),
-			'taxonomies'           => array( 'post_tag', 'wpgp_language' ),
-			'hierarchical'         => true,
-			'public'               => true,
-			'show_ui'              => true,
-			'show_in_menu'         => true,
-			'show_in_nav_menus'    => true,
-			'show_in_admin_bar'    => true,
-			'menu_position'        => 5,
-			'can_export'           => true,
-			'has_archive'          => true,
-			'exclude_from_search'  => false,
-			'publicly_queryable'   => true,
-			'capability_type'      => 'post',
-			'menu_icon'            => 'dashicons-editor-code',
-			'rewrite'              => array(
-				'slug'               => 'gistpens',
-				'with_front'         => true,
+		$args   = array(
+			'label'               => __( 'gistpens', 'wp-gistpen' ),
+			'description'         => __( 'A collection of code snippets.', 'wp-gistpen' ),
+			'labels'              => $labels,
+			'supports'            => array( 'author', 'comments', 'revisions' ),
+			'taxonomies'          => array( 'post_tag', 'wpgp_language' ),
+			'hierarchical'        => true,
+			'public'              => true,
+			'show_ui'             => true,
+			'show_in_menu'        => true,
+			'show_in_nav_menus'   => true,
+			'show_in_admin_bar'   => true,
+			'menu_position'       => 5,
+			'can_export'          => true,
+			'has_archive'         => true,
+			'exclude_from_search' => false,
+			'publicly_queryable'  => true,
+			'capability_type'     => 'post',
+			'menu_icon'           => 'dashicons-editor-code',
+			'rewrite'             => array(
+				'slug'       => 'gistpens',
+				'with_front' => true,
 			),
 		);
 
@@ -71,7 +71,7 @@ class Data implements HasActions {
 	 */
 	public function taxonomy_language() {
 
-		$labels = array(
+		$labels       = array(
 			'name'                       => _x( 'Languages', 'Taxonomy General Name', 'wp-gistpen' ),
 			'singular_name'              => _x( 'Language', 'Taxonomy Singular Name', 'wp-gistpen' ),
 			'menu_name'                  => __( 'Language', 'wp-gistpen' ),
@@ -89,21 +89,21 @@ class Data implements HasActions {
 			'not_found'                  => __( 'Not Found', 'wp-gistpen' ),
 		);
 		$capabilities = array(
-			'manage_terms'               => 'noone',
-			'edit_terms'                 => 'noone',
-			'delete_terms'               => 'noone',
-			'assign_terms'               => 'edit_posts',
+			'manage_terms' => 'noone',
+			'edit_terms'   => 'noone',
+			'delete_terms' => 'noone',
+			'assign_terms' => 'edit_posts',
 		);
-		$args = array(
-			'labels'                     => $labels,
-			'hierarchical'               => false,
-			'public'                     => true,
-			'show_ui'                    => false,
-			'show_admin_column'          => false,
-			'show_in_nav_menus'          => true,
-			'show_tagcloud'              => false,
-			'required'                   => true,
-			'capabilities'               => $capabilities,
+		$args         = array(
+			'labels'            => $labels,
+			'hierarchical'      => false,
+			'public'            => true,
+			'show_ui'           => false,
+			'show_admin_column' => false,
+			'show_in_nav_menus' => true,
+			'show_tagcloud'     => false,
+			'required'          => true,
+			'capabilities'      => $capabilities,
 		);
 
 		register_taxonomy( Language::get_taxonomy(), array( 'gistpen', 'revision' ), $args );
@@ -117,11 +117,11 @@ class Data implements HasActions {
 	public function action_hooks() {
 		return array(
 			array(
-				'hook' => 'init',
+				'hook'   => 'init',
 				'method' => 'post_type_gistpen',
 			),
 			array(
-				'hook' => 'init',
+				'hook'   => 'init',
 				'method' => 'taxonomy_language',
 			),
 		);

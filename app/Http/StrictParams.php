@@ -48,6 +48,7 @@ class StrictParams implements HasFilters {
 		foreach ( $request->get_params() as $key => $value ) {
 			if ( ! isset( $attributes['args'][ $key ] ) ) {
 				$invalid_params[ $key ] = sprintf(
+					/* translators: %s: Request param. */
 					__( 'Param "%s" is not a valid request param.', 'wp-gistpen' ),
 					$key
 				);
@@ -56,14 +57,15 @@ class StrictParams implements HasFilters {
 
 		if ( $invalid_params ) {
 			if ( is_wp_error( $response ) ) {
-				$data = $response->get_error_data();
+				$data           = $response->get_error_data();
 				$invalid_params = array_merge( $data['params'], $invalid_params );
 			}
 
 			return new WP_Error(
 				'rest_invalid_param',
 				sprintf(
-					__( 'Invalid parameter(s): %s' ),
+					/* translators: %s: Request params, comma-separated. */
+					__( 'Invalid parameter(s): %s', 'wp-gistpen' ),
 					implode( ', ', array_keys( $invalid_params ) )
 				),
 				array(

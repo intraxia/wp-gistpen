@@ -56,7 +56,7 @@ class ControllerServiceProvider implements ServiceProvider {
 		} );
 		// @TODO(mAAdhaTTah) move this to own provider?
 		$container->share( [ 'http.strict' => StrictParams::class ], function() {
-			return new StrictParams;
+			return new StrictParams();
 		});
 	}
 }

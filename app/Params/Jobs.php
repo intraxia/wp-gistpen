@@ -44,10 +44,10 @@ class Jobs implements HasFilters {
 
 		if ( 'jobs' === $params['route']['name'] && isset( $parts->job ) ) {
 			$params['jobs'][ $parts->job ]['status'] = $this->jobs->get( $parts->job )->get_status();
-			$params['runs'] = $this->jobs->get( $parts->job )->runs()->serialize();
+			$params['runs']                          = $this->jobs->get( $parts->job )->runs()->serialize();
 
 			if ( isset( $parts->run ) ) {
-				$params['runs'] = array( $this->jobs->get( $parts->job )->run( $parts->run )->serialize() );
+				$params['runs']     = array( $this->jobs->get( $parts->job )->run( $parts->run )->serialize() );
 				$params['messages'] = $this->jobs->get( $parts->job )->messages( $parts->run )->serialize();
 			}
 		}
@@ -74,7 +74,7 @@ class Jobs implements HasFilters {
 				$params['job']['status'] = $job->get_status();
 				$params['job']['runs']   = $job->runs()->serialize();
 			} else {
-				$params['run'] = $job->run( $parts->run )->serialize();
+				$params['run']             = $job->run( $parts->run )->serialize();
 				$params['run']['messages'] = $job->messages( $parts->run )->serialize();
 			}
 		}

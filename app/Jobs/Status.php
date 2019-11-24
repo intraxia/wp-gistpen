@@ -8,13 +8,13 @@ use MyCLabs\Enum\Enum;
  */
 class Status extends Enum {
 	// Job Status
-	const IDLE = 'idle';
+	const IDLE       = 'idle';
 	const PROCESSING = 'processing';
 
 	// Run Status
 	const SCHEDULED = 'scheduled';
-	const RUNNING = 'running';
-	const PAUSED = 'paused';
-	const FINISHED = 'finished';
-	const ERROR = 'error';
+	const RUNNING   = 'running';
+	const PAUSED    = 'paused';
+	const FINISHED  = 'finished';
+	const ERROR     = 'error';
 }

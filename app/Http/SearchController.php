@@ -38,9 +38,9 @@ class SearchController {
 	 * @throws \Exception
 	 */
 	public function get( WP_REST_Request $request ) {
-		$args = array(
+		$args        = array(
 			'posts_per_page' => 5,
-			'with' => 'language',
+			'with'           => 'language',
 		);
 		$search_term = $request->get_param( 's' );
 

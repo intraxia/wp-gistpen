@@ -21,7 +21,7 @@ class ClientServiceProvider implements ServiceProvider {
 	 */
 	public function register( Container $container ) {
 		$container->define( 'client.gist', function( Container $container ) {
-			return new Gist( $container->fetch( 'options.site' ), new Requests_Session );
+			return new Gist( $container->fetch( 'options.site' ), new Requests_Session() );
 		} );
 	}
 }

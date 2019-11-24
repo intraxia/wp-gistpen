@@ -95,7 +95,8 @@ abstract class AbstractJob implements Job {
 			return new WP_Error(
 				'invalid_items',
 				sprintf(
-					__( 'items passed into dispatch or returned by fetch_items for job %s is not a Collection' , 'wp-gistpen' ),
+					/* translators: %s: Job ID. */
+					__( 'items passed into dispatch or returned by fetch_items for job %s is not a Collection', 'wp-gistpen' ),
 					$this->slug()
 				)
 			);
@@ -127,6 +128,7 @@ abstract class AbstractJob implements Job {
 			return new WP_Error(
 				'job_running',
 				sprintf(
+					/* translators: %s: Job ID. */
 					__( 'Job %s is already running.', 'wp-gistpen' ),
 					$this->slug()
 				)
@@ -193,7 +195,7 @@ abstract class AbstractJob implements Job {
 	public function runs() {
 		return $this->em->find_by( Klass::RUN, array(
 			'order_by' => 'ID',
-			'job' => $this->slug(),
+			'job'      => $this->slug(),
 		) );
 	}
 
@@ -402,7 +404,7 @@ abstract class AbstractJob implements Job {
 	 * @return bool
 	 */
 	private function memory_exceeded() {
-		$memory_limit   = $this->get_memory_limit() * 0.9;
+		$memory_limit = $this->get_memory_limit() * 0.9;
 		// 90% of max memory
 		$current_memory = memory_get_usage( true );
 

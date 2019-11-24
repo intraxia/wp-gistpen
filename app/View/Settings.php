@@ -57,7 +57,7 @@ class Settings implements HasActions, HasFilters {
 	 * @since    0.5.0
 	 */
 	public function __construct( Params $params, Templating $template, $basename, $url ) {
-		$this->params = $params;
+		$this->params   = $params;
 		$this->template = $template;
 		$this->basename = $basename;
 		$this->url      = $url;

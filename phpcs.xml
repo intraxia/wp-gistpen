@@ -21,6 +21,11 @@
 	<!-- Make sure PHPCS can find the WPCS styles -->
 	<config name="installed_paths" value="lib/wp-coding-standards/wpcs" />
 
+	<!-- We use dot seperated action names. @TODO(mAAdhaTTah) revist? -->
+	<rule ref="WordPress.NamingConventions.ValidHookName.UseUnderscores">
+		<exclude-pattern>app</exclude-pattern>
+	</rule>
+
 	<!-- Ignore commenting rules for tests -->
 	<rule ref="Squiz.Commenting.FunctionComment.Missing">
 		<exclude-pattern>test</exclude-pattern>
@@ -39,7 +44,12 @@
 	</rule>
 
 	<!-- Ignore escaping rules for tests -->
-	<rule ref="WordPress.XSS.EscapeOutput.OutputNotEscaped">
+	<rule ref="WordPress.Security.EscapeOutput.OutputNotEscaped">
+		<exclude-pattern>test</exclude-pattern>
+	</rule>
+
+	<!-- Ignore fs rules for tests -->
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents">
 		<exclude-pattern>test</exclude-pattern>
 	</rule>
 </ruleset>

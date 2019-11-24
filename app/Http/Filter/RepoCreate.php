@@ -32,13 +32,13 @@ class RepoCreate implements FilterContract {
 				'default'           => 'draft',
 				'sanitize_callback' => [ $this, 'sanitize_status' ],
 			],
-			'sync'      => [
+			'sync'        => [
 				'description'       => __( 'Whether the Repo should be synced to Gist.', 'wp-gistpen' ),
 				'required'          => false,
 				'default'           => 'off',
 				'sanitize_callback' => [ $this, 'sanitize_sync' ],
 			],
-			'blobs' => [
+			'blobs'       => [
 				'description'       => __( 'Individual code snippets attached to the repo.', 'wp-gistpen' ),
 				'required'          => false,
 				'default'           => [],
@@ -68,7 +68,7 @@ class RepoCreate implements FilterContract {
 	 * @return string|WP_Error The status, or an error if invalid.
 	 */
 	public function sanitize_status( $status ) {
-		if ( ! in_array( $status, array_keys( get_post_statuses() ) ) ) {
+		if ( ! in_array( $status, array_keys( get_post_statuses() ), true ) ) {
 			return $this->create_error( __( 'Param "status" must be a valid post status.', 'wp-gistpen' ) );
 		}
 
@@ -82,7 +82,7 @@ class RepoCreate implements FilterContract {
 	 * @return string|WP_Error The sync value, or error if invalid.
 	 */
 	public function sanitize_sync( $sync ) {
-		if ( ! in_array( $sync, [ 'on', 'off' ] ) ) {
+		if ( ! in_array( $sync, [ 'on', 'off' ], true ) ) {
 			return $this->create_error( __( 'Param "sync" must be one of: on, off.', 'wp-gistpen' ) );
 		}
 
@@ -125,6 +125,7 @@ class RepoCreate implements FilterContract {
 	public function sanitize_blob( $blob, $index ) {
 		if ( ! is_array( $blob ) ) {
 			return $this->create_error( sprintf(
+				/* translators: %d: Blob index. */
 				__( 'Param "blob[%d]" must be an object.', 'wp-gistpen' ),
 				$index
 			) );
@@ -140,6 +141,7 @@ class RepoCreate implements FilterContract {
 			// @todo simplyify logic?
 		) {
 			return $this->create_error( sprintf(
+				/* translators: %d: Blob index. */
 				__( 'Param "blob[%d].filename" must be a non-empty string.', 'wp-gistpen' ),
 				$index
 			) );
@@ -150,6 +152,7 @@ class RepoCreate implements FilterContract {
 			! is_string( $blob['code'] )
 		) {
 			return $this->create_error( sprintf(
+				/* translators: %d: Blob index. */
 				__( 'Param "blob[%d].code" must be a string.', 'wp-gistpen' ),
 				$index
 			) );

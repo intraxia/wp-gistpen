@@ -48,8 +48,8 @@ class Editor implements HasFilters {
 	 */
 	public function __construct( Config $config, EntityManager $em, User $user ) {
 		$this->config = $config;
-		$this->em = $em;
-		$this->user = $user;
+		$this->em     = $em;
+		$this->user   = $user;
 	}
 
 	/**
@@ -75,16 +75,16 @@ class Editor implements HasFilters {
 
 		// @todo move to accessors?
 		if ( 'auto-draft' === $repo->status ) {
-			$repo->status = 'draft';
+			$repo->status      = 'draft';
 			$repo->description = '';
-			$repo->sync = 'off';
+			$repo->sync        = 'off';
 
 			$language = $this->em->find_by( Klass::LANGUAGE, array( 'slug' => 'plaintext' ) );
 
 			if ( $language->index_exists( 0 ) ) {
 				$language = $language->at( 0 );
 			} else {
-				$term       = new WP_Term( new stdClass );
+				$term       = new WP_Term( new stdClass() );
 				$term->slug = 'plaintext';
 
 				$language = new Language( array( Model::OBJECT_KEY => $term ) );
@@ -92,7 +92,7 @@ class Editor implements HasFilters {
 
 			$repo->blobs->add( new BlobModel( array(
 				'filename' => '',
-				'code' => '',
+				'code'     => '',
 				'language' => $language,
 			) ) );
 		}
@@ -106,11 +106,11 @@ class Editor implements HasFilters {
 
 		$params['editor'] = array(
 			'description' => $repo->description,
-			'status' => $repo->status,
-			'password' => $repo->password,
-			'gist_id' => $repo->gist_id,
-			'sync' => $repo->sync,
-			'instances'  => array_map( function ( BlobModel $blob ) {
+			'status'      => $repo->status,
+			'password'    => $repo->password,
+			'gist_id'     => $repo->gist_id,
+			'sync'        => $repo->sync,
+			'instances'   => array_map( function ( BlobModel $blob ) {
 				return array(
 					'key'      => (string) $blob->ID ? : 'new0',
 					'filename' => $blob->filename,
@@ -123,11 +123,11 @@ class Editor implements HasFilters {
 					),
 				);
 			}, $blobs ),
-			'width'      => $this->user->get( 'editor.indent_width' ),
-			'theme'      => $this->user->get( 'editor.theme' ),
-			'invisibles' => $this->user->get( 'editor.invisibles_enabled' ) ? : 'off',
-			'tabs'       => $this->user->get( 'editor.tabs_enabled' ) ? : 'off',
-			'errors'     => array(),
+			'width'       => $this->user->get( 'editor.indent_width' ),
+			'theme'       => $this->user->get( 'editor.theme' ),
+			'invisibles'  => $this->user->get( 'editor.invisibles_enabled' ) ? : 'off',
+			'tabs'        => $this->user->get( 'editor.tabs_enabled' ) ? : 'off',
+			'errors'      => array(),
 		);
 
 		return $params;

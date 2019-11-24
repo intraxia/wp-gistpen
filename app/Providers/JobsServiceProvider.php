@@ -30,7 +30,7 @@ class JobsServiceProvider implements ServiceProvider {
 		} );
 
 		$container->define( 'jobs', function ( Container $container ) {
-			$jobs = new Jobs;
+			$jobs = new Jobs();
 
 			$jobs->add_job( 'export', $container->fetch( 'job.export' ) );
 			$jobs->add_job( 'import', $container->fetch( 'job.import' ) );
