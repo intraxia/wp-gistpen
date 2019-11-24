@@ -15,5 +15,6 @@ return [
 	'loadables' => [
 		Lifecycle::class,
 		Console\Binding::class,
+		Http\StrictParams::class,
 	],
 ];
