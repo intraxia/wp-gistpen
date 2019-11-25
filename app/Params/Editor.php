@@ -102,7 +102,7 @@ class Editor implements HasFilters {
 			return (int) $a->ID - (int) $b->ID;
 		} );
 
-		$languages = $this->config->get_config_json( 'languages' );
+		$languages = $this->config->get_json_resource( 'languages' );
 
 		$params['editor'] = array(
 			'description' => $repo->description,

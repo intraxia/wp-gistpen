@@ -34,7 +34,7 @@ class Globals implements HasFilters {
 	 * @return array
 	 */
 	public function apply_globals( $params ) {
-		$languages = $this->config->get_config_json( 'languages' );
+		$languages = $this->config->get_json_resource( 'languages' );
 
 		$params['globals'] = array(
 			'languages'  => $languages['list'],
