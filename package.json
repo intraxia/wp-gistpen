@@ -30,7 +30,7 @@
     "gen:pot": "wp-pot --bug-report http://github.com/intraxia/wp-gistpen --domain wp-gistpen --package wp-gistpen --src 'app/**/*.php' --relative-to . --dest-file languages/wp-gistpen.pot"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.2",
+    "@babel/core": "^7.7.4",
     "@babel/plugin-proposal-class-properties": "^7.7.0",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.4.4",
     "@babel/plugin-proposal-optional-chaining": "^7.6.0",
