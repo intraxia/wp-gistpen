@@ -15,32 +15,7 @@ use function \WP_CLI\Utils\get_flag_value;
  *     $ wp gistpen repo create
  *     Success: Created repo 123.
  */
-class Repo {
-
-	/**
-	 * EntityManager service.
-	 *
-	 * @var EntityManager
-	 */
-	private $em;
-
-	/**
-	 * WP_CLI service.
-	 *
-	 * @var WP_CLI
-	 */
-	private $cli;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param EntityManager $em
-	 * @param WP_CLI        $cli
-	 */
-	public function __construct( EntityManager $em, WP_CLI $cli ) {
-		$this->em  = $em;
-		$this->cli = $cli;
-	}
+class Repo extends Base {
 
 	/**
 	 * Creates a new repo.
