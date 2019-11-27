@@ -32,6 +32,11 @@ class RepoCreate implements FilterContract {
 				'default'           => 'draft',
 				'sanitize_callback' => [ $this, 'sanitize_status' ],
 			],
+			'password'    => [
+				'description' => __( 'Password for the Repo.', 'wp-gistpen' ),
+				'required'    => false,
+				'default'     => '',
+			],
 			'sync'        => [
 				'description'       => __( 'Whether the Repo should be synced to Gist.', 'wp-gistpen' ),
 				'required'          => false,
