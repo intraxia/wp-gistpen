@@ -302,7 +302,7 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		// Handle blobs
-		if ( $model instanceof Repo ) {
+		if ( $model instanceof Repo && $model->blobs ) {
 			$deleted_blobs = $model->get_original_attribute( 'blobs' )
 				->filter( function ( Model $original_blob ) use ( &$model ) {
 					foreach ( $model->blobs as $blob ) {
