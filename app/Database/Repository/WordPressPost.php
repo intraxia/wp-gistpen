@@ -330,6 +330,27 @@ class WordPressPost extends AbstractRepository {
 
 		if ( $model instanceof Blob || $model instanceof State ) {
 			if ( $model->language ) {
+				// @TODO(mAAdhaTTah) dedupe from create
+				if ( is_string( $model->language ) ) {
+					$language = $this->em->find_by( Language::class, [
+						'slug' => $model->language,
+					] );
+
+					if ( count( $language ) === 0 ) {
+						$language = $this->em->create( Language::class, [
+							'slug' => $model->language,
+						] );
+
+						if ( is_wp_error( $language ) ) {
+							return $language;
+						}
+					} else {
+						$language = $language->first();
+					}
+
+					$model->language = $language;
+				}
+
 				wp_set_object_terms(
 					$model->get_primary_id(),
 					$model->language->slug,
