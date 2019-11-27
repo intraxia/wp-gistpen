@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Gistpen\Test\Integration\Repo;
+namespace Intraxia\Gistpen\Test\Integration\Http\Repo;
 
 use WP_REST_Request;
 use Intraxia\Gistpen\Model\Blob;
