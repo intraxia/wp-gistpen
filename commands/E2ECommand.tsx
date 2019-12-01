@@ -6,7 +6,7 @@ import { Delta } from 'brookjs-types';
 import { Box, Color, AppContext } from 'ink';
 import Kefir, { Observable } from 'kefir';
 import React, { useContext, useEffect } from 'react';
-import shelljs from 'shelljs';
+import execa from 'execa';
 import {
   ActionType,
   createAction,
@@ -73,16 +73,14 @@ interface E2ERC {
 
 // This is what's going to be defined in the E2E key in the rc file.
 const e2e: E2ERC = {
-  startup() {
-    return Kefir.stream(emitter => {
-      // @TODO(mAAdhaTTah) use wp-env - not yet published
-      shelljs.exec('wp-scripts env start', { silent: true });
-      emitter.value('Started!');
+  async startup() {
+    await execa.command('wp-scripts env start');
+    return 'Started!';
+  },
 
-      return () => {
-        shelljs.exec('wp-scripts env stop', { silent: true });
-      };
-    });
+  async shutdown() {
+    await execa.command('wp-scripts env stop');
+    return 'Stopped!';
   }
 };
 

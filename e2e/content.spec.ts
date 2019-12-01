@@ -1,19 +1,14 @@
 /* eslint-env jest */
 import languages from '../resources/languages.json';
-import shelljs from 'shelljs';
+import execa from 'execa';
 
 describe('content', () => {
   let repoId: string, repoUrl: string, blobId: string;
 
-  beforeAll(() => {
-    let run = shelljs.exec(
-      `npm run env cli gistpen repo create -- --description='Test' --status='publish' --porcelain`,
-      { silent: true }
+  beforeAll(async () => {
+    let run = await execa.command(
+      `npm run env cli gistpen repo create -- --description='Test' --status='publish' --porcelain`
     );
-
-    if (run.code !== 0) {
-      throw new Error(`Failed creating repo with error: ${run.stderr}`);
-    }
 
     repoId =
       run.stdout
@@ -25,14 +20,9 @@ describe('content', () => {
       throw new Error(`Failed to parse repo id from output: ${run.stdout}`);
     }
 
-    run = shelljs.exec(
-      `npm run env cli gistpen repo get ${repoId} -- --field='html_url'`,
-      { silent: true }
+    run = await execa.command(
+      `npm run env cli gistpen repo get ${repoId} -- --field='html_url'`
     );
-
-    if (run.code !== 0) {
-      throw new Error(`Failed creating repo with error: ${run.stderr}`);
-    }
 
     repoUrl =
       run.stdout
@@ -44,14 +34,9 @@ describe('content', () => {
       throw new Error(`Failed to parse repo url from output: ${run.stdout}`);
     }
 
-    run = shelljs.exec(
-      `npm run env cli gistpen blob create -- --repo_id=${repoId} --filename='placeholder' --porcelain`,
-      { silent: true }
+    run = await execa.command(
+      `npm run env cli gistpen blob create -- --repo_id=${repoId} --filename='placeholder' --porcelain`
     );
-
-    if (run.code !== 0) {
-      throw new Error(`Failed creating blob with error: ${run.stderr}`);
-    }
 
     blobId =
       run.stdout
@@ -84,14 +69,9 @@ describe('content', () => {
         throw new Error('Setup failed');
       }
 
-      const run = shelljs.exec(
-        `npm run env cli gistpen blob update ${blobId} ${dockerPath} -- --filename='${slug}' --language='${slug}'`,
-        { silent: true }
+      await execa.command(
+        `npm run env cli gistpen blob update ${blobId} ${dockerPath} -- --filename='${slug}' --language='${slug}'`
       );
-
-      if (run.code !== 0) {
-        throw new Error(`Failed updating blob with error: ${run.stderr}`);
-      }
 
       await page.goto(repoUrl);
 
