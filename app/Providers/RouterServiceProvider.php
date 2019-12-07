@@ -9,6 +9,7 @@ use Intraxia\Gistpen\Http\Filter\RepoCollection as RepoCollectionFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCreate as RepoCreateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoUpdate as RepoUpdateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoResource as RepoResourceFilter;
+use Intraxia\Gistpen\Http\Filter\SitePatch as SitePatchFilter;
 
 /**
  * Class RouterServiceProvider
@@ -110,10 +111,11 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /site endpoint
 			 */
 			$router->get( '/site', array( $controllers['site'], 'view' ), array(
-				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
+				'guard' => new Guard( array( 'rule' => 'can_manage_options' ) ),
 			) );
 			$router->patch( '/site', array( $controllers['site'], 'update' ), array(
-				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
+				'filter' => new SitePatchFilter(),
+				'guard'  => new Guard( array( 'rule' => 'can_manage_options' ) ),
 			) );
 
 			/**
