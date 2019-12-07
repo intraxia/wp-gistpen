@@ -11,141 +11,142 @@ class SiteTest extends TestCase {
 	protected $site;
 
 	/**
-	 * @var array
+	 * @var string
 	 */
-	protected $unprotected = array(
-		'prism' => array(
-			'theme'           => 'default',
-			'line-numbers'    => false,
-			'show-invisibles' => false,
-		),
-	);
-
-	/**
-	 * @var array
-	 */
-	protected $protected = array(
-		'prism' => array(
-			'theme'           => 'default',
-			'line-numbers'    => false,
-			'show-invisibles' => false,
-		),
-		'gist'  => array(
-			'token' => '',
-		),
-	);
+	protected $slug;
 
 	public function setUp() {
 		parent::setUp();
-		$this->site = new Site( 'wp-gistpen' );
+		$this->site = $this->app->make( Site::class );
+		$this->slug = $this->app->get( 'slug' );
 	}
 
 	public function tearDown() {
 		parent::tearDown();
 
-		delete_option( 'wp-gistpen' );
+		delete_option( $this->slug . '_no_priv' );
+		delete_option( $this->slug . '_priv' );
 	}
 
-	public function test_should_retrieve_public_user_options() {
-		$this->set_role( 'subscriber' );
-
-		$this->assertSame( $this->unprotected, $this->site->all() );
+	public function test_should_retrieve_site_options() {
+		$this->assertSame( Site::$defaults, $this->site->all() );
 	}
 
 	public function test_should_reset_mangled_options() {
-		$this->set_role( 'subscriber' );
-		update_option( 'wp-gistpen_no_priv', 'something went wrong' );
+		update_option( $this->slug . '_no_priv', 'something went wrong' );
 
-		$this->assertSame( $this->unprotected, $this->site->all() );
+		$this->assertSame( Site::$defaults, $this->site->all() );
 
-		update_option( 'wp-gistpen_no_priv', array() );
+		update_option( $this->slug . '_no_priv', array() );
 
-		$this->assertSame( $this->unprotected, $this->site->all() );
+		$this->assertSame( Site::$defaults, $this->site->all() );
+
+		update_option( $this->slug . '_no_priv', false );
+
+		$this->assertSame( Site::$defaults, $this->site->all() );
+
+		update_option( $this->slug . '_no_priv', [
+			'prism' => [
+				'line-numbers'    => 'off',
+				'show-invisibles' => 'on',
+				'theme'           => 'invalid-theme',
+			],
+		] );
+
+		$this->assertSame( $this->site->all(), [
+			'prism' => [
+				'line-numbers'    => false,
+				'show-invisibles' => true,
+				'theme'           => 'default',
+			],
+			'gist'  => Site::$defaults['gist'],
+		] );
 	}
 
-	public function test_should_retrieve_protected_options() {
-		$this->set_role( 'administrator' );
-
-		$this->assertEquals( $this->protected, $this->site->all() );
-	}
-
-	public function test_should_get_unprotected_option() {
-		$this->set_role( 'subscriber' );
-
+	public function test_should_get_option() {
 		$prism = $this->site->get( 'prism' );
 
-		$this->assertSame( $this->unprotected['prism'], $prism );
-	}
-
-	public function test_should_hide_protected_option() {
-		$this->set_role( 'subscriber' );
+		$this->assertSame( Site::$defaults['prism'], $prism );
 
 		$gist = $this->site->get( 'gist' );
 
-		$this->assertNull( $gist );
+		$this->assertSame( Site::$defaults['gist'], $gist );
 	}
 
 	public function test_should_throw_on_invalid_key() {
-		$this->set_role( 'administrator' );
-
 		$this->expectException( \InvalidArgumentException::class );
 
 		$this->site->get( 'random' );
 	}
 
-	public function test_should_get_protected_key() {
-		$this->set_role( 'administrator' );
+	public function test_should_throw_on_invalid_prism_key() {
+		$this->expectException( \InvalidArgumentException::class );
 
-		$gist = $this->site->get( 'gist' );
-
-		$this->assertSame( $this->protected['gist'], $gist );
+		$this->site->patch( [ 'prism' => [ 'invalid_prop' => false ] ] );
 	}
 
-	public function test_should_fail_to_update_without_perms() {
-		$this->set_role( 'subscriber' );
+	public function test_should_throw_on_invalid_prism_theme_type() {
+		$this->expectException( \InvalidArgumentException::class );
 
-		$this->site->patch( array( 'prism' => array( 'theme' => 'xonokai' ) ) );
-
-		$this->assertSame( $this->unprotected, $this->site->all() );
+		$this->site->patch( [ 'prism' => [ 'theme' => false ] ] );
 	}
 
-	public function test_should_ignore_invalid_argument() {
-		$this->set_role( 'administrator' );
+	public function test_should_throw_on_invalid_prism_theme_name() {
+		$this->expectException( \InvalidArgumentException::class );
 
-		$this->site->patch( array( 'random_key' => array( 'some_prop' => false ) ) );
-
-		$this->assertSame( $this->protected, $this->site->all() );
+		$this->site->patch( [ 'prism' => [ 'theme' => 'not-a-real-theme' ] ] );
 	}
 
-	public function test_should_update_valid_prism_key() {
-		$this->set_role( 'administrator' );
-
-		$this->site->patch( array( 'prism' => array( 'theme' => 'xonokai' ) ) );
+	public function test_should_update_valid_prism_theme() {
+		$this->site->patch( [ 'prism' => [ 'theme' => 'xonokai' ] ] );
 
 		$site = $this->site->all();
 		$this->assertSame( 'xonokai', $site['prism']['theme'] );
 	}
 
-	public function test_should_update_boolean_prism_key() {
-		$this->set_role( 'administrator' );
+	public function test_should_throw_on_invalid_prism_ln_type() {
+		$this->expectException( \InvalidArgumentException::class );
 
+		$this->site->patch( [ 'prism' => [ 'line-numbers' => 123 ] ] );
+	}
+
+	public function test_should_throw_on_invalid_prism_si_type() {
+		$this->expectException( \InvalidArgumentException::class );
+
+		$this->site->patch( [ 'prism' => [ 'show-invisibles' => 123 ] ] );
+	}
+
+	public function test_should_update_boolean_prism_key() {
 		$this->site->patch( array( 'prism' => array( 'line-numbers' => true ) ) );
 
 		$site = $this->site->all();
 		$this->assertSame( true, $site['prism']['line-numbers'] );
+
+		$this->site->patch( array( 'prism' => array( 'line-numbers' => false ) ) );
+
+		$site = $this->site->all();
+		$this->assertSame( false, $site['prism']['line-numbers'] );
 	}
 
-	public function test_should_ignore_invalid_prism_key() {
-		$this->set_role( 'administrator' );
+	public function test_should_update_boolean_prism_key_with_string() {
+		$this->site->patch( array( 'prism' => array( 'line-numbers' => 'on' ) ) );
 
-		$this->site->patch( array( 'prism' => array( 'key' => 'value' ) ) );
+		$site = $this->site->all();
+		$this->assertSame( true, $site['prism']['line-numbers'] );
 
-		$this->assertSame( $this->protected, $this->site->all() );
+		$this->site->patch( array( 'prism' => array( 'line-numbers' => 'off' ) ) );
+
+		$site = $this->site->all();
+		$this->assertSame( false, $site['prism']['line-numbers'] );
+	}
+
+	public function test_should_throw_on_invalid_gist_token_type() {
+		$this->expectException( \InvalidArgumentException::class );
+
+		$this->site->patch( [ 'gist' => [ 'token' => 123 ] ] );
 	}
 
 	public function test_should_update_valid_gist_key() {
-		$this->set_role( 'administrator' );
-
 		$this->site->patch( array( 'gist' => array( 'token' => '123456789asghskdjfhka' ) ) );
 
 		$site = $this->site->all();

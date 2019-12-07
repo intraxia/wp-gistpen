@@ -11,6 +11,37 @@ use Intraxia\Jaxion\Contract\Core\HasFilters;
 class Globals implements HasFilters {
 
 	/**
+	 * Valid themes.
+	 *
+	 * @var string[]
+	 */
+	public static $themes = [
+		'default',
+		'dark',
+		'funky',
+		'okaidia',
+		'tomorrow',
+		'twilight',
+		'coy',
+		'cb',
+		'ghcolors',
+		'pojoaque',
+		'xonokai',
+		'base16-ateliersulphurpool-light',
+		'hopscotch',
+		'atom-dark',
+		'duotone-dark',
+		'duotone-sea',
+		'duotone-space',
+		'duotone-earth',
+		'duotone-forest',
+		'duotone-light',
+		'vs',
+		'darcula',
+		'a11y-dark',
+	];
+
+	/**
 	 * App Config service.
 	 *
 	 * @var Config
