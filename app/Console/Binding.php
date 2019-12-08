@@ -29,6 +29,7 @@ class Binding implements HasActions {
 	protected $commands = [
 		'repo' => Command\Repo::class,
 		'blob' => Command\Blob::class,
+		'site' => Command\Site::class,
 	];
 
 	/**
