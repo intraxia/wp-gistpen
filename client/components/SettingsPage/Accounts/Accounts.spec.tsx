@@ -9,7 +9,7 @@ describe('Accounts', () => {
     expect(<Accounts token={''} />).toEmitFromJunction(
       [[0, Kutil.value(gistTokenChange('abc'))]],
       ({ queryByTestId }) => {
-        const input = queryByTestId('token-input') as Element;
+        const input = queryByTestId('gist-token') as Element;
 
         fireEvent.change(input, { target: { value: 'abc' } });
       }

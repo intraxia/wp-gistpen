@@ -23,7 +23,7 @@ class RepoResource implements FilterContract {
 		return array(
 			'id' => array(
 				'required' => true,
-				'type' => 'int',
+				'type'     => 'int',
 			),
 		);
 	}

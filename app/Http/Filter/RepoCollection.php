@@ -22,8 +22,8 @@ class RepoCollection implements FilterContract {
 	public function rules() {
 		return array(
 			'page' => array(
-				'required' => false,
-				'default' => 1,
+				'required'          => false,
+				'default'           => 1,
 				'sanitize_callback' => array( $this, 'sanitize_page' ),
 			),
 		);

@@ -46,9 +46,12 @@ elif [[ $E2E == 'true' ]]; then
 	# Connect to WordPress.
 	npm run env connect
 
-	# Install composer & activate plugin
+	# Install composer & activate plugin.
 	npm run env docker-run -- php composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader
 	npm run env cli plugin activate wp-gistpen
+
+	# Build assets.
+	npm run build
 else
 	# If it's not this specific version.
 	if [[ !($TRAVIS_PHP_VERSION == '5.6' && $WP_VERSION == 'latest' && $WP_MULTISITE == '0') ]]; then

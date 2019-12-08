@@ -43,6 +43,7 @@ class Translations implements TranslationsContract, HasActions {
 			'editor.theme'       => __( 'Theme', 'wp-gistpen' ),
 			'editor.update'      => __( 'Update Gistpen', 'wp-gistpen' ),
 			'editor.width'       => __( 'Indentation width (in spaces)', 'wp-gistpen' ),
+			/* translators: %s: Translation key. */
 			'i18n.notfound'      => __( 'Translation for key %s not found.', 'wp-gistpen' ),
 			'jobs.description'   => __( 'Job Description', 'wp-gistpen' ),
 			'jobs.dispatch'      => __( 'Dispatch Job', 'wp-gistpen' ),
@@ -52,6 +53,7 @@ class Translations implements TranslationsContract, HasActions {
 			'jobs.runs.view'     => __( 'View Runs', 'wp-gistpen' ),
 			'jobs.status'        => __( 'Job Status', 'wp-gistpen' ),
 			'jobs.title'         => __( 'Background Jobs', 'wp-gistpen' ),
+			/* translators: %s: Route key. */
 			'route.404'          => __( 'Route %s not found', 'wp-gistpen' ),
 			'run.id'             => __( 'Run ID', 'wp-gistpen' ),
 			'run.status'         => __( 'Run Status', 'wp-gistpen' ),
@@ -62,6 +64,7 @@ class Translations implements TranslationsContract, HasActions {
 			'run.messages.view'  => __( 'View Messages', 'wp-gistpen' ),
 			'search.invalid'     => __( 'Please enter a valid search term.', 'wp-gistpen' ),
 			'search.loading'     => __( 'Loading Gistpens...', 'wp-gistpen' ),
+			/* translators: %s: Search term. */
 			'search.results.no'  => __( 'No results found for term %s', 'wp-gistpen' ),
 			'search.term.no'     => __( 'Please enter a search term ', 'wp-gistpen' ),
 			'search.title'       => __( 'Search Gistpens', 'wp-gistpen' ),

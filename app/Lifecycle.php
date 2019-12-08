@@ -25,7 +25,7 @@ class Lifecycle implements HasActions {
 	 * @param Migration $migration Database migration.
 	 */
 	public function __construct( Config $config, Migration $migration ) {
-		$this->config = $config;
+		$this->config    = $config;
 		$this->migration = $migration;
 	}
 
@@ -62,7 +62,7 @@ class Lifecycle implements HasActions {
 	public function action_hooks() {
 		return [
 			[
-				'hook' => 'plugins_loaded',
+				'hook'   => 'plugins_loaded',
 				'method' => 'init',
 			],
 		];

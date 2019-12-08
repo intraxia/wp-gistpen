@@ -36,7 +36,7 @@ class UserController {
 	 * @return WP_REST_Response
 	 */
 	public function view() {
-		return new WP_REST_Response( $this->user->all() );
+		return new WP_REST_Response( $this->user->all( get_current_user_id() ) );
 	}
 
 	/**
@@ -48,7 +48,7 @@ class UserController {
 	 */
 	public function update( WP_REST_Request $request ) {
 		try {
-			return new WP_REST_Response( $this->user->patch( $request->get_params() ), 200 );
+			return new WP_REST_Response( $this->user->patch( get_current_user_id(), $request->get_params() ), 200 );
 		} catch ( InvalidArgumentException $e ) {
 			return new WP_Error( 'invalid_params', __( 'Invalid params.', 'wp-gistpen' ), array( 'status' => 400 ) );
 		}

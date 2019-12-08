@@ -8,9 +8,13 @@
 
 namespace Intraxia\Gistpen;
 
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager as EM;
+
 return [
-	Lifecycle::class => \DI\object(),
+	EM::class   => \DI\get( 'database' ),
 	'loadables' => [
 		Lifecycle::class,
+		Console\Binding::class,
+		Http\StrictParams::class,
 	],
 ];

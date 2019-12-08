@@ -17,12 +17,12 @@ class User {
 	 *
 	 * @var array
 	 */
-	protected $defaults = array(
+	public static $defaults = array(
 		'editor' => array(
 			'theme'              => 'default',
 			'invisibles_enabled' => 'off',
 			'tabs_enabled'       => 'off',
-			'indent_width'       => '4',
+			'indent_width'       => '2',
 		),
 	);
 
@@ -48,23 +48,20 @@ class User {
 	/**
 	 * Retrieve all the options for the provided user.
 	 *
+	 * @param  number $user_id
 	 * @return array
 	 */
-	public function all() {
-		$options = get_user_meta( get_current_user_id(), 'wpgp_options', true );
-
-		if ( ! $options ) {
-			$options = $this->defaults;
-		}
+	public function all( $user_id ) {
+		$options = get_user_meta( $user_id, 'wpgp_options', true ) ?: static::$defaults;
 
 		foreach ( $this->legacy as $legacy => $path ) {
-			$value = get_user_meta( get_current_user_id(), $this->make_option( $legacy ), true );
+			$value = get_user_meta( $user_id, $this->make_option( $legacy ), true );
 
 			if ( $value ) {
 				$options = $this->set_by_path( $options, $value, $path );
 
-				delete_user_meta( get_current_user_id(), $this->make_option( $legacy ) );
-				update_user_meta( get_current_user_id(), 'wpgp_options', $options );
+				delete_user_meta( $user_id, $this->make_option( $legacy ) );
+				update_user_meta( $user_id, 'wpgp_options', $options );
 			}
 		}
 
@@ -74,16 +71,18 @@ class User {
 	/**
 	 * Retrieves the option value for the current user.
 	 *
+	 * @param  number $user_id
 	 * @param string $name
 	 *
 	 * @return mixed
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function get( $name ) {
-		$value = $this->all();
+	public function get( $user_id, $name ) {
+		$value = $this->all( $user_id );
 		$parts = explode( '.', $name );
 
+		// @codingStandardsIgnoreLine
 		while ( $part = array_shift( $parts ) ) {
 			if ( ! isset( $value[ $part ] ) ) {
 				throw new InvalidArgumentException( $name );
@@ -98,6 +97,7 @@ class User {
 	/**
 	 * Sets the option value for the current user.
 	 *
+	 * @param  number $user_id
 	 * @param string $path
 	 * @param string $value
 	 *
@@ -105,10 +105,10 @@ class User {
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function set( $path, $value ) {
-		$options = $this->set_by_path( $this->all(), $value, $path );
+	public function set( $user_id, $path, $value ) {
+		$options = $this->set_by_path( $this->all( $user_id ), $value, $path );
 
-		update_user_meta( get_current_user_id(), 'wpgp_options', $options );
+		update_user_meta( $user_id, 'wpgp_options', $options );
 
 		return $options;
 	}
@@ -116,14 +116,15 @@ class User {
 	/**
 	 * Patch the options with the provided array.
 	 *
-	 * @param array $update
+	 * @param  number $user_id
+	 * @param array  $update
 	 *
 	 * @return array
 	 *
 	 * @throws InvalidArgumentException
 	 */
-	public function patch( array $update ) {
-		$options = $this->all();
+	public function patch( $user_id, array $update ) {
+		$options = $this->all( $user_id );
 
 		foreach ( $update as $key => $value ) {
 			if ( ! isset( $options[ $key ] ) ) {
@@ -147,7 +148,7 @@ class User {
 			$options[ $key ] = $updating;
 		}
 
-		update_user_meta( get_current_user_id(), 'wpgp_options', $options );
+		update_user_meta( $user_id, 'wpgp_options', $options );
 
 		return $options;
 	}

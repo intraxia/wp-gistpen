@@ -101,9 +101,9 @@ class Database implements HasActions {
 
 				switch ( true ) {
 					// Create a new state for blobs that have changed.
-					case $blob->filename !== $state->filename :
-					case $blob->code !== $state->code :
-					case $blob->language->slug !== $state->language->slug :
+					case $blob->filename !== $state->filename:
+					case $blob->code !== $state->code:
+					case $blob->language->slug !== $state->language->slug:
 						return $this->em->persist( $this->blob_to_state( $blob ) );
 					// Otherwise, keep it.
 					default:
@@ -152,7 +152,6 @@ class Database implements HasActions {
 				'order'       => 'ASC',
 				'orderby'     => 'date',
 			) );
-			;
 
 			/* Blob $blob */
 			foreach ( $blobs as $blob ) {
@@ -266,9 +265,9 @@ class Database implements HasActions {
 		$has_changed_blobs = $repo->blobs->filter( function ( Blob $blob ) use ( $commit ) {
 				return ! $commit->states->contains( function ( State $state ) use ( $blob ) {
 					if ( $state->blob_id === $blob->ID &&
-						 $blob->filename === $state->filename &&
-						 $blob->code === $state->code &&
-						 $blob->language->slug === $state->language->slug
+						$blob->filename === $state->filename &&
+						$blob->code === $state->code &&
+						$blob->language->slug === $state->language->slug
 					) {
 						return true;
 					}

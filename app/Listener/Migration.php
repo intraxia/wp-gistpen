@@ -65,9 +65,9 @@ class Migration implements HasActions {
 	 * @param string        $version
 	 */
 	public function __construct( EntityManager $em, $prefix, $slug, $version ) {
-		$this->em = $em;
-		$this->prefix = $prefix;
-		$this->slug = $slug;
+		$this->em      = $em;
+		$this->prefix  = $prefix;
+		$this->slug    = $slug;
 		$this->version = $version;
 	}
 
@@ -104,9 +104,9 @@ class Migration implements HasActions {
 	 * @since 1.0.0
 	 */
 	public function update_to_1_0_0() {
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-		$runs_table = $this->em->make_table_name( Klass::RUN );
+		$runs_table     = $this->em->make_table_name( Klass::RUN );
 		$messages_table = $this->em->make_table_name( Klass::MESSAGE );
 
 		dbDelta("
@@ -159,7 +159,7 @@ class Migration implements HasActions {
 	public function action_hooks() {
 		return array(
 			array(
-				'hook' => 'admin_init',
+				'hook'   => 'admin_init',
 				'method' => 'run',
 			),
 		);

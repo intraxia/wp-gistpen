@@ -55,9 +55,9 @@ class Button implements HasFilters {
 	 * @param string     $url
 	 */
 	public function __construct( Templating $tmpl, Params $params, $url ) {
-		$this->tmpl = $tmpl;
+		$this->tmpl   = $tmpl;
 		$this->params = $params;
-		$this->url = $url;
+		$this->url    = $url;
 
 		if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 			$this->min = '';
@@ -103,11 +103,11 @@ class Button implements HasFilters {
 	public function filter_hooks() {
 		$hooks = array(
 			array(
-				'hook' => 'mce_external_plugins',
+				'hook'   => 'mce_external_plugins',
 				'method' => 'mce_external_plugins',
 			),
 			array(
-				'hook' => 'mce_buttons',
+				'hook'   => 'mce_buttons',
 				'method' => 'mce_buttons',
 			),
 		);

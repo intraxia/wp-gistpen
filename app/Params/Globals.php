@@ -11,6 +11,37 @@ use Intraxia\Jaxion\Contract\Core\HasFilters;
 class Globals implements HasFilters {
 
 	/**
+	 * Valid themes.
+	 *
+	 * @var string[]
+	 */
+	public static $themes = [
+		'default',
+		'dark',
+		'funky',
+		'okaidia',
+		'tomorrow',
+		'twilight',
+		'coy',
+		'cb',
+		'ghcolors',
+		'pojoaque',
+		'xonokai',
+		'base16-ateliersulphurpool-light',
+		'hopscotch',
+		'atom-dark',
+		'duotone-dark',
+		'duotone-sea',
+		'duotone-space',
+		'duotone-earth',
+		'duotone-forest',
+		'duotone-light',
+		'vs',
+		'darcula',
+		'a11y-dark',
+	];
+
+	/**
 	 * App Config service.
 	 *
 	 * @var Config
@@ -34,7 +65,7 @@ class Globals implements HasFilters {
 	 * @return array
 	 */
 	public function apply_globals( $params ) {
-		$languages = $this->config->get_config_json( 'languages' );
+		$languages = $this->config->get_json_resource( 'languages' );
 
 		$params['globals'] = array(
 			'languages'  => $languages['list'],
@@ -87,6 +118,7 @@ class Globals implements HasFilters {
 		$params['globals']['demo'] = array(
 			'filename' => 'dummy.js',
 			'language' => 'javascript',
+			// @codingStandardsIgnoreLine
 			'code'     => file_get_contents( __DIR__ . '/demo-code' ),
 		);
 

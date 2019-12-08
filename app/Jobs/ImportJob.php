@@ -89,6 +89,7 @@ class ImportJob extends AbstractJob {
 		if ( ! ( $gist instanceof stdClass ) ) {
 			$this->log(
 				sprintf(
+					/* translators: %s: Item type. */
 					__( 'Expected to see Gist data, got %s instead.', 'wp-gistpen' ),
 					gettype( $gist )
 				),
@@ -110,7 +111,7 @@ class ImportJob extends AbstractJob {
 
 		$repos = $this->em->find_by( Klass::REPO, array(
 			'gist_id' => $gist->id,
-			'with' => array(
+			'with'    => array(
 				'blobs' => array(
 					'with' => 'language',
 				),
@@ -143,7 +144,8 @@ class ImportJob extends AbstractJob {
 		} else {
 			$this->log(
 				sprintf(
-					__( 'Created Repo %s for gist %s', 'wp-gistpen' ),
+					/* translators: 1: Repo ID. 2: Gist ID. */
+					__( 'Created Repo %1$s for gist %2$s', 'wp-gistpen' ),
 					$response->ID,
 					$gist->id
 				),
@@ -164,16 +166,16 @@ class ImportJob extends AbstractJob {
 	 */
 	private function update_repo_for_gist( Repo $repo, stdClass $gist ) {
 		$repo->unguard();
-		$repo->sync = 'on';
+		$repo->sync        = 'on';
 		$repo->description = $gist->description;
-		$repo->status = $gist->public === true ? 'publish' : 'private';
-		$repo->gist_id = $gist->id;
+		$repo->status      = true === $gist->public ? 'publish' : 'private';
+		$repo->gist_id     = $gist->id;
 
 		$files = (array) $gist->files;
 		$blobs = $repo->blobs->filter(function ( Blob $blob ) use ( &$files ) {
 			foreach ( $files as $name => $meta ) {
 				if ( $name === $blob->filename ) {
-					$blob->code = $meta->content;
+					$blob->code     = $meta->content;
 					$blob->language = $this->em
 						->find_by(
 							Klass::LANGUAGE,
@@ -200,7 +202,8 @@ class ImportJob extends AbstractJob {
 		if ( is_wp_error( $result ) ) {
 			$this->log(
 				sprintf(
-					__( 'Error saving repo for gist %s. Error: %s', 'wp-gistpen' ),
+					/* translators: 1: Gist ID. 2: Error message. */
+					__( 'Error saving repo for gist %1$s. Error: %2$s', 'wp-gistpen' ),
 					$gist->id,
 					$result->get_error_message()
 				),
@@ -209,7 +212,8 @@ class ImportJob extends AbstractJob {
 		} else {
 			$this->log(
 				sprintf(
-					__( 'Successfully imported gist %s from Gist. Updated with repo id %s.', 'wp-gistpen' ),
+					/* translators: 1: Gist ID. 2: Repo ID. */
+					__( 'Successfully imported gist %1$s from Gist. Updated with repo id %2$s.', 'wp-gistpen' ),
 					$gist->id,
 					$repo->ID
 				),
@@ -228,13 +232,13 @@ class ImportJob extends AbstractJob {
 	 * @return Repo
 	 */
 	private function map_gist_to_new_entity( stdClass $gist ) {
-		$repo = new Repo;
+		$repo = new Repo();
 
 		$repo->unguard();
-		$repo->sync = 'on';
+		$repo->sync        = 'on';
 		$repo->description = $gist->description;
-		$repo->status = $gist->public === true ? 'publish' : 'private';
-		$repo->gist_id = $gist->id;
+		$repo->status      = true === $gist->public ? 'publish' : 'private';
+		$repo->gist_id     = $gist->id;
 
 		$blobs = new Collection( Klass::BLOB, array() );
 
@@ -257,10 +261,10 @@ class ImportJob extends AbstractJob {
 	 * @return Blob
 	 */
 	private function map_name_and_meta_to_blob( $name, stdClass $meta ) {
-		$blob = new Blob;
+		$blob = new Blob();
 
 		$blob->filename = $name;
-		$blob->code = $meta->content;
+		$blob->code     = $meta->content;
 		$blob->language = new Language( array(
 			'slug' => $this->map_gist_language( $meta->language ),
 		) );
@@ -292,8 +296,11 @@ class ImportJob extends AbstractJob {
 	 */
 	private function log_response_error( stdClass $gist, WP_Error $response ) {
 		$this->log_response_error_impl(
-			__( 'Error fetching gist %s. Error: %s', 'wp-gistpen' ),
+			/* translators: 1: Gist ID. 2: Error message. */
+			__( 'Error fetching gist %1$s. Error: %2$s', 'wp-gistpen' ),
+			/* translators: %s: Gist ID. */
 			__( 'Will not reprocess gist %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
+			/* translators: %s: Gist ID. */
 			__( 'Will not reprocess gist %s. Client error. Please report to the developer.', 'wp-gistpen' ),
 			$gist->id,
 			$response

@@ -1,5 +1,20 @@
 /* eslint-env jest */
 import 'expect-puppeteer';
+import execa from 'execa';
+import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
+import { setBrowserViewport } from '@wordpress/e2e-test-utils';
+import { resetSite } from './helpers';
+
+const toMatchImageSnapshot = configureToMatchImageSnapshot({
+  // @TODO(mAAdhaTTah) high for CI – can we reduce?
+  failureThreshold: 0.06,
+  failureThresholdType: 'percent',
+  customDiffConfig: {
+    threshold: 0.15
+  }
+});
+
+expect.extend({ toMatchImageSnapshot });
 
 const { PUPPETEER_TIMEOUT } = process.env;
 
@@ -7,5 +22,12 @@ const { PUPPETEER_TIMEOUT } = process.env;
 jest.setTimeout(Number(PUPPETEER_TIMEOUT) || 100000);
 
 beforeAll(async () => {
-  await page.goto('http://localhost:8889');
+  await Promise.all([
+    (async () => {
+      await resetSite();
+      await execa.command(`npm run env cli rewrite structure /%POSTNAME%/`);
+    })(),
+    page.goto('http://localhost:8889'),
+    setBrowserViewport('large')
+  ]);
 });

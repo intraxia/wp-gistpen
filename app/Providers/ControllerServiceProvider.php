@@ -54,9 +54,5 @@ class ControllerServiceProvider implements ServiceProvider {
 		$container->share( array( 'controller.state' => 'Intraxia\Gistpen\Http\BlobController' ), function( Container $container ) {
 			return new StateController( $container->fetch( 'database' ) );
 		} );
-		// @TODO(mAAdhaTTah) move this to own provider?
-		$container->share( [ 'http.strict' => StrictParams::class ], function() {
-			return new StrictParams;
-		});
 	}
 }

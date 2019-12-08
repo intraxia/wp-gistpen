@@ -208,10 +208,11 @@ class Gist {
 		if ( ! $response->success ) {
 			// 4XX errors: client-side problems
 			if ( $response->status_code >= 400 && $response->status_code < 500 ) {
-				if ( $response->status_code === 401 ) {
+				if ( 401 === $response->status_code ) {
 					return new WP_Error(
 						'auth_error',
 						sprintf(
+							/* translators: %s: Request error. */
 							__( 'Authorization error. Message: %s', 'wp-gistpen' ),
 							$json->message
 						)
@@ -221,6 +222,7 @@ class Gist {
 				return new WP_Error(
 					'client_error',
 					sprintf(
+						/* translators: %s: Request error. */
 						__( 'Error sending request. Message: %s', 'wp-gistpen' ),
 						$json->message
 					)

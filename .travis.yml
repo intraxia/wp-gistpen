@@ -15,7 +15,9 @@ matrix:
         - name: "E2E"
           language: node_js
           node_js: 12
-          env: E2E=true
+          env:
+            E2E: true
+            SKIP_IMAGE_TESTS: true
 
 branches:
     only:

@@ -40,6 +40,7 @@ class WordPressPost extends AbstractRepository {
 			return new WP_Error(
 				'invalid_data',
 				sprintf(
+					/* translators: %s: Post ID. */
 					__( 'post id %s is invalid', 'wp-gistpen' ),
 					$id
 				)
@@ -50,6 +51,7 @@ class WordPressPost extends AbstractRepository {
 			return new WP_Error(
 				'invalid_data',
 				sprintf(
+					/* translators: %s: Post ID. */
 					__( 'post id %s is invalid', 'wp-gistpen' ),
 					$id
 				)
@@ -65,7 +67,7 @@ class WordPressPost extends AbstractRepository {
 			}
 
 			// @todo handle related keys specially for now.
-			if ( in_array( $key, array( 'blobs', 'language', 'states' ) ) ) {
+			if ( in_array( $key, array( 'blobs', 'language', 'states' ), true ) ) {
 				continue;
 			}
 
@@ -123,7 +125,7 @@ class WordPressPost extends AbstractRepository {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
-		if ( Klass::BLOB === $class  && isset( $params['repo_id'] ) ) {
+		if ( Klass::BLOB === $class && isset( $params['repo_id'] ) ) {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
@@ -134,7 +136,7 @@ class WordPressPost extends AbstractRepository {
 		if ( isset( $params['gist_id'] ) ) {
 			$query_args['meta_query'] = array(
 				array(
-					'key' => $this->make_meta_key( 'gist_id' ),
+					'key'   => $this->make_meta_key( 'gist_id' ),
 					'value' => $params['gist_id'],
 				),
 			);
@@ -172,7 +174,7 @@ class WordPressPost extends AbstractRepository {
 	 * @param array  $options
 	 */
 	public function create( $class, array $data = array(), array $options = array() ) {
-		$model = new $class;
+		$model = new $class();
 
 		/**
 		 * Set aside the `blobs` key for use.
@@ -285,7 +287,7 @@ class WordPressPost extends AbstractRepository {
 		$model->set_attribute( Model::OBJECT_KEY, get_post( $result ) );
 
 		foreach ( $model->get_table_attributes() as $key => $value ) {
-			if ( in_array( $key, array( 'blobs', 'language', 'repo' ) ) ) {
+			if ( in_array( $key, array( 'blobs', 'language', 'repo' ), true ) ) {
 				continue;
 			}
 
@@ -300,7 +302,7 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		// Handle blobs
-		if ( $model instanceof Repo ) {
+		if ( $model instanceof Repo && $model->blobs ) {
 			$deleted_blobs = $model->get_original_attribute( 'blobs' )
 				->filter( function ( Model $original_blob ) use ( &$model ) {
 					foreach ( $model->blobs as $blob ) {
@@ -328,6 +330,27 @@ class WordPressPost extends AbstractRepository {
 
 		if ( $model instanceof Blob || $model instanceof State ) {
 			if ( $model->language ) {
+				// @TODO(mAAdhaTTah) dedupe from create
+				if ( is_string( $model->language ) ) {
+					$language = $this->em->find_by( Language::class, [
+						'slug' => $model->language,
+					] );
+
+					if ( count( $language ) === 0 ) {
+						$language = $this->em->create( Language::class, [
+							'slug' => $model->language,
+						] );
+
+						if ( is_wp_error( $language ) ) {
+							return $language;
+						}
+					} else {
+						$language = $language->first();
+					}
+
+					$model->language = $language;
+				}
+
 				wp_set_object_terms(
 					$model->get_primary_id(),
 					$model->language->slug,

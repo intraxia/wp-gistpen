@@ -76,7 +76,7 @@ class MuffinStore implements StoreInterface {
 	 * @return bool
 	 */
 	public function isPending( $model ) {
-		return in_array( $model, $this->pending );
+		return in_array( $model, $this->pending, true );
 	}
 
 	/**
@@ -107,7 +107,7 @@ class MuffinStore implements StoreInterface {
 	 * @return bool
 	 */
 	public function isSaved( $model ) {
-		return in_array( $model, $this->saved );
+		return in_array( $model, $this->saved, true );
 	}
 
 	/**

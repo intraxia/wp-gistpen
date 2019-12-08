@@ -7,7 +7,7 @@
  */
 
 $plugin_root = dirname( dirname( __FILE__ ) );
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
+$_tests_dir  = getenv( 'WP_TESTS_DIR' );
 
 if ( ! $_tests_dir ) {
 	$_tests_dir = rtrim( sys_get_temp_dir(), '/\\' ) . '/wordpress-tests-lib';
@@ -43,13 +43,13 @@ $exists = file_exists( $languages_config );
 
 if ( ! $exists ) {
 	$dummy = array(
-		'list' => array(
+		'list'    => array(
 			'js'        => 'JavaScript',
 			'php'       => 'PHP',
 			'plaintext' => 'PlainText',
 		),
 		'aliases' => array(
-			'js'  => 'javascript',
+			'js' => 'javascript',
 		),
 	);
 
@@ -58,9 +58,10 @@ if ( ! $exists ) {
 
 function file_force_contents( $dir, $contents ) {
 	$parts = explode( '/', $dir );
-	$file = array_pop( $parts );
-	$dir = '';
+	$file  = array_pop( $parts );
+	$dir   = '';
 	foreach ( $parts as $part ) {
+		// @codingStandardsIgnoreLine
 		if ( ! is_dir( $dir .= "/$part" ) ) {
 			mkdir( $dir );
 		}

@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Gistpen\Test\Integration\Repo;
+namespace Intraxia\Gistpen\Test\Integration\Http\Repo;
 
 use WP_REST_Request;
 use Intraxia\Gistpen\Model\Blob;
@@ -10,7 +10,7 @@ use Intraxia\Gistpen\Test\Integration\TestCase;
 class CreateTest extends TestCase {
 	public function test_returns_error_with_invalid_blobs() {
 		$this->set_role( 'administrator' );
-		$repo = $this->fm->instance( Repo::class );
+		$repo    = $this->fm->instance( Repo::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
 			'blobs'       => 123,
@@ -22,9 +22,9 @@ class CreateTest extends TestCase {
 
 		$this->assertResponseStatus( $response, 400 );
 		$this->assertResponseData( $response, [
-			'code' => 'rest_invalid_param',
+			'code'    => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): blobs',
-			'data' => [
+			'data'    => [
 				'status' => 400,
 				'params' => [
 					'blobs' => 'Param "blob" must be an array.',
@@ -35,20 +35,20 @@ class CreateTest extends TestCase {
 
 	public function test_returns_error_with_missing_description() {
 		$this->set_role( 'administrator' );
-		$repo = $this->fm->instance( Repo::class );
+		$repo    = $this->fm->instance( Repo::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
-			'status'      => $repo->status,
-			'blobs'       => [],
+			'status' => $repo->status,
+			'blobs'  => [],
 		] );
 
 		$response = $this->server->dispatch( $request );
 
 		$this->assertResponseStatus( $response, 400 );
 		$this->assertResponseData( $response, [
-			'code' => 'rest_missing_callback_param',
+			'code'    => 'rest_missing_callback_param',
 			'message' => 'Missing parameter(s): description',
-			'data' => [
+			'data'    => [
 				'status' => 400,
 				'params' => [ 'description' ],
 			],
@@ -57,7 +57,7 @@ class CreateTest extends TestCase {
 
 	public function test_returns_error_with_invalid_description() {
 		$this->set_role( 'administrator' );
-		$repo = $this->fm->instance( Repo::class );
+		$repo    = $this->fm->instance( Repo::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
 			'description' => 473,
@@ -68,9 +68,9 @@ class CreateTest extends TestCase {
 
 		$this->assertResponseStatus( $response, 400 );
 		$this->assertResponseData( $response, [
-			'code' => 'rest_invalid_param',
+			'code'    => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): description',
-			'data' => [
+			'data'    => [
 				'status' => 400,
 				'params' => [
 					'description' => 'Param "description" must be a string.',
@@ -81,7 +81,7 @@ class CreateTest extends TestCase {
 
 	public function test_returns_error_with_extra_params() {
 		$this->set_role( 'administrator' );
-		$repo = $this->fm->instance( Repo::class );
+		$repo    = $this->fm->instance( Repo::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
 			'description' => $repo->description,
@@ -93,9 +93,9 @@ class CreateTest extends TestCase {
 
 		$this->assertResponseStatus( $response, 400 );
 		$this->assertResponseData( $response, [
-			'code' => 'rest_invalid_param',
+			'code'    => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): extra',
-			'data' => [
+			'data'    => [
 				'status' => 400,
 				'params' => [
 					'extra' => 'Param "extra" is not a valid request param.',
@@ -106,7 +106,7 @@ class CreateTest extends TestCase {
 
 	public function test_returns_combines_errors_of_extra_and_invalid_params() {
 		$this->set_role( 'administrator' );
-		$repo = $this->fm->instance( Repo::class );
+		$repo    = $this->fm->instance( Repo::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
 			'description' => 123,
@@ -118,13 +118,13 @@ class CreateTest extends TestCase {
 
 		$this->assertResponseStatus( $response, 400 );
 		$this->assertResponseData( $response, [
-			'code' => 'rest_invalid_param',
+			'code'    => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): description, extra',
-			'data' => [
+			'data'    => [
 				'status' => 400,
 				'params' => [
 					'description' => 'Param "description" must be a string.',
-					'extra' => 'Param "extra" is not a valid request param.',
+					'extra'       => 'Param "extra" is not a valid request param.',
 				],
 			],
 		] );
@@ -132,7 +132,7 @@ class CreateTest extends TestCase {
 
 	public function test_creates_repo_with_no_blobs() {
 		$this->set_role( 'administrator' );
-		$repo = $this->fm->instance( Repo::class );
+		$repo    = $this->fm->instance( Repo::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
 			'description' => $repo->description,
@@ -140,31 +140,31 @@ class CreateTest extends TestCase {
 		] );
 
 		$response = $this->server->dispatch( $request );
-		$repo = $this->app->make( 'database' )
+		$repo     = $this->app->make( 'database' )
 			->find( Repo::class, $response->get_data()['ID'] );
 		$this->assertResponseStatus( $response, 201 );
 		$this->assertResponseData( $response, [
-			'ID' => $repo->ID,
+			'ID'          => $repo->ID,
 			'description' => $repo->description,
-			'slug' => $repo->slug,
-			'status' => $repo->status,
-			'password' => $repo->password,
-			'gist_id' => $repo->gist_id,
-			'gist_url' => $repo->gist_url,
-			'sync' => $repo->sync,
-			'blobs' => [],
-			'rest_url' => $repo->rest_url,
+			'slug'        => $repo->slug,
+			'status'      => $repo->status,
+			'password'    => $repo->password,
+			'gist_id'     => $repo->gist_id,
+			'gist_url'    => $repo->gist_url,
+			'sync'        => $repo->sync,
+			'blobs'       => [],
+			'rest_url'    => $repo->rest_url,
 			'commits_url' => $repo->commits_url,
-			'html_url' => $repo->html_url,
-			'created_at' => $repo->created_at,
-			'updated_at' => $repo->updated_at,
+			'html_url'    => $repo->html_url,
+			'created_at'  => $repo->created_at,
+			'updated_at'  => $repo->updated_at,
 		] );
 	}
 
 	public function test_creates_repo_with_one_blob() {
 		$this->set_role( 'administrator' );
-		$repo = $this->fm->instance( Repo::class );
-		$blob = $this->fm->instance( Blob::class );
+		$repo    = $this->fm->instance( Repo::class );
+		$blob    = $this->fm->instance( Blob::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
 			'description' => $repo->description,
@@ -178,7 +178,7 @@ class CreateTest extends TestCase {
 		] );
 
 		$response = $this->server->dispatch( $request );
-		$repo = $this->app->make( 'database' )
+		$repo     = $this->app->make( 'database' )
 			->find( Repo::class, $response->get_data()['ID'], [
 				'with' => [
 					'blobs' => [
@@ -186,38 +186,38 @@ class CreateTest extends TestCase {
 					],
 				],
 			] );
-		$blob = $repo->blobs->first();
+		$blob     = $repo->blobs->first();
 		$this->assertResponseStatus( $response, 201 );
 		$this->assertResponseHeader( $response, 'Location', $repo->rest_url );
 		$this->assertResponseData( $response, [
-			'ID' => $repo->ID,
+			'ID'          => $repo->ID,
 			'description' => $repo->description,
-			'slug' => $repo->slug,
-			'status' => $repo->status,
-			'password' => $repo->password,
-			'gist_id' => $repo->gist_id,
-			'gist_url' => $repo->gist_url,
-			'sync' => $repo->sync,
-			'blobs' => [
+			'slug'        => $repo->slug,
+			'status'      => $repo->status,
+			'password'    => $repo->password,
+			'gist_id'     => $repo->gist_id,
+			'gist_url'    => $repo->gist_url,
+			'sync'        => $repo->sync,
+			'blobs'       => [
 				[
-					'ID' => $blob->ID,
-					'size' => $blob->size,
-					'raw_url' => $blob->raw_url,
+					'ID'       => $blob->ID,
+					'size'     => $blob->size,
+					'raw_url'  => $blob->raw_url,
 					'edit_url' => $blob->edit_url,
 					'filename' => $blob->filename,
-					'code' => $blob->code,
+					'code'     => $blob->code,
 					'language' => [
-							'ID' => $blob->language->ID,
-							'display_name' => $blob->language->display_name,
-							'slug' => $blob->language->slug,
+						'ID'           => $blob->language->ID,
+						'display_name' => $blob->language->display_name,
+						'slug'         => $blob->language->slug,
 					],
 				],
 			],
-			'rest_url' => $repo->rest_url,
+			'rest_url'    => $repo->rest_url,
 			'commits_url' => $repo->commits_url,
-			'html_url' => $repo->html_url,
-			'created_at' => $repo->created_at,
-			'updated_at' => $repo->updated_at,
+			'html_url'    => $repo->html_url,
+			'created_at'  => $repo->created_at,
+			'updated_at'  => $repo->updated_at,
 		] );
 	}
 }

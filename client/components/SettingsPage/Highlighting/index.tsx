@@ -54,6 +54,7 @@ const Highlighting: React.FC<Props> = ({
             <select
               name="wpgp-theme"
               id="wpgp-theme"
+              data-testid="prism-theme"
               onChange={onThemeChange}
               value={theme.selected}
             >
@@ -74,6 +75,7 @@ const Highlighting: React.FC<Props> = ({
               type="checkbox"
               name="wpgp-line-numbers"
               id="wpgp-line-numbers"
+              data-testid="prism-line-numbers"
               onChange={onLineNumbersChange}
               checked={lineNumbers}
             />
@@ -88,6 +90,7 @@ const Highlighting: React.FC<Props> = ({
               type="checkbox"
               name="wpgp-show-invisibles"
               id="wpgp-show-invisibles"
+              data-testid="prism-show-invisibles"
               onChange={onShowInvisiblesChange}
               checked={showInvisibles}
             />
@@ -95,16 +98,18 @@ const Highlighting: React.FC<Props> = ({
         </tr>
       </tbody>
     </table>
-    <Blob
-      {...{
-        blob: demo,
-        prism: {
-          'line-numbers': lineNumbers,
-          'show-invisibles': showInvisibles,
-          theme: theme.selected
-        }
-      }}
-    />
+    <div data-testid="prism-demo">
+      <Blob
+        {...{
+          blob: demo,
+          prism: {
+            'line-numbers': lineNumbers,
+            'show-invisibles': showInvisibles,
+            theme: theme.selected
+          }
+        }}
+      />
+    </div>
   </div>
 );
 

@@ -84,6 +84,7 @@ class ExportJob extends AbstractJob {
 		if ( ! ( $repo instanceof Repo ) ) {
 			$this->log(
 				sprintf(
+					/* translators: %s: Invalid type for repo. */
 					__( 'Expected to see instance of Repo, got %s instead.', 'wp-gistpen' ),
 					gettype( $repo )
 				),
@@ -110,7 +111,8 @@ class ExportJob extends AbstractJob {
 		if ( is_wp_error( $response ) ) {
 			$this->log(
 				sprintf(
-					__( 'Error fetching gist for Repo %s. Error: %s', 'wp-gistpen' ),
+					/* translators: 1: Repo ID. 2: Error message. */
+					__( 'Error fetching gist for Repo %1$s. Error: %2$s', 'wp-gistpen' ),
 					$repo->ID,
 					$response->get_error_message()
 				),
@@ -149,7 +151,8 @@ class ExportJob extends AbstractJob {
 		if ( is_wp_error( $repo ) ) {
 			$this->log(
 				sprintf(
-					__( 'Error saving gist_id for Repo %s. Error: %s', 'wp-gistpen' ),
+					/* translators: 1: Repo ID. 2: Error message. */
+					__( 'Error saving gist_id for Repo %1$s. Error: %2$s', 'wp-gistpen' ),
 					$repo->ID,
 					$repo->get_error_message()
 				),
@@ -161,7 +164,8 @@ class ExportJob extends AbstractJob {
 
 		$this->log(
 			sprintf(
-				__( 'Successfully exported Repo %s to Gist. Created with gist id %s.', 'wp-gistpen' ),
+				/* translators: 1: Repo ID. 2: Gist ID. */
+				__( 'Successfully exported Repo %1$s to Gist. Created with gist id %2$s.', 'wp-gistpen' ),
 				$repo->ID,
 				$repo->gist_id
 			),
@@ -184,6 +188,7 @@ class ExportJob extends AbstractJob {
 		if ( $this->entity_matches_gist( $entity, $gist ) ) {
 			$this->log(
 				sprintf(
+					/* translators: %s: Repo ID. */
 					__( 'Repo ID %s will not be exported. No changes.', 'wp-gistpen' ),
 					$repo->ID
 				)
@@ -203,7 +208,7 @@ class ExportJob extends AbstractJob {
 				'orderby'        => 'ID',
 			) );
 
-			$current_state = $states->first();
+			$current_state  = $states->first();
 			$previous_state = $states->last();
 
 			$file = array();
@@ -242,6 +247,7 @@ class ExportJob extends AbstractJob {
 
 		$this->log(
 			sprintf(
+				/* translators: %s: Repo ID. */
 				__( 'Successfully updated Repo ID %s', 'wp-gistpen' ),
 				$repo->ID
 			),
@@ -269,7 +275,7 @@ class ExportJob extends AbstractJob {
 
 		return array(
 			'description' => $repo->description,
-			'public'      => $repo->status === 'publish',
+			'public'      => 'publish' === $repo->status,
 			'files'       => $files,
 		);
 	}
@@ -328,8 +334,11 @@ class ExportJob extends AbstractJob {
 	 */
 	private function log_response_error( Repo $repo, WP_Error $response ) {
 		$this->log_response_error_impl(
-			__( 'Error creating new gist for Repo %s. Error: %s', 'wp-gistpen' ),
+			/* translators: 1: Repo ID. 2: Error message. */
+			__( 'Error creating new gist for Repo %1$s. Error: %2$s', 'wp-gistpen' ),
+			/* translators: %s: Repo ID. */
 			__( 'Will not reprocess Repo %s. Authorization failed. Check that your gist token is valid.', 'wp-gistpen' ),
+			/* translators: %s: Repo ID. */
 			__( 'Will not reprocess Repo %s. Client error. Please report to the developer.', 'wp-gistpen' ),
 			$repo->ID,
 			$response

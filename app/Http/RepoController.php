@@ -46,7 +46,7 @@ class RepoController {
 		$collection = $this->em->find_by(
 			Repo::class,
 			array(
-				'offset' => ($page - 1) * 10,
+				'offset' => ( $page - 1 ) * 10,
 				'with'   => array(
 					'blobs' => array(
 						'with' => 'language',

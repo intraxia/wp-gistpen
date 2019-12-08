@@ -25,7 +25,7 @@ class WordPressTerm extends AbstractRepository {
 	 */
 	public function find( $class, $id, array $params = array() ) {
 		$taxonomy = $class::get_taxonomy();
-		$term  = get_term( $id, $taxonomy );
+		$term     = get_term( $id, $taxonomy );
 
 		if ( ! $term ) {
 			$term = new WP_Error( 'db_error', __( 'Error getting term', 'wp-gistpen' ) );
@@ -54,7 +54,7 @@ class WordPressTerm extends AbstractRepository {
 	 * @param array  $params
 	 */
 	public function find_by( $class, array $params = array() ) {
-		$taxonomy = $class::get_taxonomy();
+		$taxonomy   = $class::get_taxonomy();
 		$collection = new Collection( $class );
 
 		$query = new WP_Term_Query( array_merge( $params, array(
@@ -84,7 +84,7 @@ class WordPressTerm extends AbstractRepository {
 	 * @return Model|WP_Error
 	 */
 	public function create( $class, array $data = array(), array $options = array() ) {
-		$model = new $class;
+		$model = new $class();
 
 		foreach ( $data as $key => $value ) {
 			$model->set_attribute( $key, $value );
@@ -118,7 +118,7 @@ class WordPressTerm extends AbstractRepository {
 	 * @return Model
 	 */
 	public function persist( Model $model ) {
-		$result  = $model->get_primary_id() ?
+		$result = $model->get_primary_id() ?
 			wp_update_term(
 				$model->get_primary_id(),
 				Language::get_taxonomy(),

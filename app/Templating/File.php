@@ -44,7 +44,7 @@ class File implements Templating {
 	 * @param string       $views
 	 */
 	public function __construct( Config $config, Translations $translations, $views ) {
-		$this->config     = $config;
+		$this->config       = $config;
 		$this->views        = $views;
 		$this->translations = $translations;
 	}
@@ -69,7 +69,7 @@ class File implements Templating {
 	 * @return string       Prism language slug.
 	 */
 	public function prism_slug( $slug ) {
-		$languages = $this->config->get_config_json( 'languages' );
+		$languages = $this->config->get_json_resource( 'languages' );
 		$map       = $languages['aliases'];
 
 		if ( array_key_exists( $slug, $map ) ) {

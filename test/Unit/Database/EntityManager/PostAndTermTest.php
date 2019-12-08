@@ -104,7 +104,7 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_return_repos_by_repo_id() {
 		$this->create_post_and_children( false );
-		$blobs = $this->em->find_by( Klass::BLOB , array(
+		$blobs = $this->em->find_by( Klass::BLOB, array(
 			'repo_id' => $this->repo->ID,
 		) );
 
@@ -241,7 +241,7 @@ class PostAndTermTest extends TestCase {
 				),
 			),
 		) );
-		$blob = new Blob;
+		$blob = new Blob();
 
 		$code     = $blob->code = 'some new php code';
 		$filename = $blob->filename = 'new-slug.php';
@@ -494,7 +494,7 @@ class PostAndTermTest extends TestCase {
 		);
 
 		foreach ( $state as $key => $value ) {
-			if ( 'language' === $key  ) {
+			if ( 'language' === $key ) {
 				$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model->language );
 
 				foreach ( $language as $key => $value ) {

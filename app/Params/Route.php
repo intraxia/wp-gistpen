@@ -17,11 +17,15 @@ class Route implements HasFilters {
 	 * @return array
 	 */
 	public function apply_settings_route( $params ) {
-		$params['route'] = array( 'name' => 'highlighting', 'parts' => $parts = new stdClass );
+		$params['route'] = array(
+			'name'  => 'highlighting',
+			'parts' => $parts = new stdClass(),
+		);
 
+		// @codingStandardsIgnoreStart
 		if ( ! empty( $_GET['wpgp_route'] ) ) {
 			$pieces = explode( '/', $_GET['wpgp_route'] );
-			$name = $params['route']['name'] = $pieces[0];
+			$name   = $params['route']['name'] = $pieces[0];
 
 			if ( 'jobs' === $name && isset( $pieces[1] ) ) {
 				$parts->job = $pieces[1];
@@ -31,6 +35,7 @@ class Route implements HasFilters {
 				}
 			}
 		}
+		// @codingStandardsIgnoreEnd
 
 		return $params;
 	}
@@ -43,11 +48,12 @@ class Route implements HasFilters {
 	 * @return array
 	 */
 	public function apply_edit_route( $params ) {
+		// @codingStandardsIgnoreStart
 		$params['route'] = array(
-			'name' => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor',
-			'parts' => new stdClass,
-
+			'name'  => ! empty( $_GET['wpgp_route'] ) ? $_GET['wpgp_route'] : 'editor',
+			'parts' => new stdClass(),
 		);
+		// @codingStandardsIgnoreEnd
 
 		return $params;
 	}

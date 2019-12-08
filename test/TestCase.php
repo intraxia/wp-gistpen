@@ -31,7 +31,7 @@ abstract class TestCase extends WP_UnitTestCase {
 		parent::setUp();
 
 		$this->app     = \Intraxia\Gistpen\container();
-		$this->factory = new Factory;
+		$this->factory = new Factory();
 		$this->fm      = new FactoryMuffin(
 			new MuffinStore( $this->app->get( 'database' ) )
 		);
@@ -41,7 +41,7 @@ abstract class TestCase extends WP_UnitTestCase {
 		);
 
 		$definitions = [
-			Repo::class => [
+			Repo::class     => [
 				'description' => Faker::sentence(),
 				'slug'        => Faker::slug(),
 				'status'      => Faker::randomElement( array_keys( get_post_statuses() ) ),
@@ -56,12 +56,13 @@ abstract class TestCase extends WP_UnitTestCase {
 				'updated_at'  => Faker::iso8601(),
 			],
 			Language::class => [
-				'slug'     => Faker::randomElement( $language_slugs ),
+				'slug' => Faker::randomElement( $language_slugs ),
 			],
-			Blob::class => [
+			Blob::class     => [
 				'filename' => function() {
 					$faker = Faker::instance()->getGenerator();
 
+					// @codingStandardsIgnoreLine
 					return $faker->word . '.' . $faker->fileExtension;
 				},
 				'code'     => Faker::text(),

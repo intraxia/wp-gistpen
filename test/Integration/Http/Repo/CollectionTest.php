@@ -1,5 +1,5 @@
 <?php
-namespace Intraxia\Gistpen\Test\Integration\Repo;
+namespace Intraxia\Gistpen\Test\Integration\Http\Repo;
 
 use WP_REST_Request;
 use Intraxia\Gistpen\Model\Blob;
@@ -18,7 +18,7 @@ class CollectionTest extends TestCase {
 	}
 
 	public function test_returns_published_repo() {
-		$repo = $this->fm->create( Repo::class, [ 'status' => 'publish' ] );
+		$repo    = $this->fm->create( Repo::class, [ 'status' => 'publish' ] );
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 
 		$response = $this->server->dispatch( $request );
@@ -26,26 +26,26 @@ class CollectionTest extends TestCase {
 		$this->assertResponseStatus( $response, 200 );
 		$this->assertResponseData( $response, [
 			[
-				'ID' => $repo->ID,
+				'ID'          => $repo->ID,
 				'description' => $repo->description,
-				'slug' => $repo->slug,
-				'status' => $repo->status,
-				'password' => $repo->password,
-				'gist_id' => $repo->gist_id,
-				'gist_url' => $repo->gist_url,
-				'sync' => $repo->sync,
-				'blobs' => $repo->blobs->serialize(),
-				'rest_url' => $repo->rest_url,
+				'slug'        => $repo->slug,
+				'status'      => $repo->status,
+				'password'    => $repo->password,
+				'gist_id'     => $repo->gist_id,
+				'gist_url'    => $repo->gist_url,
+				'sync'        => $repo->sync,
+				'blobs'       => $repo->blobs->serialize(),
+				'rest_url'    => $repo->rest_url,
 				'commits_url' => $repo->commits_url,
-				'html_url' => $repo->html_url,
-				'created_at' => $repo->created_at,
-				'updated_at' => $repo->updated_at,
+				'html_url'    => $repo->html_url,
+				'created_at'  => $repo->created_at,
+				'updated_at'  => $repo->updated_at,
 			],
 		] );
 	}
 
 	public function test_hide_unpublished_repo_in_db() {
-		$repo = $this->fm->create( Repo::class, [ 'status' => 'publish' ] );
+		$repo    = $this->fm->create( Repo::class, [ 'status' => 'publish' ] );
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 
 		$response = $this->server->dispatch( $request );
@@ -53,28 +53,28 @@ class CollectionTest extends TestCase {
 		$this->assertResponseStatus( $response, 200 );
 		$this->assertResponseData( $response, [
 			[
-				'ID' => $repo->ID,
+				'ID'          => $repo->ID,
 				'description' => $repo->description,
-				'slug' => $repo->slug,
-				'status' => $repo->status,
-				'password' => $repo->password,
-				'gist_id' => $repo->gist_id,
-				'gist_url' => $repo->gist_url,
-				'sync' => $repo->sync,
-				'blobs' => $repo->blobs->serialize(),
-				'rest_url' => $repo->rest_url,
+				'slug'        => $repo->slug,
+				'status'      => $repo->status,
+				'password'    => $repo->password,
+				'gist_id'     => $repo->gist_id,
+				'gist_url'    => $repo->gist_url,
+				'sync'        => $repo->sync,
+				'blobs'       => $repo->blobs->serialize(),
+				'rest_url'    => $repo->rest_url,
 				'commits_url' => $repo->commits_url,
-				'html_url' => $repo->html_url,
-				'created_at' => $repo->created_at,
-				'updated_at' => $repo->updated_at,
+				'html_url'    => $repo->html_url,
+				'created_at'  => $repo->created_at,
+				'updated_at'  => $repo->updated_at,
 			],
 		] );
 	}
 
 	public function test_returns_attached_blobs() {
-		$repo = $this->fm->create( Repo::class, [ 'status' => 'publish' ] );
-		$blob = $this->fm->create( Blob::class, [
-			'repo_id'  => $repo->ID,
+		$repo    = $this->fm->create( Repo::class, [ 'status' => 'publish' ] );
+		$blob    = $this->fm->create( Blob::class, [
+			'repo_id' => $repo->ID,
 		] );
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 
@@ -83,34 +83,34 @@ class CollectionTest extends TestCase {
 		$this->assertResponseStatus( $response, 200 );
 		$this->assertResponseData( $response, [
 			[
-				'ID' => $repo->ID,
+				'ID'          => $repo->ID,
 				'description' => $repo->description,
-				'slug' => $repo->slug,
-				'status' => $repo->status,
-				'password' => $repo->password,
-				'gist_id' => $repo->gist_id,
-				'gist_url' => $repo->gist_url,
-				'sync' => $repo->sync,
-				'blobs' => [
+				'slug'        => $repo->slug,
+				'status'      => $repo->status,
+				'password'    => $repo->password,
+				'gist_id'     => $repo->gist_id,
+				'gist_url'    => $repo->gist_url,
+				'sync'        => $repo->sync,
+				'blobs'       => [
 					[
-						'ID' => $blob->ID,
-						'size' => $blob->size,
-						'raw_url' => $blob->raw_url,
+						'ID'       => $blob->ID,
+						'size'     => $blob->size,
+						'raw_url'  => $blob->raw_url,
 						'edit_url' => $blob->edit_url,
 						'filename' => $blob->filename,
-						'code' => $blob->code,
+						'code'     => $blob->code,
 						'language' => [
-								'ID' => $blob->language->ID,
-								'display_name' => $blob->language->display_name,
-								'slug' => $blob->language->slug,
+							'ID'           => $blob->language->ID,
+							'display_name' => $blob->language->display_name,
+							'slug'         => $blob->language->slug,
 						],
 					],
 				],
-				'rest_url' => $repo->rest_url,
+				'rest_url'    => $repo->rest_url,
 				'commits_url' => $repo->commits_url,
-				'html_url' => $repo->html_url,
-				'created_at' => $repo->created_at,
-				'updated_at' => $repo->updated_at,
+				'html_url'    => $repo->html_url,
+				'created_at'  => $repo->created_at,
+				'updated_at'  => $repo->updated_at,
 			],
 		] );
 	}
@@ -122,9 +122,9 @@ class CollectionTest extends TestCase {
 
 		$this->assertResponseStatus( $response, 400 );
 		$this->assertResponseData( $response, [
-			'code' => 'rest_invalid_param',
+			'code'    => 'rest_invalid_param',
 			'message' => 'Invalid parameter(s): page',
-			'data' => [
+			'data'    => [
 				'status' => 400,
 				'params' => [
 					'page' => 'Param "page" is not a number, received xyz',
@@ -137,7 +137,7 @@ class CollectionTest extends TestCase {
 		$this->fm->seed( 15, Repo::class, [ 'status' => 'publish' ] );
 
 		// Do a basic request.
-		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
+		$request  = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 		$response = $this->server->dispatch( $request );
 
 		// Check we get the correct headers for the number of pages.

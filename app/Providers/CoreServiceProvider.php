@@ -19,7 +19,7 @@ class CoreServiceProvider implements ServiceProvider {
 	 */
 	public function register( Container $container ) {
 		$container->define( 'register.data', function () {
-			return new Data;
+			return new Data();
 		} );
 	}
 }

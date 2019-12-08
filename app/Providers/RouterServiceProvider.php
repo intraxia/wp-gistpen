@@ -7,7 +7,9 @@ use Intraxia\Jaxion\Http\Router;
 use Intraxia\Jaxion\Http\ServiceProvider;
 use Intraxia\Gistpen\Http\Filter\RepoCollection as RepoCollectionFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCreate as RepoCreateFilter;
+use Intraxia\Gistpen\Http\Filter\RepoUpdate as RepoUpdateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoResource as RepoResourceFilter;
+use Intraxia\Gistpen\Http\Filter\SitePatch as SitePatchFilter;
 
 /**
  * Class RouterServiceProvider
@@ -24,7 +26,7 @@ class RouterServiceProvider extends ServiceProvider {
 	protected function add_routes( Router $router ) {
 		$router->set_vendor( 'intraxia' )->set_version( 1 );
 		$controllers = array(
-		// @todo this sucks, pass controller into router? how does router access the controllers?
+			// @todo this sucks, pass controller into router? how does router access the controllers?
 			'search' => $this->container->fetch( 'controller.search' ),
 			'user'   => $this->container->fetch( 'controller.user' ),
 			'job'    => $this->container->fetch( 'controller.job' ),
@@ -40,10 +42,10 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos endpoints
 			 */
 			$router->get( '/repos', array( $controllers['repo'], 'index' ), array(
-				'filter' => new RepoCollectionFilter,
+				'filter' => new RepoCollectionFilter(),
 			) );
 			$router->post( '/repos', array( $controllers['repo'], 'create' ), array(
-				'filter' => new RepoCreateFilter,
+				'filter' => new RepoCreateFilter(),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
@@ -51,18 +53,18 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos/{repo_id} endpoints
 			 */
 			$router->get( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'view' ), [
-				'filter' => new RepoResourceFilter,
+				'filter' => new RepoResourceFilter(),
 			] );
 			$router->put( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'update' ), array(
-				'filter' => new RepoCreateFilter,
+				'filter' => new RepoUpdateFilter(),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 			$router->patch( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'apply' ), array(
-				'filter' => new RepoCreateFilter,
+				'filter' => new RepoUpdateFilter(),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 			$router->delete( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
-				'filter' => new RepoCreateFilter,
+				'filter' => new RepoCreateFilter(),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
@@ -102,17 +104,18 @@ class RouterServiceProvider extends ServiceProvider {
 				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
 			) );
 			$router->patch( '/me', array( $controllers['user'], 'update' ), array(
-				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
+				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
 			) );
 
 			/**
 			 * /site endpoint
 			 */
 			$router->get( '/site', array( $controllers['site'], 'view' ), array(
-				'guard' => new Guard( array( 'rule' => 'user_logged_in' ) ),
+				'guard' => new Guard( array( 'rule' => 'can_manage_options' ) ),
 			) );
 			$router->patch( '/site', array( $controllers['site'], 'update' ), array(
-				'guard'  => new Guard( array( 'rule' => 'user_logged_in' ) ),
+				'filter' => new SitePatchFilter(),
+				'guard'  => new Guard( array( 'rule' => 'can_manage_options' ) ),
 			) );
 
 			/**

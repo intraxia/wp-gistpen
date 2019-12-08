@@ -165,7 +165,7 @@ class DatabaseTest extends TestCase {
 			),
 		) );
 
-		$blob = new Blob;
+		$blob = new Blob();
 
 		$blob->unguard();
 		$blob->code     = 'some new php code';
@@ -274,7 +274,7 @@ class DatabaseTest extends TestCase {
 			),
 		) );
 
-		$blob = new Blob;
+		$blob = new Blob();
 
 		$blob->unguard();
 		$blob->code     = 'some new php code';
@@ -485,7 +485,7 @@ class DatabaseTest extends TestCase {
 			if ( $state->blob_id === $blob->ID ) {
 				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
 					'blob_id' => $blob->ID,
-					'with' => 'language',
+					'with'    => 'language',
 					// ID because the 2 commits are saving at the same time.
 					'orderby' => 'ID',
 					'order'   => 'DESC',

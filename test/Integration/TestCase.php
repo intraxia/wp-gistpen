@@ -16,7 +16,7 @@ abstract class TestCase extends BaseTestCase {
 		parent::setUp();
 
 		global $wp_rest_server;
-		$this->server = $wp_rest_server = new WP_REST_Server;
+		$this->server = $wp_rest_server = new WP_REST_Server();
 		do_action( 'plugins_loaded' );
 		do_action( 'rest_api_init' );
 

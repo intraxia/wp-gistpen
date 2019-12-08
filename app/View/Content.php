@@ -184,7 +184,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 			return '<div class="wp-gistpen-error">' . __( 'No Gistpen ID was provided.', 'wp-gistpen' ) . '</div>';
 		}
 
-		$args['id'] = (int) str_replace( '&quot;', '', $args['id'] );
+		$args['id']        = (int) str_replace( '&quot;', '', $args['id'] );
 		$args['highlight'] = str_replace( '&quot;', '', $args['highlight'] );
 
 		if ( Repo::get_post_type() !== get_post_type( $args['id'] ) ) {
