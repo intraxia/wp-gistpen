@@ -42,4 +42,4 @@ if ( ! $update_php->does_it_meet_required_php_version( PHP_VERSION ) ) {
 }
 
 // Boot!
-Intraxia\Gistpen\boot( Intraxia\Jaxion\Core\ConfigType::PLUGIN, __FILE__ );
+Intraxia\Gistpen\boot();

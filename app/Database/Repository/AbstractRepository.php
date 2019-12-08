@@ -3,9 +3,10 @@
 namespace Intraxia\Gistpen\Database\Repository;
 
 use Intraxia\Gistpen\Contract\Repository;
-use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\State;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
 use InvalidArgumentException;
@@ -69,7 +70,7 @@ abstract class AbstractRepository implements Repository {
 
 			switch ( $key ) {
 				case 'blobs':
-					$value = $this->em->find_by( \Intraxia\Gistpen\Database\EntityManager::BLOB_CLASS, array_merge( $params, array(
+					$value = $this->em->find_by( Blob::class, array_merge( $params, array(
 						'repo_id'     => $model->get_primary_id(),
 						'post_status' => 'any',
 						'order'       => 'ASC',
@@ -89,10 +90,10 @@ abstract class AbstractRepository implements Repository {
 					$value = new Language( array( Model::OBJECT_KEY => $term ) );
 					break;
 				case 'states':
-					$value = new Collection( \Intraxia\Gistpen\Database\EntityManager::STATE_CLASS );
+					$value = new Collection( State::class );
 
 					foreach ( $model->state_ids as $state_id ) {
-						$state = $this->find( \Intraxia\Gistpen\Database\EntityManager::STATE_CLASS, $state_id, $params );
+						$state = $this->find( State::class, $state_id, $params );
 
 						if ( ! is_wp_error( $state ) ) {
 							$value = $value->add( $state );

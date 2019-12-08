@@ -5,7 +5,6 @@ namespace Intraxia\Gistpen\Test\Unit\Database\EntityManager;
 use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
@@ -34,34 +33,34 @@ class PostAndTermTest extends TestCase {
 	public function test_should_return_error_for_non_gistpen_repo() {
 		$post_id = $this->factory->post->create();
 
-		$this->assertInstanceOf( 'WP_Error', $this->em->find( EntityManager::REPO_CLASS, $post_id ) );
+		$this->assertInstanceOf( 'WP_Error', $this->em->find( Repo::class, $post_id ) );
 	}
 
 	public function test_should_return_error_for_non_gistpen_blob() {
 		$post_id = $this->factory->post->create();
 
-		$this->assertInstanceOf( 'WP_Error', $this->em->find( EntityManager::BLOB_CLASS, $post_id ) );
+		$this->assertInstanceOf( 'WP_Error', $this->em->find( Blob::class, $post_id ) );
 	}
 
 	public function test_should_return_error_for_non_language_term() {
 		$term_id = $this->factory->term->create();
 
-		$this->assertInstanceOf( 'WP_Error', $this->em->find( EntityManager::LANGUAGE_CLASS, $term_id ) );
+		$this->assertInstanceOf( 'WP_Error', $this->em->find( Language::class, $term_id ) );
 	}
 
 	public function test_should_return_error_for_non_revision_commit() {
 		$post_id = $this->factory->post->create();
 
-		$this->assertInstanceOf( 'WP_Error', $this->em->find( EntityManager::COMMIT_CLASS, $post_id ) );
+		$this->assertInstanceOf( 'WP_Error', $this->em->find( Commit::class, $post_id ) );
 	}
 
 	public function test_should_return_full_repo() {
 		/** @var Repo $model */
-		$model = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$model = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => 'blobs',
 		) );
 
-		$this->assertInstanceOf( EntityManager::REPO_CLASS, $model );
+		$this->assertInstanceOf( Repo::class, $model );
 		$this->assertEquals( $this->repo, $model->get_underlying_wp_object() );
 		$this->assertCount( 3, $model->blobs );
 	}
@@ -69,34 +68,34 @@ class PostAndTermTest extends TestCase {
 	public function test_should_return_full_blob() {
 		foreach ( $this->blobs as $blob ) {
 			/** @var Blob $model */
-			$model = $this->em->find( EntityManager::BLOB_CLASS, $blob, array(
+			$model = $this->em->find( Blob::class, $blob, array(
 				'with' => 'language',
 			) );
 
-			$this->assertInstanceOf( EntityManager::BLOB_CLASS, $model );
+			$this->assertInstanceOf( Blob::class, $model );
 			$this->assertEquals( get_post( $blob ), $model->get_underlying_wp_object() );
-			$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model->language );
+			$this->assertInstanceOf( Language::class, $model->language );
 			$this->assertSame( 'php', $model->language->slug );
 		}
 	}
 
 	public function test_should_return_full_language() {
 		/** @var Language $model */
-		$model = $this->em->find( EntityManager::LANGUAGE_CLASS, $this->language->term_id );
+		$model = $this->em->find( Language::class, $this->language->term_id );
 
-		$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model );
+		$this->assertInstanceOf( Language::class, $model );
 		$this->assertSame( 'php', $model->slug );
 	}
 
 	public function test_should_return_all_repos_in_collection() {
-		$repos = $this->em->find_by( EntityManager::REPO_CLASS );
+		$repos = $this->em->find_by( Repo::class );
 
 		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $repos );
 		$this->assertCount( 1, $repos );
 	}
 
 	public function test_should_return_all_blobs_in_collection() {
-		$blobs = $this->em->find_by( EntityManager::BLOB_CLASS );
+		$blobs = $this->em->find_by( Blob::class );
 
 		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $blobs );
 		$this->assertCount( 3, $blobs );
@@ -104,7 +103,7 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_return_repos_by_repo_id() {
 		$this->create_post_and_children( false );
-		$blobs = $this->em->find_by( Klass::BLOB, array(
+		$blobs = $this->em->find_by( Blob::class, array(
 			'repo_id' => $this->repo->ID,
 		) );
 
@@ -112,7 +111,7 @@ class PostAndTermTest extends TestCase {
 	}
 
 	public function test_should_return_all_languages_in_collection() {
-		$languages = $this->em->find_by( EntityManager::LANGUAGE_CLASS );
+		$languages = $this->em->find_by( Language::class );
 
 		$this->assertInstanceOf( 'Intraxia\Jaxion\Axolotl\Collection', $languages );
 		$this->assertCount( 1, $languages );
@@ -140,8 +139,8 @@ class PostAndTermTest extends TestCase {
 		$data['blobs'][0]['language'] = $language;
 
 		/** @var Repo $model */
-		$model = $this->em->create( EntityManager::REPO_CLASS, $data );
-		$model = $this->em->find( EntityManager::REPO_CLASS, $model->ID, array(
+		$model = $this->em->create( Repo::class, $data );
+		$model = $this->em->find( Repo::class, $model->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -149,7 +148,7 @@ class PostAndTermTest extends TestCase {
 			),
 		) );
 
-		$this->assertInstanceOf( EntityManager::REPO_CLASS, $model );
+		$this->assertInstanceOf( Repo::class, $model );
 		$this->assertEquals(
 			get_post( $model->get_primary_id() ),
 			$model->get_underlying_wp_object()
@@ -175,7 +174,7 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_update_existing_repo() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -190,7 +189,7 @@ class PostAndTermTest extends TestCase {
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => 'blobs',
 		) );
 
@@ -202,7 +201,7 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_update_blob() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -214,11 +213,11 @@ class PostAndTermTest extends TestCase {
 
 		$code     = $blob->code = 'some new javascript code';
 		$filename = $blob->filename = 'new-slug.js';
-		$language = $blob->language = $this->em->create( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'js' ) );
+		$language = $blob->language = $this->em->create( Language::class, array( 'slug' => 'js' ) );
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -234,7 +233,7 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_add_new_blob() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -246,14 +245,14 @@ class PostAndTermTest extends TestCase {
 		$code     = $blob->code = 'some new php code';
 		$filename = $blob->filename = 'new-slug.php';
 		$language = $blob->language = $this->em
-			->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
+			->find_by( Language::class, array( 'slug' => 'php' ) )
 			->first();
 
 		$repo->blobs = $repo->blobs->add( $blob );
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -272,7 +271,7 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_remove_missing_blob() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -285,7 +284,7 @@ class PostAndTermTest extends TestCase {
 
 		$this->em->persist( $repo );
 
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -303,21 +302,21 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_update_language() {
 		/** @var Language $language */
-		$language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
+		$language = $this->em->find_by( Language::class, array( 'slug' => 'php' ) )
 			->at( 0 );
 
 		$slug = $language->slug = 'js';
 
 		$this->em->persist( $language );
 
-		$language = $this->em->find( EntityManager::LANGUAGE_CLASS, $language->get_primary_id() );
+		$language = $this->em->find( Language::class, $language->get_primary_id() );
 
 		$this->assertSame( $slug, $language->slug );
 	}
 
 	public function test_should_delete_repo_and_all_blobs() {
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => 'blobs',
 		) );
 
@@ -330,7 +329,7 @@ class PostAndTermTest extends TestCase {
 		}
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => 'blobs',
 		) );
 
@@ -339,21 +338,21 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_delete_blob() {
 		/** @var Blob $blob */
-		$blob = $this->em->find( EntityManager::BLOB_CLASS, $this->blobs[0] );
+		$blob = $this->em->find( Blob::class, $this->blobs[0] );
 
 		$this->em->delete( $blob, true );
 
 		$this->assertNull( get_post( ( $blob->ID ) ) );
 
 		/** @var Blob $blob */
-		$blob = $this->em->find( EntityManager::BLOB_CLASS, $this->blobs[0] );
+		$blob = $this->em->find( Blob::class, $this->blobs[0] );
 
 		$this->assertInstanceOf( 'WP_Error', $blob );
 	}
 
 	public function test_should_return_full_list_of_commits() {
 		/** @var Collection<Commit> $commits */
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $this->repo->ID,
 		) );
 
@@ -362,7 +361,7 @@ class PostAndTermTest extends TestCase {
 		/** @var Commit $commit */
 		$commit = $commits->at( 0 );
 
-		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertInstanceOf( Commit::class, $commit );
 		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
 		$this->assertSame( $this->commit->ID, $commit->ID );
 		$this->assertSame( $this->repo->ID, $commit->repo_id );
@@ -372,7 +371,7 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_return_full_list_of_commits_with_states() {
 		/** @var Collection<Commit> $commits */
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $this->repo->ID,
 			'with'    => 'states',
 		) );
@@ -382,7 +381,7 @@ class PostAndTermTest extends TestCase {
 		/** @var Commit $commit */
 		$commit = $commits->at( 0 );
 
-		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertInstanceOf( Commit::class, $commit );
 		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
 		$this->assertSame( $this->commit->ID, $commit->ID );
 		$this->assertSame( $this->repo->ID, $commit->repo_id );
@@ -390,15 +389,15 @@ class PostAndTermTest extends TestCase {
 		$this->assertCount( 3, $commit->states );
 
 		foreach ( $commit->states as $state ) {
-			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+			$this->assertInstanceOf( State::class, $state );
 		}
 	}
 
 	public function test_should_return_single_commit() {
 		/** @var Commit $commit */
-		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID );
+		$commit = $this->em->find( Commit::class, $this->commit->ID );
 
-		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertInstanceOf( Commit::class, $commit );
 		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
 		$this->assertSame( $this->commit->ID, $commit->ID );
 		$this->assertSame( $this->repo->ID, $commit->repo_id );
@@ -408,11 +407,11 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_return_single_commit_with_states() {
 		/** @var Commit $commit */
-		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID, array(
+		$commit = $this->em->find( Commit::class, $this->commit->ID, array(
 			'with' => 'states',
 		) );
 
-		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertInstanceOf( Commit::class, $commit );
 		$this->assertEquals( $this->commit, $commit->get_underlying_wp_object() );
 		$this->assertSame( $this->commit->ID, $commit->ID );
 		$this->assertSame( $this->repo->ID, $commit->repo_id );
@@ -420,13 +419,13 @@ class PostAndTermTest extends TestCase {
 		$this->assertCount( 3, $commit->states );
 
 		foreach ( $commit->states as $state ) {
-			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+			$this->assertInstanceOf( State::class, $state );
 		}
 	}
 
 	public function test_should_return_full_list_of_states() {
 		foreach ( $this->blobs as $idx => $blob_id ) {
-			$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+			$states = $this->em->find_by( State::class, array(
 				'blob_id' => $blob_id,
 			) );
 
@@ -434,7 +433,7 @@ class PostAndTermTest extends TestCase {
 
 			$state = $states->at( 0 );
 
-			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+			$this->assertInstanceOf( State::class, $state );
 			$this->assertEquals( get_post( $this->states[ $idx ] ), $state->get_underlying_wp_object() );
 			$this->assertSame( $blob_id, $state->blob_id );
 		}
@@ -442,9 +441,9 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_return_single_state() {
 		foreach ( $this->states as $idx => $state_id ) {
-			$state = $this->em->find( EntityManager::STATE_CLASS, $state_id );
+			$state = $this->em->find( State::class, $state_id );
 
-			$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+			$this->assertInstanceOf( State::class, $state );
 			$this->assertEquals( get_post( $state_id ), $state->get_underlying_wp_object() );
 			$this->assertSame( $this->blobs[ $idx ], $state->blob_id );
 		}
@@ -457,10 +456,10 @@ class PostAndTermTest extends TestCase {
 			'state_ids'   => $this->states,
 		);
 
-		$model = $this->em->create( EntityManager::COMMIT_CLASS, $commit );
-		$model = $this->em->find( EntityManager::COMMIT_CLASS, $model->ID );
+		$model = $this->em->create( Commit::class, $commit );
+		$model = $this->em->find( Commit::class, $model->ID );
 
-		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $model );
+		$this->assertInstanceOf( Commit::class, $model );
 		$this->assertEquals(
 			get_post( $model->get_primary_id() ),
 			$model->get_underlying_wp_object()
@@ -482,12 +481,12 @@ class PostAndTermTest extends TestCase {
 		);
 
 		/** @var State $model */
-		$model = $this->em->create( EntityManager::STATE_CLASS, $state );
-		$model = $this->em->find( EntityManager::STATE_CLASS, $model->ID, array(
+		$model = $this->em->create( State::class, $state );
+		$model = $this->em->find( State::class, $model->ID, array(
 			'with' => 'language',
 		) );
 
-		$this->assertInstanceOf( EntityManager::STATE_CLASS, $model );
+		$this->assertInstanceOf( State::class, $model );
 		$this->assertEquals(
 			get_post( $model->get_primary_id() ),
 			$model->get_underlying_wp_object()
@@ -495,7 +494,7 @@ class PostAndTermTest extends TestCase {
 
 		foreach ( $state as $key => $value ) {
 			if ( 'language' === $key ) {
-				$this->assertInstanceOf( EntityManager::LANGUAGE_CLASS, $model->language );
+				$this->assertInstanceOf( Language::class, $model->language );
 
 				foreach ( $language as $key => $value ) {
 					$this->assertSame( $value, $model->language->get_attribute( $key ) );
@@ -508,26 +507,26 @@ class PostAndTermTest extends TestCase {
 
 	public function test_should_update_commit() {
 		/** @var Commit $commit */
-		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $this->commit->ID );
+		$commit = $this->em->find( Commit::class, $this->commit->ID );
 
 		$description = $commit->description = 'New Description';
 
 		$commit = $this->em->persist( $commit );
 
-		$this->assertInstanceOf( EntityManager::COMMIT_CLASS, $commit );
+		$this->assertInstanceOf( Commit::class, $commit );
 		$this->assertSame( $description, $commit->description );
 	}
 
 	public function test_should_update_state() {
 		/** @var State $state */
-		$state = $this->em->find( EntityManager::STATE_CLASS, $this->states[0] );
+		$state = $this->em->find( State::class, $this->states[0] );
 
 		$filename = $state->filename = 'new-filename.php';
 		$code     = $state->code = 'Some new PHP code is here';
 
 		$state = $this->em->persist( $state );
 
-		$this->assertInstanceOf( EntityManager::STATE_CLASS, $state );
+		$this->assertInstanceOf( State::class, $state );
 		$this->assertSame( $filename, $state->filename );
 		$this->assertSame( $code, $state->code );
 	}

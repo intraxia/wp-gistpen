@@ -4,7 +4,6 @@ namespace Intraxia\Gistpen\Listener;
 use Intraxia\Gistpen\Database\EntityManager as EM;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Axolotl\Collection;
@@ -38,7 +37,7 @@ class Database implements HasActions {
 	 * @param Repo $repo
 	 */
 	public function add_commit( Repo $repo ) {
-		$commits = $this->em->find_by( EM::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => array(
 				'states' => array(
@@ -61,7 +60,7 @@ class Database implements HasActions {
 
 		// This is the first commit.
 		if ( $commits->count() === 0 ) {
-			$states = new Collection( EM::STATE_CLASS );
+			$states = new Collection( State::class );
 
 			foreach ( $repo->blobs as $blob ) {
 				$states = $states->add( $this->blob_to_state( $blob ) );
@@ -146,7 +145,7 @@ class Database implements HasActions {
 		$post = get_post( $post_id );
 
 		if ( 'gistpen' === $post->post_type && 0 === $post->post_parent ) {
-			$blobs = $this->em->find_by( Klass::BLOB, array(
+			$blobs = $this->em->find_by( \Intraxia\Gistpen\Model\Blob::class, array(
 				'post_parent' => $post_id,
 				'post_status' => 'any',
 				'order'       => 'ASC',

@@ -1,20 +1,20 @@
 <?php
-namespace Intraxia\Gistpen\Providers;
+namespace Intraxia\Gistpen\Register;
 
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Params\Repository as Params;
 use Intraxia\Gistpen\View\Edit;
 use Intraxia\Gistpen\View\Settings;
-use Intraxia\Jaxion\Assets\Register as Assets;
-use Intraxia\Jaxion\Assets\ServiceProvider;
+use Intraxia\Jaxion\Assets\Register;
+use Psr\Container\ContainerInterface as Container;
 
 /**
- * Class AssetServiceProvider
+ * Class Register\Assets.
  *
  * @package    Intraxia\Gistpen
- * @subpackage Providers
+ * @subpackage Register
  */
-class AssetsServiceProvider extends ServiceProvider {
+class Assets {
 
 	/**
 	 * Common dependencies
@@ -32,14 +32,30 @@ class AssetsServiceProvider extends ServiceProvider {
 	);
 
 	/**
+	 * Container service.
+	 *
+	 * @var Container
+	 */
+	protected $container;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Container $container
+	 */
+	public function __construct( Container $container ) {
+		$this->container = $container;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 *
-	 * @param Assets $assets
+	 * @param Register $assets
 	 */
-	protected function add_assets( Assets $assets ) {
+	public function add_assets( Register $assets ) {
 		$assets->set_debug( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
 
-		$slug = $this->container->fetch( 'slug' );
+		$slug = $this->container->get( 'slug' );
 
 		/**
 		 * Edit Assets
@@ -65,7 +81,7 @@ class AssetsServiceProvider extends ServiceProvider {
 				 *
 				 * @var Params
 				 */
-				$params = $this->container->fetch( 'params' );
+				$params = $this->container->get( Params::class );
 
 				return array(
 					'name' => '__GISTPEN_EDITOR__',
@@ -92,7 +108,7 @@ class AssetsServiceProvider extends ServiceProvider {
 				 *
 				 * @var Params
 				 */
-				$params = $this->container->fetch( 'params' );
+				$params = $this->container->get( Params::class );
 
 				return array(
 					'name' => '__GISTPEN_SETTINGS__',
@@ -132,7 +148,7 @@ class AssetsServiceProvider extends ServiceProvider {
 				 *
 				 * @var Params
 				 */
-				$params = $this->container->fetch( 'params' );
+				$params = $this->container->get( Params::class );
 
 				return array(
 					'name' => '__GISTPEN_CONTENT__',

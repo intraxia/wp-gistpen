@@ -19,7 +19,7 @@ class MigrationTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->migration = $this->app->make( 'listener.migration' );
+		$this->migration = $this->app->make( Migration::class );
 	}
 
 	public function test_should_update_to_1_0_0() {

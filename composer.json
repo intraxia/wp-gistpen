@@ -14,7 +14,7 @@
   "require": {
     "php": ">=5.6.0",
     "wpupdatephp/wp-update-php": "~1.0",
-    "intraxia/jaxion": "0.0.3",
+    "intraxia/jaxion": "0.0.4",
     "myclabs/php-enum": "^1.5",
     "php-di/php-di": "5.4.x"
   },

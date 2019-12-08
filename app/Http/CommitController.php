@@ -2,7 +2,7 @@
 
 namespace Intraxia\Gistpen\Http;
 
-use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -36,7 +36,7 @@ class CommitController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
-		$collection = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$collection = $this->em->find_by( \Intraxia\Gistpen\Model\Commit::class, array(
 			'repo_id' => $request->get_param( 'repo_id' ),
 			'with'    => array(
 				'states' => array(

@@ -22,11 +22,6 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressTerm;
  */
 class Language extends Model implements UsesWordPressTerm {
 	/**
-	 * Related Blob class for the Language.
-	 */
-	const BLOB_CLASS = 'Intraxia\Gistpen\Model\Blob';
-
-	/**
 	 * {@inheritDoc}
 	 *
 	 * @var array

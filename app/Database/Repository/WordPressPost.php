@@ -3,10 +3,8 @@
 namespace Intraxia\Gistpen\Database\Repository;
 
 use Exception;
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
@@ -14,6 +12,7 @@ use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Axolotl\PropertyDoesNotExistException;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
 use WP_Error;
 use WP_Query;
@@ -47,7 +46,7 @@ class WordPressPost extends AbstractRepository {
 			);
 		}
 
-		if ( EntityManager::BLOB_CLASS === $class && 0 === $post->post_parent ) {
+		if ( Blob::class === $class && 0 === $post->post_parent ) {
 			return new WP_Error(
 				'invalid_data',
 				sprintf(
@@ -63,7 +62,7 @@ class WordPressPost extends AbstractRepository {
 
 		foreach ( $model->get_table_keys() as $key ) {
 			if ( 'states' === $key ) {
-				$table[ $key ] = new Collection( EntityManager::STATE_CLASS );
+				$table[ $key ] = new Collection( State::class );
 			}
 
 			// @todo handle related keys specially for now.
@@ -111,7 +110,7 @@ class WordPressPost extends AbstractRepository {
 		$post_type     = $class::get_post_type();
 		$parent_search = 'post_parent__in';
 
-		if ( EntityManager::BLOB_CLASS === $class ) {
+		if ( Blob::class === $class ) {
 			$parent_search = 'post_parent__not_in';
 		}
 
@@ -121,15 +120,15 @@ class WordPressPost extends AbstractRepository {
 			'fields'       => 'ids',
 		);
 
-		if ( EntityManager::COMMIT_CLASS === $class ) {
+		if ( Commit::class === $class ) {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
-		if ( Klass::BLOB === $class && isset( $params['repo_id'] ) ) {
+		if ( \Intraxia\Gistpen\Model\Blob::class === $class && isset( $params['repo_id'] ) ) {
 			$query_args['post_parent'] = $params['repo_id'];
 		}
 
-		if ( EntityManager::STATE_CLASS === $class ) {
+		if ( State::class === $class ) {
 			$query_args['post_parent'] = $params['blob_id'];
 		}
 
@@ -230,13 +229,13 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		if ( isset( $blobs_data ) ) {
-			$blobs = new Collection( EntityManager::BLOB_CLASS );
+			$blobs = new Collection( Blob::class );
 
 			foreach ( $blobs_data as $blob_data ) {
 				$blob_data['repo_id'] = $model->get_primary_id();
 				$blob_data['status']  = $model->get_attribute( 'status' );
 
-				$blob = $this->em->create( EntityManager::BLOB_CLASS, $blob_data, array(
+				$blob = $this->em->create( Blob::class, $blob_data, array(
 					'unguarded' => true,
 				) );
 
@@ -249,10 +248,10 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		if ( isset( $language_data ) ) {
-			$language = $this->em->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => $language_data['slug'] ) );
+			$language = $this->em->find_by( Language::class, array( 'slug' => $language_data['slug'] ) );
 
 			if ( count( $language ) === 0 ) {
-				$language = $this->em->create( EntityManager::LANGUAGE_CLASS, $language_data );
+				$language = $this->em->create( Language::class, $language_data );
 
 				if ( is_wp_error( $language ) ) {
 					return $language;
@@ -361,7 +360,7 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		if ( $model instanceof Commit && $model->states ) {
-			$states = new Collection( EntityManager::STATE_CLASS );
+			$states = new Collection( State::class );
 
 			foreach ( $model->states as $state ) {
 				$state = $this->em->persist( $state );

@@ -41,10 +41,10 @@ class CreateTest extends TestCase {
 	}
 
 	public function test_should_output_error_on_create_error() {
-		$this->app->set( EM::class, $this->em = \Mockery::mock( EM::class ) );
+		$this->app->set( EM::class, $em = \Mockery::mock( EM::class ) );
 		$this->command = $this->app->make( RepoCommand::class );
 
-		$this->em->shouldReceive( 'create' )->once()->andReturn( $error = new \WP_Error() );
+		$em->shouldReceive( 'create' )->once()->andReturn( $error = new \WP_Error() );
 		$this->cli->shouldReceive( 'error' )->once()->andReturn( $error );
 
 		$result = $this->command->create( [], [] );

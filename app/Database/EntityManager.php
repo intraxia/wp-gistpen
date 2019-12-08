@@ -6,7 +6,6 @@ use Intraxia\Gistpen\Contract\Repository;
 use Intraxia\Gistpen\Database\Repository\WordPressCustomTable;
 use Intraxia\Gistpen\Database\Repository\WordPressPost;
 use Intraxia\Gistpen\Database\Repository\WordPressTerm;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
@@ -18,31 +17,6 @@ use WP_Error;
  * EntityManager class.
  */
 class EntityManager implements EntityManagerContract {
-	/**
-	 * Model class for the Repo.
-	 */
-	const REPO_CLASS = 'Intraxia\Gistpen\Model\Repo';
-
-	/**
-	 * Model class for the Repo.
-	 */
-	const BLOB_CLASS = 'Intraxia\Gistpen\Model\Blob';
-
-	/**
-	 * Model class for the Repo.
-	 */
-	const LANGUAGE_CLASS = 'Intraxia\Gistpen\Model\Language';
-
-	/**
-	 * Model class for the Commit.
-	 */
-	const COMMIT_CLASS = 'Intraxia\Gistpen\Model\Commit';
-
-	/**
-	 * Model class for the Commit.
-	 */
-	const STATE_CLASS = 'Intraxia\Gistpen\Model\State';
-
 	/**
 	 * Meta prefix.
 	 *
@@ -152,7 +126,7 @@ class EntityManager implements EntityManagerContract {
 				}
 
 				if ( $model instanceof Repo ) {
-					$model = $this->find( self::REPO_CLASS, $model->ID, array(
+					$model = $this->find( Repo::class, $model->ID, array(
 						'with' => array(
 							'blobs' => array(
 								'with' => 'language',
@@ -186,7 +160,7 @@ class EntityManager implements EntityManagerContract {
 				}
 
 				if ( $model instanceof Repo ) {
-					$model = $this->find( self::REPO_CLASS, $model->ID, array(
+					$model = $this->find( Repo::class, $model->ID, array(
 						'with' => array(
 							'blobs' => array(
 								'with' => 'language',

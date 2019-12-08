@@ -1,51 +1,68 @@
 <?php
-namespace Intraxia\Gistpen\Providers;
+namespace Intraxia\Gistpen\Register;
 
 use Intraxia\Jaxion\Http\Filter;
 use Intraxia\Jaxion\Http\Guard;
-use Intraxia\Jaxion\Http\Router;
-use Intraxia\Jaxion\Http\ServiceProvider;
+use Intraxia\Jaxion\Http\Router as CoreRouter;
 use Intraxia\Gistpen\Http\Filter\RepoCollection as RepoCollectionFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCreate as RepoCreateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoUpdate as RepoUpdateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoResource as RepoResourceFilter;
 use Intraxia\Gistpen\Http\Filter\SitePatch as SitePatchFilter;
+use Psr\Container\ContainerInterface as Container;
 
 /**
- * Class RouterServiceProvider
+ * Class Router
  *
  * @package Intraxia\Gistpen
- * @subpackage Providers
+ * @subpackage Register
  */
-class RouterServiceProvider extends ServiceProvider {
+class Router {
+
+	/**
+	 * Container service.
+	 *
+	 * @var Container
+	 */
+	protected $container;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Container $container
+	 */
+	public function __construct( Container $container ) {
+		$this->container = $container;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 *
-	 * @param Router $router
+	 * @param CoreRouter $router
 	 */
-	protected function add_routes( Router $router ) {
+	public function add_routes( CoreRouter $router ) {
 		$router->set_vendor( 'intraxia' )->set_version( 1 );
 		$controllers = array(
 			// @todo this sucks, pass controller into router? how does router access the controllers?
-			'search' => $this->container->fetch( 'controller.search' ),
-			'user'   => $this->container->fetch( 'controller.user' ),
-			'job'    => $this->container->fetch( 'controller.job' ),
-			'repo'   => $this->container->fetch( 'controller.repo' ),
-			'blob'   => $this->container->fetch( 'controller.blob' ),
-			'commit' => $this->container->fetch( 'controller.commit' ),
-			'state'  => $this->container->fetch( 'controller.state' ),
-			'site'   => $this->container->fetch( 'controller.site' ),
+			'search' => $this->container->get( \Intraxia\Gistpen\Http\SearchController::class ),
+			'user'   => $this->container->get( \Intraxia\Gistpen\Http\UserController::class ),
+			'job'    => $this->container->get( \Intraxia\Gistpen\Http\JobsController::class ),
+			'repo'   => $this->container->get( \Intraxia\Gistpen\Http\RepoController::class ),
+			'blob'   => $this->container->get( \Intraxia\Gistpen\Http\BlobController::class ),
+			'commit' => $this->container->get( \Intraxia\Gistpen\Http\CommitController::class ),
+			'state'  => $this->container->get( \Intraxia\Gistpen\Http\StateController::class ),
+			'site'   => $this->container->get( \Intraxia\Gistpen\Http\SiteController::class ),
 		);
 
-		$router->group( array( 'prefix' => '/gistpen' ), function ( Router $router ) use ( $controllers ) {
+		$router->group( array( 'prefix' => '/gistpen' ), function ( CoreRouter $router ) use ( $controllers ) {
 			/**
 			 * /repos endpoints
 			 */
 			$router->get( '/repos', array( $controllers['repo'], 'index' ), array(
-				'filter' => new RepoCollectionFilter(),
+				'filter' => $this->container->get( RepoCollectionFilter::class ),
 			) );
 			$router->post( '/repos', array( $controllers['repo'], 'create' ), array(
-				'filter' => new RepoCreateFilter(),
+				'filter' => $this->container->get( RepoCreateFilter::class ),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
@@ -53,18 +70,18 @@ class RouterServiceProvider extends ServiceProvider {
 			 * /repos/{repo_id} endpoints
 			 */
 			$router->get( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'view' ), [
-				'filter' => new RepoResourceFilter(),
+				'filter' => $this->container->get( RepoResourceFilter::class ),
 			] );
 			$router->put( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'update' ), array(
-				'filter' => new RepoUpdateFilter(),
+				'filter' => $this->container->get( RepoUpdateFilter::class ),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 			$router->patch( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'apply' ), array(
-				'filter' => new RepoUpdateFilter(),
+				'filter' => $this->container->get( RepoUpdateFilter::class ),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 			$router->delete( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
-				'filter' => new RepoCreateFilter(),
+				'filter' => $this->container->get( RepoCreateFilter::class ),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
@@ -114,7 +131,7 @@ class RouterServiceProvider extends ServiceProvider {
 				'guard' => new Guard( array( 'rule' => 'can_manage_options' ) ),
 			) );
 			$router->patch( '/site', array( $controllers['site'], 'update' ), array(
-				'filter' => new SitePatchFilter(),
+				'filter' => $this->container->get( SitePatchFilter::class ),
 				'guard'  => new Guard( array( 'rule' => 'can_manage_options' ) ),
 			) );
 

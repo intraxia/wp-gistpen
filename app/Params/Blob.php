@@ -1,9 +1,9 @@
 <?php
 namespace Intraxia\Gistpen\Params;
 
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob as BlobModel;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 
 /**
  * [Blob description]
@@ -42,7 +42,7 @@ class Blob implements HasFilters {
 		 *
 		 * @var BlobModel
 		 */
-		$blob = $this->em->find( EntityManager::BLOB_CLASS, get_the_ID(), array(
+		$blob = $this->em->find( BlobModel::class, get_the_ID(), array(
 			'with' => 'language',
 		) );
 

@@ -2,9 +2,9 @@
 
 namespace Intraxia\Gistpen\Http;
 
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\GuardedPropertyException;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
