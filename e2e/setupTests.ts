@@ -3,6 +3,7 @@ import 'expect-puppeteer';
 import execa from 'execa';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
 import { setBrowserViewport } from '@wordpress/e2e-test-utils';
+import { resetSite } from './helpers';
 
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
   // @TODO(mAAdhaTTah) high for CI – can we reduce?
@@ -22,8 +23,11 @@ jest.setTimeout(Number(PUPPETEER_TIMEOUT) || 100000);
 
 beforeAll(async () => {
   await Promise.all([
+    (async () => {
+      await resetSite();
+      await execa.command(`npm run env cli rewrite structure /%POSTNAME%/`);
+    })(),
     page.goto('http://localhost:8889'),
-    execa.command(`npm run env cli rewrite structure /%POSTNAME%/`),
     setBrowserViewport('large')
   ]);
 });

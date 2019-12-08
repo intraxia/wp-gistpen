@@ -39,6 +39,7 @@ cache
 lib
 node_modules
 bower_components
+__diff_output__
 
 # Generated files
 assets/

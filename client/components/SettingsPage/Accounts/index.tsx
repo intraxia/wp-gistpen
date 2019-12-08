@@ -28,7 +28,7 @@ const Accounts: React.FC<Props> = ({ onChange, token }) => (
               className="regular-text"
               onChange={onChange}
               value={token}
-              data-testid="token-input"
+              data-testid="gist-token"
             />
             <p className="description" id="wpgp-token-description">
               Create a new{' '}

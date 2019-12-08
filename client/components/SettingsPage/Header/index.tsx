@@ -19,6 +19,7 @@ const Header: React.FC<Props> = ({ route, loading }) => (
           'nav-tab-active': route === 'highlighting'
         })}
         href={link('wpgp_route', 'highlighting')}
+        data-testid="link-highlighting"
       >
         Highlighting
       </a>
@@ -28,6 +29,7 @@ const Header: React.FC<Props> = ({ route, loading }) => (
           'nav-tab-active': route === 'accounts'
         })}
         href={link('wpgp_route', 'accounts')}
+        data-testid="link-accounts"
       >
         Accounts
       </a>
@@ -37,6 +39,7 @@ const Header: React.FC<Props> = ({ route, loading }) => (
           'nav-tab-active': route === 'jobs'
         })}
         href={link('wpgp_route', 'jobs')}
+        data-testid="link-jobs"
       >
         Jobs
       </a>
