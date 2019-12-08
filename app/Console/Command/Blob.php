@@ -19,6 +19,22 @@ use function \WP_CLI\Utils\get_flag_value;
 class Blob extends Base {
 
 	/**
+	 * EntityManager service.
+	 *
+	 * @var EntityManager
+	 */
+	protected $em;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param EntityManager $em
+	 */
+	public function __construct( EntityManager $em ) {
+		$this->em = $em;
+	}
+
+	/**
 	 * Creates a new blob.
 	 *
 	 * ## OPTIONS

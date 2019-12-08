@@ -18,6 +18,22 @@ use function \WP_CLI\Utils\get_flag_value;
 class Repo extends Base {
 
 	/**
+	 * EntityManager service.
+	 *
+	 * @var EntityManager
+	 */
+	protected $em;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param EntityManager $em
+	 */
+	public function __construct( EntityManager $em ) {
+		$this->em = $em;
+	}
+
+	/**
 	 * Creates a new repo.
 	 *
 	 * ## OPTIONS

@@ -25,7 +25,8 @@
     "intraxia/codestyle": "0.0.2",
     "league/factory-muffin-faker": "^2.1",
     "league/factory-muffin": "^3.0",
-    "wp-cli/wp-cli": "^2.4"
+    "wp-cli/wp-cli": "^2.4",
+    "wp-cli/entity-command": "^2.0"
   },
   "autoload": {
     "psr-4": {

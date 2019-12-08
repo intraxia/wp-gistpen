@@ -2,27 +2,12 @@
 namespace Intraxia\Gistpen\Console\Command;
 
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
+use WP_CLI;
 
 /**
  * Base command with shared functionality for commands.
  */
 abstract class Base {
-
-	/**
-	 * EntityManager service.
-	 *
-	 * @var EntityManager
-	 */
-	protected $em;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param EntityManager $em
-	 */
-	public function __construct( EntityManager $em ) {
-		$this->em = $em;
-	}
 
 	/**
 	 * Read post content from file or STDIN.
@@ -40,5 +25,37 @@ abstract class Base {
 			$readfile = 'php://stdin';
 		}
 		return file_get_contents( $readfile ); // phpcs:ignore
+	}
+
+	/**
+	 * Get the patch result from the input arguments.
+	 *
+	 * @param  array $args
+	 * @param  array $assoc_args
+	 * @param  array $defaults
+	 * @return array
+	 */
+	protected function get_patch_from_args( $args, $assoc_args, $defaults ) {
+		if ( ! isset( $args[0] ) ) {
+			$value = WP_CLI::get_value_from_arg_or_stdin( $args, -1 );
+			$patch = WP_CLI::read_value( $value, $assoc_args );
+		} else {
+			$key    = $args[0];
+			$subkey = null;
+
+			if ( strpos( $key, '.' ) !== false ) {
+				list( $key, $subkey ) = explode( '.', $args[0] );
+			}
+
+			if ( array_key_exists( $key, $defaults ) ) {
+				$value = WP_CLI::get_value_from_arg_or_stdin( $args, 1 );
+				$value = WP_CLI::read_value( $value, $assoc_args );
+				$patch = [ $key => null === $subkey ? $value : [ $subkey => $value ] ];
+			} else {
+				$patch = WP_CLI::read_value( $args[0], $assoc_args );
+			}
+		}
+
+		return $patch;
 	}
 }

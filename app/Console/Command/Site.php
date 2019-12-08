@@ -17,7 +17,7 @@ use WP_CLI\Entity\Utils as EntityUtils;
  *     $ wp gistpen site update prism.theme xonokai
  *     Success: Updated prism.theme to xonokai.
  */
-class Site {
+class Site extends Base {
 
 	/**
 	 * Site options service.
@@ -143,27 +143,7 @@ class Site {
 	 * @param  array $assoc_args
 	 */
 	public function patch( $args, $assoc_args ) {
-		if ( ! isset( $args[0] ) ) {
-			$value = WP_CLI::get_value_from_arg_or_stdin( $args, -1 );
-			$patch = WP_CLI::read_value( $value, $assoc_args );
-		} else {
-			$key    = $args[0];
-			$subkey = null;
-
-			if ( strpos( $key, '.' ) !== false ) {
-				list( $key, $subkey ) = explode( '.', $args[0] );
-			}
-
-			if ( array_key_exists( $key, SiteOptions::$defaults ) ) {
-				$value = WP_CLI::get_value_from_arg_or_stdin( $args, 1 );
-				$value = WP_CLI::read_value( $value, $assoc_args );
-				$patch = [ $key => null === $subkey ? $value : [ $subkey => $value ] ];
-			} else {
-				$patch = WP_CLI::read_value( $args[0], $assoc_args );
-			}
-		}
-
-		$this->options->patch( $patch );
+		$this->options->patch( $this->get_patch_from_args( $args, $assoc_args, SiteOptions::$defaults ) );
 
 		WP_CLI::success( __( 'Updated site options.', 'wp-gispen' ) );
 	}
