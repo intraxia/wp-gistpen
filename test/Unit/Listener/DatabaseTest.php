@@ -2,13 +2,14 @@
 
 namespace Intraxia\Jaxion\Test\Unit\Listener;
 
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Listener\Database;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Commit;
+use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
 use Intraxia\Gistpen\Test\Unit\TestCase;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Mockery\Mock;
 
 class DatabaseTest extends TestCase {
@@ -33,14 +34,14 @@ class DatabaseTest extends TestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->em       = $this->app->make( 'database' );
-		$this->database = $this->app->make( 'listener.database' );
+		$this->em       = $this->app->make( EntityManager::class );
+		$this->database = $this->app->make( Database::class );
 	}
 
 	public function test_should_save_when_no_commits_saved() {
 		$this->create_post_and_children( false );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $this->repo->ID,
 			'with'    => 'states',
 		) );
@@ -48,7 +49,7 @@ class DatabaseTest extends TestCase {
 		$this->assertCount( 0, $commits );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language,',
@@ -58,7 +59,7 @@ class DatabaseTest extends TestCase {
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 		) );
@@ -78,7 +79,7 @@ class DatabaseTest extends TestCase {
 		/** @var State $state */
 		foreach ( $commit->states as $state ) {
 			/** @var Blob $blob */
-			$blob = $this->em->find( EntityManager::BLOB_CLASS, $state->blob_id );
+			$blob = $this->em->find( Blob::class, $state->blob_id );
 
 			$this->assertEquals( $blob->ID, $state->blob_id );
 			$this->assertEquals( $blob->filename, $state->filename );
@@ -91,21 +92,21 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo             = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo             = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
 				),
 			),
 		) );
-		$existing_commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$existing_commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 		) );
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 		) );
@@ -117,7 +118,7 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -129,7 +130,7 @@ class DatabaseTest extends TestCase {
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 			'orderby' => 'ID',
@@ -145,7 +146,7 @@ class DatabaseTest extends TestCase {
 		$this->assertEquals( $repo->description, $commit->description );
 
 		foreach ( $repo->blobs as $blob ) {
-			$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+			$states = $this->em->find_by( State::class, array(
 				'blob_id' => $blob->ID,
 			) );
 
@@ -157,7 +158,7 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -171,7 +172,7 @@ class DatabaseTest extends TestCase {
 		$blob->code     = 'some new php code';
 		$blob->filename = 'new-slug.php';
 		$blob->language = $this->em
-			->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
+			->find_by( Language::class, array( 'slug' => 'php' ) )
 			->first();
 		$blob->repo_id  = $repo->ID;
 		$blob->reguard();
@@ -180,7 +181,7 @@ class DatabaseTest extends TestCase {
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 			'orderby' => 'ID',
@@ -194,7 +195,7 @@ class DatabaseTest extends TestCase {
 
 		$this->assertCount( 4, $commit->states );
 
-		$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+		$states = $this->em->find_by( State::class, array(
 			'blob_id' => $blob->ID,
 		) );
 
@@ -208,7 +209,7 @@ class DatabaseTest extends TestCase {
 		$this->assertEquals( $blob->language, $state->language );
 
 		foreach ( $repo->blobs->remove_at( 3 ) as $blob ) {
-			$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+			$states = $this->em->find_by( State::class, array(
 				'blob_id' => $blob->ID,
 			) );
 
@@ -220,7 +221,7 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -235,7 +236,7 @@ class DatabaseTest extends TestCase {
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 			'orderby' => 'ID',
@@ -254,7 +255,7 @@ class DatabaseTest extends TestCase {
 		} ) );
 
 		foreach ( $repo->blobs as $blob ) {
-			$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+			$states = $this->em->find_by( State::class, array(
 				'blob_id' => $blob->ID,
 			) );
 
@@ -266,7 +267,7 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -280,7 +281,7 @@ class DatabaseTest extends TestCase {
 		$blob->code     = 'some new php code';
 		$blob->filename = 'new-slug.php';
 		$blob->language = $this->em
-			->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'php' ) )
+			->find_by( Language::class, array( 'slug' => 'php' ) )
 			->first();
 		$blob->repo_id  = $repo->ID;
 		$blob->reguard();
@@ -292,7 +293,7 @@ class DatabaseTest extends TestCase {
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 			'orderby' => 'date',
@@ -309,7 +310,7 @@ class DatabaseTest extends TestCase {
 			return $state->blob_id === $removed_blob->ID;
 		} ) );
 
-		$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+		$states = $this->em->find_by( State::class, array(
 			'blob_id' => $blob->ID,
 		) );
 
@@ -323,7 +324,7 @@ class DatabaseTest extends TestCase {
 		$this->assertEquals( $blob->language, $state->language );
 
 		foreach ( $repo->blobs->remove_at( 2 ) as $blob ) {
-			$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+			$states = $this->em->find_by( State::class, array(
 				'blob_id' => $blob->ID,
 			) );
 
@@ -335,7 +336,7 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -352,7 +353,7 @@ class DatabaseTest extends TestCase {
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 			'orderby' => 'date',
@@ -367,7 +368,7 @@ class DatabaseTest extends TestCase {
 		/** @var State $state */
 		foreach ( $commit->states as $state ) {
 			if ( $state->blob_id === $blob->ID ) {
-				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+				$states = $this->em->find_by( State::class, array(
 					'blob_id' => $blob->ID,
 					// ID because the 2 commits are saving at the same time.
 					'orderby' => 'ID',
@@ -379,7 +380,7 @@ class DatabaseTest extends TestCase {
 
 				$this->assertEquals( $blob->code, $state->code );
 			} else {
-				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+				$states = $this->em->find_by( State::class, array(
 					'blob_id' => $state->blob_id,
 				) );
 
@@ -392,7 +393,7 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -409,7 +410,7 @@ class DatabaseTest extends TestCase {
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 			'orderby' => 'date',
@@ -424,7 +425,7 @@ class DatabaseTest extends TestCase {
 		/** @var State $state */
 		foreach ( $commit->states as $state ) {
 			if ( $state->blob_id === $blob->ID ) {
-				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+				$states = $this->em->find_by( State::class, array(
 					'blob_id' => $blob->ID,
 					// ID because the 2 commits are saving at the same time.
 					'orderby' => 'ID',
@@ -436,7 +437,7 @@ class DatabaseTest extends TestCase {
 
 				$this->assertEquals( $blob->filename, $state->filename );
 			} else {
-				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+				$states = $this->em->find_by( State::class, array(
 					'blob_id' => $state->blob_id,
 				) );
 
@@ -449,7 +450,7 @@ class DatabaseTest extends TestCase {
 		$this->create_post_and_children( true );
 
 		/** @var Repo $repo */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, $this->repo->ID, array(
+		$repo = $this->em->find( Repo::class, $this->repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -463,12 +464,12 @@ class DatabaseTest extends TestCase {
 		wp_set_object_terms( $blob->ID, 'js', 'wpgp_language', false );
 
 		$blob->language = $this->em
-			->find_by( EntityManager::LANGUAGE_CLASS, array( 'slug' => 'js' ) )
+			->find_by( Language::class, array( 'slug' => 'js' ) )
 			->first();
 
 		$this->database->add_commit( $repo );
 
-		$commits = $this->em->find_by( EntityManager::COMMIT_CLASS, array(
+		$commits = $this->em->find_by( Commit::class, array(
 			'repo_id' => $repo->ID,
 			'with'    => 'states',
 			'orderby' => 'date',
@@ -483,7 +484,7 @@ class DatabaseTest extends TestCase {
 		/** @var State $state */
 		foreach ( $commit->states as $state ) {
 			if ( $state->blob_id === $blob->ID ) {
-				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+				$states = $this->em->find_by( State::class, array(
 					'blob_id' => $blob->ID,
 					'with'    => 'language',
 					// ID because the 2 commits are saving at the same time.
@@ -496,7 +497,7 @@ class DatabaseTest extends TestCase {
 
 				$this->assertEquals( $blob->language->ID, $state->language->ID );
 			} else {
-				$states = $this->em->find_by( EntityManager::STATE_CLASS, array(
+				$states = $this->em->find_by( State::class, array(
 					'blob_id' => $state->blob_id,
 				) );
 

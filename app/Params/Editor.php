@@ -2,14 +2,13 @@
 namespace Intraxia\Gistpen\Params;
 
 use Intraxia\Jaxion\Core\Config;
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob as BlobModel;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo as RepoModel;
 use Intraxia\Gistpen\Options\User;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use stdClass;
 use WP_Term;
 
@@ -65,7 +64,7 @@ class Editor implements HasFilters {
 		 *
 		 * @var RepoModel
 		 */
-		$repo = $this->em->find( Klass::REPO, get_the_ID(), array(
+		$repo = $this->em->find( \Intraxia\Gistpen\Model\Repo::class, get_the_ID(), array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -79,7 +78,7 @@ class Editor implements HasFilters {
 			$repo->description = '';
 			$repo->sync        = 'off';
 
-			$language = $this->em->find_by( Klass::LANGUAGE, array( 'slug' => 'plaintext' ) );
+			$language = $this->em->find_by( \Intraxia\Gistpen\Model\Language::class, array( 'slug' => 'plaintext' ) );
 
 			if ( $language->index_exists( 0 ) ) {
 				$language = $language->at( 0 );

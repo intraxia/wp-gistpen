@@ -1,7 +1,7 @@
 <?php
 namespace Intraxia\Gistpen\Http;
 
-use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -48,7 +48,7 @@ class SearchController {
 			$args['s'] = $search_term;
 		}
 
-		$blobs = $this->em->find_by( EntityManager::BLOB_CLASS, $args );
+		$blobs = $this->em->find_by( \Intraxia\Gistpen\Model\Blob::class, $args );
 
 		if ( is_wp_error( $blobs ) ) {
 			$blobs->add_data( array( 'status' => 500 ) );

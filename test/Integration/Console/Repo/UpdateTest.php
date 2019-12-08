@@ -25,13 +25,13 @@ class UpdateTest extends TestCase {
 	}
 
 	public function test_should_output_error_on_find_before_update_error() {
-		$this->app->set( EM::class, $this->em = \Mockery::mock( EM::class ) );
+		$this->app->set( EM::class, $em = \Mockery::mock( EM::class ) );
 		$this->command = $this->app->make( RepoCommand::class );
 
 		$orig_repo = $this->fm->create( Repo::class );
 		$fake_repo = $this->fm->instance( Repo::class );
 
-		$this->em->shouldReceive( 'find' )->once()->andReturn( $error = new \WP_Error() );
+		$em->shouldReceive( 'find' )->once()->andReturn( $error = new \WP_Error() );
 		$this->cli->shouldReceive( 'error' )->once()->andReturn( $error );
 
 		$result = $this->command->update( [ $orig_repo->ID ], [
@@ -44,14 +44,14 @@ class UpdateTest extends TestCase {
 	}
 
 	public function test_should_output_error_on_update_error() {
-		$this->app->set( EM::class, $this->em = \Mockery::mock( EM::class ) );
+		$this->app->set( EM::class, $em = \Mockery::mock( EM::class ) );
 		$this->command = $this->app->make( RepoCommand::class );
 
 		$orig_repo = $this->fm->create( Repo::class );
 		$fake_repo = $this->fm->instance( Repo::class );
 
-		$this->em->shouldReceive( 'find' )->once()->andReturn( $orig_repo );
-		$this->em->shouldReceive( 'persist' )->once()->andReturn( $error = new \WP_Error() );
+		$em->shouldReceive( 'find' )->once()->andReturn( $orig_repo );
+		$em->shouldReceive( 'persist' )->once()->andReturn( $error = new \WP_Error() );
 		$this->cli->shouldReceive( 'error' )->once()->andReturn( $error );
 
 		$result = $this->command->update( [ $orig_repo->ID ], [

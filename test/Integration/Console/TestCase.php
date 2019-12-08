@@ -33,6 +33,6 @@ abstract class TestCase extends BaseTestCase {
 		parent::tearDown();
 
 		// Rebind the db to the interface, overwriting any one-off mocks.
-		$this->app->set( EM::class, $this->app->make( DB::class ) );
+		$this->app->set( EM::class, $this->em );
 	}
 }

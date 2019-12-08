@@ -3,7 +3,6 @@ namespace Intraxia\Gistpen\Jobs;
 
 use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Model\Blob;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Model\State;
 use Intraxia\Jaxion\Contract\Axolotl\Collection;
@@ -68,7 +67,7 @@ class ExportJob extends AbstractJob {
 	 * @return Collection|WP_Error
 	 */
 	protected function fetch_items() {
-		return $this->em->find_by( Klass::REPO, array(
+		return $this->em->find_by( \Intraxia\Gistpen\Model\Repo::class, array(
 			'nopaging' => true,
 		) );
 	}
@@ -94,7 +93,7 @@ class ExportJob extends AbstractJob {
 			return null;
 		}
 
-		$repo = $this->em->find( Klass::REPO, $repo->ID, array(
+		$repo = $this->em->find( \Intraxia\Gistpen\Model\Repo::class, $repo->ID, array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',
@@ -201,7 +200,7 @@ class ExportJob extends AbstractJob {
 		$gist_files = (array) $gist->files;
 
 		foreach ( $repo->blobs as $blob ) {
-			$states = $this->em->find_by( Klass::STATE, array(
+			$states = $this->em->find_by( \Intraxia\Gistpen\Model\State::class, array(
 				'blob_id'        => $blob->ID,
 				'posts_per_page' => 2,
 				'order'          => 'DESC',

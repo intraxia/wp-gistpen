@@ -2,7 +2,7 @@
 namespace Intraxia\Gistpen\Listener;
 
 use Intraxia\Gistpen\Jobs\Manager;
-use Intraxia\Gistpen\Model\Klass;
+
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Contract\Core\HasActions;
@@ -35,7 +35,7 @@ class Sync implements HasActions {
 	 */
 	public function export_repo( Repo $repo ) {
 		if ( 'on' === $repo->sync ) {
-			$this->jobs->get( 'export' )->dispatch( new Collection( Klass::REPO, array( $repo ) ) );
+			$this->jobs->get( 'export' )->dispatch( new Collection( \Intraxia\Gistpen\Model\Repo::class, array( $repo ) ) );
 		}
 	}
 

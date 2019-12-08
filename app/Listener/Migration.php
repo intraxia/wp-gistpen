@@ -11,8 +11,8 @@ namespace Intraxia\Gistpen\Listener;
  * @copyright 2014 James DiGioia
  */
 
-use Intraxia\Gistpen\Database\EntityManager;
-use Intraxia\Gistpen\Model\Klass;
+
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
 use Intraxia\Jaxion\Contract\Core\HasActions;
 
@@ -106,8 +106,8 @@ class Migration implements HasActions {
 	public function update_to_1_0_0() {
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
-		$runs_table     = $this->em->make_table_name( Klass::RUN );
-		$messages_table = $this->em->make_table_name( Klass::MESSAGE );
+		$runs_table     = $this->em->make_table_name( \Intraxia\Gistpen\Model\Run::class );
+		$messages_table = $this->em->make_table_name( \Intraxia\Gistpen\Model\Message::class );
 
 		dbDelta("
 			CREATE TABLE {$runs_table} (

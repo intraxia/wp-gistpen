@@ -4,7 +4,7 @@ namespace Intraxia\Gistpen\Http;
 
 use Intraxia\Gistpen\Contract\Job;
 use Intraxia\Gistpen\Jobs\Manager as Jobs;
-use Intraxia\Gistpen\Model\Klass;
+
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use WP_Error;
 use WP_REST_Request;
@@ -229,7 +229,7 @@ class JobsController {
 			return $run;
 		}
 
-		$messages = $this->em->find_by( Klass::MESSAGE, array(
+		$messages = $this->em->find_by( \Intraxia\Gistpen\Model\Message::class, array(
 			'run_id' => $run_id,
 		) );
 

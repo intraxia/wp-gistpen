@@ -155,7 +155,7 @@ class Edit implements HasActions, HasFilters {
 			 *
 			 * @var Repo
 			 */
-			$repo = $this->em->find( EntityManager::REPO_CLASS, $post_id, array(
+			$repo = $this->em->find( Repo::class, $post_id, array(
 				'with' => 'blobs',
 			) );
 

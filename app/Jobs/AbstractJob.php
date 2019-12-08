@@ -3,7 +3,6 @@
 namespace Intraxia\Gistpen\Jobs;
 
 use Intraxia\Gistpen\Contract\Job;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Message;
 use Intraxia\Gistpen\Model\Run;
 use Intraxia\Jaxion\Axolotl\Collection;
@@ -102,7 +101,7 @@ abstract class AbstractJob implements Job {
 			);
 		}
 
-		$run = $this->em->create( Klass::RUN, array(
+		$run = $this->em->create( \Intraxia\Gistpen\Model\Run::class, array(
 			'scheduled_at' => $this->make_timestamp(),
 			'items'        => $items,
 			'status'       => Status::SCHEDULED,
@@ -184,7 +183,7 @@ abstract class AbstractJob implements Job {
 	 * @return Run|WP_Error
 	 */
 	public function fetch( $run_id ) {
-		return $this->em->find( Klass::RUN, $run_id );
+		return $this->em->find( \Intraxia\Gistpen\Model\Run::class, $run_id );
 	}
 
 	/**
@@ -193,7 +192,7 @@ abstract class AbstractJob implements Job {
 	 * @return Collection|WP_Error
 	 */
 	public function runs() {
-		return $this->em->find_by( Klass::RUN, array(
+		return $this->em->find_by( \Intraxia\Gistpen\Model\Run::class, array(
 			'order_by' => 'ID',
 			'job'      => $this->slug(),
 		) );
@@ -207,7 +206,7 @@ abstract class AbstractJob implements Job {
 	 * @return Run|WP_Error
 	 */
 	public function run( $run_id ) {
-		return $this->em->find( Klass::RUN, $run_id, array(
+		return $this->em->find( \Intraxia\Gistpen\Model\Run::class, $run_id, array(
 			'job' => $this->slug(),
 		) );
 	}
@@ -220,7 +219,7 @@ abstract class AbstractJob implements Job {
 	 * @return Collection|WP_Error
 	 */
 	public function messages( $run_id ) {
-		return $this->em->find_by( Klass::MESSAGE, array(
+		return $this->em->find_by( \Intraxia\Gistpen\Model\Message::class, array(
 			'run_id' => $run_id,
 		) );
 	}
@@ -264,7 +263,7 @@ abstract class AbstractJob implements Job {
 	 * @return Message|WP_Error
 	 */
 	protected function log( $msg, $lvl = Level::INFO ) {
-		return $this->em->create( Klass::MESSAGE, array(
+		return $this->em->create( \Intraxia\Gistpen\Model\Message::class, array(
 			'run_id'    => $this->current_run->ID,
 			'text'      => $msg,
 			'level'     => $lvl,
@@ -465,12 +464,12 @@ abstract class AbstractJob implements Job {
 	 * @return Collection|WP_Error
 	 */
 	private function get_paused_or_scheduled_runs() {
-		$runs = $this->em->find_by( Klass::RUN, array(
+		$runs = $this->em->find_by( \Intraxia\Gistpen\Model\Run::class, array(
 			'status' => Status::PAUSED,
 		) );
 
 		if ( $runs->count() === 0 ) {
-			$runs = $this->em->find_by( Klass::RUN, array(
+			$runs = $this->em->find_by( \Intraxia\Gistpen\Model\Run::class, array(
 				'status' => Status::SCHEDULED,
 			) );
 		}

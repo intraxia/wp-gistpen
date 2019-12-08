@@ -3,7 +3,6 @@ namespace Intraxia\Gistpen\Jobs;
 
 use Intraxia\Gistpen\Client\Gist;
 use Intraxia\Gistpen\Model\Blob;
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Language;
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Jaxion\Axolotl\Collection;
@@ -109,7 +108,7 @@ class ImportJob extends AbstractJob {
 			$gist = $response->json;
 		}
 
-		$repos = $this->em->find_by( Klass::REPO, array(
+		$repos = $this->em->find_by( \Intraxia\Gistpen\Model\Repo::class, array(
 			'gist_id' => $gist->id,
 			'with'    => array(
 				'blobs' => array(
@@ -178,7 +177,7 @@ class ImportJob extends AbstractJob {
 					$blob->code     = $meta->content;
 					$blob->language = $this->em
 						->find_by(
-							Klass::LANGUAGE,
+							\Intraxia\Gistpen\Model\Language::class,
 							array( 'slug' => $this->map_gist_language( $meta->language ) )
 						)
 						->first();
@@ -240,7 +239,7 @@ class ImportJob extends AbstractJob {
 		$repo->status      = true === $gist->public ? 'publish' : 'private';
 		$repo->gist_id     = $gist->id;
 
-		$blobs = new Collection( Klass::BLOB, array() );
+		$blobs = new Collection( \Intraxia\Gistpen\Model\Blob::class, array() );
 
 		foreach ( $gist->files as $name => $meta ) {
 			$blobs = $blobs->add( $this->map_name_and_meta_to_blob( $name, $meta ) );

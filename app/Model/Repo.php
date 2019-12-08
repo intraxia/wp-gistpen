@@ -2,6 +2,7 @@
 namespace Intraxia\Gistpen\Model;
 
 use Intraxia\Gistpen\Database\EntityManager;
+use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Jaxion\Axolotl\Collection;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
@@ -28,11 +29,6 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property string     $updated_at
  */
 class Repo extends Model implements UsesWordPressPost {
-	/**
-	 * Class name for Blob related class.
-	 */
-	const BLOB_CLASS = 'Intraxia\Gistpen\Model\Blob';
-
 	/**
 	 * {@inheritdoc}
 	 *
@@ -226,10 +222,10 @@ class Repo extends Model implements UsesWordPressPost {
 		try {
 			$prev_blobs = $this->blobs;
 		} catch ( \Exception $exception ) {
-			$prev_blobs = new Collection( EntityManager::BLOB_CLASS );
+			$prev_blobs = new Collection( Blob::class );
 		}
 
-		$new_blobs = new Collection( EntityManager::BLOB_CLASS );
+		$new_blobs = new Collection( Blob::class );
 
 		if ( isset( $attributes['blobs'] ) ) {
 			if ( $attributes['blobs'] instanceof Collection ) {
@@ -276,7 +272,7 @@ class Repo extends Model implements UsesWordPressPost {
 		try {
 			$blobs = $this->blobs;
 		} catch ( \Exception $exception ) {
-			$blobs = new Collection( EntityManager::BLOB_CLASS );
+			$blobs = new Collection( Blob::class );
 		}
 
 		if ( isset( $attributes['blobs'] ) ) {

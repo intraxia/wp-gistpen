@@ -2,7 +2,6 @@
 
 namespace Intraxia\Gistpen\Database\Repository;
 
-use Intraxia\Gistpen\Model\Klass;
 use Intraxia\Gistpen\Model\Run;
 use Intraxia\Jaxion\Axolotl\Model;
 use Intraxia\Jaxion\Axolotl\Collection;
@@ -239,7 +238,7 @@ class WordPressCustomTable extends AbstractRepository {
 
 		if ( $model instanceof Run ) {
 			$results = $wpdb->delete(
-				$this->em->make_table_name( Klass::MESSAGE ),
+				$this->em->make_table_name( \Intraxia\Gistpen\Model\Message::class ),
 				array( 'run_id' => $model->get_primary_id() )
 			);
 
@@ -268,9 +267,9 @@ class WordPressCustomTable extends AbstractRepository {
 	 */
 	private function is_valid_key( $class, $key ) {
 		switch ( $class ) {
-			case Klass::MESSAGE:
+			case \Intraxia\Gistpen\Model\Message::class:
 				return in_array( $key, array( 'run_id' ), true );
-			case Klass::RUN:
+			case \Intraxia\Gistpen\Model\Run::class:
 				return in_array( $key, array( 'job', 'status' ), true );
 			default:
 				return false;
@@ -287,13 +286,13 @@ class WordPressCustomTable extends AbstractRepository {
 	 */
 	private function validate_data( $class, $data ) {
 		switch ( $class ) {
-			case Klass::RUN:
+			case \Intraxia\Gistpen\Model\Run::class:
 				if ( isset( $data['items'] ) ) {
 					$data['items'] = maybe_serialize( $data['items'] );
 				}
 
 				return $data;
-			case Klass::MESSAGE:
+			case \Intraxia\Gistpen\Model\Message::class:
 				if ( ! isset( $data['run_id'] ) ) {
 					return new WP_Error(
 						'invalid_run_id',
@@ -307,7 +306,7 @@ class WordPressCustomTable extends AbstractRepository {
 					$wpdb->prepare(
 						 // @codingStandardsIgnoreStart
 						"
-							SELECT COUNT(*) FROM {$this->em->make_table_name( Klass::RUN )}
+							SELECT COUNT(*) FROM {$this->em->make_table_name( \Intraxia\Gistpen\Model\Run::class )}
 							WHERE ID = %d
 						",
 						 // @codingStandardsIgnoreEnd

@@ -140,9 +140,10 @@ class CreateTest extends TestCase {
 		] );
 
 		$response = $this->server->dispatch( $request );
-		$repo     = $this->app->make( 'database' )
-			->find( Repo::class, $response->get_data()['ID'] );
 		$this->assertResponseStatus( $response, 201 );
+
+		$repo = $this->app->make( 'database' )
+			->find( Repo::class, $response->get_data()['ID'] );
 		$this->assertResponseData( $response, [
 			'ID'          => $repo->ID,
 			'description' => $repo->description,
@@ -178,7 +179,10 @@ class CreateTest extends TestCase {
 		] );
 
 		$response = $this->server->dispatch( $request );
-		$repo     = $this->app->make( 'database' )
+
+		$this->assertResponseStatus( $response, 201 );
+
+		$repo = $this->app->make( 'database' )
 			->find( Repo::class, $response->get_data()['ID'], [
 				'with' => [
 					'blobs' => [
@@ -186,8 +190,7 @@ class CreateTest extends TestCase {
 					],
 				],
 			] );
-		$blob     = $repo->blobs->first();
-		$this->assertResponseStatus( $response, 201 );
+		$blob = $repo->blobs->first();
 		$this->assertResponseHeader( $response, 'Location', $repo->rest_url );
 		$this->assertResponseData( $response, [
 			'ID'          => $repo->ID,

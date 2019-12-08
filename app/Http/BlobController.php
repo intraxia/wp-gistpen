@@ -1,9 +1,9 @@
 <?php
 namespace Intraxia\Gistpen\Http;
 
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 use WP_Error;
 use WP_REST_Request;
@@ -40,7 +40,7 @@ class BlobController implements HasFilters {
 	 * @return WP_Error|WP_REST_Response
 	 */
 	public function raw( WP_REST_Request $request ) {
-		$blob = $this->em->find( EntityManager::BLOB_CLASS, $request->get_param( 'blob_id' ), array(
+		$blob = $this->em->find( Blob::class, $request->get_param( 'blob_id' ), array(
 			'repo_id' => $request->get_param( 'repo_id' ),
 		) );
 

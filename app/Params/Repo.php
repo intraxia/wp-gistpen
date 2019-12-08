@@ -1,10 +1,10 @@
 <?php
 namespace Intraxia\Gistpen\Params;
 
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Blob as BlobModel;
 use Intraxia\Gistpen\Model\Repo as RepoModel;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 
 /**
  * Params service for Repo slice of state.
@@ -42,7 +42,7 @@ class Repo implements HasFilters {
 		 *
 		 * @var RepoModel
 		 */
-		$repo = $this->em->find( EntityManager::REPO_CLASS, get_the_ID(), array(
+		$repo = $this->em->find( \Intraxia\Gistpen\Model\Repo::class, get_the_ID(), array(
 			'with' => array(
 				'blobs' => array(
 					'with' => 'language',

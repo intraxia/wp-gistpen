@@ -2,8 +2,8 @@
 
 namespace Intraxia\Gistpen\Http;
 
-use Intraxia\Gistpen\Database\EntityManager;
 use Intraxia\Gistpen\Model\Commit;
+use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -37,7 +37,7 @@ class StateController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
-		$commit = $this->em->find( EntityManager::COMMIT_CLASS, $request->get_param( 'commit_id' ), array(
+		$commit = $this->em->find( Commit::class, $request->get_param( 'commit_id' ), array(
 			'with' => 'states',
 		) );
 
