@@ -1,32 +1,23 @@
 import React from 'react';
 import { Nullable } from 'typescript-nullable';
-import { TextControl, Button } from '@wordpress/components';
-import { compose, withState } from '@wordpress/compose';
+import Editor from './Editor';
+import Selector from './Selector';
 
 const Edit: React.FC<{
   className: string;
-  id: Nullable<number>;
-  setAttributes: (attr: { id: number }) => void;
-  search: string;
-  setState: (state: Partial<{ search: string }>) => void;
-}> = ({ className, id, setAttributes, search, setState }) => {
-  if (Nullable.isNone(id)) {
-    return (
-      <div className={className}>
-        <h3>No snippet has been selected</h3>
-        <TextControl
-          label="Enter ID"
-          value={search}
-          onChange={search => setState({ search })}
-        />
-        <Button isPrimary onClick={() => setAttributes({ id: Number(search) })}>
-          Set ID
-        </Button>
-      </div>
-    );
-  }
-
-  return <div className={className}>id is {id}</div>;
+  blobId: Nullable<number>;
+  repoId: Nullable<number>;
+  setIds: (repoId: number, blobId: number) => void;
+}> = ({ className, blobId, repoId, setIds }) => {
+  return (
+    <div className={className}>
+      {Nullable.isNone(blobId) || Nullable.isNone(repoId) ? (
+        <Selector setIds={setIds} />
+      ) : (
+        <Editor blobId={blobId} repoId={repoId} />
+      )}
+    </div>
+  );
 };
 
-export default compose(withState({ search: '' }))(Edit);
+export default Edit;

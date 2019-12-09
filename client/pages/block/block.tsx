@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Nullable } from 'typescript-nullable';
 import { Block } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Edit, Save } from './views';
 
-type Module = Block<{ id: Nullable<number> }>;
+type Module = Block<
+  { blobId: number; repoId: number } | { blobId: null; repoId: null }
+>;
 
 export const title: Module['title'] = __('Gistpen Code Snippet');
 
@@ -19,7 +20,10 @@ export const keywords: Module['keywords'] = [
 ];
 
 export const attributes: Module['attributes'] = {
-  id: {
+  repoId: {
+    type: 'number'
+  },
+  blobId: {
     type: 'number'
   }
 };
@@ -32,12 +36,13 @@ export const edit: Module['edit'] = ({
   return (
     <Edit
       className={className}
-      id={attributes.id}
-      setAttributes={setAttributes}
+      repoId={attributes.repoId}
+      blobId={attributes.blobId}
+      setIds={(repoId, blobId) => setAttributes({ repoId, blobId })}
     />
   );
 };
 
 export const save: Module['save'] = ({ attributes }) => {
-  return <Save id={attributes.id} />;
+  return <Save {...attributes} />;
 };

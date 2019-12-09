@@ -32,3 +32,10 @@ declare global {
     }
   }
 }
+
+window.__GISTPEN_TINYMCE__ = {
+  globals: {
+    nonce: '12345',
+    root: 'http://localhost/wp-json/intraxia/v1/gistpen/'
+  }
+} as any;
