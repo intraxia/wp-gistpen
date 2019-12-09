@@ -69,7 +69,7 @@ declare module '@wordpress/e2e-test-utils' {
     title: string;
     content: string;
     excerpt: string;
-    enableTips: boolean;
+    enableTips?: boolean;
   }): Promise<void>;
 
   /**
