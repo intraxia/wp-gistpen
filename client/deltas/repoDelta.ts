@@ -1,6 +1,5 @@
 import Kefir, { Stream, Property, Observable } from 'kefir';
 import { ofType } from 'brookjs-flow';
-import * as t from 'io-ts';
 import { Nullable } from 'typescript-nullable';
 import {
   editorUpdateClick,
@@ -9,7 +8,7 @@ import {
   ajaxFinished,
   repoSaveSucceeded
 } from '../actions';
-import { RootAction, toggle } from '../util';
+import { RootAction } from '../util';
 import {
   RepoState,
   GlobalsState,
@@ -17,6 +16,7 @@ import {
   EditorInstance
 } from '../reducers';
 import { AjaxService, AjaxError } from '../ajax';
+import { ApiRepo } from '../api';
 
 type RepoDeltaState = {
   repo: RepoState;
@@ -58,41 +58,6 @@ const makeBody = (state: RepoDeltaState) =>
     })
   });
 
-export const apiLanguage = t.type({
-  ID: t.number,
-  display_name: t.string,
-  slug: t.string
-});
-
-// @TODO(mAAdhaTTah) dedupe from searchDelta
-export const apiBlob = t.type({
-  filename: t.string,
-  code: t.string,
-  language: apiLanguage,
-  ID: t.number,
-  size: t.number,
-  raw_url: t.string,
-  edit_url: t.string
-});
-
-export const apiRepo = t.type({
-  ID: t.number,
-  description: t.string,
-  status: t.string,
-  password: t.string,
-  gist_id: t.string,
-  gist_url: t.union([t.string, t.null]),
-  sync: toggle,
-  blobs: t.array(apiBlob),
-  rest_url: t.string,
-  commits_url: t.string,
-  html_url: t.string,
-  created_at: t.string,
-  updated_at: t.string
-});
-
-export type ApiRepo = t.TypeOf<typeof apiRepo>;
-
 export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
   action$: Stream<RootAction, never>,
   state$: Property<RepoDeltaState, never>
@@ -116,15 +81,15 @@ export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
             })
               .flatMap(response => response.json())
               .flatMap(response =>
-                apiRepo
-                  .validate(response, [])
-                  .fold<Observable<t.TypeOf<typeof apiRepo>, AjaxError>>(
-                    () =>
-                      Kefir.constantError(
-                        new AjaxError('API response was invalid')
-                      ),
-                    Kefir.constant
-                  )
+                ApiRepo.validate(response, []).fold<
+                  Observable<ApiRepo, AjaxError>
+                >(
+                  () =>
+                    Kefir.constantError(
+                      new AjaxError('API response was invalid')
+                    ),
+                  Kefir.constant
+                )
               )
               .flatten(response => [
                 ajaxFinished(),
