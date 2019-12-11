@@ -38,24 +38,36 @@ class SearchController {
 	 * @throws \Exception
 	 */
 	public function get( WP_REST_Request $request ) {
-		$args        = array(
-			'posts_per_page' => 5,
-			'with'           => 'language',
-		);
+		$args = 'repo' === $request->get_param( 'type' )
+			? [
+				\Intraxia\Gistpen\Model\Repo::class,
+				[
+					'with' => [
+						'blobs' => [
+							'with' => 'language',
+						],
+					],
+				],
+			]
+			: [
+				\Intraxia\Gistpen\Model\Blob::class,
+				[ 'with' => 'language' ],
+			];
+
 		$search_term = $request->get_param( 's' );
 
 		if ( $search_term ) {
-			$args['s'] = $search_term;
+			$args[1]['s'] = $search_term;
 		}
 
-		$blobs = $this->em->find_by( \Intraxia\Gistpen\Model\Blob::class, $args );
+		$result = $this->em->find_by( $args[0], $args[1] );
 
-		if ( is_wp_error( $blobs ) ) {
-			$blobs->add_data( array( 'status' => 500 ) );
+		if ( is_wp_error( $result ) ) {
+			$result->add_data( array( 'status' => 500 ) );
 
-			return $blobs;
+			return $result;
 		}
 
-		return new WP_REST_Response( $blobs->serialize() );
+		return new WP_REST_Response( $result->serialize() );
 	}
 }

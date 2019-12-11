@@ -122,10 +122,10 @@ class Editor implements HasFilters {
 					),
 				);
 			}, $blobs ),
-			'width'       => $this->user->get( 'editor.indent_width' ),
-			'theme'       => $this->user->get( 'editor.theme' ),
-			'invisibles'  => $this->user->get( 'editor.invisibles_enabled' ) ? : 'off',
-			'tabs'        => $this->user->get( 'editor.tabs_enabled' ) ? : 'off',
+			'width'       => $this->user->get( get_current_user_id(), 'editor.indent_width' ),
+			'theme'       => $this->user->get( get_current_user_id(), 'editor.theme' ),
+			'invisibles'  => $this->user->get( get_current_user_id(), 'editor.invisibles_enabled' ) ? : 'off',
+			'tabs'        => $this->user->get( get_current_user_id(), 'editor.tabs_enabled' ) ? : 'off',
 			'errors'      => array(),
 		);
 
