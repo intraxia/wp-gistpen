@@ -8,6 +8,7 @@ use Intraxia\Gistpen\Http\Filter\RepoCollection as RepoCollectionFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCreate as RepoCreateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoUpdate as RepoUpdateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoResource as RepoResourceFilter;
+use Intraxia\Gistpen\Http\Filter\Search as SearchFilter;
 use Intraxia\Gistpen\Http\Filter\SitePatch as SitePatchFilter;
 use Psr\Container\ContainerInterface as Container;
 
@@ -106,12 +107,7 @@ class Router {
 			$router->get(
 				'/search',
 				array( $controllers['search'], 'get' ),
-				array(
-					'filter' => new Filter( array(
-						's'    => 'default',
-						'type' => 'default:both|oneof:zip,type,both',
-					) ),
-				)
+				[ 'filter' => $this->container->get( SearchFilter::class ) ]
 			);
 
 			/**

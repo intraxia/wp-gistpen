@@ -328,6 +328,13 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		if ( $model instanceof Blob || $model instanceof State ) {
+			if ( $model instanceof Blob ) {
+				$model->unguard();
+				// @TODO(mAAdhaTTah) I mean... where does this really go?
+				$model->status = get_post( $model->repo_id )->post_status;
+				$model->reguard();
+			}
+
 			if ( $model->language ) {
 				// @TODO(mAAdhaTTah) dedupe from create
 				if ( is_string( $model->language ) ) {
