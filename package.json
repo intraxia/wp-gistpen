@@ -76,7 +76,7 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^6.7.0",
     "eslint-config-valtech": "^1.0.0",
-    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-react": "^7.17.0",
     "execa": "^3.4.0",
     "expect-puppeteer": "^4.3.0",
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
