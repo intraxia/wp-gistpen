@@ -8,6 +8,17 @@ use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Test\Integration\TestCase;
 
 class CreateTest extends TestCase {
+	public function test_requires_admin() {
+		$this->set_role( 'subscriber' );
+		$repo    = $this->fm->instance( Repo::class );
+		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
+		$request->set_body_params( [ 'description' => $repo->description ] );
+
+		$response = $this->server->dispatch( $request );
+
+		$this->assertResponseStatus( $response, 401 );
+	}
+
 	public function test_returns_error_with_invalid_blobs() {
 		$this->set_role( 'administrator' );
 		$repo    = $this->fm->instance( Repo::class );
