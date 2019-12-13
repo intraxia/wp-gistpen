@@ -71,7 +71,7 @@
     "babel-preset-brookjs": "1.0.0-alpha.26",
     "brookjs-cli": "1.0.0-alpha.27",
     "brookjs-desalinate": "1.0.0-alpha.26",
-    "copy-webpack-plugin": "^5.0.5",
+    "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.3.0",
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^6.7.0",
