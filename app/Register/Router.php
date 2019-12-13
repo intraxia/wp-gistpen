@@ -82,7 +82,7 @@ class Router {
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 			$router->delete( '/repos/(?P<id>\d+)', array( $controllers['repo'], 'trash' ), array(
-				'filter' => $this->container->get( RepoCreateFilter::class ),
+				'filter' => $this->container->get( RepoResourceFilter::class ),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
 
