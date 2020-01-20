@@ -70,7 +70,7 @@
     "@wordpress/scripts": "^6.0.0",
     "babel-preset-brookjs": "1.0.0-alpha.26",
     "brookjs-cli": "1.0.0-alpha.28",
-    "brookjs-desalinate": "1.0.0-alpha.27",
+    "brookjs-desalinate": "1.0.0-alpha.31",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.4.1",
     "eslint": "^5.16.0",
