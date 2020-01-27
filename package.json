@@ -78,7 +78,7 @@
     "eslint-config-valtech": "^1.0.0",
     "eslint-plugin-react": "^7.17.0",
     "execa": "^3.4.0",
-    "expect-puppeteer": "^4.3.0",
+    "expect-puppeteer": "^4.4.0",
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
     "ink": "^2.6.0",
     "jest-image-snapshot": "^2.11.1",
