@@ -1,6 +1,6 @@
 import { AjaxService } from '../ajax';
 import Kefir, { Observable, Stream, Property } from 'kefir';
-import { ofType } from 'brookjs-flow';
+import { ofType } from 'brookjs';
 import * as t from 'io-ts';
 import {
   messagesFetchStarted,

@@ -1,5 +1,5 @@
 import Kefir, { Observable } from 'kefir';
-import { ofType } from 'brookjs-flow';
+import { ofType } from 'brookjs';
 import * as t from 'io-ts';
 import {
   ajaxFinished,

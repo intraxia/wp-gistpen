@@ -1,7 +1,7 @@
 import './index.scss';
 import React, { memo, useRef, useEffect } from 'react';
 import { Props } from './types';
-import { toJunction } from 'brookjs-silt';
+import { toJunction } from 'brookjs';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import ClipboardJS from 'clipboard';
 import {

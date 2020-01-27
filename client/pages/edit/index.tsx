@@ -1,5 +1,5 @@
 import { createStore } from 'redux';
-import { RootJunction } from 'brookjs-silt';
+import { RootJunction } from 'brookjs';
 import ReactDOM from 'react-dom';
 import {
   applyDelta,

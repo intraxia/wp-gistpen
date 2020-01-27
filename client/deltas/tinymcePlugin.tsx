@@ -1,5 +1,5 @@
 import Kefir, { Emitter, Observable, Property, Stream } from 'kefir';
-import { ofType } from 'brookjs-flow';
+import { ofType } from 'brookjs';
 import React from 'react';
 import {
   tinymceButtonClick,
@@ -7,7 +7,7 @@ import {
   tinymcePopupCloseClick
 } from '../actions';
 import { SearchPopup } from '../components';
-import { RootJunction } from 'brookjs-silt';
+import { RootJunction } from 'brookjs';
 import ReactDOM from 'react-dom';
 import * as tmce from 'tinymce';
 import { RootAction } from '../util';

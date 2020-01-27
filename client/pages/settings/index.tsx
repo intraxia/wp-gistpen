@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import React from 'react';
-import { RootJunction } from 'brookjs-silt';
+import { RootJunction } from 'brookjs';
 import ReactDOM from 'react-dom';
 import router from './router';
 import {

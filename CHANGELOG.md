@@ -24,7 +24,6 @@ This change log follows the [Keep a Changelog standards](http://keepachangelog.c
 * Added label to filename input
 * Bumped dependencies
 
-
 ### [1.1.3][1.1.3] ###
 
 #### Fixed ####

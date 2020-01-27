@@ -1,6 +1,6 @@
 import './Description.scss';
 import React from 'react';
-import { toJunction } from 'brookjs-silt';
+import { toJunction } from 'brookjs';
 import { i18n } from '../../helpers';
 import { editorDescriptionChange } from '../../actions';
 import Loader from '../Loader';
