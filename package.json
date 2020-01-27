@@ -82,7 +82,7 @@
     "fork-ts-checker-webpack-plugin-alt": "^0.4.14",
     "ink": "^2.6.0",
     "jest-image-snapshot": "^2.11.1",
-    "jest-puppeteer": "^4.3.0",
+    "jest-puppeteer": "^4.4.0",
     "node-sass": "^4.13.0",
     "prettier": "^1.19.1",
     "react-dev-utils": "^10.0.0",
