@@ -708,16 +708,16 @@
         },
         {
             "name": "league/factory-muffin",
-            "version": "v3.1.0",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/factory-muffin.git",
-                "reference": "bfb82fed0659c7bd8b91724d1503b6a5864fe12d"
+                "reference": "f7f7d0d2183aeb6b598f1984a4479a9e43b62934"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/factory-muffin/zipball/bfb82fed0659c7bd8b91724d1503b6a5864fe12d",
-                "reference": "bfb82fed0659c7bd8b91724d1503b6a5864fe12d",
+                "url": "https://api.github.com/repos/thephpleague/factory-muffin/zipball/f7f7d0d2183aeb6b598f1984a4479a9e43b62934",
+                "reference": "f7f7d0d2183aeb6b598f1984a4479a9e43b62934",
                 "shasum": ""
             },
             "require": {
@@ -727,10 +727,10 @@
                 "zizaco/factory-muff": "self.version"
             },
             "require-dev": {
-                "doctrine/orm": "2.5.*",
-                "illuminate/database": "5.0.*|5.1.*",
+                "doctrine/orm": "^2.5",
+                "illuminate/database": "5.0.*|5.1.*|5.5.*|6.0.*",
                 "league/factory-muffin-faker": "^2.0",
-                "phpunit/phpunit": "^4.8|^5.0"
+                "phpunit/phpunit": "^4.8.36|^5.6.3"
             },
             "suggest": {
                 "doctrine/orm": "Factory Muffin supports doctrine through the repository store.",
@@ -740,7 +740,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "3.2-dev"
                 }
             },
             "autoload": {
@@ -768,7 +768,7 @@
                 "factory",
                 "testing"
             ],
-            "time": "2019-11-25T14:29:21+00:00"
+            "time": "2020-02-17T17:16:02+00:00"
         },
         {
             "name": "league/factory-muffin-faker",
