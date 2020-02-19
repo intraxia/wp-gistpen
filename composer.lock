@@ -580,16 +580,16 @@
         },
         {
             "name": "fzaninotto/faker",
-            "version": "v1.9.0",
+            "version": "v1.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "27a216cbe72327b2d6369fab721a5843be71e57d"
+                "reference": "fc10d778e4b84d5bd315dad194661e091d307c6f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/27a216cbe72327b2d6369fab721a5843be71e57d",
-                "reference": "27a216cbe72327b2d6369fab721a5843be71e57d",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/fc10d778e4b84d5bd315dad194661e091d307c6f",
+                "reference": "fc10d778e4b84d5bd315dad194661e091d307c6f",
                 "shasum": ""
             },
             "require": {
@@ -602,7 +602,9 @@
             },
             "type": "library",
             "extra": {
-                "branch-alias": []
+                "branch-alias": {
+                    "dev-master": "1.9-dev"
+                }
             },
             "autoload": {
                 "psr-4": {
@@ -624,7 +626,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2019-11-14T13:13:06+00:00"
+            "time": "2019-12-12T13:22:17+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
@@ -772,16 +774,16 @@
         },
         {
             "name": "league/factory-muffin-faker",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/factory-muffin-faker.git",
-                "reference": "2d439542e94f231b6608c153754d071f27d8c6d1"
+                "reference": "d2945ac65ded01c6a295d524e7f6c0af1bb50516"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/factory-muffin-faker/zipball/2d439542e94f231b6608c153754d071f27d8c6d1",
-                "reference": "2d439542e94f231b6608c153754d071f27d8c6d1",
+                "url": "https://api.github.com/repos/thephpleague/factory-muffin-faker/zipball/d2945ac65ded01c6a295d524e7f6c0af1bb50516",
+                "reference": "d2945ac65ded01c6a295d524e7f6c0af1bb50516",
                 "shasum": ""
             },
             "require": {
@@ -789,7 +791,7 @@
                 "php": ">=5.4.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8|^5.0"
+                "phpunit/phpunit": "^4.8.36|^5.6.3"
             },
             "type": "library",
             "extra": {
@@ -819,7 +821,7 @@
                 "faker",
                 "testing"
             ],
-            "time": "2019-11-25T14:28:47+00:00"
+            "time": "2020-02-17T16:51:03+00:00"
         },
         {
             "name": "mockery/mockery",
