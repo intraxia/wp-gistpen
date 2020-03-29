@@ -60,7 +60,7 @@
     "@types/webpack": "^4.41.0",
     "@types/webpack-env": "^1.15.0",
     "@types/wordpress__blocks": "^6.4.3",
-    "@types/wordpress__components": "^8.2.1",
+    "@types/wordpress__components": "^8.5.2",
     "@types/wordpress__compose": "^3.4.0",
     "@types/wordpress__element": "^2.4.0",
     "@types/wordpress__i18n": "^3.4.0",
