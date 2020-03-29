@@ -36,6 +36,7 @@ dwsync.xml
 .CVS
 intermediate
 cache
+coverage
 lib
 node_modules
 bower_components
