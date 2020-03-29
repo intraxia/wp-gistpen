@@ -99,7 +99,7 @@
     "wp-pot-cli": "^1.3.0"
   },
   "dependencies": {
-    "brookjs": "1.0.0-alpha.28",
+    "brookjs": "1.0.0-beta.2",
     "brookjs-flow": "^1.0.0-alpha.26",
     "brookjs-silt": "1.0.0-alpha.27",
     "brookjs-types": "^1.0.0-alpha.26",
