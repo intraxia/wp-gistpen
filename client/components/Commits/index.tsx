@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { commitClick } from '../../actions';
 import { i18n, link } from '../../helpers';
 import Blob from '../Blob';
+import { Stream } from 'kefir';
 
 const Commits: React.FC<{
   commits: Array<{
@@ -73,6 +74,9 @@ const Commits: React.FC<{
   </div>
 );
 
-export default toJunction({
-  onCommitClick: evt$ => evt$.map(key => commitClick(key))
-})(Commits);
+const events = {
+  onCommitClick: (evt$: Stream<string, never>) =>
+    evt$.map(key => commitClick(key))
+};
+
+export default toJunction(events)(Commits);

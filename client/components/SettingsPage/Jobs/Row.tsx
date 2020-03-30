@@ -30,7 +30,7 @@ const Row: React.FC<Props> = ({ name, description, status, slug, onClick }) => (
 );
 
 const events = {
-  onClick: (evt$: Observable<string, Error>) =>
+  onClick: (evt$: Observable<string, never>) =>
     evt$.map(jobDispatchClick).debounce(200)
 };
 

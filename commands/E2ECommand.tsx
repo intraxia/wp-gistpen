@@ -1,7 +1,7 @@
 import path from 'path';
 import { Command } from 'brookjs-cli';
 import { ofType } from 'brookjs-flow';
-import { useDeltas } from 'brookjs-silt';
+import { useDelta } from 'brookjs-silt';
 import { Delta } from 'brookjs-types';
 import { Box, Color, AppContext } from 'ink';
 import Kefir, { Observable } from 'kefir';
@@ -99,7 +99,7 @@ const toObs = (ret: E2EExec): Observable<string, Error> => {
 
 const startup: Delta<Action, State> = (action$, state$) =>
   Kefir.concat([
-    // @TODO(mAAdhaTTah) use `constant` when useDeltas is fixed.
+    // @TODO(mAAdhaTTah) use `constant` when useDelta is fixed.
     Kefir.later(0, actions.startup.request()),
     state$.take(1).flatMap(
       (state): Observable<Action, never> => {
@@ -271,6 +271,9 @@ const Status: React.FC<{ status: State['status'] }> = ({ status }) => {
   }
 };
 
+const rootDelta: Delta<Action, State> = (action$, state$) =>
+  Kefir.merge([startup(action$, state$), tests(action$, state$)]);
+
 const E2ECommand: Command<{}> = {
   cmd: 'e2e',
   describe: 'Run the application e2e tests.',
@@ -278,10 +281,11 @@ const E2ECommand: Command<{}> = {
     return yargs;
   },
   View: ({ cwd }) => {
-    const { state } = useDeltas(reducer, { e2e, cwd, status: 'idle' }, [
-      startup,
-      tests
-    ]);
+    const { state } = useDelta(
+      reducer,
+      { e2e, cwd, status: 'idle' },
+      rootDelta
+    );
 
     return (
       <Box>

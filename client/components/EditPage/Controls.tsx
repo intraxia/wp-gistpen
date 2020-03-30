@@ -199,31 +199,33 @@ const Controls: React.FC<Props> = ({
   </div>
 );
 
-export default toJunction({
+const events = {
   onStatusChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
   ) => e$.map(e => editorStatusChange(e.target.value)),
-  onSyncChange: (e$: Observable<React.ChangeEvent<HTMLInputElement>, Error>) =>
+  onSyncChange: (e$: Observable<React.ChangeEvent<HTMLInputElement>, never>) =>
     e$.map(e => editorSyncToggle(mapCheckedToString(e))),
   onThemeChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
   ) => e$.map(e => editorThemeChange(e.target.value)),
-  onTabsChange: (e$: Observable<React.ChangeEvent<HTMLInputElement>, Error>) =>
+  onTabsChange: (e$: Observable<React.ChangeEvent<HTMLInputElement>, never>) =>
     e$.map(e => editorTabsToggle(mapCheckedToString(e))),
   onWidthChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
   ) => e$.map(e => editorWidthChange(e.target.value)),
   onInvisiblesChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
   ) => e$.map(e => editorInvisiblesToggle(mapCheckedToString(e))),
-  onUpdateClick: (e$: Observable<React.MouseEvent<HTMLButtonElement>, Error>) =>
+  onUpdateClick: (e$: Observable<React.MouseEvent<HTMLButtonElement>, never>) =>
     e$.map(e => {
       e.preventDefault();
       return editorUpdateClick();
     }),
-  onAddClick: (e$: Observable<React.MouseEvent<HTMLButtonElement>, Error>) =>
+  onAddClick: (e$: Observable<React.MouseEvent<HTMLButtonElement>, never>) =>
     e$.map(e => {
       e.preventDefault();
       return editorAddClick();
     })
-})(Controls);
+};
+
+export default toJunction(events)(Controls);
