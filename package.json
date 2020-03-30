@@ -39,7 +39,7 @@
     "@babel/preset-env": "^7.7.6",
     "@babel/preset-typescript": "^7.7.4",
     "@babel/register": "^7.7.4",
-    "@jest/types": "^24.9.0",
+    "@jest/types": "^25.2.3",
     "@storybook/addon-actions": "^5.2.8",
     "@storybook/react": "^5.3.17",
     "@testing-library/react": "^8.0.9",
