@@ -88,13 +88,13 @@ const Search: React.FC<Props> = ({
 
 const events = {
   onSearchTyping: (
-    evt$: Observable<React.ChangeEvent<HTMLInputElement>, Error>
+    evt$: Observable<React.ChangeEvent<HTMLInputElement>, never>
   ) =>
     evt$
       .map(e => e.target.value)
       .debounce(300)
       .map(searchInput),
-  onRadioChange: (evt$: Observable<string, Error>) =>
+  onRadioChange: (evt$: Observable<string, never>) =>
     evt$.map(searchResultSelectionChange)
 };
 

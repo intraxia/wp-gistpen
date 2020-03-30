@@ -115,13 +115,13 @@ const Highlighting: React.FC<Props> = ({
 
 const events = {
   onThemeChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
   ) => e$.map(e => themeChange(e.target.value)),
   onLineNumbersChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
   ) => e$.map(e => lineNumbersChange(e.target.checked)),
   onShowInvisiblesChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
   ) => e$.map(e => showInvisiblesChange(e.target.checked))
 };
 

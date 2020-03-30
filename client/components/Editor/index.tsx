@@ -149,13 +149,13 @@ const Editor: React.FC<Props> = ({
 
 const events = {
   onFilenameChange: (
-    evt$: Observable<React.ChangeEvent<HTMLSpanElement>, Error>
+    evt$: Observable<React.ChangeEvent<HTMLSpanElement>, never>
   ) => evt$.map(e => editorFilenameChange(e.target.textContent || '', null)),
   onLanguageChange: (
-    evt$: Observable<React.ChangeEvent<HTMLSelectElement>, Error>
+    evt$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
   ) => evt$.map(e => editorLanguageChange(e.target.value || '', null)),
   onDeleteClick: (
-    evt$: Observable<React.MouseEvent<HTMLButtonElement>, Error>
+    evt$: Observable<React.MouseEvent<HTMLButtonElement>, never>
   ) => evt$.map(() => editorDeleteClick(null))
 };
 

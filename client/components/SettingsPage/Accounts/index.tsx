@@ -45,7 +45,7 @@ const Accounts: React.FC<Props> = ({ onChange, token }) => (
 );
 
 const events = {
-  onChange: (evt$: Observable<React.ChangeEvent<HTMLInputElement>, Error>) =>
+  onChange: (evt$: Observable<React.ChangeEvent<HTMLInputElement>, never>) =>
     evt$.map(e => gistTokenChange(e.target.value))
 };
 export default toJunction(events)(Accounts);

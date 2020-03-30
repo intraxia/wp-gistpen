@@ -45,8 +45,10 @@ const Description: React.FC<Props> = ({
   </div>
 );
 
-export default toJunction({
+const events = {
   onDescriptionChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, Error>
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
   ) => e$.map(e => editorDescriptionChange(e.target.value))
-})(Description);
+};
+
+export default toJunction(events)(Description);

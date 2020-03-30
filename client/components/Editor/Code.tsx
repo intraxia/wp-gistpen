@@ -38,7 +38,7 @@ const elementToCursorMoveAction = (e: Element) =>
 // Use this to fill in type at call site.
 const mapToTargetCursorAction = <
   E extends React.SyntheticEvent<HTMLElement>
->() => (evt$: Observable<E, Error>) =>
+>() => (evt$: Observable<E, never>) =>
   evt$.map(e => elementToCursorMoveAction(e.target as Element));
 
 const mapKeydownToAction = (
@@ -176,8 +176,8 @@ const Code: React.RefForwardingComponent<HTMLElement, Props> = (
   />
 );
 
-const refback: Refback<Props, HTMLElement> = (ref$, props$) =>
-  ref$.flatMap<RootAction, never>(el => {
+const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
+  ref$.flatMap(el => {
     const keyUp$ = Kefir.fromEvents<KeyboardEvent, never>(el, 'keyup').setName(
       'keyUp$'
     );
@@ -262,11 +262,11 @@ const refback: Refback<Props, HTMLElement> = (ref$, props$) =>
   });
 
 const events = {
-  onBlur: (evt$: Observable<React.FocusEvent<HTMLElement>, Error>) =>
+  onBlur: (evt$: Observable<React.FocusEvent<HTMLElement>, never>) =>
     evt$.map(() => editorCursorMove(false, null)),
   onClick: mapToTargetCursorAction<React.MouseEvent<HTMLElement>>(),
   onFocus: mapToTargetCursorAction<React.FocusEvent<HTMLElement>>(),
-  onInput: (evt$: Observable<React.ChangeEvent<HTMLElement>, Error>) =>
+  onInput: (evt$: Observable<React.ChangeEvent<HTMLElement>, never>) =>
     evt$.map(evt =>
       editorValueChange(
         {
@@ -279,9 +279,9 @@ const events = {
         null
       )
     ),
-  onKeyUp: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, Error>) =>
+  onKeyUp: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, never>) =>
     evt$.filter(e => !isSpecialEvent(e)).thru(mapToTargetCursorAction()),
-  onKeyDown: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, Error>) =>
+  onKeyDown: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, never>) =>
     evt$.filter(e => isSpecialEvent(e)).map(mapKeydownToAction)
 };
 
