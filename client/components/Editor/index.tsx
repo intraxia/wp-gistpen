@@ -1,20 +1,18 @@
 import './index.scss';
 import React, { memo, useRef, useEffect } from 'react';
-import { Props } from './types';
 import { toJunction } from 'brookjs-silt';
-import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import ClipboardJS from 'clipboard';
+import { Observable } from 'kefir';
 import {
   editorFilenameChange,
   editorDeleteClick,
   editorLanguageChange
 } from '../../actions';
 import { i18n } from '../../helpers';
+import Prism from '../../prism';
 import Pre from './Pre';
 import Code from './Code';
-import { Observable } from 'kefir';
-
-toolbarStyles.use();
+import { Props } from './types';
 
 const ToolbarButton: React.FC<{ children: React.ReactNode }> = ({
   children
@@ -30,7 +28,7 @@ const _Filename: React.FC<{
     if (ref.current != null) {
       ref.current.textContent = filename;
     }
-  }, [ref.current]);
+  }, [filename]);
 
   return (
     <ToolbarButton>
@@ -105,9 +103,13 @@ const CopyEmbedCode: React.FC<{
   );
 };
 
-const Toolbar: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="toolbar">{children}</div>
-);
+const Toolbar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  useEffect(() => {
+    Prism.togglePlugin('toolbar', true);
+  }, []);
+
+  return <div className="toolbar">{children}</div>;
+};
 
 const Editor: React.FC<Props> = ({
   filename,

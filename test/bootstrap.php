@@ -29,6 +29,34 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 $_manually_load_plugin = function() use ( $plugin_root ) {
+	create_if_missing(
+		$plugin_root . '/resources/languages.json',
+		[
+			'list'    => [
+				'js'        => 'JavaScript',
+				'php'       => 'PHP',
+				'plaintext' => 'PlainText',
+			],
+			'aliases' => [
+				'js' => 'javascript',
+			],
+		]
+	);
+
+	$dummy_asset_manifest = [
+		'entrypoints' => [],
+	];
+
+	create_if_missing(
+		$plugin_root . '/resources/assets/asset-manifest.json',
+		$dummy_asset_manifest
+	);
+
+	create_if_missing(
+		$plugin_root . '/resources/assets/asset-manifest.min.json',
+		$dummy_asset_manifest
+	);
+
 	require $plugin_root . '/wp-gistpen.php';
 };
 
@@ -37,23 +65,10 @@ tests_add_filter( 'muplugins_loaded', $_manually_load_plugin );
 // Start up the WP testing environment.
 require $_tests_dir . '/includes/bootstrap.php';
 
-$languages_config = $plugin_root . '/resources/languages.json';
-
-$exists = file_exists( $languages_config );
-
-if ( ! $exists ) {
-	$dummy = array(
-		'list'    => array(
-			'js'        => 'JavaScript',
-			'php'       => 'PHP',
-			'plaintext' => 'PlainText',
-		),
-		'aliases' => array(
-			'js' => 'javascript',
-		),
-	);
-
-	file_force_contents( $languages_config, wp_json_encode( $dummy ) );
+function create_if_missing( $file, array $json ) {
+	if ( ! file_exists( $file ) ) {
+		file_force_contents( $file, wp_json_encode( $json ) );
+	}
 }
 
 function file_force_contents( $dir, $contents ) {

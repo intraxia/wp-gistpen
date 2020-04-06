@@ -9,12 +9,9 @@ webpack
 .dockerignore
 .editorconfig
 .env.example
-.eslintrc.js
 .gitignore
-.prettierrc
 .svnignore
 .travis.yml
-babel.config.js
 Dockerfile
 setupTests.js
 stylelint.config.js

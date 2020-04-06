@@ -1,4 +1,5 @@
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import {
   ajaxStarted,
   ajaxFailed,
@@ -7,7 +8,6 @@ import {
   searchResultsSucceeded
 } from '../actions';
 import { RootAction } from '../util';
-import { EddyReducer } from 'brookjs';
 
 export type AjaxState = {
   running: boolean;

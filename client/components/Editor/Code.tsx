@@ -13,10 +13,10 @@ import {
 } from '../../actions';
 import { selectSelectionStart, selectSelectionEnd } from '../../selectors';
 import Prism from '../../prism';
-import { isSpecialEvent, languageIsEqual, editorOptionsIsEqual } from './util';
 import { prismSlug } from '../../helpers';
-import findOffset from './findOffset';
 import { RootAction, Cursor, Toggle } from '../../util';
+import { isSpecialEvent, languageIsEqual, editorOptionsIsEqual } from './util';
+import findOffset from './findOffset';
 
 type Props = {
   code: string;

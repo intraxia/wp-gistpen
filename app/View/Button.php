@@ -72,7 +72,7 @@ class Button implements HasFilters {
 	 * @since 0.4.0
 	 */
 	public function mce_external_plugins( $plugins ) {
-		$plugins['wp_gistpen'] = $this->url . 'assets/js/tinymce' . $this->min . '.js';
+		$plugins['wp_gistpen'] = $this->url . 'resources/assets/tinymce' . $this->min . '.js';
 		return $plugins;
 	}
 

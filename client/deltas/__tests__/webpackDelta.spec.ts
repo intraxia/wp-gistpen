@@ -15,6 +15,8 @@ describe('webpackDelta', () => {
       send(action, state);
     });
 
-    expect(window.__webpack_public_path__).toBe('https://test.dev/assets/js/');
+    expect(window.__webpack_public_path__).toBe(
+      'https://test.dev/resources/assets/'
+    );
   });
 });

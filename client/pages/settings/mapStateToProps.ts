@@ -1,8 +1,8 @@
-import { State } from './state';
-import { Route, Run, Job, JobStatus, RunStatus } from '../../reducers';
 import { Nullable } from 'typescript-nullable';
+import { Route, Run, Job, JobStatus, RunStatus } from '../../reducers';
 import { SettingsPage } from '../../components';
 import { jobIsSuccess } from '../../selectors';
+import { State } from './state';
 
 const selectRoute = (state: { route: Nullable<Route> }) =>
   Nullable.withDefault({ name: 'highlighting', parts: {} }, state.route);

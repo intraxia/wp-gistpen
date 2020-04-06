@@ -1,6 +1,7 @@
 import Kefir, { Stream, Property, Observable } from 'kefir';
 import { ofType } from 'brookjs-flow';
 import * as t from 'io-ts';
+import { Nullable } from 'typescript-nullable';
 import {
   editorUpdateClick,
   ajaxStarted,
@@ -15,7 +16,6 @@ import {
   EditorState,
   EditorInstance
 } from '../reducers';
-import { Nullable } from 'typescript-nullable';
 import { AjaxService, AjaxError } from '../ajax';
 
 type RepoDeltaState = {

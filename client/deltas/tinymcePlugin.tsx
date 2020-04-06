@@ -1,21 +1,20 @@
 import Kefir, { Emitter, Observable, Property, Stream } from 'kefir';
 import { ofType } from 'brookjs-flow';
 import React from 'react';
+import { RootJunction } from 'brookjs-silt';
+import ReactDOM from 'react-dom';
+import * as tmce from 'tinymce';
+import { SearchPopup } from '../components';
 import {
   tinymceButtonClick,
   tinymcePopupInsertClick,
   tinymcePopupCloseClick
 } from '../actions';
-import { SearchPopup } from '../components';
-import { RootJunction } from 'brookjs-silt';
-import ReactDOM from 'react-dom';
-import * as tmce from 'tinymce';
 import { RootAction } from '../util';
 import { SearchState, AjaxState } from '../reducers';
 
 declare global {
   interface Window {
-    // eslint-disable-next-line
     tinymce: typeof tmce;
   }
 }

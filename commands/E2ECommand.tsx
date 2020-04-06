@@ -159,12 +159,16 @@ const tests: Delta<Action, State> = (action$, state$) =>
           `<rootDir>/${dir}/**/*.{spec,test}.{js,jsx,ts,tsx}`
         ],
         transform: {
-          '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
-          '^.+\\.css$': require.resolve(
-            path.join('brookjs-cli', 'jest', 'cssTransform.js')
+          '^.+\\.(js|jsx|ts|tsx)$': path.join(
+            'brookjs-cli',
+            'jest',
+            'babelTransform.js'
           ),
-          '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': require.resolve(
-            path.join('brookjs-cli', 'jest', 'fileTransform.js')
+          '^.+\\.css$': path.join('brookjs-cli', 'jest', 'cssTransform.js'),
+          '^(?!.*\\.(js|jsx|ts|tsx|css|json)$)': path.join(
+            'brookjs-cli',
+            'jest',
+            'fileTransform.js'
           )
         },
         transformIgnorePatterns: [

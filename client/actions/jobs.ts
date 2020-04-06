@@ -24,7 +24,7 @@ export const runsFetchFailed = createAction(
   'RUNS_FETCH_FAILED',
   resolve => (err: TypeError) => resolve(err)
 );
-``;
+
 export const messagesFetchStarted = createAction('MESSAGES_FETCH_STARTED');
 
 export const messagesFetchSucceeded = createAction(

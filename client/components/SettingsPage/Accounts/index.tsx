@@ -1,7 +1,7 @@
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
-import { gistTokenChange } from '../../../actions';
 import { Observable } from 'kefir';
+import { gistTokenChange } from '../../../actions';
 
 type AccountProps = {
   token: string;
@@ -32,7 +32,11 @@ const Accounts: React.FC<Props> = ({ onChange, token }) => (
             />
             <p className="description" id="wpgp-token-description">
               Create a new{' '}
-              <a href="https://github.com/settings/tokens" target="_blank">
+              <a
+                href="https://github.com/settings/tokens"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 Personal Access Token
               </a>{' '}
               with <code>gist</code> scope and paste it here.
