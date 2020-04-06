@@ -2,7 +2,8 @@ import { createStore } from 'redux';
 import React from 'react';
 import { RootJunction } from 'brookjs-silt';
 import ReactDOM from 'react-dom';
-import router from './router';
+import { connect, Provider } from 'react-redux';
+import { eddy } from 'brookjs';
 import {
   applyDelta,
   jobsDelta,
@@ -12,13 +13,12 @@ import {
 } from '../../deltas';
 import { ajax$ } from '../../ajax';
 import { SettingsPage } from '../../components';
-import { reducer, State } from './state';
-import mapStateToProps from './mapStateToProps';
-import { connect, Provider } from 'react-redux';
-import { eddy } from 'brookjs';
 import Prism from '../../prism';
 import { RootAction } from '../../util';
 import { Job } from '../../reducers';
+import mapStateToProps from './mapStateToProps';
+import { reducer, State } from './state';
+import router from './router';
 
 type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -36,7 +36,6 @@ declare global {
 
 const { __GISTPEN_SETTINGS__ } = window;
 
-// eslint-disable-next-line camelcase
 Prism.setAutoloaderPath(
   (__webpack_public_path__ = __GISTPEN_SETTINGS__.globals.url + 'assets/js/')
 );

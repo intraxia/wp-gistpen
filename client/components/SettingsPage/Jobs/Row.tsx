@@ -1,8 +1,8 @@
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
+import { Observable } from 'kefir';
 import { i18n, link } from '../../../helpers';
 import { jobDispatchClick } from '../../../actions';
-import { Observable } from 'kefir';
 import { Job } from './types';
 
 type Props = Job & { onClick: (slug: string) => void };

@@ -1,7 +1,8 @@
-import { AjaxService } from '../ajax';
 import Kefir, { Observable, Stream, Property } from 'kefir';
 import { ofType } from 'brookjs-flow';
 import * as t from 'io-ts';
+import { Nullable } from 'typescript-nullable';
+import { AjaxService } from '../ajax';
 import {
   messagesFetchStarted,
   messagesFetchSucceeded,
@@ -26,7 +27,6 @@ import {
   JobSuccess
 } from '../reducers';
 import { RootAction } from '../util';
-import { Nullable } from 'typescript-nullable';
 import { jobIsSuccess } from '../selectors';
 
 type JobsServices = {

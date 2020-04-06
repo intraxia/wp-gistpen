@@ -1,6 +1,9 @@
 import { createStore } from 'redux';
 import { RootJunction } from 'brookjs-silt';
 import ReactDOM from 'react-dom';
+import React from 'react';
+import { Provider, connect } from 'react-redux';
+import { eddy } from 'brookjs';
 import {
   applyDelta,
   authorDelta,
@@ -10,15 +13,12 @@ import {
   userDelta
 } from '../../deltas';
 import { ajax$ } from '../../ajax';
-import router from './router';
 import { RootAction } from '../../util';
-import React from 'react';
-import { Provider, connect } from 'react-redux';
-import View from './View';
-import { State, mapStateToProps, reducer } from './state';
-import { eddy } from 'brookjs';
 import Prism from '../../prism';
 import { init } from '../../actions';
+import router from './router';
+import View from './View';
+import { State, mapStateToProps, reducer } from './state';
 
 interface EditWindowState extends State {}
 
@@ -30,7 +30,6 @@ declare global {
 
 const { __GISTPEN_EDITOR__ } = window;
 
-// eslint-disable-next-line camelcase
 Prism.setAutoloaderPath(
   (__webpack_public_path__ = __GISTPEN_EDITOR__.globals.url + 'assets/js/')
 );

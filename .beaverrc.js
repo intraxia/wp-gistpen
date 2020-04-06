@@ -1,21 +1,13 @@
-import path from 'path';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import {
-  devtool,
-  styleRule,
-  usableStyleRule,
+  lazyStyleRule,
   styleLintPlugin,
   notifierPlugin,
-  resolve,
   copyPlugin,
-  prismLanguageGenerationPlugin,
-  tsCheckPlugin
+  prismLanguageGenerationPlugin
 } from './webpack';
 
 export const dir = 'client';
-
-const client = path.resolve(__dirname, dir);
-const pages = path.resolve(client, 'pages');
 
 const isProd = state => state.env === 'production';
 
@@ -34,22 +26,12 @@ export const webpack = {
     filename: state => `[name]${isProd(state) ? '.min' : ''}.js`
   },
   modifier: (config, state) => {
-    if (!isProd(state)) {
-      config.devtool = devtool;
-    }
-
-    config.resolve = {
-      ...config.resolve,
-      ...resolve
-    };
-
-    config.module.rules.push(styleRule);
-    config.module.rules.push(usableStyleRule);
+    config.module.rules[2].exclude = /\.(module|lazy)\.css$/;
+    config.module.rules.push(lazyStyleRule);
 
     config.plugins.push(styleLintPlugin);
     config.plugins.push(notifierPlugin);
     config.plugins.push(prismLanguageGenerationPlugin);
-    config.plugins.push(tsCheckPlugin);
 
     if (isProd(state)) {
       config.plugins.push(copyPlugin);
@@ -76,15 +58,4 @@ export const webpack = {
 
     return config;
   }
-};
-
-export const storybook = {
-  port: 9001,
-  host: null,
-  staticDirs: ['assets/js'],
-  https: {
-    enabled: false
-  },
-  devServer: {},
-  middleware: (router, state) => router
 };

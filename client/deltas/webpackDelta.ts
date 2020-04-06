@@ -12,7 +12,6 @@ export const webpackDelta = (
 ): Observable<never, never> =>
   state$.take(1).flatMap(props =>
     stream(emitter => {
-      // eslint-disable-next-line camelcase
       window.__webpack_public_path__ = props.globals.url + 'assets/js/';
 
       emitter.end();

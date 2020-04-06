@@ -4,7 +4,6 @@ import 'prismjs/plugins/autoloader/prism-autoloader';
 // Prism highlights automatically by default.
 document.removeEventListener('DOMContentLoaded', Prism.highlightAll);
 
-// eslint-disable-next-line camelcase
 if (window.__webpack_public_path__ != null) {
   Prism.plugins.autoloader.languages_path = window.__webpack_public_path__;
 }
@@ -18,14 +17,14 @@ type Theme = {
 
 let currentTheme: Theme;
 
-const plugins = {} as { [key: string]: boolean };
+const plugins: Record<string, boolean> = {};
 
 const extension = {
   setAutoloaderPath: (path: string) =>
     (Prism.plugins.autoloader.languages_path = path),
   setTheme: (theme: string): Promise<Theme> =>
-    import(`./themes/${theme}.ts`).then(
-      ({ theme }: { theme: Theme }) =>
+    import(`./themes/${theme}.lazy.css`).then(
+      ({ default: theme }: { default: Theme }) =>
         new Promise(resolve =>
           requestAnimationFrame(() => {
             if (currentTheme !== theme) {

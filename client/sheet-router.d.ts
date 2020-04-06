@@ -1,4 +1,3 @@
-/* eslint-disable one-var */
 declare module 'sheet-router' {
   const router: any;
   export default router;

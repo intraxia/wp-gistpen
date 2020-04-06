@@ -3,10 +3,10 @@ import { Nullable } from 'typescript-nullable';
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
 import classNames from 'classnames';
+import { Stream } from 'kefir';
 import { commitClick } from '../../actions';
 import { i18n, link } from '../../helpers';
 import Blob from '../Blob';
-import { Stream } from 'kefir';
 
 const Commits: React.FC<{
   commits: Array<{

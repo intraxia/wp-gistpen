@@ -1,10 +1,10 @@
 import './index.scss';
 import React, { useRef, useEffect, useMemo } from 'react';
-import Controls from './Controls';
-import Description from './Description';
 import Editor from '../Editor';
 import { Toggle, Cursor } from '../../util';
 import { AjaxError } from '../../ajax';
+import Description from './Description';
+import Controls from './Controls';
 
 type Instance = {
   ID: string;

@@ -35,8 +35,8 @@ type Props = HighlightingProps & {
 
 const Highlighting: React.FC<Props> = ({
   theme,
-  ['line-numbers']: lineNumbers,
-  ['show-invisibles']: showInvisibles,
+  'line-numbers': lineNumbers,
+  'show-invisibles': showInvisibles,
   demo,
   onThemeChange,
   onLineNumbersChange,

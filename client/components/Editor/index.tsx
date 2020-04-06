@@ -1,9 +1,9 @@
 import './index.scss';
 import React, { memo, useRef, useEffect } from 'react';
-import { Props } from './types';
 import { toJunction } from 'brookjs-silt';
 import toolbarStyles from 'prismjs/plugins/toolbar/prism-toolbar.css';
 import ClipboardJS from 'clipboard';
+import { Observable } from 'kefir';
 import {
   editorFilenameChange,
   editorDeleteClick,
@@ -12,7 +12,7 @@ import {
 import { i18n } from '../../helpers';
 import Pre from './Pre';
 import Code from './Code';
-import { Observable } from 'kefir';
+import { Props } from './types';
 
 toolbarStyles.use();
 
@@ -30,7 +30,7 @@ const _Filename: React.FC<{
     if (ref.current != null) {
       ref.current.textContent = filename;
     }
-  }, [ref.current]);
+  }, [filename]);
 
   return (
     <ToolbarButton>

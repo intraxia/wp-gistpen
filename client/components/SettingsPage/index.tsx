@@ -1,12 +1,12 @@
 import React from 'react';
 import { i18n } from '../../helpers';
+import { Route, RunStatus, Message, JobStatus, Run } from '../../reducers';
 import Accounts from './Accounts';
 import Header from './Header';
 import Highlighting from './Highlighting';
 import Messages from './Messages';
 import Jobs from './Jobs';
 import Runs from './Runs';
-import { Route, RunStatus, Message, JobStatus, Run } from '../../reducers';
 
 type Theme = {
   name: string;
@@ -45,8 +45,8 @@ type Props = {
 const Page: React.FC<Props> = ({
   route,
   theme,
-  ['line-numbers']: lineNumbers,
-  ['show-invisibles']: showInvisibles,
+  'line-numbers': lineNumbers,
+  'show-invisibles': showInvisibles,
   demo,
   token,
   jobs,

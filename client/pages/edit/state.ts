@@ -1,5 +1,4 @@
 import React from 'react';
-import View from './View';
 import { combineReducers } from 'brookjs';
 import { StateType } from 'typesafe-actions';
 import {
@@ -11,6 +10,7 @@ import {
   commitsReducer,
   routeReducer
 } from '../../reducers';
+import View from './View';
 
 export const reducer = combineReducers({
   ajax: ajaxReducer,
