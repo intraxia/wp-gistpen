@@ -85,7 +85,7 @@
     "jest-image-snapshot": "^3.0.1",
     "jest-puppeteer": "^4.4.0",
     "node-sass": "^4.13.1",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.4",
     "react-dev-utils": "^10.0.0",
     "sass-loader": "^7.3.1",
     "sinon": "^9.0.1",
