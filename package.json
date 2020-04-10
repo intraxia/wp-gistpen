@@ -93,7 +93,7 @@
     "clipboard": "^2.0.4",
     "io-ts": "^1.10.4",
     "jest": "^24.9.0",
-    "jest-cli": "^24.9.0",
+    "jest-cli": "^25.3.0",
     "kefir": "^3.8.6",
     "mutationobserver-shim": "^0.3.3",
     "prism-themes": "^1.1.0",
