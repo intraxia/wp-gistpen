@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "65df23661ffa8da39759f6a627991aad",
+    "content-hash": "afc62176895ed50bfbd591efa760239a",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -168,16 +168,16 @@
         },
         {
             "name": "intraxia/jaxion",
-            "version": "0.0.4",
+            "version": "0.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/intraxia/jaxion.git",
-                "reference": "6a09cf307438f3e2990ebd6445c7d0a044720124"
+                "reference": "60b195650c5453bffec30be0ae511dded2ad0099"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/6a09cf307438f3e2990ebd6445c7d0a044720124",
-                "reference": "6a09cf307438f3e2990ebd6445c7d0a044720124",
+                "url": "https://api.github.com/repos/intraxia/jaxion/zipball/60b195650c5453bffec30be0ae511dded2ad0099",
+                "reference": "60b195650c5453bffec30be0ae511dded2ad0099",
                 "shasum": ""
             },
             "require": {
@@ -209,7 +209,7 @@
                 }
             ],
             "description": "A WordPress plugin framework for modern WordPress development.",
-            "time": "2019-12-08T19:47:24+00:00"
+            "time": "2020-04-10T01:08:55+00:00"
         },
         {
             "name": "myclabs/php-enum",
