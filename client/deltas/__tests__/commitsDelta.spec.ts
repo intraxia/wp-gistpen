@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import { ObsResponse } from '../../ajax';
 import sinon from 'sinon';
+import { ObsResponse } from '../../ajax';
 import {
   routeChange,
   commitsFetchStarted,

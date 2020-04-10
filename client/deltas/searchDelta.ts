@@ -1,8 +1,8 @@
 // @flow
 import Kefir, { Observable } from 'kefir';
-import { RootAction } from '../util';
 import { ofType } from 'brookjs-flow';
 import * as t from 'io-ts';
+import { RootAction } from '../util';
 import { AjaxService, AjaxError } from '../ajax';
 import {
   searchInput,

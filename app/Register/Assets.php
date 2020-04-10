@@ -3,10 +3,10 @@ namespace Intraxia\Gistpen\Register;
 
 use Intraxia\Gistpen\Model\Repo;
 use Intraxia\Gistpen\Params\Repository as Params;
-use Intraxia\Gistpen\View\Edit;
-use Intraxia\Gistpen\View\Settings;
 use Intraxia\Jaxion\Assets\Register;
+use Intraxia\Jaxion\Core\Config;
 use Psr\Container\ContainerInterface as Container;
+use Exception;
 
 /**
  * Class Register\Assets.
@@ -32,6 +32,13 @@ class Assets {
 	);
 
 	/**
+	 * Configuration for each asset entrypoint.
+	 *
+	 * @var array
+	 */
+	private $asset_config = [];
+
+	/**
 	 * Container service.
 	 *
 	 * @var Container
@@ -44,117 +51,154 @@ class Assets {
 	 * @param Container $container
 	 */
 	public function __construct( Container $container ) {
-		$this->container = $container;
+		$this->container    = $container;
+		$this->asset_config = [
+			'edit'     => [
+				'type'      => 'admin',
+				'condition' => function () {
+					$cond = get_current_screen()->id === 'gistpen';
+
+					if ( $cond ) {
+						wp_dequeue_script( 'autosave' );
+					}
+
+					return $cond;
+				},
+				'localize'  => function () {
+					/**
+					 * Params service.
+					 *
+					 * @var Params
+					 */
+					$params = $this->container->get( Params::class );
+
+					return array(
+						'name' => '__GISTPEN_EDITOR__',
+						'data' => $params->state( 'edit' ),
+					);
+				},
+			],
+			'content'  => [
+				'type'      => 'web',
+				'condition' => function () {
+					if ( is_home() || is_archive() ) {
+						return true;
+					}
+
+					if ( Repo::get_post_type() === get_post_type() ) {
+						return true;
+					}
+
+					$post = get_post();
+
+					if ( ! $post ) {
+						return false;
+					}
+
+					return has_shortcode( $post->post_content, 'gistpen' );
+				},
+				'localize'  => function() {
+					/**
+					 * Params service.
+					 *
+					 * @var Params
+					 */
+					$params = $this->container->get( Params::class );
+
+					return array(
+						'name' => '__GISTPEN_CONTENT__',
+						'data' => $params->state( 'content' ),
+					);
+				},
+			],
+			'settings' => [
+				'type'      => 'admin',
+				'condition' => function () {
+					return 'settings_page_wp-gistpen' === get_current_screen()->id;
+				},
+				'localize'  => function () {
+					/**
+					 * Params service.
+					 *
+					 * @var Params
+					 */
+					$params = $this->container->get( Params::class );
+
+					return array(
+						'name' => '__GISTPEN_SETTINGS__',
+						'data' => $params->state( 'settings' ),
+					);
+				},
+			],
+		];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @param Register $assets
+	 * @throws Exception
 	 */
 	public function add_assets( Register $assets ) {
-		$assets->set_debug( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG );
+		/** App config. @var Config $config */
+		$config         = $this->container->get( Config::class );
+		$debug          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+		$asset_manifest = $config->get_json_resource(
+			'assets/asset-manifest' . ( $debug ? '' : '.min' )
+		);
 
-		$slug = $this->container->get( 'slug' );
+		if ( null === $asset_manifest ) {
+			throw new Exception( 'Asset manifest not found' );
+		}
 
-		/**
-		 * Edit Assets
-		 */
-		$assets->register_script( array(
-			'type'      => 'admin',
-			'deps'      => static::$deps,
-			'condition' => function () {
-				$cond = get_current_screen()->id === 'gistpen';
+		foreach ( $asset_manifest['entrypoints'] as $entry => $files ) {
+			$this->process_entrypoint( $assets, $entry, $files );
+		}
+	}
 
-				if ( $cond ) {
-					wp_dequeue_script( 'autosave' );
-				}
+	/**
+	 * Process a given entrypoint.
+	 *
+	 * @param Register $assets
+	 * @param string   $entry
+	 * @param array    $files
+	 * @throws Exception
+	 */
+	private function process_entrypoint( Register $assets, $entry, $files ) {
+		// TinyMCE plugins are registered differently than regular assets.
+		if ( 'tinymce' === $entry ) {
+			return;
+		}
 
-				return $cond;
-			},
-			'handle'    => $slug . '-editor-script',
-			'src'       => 'assets/js/editor',
-			'footer'    => false,
-			'localize'  => function () {
-				/**
-				 * Params service.
-				 *
-				 * @var Params
-				 */
-				$params = $this->container->get( Params::class );
+		if ( ! isset( $this->asset_config[ $entry ] ) ) {
+			throw new Exception( 'Unexpected entry in manifest: ' . $entry );
+		}
 
-				return array(
-					'name' => '__GISTPEN_EDITOR__',
-					'data' => $params->state( 'edit' ),
-				);
-			},
-		) );
+		/** App slug @var string $slug  */
+		$slug         = $this->container->get( 'slug' );
+		$asset_config = $this->asset_config[ $entry ];
 
-		/**
-		 * Settings Page Assets
-		 */
-		$assets->register_script( array(
-			'type'      => 'admin',
-			'deps'      => static::$deps,
-			'condition' => function () {
-				return 'settings_page_wp-gistpen' === get_current_screen()->id;
-			},
-			'handle'    => $slug . '-settings-script',
-			'src'       => 'assets/js/settings',
-			'footer'    => true,
-			'localize'  => function () {
-				/**
-				 * Params service.
-				 *
-				 * @var Params
-				 */
-				$params = $this->container->get( Params::class );
+		foreach ( $files as $file ) {
+			if ( false !== strpos( $file, '.js' ) ) {
+				$assets->register_script( array(
+					'type'      => $asset_config['type'],
+					'deps'      => static::$deps,
+					'condition' => $asset_config['condition'],
+					'handle'    => $slug . '-' . $entry . '-script',
+					'src'       => 'resources/assets/' . $file,
+					'footer'    => true,
+					'localize'  => $asset_config['localize'],
+				) );
+			}
 
-				return array(
-					'name' => '__GISTPEN_SETTINGS__',
-					'data' => $params->state( 'settings' ),
-				);
-			},
-		) );
-
-		/**
-		 * Content Assets
-		 */
-		$assets->register_script( array(
-			'type'      => 'web',
-			'condition' => function () {
-				if ( is_home() || is_archive() ) {
-					return true;
-				}
-
-				if ( Repo::get_post_type() === get_post_type() ) {
-					return true;
-				}
-
-				$post = get_post();
-
-				if ( ! $post ) {
-					return false;
-				}
-
-				return has_shortcode( $post->post_content, 'gistpen' );
-			},
-			'handle'    => $slug . '-content-script',
-			'src'       => 'assets/js/content',
-			'footer'    => true,
-			'localize'  => function() {
-				/**
-				 * Params service.
-				 *
-				 * @var Params
-				 */
-				$params = $this->container->get( Params::class );
-
-				return array(
-					'name' => '__GISTPEN_CONTENT__',
-					'data' => $params->state( 'content' ),
-				);
-			},
-		) );
+			if ( false !== strpos( $file, '.css' ) ) {
+				$assets->register_style( array(
+					'type'      => $asset_config['type'],
+					'condition' => $asset_config['condition'],
+					'handle'    => $slug . '-' . $entry . '-style',
+					'src'       => 'resources/assets/' . $file,
+				) );
+			}
+		}
 	}
 }

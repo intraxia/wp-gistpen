@@ -22,9 +22,9 @@ p2.use();
 
 const { __GISTPEN_CONTENT__ } = window;
 
-// eslint-disable-next-line camelcase
 Prism.setAutoloaderPath(
-  (__webpack_public_path__ = __GISTPEN_CONTENT__.globals.url + 'assets/js/')
+  (__webpack_public_path__ =
+    __GISTPEN_CONTENT__.globals.url + 'resources/assets/')
 );
 
 const promises: Array<Promise<any>> = [];

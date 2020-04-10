@@ -1,4 +1,5 @@
 import { getType } from 'typesafe-actions';
+import { EddyReducer } from 'brookjs';
 import {
   editorThemeChange,
   editorTabsToggle,
@@ -22,7 +23,6 @@ import {
   ajaxFailed
 } from '../actions';
 import { RootAction, Cursor, Toggle } from '../util';
-import { EddyReducer } from 'brookjs';
 import { AjaxError } from '../ajax';
 
 export type EditorSnapshot = {

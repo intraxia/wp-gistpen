@@ -1,10 +1,10 @@
 import './Description.scss';
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
+import { Observable } from 'kefir';
 import { i18n } from '../../helpers';
 import { editorDescriptionChange } from '../../actions';
 import Loader from '../Loader';
-import { Observable } from 'kefir';
 
 type Props = {
   description: string;

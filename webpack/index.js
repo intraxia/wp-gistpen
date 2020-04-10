@@ -3,64 +3,21 @@ const fs = require('fs-extra');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin-alt');
-const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 
 const client = path.join(__dirname, '..', 'client');
-const pages = path.join(client, 'pages');
 
-exports.devtool = 'sourcemap';
-
-exports.eslintRule = {
-  test: /\.js$/,
-  use: ['eslint-loader'],
-  include: client,
-  enforce: 'pre'
-};
-
-exports.styleRule = {
-  test: /\.(scss|css)$/,
-  include: [
-    path.join(pages, 'editor'),
-    path.join(pages, 'tinymce'),
-    path.join(client, 'components')
-  ],
+exports.lazyStyleRule = {
+  test: /\.lazy\.(scss|css)$/,
   use: [
     {
       loader: 'style-loader',
       options: {
-        hmr: false
+        injectType: 'lazyStyleTag'
       }
     },
     'css-loader',
     'sass-loader'
   ]
-};
-
-exports.usableStyleRule = {
-  test: /\.(scss|css)$/,
-  include: [
-    path.join(pages, 'settings'),
-    path.join(client, 'prism'),
-    /node_modules/
-  ],
-  use: [
-    {
-      loader: 'style-loader/useable',
-      options: {
-        hmr: false
-      }
-    },
-    'css-loader',
-    'sass-loader'
-  ]
-};
-
-exports.resolve = {
-  alias: {
-    redux: 'redux/es/redux.js'
-  },
-  extensions: ['.js', '.ts', '.tsx', '.json']
 };
 
 exports.styleLintPlugin = new StyleLintPlugin({
@@ -187,12 +144,3 @@ class PrismLanguageGenerationPlugin {
 }
 
 exports.prismLanguageGenerationPlugin = new PrismLanguageGenerationPlugin();
-
-exports.tsCheckPlugin = new ForkTsCheckerWebpackPlugin({
-  async: process.env.NODE_ENV === 'development',
-  checkSyntacticErrors: true,
-  reportFiles: ['**', '!**/*.js', '!**/*.json'],
-  watch: path.join(client),
-  silent: true,
-  formatter: typescriptFormatter
-});

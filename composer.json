@@ -14,7 +14,7 @@
   "require": {
     "php": ">=5.6.0",
     "wpupdatephp/wp-update-php": "~1.0",
-    "intraxia/jaxion": "0.0.4",
+    "intraxia/jaxion": "0.0.5",
     "myclabs/php-enum": "^1.5",
     "php-di/php-di": "5.4.x"
   },
@@ -45,9 +45,9 @@
     "vendor-dir": "lib"
   },
   "scripts": {
-    "dev:format": "phpcbf",
-    "test:lint": "phpcs",
-    "test:unit": "phpunit",
+    "dev:format": "./lib/bin/phpcbf",
+    "test:lint": "./lib/bin/phpcs",
+    "test:unit": "./lib/bin/phpunit",
     "test": [
       "@test:lint",
       "@test:unit"

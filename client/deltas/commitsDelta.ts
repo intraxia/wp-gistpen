@@ -1,6 +1,7 @@
 import Kefir, { Stream, Property, Observable } from 'kefir';
 import { ofType } from 'brookjs-flow';
 import * as t from 'io-ts';
+import { Nullable } from 'typescript-nullable';
 import { AjaxService } from '../ajax';
 import {
   routeChange,
@@ -10,7 +11,6 @@ import {
 } from '../actions';
 import { RootAction } from '../util';
 import { GlobalsState, RepoState } from '../reducers';
-import { Nullable } from 'typescript-nullable';
 
 type CommitsServices = {
   ajax$: AjaxService;

@@ -1,6 +1,7 @@
 import './Controls.scss';
 import React from 'react';
 import { toJunction } from 'brookjs-silt';
+import { Observable } from 'kefir';
 import { i18n, link } from '../../helpers';
 import {
   editorTabsToggle,
@@ -13,7 +14,6 @@ import {
   editorAddClick
 } from '../../actions';
 import { Toggle } from '../../util';
-import { Observable } from 'kefir';
 
 const mapCheckedToString = (e: React.ChangeEvent<HTMLInputElement>): Toggle =>
   e.target.checked ? 'on' : 'off';

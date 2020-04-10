@@ -1,6 +1,4 @@
-/* @TODO(mAAdhaTTah) figure out why eslint TS is complaining.
 /* eslint-env jest */
-/* eslint-disable */
 import { jestPlugin } from 'brookjs-desalinate';
 import Kefir from 'kefir';
 
