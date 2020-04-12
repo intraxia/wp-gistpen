@@ -8509,3 +8509,5 @@ exports[`Storyshots SettingsPage jobs view - no job selected 1`] = `
   </div>
 </div>
 `;
+
+exports[`Storyshots Shortcode default 1`] = `[gistpen id="`;
