@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Highlighting from './';
+import Highlighting from '../';
 
 storiesOf('Highlighting', module).add('default', () => (
   <Highlighting

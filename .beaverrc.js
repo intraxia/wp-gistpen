@@ -61,3 +61,20 @@ export const webpack = {
     return config;
   }
 };
+
+// @TODO(mAAdhaTTah) remove dupes from internals
+export const jest = {
+  moduleNameMapper: {
+    '^react-native$': 'react-native-web',
+    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
+    'react-syntax-highlighter/dist/esm/(.*)':
+      'react-syntax-highlighter/dist/cjs/$1',
+    '@babel/runtime/helpers/esm/(.*)': '@babel/runtime/helpers/$1',
+    '^.+\\.lazy\\.(css|sass|scss)$': '<rootDir>/__mocks__/lazy.js'
+  },
+  transformIgnorePatterns: [
+    '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$',
+    '^.+\\.module\\.(css|sass|scss)$',
+    '^.+\\.lazy\\.(css|sass|scss)$'
+  ]
+};

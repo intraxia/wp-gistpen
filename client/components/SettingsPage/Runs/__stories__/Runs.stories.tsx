@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Runs from './';
+import Runs from '../';
 
 storiesOf('Runs', module).add('default', () => (
   <Runs

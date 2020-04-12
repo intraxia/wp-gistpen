@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Jobs from './';
+import Jobs from '../';
 
 storiesOf('Jobs', module).add('default', () => (
   <Jobs

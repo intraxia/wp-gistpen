@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Description from './Description';
+import Description from '../Description';
 
 storiesOf('Description', module)
   .add('without text - not loading', () => (

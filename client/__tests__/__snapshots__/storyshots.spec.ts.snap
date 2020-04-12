@@ -1,0 +1,8511 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Storyshots Accounts default 1`] = `
+<div
+  class="table"
+>
+  <h3
+    class="title"
+  >
+    Sync Account Settings
+  </h3>
+  <table
+    class="form-table"
+  >
+    <tbody>
+      <tr>
+        <th>
+          <label
+            for="wpgp-token"
+          >
+            Gist Token
+          </label>
+        </th>
+        <td>
+          <input
+            class="regular-text"
+            data-testid="gist-token"
+            id="wpgp-token"
+            name="wpgp-token"
+            type="text"
+            value="ancsdf"
+          />
+          <p
+            class="description"
+            id="wpgp-token-description"
+          >
+            Create a new
+             
+            <a
+              href="https://github.com/settings/tokens"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Personal Access Token
+            </a>
+             
+            with 
+            <code>
+              gist
+            </code>
+             scope and paste it here.
+          </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Storyshots Blob default 1`] = `
+<pre
+  class="gistpen"
+  data-filename="test.js"
+>
+  <code
+    class="language-javascript"
+  >
+    function $initHighlight(block, flags) {
+    try {
+        if (block.className.search(/\\bno\\-highlight\\b/) != -1)
+            return processBlock(block.function, true, 0x0F) + ' class=""';
+    } catch (e) {
+        /* handle exception */
+        var e4x =
+            &lt;div&gt;Example
+                &lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;
+    }
+    for (var i = 0 / 2; i &lt; classes.length; i++) { // "0 / 2" should not be parsed as regexp
+        if (checkCondition(classes[i]) === undefined)
+            return /\\d+[\\s/]/g;
+    }
+    console.log(Array.every(classes, Boolean));
+}
+  </code>
+</pre>
+`;
+
+exports[`Storyshots Blob with inivisibles and line-numbers 1`] = `
+<pre
+  class="gistpen line-numbers"
+  data-filename="test.js"
+>
+  <code
+    class="language-javascript"
+  >
+    function $initHighlight(block, flags) {
+    try {
+        if (block.className.search(/\\bno\\-highlight\\b/) != -1)
+            return processBlock(block.function, true, 0x0F) + ' class=""';
+    } catch (e) {
+        /* handle exception */
+        var e4x =
+            &lt;div&gt;Example
+                &lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;
+    }
+    for (var i = 0 / 2; i &lt; classes.length; i++) { // "0 / 2" should not be parsed as regexp
+        if (checkCondition(classes[i]) === undefined)
+            return /\\d+[\\s/]/g;
+    }
+    console.log(Array.every(classes, Boolean));
+}
+  </code>
+</pre>
+`;
+
+exports[`Storyshots Blob with invisibles 1`] = `
+<pre
+  class="gistpen"
+  data-filename="test.js"
+>
+  <code
+    class="language-javascript"
+  >
+    function $initHighlight(block, flags) {
+    try {
+        if (block.className.search(/\\bno\\-highlight\\b/) != -1)
+            return processBlock(block.function, true, 0x0F) + ' class=""';
+    } catch (e) {
+        /* handle exception */
+        var e4x =
+            &lt;div&gt;Example
+                &lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;
+    }
+    for (var i = 0 / 2; i &lt; classes.length; i++) { // "0 / 2" should not be parsed as regexp
+        if (checkCondition(classes[i]) === undefined)
+            return /\\d+[\\s/]/g;
+    }
+    console.log(Array.every(classes, Boolean));
+}
+  </code>
+</pre>
+`;
+
+exports[`Storyshots Blob with line-numbers 1`] = `
+<pre
+  class="gistpen line-numbers"
+  data-filename="test.js"
+>
+  <code
+    class="language-javascript"
+  >
+    function $initHighlight(block, flags) {
+    try {
+        if (block.className.search(/\\bno\\-highlight\\b/) != -1)
+            return processBlock(block.function, true, 0x0F) + ' class=""';
+    } catch (e) {
+        /* handle exception */
+        var e4x =
+            &lt;div&gt;Example
+                &lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;
+    }
+    for (var i = 0 / 2; i &lt; classes.length; i++) { // "0 / 2" should not be parsed as regexp
+        if (checkCondition(classes[i]) === undefined)
+            return /\\d+[\\s/]/g;
+    }
+    console.log(Array.every(classes, Boolean));
+}
+  </code>
+</pre>
+`;
+
+exports[`Storyshots Commits default 1`] = `
+<div
+  class="wpgp-commits-container"
+>
+  <div
+    class="wpgp-commits-header"
+  >
+    <a
+      href="/?=&wpgp_route=editor"
+      type="button"
+    >
+      Translation & fallback not found for key editor.return
+    </a>
+  </div>
+  <div
+    class="wpgp-commits-app"
+  >
+    <div
+      class="wpgp-commits-list"
+    >
+      <div
+        class="wpgp-commits-item wpgp-commits-selected"
+      >
+        <img
+          alt="Commit Author"
+          src="http://via.placeholder.com/48x48"
+        />
+        <p>
+          <strong>
+            Commit Description
+          </strong>
+        </p>
+        <p>
+          1970-01-01
+        </p>
+      </div>
+      <div
+        class="wpgp-commits-item"
+      >
+        <img
+          alt="Commit Author"
+          src="http://via.placeholder.com/48x48"
+        />
+        <p>
+          <strong>
+            Commit Description
+          </strong>
+        </p>
+        <p>
+          1970-01-01
+        </p>
+      </div>
+    </div>
+    <div
+      class="wpgp-commits-preview"
+    >
+      <span>
+        <h3>
+          Commit Description
+        </h3>
+        <pre
+          class="gistpen"
+          data-filename="test.js"
+        >
+          <code
+            class="language-javascript"
+          >
+            console.log("test");
+          </code>
+        </pre>
+        <pre
+          class="gistpen"
+          data-filename="test.js"
+        >
+          <code
+            class="language-javascript"
+          >
+            console.log("test");
+          </code>
+        </pre>
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Ateliersulphurpool-Light 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-base16-ateliersulphurpool-light"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Atom Dark 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-atom-dark"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls CB 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-cb"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Coy 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-coy"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Darcula 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-darcula"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Dark 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-dark"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Default 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-default"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Duotone Dark 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-duotone-dark"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Duotone Earth 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-duotone-earth"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Duotone Forest 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-duotone-forest"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Duotone Light 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-duotone-light"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Duotone Sea 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-duotone-sea"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Duotone Space 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-duotone-space"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Funky 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-funky"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls GHColors 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-ghcolors"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Hopscotch 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-hopscotch"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Okaidia 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-okaidia"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Projoaque 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-pojoaque"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Tomorrow 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-tomorrow"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Twilight 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-twilight"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls VS 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-vs"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls Xonokai 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-xonokai"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Controls a11y Dark 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor-controls wpgp-editor-controls-a11y-dark"
+  >
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-status"
+      >
+        Translation & fallback not found for key editor.status
+        : 
+      </label>
+      <select
+        id="wpgp-editor-status"
+      >
+        <option
+          value="draft"
+        >
+          Draft
+        </option>
+        <option
+          value="pending"
+        >
+          Pending Review
+        </option>
+        <option
+          value="private"
+        >
+          Private
+        </option>
+        <option
+          value="publish"
+        >
+          Publish
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-sync"
+      >
+        Translation & fallback not found for key editor.sync
+      </label>
+      <input
+        checked=""
+        id="wpgp-editor-sync"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-theme"
+      >
+        Translation & fallback not found for key editor.theme
+        : 
+      </label>
+      <select
+        id="wpgp-editor-theme"
+      >
+        <option
+          value="default"
+        >
+          Default
+        </option>
+        <option
+          value="dark"
+        >
+          Dark
+        </option>
+        <option
+          value="funky"
+        >
+          Funky
+        </option>
+        <option
+          value="okaidia"
+        >
+          Okaidia
+        </option>
+        <option
+          value="tomorrow"
+        >
+          Tomorrow
+        </option>
+        <option
+          value="twilight"
+        >
+          Twilight
+        </option>
+        <option
+          value="coy"
+        >
+          Coy
+        </option>
+        <option
+          value="cb"
+        >
+          CB
+        </option>
+        <option
+          value="ghcolors"
+        >
+          GHColors
+        </option>
+        <option
+          value="pojoaque"
+        >
+          Projoaque
+        </option>
+        <option
+          value="xonokai"
+        >
+          Xonokai
+        </option>
+        <option
+          value="base16-ateliersulphurpool-light"
+        >
+          Ateliersulphurpool-Light
+        </option>
+        <option
+          value="hopscotch"
+        >
+          Hopscotch
+        </option>
+        <option
+          value="atom-dark"
+        >
+          Atom Dark
+        </option>
+        <option
+          value="duotone-dark"
+        >
+          Duotone Dark
+        </option>
+        <option
+          value="duotone-sea"
+        >
+          Duotone Sea
+        </option>
+        <option
+          value="duotone-space"
+        >
+          Duotone Space
+        </option>
+        <option
+          value="duotone-earth"
+        >
+          Duotone Earth
+        </option>
+        <option
+          value="duotone-forest"
+        >
+          Duotone Forest
+        </option>
+        <option
+          value="duotone-light"
+        >
+          Duotone Light
+        </option>
+        <option
+          value="vs"
+        >
+          VS
+        </option>
+        <option
+          value="darcula"
+        >
+          Darcula
+        </option>
+        <option
+          value="a11y-dark"
+        >
+          a11y Dark
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-tabs"
+      >
+        Translation & fallback not found for key editor.tabs
+         
+      </label>
+      <input
+        id="wpgp-enable-tabs"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-editor-width"
+      >
+        Translation & fallback not found for key editor.width
+        : 
+      </label>
+      <select
+        id="wpgp-editor-width"
+      >
+        <option
+          value="1"
+        >
+          1
+        </option>
+        <option
+          value="2"
+        >
+          2
+        </option>
+        <option
+          value="4"
+        >
+          4
+        </option>
+        <option
+          value="8"
+        >
+          8
+        </option>
+      </select>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <label
+        for="wpgp-enable-invisibles"
+      >
+        Translation & fallback not found for key editor.invisibles
+         
+      </label>
+      <input
+        checked=""
+        id="wpgp-enable-invisibles"
+        type="checkbox"
+      />
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-update"
+      >
+        Translation & fallback not found for key editor.update
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <button
+        class="dashicons-before wpgp-button wpgp-button-add"
+      >
+        Translation & fallback not found for key editor.file.add
+      </button>
+    </div>
+    <div
+      class="wpgp-editor-control"
+    >
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="/?=&wpgp_route=commits"
+      >
+        Translation & fallback not found for key editor.commits
+      </a>
+      <a
+        class="dashicons-before wpgp-button wpgp-button-add"
+        href="#"
+      >
+        Translation & fallback not found for key editor.gist
+      </a>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Description with text - loading 1`] = `
+<div
+  class="wpgp-editor-header-container"
+  id="titlediv"
+>
+  <div
+    class="wpgp-editor-header-row"
+  >
+    <div
+      class="wpgp-editor-description-container"
+      id="titlewrap"
+    >
+      <label
+        class="screen-reader-text"
+        for="title"
+        id="title-prompt-text"
+      >
+        Translation & fallback not found for key editor.description
+      </label>
+      <input
+        autocomplete="off"
+        id="title"
+        name="description"
+        size="30"
+        spellcheck="true"
+        type="text"
+        value="New Repo"
+      />
+    </div>
+    <div
+      class="wpgp-editor-loader-container"
+    >
+      <div
+        class="loader"
+      >
+        Translation & fallback not found for key editor.saving
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Description with text - not loading 1`] = `
+<div
+  class="wpgp-editor-header-container"
+  id="titlediv"
+>
+  <div
+    class="wpgp-editor-header-row"
+  >
+    <div
+      class="wpgp-editor-description-container"
+      id="titlewrap"
+    >
+      <label
+        class="screen-reader-text"
+        for="title"
+        id="title-prompt-text"
+      >
+        Translation & fallback not found for key editor.description
+      </label>
+      <input
+        autocomplete="off"
+        id="title"
+        name="description"
+        size="30"
+        spellcheck="true"
+        type="text"
+        value="New Repo"
+      />
+    </div>
+    <div
+      class="wpgp-editor-loader-container"
+    />
+  </div>
+</div>
+`;
+
+exports[`Storyshots Description without text - not loading 1`] = `
+<div
+  class="wpgp-editor-header-container"
+  id="titlediv"
+>
+  <div
+    class="wpgp-editor-header-row"
+  >
+    <div
+      class="wpgp-editor-description-container"
+      id="titlewrap"
+    >
+      <label
+        for="title"
+        id="title-prompt-text"
+      >
+        Translation & fallback not found for key editor.description
+      </label>
+      <input
+        autocomplete="off"
+        id="title"
+        name="description"
+        size="30"
+        spellcheck="true"
+        type="text"
+        value=""
+      />
+    </div>
+    <div
+      class="wpgp-editor-loader-container"
+    />
+  </div>
+</div>
+`;
+
+exports[`Storyshots EditPage with error 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="wpgp-editor"
+    data-brk-container="editor"
+  >
+    <div
+      class="wpgp-editor-row"
+    >
+      <div
+        class="wpgp-editor-header-container"
+        id="titlediv"
+      >
+        <div
+          class="wpgp-editor-header-row"
+        >
+          <div
+            class="wpgp-editor-description-container"
+            id="titlewrap"
+          >
+            <label
+              for="title"
+              id="title-prompt-text"
+            >
+              Translation & fallback not found for key editor.description
+            </label>
+            <input
+              autocomplete="off"
+              id="title"
+              name="description"
+              size="30"
+              spellcheck="true"
+              type="text"
+              value=""
+            />
+          </div>
+          <div
+            class="wpgp-editor-loader-container"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="wpgp-editor-row"
+    >
+      <div
+        class="wpgp-editor-controls wpgp-editor-controls-twilight"
+      >
+        <div
+          class="wpgp-editor-control"
+        >
+          <label
+            for="wpgp-editor-status"
+          >
+            Translation & fallback not found for key editor.status
+            : 
+          </label>
+          <select
+            id="wpgp-editor-status"
+          />
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <label
+            for="wpgp-editor-sync"
+          >
+            Translation & fallback not found for key editor.sync
+          </label>
+          <input
+            id="wpgp-editor-sync"
+            type="checkbox"
+          />
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <label
+            for="wpgp-editor-theme"
+          >
+            Translation & fallback not found for key editor.theme
+            : 
+          </label>
+          <select
+            id="wpgp-editor-theme"
+          />
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <label
+            for="wpgp-enable-tabs"
+          >
+            Translation & fallback not found for key editor.tabs
+             
+          </label>
+          <input
+            id="wpgp-enable-tabs"
+            type="checkbox"
+          />
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <label
+            for="wpgp-editor-width"
+          >
+            Translation & fallback not found for key editor.width
+            : 
+          </label>
+          <select
+            id="wpgp-editor-width"
+          />
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <label
+            for="wpgp-enable-invisibles"
+          >
+            Translation & fallback not found for key editor.invisibles
+             
+          </label>
+          <input
+            id="wpgp-enable-invisibles"
+            type="checkbox"
+          />
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <button
+            class="dashicons-before wpgp-button wpgp-button-update"
+          >
+            Translation & fallback not found for key editor.update
+          </button>
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <button
+            class="dashicons-before wpgp-button wpgp-button-add"
+          >
+            Translation & fallback not found for key editor.file.add
+          </button>
+        </div>
+        <div
+          class="wpgp-editor-control"
+        >
+          <a
+            class="dashicons-before wpgp-button wpgp-button-add"
+            href="/?=&wpgp_route=commits"
+          >
+            Translation & fallback not found for key editor.commits
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="wpgp-editor-row"
+    >
+      <div
+        class="editor page wpgp-editor-theme-twilight"
+      >
+        <div
+          class="code-toolbar"
+        >
+          <div
+            class="toolbar"
+          >
+            <div
+              class="toolbar-item"
+            >
+              <span
+                aria-label="filename"
+                class="wpgp-filename-input"
+                contenteditable="true"
+                spellcheck="false"
+              />
+            </div>
+            <div
+              class="toolbar-item"
+            >
+              <select />
+            </div>
+            <div
+              class="toolbar-item"
+            >
+              <button
+                type="button"
+              >
+                Translation & fallback not found for key editor.delete
+              </button>
+            </div>
+            <div
+              class="toolbar-item"
+            >
+              <button
+                type="button"
+              >
+                Translation & fallback not found for key editor.shortcode
+              </button>
+            </div>
+          </div>
+          <pre
+            class="language-javascript line-numbers"
+            spellcheck="false"
+          >
+            <code
+              class="language-javascript"
+              contenteditable="true"
+              spellcheck="false"
+            />
+          </pre>
+        </div>
+      </div>
+    </div>
+    <div
+      class="wpgp-editor-errors-container"
+    >
+      <div
+        class="wpgp-editor-error"
+      >
+        <h3>
+          An error occurred!
+        </h3>
+        <p>
+          A more specific BE message
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Editor default 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="editor page wpgp-editor-theme-twilight"
+  >
+    <div
+      class="code-toolbar"
+    >
+      <div
+        class="toolbar"
+      >
+        <div
+          class="toolbar-item"
+        >
+          <span
+            aria-label="filename"
+            class="wpgp-filename-input"
+            contenteditable="true"
+            spellcheck="false"
+          >
+            storybook.js
+          </span>
+        </div>
+        <div
+          class="toolbar-item"
+        >
+          <select>
+            <option
+              value="js"
+            >
+              JavaScript
+            </option>
+            <option
+              value="python"
+            >
+              Python
+            </option>
+          </select>
+        </div>
+        <div
+          class="toolbar-item"
+        >
+          <button
+            type="button"
+          >
+            Translation & fallback not found for key editor.delete
+          </button>
+        </div>
+        <div
+          class="toolbar-item"
+        >
+          <button
+            type="button"
+          >
+            Translation & fallback not found for key editor.shortcode
+          </button>
+        </div>
+      </div>
+      <pre
+        class="language-javascript line-numbers"
+        spellcheck="false"
+      >
+        <code
+          class="language-javascript"
+          contenteditable="true"
+          spellcheck="false"
+        />
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Editor no filename or content 1`] = `
+<div
+  id="wpbody"
+>
+  <div
+    class="editor page wpgp-editor-theme-twilight"
+  >
+    <div
+      class="code-toolbar"
+    >
+      <div
+        class="toolbar"
+      >
+        <div
+          class="toolbar-item"
+        >
+          <span
+            aria-label="filename"
+            class="wpgp-filename-input"
+            contenteditable="true"
+            spellcheck="false"
+          />
+        </div>
+        <div
+          class="toolbar-item"
+        >
+          <select>
+            <option
+              value="js"
+            >
+              JavaScript
+            </option>
+            <option
+              value="python"
+            >
+              Python
+            </option>
+          </select>
+        </div>
+        <div
+          class="toolbar-item"
+        >
+          <button
+            type="button"
+          >
+            Translation & fallback not found for key editor.delete
+          </button>
+        </div>
+        <div
+          class="toolbar-item"
+        >
+          <button
+            type="button"
+          >
+            Translation & fallback not found for key editor.shortcode
+          </button>
+        </div>
+      </div>
+      <pre
+        class="language-javascript line-numbers"
+        spellcheck="false"
+      >
+        <code
+          class="language-javascript"
+          contenteditable="true"
+          spellcheck="false"
+        />
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Header default 1`] = `
+<div
+  class="wpgp-settings-header"
+>
+  <h1>
+    Gistpen Settings
+  </h1>
+  <h2
+    class="nav-tab-wrapper"
+  >
+    <a
+      class="nav-tab nav-tab-active"
+      data-testid="link-highlighting"
+      href="/?=&wpgp_route=highlighting"
+    >
+      Highlighting
+    </a>
+    <a
+      class="nav-tab"
+      data-testid="link-accounts"
+      href="/?=&wpgp_route=accounts"
+    >
+      Accounts
+    </a>
+    <a
+      class="nav-tab"
+      data-testid="link-jobs"
+      href="/?=&wpgp_route=jobs"
+    >
+      Jobs
+    </a>
+  </h2>
+</div>
+`;
+
+exports[`Storyshots Header loading 1`] = `
+<div
+  class="wpgp-settings-header"
+>
+  <h1>
+    Gistpen Settings
+  </h1>
+  <h2
+    class="nav-tab-wrapper"
+  >
+    <a
+      class="nav-tab nav-tab-active"
+      data-testid="link-highlighting"
+      href="/?=&wpgp_route=highlighting"
+    >
+      Highlighting
+    </a>
+    <a
+      class="nav-tab"
+      data-testid="link-accounts"
+      href="/?=&wpgp_route=accounts"
+    >
+      Accounts
+    </a>
+    <a
+      class="nav-tab"
+      data-testid="link-jobs"
+      href="/?=&wpgp_route=jobs"
+    >
+      Jobs
+    </a>
+    <div
+      class="loader"
+    >
+      Translation & fallback not found for key settings.loading
+    </div>
+  </h2>
+</div>
+`;
+
+exports[`Storyshots Highlighting default 1`] = `
+<div
+  class="table"
+>
+  <h3
+    class="title"
+  >
+    Syntax Highlighting Settings
+  </h3>
+  <table
+    class="form-table"
+  >
+    <tbody>
+      <tr>
+        <th>
+          <label
+            for="wpgp-theme"
+          >
+            Choose Theme
+          </label>
+        </th>
+        <td>
+          <select
+            data-testid="prism-theme"
+            id="wpgp-theme"
+            name="wpgp-theme"
+          >
+            <option
+              value="default"
+            >
+              Default
+            </option>
+            <option
+              value="twilight"
+            >
+              Twilight
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label
+            for="wpgp-line-numbers"
+          >
+            Enable Line Numbers
+          </label>
+        </th>
+        <td>
+          <input
+            checked=""
+            data-testid="prism-line-numbers"
+            id="wpgp-line-numbers"
+            name="wpgp-line-numbers"
+            type="checkbox"
+          />
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label
+            for="wpgp-show-invisibles"
+          >
+            Enable Show Invisibles
+          </label>
+        </th>
+        <td>
+          <input
+            checked=""
+            data-testid="prism-show-invisibles"
+            id="wpgp-show-invisibles"
+            name="wpgp-show-invisibles"
+            type="checkbox"
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div
+    data-testid="prism-demo"
+  >
+    <pre
+      class="gistpen line-numbers"
+      data-filename="test.js"
+    >
+      <code
+        class="language-javascript"
+      >
+        console.log('test');
+      </code>
+    </pre>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Jobs default 1`] = `
+<div
+  class="table"
+>
+  <h3
+    class="title"
+  >
+    Translation & fallback not found for key jobs.title
+  </h3>
+  <table
+    class="widefat striped"
+  >
+    <thead>
+      <tr>
+        <th>
+          Translation & fallback not found for key jobs.name
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.description
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.status
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.runs
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.dispatch
+        </th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>
+          Translation & fallback not found for key jobs.name
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.description
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.status
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.runs
+        </th>
+        <th>
+          Translation & fallback not found for key jobs.dispatch
+        </th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>
+          <strong>
+            Export
+          </strong>
+        </td>
+        <td>
+          Export things
+        </td>
+        <td>
+          idle
+        </td>
+        <td>
+          <a
+            href="/?=&wpgp_route=jobs/export"
+          >
+            Translation & fallback not found for key jobs.runs.view
+          </a>
+        </td>
+        <td>
+          <button
+            class="button button-primary"
+            data-testid="dispatch-job-export"
+          >
+            Translation & fallback not found for key jobs.dispatch
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Storyshots Loader default 1`] = `
+<div
+  class="loader"
+>
+  Loading...
+</div>
+`;
+
+exports[`Storyshots Messages default 1`] = `
+<div
+  class="table"
+>
+  <h3
+    class="title"
+  >
+    Runs for 
+    Export
+     Run
+  </h3>
+  <p>
+    <strong>
+      Current Status: 
+      finished
+    </strong>
+  </p>
+  <p>
+    <a
+      href="/?=&wpgp_route=jobs/2"
+    >
+      ← back
+    </a>
+  </p>
+  <table
+    class="widefat striped"
+  >
+    <thead>
+      <tr>
+        <th>
+          Message ID
+        </th>
+        <th>
+          Message Text
+        </th>
+        <th>
+          Message Level
+        </th>
+        <th>
+          Message Log Time
+        </th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>
+          Message ID
+        </th>
+        <th>
+          Message Text
+        </th>
+        <th>
+          Message Level
+        </th>
+        <th>
+          Message Log Time
+        </th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>
+          1
+        </td>
+        <td>
+          This is a message
+        </td>
+        <td>
+          info
+        </td>
+        <td>
+          yesterday
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Storyshots Repo default 1`] = `
+<div>
+  <pre
+    class="gistpen"
+    data-filename="test.js"
+  >
+    <code
+      class="language-javascript"
+    >
+      function $initHighlight(block, flags) {
+  try {
+      if (block.className.search(/\\bno\\-highlight\\b/) != -1)
+          return processBlock(block.function, true, 0x0F) + ' class=""';
+  } catch (e) {
+      /* handle exception */
+      var e4x =
+          &lt;div&gt;Example
+              &lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;
+  }
+  for (var i = 0 / 2; i &lt; classes.length; i++) { // "0 / 2" should not be parsed as regexp
+      if (checkCondition(classes[i]) === undefined)
+          return /\\d+[\\s/]/g;
+  }
+  console.log(Array.every(classes, Boolean));
+}
+    </code>
+  </pre>
+  <pre
+    class="gistpen"
+    data-filename="test.js"
+  >
+    <code
+      class="language-javascript"
+    >
+      function $initHighlight(block, flags) {
+  try {
+      if (block.className.search(/\\bno\\-highlight\\b/) != -1)
+          return processBlock(block.function, true, 0x0F) + ' class=""';
+  } catch (e) {
+      /* handle exception */
+      var e4x =
+          &lt;div&gt;Example
+              &lt;p&gt;1234&lt;/p&gt;&lt;/div&gt;;
+  }
+  for (var i = 0 / 2; i &lt; classes.length; i++) { // "0 / 2" should not be parsed as regexp
+      if (checkCondition(classes[i]) === undefined)
+          return /\\d+[\\s/]/g;
+  }
+  console.log(Array.every(classes, Boolean));
+}
+    </code>
+  </pre>
+</div>
+`;
+
+exports[`Storyshots Runs default 1`] = `
+<div
+  class="table"
+>
+  <h3
+    class="title"
+  >
+    Runs for 
+    Export
+     Job
+  </h3>
+  <p>
+    <strong>
+      Current Status: 
+      idle
+    </strong>
+  </p>
+  <p>
+    <a
+      href="/?=&wpgp_route=jobs"
+    >
+      ← back
+    </a>
+  </p>
+  <table
+    class="widefat striped"
+  >
+    <thead>
+      <tr>
+        <th>
+          Translation & fallback not found for key run.id
+        </th>
+        <th>
+          Translation & fallback not found for key run.status
+        </th>
+        <th>
+          Translation & fallback not found for key run.scheduled
+        </th>
+        <th>
+          Translation & fallback not found for key run.started
+        </th>
+        <th>
+          Translation & fallback not found for key run.finished
+        </th>
+        <th>
+          Translation & fallback not found for key run.messages
+        </th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th>
+          Translation & fallback not found for key run.id
+        </th>
+        <th>
+          Translation & fallback not found for key run.status
+        </th>
+        <th>
+          Translation & fallback not found for key run.scheduled
+        </th>
+        <th>
+          Translation & fallback not found for key run.started
+        </th>
+        <th>
+          Translation & fallback not found for key run.finished
+        </th>
+        <th>
+          Translation & fallback not found for key run.messages
+        </th>
+      </tr>
+    </tfoot>
+    <tbody>
+      <tr>
+        <td>
+          1
+        </td>
+        <td>
+          finished
+        </td>
+        <td>
+          Yesterday
+        </td>
+        <td>
+          Today
+        </td>
+        <td>
+          Tomorrow
+        </td>
+        <td>
+          <a
+            href="/?=&wpgp_route=jobs/export/1"
+          >
+            Translation & fallback not found for key run.messages.view
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
+
+exports[`Storyshots SearchPopup with results; loading 1`] = `
+<div
+  class="wpgp-search-container"
+>
+  <div
+    class="wpgp-search-form"
+  >
+    <label
+      class="wpgp-search-label"
+      for="wpgp-search-field"
+    >
+      Translation & fallback not found for key search.title
+    </label>
+    <input
+      class="wpgp-search-field"
+      id="gistpen-search-field"
+      placeholder="keywords"
+      type="search"
+      value="test"
+    />
+    <div
+      class="loader"
+    >
+      Translation & fallback not found for key search.loading
+    </div>
+  </div>
+  <ul
+    class="wpgp-search-results"
+  >
+    <li
+      class="wpgp-search-result"
+    >
+      <input
+        id="wpgp-radio-1"
+        name="wpgp-search"
+        type="radio"
+        value="1"
+      />
+      <label
+        class="wpgp-search-result-title"
+        for="wpgp-radio-1"
+      >
+        test1.js
+      </label>
+    </li>
+    <li
+      class="wpgp-search-result"
+    >
+      <input
+        id="wpgp-radio-2"
+        name="wpgp-search"
+        type="radio"
+        value="2"
+      />
+      <label
+        class="wpgp-search-result-title"
+        for="wpgp-radio-2"
+      >
+        test2.js
+      </label>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`Storyshots SearchPopup with results; not loading 1`] = `
+<div
+  class="wpgp-search-container"
+>
+  <div
+    class="wpgp-search-form"
+  >
+    <label
+      class="wpgp-search-label"
+      for="wpgp-search-field"
+    >
+      Translation & fallback not found for key search.title
+    </label>
+    <input
+      class="wpgp-search-field"
+      id="gistpen-search-field"
+      placeholder="keywords"
+      type="search"
+      value="test"
+    />
+  </div>
+  <ul
+    class="wpgp-search-results"
+  >
+    <li
+      class="wpgp-search-result"
+    >
+      <input
+        id="wpgp-radio-1"
+        name="wpgp-search"
+        type="radio"
+        value="1"
+      />
+      <label
+        class="wpgp-search-result-title"
+        for="wpgp-radio-1"
+      >
+        test1.js
+      </label>
+    </li>
+    <li
+      class="wpgp-search-result"
+    >
+      <input
+        id="wpgp-radio-2"
+        name="wpgp-search"
+        type="radio"
+        value="2"
+      />
+      <label
+        class="wpgp-search-result-title"
+        for="wpgp-radio-2"
+      >
+        test2.js
+      </label>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`Storyshots SearchPopup without results; loading 1`] = `
+<div
+  class="wpgp-search-container"
+>
+  <div
+    class="wpgp-search-form"
+  >
+    <label
+      class="wpgp-search-label"
+      for="wpgp-search-field"
+    >
+      Translation & fallback not found for key search.title
+    </label>
+    <input
+      class="wpgp-search-field"
+      id="gistpen-search-field"
+      placeholder="keywords"
+      type="search"
+      value=""
+    />
+    <div
+      class="loader"
+    >
+      Translation & fallback not found for key search.loading
+    </div>
+  </div>
+  <p>
+    Translation & fallback not found for key search.term.no
+  </p>
+</div>
+`;
+
+exports[`Storyshots SearchPopup without results; not loading 1`] = `
+<div
+  class="wpgp-search-container"
+>
+  <div
+    class="wpgp-search-form"
+  >
+    <label
+      class="wpgp-search-label"
+      for="wpgp-search-field"
+    >
+      Translation & fallback not found for key search.title
+    </label>
+    <input
+      class="wpgp-search-field"
+      id="gistpen-search-field"
+      placeholder="keywords"
+      type="search"
+      value=""
+    />
+  </div>
+  <p>
+    Translation & fallback not found for key search.term.no
+  </p>
+</div>
+`;
+
+exports[`Storyshots SettingsPage accounts view 1`] = `
+<div
+  class="wrap"
+>
+  <div
+    class="wpgp-settings-header"
+  >
+    <h1>
+      Gistpen Settings
+    </h1>
+    <h2
+      class="nav-tab-wrapper"
+    >
+      <a
+        class="nav-tab"
+        data-testid="link-highlighting"
+        href="/?=&wpgp_route=highlighting"
+      >
+        Highlighting
+      </a>
+      <a
+        class="nav-tab nav-tab-active"
+        data-testid="link-accounts"
+        href="/?=&wpgp_route=accounts"
+      >
+        Accounts
+      </a>
+      <a
+        class="nav-tab"
+        data-testid="link-jobs"
+        href="/?=&wpgp_route=jobs"
+      >
+        Jobs
+      </a>
+    </h2>
+  </div>
+  <div
+    class="table"
+  >
+    <h3
+      class="title"
+    >
+      Sync Account Settings
+    </h3>
+    <table
+      class="form-table"
+    >
+      <tbody>
+        <tr>
+          <th>
+            <label
+              for="wpgp-token"
+            >
+              Gist Token
+            </label>
+          </th>
+          <td>
+            <input
+              class="regular-text"
+              data-testid="gist-token"
+              id="wpgp-token"
+              name="wpgp-token"
+              type="text"
+              value="12345"
+            />
+            <p
+              class="description"
+              id="wpgp-token-description"
+            >
+              Create a new
+               
+              <a
+                href="https://github.com/settings/tokens"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Personal Access Token
+              </a>
+               
+              with 
+              <code>
+                gist
+              </code>
+               scope and paste it here.
+            </p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Storyshots SettingsPage highlighting view 1`] = `
+<div
+  class="wrap"
+>
+  <div
+    class="wpgp-settings-header"
+  >
+    <h1>
+      Gistpen Settings
+    </h1>
+    <h2
+      class="nav-tab-wrapper"
+    >
+      <a
+        class="nav-tab nav-tab-active"
+        data-testid="link-highlighting"
+        href="/?=&wpgp_route=highlighting"
+      >
+        Highlighting
+      </a>
+      <a
+        class="nav-tab"
+        data-testid="link-accounts"
+        href="/?=&wpgp_route=accounts"
+      >
+        Accounts
+      </a>
+      <a
+        class="nav-tab"
+        data-testid="link-jobs"
+        href="/?=&wpgp_route=jobs"
+      >
+        Jobs
+      </a>
+    </h2>
+  </div>
+  <div
+    class="table"
+  >
+    <h3
+      class="title"
+    >
+      Syntax Highlighting Settings
+    </h3>
+    <table
+      class="form-table"
+    >
+      <tbody>
+        <tr>
+          <th>
+            <label
+              for="wpgp-theme"
+            >
+              Choose Theme
+            </label>
+          </th>
+          <td>
+            <select
+              data-testid="prism-theme"
+              id="wpgp-theme"
+              name="wpgp-theme"
+            >
+              <option
+                value="default"
+              >
+                Default
+              </option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <label
+              for="wpgp-line-numbers"
+            >
+              Enable Line Numbers
+            </label>
+          </th>
+          <td>
+            <input
+              checked=""
+              data-testid="prism-line-numbers"
+              id="wpgp-line-numbers"
+              name="wpgp-line-numbers"
+              type="checkbox"
+            />
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <label
+              for="wpgp-show-invisibles"
+            >
+              Enable Show Invisibles
+            </label>
+          </th>
+          <td>
+            <input
+              data-testid="prism-show-invisibles"
+              id="wpgp-show-invisibles"
+              name="wpgp-show-invisibles"
+              type="checkbox"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div
+      data-testid="prism-demo"
+    >
+      <pre
+        class="gistpen line-numbers"
+        data-filename=""
+      >
+        <code
+          class="language-javascript"
+        >
+          console.log('hello')
+        </code>
+      </pre>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots SettingsPage jobs view - job & run selected 1`] = `
+<div
+  class="wrap"
+>
+  <div
+    class="wpgp-settings-header"
+  >
+    <h1>
+      Gistpen Settings
+    </h1>
+    <h2
+      class="nav-tab-wrapper"
+    >
+      <a
+        class="nav-tab"
+        data-testid="link-highlighting"
+        href="/?=&wpgp_route=highlighting"
+      >
+        Highlighting
+      </a>
+      <a
+        class="nav-tab"
+        data-testid="link-accounts"
+        href="/?=&wpgp_route=accounts"
+      >
+        Accounts
+      </a>
+      <a
+        class="nav-tab nav-tab-active"
+        data-testid="link-jobs"
+        href="/?=&wpgp_route=jobs"
+      >
+        Jobs
+      </a>
+    </h2>
+  </div>
+  <div
+    class="table"
+  >
+    <h3
+      class="title"
+    >
+      Runs for 
+      Export
+       Job
+    </h3>
+    <p>
+      <strong>
+        Current Status: 
+        idle
+      </strong>
+    </p>
+    <p>
+      <a
+        href="/?=&wpgp_route=jobs"
+      >
+        ← back
+      </a>
+    </p>
+    <table
+      class="widefat striped"
+    >
+      <thead>
+        <tr>
+          <th>
+            Translation & fallback not found for key run.id
+          </th>
+          <th>
+            Translation & fallback not found for key run.status
+          </th>
+          <th>
+            Translation & fallback not found for key run.scheduled
+          </th>
+          <th>
+            Translation & fallback not found for key run.started
+          </th>
+          <th>
+            Translation & fallback not found for key run.finished
+          </th>
+          <th>
+            Translation & fallback not found for key run.messages
+          </th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>
+            Translation & fallback not found for key run.id
+          </th>
+          <th>
+            Translation & fallback not found for key run.status
+          </th>
+          <th>
+            Translation & fallback not found for key run.scheduled
+          </th>
+          <th>
+            Translation & fallback not found for key run.started
+          </th>
+          <th>
+            Translation & fallback not found for key run.finished
+          </th>
+          <th>
+            Translation & fallback not found for key run.messages
+          </th>
+        </tr>
+      </tfoot>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Storyshots SettingsPage jobs view - job selected 1`] = `
+<div
+  class="wrap"
+>
+  <div
+    class="wpgp-settings-header"
+  >
+    <h1>
+      Gistpen Settings
+    </h1>
+    <h2
+      class="nav-tab-wrapper"
+    >
+      <a
+        class="nav-tab"
+        data-testid="link-highlighting"
+        href="/?=&wpgp_route=highlighting"
+      >
+        Highlighting
+      </a>
+      <a
+        class="nav-tab"
+        data-testid="link-accounts"
+        href="/?=&wpgp_route=accounts"
+      >
+        Accounts
+      </a>
+      <a
+        class="nav-tab nav-tab-active"
+        data-testid="link-jobs"
+        href="/?=&wpgp_route=jobs"
+      >
+        Jobs
+      </a>
+    </h2>
+  </div>
+  <div
+    class="table"
+  >
+    <h3
+      class="title"
+    >
+      Runs for 
+      Export
+       Run
+    </h3>
+    <p>
+      <strong>
+        Current Status: 
+        finished
+      </strong>
+    </p>
+    <p>
+      <a
+        href="/?=&wpgp_route=jobs/undefined"
+      >
+        ← back
+      </a>
+    </p>
+    <table
+      class="widefat striped"
+    >
+      <thead>
+        <tr>
+          <th>
+            Message ID
+          </th>
+          <th>
+            Message Text
+          </th>
+          <th>
+            Message Level
+          </th>
+          <th>
+            Message Log Time
+          </th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>
+            Message ID
+          </th>
+          <th>
+            Message Text
+          </th>
+          <th>
+            Message Level
+          </th>
+          <th>
+            Message Log Time
+          </th>
+        </tr>
+      </tfoot>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;
+
+exports[`Storyshots SettingsPage jobs view - no job selected 1`] = `
+<div
+  class="wrap"
+>
+  <div
+    class="wpgp-settings-header"
+  >
+    <h1>
+      Gistpen Settings
+    </h1>
+    <h2
+      class="nav-tab-wrapper"
+    >
+      <a
+        class="nav-tab"
+        data-testid="link-highlighting"
+        href="/?=&wpgp_route=highlighting"
+      >
+        Highlighting
+      </a>
+      <a
+        class="nav-tab"
+        data-testid="link-accounts"
+        href="/?=&wpgp_route=accounts"
+      >
+        Accounts
+      </a>
+      <a
+        class="nav-tab nav-tab-active"
+        data-testid="link-jobs"
+        href="/?=&wpgp_route=jobs"
+      >
+        Jobs
+      </a>
+    </h2>
+  </div>
+  <div
+    class="table"
+  >
+    <h3
+      class="title"
+    >
+      Translation & fallback not found for key jobs.title
+    </h3>
+    <table
+      class="widefat striped"
+    >
+      <thead>
+        <tr>
+          <th>
+            Translation & fallback not found for key jobs.name
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.description
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.status
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.runs
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.dispatch
+          </th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <th>
+            Translation & fallback not found for key jobs.name
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.description
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.status
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.runs
+          </th>
+          <th>
+            Translation & fallback not found for key jobs.dispatch
+          </th>
+        </tr>
+      </tfoot>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;
