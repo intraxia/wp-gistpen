@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import Commits from './';
+import Commits from '../';
 
 storiesOf('Commits', module).add('default', () => (
   <Commits

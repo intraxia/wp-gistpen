@@ -1,8 +1,8 @@
 /* eslint-env jest */
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
-import { jobDispatchClick } from '../../../actions';
-import Jobs from './';
+import { jobDispatchClick } from '../../../../actions';
+import Jobs from '../';
 
 describe('Jobs', () => {
   it('should emit action when clicked', () => {

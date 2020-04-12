@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { JobStatus, RunStatus } from '../../reducers';
-import SettingsPage from './';
+import { JobStatus, RunStatus } from '../../../reducers';
+import SettingsPage from '../';
 
 const highlightingRoute = {
   name: 'highlighting',

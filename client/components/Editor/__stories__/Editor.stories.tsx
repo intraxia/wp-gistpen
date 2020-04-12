@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Editor from './index';
+import Editor from '../';
 
 const props: React.ComponentProps<typeof Editor> = {
   code: "console.log('hello')",

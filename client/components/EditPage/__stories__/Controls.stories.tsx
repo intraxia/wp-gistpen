@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Controls from './Controls';
+import Controls from '../Controls';
 
 const statuses = [
   { slug: 'draft', name: 'Draft' },

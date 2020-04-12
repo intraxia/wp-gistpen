@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import SearchPopup from './';
+import SearchPopup from '../';
 
 storiesOf('SearchPopup', module)
   .add('without results; not loading', () => (

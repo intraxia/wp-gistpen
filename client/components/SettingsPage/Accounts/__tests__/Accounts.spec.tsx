@@ -1,8 +1,8 @@
 /* eslint-env jest */
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
-import { gistTokenChange } from '../../../actions';
-import Accounts from './';
+import { gistTokenChange } from '../../../../actions';
+import Accounts from '../';
 
 describe('Accounts', () => {
   it('should emit action when clicked', () => {

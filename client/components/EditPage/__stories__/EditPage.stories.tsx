@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { AjaxError } from '../../ajax';
-import EditPage from './';
+import { AjaxError } from '../../../ajax';
+import EditPage from '../';
 
 storiesOf('EditPage', module).add('with error', () => (
   <div id="wpbody">

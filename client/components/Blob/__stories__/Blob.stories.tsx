@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Blob from './index';
+import Blob from '../';
 
 const blob = {
   filename: 'test.js',

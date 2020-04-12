@@ -1,6 +1,6 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import Repo from './';
+import Repo from '../';
 
 const blobs = [
   {
