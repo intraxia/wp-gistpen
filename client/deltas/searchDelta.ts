@@ -10,6 +10,7 @@ import {
   searchsResultsFailed
 } from '../actions';
 import { GlobalsState, SearchState } from '../reducers';
+import { validationErrorsToString } from '../api';
 
 type SearchDeltaState = {
   globals: GlobalsState;
@@ -59,18 +60,7 @@ export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
         .validate(response, [])
         .fold<Observable<RootAction, AjaxError>>(
           errs =>
-            Kefir.constantError(
-              new AjaxError(`Search API response validation failed:
-
-${errs
-  .map(
-    err =>
-      `* Invalid value ${JSON.stringify(
-        err.value
-      )} supplied to ${err.context.map(x => x.key).join('/')}`
-  )
-  .join('\n')}`)
-            ),
+            Kefir.constantError(new AjaxError(validationErrorsToString(errs))),
           res => Kefir.constant(searchResultsSucceeded(res))
         )
     )
