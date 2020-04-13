@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { useDelta, Delta, RootJunction, unreachable } from 'brookjs';
+import { useDelta, Delta, RootJunction } from 'brookjs';
 import Kefir from 'kefir';
 import { RootAction } from '../../util';
+import { StatusMapper } from '../StatusMapper';
 import { reducer, initialState, State, Attributes } from './state';
 
 const rootDelta: Delta<RootAction, State> = () => Kefir.never();
@@ -24,23 +25,19 @@ export const Block: React.FC<Attributes & {
     setAttributes({ blobId: state.blobId });
   }, [setAttributes, state.blobId]);
 
-  let children: JSX.Element;
-
-  switch (state.status) {
-    case 'set-embed':
-      children = <div data-testid="set-embed">Create or choose</div>;
-      break;
-    case 'edit-embed':
-      children = <div data-testid="edit-embed">Edit blob</div>;
-      break;
-    /* istanbul ignore next */
-    default:
-      return unreachable(state);
-  }
-
   return (
     <RootJunction root$={root$}>
-      <div className={className}>{children}</div>
+      <div className={className}>
+        <StatusMapper
+          status={state.status}
+          elements={{
+            'set-embed': () => (
+              <div data-testid="set-embed">Create or choose</div>
+            ),
+            'edit-embed': () => <div data-testid="edit-embed">Edit blob</div>
+          }}
+        />
+      </div>
     </RootJunction>
   );
 };
