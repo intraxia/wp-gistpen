@@ -1,113 +1,245 @@
 <script>
-  window.__GISTPEN_I18N__ = {
-    'editor.commits': 'View Commits',
-    'editor.delete': 'Delete',
-    'editor.description': 'Description...',
-    'editor.file.add': 'Add File',
-    'editor.gist': 'View on Gist',
-    'editor.invisibles': 'Enable Invisibles?',
-    'editor.return': 'Return to Editor',
-    'editor.saving': 'Saving Gistpen...',
-    'editor.status': 'Post Status',
-    'editor.sync': 'Sync Gistpen with Gist?',
-    'editor.tabs': 'Enable Tabs?',
-    'editor.theme': 'Theme',
-    'editor.update': 'Update Gistpen',
-    'editor.width': 'Indentation width (in spaces)',
-    'i18n.notfound': 'Translation for key %s not found.',
-    'jobs.description': 'Job Description',
-    'jobs.dispatch': 'Dispatch Job',
-    'jobs.loading': 'Loading...',
-    'jobs.name': 'Job Name',
-    'jobs.runs': 'Job Runs',
-    'jobs.runs.view': 'View Runs',
-    'jobs.status': 'Job Status',
-    'jobs.title': 'Background Jobs',
-    'route.404': 'Route %s not found',
-    'run.id': 'Run ID',
-    'run.status': 'Run Status',
-    'run.scheduled': 'Run Scheduled At',
-    'run.started': 'Run Started At',
-    'run.finished': 'Run Finished At',
-    'run.messages': 'Run Messages',
-    'run.messages.view': 'View Messages',
-    'search.invalid': 'Please enter a valid search term.',
-    'search.loading': 'Loading Gistpens...',
-    'search.results.no': 'No results found for term %s',
-    'search.term.no': 'Please enter a search term ',
-    'search.title': 'Search Gistpens',
-    'settings.saving': 'Saving settings...'
-  };
+	window.__GISTPEN_I18N__ = {
+		'editor.commits': 'View Commits',
+		'editor.delete': 'Delete',
+		'editor.description': 'Description...',
+		'editor.file.add': 'Add File',
+		'editor.gist': 'View on Gist',
+		'editor.invisibles': 'Enable Invisibles?',
+		'editor.return': 'Return to Editor',
+		'editor.saving': 'Saving Gistpen...',
+		'editor.status': 'Post Status',
+		'editor.sync': 'Sync Gistpen with Gist?',
+		'editor.tabs': 'Enable Tabs?',
+		'editor.theme': 'Theme',
+		'editor.update': 'Update Gistpen',
+		'editor.width': 'Indentation width (in spaces)',
+		'i18n.notfound': 'Translation for key %s not found.',
+		'jobs.description': 'Job Description',
+		'jobs.dispatch': 'Dispatch Job',
+		'jobs.loading': 'Loading...',
+		'jobs.name': 'Job Name',
+		'jobs.runs': 'Job Runs',
+		'jobs.runs.view': 'View Runs',
+		'jobs.status': 'Job Status',
+		'jobs.title': 'Background Jobs',
+		'route.404': 'Route %s not found',
+		'run.id': 'Run ID',
+		'run.status': 'Run Status',
+		'run.scheduled': 'Run Scheduled At',
+		'run.started': 'Run Started At',
+		'run.finished': 'Run Finished At',
+		'run.messages': 'Run Messages',
+		'run.messages.view': 'View Messages',
+		'search.invalid': 'Please enter a valid search term.',
+		'search.loading': 'Loading Gistpens...',
+		'search.results.no': 'No results found for term %s',
+		'search.term.no': 'Please enter a search term ',
+		'search.title': 'Search Gistpens',
+		'settings.saving': 'Saving settings...'
+	};
 </script>
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dashicons.css"
+	rel="stylesheet"
+	id="dashicons-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dashicons.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/admin-bar.css"
+	rel="stylesheet"
+	id="admin-bar-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/admin-bar.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/common.css"
+	rel="stylesheet"
+	id="buttons-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/buttons.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/forms.css"
+	rel="stylesheet"
+	id="mediaelement-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/js/mediaelement/mediaelementplayer-legacy.min.css?ver=4.2.13-9993131"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/admin-menu.css"
+	rel="stylesheet"
+	id="wp-mediaelement-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/js/mediaelement/wp-mediaelement.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/dashboard.css"
+	rel="stylesheet"
+	id="media-views-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/media-views.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/list-tables.css"
+	rel="stylesheet"
+	id="imgareaselect-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/js/imgareaselect/imgareaselect.css?ver=0.9.8"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/edit.css"
+	rel="stylesheet"
+	id="editor-buttons-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/editor.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/revisions.css"
+	rel="stylesheet"
+	id="wp-components-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/components/style.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/media.css"
+	rel="stylesheet"
+	id="wp-editor-font-css"
+	href="https://fonts.googleapis.com/css?family=Noto+Serif%3A400%2C400i%2C700%2C700i&#038;ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/themes.css"
+	rel="stylesheet"
+	id="wp-block-editor-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/block-editor/style.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/about.css"
+	rel="stylesheet"
+	id="wp-nux-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/nux/style.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/nav-menus.css"
+	rel="stylesheet"
+	id="wp-editor-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/editor/style.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/wp-pointer.css"
+	rel="stylesheet"
+	id="wp-block-library-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/block-library/style.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/widgets.css"
+	rel="stylesheet"
+	id="wp-block-library-theme-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/block-library/theme.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/site-icon.css"
+	rel="stylesheet"
+	id="wp-edit-blocks-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/block-library/editor.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/l10n.css"
+	rel="stylesheet"
+	id="wp-edit-post-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/edit-post/style.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
 <link
-  rel="stylesheet"
-  href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/buttons.css"
+	rel="stylesheet"
+	id="wp-format-library-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/dist/format-library/style.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="twentytwenty-block-editor-styles-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-content/themes/twentytwenty/assets/css/editor-style-block.css?ver=1.2"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="common-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/common.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="forms-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/forms.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="admin-menu-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/admin-menu.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="dashboard-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/dashboard.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="list-tables-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/list-tables.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="edit-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/edit.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="revisions-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/revisions.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="media-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/media.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="themes-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/themes.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="about-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/about.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="nav-menus-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/nav-menus.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="wp-pointer-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-includes/css/wp-pointer.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="widgets-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/widgets.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="site-icon-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/site-icon.css?ver=5.5-alpha-47426-src"
+	media="all"
+/>
+<link
+	rel="stylesheet"
+	id="l10n-css"
+	href="https://rawgit.com/WordPress/WordPress/master/wp-admin/css/l10n.css?ver=5.5-alpha-47426-src"
+	media="all"
 />
