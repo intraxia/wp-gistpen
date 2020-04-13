@@ -51,7 +51,7 @@
     "@types/react-dom": "^16.9.5",
     "@types/react-redux": "^7.1.7",
     "@types/recompose": "^0.30.7",
-    "@types/sinon": "^7.5.2",
+    "@types/sinon": "^9.0.0",
     "@types/sprintf-js": "^1.1.2",
     "@types/tinymce": "^4.5.23",
     "@types/webpack": "^4.41.0",
