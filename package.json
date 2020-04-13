@@ -90,7 +90,7 @@
   },
   "dependencies": {
     "brookjs": "1.0.0-beta.8",
-    "brookjs-flow": "^1.0.0-alpha.26",
+    "brookjs-flow": "^1.0.0-beta.9",
     "brookjs-silt": "1.0.0-beta.8",
     "brookjs-types": "^1.0.0-beta.0",
     "classnames": "^2.2.5",
