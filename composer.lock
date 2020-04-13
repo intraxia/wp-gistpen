@@ -666,16 +666,16 @@
         },
         {
             "name": "league/factory-muffin",
-            "version": "v3.2.0",
+            "version": "v3.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/factory-muffin.git",
-                "reference": "f7f7d0d2183aeb6b598f1984a4479a9e43b62934"
+                "reference": "659b7eb9563d9cfd2284c0ddb74b9bc6d0a02332"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/factory-muffin/zipball/f7f7d0d2183aeb6b598f1984a4479a9e43b62934",
-                "reference": "f7f7d0d2183aeb6b598f1984a4479a9e43b62934",
+                "url": "https://api.github.com/repos/thephpleague/factory-muffin/zipball/659b7eb9563d9cfd2284c0ddb74b9bc6d0a02332",
+                "reference": "659b7eb9563d9cfd2284c0ddb74b9bc6d0a02332",
                 "shasum": ""
             },
             "require": {
@@ -726,7 +726,7 @@
                 "factory",
                 "testing"
             ],
-            "time": "2020-02-17T17:16:02+00:00"
+            "time": "2020-04-12T21:50:48+00:00"
         },
         {
             "name": "league/factory-muffin-faker",
@@ -2195,20 +2195,6 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-02-14T07:34:21+00:00"
         },
         {
@@ -2266,20 +2252,6 @@
                 "ctype",
                 "polyfill",
                 "portable"
-            ],
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
             ],
             "time": "2020-02-27T09:26:54+00:00"
         },
@@ -2340,20 +2312,6 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
             "time": "2020-03-25T12:02:26+00:00"
         },
         {
@@ -2824,6 +2782,5 @@
     "platform": {
         "php": ">=5.6.0"
     },
-    "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "platform-dev": []
 }
