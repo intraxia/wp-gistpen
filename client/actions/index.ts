@@ -1,6 +1,7 @@
 export * from './accounts';
 export * from './ajax';
 export * from './author';
+export * from './block';
 export * from './commits';
 export * from './editor';
 export * from './highlighting';

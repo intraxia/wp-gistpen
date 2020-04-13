@@ -6810,6 +6810,36 @@ exports[`Storyshots Controls a11y Dark 1`] = `
 </div>
 `;
 
+exports[`Storyshots Create or Choose Basic 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    class="container"
+    data-testid="create-or-choose"
+  >
+    <button
+      class="components-button is-button is-primary is-large"
+      type="button"
+    >
+      Create new
+    </button>
+    <div
+      class="or"
+    >
+      Or
+    </div>
+    <button
+      class="components-button is-button is-default is-large is-tertiary"
+      type="button"
+    >
+      Choose from existing
+    </button>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Description with text - loading 1`] = `
 <div
   class="wpgp-editor-header-container"
