@@ -45,7 +45,7 @@
     "@types/jest-image-snapshot": "^2.11.1",
     "@types/kefir": "^3.8.2",
     "@types/lolex": "^5.1.0",
-    "@types/node": "^13.1.8",
+    "@types/node": "^13.11.1",
     "@types/puppeteer": "^2.0.1",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.5",
