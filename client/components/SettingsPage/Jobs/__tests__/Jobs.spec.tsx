@@ -13,10 +13,10 @@ describe('Jobs', () => {
             name: 'Export',
             slug: 'export',
             description: 'Export things',
-            status: 'idle' as const
-          }
+            status: 'idle' as const,
+          },
         ]}
-      />
+      />,
     ).toEmitFromJunction(
       [[350, Kutil.value(jobDispatchClick('export'))]],
       ({ getByTestId }, tick) => {
@@ -27,7 +27,7 @@ describe('Jobs', () => {
         fireEvent.click(button);
         tick(50);
         fireEvent.click(button);
-      }
+      },
     );
   });
 });

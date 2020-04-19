@@ -8,7 +8,7 @@ storiesOf('SearchPopup', module)
       {...{
         loading: false,
         term: '',
-        results: []
+        results: [],
       }}
     />
   ))
@@ -20,13 +20,13 @@ storiesOf('SearchPopup', module)
         results: [
           {
             id: '1',
-            filename: 'test1.js'
+            filename: 'test1.js',
           },
           {
             id: '2',
-            filename: 'test2.js'
-          }
-        ]
+            filename: 'test2.js',
+          },
+        ],
       }}
     />
   ))
@@ -35,7 +35,7 @@ storiesOf('SearchPopup', module)
       {...{
         loading: true,
         term: '',
-        results: []
+        results: [],
       }}
     />
   ))
@@ -47,13 +47,13 @@ storiesOf('SearchPopup', module)
         results: [
           {
             id: '1',
-            filename: 'test1.js'
+            filename: 'test1.js',
           },
           {
             id: '2',
-            filename: 'test2.js'
-          }
-        ]
+            filename: 'test2.js',
+          },
+        ],
       }}
     />
   ));

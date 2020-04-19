@@ -20,7 +20,7 @@ export const applyDelta = <A extends { type: string }, S>(
   composeWithDevTools({
     serialize: {
       options: {
-        error: true
-      }
-    }
+        error: true,
+      },
+    },
   } as object)(applyMiddleware(observeDelta(...args)));

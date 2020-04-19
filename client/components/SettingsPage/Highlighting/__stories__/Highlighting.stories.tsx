@@ -8,23 +8,23 @@ storiesOf('Highlighting', module).add('default', () => (
       demo: {
         code: `console.log('test');`,
         filename: 'test.js',
-        language: 'javascript'
+        language: 'javascript',
       },
       theme: {
         options: [
           {
             name: 'Default',
-            slug: 'default'
+            slug: 'default',
           },
           {
             name: 'Twilight',
-            slug: 'twilight'
-          }
+            slug: 'twilight',
+          },
         ],
-        selected: 'default'
+        selected: 'default',
       },
       'line-numbers': true,
-      'show-invisibles': true
+      'show-invisibles': true,
     }}
   />
 ));

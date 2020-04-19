@@ -8,7 +8,7 @@ import { SearchPopup } from '../components';
 import {
   tinymceButtonClick,
   tinymcePopupInsertClick,
-  tinymcePopupCloseClick
+  tinymcePopupCloseClick,
 } from '../actions';
 import { RootAction } from '../util';
 import { SearchState, AjaxState } from '../reducers';
@@ -34,20 +34,20 @@ const createTinyMCEPlugin = (): Observable<tmce.Editor, never> =>
 const createTinyMCEButton = (
   actions$: Stream<RootAction, never>,
   state$: Property<TinyMCEPluginState, never>,
-  editor: tmce.Editor
+  editor: tmce.Editor,
 ): Observable<RootAction, never> =>
   Kefir.merge<RootAction, never>([
     Kefir.stream((emitter: Emitter<RootAction, never>) => {
       // Bind command to stream.
       editor.addCommand('wpgp_insert', () =>
-        emitter.value(tinymceButtonClick())
+        emitter.value(tinymceButtonClick()),
       );
 
       // Add the Insert Gistpen button
       editor.addButton('wp_gistpen', {
         icon: 'icons dashicons-editor-code',
         tooltip: 'Insert Gistpen',
-        cmd: 'wpgp_insert'
+        cmd: 'wpgp_insert',
       });
     }),
     state$
@@ -56,17 +56,17 @@ const createTinyMCEButton = (
         Kefir.stream((emitter: Emitter<RootAction, never>) => {
           if (state.search.selection != null) {
             editor.insertContent(
-              '[gistpen id="' + state.search.selection + '"]'
+              '[gistpen id="' + state.search.selection + '"]',
             );
           }
 
           emitter.end();
-        })
-      )
+        }),
+      ),
   ]);
 
 const emitTinyMCEWindow = (editor: tmce.Editor) => (
-  emitter: Emitter<RootAction, Element>
+  emitter: Emitter<RootAction, Element>,
 ) => {
   const id = `wpgp-tinymce-popup-container`;
   const e = editor.windowManager.open(
@@ -82,16 +82,16 @@ const emitTinyMCEWindow = (editor: tmce.Editor) => (
         {
           text: 'Insert',
           id: 'wpgp-popup-insert',
-          onclick: () => emitter.value(tinymcePopupInsertClick())
+          onclick: () => emitter.value(tinymcePopupInsertClick()),
         },
         {
           text: 'Cancel',
           id: 'wpgp-popup-cancel',
-          onclick: () => emitter.value(tinymcePopupCloseClick())
-        }
-      ]
+          onclick: () => emitter.value(tinymcePopupCloseClick()),
+        },
+      ],
     },
-    {}
+    {},
   ) as any;
 
   const $el = jQuery('<div class="app"></div>');
@@ -106,7 +106,7 @@ const emitTinyMCEWindow = (editor: tmce.Editor) => (
 const createTinyMCEWindow = (
   actions$: Observable<RootAction, never>,
   state$: Observable<TinyMCEPluginState, never>,
-  editor: tmce.Editor
+  editor: tmce.Editor,
 ): Observable<RootAction, never> =>
   Kefir.stream(emitTinyMCEWindow(editor))
     // This is kind of abusive, b/c it's not an "error", but it's another channel to use...
@@ -122,11 +122,11 @@ const createTinyMCEWindow = (
                 term={state.search.term}
                 results={state.search.results.map(blob => ({
                   id: String(blob.ID),
-                  filename: blob.filename
+                  filename: blob.filename,
                 }))}
               />
             </RootJunction>,
-            el
+            el,
           );
         });
 
@@ -134,27 +134,27 @@ const createTinyMCEWindow = (
           sub.unsubscribe();
           ReactDOM.unmountComponentAtNode(el);
         };
-      })
+      }),
     )
     .takeUntilBy(
-      actions$.thru(ofType(tinymcePopupCloseClick, tinymcePopupInsertClick))
+      actions$.thru(ofType(tinymcePopupCloseClick, tinymcePopupInsertClick)),
     );
 
 const mergeTinyMCEButtonAndPopup = (
   actions$: Observable<RootAction, never>,
-  state$: Observable<TinyMCEPluginState, never>
+  state$: Observable<TinyMCEPluginState, never>,
 ) => (editor: tmce.Editor): Observable<RootAction, never> =>
   Kefir.merge([
     createTinyMCEButton(actions$, state$, editor),
     actions$
       .thru(ofType(tinymceButtonClick))
-      .flatMapLatest(() => createTinyMCEWindow(actions$, state$, editor))
+      .flatMapLatest(() => createTinyMCEWindow(actions$, state$, editor)),
   ]);
 
 export const tinymcePluginDelta = (
   actions$: Observable<RootAction, never>,
-  state$: Observable<TinyMCEPluginState, never>
+  state$: Observable<TinyMCEPluginState, never>,
 ): Observable<RootAction, never> =>
   createTinyMCEPlugin().flatMapLatest(
-    mergeTinyMCEButtonAndPopup(actions$, state$)
+    mergeTinyMCEButtonAndPopup(actions$, state$),
   );

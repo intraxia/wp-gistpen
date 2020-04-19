@@ -6,10 +6,10 @@ describe('state', () => {
       const initialState = {
         status: 'set-embed',
         repoId: null,
-        blobId: null
+        blobId: null,
       } as const;
       expect(reducer(initialState, { type: '@@RANDOM' } as any)).toEqual(
-        initialState
+        initialState,
       );
     });
   });

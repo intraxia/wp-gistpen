@@ -27,7 +27,7 @@ declare module 'prismjs/components/prism-core' {
     highlightElement(
       element: Element,
       async?: boolean,
-      callback?: Function
+      callback?: Function,
     ): void;
     hooks: {
       add(event: string, callback: (env: Environment) => void): void;

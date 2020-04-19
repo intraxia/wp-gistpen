@@ -20,14 +20,14 @@ declare global {
         cb?: (a: any, b: any, c: any) => void,
         opts?: {
           timeLimit?: number | undefined;
-        }
+        },
       ): R;
       toEmitFromJunction(
         expected: any,
         cb?: (a: any, b: any, c: any) => void,
         opt?: {
           timeLimit?: number | undefined;
-        }
+        },
       ): R;
     }
   }

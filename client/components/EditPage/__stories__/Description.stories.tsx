@@ -7,7 +7,7 @@ storiesOf('Description', module)
     <Description
       {...{
         description: '',
-        loading: false
+        loading: false,
       }}
     />
   ))
@@ -15,7 +15,7 @@ storiesOf('Description', module)
     <Description
       {...{
         description: 'New Repo',
-        loading: false
+        loading: false,
       }}
     />
   ))
@@ -23,7 +23,7 @@ storiesOf('Description', module)
     <Description
       {...{
         description: 'New Repo',
-        loading: true
+        loading: true,
       }}
     />
   ));

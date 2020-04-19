@@ -22,7 +22,7 @@ const blobs = [
           return /\\d+[\\s/]/g;
   }
   console.log(Array.every(classes, Boolean));
-}`
+}`,
   },
   {
     ID: '2',
@@ -43,14 +43,14 @@ const blobs = [
           return /\\d+[\\s/]/g;
   }
   console.log(Array.every(classes, Boolean));
-}`
-  }
+}`,
+  },
 ];
 
 const prism = {
   theme: 'default',
   'line-numbers': false,
-  'show-invisibles': false
+  'show-invisibles': false,
 };
 
 storiesOf('Repo', module).add('default', () => <Repo {...{ blobs, prism }} />);

@@ -6,7 +6,7 @@ import { Props } from './types';
 const propsToClassName = (prism: Props['prism']) =>
   classNames({
     gistpen: true,
-    'line-numbers': prism['line-numbers']
+    'line-numbers': prism['line-numbers'],
   });
 
 const Blob: React.FC<Props> = props => (

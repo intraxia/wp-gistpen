@@ -10,7 +10,7 @@ const updatePrism = (prism: Props['prism']) =>
   Promise.all([
     Prism.setTheme(prism.theme),
     Prism.togglePlugin('line-numbers', prism['line-numbers']),
-    Prism.togglePlugin('show-invisibles', prism['show-invisibles'])
+    Prism.togglePlugin('show-invisibles', prism['show-invisibles']),
   ]);
 
 const Code: React.RefForwardingComponent<HTMLElement, Props> = (props, ref) => (
@@ -27,8 +27,8 @@ const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
         Kefir.fromPromise(updatePrism(props.prism)).flatMap(() => {
           Prism.highlightElement(el, false);
           return Kefir.never();
-        })
-      )
+        }),
+      ),
   );
 
 export default withRef$(refback)(Code);

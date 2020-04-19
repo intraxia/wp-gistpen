@@ -9,7 +9,7 @@ describe('CreateOrChoose', () => {
       [[0, Kutil.value(createNewClick())]],
       ({ getByText }: RenderResult) => {
         fireEvent.click(getByText('Create new'));
-      }
+      },
     );
   });
 
@@ -18,7 +18,7 @@ describe('CreateOrChoose', () => {
       [[0, Kutil.value(chooseExistingClick())]],
       ({ getByText }: RenderResult) => {
         fireEvent.click(getByText('Choose from existing'));
-      }
+      },
     );
   });
 });

@@ -4,7 +4,7 @@ import { Observable } from 'kefir';
 import {
   lineNumbersChange,
   showInvisiblesChange,
-  themeChange
+  themeChange,
 } from '../../../actions';
 import Blob from '../../Blob';
 
@@ -40,7 +40,7 @@ const Highlighting: React.FC<Props> = ({
   demo,
   onThemeChange,
   onLineNumbersChange,
-  onShowInvisiblesChange
+  onShowInvisiblesChange,
 }) => (
   <div className="table">
     <h3 className="title">Syntax Highlighting Settings</h3>
@@ -105,8 +105,8 @@ const Highlighting: React.FC<Props> = ({
           prism: {
             'line-numbers': lineNumbers,
             'show-invisibles': showInvisibles,
-            theme: theme.selected
-          }
+            theme: theme.selected,
+          },
         }}
       />
     </div>
@@ -115,14 +115,14 @@ const Highlighting: React.FC<Props> = ({
 
 const events = {
   onThemeChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>,
   ) => e$.map(e => themeChange(e.target.value)),
   onLineNumbersChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>,
   ) => e$.map(e => lineNumbersChange(e.target.checked)),
   onShowInvisiblesChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
-  ) => e$.map(e => showInvisiblesChange(e.target.checked))
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>,
+  ) => e$.map(e => showInvisiblesChange(e.target.checked)),
 };
 
 export default toJunction(events)(Highlighting);

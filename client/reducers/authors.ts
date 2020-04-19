@@ -22,12 +22,12 @@ export type AuthorsState = {
 };
 
 const defaultState: AuthorsState = {
-  items: {}
+  items: {},
 };
 
 export const authorsReducer: EddyReducer<AuthorsState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(fetchAuthorSucceeded):
@@ -35,8 +35,8 @@ export const authorsReducer: EddyReducer<AuthorsState, RootAction> = (
         ...state,
         items: {
           ...state.items,
-          [action.payload.author.id]: action.payload.author
-        }
+          [action.payload.author.id]: action.payload.author,
+        },
       };
     default:
       return state;

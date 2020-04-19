@@ -7,7 +7,7 @@ export const parseQueryString = ([, ...tail]: string) =>
     .map(str => str.split('='))
     .reduce<{ [key: string]: string }>(
       (acc, [key, value]) => ({ ...acc, [key]: value }),
-      {}
+      {},
     );
 
 export const buildQueryString = (obj: { [key: string]: string }) =>
@@ -35,7 +35,7 @@ export const generateParam = (route: Route): string => {
 export const getSearch = (param: string, route: Route): string => {
   return buildQueryString({
     ...parseQueryString(window.location.search),
-    [param]: generateParam(route)
+    [param]: generateParam(route),
   });
 };
 

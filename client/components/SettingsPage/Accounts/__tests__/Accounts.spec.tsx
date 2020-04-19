@@ -12,7 +12,7 @@ describe('Accounts', () => {
         const input = queryByTestId('gist-token') as Element;
 
         fireEvent.change(input, { target: { value: 'abc' } });
-      }
+      },
     );
   });
 });

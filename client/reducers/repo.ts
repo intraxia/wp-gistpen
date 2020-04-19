@@ -11,7 +11,7 @@ const defaultState: RepoState = null;
 
 export const repoReducer: EddyReducer<RepoState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(repoSaveSucceeded):

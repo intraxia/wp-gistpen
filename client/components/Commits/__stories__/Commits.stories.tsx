@@ -8,7 +8,7 @@ storiesOf('Commits', module).add('default', () => (
       prism: {
         theme: 'default',
         'line-numbers': false,
-        'show-invisibles': false
+        'show-invisibles': false,
       },
       selectedCommit: {
         description: 'Commit Description',
@@ -17,15 +17,15 @@ storiesOf('Commits', module).add('default', () => (
             ID: '1',
             code: 'console.log("test");',
             filename: 'test.js',
-            language: 'javascript'
+            language: 'javascript',
           },
           {
             ID: '2',
             code: 'console.log("test");',
             filename: 'test.js',
-            language: 'javascript'
-          }
-        ]
+            language: 'javascript',
+          },
+        ],
       },
       commits: [
         {
@@ -35,8 +35,8 @@ storiesOf('Commits', module).add('default', () => (
           committedAt: '1970-01-01',
           author: {
             name: 'Commit Author',
-            avatar: 'http://via.placeholder.com/48x48'
-          }
+            avatar: 'http://via.placeholder.com/48x48',
+          },
         },
         {
           ID: '2',
@@ -45,10 +45,10 @@ storiesOf('Commits', module).add('default', () => (
           committedAt: '1970-01-01',
           author: {
             name: 'Commit Author',
-            avatar: 'http://via.placeholder.com/48x48'
-          }
-        }
-      ]
+            avatar: 'http://via.placeholder.com/48x48',
+          },
+        },
+      ],
     }}
   />
 ));

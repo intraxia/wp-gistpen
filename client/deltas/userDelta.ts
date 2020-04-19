@@ -8,7 +8,7 @@ import {
   editorWidthChange,
   editorInvisiblesToggle,
   editorTabsToggle,
-  editorThemeChange
+  editorThemeChange,
 } from '../actions';
 import { selectUserAjaxOpts } from '../selectors';
 import { RootAction } from '../util';
@@ -30,7 +30,7 @@ export type UserApiResponse = t.TypeOf<typeof userResponse>;
 
 export const userDelta = ({ ajax$ }: UserDeltaServices) => (
   actions$: Observable<RootAction, never>,
-  state$: Observable<UserDeltaState, never>
+  state$: Observable<UserDeltaState, never>,
 ): Observable<RootAction, never> =>
   state$
     .sampledBy(
@@ -39,13 +39,13 @@ export const userDelta = ({ ajax$ }: UserDeltaServices) => (
           editorWidthChange,
           editorInvisiblesToggle,
           editorTabsToggle,
-          editorThemeChange
-        )
-      )
+          editorThemeChange,
+        ),
+      ),
     )
     .debounce(2500)
     .flatMapLatest(state =>
-      ajax$(state.globals.root + 'me', selectUserAjaxOpts(state))
+      ajax$(state.globals.root + 'me', selectUserAjaxOpts(state)),
     )
     .flatMap(response => response.json())
     .flatMap(response =>
@@ -54,8 +54,8 @@ export const userDelta = ({ ajax$ }: UserDeltaServices) => (
         .fold<Observable<t.TypeOf<typeof userResponse>, AjaxError>>(
           () =>
             Kefir.constantError(new AjaxError('User response was not valid')),
-          response => Kefir.constant(response)
-        )
+          response => Kefir.constant(response),
+        ),
     )
     .flatten(response => [ajaxFinished(), userSaveSucceeded(response)])
     .flatMapErrors(err => Kefir.constant(ajaxFailed(err)));

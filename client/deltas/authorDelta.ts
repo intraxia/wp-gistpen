@@ -4,7 +4,7 @@ import * as t from 'io-ts';
 import {
   fetchAuthorSucceeded,
   fetchAuthorFailed,
-  commitsFetchSucceeded
+  commitsFetchSucceeded,
 } from '../actions';
 import { CommitsState, GlobalsState } from '../reducers';
 import { AjaxService } from '../ajax';
@@ -26,14 +26,14 @@ const apiAuthor = t.type({
   description: t.string,
   link: t.string,
   slug: t.string,
-  avatar_urls: t.dictionary(t.string, t.string)
+  avatar_urls: t.dictionary(t.string, t.string),
 });
 
 export interface ApiAuthor extends t.TypeOf<typeof apiAuthor> {}
 
 export const authorDelta = ({ ajax$ }: AuthorServices) => (
   actions$: Stream<RootAction, never>,
-  state$: Property<AuthorDeltaState, never>
+  state$: Property<AuthorDeltaState, never>,
 ): Observable<RootAction, never> =>
   state$
     .sampledBy(actions$.thru(ofType(commitsFetchSucceeded)))
@@ -45,18 +45,18 @@ export const authorDelta = ({ ajax$ }: AuthorServices) => (
             credentials: 'include',
             headers: {
               'X-WP-Nonce': state.globals.nonce,
-              'Content-Type': 'application/json'
-            }
-          })
-        )
+              'Content-Type': 'application/json',
+            },
+          }),
+        ),
       )
         .flatMap(response => response.json())
         .flatMap(response =>
           apiAuthor.is(response)
             ? Kefir.constant(fetchAuthorSucceeded(response))
             : Kefir.constantError(
-                new TypeError('Author response was not the expected shape')
-              )
+                new TypeError('Author response was not the expected shape'),
+              ),
         )
-        .flatMapErrors(err => Kefir.constant(fetchAuthorFailed(err)))
+        .flatMapErrors(err => Kefir.constant(fetchAuthorFailed(err))),
     );

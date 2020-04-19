@@ -9,7 +9,7 @@ jest.mock('../../../components', () => ({
       blobId: {props.blobId}; repoId: {props.repoId}
     </div>
   ),
-  Shortcode: jest.requireActual('../../../components').Shortcode
+  Shortcode: jest.requireActual('../../../components').Shortcode,
 }));
 
 const Edit = block.edit!;
@@ -22,9 +22,9 @@ describe('block', () => {
       isSelected: false,
       attributes: {
         blobId: 123,
-        repoId: 456
+        repoId: 456,
       },
-      setAttributes: jest.fn()
+      setAttributes: jest.fn(),
     };
 
     const { container } = render(<Edit {...props} />);
@@ -49,9 +49,9 @@ describe('block', () => {
       isSelected: false,
       attributes: {
         blobId: null,
-        repoId: null
+        repoId: null,
       },
-      setAttributes: jest.fn()
+      setAttributes: jest.fn(),
     };
 
     const { container } = render(<Save {...props} />);
@@ -65,9 +65,9 @@ describe('block', () => {
       isSelected: false,
       attributes: {
         blobId: 123,
-        repoId: 456
+        repoId: 456,
       },
-      setAttributes: jest.fn()
+      setAttributes: jest.fn(),
     };
 
     const { container } = render(<Save {...props} />);

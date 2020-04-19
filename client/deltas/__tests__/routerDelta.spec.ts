@@ -15,7 +15,7 @@ const createLocation = (search: string) => {
     'port',
     'pathname',
     'search',
-    'hash'
+    'hash',
   ] as const).forEach(prop => {
     location[prop] = parser[prop];
   });
@@ -38,12 +38,12 @@ describe('routerDelta', () => {
     const location = createLocation('wpgp=start');
     const history = createHistory();
     expect(
-      routerDelta({ router, param: 'wpgp', location, history })
+      routerDelta({ router, param: 'wpgp', location, history }),
     ).toEmitFromDelta(
       [[0, Kutil.value(routeChange('/start'))]],
       (_send, tick) => {
         tick(10);
-      }
+      },
     );
   });
 });

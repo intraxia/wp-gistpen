@@ -14,7 +14,7 @@ const Run: React.FC<RunEntity & { job: string }> = ({
   scheduled_at,
   started_at,
   finished_at,
-  job
+  job,
 }) => (
   <tr>
     <td>{ID}</td>

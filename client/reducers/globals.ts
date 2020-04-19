@@ -29,19 +29,19 @@ const defaultState: GlobalsState = {
   demo: {
     filename: '',
     language: '',
-    code: ''
-  }
+    code: '',
+  },
 };
 
 export const globalsReducer: EddyReducer<GlobalsState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(init):
       return {
         ...state,
-        ...action.payload.globals
+        ...action.payload.globals,
       };
     default:
       return state;

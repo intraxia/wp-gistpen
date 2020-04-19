@@ -2,7 +2,7 @@ import React from 'react';
 import CreateOrChoose from '../CreateOrChoose';
 
 export default {
-  title: 'Create or Choose'
+  title: 'Create or Choose',
 };
 
 export const basic = () => (

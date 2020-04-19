@@ -8,7 +8,7 @@ import {
   gistReducer,
   jobsReducer,
   runsReducer,
-  messagesReducer
+  messagesReducer,
 } from '../../reducers';
 
 export const reducer = combineReducers({
@@ -19,7 +19,7 @@ export const reducer = combineReducers({
   gist: gistReducer,
   jobs: jobsReducer,
   runs: runsReducer,
-  messages: messagesReducer
+  messages: messagesReducer,
 });
 
 export type State = StateType<typeof reducer>[0];

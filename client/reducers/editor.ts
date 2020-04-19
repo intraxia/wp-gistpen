@@ -20,7 +20,7 @@ import {
   editorValueChange,
   repoSaveSucceeded,
   init,
-  ajaxFailed
+  ajaxFailed,
 } from '../actions';
 import { RootAction, Cursor, Toggle } from '../util';
 import { AjaxError } from '../ajax';
@@ -66,8 +66,8 @@ const defaultInstance: EditorInstance = {
   cursor: false,
   history: {
     undo: [],
-    redo: []
-  }
+    redo: [],
+  },
 };
 
 const defaultState: EditorState = {
@@ -81,48 +81,48 @@ const defaultState: EditorState = {
   gist_id: '',
   sync: 'off',
   instances: [defaultInstance],
-  errors: []
+  errors: [],
 };
 
 export const editorReducer: EddyReducer<EditorState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(editorThemeChange):
       return {
         ...state,
-        theme: action.payload.value
+        theme: action.payload.value,
       };
     case getType(editorTabsToggle):
       return {
         ...state,
-        tabs: action.payload.value
+        tabs: action.payload.value,
       };
     case getType(editorWidthChange):
       return {
         ...state,
-        width: action.payload.value
+        width: action.payload.value,
       };
     case getType(editorInvisiblesToggle):
       return {
         ...state,
-        invisibles: action.payload.value
+        invisibles: action.payload.value,
       };
     case getType(editorDescriptionChange):
       return {
         ...state,
-        description: action.payload.value
+        description: action.payload.value,
       };
     case getType(editorStatusChange):
       return {
         ...state,
-        status: action.payload.value
+        status: action.payload.value,
       };
     case getType(editorSyncToggle):
       return {
         ...state,
-        sync: action.payload.value
+        sync: action.payload.value,
       };
     case getType(editorAddClick):
       return {
@@ -131,29 +131,29 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           ...state.instances,
           {
             ...defaultInstance,
-            key: createUniqueKey(state.instances)
-          }
-        ]
+            key: createUniqueKey(state.instances),
+          },
+        ],
       };
     case getType(editorDeleteClick):
       return {
         ...state,
-        instances: rejectWithKey(action.meta.key, state.instances)
+        instances: rejectWithKey(action.meta.key, state.instances),
       };
     case getType(editorCursorMove):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
-        cursor: action.payload.cursor
+        cursor: action.payload.cursor,
       }));
     case getType(editorFilenameChange):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
-        filename: action.payload.value
+        filename: action.payload.value,
       }));
     case getType(editorLanguageChange):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
-        language: action.payload.value
+        language: action.payload.value,
       }));
     case getType(editorIndent):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
@@ -163,9 +163,9 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           ...instance.history,
           undo: instance.history.undo.concat({
             code: instance.code,
-            cursor: instance.cursor
-          })
-        }
+            cursor: instance.cursor,
+          }),
+        },
       }));
     case getType(editorMakeNewline):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
@@ -175,9 +175,9 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           ...instance.history,
           undo: instance.history.undo.concat({
             code: instance.code,
-            cursor: instance.cursor
-          })
-        }
+            cursor: instance.cursor,
+          }),
+        },
       }));
     case getType(editorValueChange):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
@@ -188,9 +188,9 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           ...instance.history,
           undo: instance.history.undo.concat({
             code: instance.code,
-            cursor: instance.cursor
-          })
-        }
+            cursor: instance.cursor,
+          }),
+        },
       }));
     case getType(repoSaveSucceeded):
       const { response: repo } = action.payload;
@@ -209,13 +209,13 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           language:
             typeof blob.language === 'string'
               ? blob.language
-              : blob.language.slug
-        }))
+              : blob.language.slug,
+        })),
       };
     case getType(ajaxFailed):
       return {
         ...state,
-        errors: [...state.errors, action.payload.error]
+        errors: [...state.errors, action.payload.error],
       };
     case getType(init):
       return {
@@ -223,7 +223,7 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
         instances:
           state.instances.length === 0
             ? defaultState.instances
-            : state.instances
+            : state.instances,
       };
     default:
       return state;
@@ -239,7 +239,7 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
  */
 function rejectWithKey(
   key: string | null,
-  instances: Array<EditorInstance>
+  instances: Array<EditorInstance>,
 ): Array<EditorInstance> {
   if (key == null) {
     return instances;
@@ -258,7 +258,7 @@ function rejectWithKey(
 function mapInstanceWithKey(
   state: EditorState,
   key: string | null,
-  fn: (i: EditorInstance) => EditorInstance
+  fn: (i: EditorInstance) => EditorInstance,
 ): EditorState {
   if (key == null) {
     return state;
@@ -266,8 +266,8 @@ function mapInstanceWithKey(
   return {
     ...state,
     instances: state.instances.map((instance: EditorInstance) =>
-      instance.key !== key ? instance : fn(instance)
-    )
+      instance.key !== key ? instance : fn(instance),
+    ),
   };
 }
 
@@ -289,7 +289,7 @@ function extractSections(code: string, ss: number, se: number): Section {
   return {
     before: code.slice(0, ss),
     selection: code.slice(ss, se),
-    after: code.slice(se)
+    after: code.slice(se),
   };
 }
 
@@ -310,7 +310,7 @@ type Indentation = {
  */
 function indent(
   { code, cursor, inverse }: EditorIndentValue,
-  { tabs, width }: Indentation
+  { tabs, width }: Indentation,
 ): EditorValue {
   if (!cursor) {
     return { code, cursor };
@@ -397,7 +397,7 @@ function indent(
 
   return {
     code: [...befores, ...lines, ...afters].join('\n'),
-    cursor: [ss, se]
+    cursor: [ss, se],
   };
 }
 
@@ -426,7 +426,7 @@ function makeNewline({ code, cursor }: EditorValue): EditorValue {
 
   return {
     code: before + after,
-    cursor: [ss, se]
+    cursor: [ss, se],
   };
 }
 

@@ -6,7 +6,7 @@ const statuses = [
   { slug: 'draft', name: 'Draft' },
   { slug: 'pending', name: 'Pending Review' },
   { slug: 'private', name: 'Private' },
-  { slug: 'publish', name: 'Publish' }
+  { slug: 'publish', name: 'Publish' },
 ];
 
 const themes = [
@@ -32,19 +32,19 @@ const themes = [
   { slug: 'duotone-light', name: 'Duotone Light' },
   { slug: 'vs', name: 'VS' },
   { slug: 'darcula', name: 'Darcula' },
-  { slug: 'a11y-dark', name: 'a11y Dark' }
+  { slug: 'a11y-dark', name: 'a11y Dark' },
 ];
 
 const widths = [
   { slug: '1', name: '1' },
   { slug: '2', name: '2' },
   { slug: '4', name: '4' },
-  { slug: '8', name: '8' }
+  { slug: '8', name: '8' },
 ];
 
 const gist = {
   show: true,
-  url: '#'
+  url: '#',
 };
 
 const sync = 'on';
@@ -67,7 +67,7 @@ themes.forEach(theme => {
           invisibles,
           selectedTheme: theme.slug,
           selectedStatus: 'publish',
-          selectedWidth: '4'
+          selectedWidth: '4',
         }}
       />
     </div>

@@ -11,7 +11,7 @@ import {
   editorStatusChange,
   editorSyncToggle,
   editorUpdateClick,
-  editorAddClick
+  editorAddClick,
 } from '../../actions';
 import { Toggle } from '../../util';
 
@@ -92,7 +92,7 @@ const Controls: React.FC<Props> = ({
   onWidthChange,
   onInvisiblesChange,
   onUpdateClick,
-  onAddClick
+  onAddClick,
 }) => (
   <div className={`wpgp-editor-controls wpgp-editor-controls-${selectedTheme}`}>
     <div className="wpgp-editor-control">
@@ -201,20 +201,20 @@ const Controls: React.FC<Props> = ({
 
 const events = {
   onStatusChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>,
   ) => e$.map(e => editorStatusChange(e.target.value)),
   onSyncChange: (e$: Observable<React.ChangeEvent<HTMLInputElement>, never>) =>
     e$.map(e => editorSyncToggle(mapCheckedToString(e))),
   onThemeChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>,
   ) => e$.map(e => editorThemeChange(e.target.value)),
   onTabsChange: (e$: Observable<React.ChangeEvent<HTMLInputElement>, never>) =>
     e$.map(e => editorTabsToggle(mapCheckedToString(e))),
   onWidthChange: (
-    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
+    e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>,
   ) => e$.map(e => editorWidthChange(e.target.value)),
   onInvisiblesChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>,
   ) => e$.map(e => editorInvisiblesToggle(mapCheckedToString(e))),
   onUpdateClick: (e$: Observable<React.MouseEvent<HTMLButtonElement>, never>) =>
     e$.map(e => {
@@ -225,7 +225,7 @@ const events = {
     e$.map(e => {
       e.preventDefault();
       return editorAddClick();
-    })
+    }),
 };
 
 export default toJunction(events)(Controls);

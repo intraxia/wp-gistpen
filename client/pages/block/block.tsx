@@ -20,22 +20,22 @@ export const category: Module['category'] = 'widgets';
 export const keywords: Module['keywords'] = [
   __('code'),
   __('snippet'),
-  __('gistpen')
+  __('gistpen'),
 ];
 
 export const attributes: Module['attributes'] = {
   repoId: {
-    type: 'number'
+    type: 'number',
   },
   blobId: {
-    type: 'number'
-  }
+    type: 'number',
+  },
 };
 
 export const edit: Module['edit'] = ({
   attributes,
   className,
-  setAttributes
+  setAttributes,
 }) => {
   return (
     <Gutenblock

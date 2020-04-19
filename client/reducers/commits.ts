@@ -29,18 +29,18 @@ export type CommitsState = {
 
 const defaultState: CommitsState = {
   instances: [],
-  selected: null
+  selected: null,
 };
 
 export const commitsReducer: EddyReducer<CommitsState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(commitsFetchSucceeded):
       return {
         ...state,
-        instances: action.payload.response
+        instances: action.payload.response,
       };
     case getType(commitClick):
       return {
@@ -48,7 +48,7 @@ export const commitsReducer: EddyReducer<CommitsState, RootAction> = (
         selected:
           (typeof action.meta.key === 'string'
             ? parseInt(action.meta.key, 10)
-            : action.meta.key) || null
+            : action.meta.key) || null,
       };
     default:
       return state;

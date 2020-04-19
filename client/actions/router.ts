@@ -8,5 +8,5 @@ type Routes = string;
 
 export const routeChange = createAction(
   'ROUTE_CHANGE',
-  resolve => (name: Routes, parts: RouteParts = {}) => resolve({ name, parts })
+  resolve => (name: Routes, parts: RouteParts = {}) => resolve({ name, parts }),
 );

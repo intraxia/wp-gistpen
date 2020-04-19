@@ -7,7 +7,7 @@ import { AjaxService, AjaxError } from '../ajax';
 import {
   searchInput,
   searchResultsSucceeded,
-  searchsResultsFailed
+  searchsResultsFailed,
 } from '../actions';
 import { GlobalsState, SearchState } from '../reducers';
 import { validationErrorsToString } from '../api';
@@ -29,9 +29,9 @@ const searchResponse = t.array(
     language: t.type({
       ID: t.number,
       display_name: t.string,
-      slug: t.string
-    })
-  })
+      slug: t.string,
+    }),
+  }),
 );
 
 export type SearchApiResponse = t.TypeOf<typeof searchResponse>;
@@ -41,7 +41,7 @@ const getSearchUrl = (state: SearchDeltaState) =>
 
 export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
   actions$: Observable<RootAction, never>,
-  state$: Observable<SearchDeltaState, never>
+  state$: Observable<SearchDeltaState, never>,
 ): Observable<RootAction, never> =>
   state$
     .sampledBy(actions$.thru(ofType(searchInput)))
@@ -50,9 +50,9 @@ export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
       ajax$(getSearchUrl(state), {
         method: 'GET',
         headers: {
-          'X-WP-Nonce': state.globals.nonce
-        }
-      })
+          'X-WP-Nonce': state.globals.nonce,
+        },
+      }),
     )
     .flatMap(response => response.json())
     .flatMap(response =>
@@ -61,7 +61,7 @@ export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
         .fold<Observable<RootAction, AjaxError>>(
           errs =>
             Kefir.constantError(new AjaxError(validationErrorsToString(errs))),
-          res => Kefir.constant(searchResultsSucceeded(res))
-        )
+          res => Kefir.constant(searchResultsSucceeded(res)),
+        ),
     )
     .flatMapErrors(err => Kefir.constant(searchsResultsFailed(err)));

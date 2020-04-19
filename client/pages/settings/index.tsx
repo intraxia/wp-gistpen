@@ -9,7 +9,7 @@ import {
   jobsDelta,
   routerDelta,
   siteDelta,
-  webpackDelta
+  webpackDelta,
 } from '../../deltas';
 import { ajax$ } from '../../ajax';
 import { SettingsPage } from '../../components';
@@ -38,7 +38,7 @@ const { __GISTPEN_SETTINGS__ } = window;
 
 Prism.setAutoloaderPath(
   (__webpack_public_path__ =
-    __GISTPEN_SETTINGS__.globals.url + 'resources/assets/')
+    __GISTPEN_SETTINGS__.globals.url + 'resources/assets/'),
 );
 
 const store = eddy()(createStore)(
@@ -48,10 +48,10 @@ const store = eddy()(createStore)(
     jobs: Object.values(__GISTPEN_SETTINGS__.jobs).reduce(
       (jobs, job) => ({
         ...jobs,
-        [job.slug]: { result: 'success', response: job }
+        [job.slug]: { result: 'success', response: job },
       }),
-      {}
-    )
+      {},
+    ),
   },
   applyDelta<RootAction, State>(
     jobsDelta({ ajax$ }),
@@ -59,11 +59,11 @@ const store = eddy()(createStore)(
       router,
       param: 'wpgp_route',
       location: window.location,
-      history: window.history
+      history: window.history,
     }),
     siteDelta({ ajax$ }),
-    webpackDelta
-  )
+    webpackDelta,
+  ),
 );
 
 const App = connect(mapStateToProps)(SettingsPage);
@@ -74,5 +74,5 @@ ReactDOM.render(
       <App />
     </RootJunction>
   </Provider>,
-  document.getElementById('settings-app')
+  document.getElementById('settings-app'),
 );

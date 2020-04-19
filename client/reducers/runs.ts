@@ -11,12 +11,12 @@ export type RunsState = {
 };
 
 const defaultState: RunsState = {
-  items: {}
+  items: {},
 };
 
 export const runsReducer: EddyReducer<RunsState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(runsFetchSucceeded):
@@ -25,10 +25,10 @@ export const runsReducer: EddyReducer<RunsState, RootAction> = (
         items: action.payload.response.reduce(
           (items, run) => ({
             ...items,
-            [run.ID]: run
+            [run.ID]: run,
           }),
-          state.items
-        )
+          state.items,
+        ),
       };
     default:
       return state;

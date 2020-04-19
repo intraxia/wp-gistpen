@@ -5,31 +5,31 @@ import SettingsPage from '../';
 
 const highlightingRoute = {
   name: 'highlighting',
-  parts: {}
+  parts: {},
 };
 
 const accountsRoute = {
   name: 'accounts',
-  parts: {}
+  parts: {},
 };
 
 const jobsRoute = {
   name: 'jobs',
-  parts: {}
+  parts: {},
 };
 
 const runRoute = {
   name: 'jobs',
   parts: {
-    run: '1'
-  }
+    run: '1',
+  },
 };
 
 const messagesRoute = {
   name: 'jobs',
   parts: {
-    job: '1'
-  }
+    job: '1',
+  },
 };
 
 const props = {
@@ -38,10 +38,10 @@ const props = {
     options: [
       {
         name: 'Default',
-        slug: 'default'
-      }
+        slug: 'default',
+      },
     ],
-    selected: 'default'
+    selected: 'default',
   },
   'line-numbers': true,
   'show-invisibles': false,
@@ -55,8 +55,8 @@ const props = {
   demo: {
     code: "console.log('hello')",
     filename: '',
-    language: 'javascript'
-  }
+    language: 'javascript',
+  },
 };
 
 storiesOf('SettingsPage', module)

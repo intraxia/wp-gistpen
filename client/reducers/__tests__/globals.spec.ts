@@ -15,11 +15,11 @@ describe('globalsReducer', () => {
       demo: {
         filename: '',
         code: '',
-        language: ''
-      }
+        language: '',
+      },
     };
     const action = {
-      type: 'RANDOM'
+      type: 'RANDOM',
     } as any;
     expect(globalsReducer(state, action)).toBe(state);
   });
@@ -36,13 +36,13 @@ describe('globalsReducer', () => {
       demo: {
         filename: '',
         code: '',
-        language: ''
-      }
+        language: '',
+      },
     };
     const action = init({
       globals: {
-        root: 'the-root'
-      }
+        root: 'the-root',
+      },
     });
 
     expect(globalsReducer(state, action)).toEqual({
@@ -56,8 +56,8 @@ describe('globalsReducer', () => {
       demo: {
         filename: '',
         code: '',
-        language: ''
-      }
+        language: '',
+      },
     });
   });
 });

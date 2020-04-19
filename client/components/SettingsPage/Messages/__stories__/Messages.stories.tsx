@@ -14,9 +14,9 @@ storiesOf('Messages', module).add('default', () => (
           run_id: '2',
           text: 'This is a message',
           level: 'info',
-          logged_at: 'yesterday'
-        }
-      ]
+          logged_at: 'yesterday',
+        },
+      ],
     }}
   />
 ));

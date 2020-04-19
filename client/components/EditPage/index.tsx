@@ -112,7 +112,7 @@ const EditPage: React.FC<{
   selectedWidth,
   instances,
   languages,
-  errors
+  errors,
 }) => {
   return (
     <div data-brk-container="editor" className="wpgp-editor">
@@ -150,7 +150,7 @@ const EditPage: React.FC<{
             preplug={instance$ =>
               instance$.map(action => ({
                 ...action,
-                meta: { key: instance.ID }
+                meta: { key: instance.ID },
               }))
             }
           />

@@ -3,7 +3,7 @@ import { EddyReducer } from 'brookjs';
 import {
   searchInput,
   searchResultsSucceeded,
-  searchResultSelectionChange
+  searchResultSelectionChange,
 } from '../actions';
 import { RootAction } from '../util';
 
@@ -33,25 +33,25 @@ const defaultState: SearchState = { term: '', results: [], selection: null };
 
 export const searchReducer: EddyReducer<SearchState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(searchInput):
       return {
         ...state,
         term: action.payload.value,
-        results: action.payload.value ? state.results : []
+        results: action.payload.value ? state.results : [],
       };
     case getType(searchResultsSucceeded):
       return {
         ...state,
         results: action.payload.response,
-        selection: null
+        selection: null,
       };
     case getType(searchResultSelectionChange):
       return {
         ...state,
-        selection: parseInt(action.payload.selection, 10)
+        selection: parseInt(action.payload.selection, 10),
       };
     default:
       return state;

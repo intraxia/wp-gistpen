@@ -15,7 +15,7 @@ type Props = {
 const Description: React.FC<Props> = ({
   description,
   loading,
-  onDescriptionChange
+  onDescriptionChange,
 }) => (
   <div id="titlediv" className="wpgp-editor-header-container">
     <div className="wpgp-editor-header-row">
@@ -47,8 +47,8 @@ const Description: React.FC<Props> = ({
 
 const events = {
   onDescriptionChange: (
-    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>
-  ) => e$.map(e => editorDescriptionChange(e.target.value))
+    e$: Observable<React.ChangeEvent<HTMLInputElement>, never>,
+  ) => e$.map(e => editorDescriptionChange(e.target.value)),
 };
 
 export default toJunction(events)(Description);

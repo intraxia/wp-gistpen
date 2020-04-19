@@ -11,7 +11,7 @@ const state = {
     url: '',
     ace_widths: [],
     statuses: {},
-    themes: {}
+    themes: {},
   },
   repo: {
     ID: 1234,
@@ -25,9 +25,9 @@ const state = {
     rest_url: '',
     status: '',
     sync: 'off',
-    updated_at: ''
+    updated_at: '',
   },
-  editor: {}
+  editor: {},
 };
 
 describe('repoDelta', () => {

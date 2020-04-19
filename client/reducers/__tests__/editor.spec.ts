@@ -23,10 +23,10 @@ describe('editorReducer', () => {
         language: 'php',
         history: {
           undo: [],
-          redo: []
-        }
-      }
-    ]
+          redo: [],
+        },
+      },
+    ],
   };
 
   it('should tab indent line the cursor is on', () => {
@@ -34,9 +34,9 @@ describe('editorReducer', () => {
       {
         code: 'echo "Hello";\necho "world!";',
         cursor: [13, 13],
-        inverse: false
+        inverse: false,
       },
-      '1'
+      '1',
     );
     const before = initial;
     const after = {
@@ -61,13 +61,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: 'echo "Hello";\necho "world!";',
-                cursor: [13, 13]
-              }
+                cursor: [13, 13],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -78,9 +78,9 @@ describe('editorReducer', () => {
       {
         code: 'echo "Hello";\necho "world!";',
         cursor: [13, 13],
-        inverse: false
+        inverse: false,
       },
-      '1'
+      '1',
     );
     const before: EditorState = { ...initial, tabs: 'off' };
     const after = {
@@ -105,13 +105,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: 'echo "Hello";\necho "world!";',
-                cursor: [13, 13]
-              }
+                cursor: [13, 13],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -122,9 +122,9 @@ describe('editorReducer', () => {
       {
         code: 'echo "Hello";\necho "world!";',
         cursor: [0, 28],
-        inverse: false
+        inverse: false,
       },
-      '1'
+      '1',
     );
     const before: EditorState = { ...initial, tabs: 'off' };
     const after = {
@@ -150,13 +150,13 @@ describe('editorReducer', () => {
               {
                 code: 'echo "Hello";\necho "world!";',
                 // This matches the previous state, not the dispatched value.
-                cursor: [13, 13]
-              }
+                cursor: [13, 13],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -167,9 +167,9 @@ describe('editorReducer', () => {
       {
         code: 'echo "Hello";\t\necho "world!";',
         cursor: [14, 14],
-        inverse: true
+        inverse: true,
       },
-      '1'
+      '1',
     );
     const before: EditorState = {
       ...initial,
@@ -177,9 +177,9 @@ describe('editorReducer', () => {
         {
           ...initial.instances[0],
           code: 'echo "Hello";\t\necho "world!";',
-          cursor: [14, 14]
-        }
-      ]
+          cursor: [14, 14],
+        },
+      ],
     };
     const after = {
       errors: [],
@@ -203,13 +203,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: 'echo "Hello";\t\necho "world!";',
-                cursor: [14, 14]
-              }
+                cursor: [14, 14],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -220,9 +220,9 @@ describe('editorReducer', () => {
       {
         code: '\techo "Hello";\necho "world!";',
         cursor: [14, 14],
-        inverse: true
+        inverse: true,
       },
-      '1'
+      '1',
     );
     const before: EditorState = {
       ...initial,
@@ -230,9 +230,9 @@ describe('editorReducer', () => {
         {
           ...initial.instances[0],
           code: '\techo "Hello";\necho "world!";',
-          cursor: [14, 14]
-        }
-      ]
+          cursor: [14, 14],
+        },
+      ],
     };
     const after = {
       errors: [],
@@ -256,13 +256,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: '\techo "Hello";\necho "world!";',
-                cursor: [14, 14]
-              }
+                cursor: [14, 14],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -273,9 +273,9 @@ describe('editorReducer', () => {
       {
         code: 'echo "Hello";    \necho "world!";',
         cursor: [17, 17],
-        inverse: true
+        inverse: true,
       },
-      '1'
+      '1',
     );
     const before: EditorState = {
       ...initial,
@@ -284,9 +284,9 @@ describe('editorReducer', () => {
         {
           ...initial.instances[0],
           code: 'echo "Hello";    \necho "world!";',
-          cursor: [17, 17]
-        }
-      ]
+          cursor: [17, 17],
+        },
+      ],
     };
     const after = {
       errors: [],
@@ -310,13 +310,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: 'echo "Hello";    \necho "world!";',
-                cursor: [17, 17]
-              }
+                cursor: [17, 17],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -327,9 +327,9 @@ describe('editorReducer', () => {
       {
         code: '    echo "Hello";\necho "world!";',
         cursor: [17, 17],
-        inverse: true
+        inverse: true,
       },
-      '1'
+      '1',
     );
     const before: EditorState = {
       ...initial,
@@ -338,9 +338,9 @@ describe('editorReducer', () => {
         {
           ...initial.instances[0],
           code: '    echo "Hello";\necho "world!";',
-          cursor: [17, 17]
-        }
-      ]
+          cursor: [17, 17],
+        },
+      ],
     };
     const after = {
       errors: [],
@@ -364,13 +364,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: '    echo "Hello";\necho "world!";',
-                cursor: [17, 17]
-              }
+                cursor: [17, 17],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -380,9 +380,9 @@ describe('editorReducer', () => {
     const action = editorMakeNewline(
       {
         code: '    echo "Hello";\necho "world!";',
-        cursor: [17, 17]
+        cursor: [17, 17],
       },
-      '1'
+      '1',
     );
     const before: EditorState = {
       ...initial,
@@ -391,9 +391,9 @@ describe('editorReducer', () => {
         {
           ...initial.instances[0],
           code: '    echo "Hello";\necho "world!";',
-          cursor: [17, 17]
-        }
-      ]
+          cursor: [17, 17],
+        },
+      ],
     };
     const after = {
       errors: [],
@@ -417,13 +417,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: '    echo "Hello";\necho "world!";',
-                cursor: [17, 17]
-              }
+                cursor: [17, 17],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);
@@ -434,9 +434,9 @@ describe('editorReducer', () => {
       {
         code: '    echo "Hello";\necho "world!";',
         cursor: [0, 0],
-        inverse: true
+        inverse: true,
       },
-      '1'
+      '1',
     );
     const before: EditorState = {
       ...initial,
@@ -445,9 +445,9 @@ describe('editorReducer', () => {
         {
           ...initial.instances[0],
           code: '    echo "Hello";\necho "world!";',
-          cursor: [0, 0]
-        }
-      ]
+          cursor: [0, 0],
+        },
+      ],
     };
     const after = {
       errors: [],
@@ -471,13 +471,13 @@ describe('editorReducer', () => {
             undo: [
               {
                 code: '    echo "Hello";\necho "world!";',
-                cursor: [0, 0]
-              }
+                cursor: [0, 0],
+              },
             ],
-            redo: []
-          }
-        }
-      ]
+            redo: [],
+          },
+        },
+      ],
     };
 
     expect(editorReducer(before, action)).toEqual(after);

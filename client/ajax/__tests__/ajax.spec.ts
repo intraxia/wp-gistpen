@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import sinon, {
   SinonFakeXMLHttpRequestStatic,
-  SinonFakeXMLHttpRequest
+  SinonFakeXMLHttpRequest,
 } from 'sinon';
 import { ajax$, ObsResponse } from '../';
 
@@ -39,7 +39,7 @@ describe('ajax$', () => {
       [Kutil.error(new TypeError('Network request failed')), Kutil.end()],
       () => {
         requests[0].error();
-      }
+      },
     );
   });
 

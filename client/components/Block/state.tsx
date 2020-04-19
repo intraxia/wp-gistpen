@@ -23,7 +23,7 @@ export type Attributes = {
 // @TODO(mAAdhaTTah) remove duplicate types on params (implicit any?!)
 export const reducer: EddyReducer<State, RootAction> = (
   state: State,
-  action: RootAction
+  action: RootAction,
 ) => {
   switch (action.type) {
     default:
@@ -36,13 +36,13 @@ export const initialState = ({ blobId, repoId }: Attributes): State => {
     return {
       status: 'set-embed',
       repoId,
-      blobId
+      blobId,
     } as const;
   } else {
     return {
       status: 'edit-embed',
       repoId,
-      blobId
+      blobId,
     } as const;
   }
 };

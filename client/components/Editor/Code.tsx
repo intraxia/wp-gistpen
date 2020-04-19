@@ -9,7 +9,7 @@ import {
   editorMakeNewline,
   editorRedo,
   editorUndo,
-  editorValueChange
+  editorValueChange,
 } from '../../actions';
 import { selectSelectionStart, selectSelectionEnd } from '../../selectors';
 import Prism from '../../prism';
@@ -42,14 +42,14 @@ const mapToTargetCursorAction = <
   evt$.map(e => elementToCursorMoveAction(e.target as Element));
 
 const mapKeydownToAction = (
-  evt: React.KeyboardEvent<HTMLElement>
+  evt: React.KeyboardEvent<HTMLElement>,
 ): RootAction => {
   const { shiftKey: inverse } = evt;
   let { textContent: code } = evt.target as HTMLElement;
   code = code || '';
   const cursor: Cursor = [
     selectSelectionStart(evt.target as Element),
-    selectSelectionEnd(evt.target as Element)
+    selectSelectionEnd(evt.target as Element),
   ];
 
   evt.preventDefault();
@@ -138,8 +138,8 @@ const createPrismUpdateStream = (props: Props) =>
           });
         }
       }),
-      Prism.togglePlugin('show-invisibles', props.invisibles === 'on')
-    ])
+      Prism.togglePlugin('show-invisibles', props.invisibles === 'on'),
+    ]),
   )
     .ignoreValues()
     .setName('prismUpdate$');
@@ -154,13 +154,13 @@ const createDOMUpdateStream = (el: Element, props: Props) =>
       highlightElement(el),
       props.cursor
         ? setSelectionRange(el, props.cursor[0], props.cursor[1])
-        : Kefir.never()
-    ])
+        : Kefir.never(),
+    ]),
   );
 
 const Code: React.RefForwardingComponent<HTMLElement, Props> = (
   { language, onBlur, onClick, onFocus, onInput, onKeyUp, onKeyDown },
-  ref
+  ref,
 ) => (
   <code
     onBlur={onBlur}
@@ -179,11 +179,11 @@ const Code: React.RefForwardingComponent<HTMLElement, Props> = (
 const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
   ref$.flatMap(el => {
     const keyUp$ = Kefir.fromEvents<KeyboardEvent, never>(el, 'keyup').setName(
-      'keyUp$'
+      'keyUp$',
     );
     const keyDown$ = Kefir.fromEvents<KeyboardEvent, never>(
       el,
-      'keydown'
+      'keydown',
     ).setName('keyDown$');
 
     /**
@@ -211,8 +211,8 @@ const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
       .flatMapLatest(props =>
         Kefir.concat([
           createPrismUpdateStream(props),
-          createDOMUpdateStream(el, props)
-        ])
+          createDOMUpdateStream(el, props),
+        ]),
       )
       .setName('options$');
 
@@ -227,7 +227,7 @@ const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
       .sampledBy(keyUp$.debounce(10))
       .skipDuplicates((prev, next) => prev.code === next.code)
       .flatMapLatest(props =>
-        createDOMUpdateStream(el, props).takeUntilBy(keyDown$)
+        createDOMUpdateStream(el, props).takeUntilBy(keyDown$),
       )
       .setName('typing$');
 
@@ -243,7 +243,7 @@ const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
       .sampledBy(keyDown$.filter(isSpecialEvent).delay(0))
       .skipDuplicates((prev, next) => prev.code === next.code)
       .flatMapLatest(props =>
-        raf$.take(1).flatMap(() => createDOMUpdateStream(el, props))
+        raf$.take(1).flatMap(() => createDOMUpdateStream(el, props)),
       )
       .setName('special$');
 
@@ -257,7 +257,7 @@ const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
       options$,
       typing$,
       special$,
-      language$
+      language$,
     ]);
   });
 
@@ -273,23 +273,23 @@ const events = {
           code: (evt.target as HTMLElement).textContent || '',
           cursor: [
             selectSelectionStart(evt.target as Element),
-            selectSelectionEnd(evt.target as Element)
-          ]
+            selectSelectionEnd(evt.target as Element),
+          ],
         },
-        null
-      )
+        null,
+      ),
     ),
   onKeyUp: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, never>) =>
     evt$.filter(e => !isSpecialEvent(e)).thru(mapToTargetCursorAction()),
   onKeyDown: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, never>) =>
-    evt$.filter(e => isSpecialEvent(e)).map(mapKeydownToAction)
+    evt$.filter(e => isSpecialEvent(e)).map(mapKeydownToAction),
 };
 
 export default toJunction(events)(
   withRef$(refback)(
     memo(
       forwardRef(Code),
-      (prev: Props, next: Props) => prev.language === next.language
-    )
-  )
+      (prev: Props, next: Props) => prev.language === next.language,
+    ),
+  ),
 );
