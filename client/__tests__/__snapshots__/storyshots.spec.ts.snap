@@ -6820,7 +6820,7 @@ exports[`Storyshots Create or Choose Basic 1`] = `
     data-testid="create-or-choose"
   >
     <button
-      class="components-button is-button is-primary is-large"
+      class="components-button is-primary is-large"
       type="button"
     >
       Create new
@@ -6831,7 +6831,7 @@ exports[`Storyshots Create or Choose Basic 1`] = `
       Or
     </div>
     <button
-      class="components-button is-button is-default is-large is-tertiary"
+      class="components-button is-large is-tertiary"
       type="button"
     >
       Choose from existing
