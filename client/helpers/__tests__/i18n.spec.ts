@@ -9,7 +9,7 @@ describe('i18n', () => {
   it('should sprintf the key', () => {
     const key = 'message';
     window.__GISTPEN_I18N__ = {
-      [key]: 'A test message: %s %d'
+      [key]: 'A test message: %s %d',
     };
 
     expect(i18n(key, 'hello', 21)).toBe('A test message: hello 21');
@@ -18,7 +18,7 @@ describe('i18n', () => {
   it('should use the not found key if missing root key', () => {
     const key = 'message';
     window.__GISTPEN_I18N__ = {
-      'i18n.notfound': 'Oh no!'
+      'i18n.notfound': 'Oh no!',
     };
 
     expect(i18n(key, 'hello', 21)).toBe('Oh no!');
@@ -28,7 +28,7 @@ describe('i18n', () => {
     const key = 'message';
 
     expect(i18n(key, 'hello', 21)).toBe(
-      'Translation & fallback not found for key message'
+      'Translation & fallback not found for key message',
     );
   });
 });

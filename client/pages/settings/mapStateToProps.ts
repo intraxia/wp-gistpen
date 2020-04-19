@@ -10,9 +10,9 @@ const selectRoute = (state: { route: Nullable<Route> }) =>
 const selectThemes = (state: State) => ({
   options: Object.entries(state.globals.themes).map(([key, value]) => ({
     slug: key,
-    name: value
+    name: value,
   })),
-  selected: state.prism.theme
+  selected: state.prism.theme,
 });
 
 const selectLineNumbers = (state: State) => state.prism['line-numbers'];
@@ -29,7 +29,7 @@ const selectJobs = (state: State) =>
     .filter(jobIsSuccess)
     .map(({ response: job }) => ({
       ...job,
-      runs: selectRunsForJob(state, job)
+      runs: selectRunsForJob(state, job),
     }));
 
 const selectLoading = (state: State) => state.ajax.running;
@@ -60,7 +60,7 @@ const selectJobRuns = (state: State) =>
   Nullable.maybe(
     [],
     job => selectRunsForJob(state, job),
-    selectViewedJob(state)
+    selectViewedJob(state),
   );
 
 const selectViewedRun = (state: State): Nullable<Run> => {
@@ -81,13 +81,13 @@ const selectRunMessages = (state: State) =>
     [],
     route =>
       Object.values(state.messages.items).filter(
-        message => message.run_id === route.parts.run
+        message => message.run_id === route.parts.run,
       ),
-    state.route
+    state.route,
   );
 
 const mapStateToProps = (
-  state: State
+  state: State,
 ): React.ComponentProps<typeof SettingsPage> => ({
   loading: selectLoading(state),
   route: selectRoute(state),
@@ -101,7 +101,7 @@ const mapStateToProps = (
   selectedJobStatus: selectJobStatus(state),
   selectedJobRuns: selectJobRuns(state),
   selectedRunStatus: selectRunStatus(state),
-  selectedRunMessages: selectRunMessages(state)
+  selectedRunMessages: selectRunMessages(state),
 });
 
 export default mapStateToProps;

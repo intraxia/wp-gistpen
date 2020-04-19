@@ -24,16 +24,16 @@ storiesOf('EditPage', module).add('with error', () => (
           code: '\n',
           filename: '',
           cursor: false as const,
-          language: 'js'
-        }
+          language: 'js',
+        },
       ]}
       languages={[]}
       errors={[
         new AjaxError(
           'API response was bad',
           400,
-          JSON.stringify({ message: 'A more specific BE message' })
-        )
+          JSON.stringify({ message: 'A more specific BE message' }),
+        ),
       ]}
     />
   </div>

@@ -38,8 +38,8 @@ const extension = {
             }
 
             resolve(currentTheme);
-          })
-        )
+          }),
+        ),
     ),
   togglePlugin: (pluginKey: string, toggle: boolean): Promise<Theme> =>
     import(`./plugins/${pluginKey}.ts`).then(
@@ -57,9 +57,9 @@ const extension = {
             }
 
             resolve(plugin);
-          })
-        )
-    )
+          }),
+        ),
+    ),
 };
 
 export default Object.assign({}, Prism, extension);

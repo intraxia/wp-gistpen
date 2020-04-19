@@ -57,7 +57,7 @@ const defaultState: JobsState = {};
 
 export const jobsReducer: EddyReducer<JobsState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(jobFetchSucceeded):
@@ -65,16 +65,16 @@ export const jobsReducer: EddyReducer<JobsState, RootAction> = (
         ...state,
         [action.payload.response.slug]: {
           result: 'success',
-          response: action.payload.response
-        }
+          response: action.payload.response,
+        },
       };
     case getType(jobFetchFailed):
       return {
         ...state,
         [action.payload.slug]: {
           result: 'error',
-          error: action.payload.error
-        }
+          error: action.payload.error,
+        },
       };
     default:
       return state;

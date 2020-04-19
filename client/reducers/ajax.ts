@@ -5,7 +5,7 @@ import {
   ajaxFailed,
   ajaxFinished,
   searchInput,
-  searchResultsSucceeded
+  searchResultsSucceeded,
 } from '../actions';
 import { RootAction } from '../util';
 
@@ -14,12 +14,12 @@ export type AjaxState = {
 };
 
 const defaultState: AjaxState = {
-  running: false
+  running: false,
 };
 
 export const ajaxReducer: EddyReducer<AjaxState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(ajaxStarted):

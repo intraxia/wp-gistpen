@@ -8,16 +8,16 @@ const renderBlock = createRender({
     className: '',
     setAttributes: jest.fn(),
     blobId: null,
-    repoId: null
+    repoId: null,
   },
   component: Block,
   render,
   elements: ({ getByTestId }: RenderResult) => ({
     setEmbed: () => getByTestId('set-embed'),
-    editEmbed: () => getByTestId('edit-embed')
+    editEmbed: () => getByTestId('edit-embed'),
   }),
   fire: () => ({}),
-  waitFor: () => ({})
+  waitFor: () => ({}),
 });
 
 describe('Block', () => {

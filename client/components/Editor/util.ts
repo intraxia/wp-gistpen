@@ -2,7 +2,7 @@ import { Props } from './types';
 
 export function editorOptionsIsEqual(
   prev: Pick<Props, 'theme' | 'invisibles'>,
-  next: Pick<Props, 'theme' | 'invisibles'>
+  next: Pick<Props, 'theme' | 'invisibles'>,
 ): boolean {
   return prev.theme === next.theme && prev.invisibles === next.invisibles;
 }
@@ -14,13 +14,13 @@ export function lineNumberIsEqual(/* prev, next */): boolean {
 
 export function languageIsEqual(
   prev: Pick<Props, 'language'>,
-  next: Pick<Props, 'language'>
+  next: Pick<Props, 'language'>,
 ): boolean {
   return prev.language === next.language;
 }
 
 export function isSpecialEvent(
-  evt: KeyboardEvent | React.KeyboardEvent
+  evt: KeyboardEvent | React.KeyboardEvent,
 ): boolean {
   const { altKey, metaKey, ctrlKey } = evt;
   const cmdOrCtrl = metaKey || ctrlKey;

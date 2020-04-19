@@ -18,7 +18,7 @@ type HrefTarget = {
 
 type SheetRouter = (
   route: string,
-  parts?: RouteParts
+  parts?: RouteParts,
 ) => ReturnType<typeof routeChange>;
 
 type RouterDeltaServices = {
@@ -32,9 +32,9 @@ export const routerDelta = ({
   router,
   param,
   location,
-  history
+  history,
 }: RouterDeltaServices) => (
-  actions$: Observable<RootAction, never>
+  actions$: Observable<RootAction, never>,
 ): Observable<RootAction, never> => {
   const initial$ = Kefir.later(0, router(getRoute(location.search, param)));
 
@@ -47,7 +47,7 @@ export const routerDelta = ({
       }
 
       emitter.end();
-    })
+    }),
   );
 
   const href$ = Kefir.stream<RootAction, never>(emitter => {

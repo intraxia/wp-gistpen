@@ -54,7 +54,7 @@ const Page: React.FC<Props> = ({
   selectedJobStatus,
   selectedJobRuns,
   selectedRunStatus,
-  selectedRunMessages
+  selectedRunMessages,
 }) => {
   switch (route.name) {
     case 'highlighting':
@@ -77,7 +77,7 @@ const Page: React.FC<Props> = ({
                 job: selectedJobName,
                 job_id: route.parts.job,
                 status: selectedRunStatus,
-                messages: selectedRunMessages
+                messages: selectedRunMessages,
               }}
             />
           );

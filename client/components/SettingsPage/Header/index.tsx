@@ -16,7 +16,7 @@ const Header: React.FC<Props> = ({ route, loading }) => (
       <a
         className={classNames({
           'nav-tab': true,
-          'nav-tab-active': route === 'highlighting'
+          'nav-tab-active': route === 'highlighting',
         })}
         href={link('wpgp_route', 'highlighting')}
         data-testid="link-highlighting"
@@ -26,7 +26,7 @@ const Header: React.FC<Props> = ({ route, loading }) => (
       <a
         className={classNames({
           'nav-tab': true,
-          'nav-tab-active': route === 'accounts'
+          'nav-tab-active': route === 'accounts',
         })}
         href={link('wpgp_route', 'accounts')}
         data-testid="link-accounts"
@@ -36,7 +36,7 @@ const Header: React.FC<Props> = ({ route, loading }) => (
       <a
         className={classNames({
           'nav-tab': true,
-          'nav-tab-active': route === 'jobs'
+          'nav-tab-active': route === 'jobs',
         })}
         href={link('wpgp_route', 'jobs')}
         data-testid="link-jobs"

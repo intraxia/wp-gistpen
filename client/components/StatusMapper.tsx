@@ -11,7 +11,7 @@ type Props<T extends string> = {
 
 export const StatusMapper = <T extends string>({
   status,
-  elements
+  elements,
 }: Props<T>): React.ReactElement => {
   return elements[status]();
 };

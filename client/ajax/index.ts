@@ -16,7 +16,7 @@ export class ObsResponse {
         result = JSON.parse(xhr.response || xhr.responseText);
       } catch (e) {
         emitter.error(
-          new TypeError(`Error parsing JSON response: ${e.message}`)
+          new TypeError(`Error parsing JSON response: ${e.message}`),
         );
       } finally {
         if (result) {
@@ -51,7 +51,7 @@ export class AjaxError extends Error {
 
 export const ajax$ = (
   url: string,
-  { method = 'GET', headers = {}, credentials, body }: AjaxOptions = {}
+  { method = 'GET', headers = {}, credentials, body }: AjaxOptions = {},
 ): Stream<ObsResponse, TypeError> =>
   Kefir.stream((emitter: Emitter<ObsResponse, AjaxError>) => {
     const xhr = new XMLHttpRequest();
@@ -64,8 +64,8 @@ export const ajax$ = (
           new AjaxError(
             `${xhr.status} - ${xhr.statusText}`,
             xhr.status,
-            xhr.response || xhr.responseText
-          )
+            xhr.response || xhr.responseText,
+          ),
         );
       }
     };

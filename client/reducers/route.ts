@@ -19,7 +19,7 @@ const defaultState: RouteState = null;
 
 export const routeReducer: EddyReducer<RouteState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(routeChange):

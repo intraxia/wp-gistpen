@@ -3,5 +3,5 @@ import { GlobalsState } from '../reducers';
 
 export const init = createAction(
   'INIT',
-  resolve => (initial: { globals: Partial<GlobalsState> }) => resolve(initial)
+  resolve => (initial: { globals: Partial<GlobalsState> }) => resolve(initial),
 );

@@ -6,7 +6,7 @@ describe('searchDelta', () => {
   it('should ignore random actions', () => {
     const state = {};
     const action = {
-      type: 'RANDOM'
+      type: 'RANDOM',
     };
     expect(searchDelta({ ajax$: sinon.stub() })).toEmitFromDelta([], send => {
       send(action, state);

@@ -7,14 +7,16 @@ import { reducer, initialState, State, Attributes } from './state';
 
 const rootDelta: Delta<RootAction, State> = () => Kefir.never();
 
-export const Block: React.FC<Attributes & {
-  className: string;
-  setAttributes: (attributes: Partial<Attributes>) => void;
-}> = ({ className, blobId, repoId, setAttributes }) => {
+export const Block: React.FC<
+  Attributes & {
+    className: string;
+    setAttributes: (attributes: Partial<Attributes>) => void;
+  }
+> = ({ className, blobId, repoId, setAttributes }) => {
   const { state, root$ } = useDelta(
     reducer,
     initialState({ repoId, blobId }),
-    rootDelta
+    rootDelta,
   );
 
   useEffect(() => {
@@ -34,7 +36,7 @@ export const Block: React.FC<Attributes & {
             'set-embed': () => (
               <div data-testid="set-embed">Create or choose</div>
             ),
-            'edit-embed': () => <div data-testid="edit-embed">Edit blob</div>
+            'edit-embed': () => <div data-testid="edit-embed">Edit blob</div>,
           }}
         />
       </div>

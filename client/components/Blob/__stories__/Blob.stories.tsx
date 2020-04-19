@@ -20,13 +20,13 @@ const blob = {
             return /\\d+[\\s/]/g;
     }
     console.log(Array.every(classes, Boolean));
-}`
+}`,
 };
 
 const prism = {
   theme: 'default',
   'line-numbers': false,
-  'show-invisibles': false
+  'show-invisibles': false,
 };
 
 const props = { blob, prism };
@@ -37,7 +37,7 @@ storiesOf('Blob', module)
     <Blob
       {...{
         blob,
-        prism: { ...prism, 'line-numbers': true }
+        prism: { ...prism, 'line-numbers': true },
       }}
     />
   ))
@@ -45,7 +45,7 @@ storiesOf('Blob', module)
     <Blob
       {...{
         blob,
-        prism: { ...prism, 'show-invisibles': true }
+        prism: { ...prism, 'show-invisibles': true },
       }}
     />
   ))
@@ -53,7 +53,7 @@ storiesOf('Blob', module)
     <Blob
       {...{
         blob,
-        prism: { ...prism, 'show-invisibles': true, 'line-numbers': true }
+        prism: { ...prism, 'show-invisibles': true, 'line-numbers': true },
       }}
     />
   ));

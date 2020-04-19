@@ -4,7 +4,7 @@ import { RootAction } from '../util';
 import {
   themeChange,
   lineNumbersChange,
-  showInvisiblesChange
+  showInvisiblesChange,
 } from '../actions';
 
 export type PrismState = {
@@ -16,28 +16,28 @@ export type PrismState = {
 const defaultState: PrismState = {
   theme: 'default',
   'line-numbers': false,
-  'show-invisibles': false
+  'show-invisibles': false,
 };
 
 export const prismReducer: EddyReducer<PrismState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(themeChange):
       return {
         ...state,
-        theme: action.payload.value
+        theme: action.payload.value,
       };
     case getType(lineNumbersChange):
       return {
         ...state,
-        'line-numbers': action.payload.value
+        'line-numbers': action.payload.value,
       };
     case getType(showInvisiblesChange):
       return {
         ...state,
-        'show-invisibles': action.payload.value
+        'show-invisibles': action.payload.value,
       };
     default:
       return state;

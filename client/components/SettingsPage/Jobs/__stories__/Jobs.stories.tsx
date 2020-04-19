@@ -10,9 +10,9 @@ storiesOf('Jobs', module).add('default', () => (
           name: 'Export',
           slug: 'export',
           description: 'Export things',
-          status: 'idle'
-        }
-      ]
+          status: 'idle',
+        },
+      ],
     }}
   />
 ));

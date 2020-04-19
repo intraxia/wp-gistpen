@@ -5,7 +5,7 @@ import {
   routeChange,
   commitsFetchStarted,
   commitsFetchFailed,
-  commitsFetchSucceeded
+  commitsFetchSucceeded,
 } from '../../actions';
 import { commitsDelta } from '../commitsDelta';
 
@@ -17,7 +17,7 @@ const globals = {
   url: '',
   ace_widths: [],
   statuses: {},
-  themes: {}
+  themes: {},
 };
 const stateNoId = {
   globals,
@@ -33,8 +33,8 @@ const stateNoId = {
     rest_url: '',
     status: '',
     sync: 'off',
-    updated_at: ''
-  }
+    updated_at: '',
+  },
 };
 const stateWithId = {
   globals,
@@ -50,8 +50,8 @@ const stateWithId = {
     rest_url: '',
     status: '',
     sync: 'off',
-    updated_at: ''
-  }
+    updated_at: '',
+  },
 };
 
 describe('commitsDelta', () => {
@@ -93,28 +93,25 @@ describe('commitsDelta', () => {
       credentials: 'include',
       headers: {
         'X-WP-Nonce': 'asdf',
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
     const xhr = { response: JSON.stringify([]) } as any;
     const services = createServices();
     const effect$ = Kutil.stream();
 
-    services.ajax$
-      .withArgs(commitsUrl, options)
-      .onFirstCall()
-      .returns(effect$);
+    services.ajax$.withArgs(commitsUrl, options).onFirstCall().returns(effect$);
 
     expect(commitsDelta(services)).toEmitFromDelta(
       [
         [0, Kutil.value(commitsFetchStarted())],
-        [10, Kutil.value(commitsFetchSucceeded([]))]
+        [10, Kutil.value(commitsFetchSucceeded([]))],
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
         Kutil.send(effect$, [Kutil.value(new ObsResponse(xhr)), Kutil.end()]);
-      }
+      },
     );
   });
 
@@ -125,28 +122,25 @@ describe('commitsDelta', () => {
       credentials: 'include',
       headers: {
         'X-WP-Nonce': 'asdf',
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     };
     const payload = new TypeError('Network request failed');
     const services = createServices();
     const effect$ = Kutil.stream();
 
-    services.ajax$
-      .withArgs(commitsUrl, options)
-      .onFirstCall()
-      .returns(effect$);
+    services.ajax$.withArgs(commitsUrl, options).onFirstCall().returns(effect$);
 
     expect(commitsDelta(services)).toEmitFromDelta(
       [
         [0, Kutil.value(commitsFetchStarted())],
-        [10, Kutil.value(commitsFetchFailed(payload))]
+        [10, Kutil.value(commitsFetchFailed(payload))],
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
         Kutil.send(effect$, [Kutil.error(payload), Kutil.end()]);
-      }
+      },
     );
   });
 });

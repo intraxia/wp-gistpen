@@ -23,5 +23,5 @@ Prism.plugins.toolbar.registerButton('edit', function editButton(env) {
 export const plugin = {
   use() {},
 
-  unuse() {}
+  unuse() {},
 };

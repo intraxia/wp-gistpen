@@ -6,7 +6,7 @@ import { Observable } from 'kefir';
 import {
   editorFilenameChange,
   editorDeleteClick,
-  editorLanguageChange
+  editorLanguageChange,
 } from '../../actions';
 import { i18n } from '../../helpers';
 import Prism from '../../prism';
@@ -15,7 +15,7 @@ import Code from './Code';
 import { Props } from './types';
 
 const ToolbarButton: React.FC<{ children: React.ReactNode }> = ({
-  children
+  children,
 }) => <div className="toolbar-item">{children}</div>;
 
 const _Filename: React.FC<{
@@ -88,7 +88,7 @@ const CopyEmbedCode: React.FC<{
     }
 
     const clipboard = new ClipboardJS(el, {
-      text: () => embedCode
+      text: () => embedCode,
     });
 
     return () => clipboard.destroy();
@@ -122,7 +122,7 @@ const Editor: React.FC<Props> = ({
   embedCode,
   onFilenameChange,
   onLanguageChange,
-  onDeleteClick
+  onDeleteClick,
 }) => (
   <div className={`editor page wpgp-editor-theme-${theme}`}>
     <div className="code-toolbar">
@@ -151,14 +151,14 @@ const Editor: React.FC<Props> = ({
 
 const events = {
   onFilenameChange: (
-    evt$: Observable<React.ChangeEvent<HTMLSpanElement>, never>
+    evt$: Observable<React.ChangeEvent<HTMLSpanElement>, never>,
   ) => evt$.map(e => editorFilenameChange(e.target.textContent || '', null)),
   onLanguageChange: (
-    evt$: Observable<React.ChangeEvent<HTMLSelectElement>, never>
+    evt$: Observable<React.ChangeEvent<HTMLSelectElement>, never>,
   ) => evt$.map(e => editorLanguageChange(e.target.value || '', null)),
   onDeleteClick: (
-    evt$: Observable<React.MouseEvent<HTMLButtonElement>, never>
-  ) => evt$.map(() => editorDeleteClick(null))
+    evt$: Observable<React.MouseEvent<HTMLButtonElement>, never>,
+  ) => evt$.map(() => editorDeleteClick(null)),
 };
 
 export default toJunction(events)(Editor);

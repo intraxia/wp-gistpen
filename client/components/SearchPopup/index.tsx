@@ -56,7 +56,7 @@ const Search: React.FC<Props> = ({
   loading,
   results,
   onSearchTyping,
-  onRadioChange
+  onRadioChange,
 }) => (
   <div className={'wpgp-search-container'}>
     <div className="wpgp-search-form">
@@ -88,14 +88,14 @@ const Search: React.FC<Props> = ({
 
 const events = {
   onSearchTyping: (
-    evt$: Observable<React.ChangeEvent<HTMLInputElement>, never>
+    evt$: Observable<React.ChangeEvent<HTMLInputElement>, never>,
   ) =>
     evt$
       .map(e => e.target.value)
       .debounce(300)
       .map(searchInput),
   onRadioChange: (evt$: Observable<string, never>) =>
-    evt$.map(searchResultSelectionChange)
+    evt$.map(searchResultSelectionChange),
 };
 
 export default toJunction(events)(Search);

@@ -6,7 +6,7 @@ import {
   applyDelta,
   searchDelta,
   tinymcePluginDelta,
-  webpackDelta
+  webpackDelta,
 } from '../../deltas';
 import { ajaxReducer, globalsReducer, searchReducer } from '../../reducers';
 import { RootAction } from '../../util';
@@ -14,7 +14,7 @@ import { RootAction } from '../../util';
 const reducer = combineReducers({
   ajax: ajaxReducer,
   globals: globalsReducer,
-  search: searchReducer
+  search: searchReducer,
 });
 
 export type State = StateType<typeof reducer>[0];
@@ -24,6 +24,6 @@ export default eddy()(createStore)(
   applyDelta<RootAction, State>(
     searchDelta({ ajax$ }),
     tinymcePluginDelta,
-    webpackDelta
-  )
+    webpackDelta,
+  ),
 );

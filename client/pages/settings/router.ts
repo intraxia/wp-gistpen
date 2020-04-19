@@ -12,8 +12,8 @@ export default sheetRouter({ default: '/highlighting' }, [
       [
         '/:job',
         (params: RouteParts) => routeChange('jobs', params),
-        [['/:run', (params: RouteParts) => routeChange('jobs', params)]]
-      ]
-    ]
-  ]
+        [['/:run', (params: RouteParts) => routeChange('jobs', params)]],
+      ],
+    ],
+  ],
 ]);

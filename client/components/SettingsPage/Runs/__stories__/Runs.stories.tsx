@@ -17,9 +17,9 @@ storiesOf('Runs', module).add('default', () => (
           job: 'export',
           rest_url: '',
           job_url: '',
-          console_url: ''
-        }
-      ]
+          console_url: '',
+        },
+      ],
     }}
   />
 ));

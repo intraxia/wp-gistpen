@@ -48,7 +48,7 @@ const Commits: React.FC<{
             key={ID}
             className={classNames({
               'wpgp-commits-item': true,
-              'wpgp-commits-selected': selected
+              'wpgp-commits-selected': selected,
             })}
             onClick={() => onCommitClick(ID)}
           >
@@ -76,7 +76,7 @@ const Commits: React.FC<{
 
 const events = {
   onCommitClick: (evt$: Stream<string, never>) =>
-    evt$.map(key => commitClick(key))
+    evt$.map(key => commitClick(key)),
 };
 
 export default toJunction(events)(Commits);

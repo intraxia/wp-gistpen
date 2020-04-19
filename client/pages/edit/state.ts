@@ -8,7 +8,7 @@ import {
   editorReducer,
   repoReducer,
   commitsReducer,
-  routeReducer
+  routeReducer,
 } from '../../reducers';
 import View from './View';
 
@@ -19,13 +19,13 @@ export const reducer = combineReducers({
   editor: editorReducer,
   commits: commitsReducer,
   repo: repoReducer,
-  route: routeReducer
+  route: routeReducer,
 });
 
 export type State = StateType<typeof reducer>[0];
 
 export const mapStateToProps = (
-  state: State
+  state: State,
 ): React.ComponentProps<typeof View> => ({
   route: (state.route && state.route.name) || null,
   edit: {
@@ -34,22 +34,22 @@ export const mapStateToProps = (
     invisibles: state.editor.invisibles,
     statuses: Object.keys(state.globals.statuses).map(key => ({
       slug: key,
-      name: state.globals.statuses[key]
+      name: state.globals.statuses[key],
     })),
     themes: Object.keys(state.globals.themes).map(key => ({
       slug: key,
-      name: state.globals.themes[key]
+      name: state.globals.themes[key],
     })),
     widths: state.globals.ace_widths.map(width => ({
       slug: String(width),
-      name: String(width)
+      name: String(width),
     })),
     selectedTheme: state.editor.theme,
     selectedStatus: state.editor.status,
     selectedWidth: state.editor.width,
     gist: {
       show: !!state.editor.gist_id,
-      url: state.editor.gist_id ? `${state.editor.gist_id}` : undefined
+      url: state.editor.gist_id ? `${state.editor.gist_id}` : undefined,
     },
     sync: state.editor.sync,
     tabs: state.editor.tabs,
@@ -58,19 +58,19 @@ export const mapStateToProps = (
       code: instance.code,
       filename: instance.filename,
       cursor: instance.cursor,
-      language: instance.language
+      language: instance.language,
     })),
     languages: Object.keys(state.globals.languages).map(key => ({
       value: key,
-      label: state.globals.languages[key]
+      label: state.globals.languages[key],
     })),
-    errors: state.editor.errors
+    errors: state.editor.errors,
   },
   commits: {
     prism: {
       theme: state.editor.theme,
       'show-invisibles': state.editor.invisibles === 'on',
-      'line-numbers': true
+      'line-numbers': true,
     },
     commits: state.commits.instances.map(instance => ({
       ID: String(instance.ID),
@@ -86,13 +86,13 @@ export const mapStateToProps = (
 
         return {
           avatar: author.avatar_urls['48'],
-          name: author.name
+          name: author.name,
         };
-      })()
+      })(),
     })),
     selectedCommit: (() => {
       const commit = state.commits.instances.find(
-        instance => instance.ID === state.commits.selected
+        instance => instance.ID === state.commits.selected,
       );
       if (commit == null) {
         return null;
@@ -105,9 +105,9 @@ export const mapStateToProps = (
           ID: String(state.ID),
           code: state.code,
           filename: state.filename,
-          language: state.language.slug
-        }))
+          language: state.language.slug,
+        })),
       };
-    })()
-  }
+    })(),
+  },
 });

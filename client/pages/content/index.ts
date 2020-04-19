@@ -24,7 +24,7 @@ const { __GISTPEN_CONTENT__ } = window;
 
 Prism.setAutoloaderPath(
   (__webpack_public_path__ =
-    __GISTPEN_CONTENT__.globals.url + 'resources/assets/')
+    __GISTPEN_CONTENT__.globals.url + 'resources/assets/'),
 );
 
 const promises: Array<Promise<any>> = [];

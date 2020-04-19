@@ -12,7 +12,7 @@ type Props = {
 
 const CreateOrChoose: React.FC<Props> = ({
   onCreateNewClick,
-  onChooseExistingClick
+  onChooseExistingClick,
 }) => {
   return (
     <div className={styles.container} data-testid="create-or-choose">
@@ -30,7 +30,7 @@ const CreateOrChoose: React.FC<Props> = ({
 const events = {
   onCreateNewClick: (e$: Stream<void, never>) => e$.map(() => createNewClick()),
   onChooseExistingClick: (e$: Stream<void, never>) =>
-    e$.map(() => chooseExistingClick())
+    e$.map(() => chooseExistingClick()),
 };
 
 export default toJunction(events)(CreateOrChoose);

@@ -10,7 +10,7 @@ import {
   repoDelta,
   commitsDelta,
   routerDelta,
-  userDelta
+  userDelta,
 } from '../../deltas';
 import { ajax$ } from '../../ajax';
 import { RootAction } from '../../util';
@@ -32,7 +32,7 @@ const { __GISTPEN_EDITOR__ } = window;
 
 Prism.setAutoloaderPath(
   (__webpack_public_path__ =
-    __GISTPEN_EDITOR__.globals.url + 'resources/assets/')
+    __GISTPEN_EDITOR__.globals.url + 'resources/assets/'),
 );
 
 const store = eddy()(createStore)(
@@ -45,11 +45,11 @@ const store = eddy()(createStore)(
       router,
       param: 'wpgp_route',
       history: window.history,
-      location: window.location
+      location: window.location,
     }),
     commitsDelta({ ajax$ }),
-    userDelta({ ajax$ })
-  )
+    userDelta({ ajax$ }),
+  ),
 );
 
 const App = connect(mapStateToProps)(View);
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <App />
       </RootJunction>
     </Provider>,
-    el
+    el,
   );
 
   store.dispatch(init(__GISTPEN_EDITOR__));

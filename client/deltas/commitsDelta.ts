@@ -7,7 +7,7 @@ import {
   routeChange,
   commitsFetchStarted,
   commitsFetchSucceeded,
-  commitsFetchFailed
+  commitsFetchFailed,
 } from '../actions';
 import { RootAction } from '../util';
 import { GlobalsState, RepoState } from '../reducers';
@@ -33,25 +33,25 @@ const apiCommits = t.array(
         code: t.string,
         filename: t.string,
         language: t.type({
-          slug: t.string
-        })
-      })
-    )
-  })
+          slug: t.string,
+        }),
+      }),
+    ),
+  }),
 );
 
 export interface ApiCommits extends t.TypeOf<typeof apiCommits> {}
 
 export const commitsDelta = ({ ajax$ }: CommitsServices) => (
   actions$: Stream<RootAction, never>,
-  state$: Property<CommitsDeltaState, never>
+  state$: Property<CommitsDeltaState, never>,
 ): Observable<RootAction, never> =>
   state$
     .sampledBy(
       // sample when route changes to `commits`
       actions$
         .thru(ofType(routeChange))
-        .filter(action => action.payload.name === 'commits')
+        .filter(action => action.payload.name === 'commits'),
     )
     .filter(state => state.repo != null && state.repo.ID != null)
     .flatMapFirst(state =>
@@ -64,16 +64,16 @@ export const commitsDelta = ({ ajax$ }: CommitsServices) => (
             credentials: 'include',
             headers: {
               'X-WP-Nonce': state.globals.nonce,
-              'Content-Type': 'application/json'
-            }
-          }
+              'Content-Type': 'application/json',
+            },
+          },
         )
           .flatMap(response => response.json())
           .flatMap(response =>
             apiCommits.is(response)
               ? Kefir.constant(commitsFetchSucceeded(response))
-              : Kefir.constantError(new TypeError('Response did not match'))
+              : Kefir.constantError(new TypeError('Response did not match')),
           )
-          .flatMapErrors(err => Kefir.constant(commitsFetchFailed(err)))
-      ])
+          .flatMapErrors(err => Kefir.constant(commitsFetchFailed(err))),
+      ]),
     );

@@ -17,14 +17,14 @@ import {
   jobDispatchClick,
   jobDispatchStarted,
   jobDispatchSucceeded,
-  jobDispatchFailed
+  jobDispatchFailed,
 } from '../actions';
 import {
   GlobalsState,
   RouteState,
   RunsState,
   JobsState,
-  JobSuccess
+  JobSuccess,
 } from '../reducers';
 import { RootAction } from '../util';
 import { jobIsSuccess } from '../selectors';
@@ -52,11 +52,11 @@ const consoleResponse = t.type({
         t.literal('warning'),
         t.literal('success'),
         t.literal('info'),
-        t.literal('debug')
+        t.literal('debug'),
       ]),
-      logged_at: t.string
-    })
-  )
+      logged_at: t.string,
+    }),
+  ),
 });
 
 const jobStatus = t.union([t.literal('idle'), t.literal('processing')]);
@@ -67,7 +67,7 @@ const jobResponse = t.type({
   description: t.string,
   rest_url: t.string,
   runs_url: t.string,
-  status: jobStatus
+  status: jobStatus,
 });
 
 const runStatus = t.union([
@@ -75,7 +75,7 @@ const runStatus = t.union([
   t.literal('running'),
   t.literal('paused'),
   t.literal('finished'),
-  t.literal('error')
+  t.literal('error'),
 ]);
 
 const runEntity = t.type({
@@ -87,7 +87,7 @@ const runEntity = t.type({
   finished_at: t.union([t.string, t.null]),
   rest_url: t.string,
   job_url: t.string,
-  console_url: t.string
+  console_url: t.string,
 });
 
 const runResponse = t.array(runEntity);
@@ -96,13 +96,13 @@ const dispatchResponse = runEntity;
 
 export const jobsDelta = ({ ajax$ }: JobsServices) => (
   actions$: Stream<RootAction, never>,
-  state$: Property<JobsDeltaState, never>
+  state$: Property<JobsDeltaState, never>,
 ): Observable<RootAction, never> => {
   const fetch$ = state$
     .sampledBy(
       actions$
         .thru(ofType(routeChange))
-        .filter(action => action.payload.name === 'jobs')
+        .filter(action => action.payload.name === 'jobs'),
     )
     .flatMapLatest(({ route, runs, globals, jobs }) => {
       if (Nullable.isNone(route)) {
@@ -123,8 +123,8 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
             credentials: 'include',
             headers: {
               'X-WP-Nonce': globals.nonce,
-              'Content-Type': 'application/json'
-            }
+              'Content-Type': 'application/json',
+            },
           })
             .flatMap(response => response.json())
             .flatMap(response =>
@@ -133,10 +133,10 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
                 .fold<Observable<RootAction, Error>>(
                   () =>
                     Kefir.constantError(new Error('API response was invalid')),
-                  r => Kefir.constant(messagesFetchSucceeded(r))
-                )
+                  r => Kefir.constant(messagesFetchSucceeded(r)),
+                ),
             )
-            .flatMapErrors(err => Kefir.constant(messagesFetchFailed(err)))
+            .flatMapErrors(err => Kefir.constant(messagesFetchFailed(err))),
         ]);
       }
 
@@ -158,8 +158,8 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
             credentials: 'include',
             headers: {
               'X-WP-Nonce': globals.nonce,
-              'Content-Type': 'application/json'
-            }
+              'Content-Type': 'application/json',
+            },
           })
             .flatMap(response => response.json())
             .flatMap(response =>
@@ -168,12 +168,12 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
                 .fold<Observable<RootAction, Error>>(
                   () =>
                     Kefir.constantError(new Error('API response was invalid')),
-                  response => Kefir.constant(jobFetchSucceeded(response))
-                )
+                  response => Kefir.constant(jobFetchSucceeded(response)),
+                ),
             )
             .flatMapErrors(err =>
-              Kefir.constant(jobFetchFailed(job.response.slug, err))
-            )
+              Kefir.constant(jobFetchFailed(job.response.slug, err)),
+            ),
         ]);
 
         const runs$ = Kefir.concat<RootAction, never>([
@@ -183,8 +183,8 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
             credentials: 'include',
             headers: {
               'X-WP-Nonce': globals.nonce,
-              'Content-Type': 'application/json'
-            }
+              'Content-Type': 'application/json',
+            },
           })
             .flatMap(response => response.json())
             .flatMap(response =>
@@ -193,10 +193,10 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
                 .fold<Observable<RootAction, Error>>(
                   () =>
                     Kefir.constantError(new Error('API response was invalid')),
-                  response => Kefir.constant(runsFetchSucceeded(response))
-                )
+                  response => Kefir.constant(runsFetchSucceeded(response)),
+                ),
             )
-            .flatMapErrors(err => Kefir.constant(runsFetchFailed(err)))
+            .flatMapErrors(err => Kefir.constant(runsFetchFailed(err))),
         ]);
 
         return Kefir.merge([job$, runs$]);
@@ -218,8 +218,8 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
             credentials: 'include',
             headers: {
               'X-WP-Nonce': globals.nonce,
-              'Content-Type': 'application/json'
-            }
+              'Content-Type': 'application/json',
+            },
           })
             .flatMap(response => response.json())
             .flatMap(response =>
@@ -228,12 +228,12 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
                 .fold<Observable<RootAction, Error>>(
                   () =>
                     Kefir.constantError(new Error('API response was invalid')),
-                  response => Kefir.constant(jobFetchSucceeded(response))
-                )
+                  response => Kefir.constant(jobFetchSucceeded(response)),
+                ),
             )
             .flatMapErrors(err =>
-              Kefir.constant(jobFetchFailed(job.response.slug, err))
-            )
+              Kefir.constant(jobFetchFailed(job.response.slug, err)),
+            ),
         ]);
 
         jobs$.push(job$);
@@ -247,8 +247,8 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
     [state$],
     (action, state) => ({
       job: state.jobs[action.meta.key],
-      globals: state.globals
-    })
+      globals: state.globals,
+    }),
   )
     .filter(({ job }) => jobIsSuccess(job))
     .flatMap(({ globals, job }) =>
@@ -260,8 +260,8 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
           credentials: 'include',
           headers: {
             'X-WP-Nonce': globals.nonce,
-            'Content-Type': 'application/json'
-          }
+            'Content-Type': 'application/json',
+          },
         })
           .flatMap(response => response.json())
           .flatMap(response =>
@@ -270,11 +270,11 @@ export const jobsDelta = ({ ajax$ }: JobsServices) => (
               .fold<Observable<RootAction, Error>>(
                 () =>
                   Kefir.constantError(new Error('API response was invalid')),
-                response => Kefir.constant(jobDispatchSucceeded(response))
-              )
+                response => Kefir.constant(jobDispatchSucceeded(response)),
+              ),
           )
-          .flatMapErrors(err => Kefir.constant(jobDispatchFailed(err)))
-      ])
+          .flatMapErrors(err => Kefir.constant(jobDispatchFailed(err))),
+      ]),
     );
 
   return Kefir.merge([fetch$, start$]);

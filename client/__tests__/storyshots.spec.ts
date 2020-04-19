@@ -7,12 +7,12 @@ initStoryshots({
   framework: 'react',
   renderer: (element: ReactElement) =>
     render(element, {
-      wrapper: RootJunction as any
+      wrapper: RootJunction as any,
     }),
   snapshotSerializers: [
     {
       print: (val, serialize) => serialize(val.container.firstChild),
-      test: val => val && val.hasOwnProperty('container')
-    }
-  ]
+      test: val => val && val.hasOwnProperty('container'),
+    },
+  ],
 });

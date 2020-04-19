@@ -32,7 +32,7 @@ export default function findOffset(root: Element, ss: number): Offset {
   if (element) {
     return {
       element: element,
-      offset: ss - offset
+      offset: ss - offset,
     };
   } else if (container) {
     element = container;
@@ -44,12 +44,12 @@ export default function findOffset(root: Element, ss: number): Offset {
     if (element.nodeType === 3) {
       return {
         element: element,
-        offset: (element.textContent || '').length
+        offset: (element.textContent || '').length,
       };
     } else {
       return {
         element: element,
-        offset: 0
+        offset: 0,
       };
     }
   }
@@ -57,6 +57,6 @@ export default function findOffset(root: Element, ss: number): Offset {
   return {
     element: null,
     offset: 0,
-    error: true
+    error: true,
   };
 }

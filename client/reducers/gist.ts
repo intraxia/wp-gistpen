@@ -8,18 +8,18 @@ export type GistState = {
 };
 
 const defaultState: GistState = {
-  token: ''
+  token: '',
 };
 
 export const gistReducer: EddyReducer<GistState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(gistTokenChange):
       return {
         ...state,
-        token: action.payload.value
+        token: action.payload.value,
       };
     default:
       return state;

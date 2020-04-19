@@ -6,7 +6,7 @@ import { AjaxService } from '../../ajax';
 import {
   commitsFetchSucceeded,
   fetchAuthorFailed,
-  fetchAuthorSucceeded
+  fetchAuthorSucceeded,
 } from '../../actions';
 
 describe('authorDelta', () => {
@@ -14,13 +14,13 @@ describe('authorDelta', () => {
     commits: {
       instances: [
         {
-          author: '1'
-        }
-      ]
+          author: '1',
+        },
+      ],
     },
     globals: {
-      nonce: '12345'
-    }
+      nonce: '12345',
+    },
   };
 
   let services: { ajax$: AjaxService }, stub: SinonStub;
@@ -53,7 +53,7 @@ describe('authorDelta', () => {
       [[0, Kutil.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
-      }
+      },
     );
   });
 
@@ -62,15 +62,15 @@ describe('authorDelta', () => {
 
     stub.returns(
       Kefir.constant({
-        json: () => Kefir.constantError(error)
-      })
+        json: () => Kefir.constantError(error),
+      }),
     );
 
     expect(authorDelta(services)).toEmitFromDelta(
       [[0, Kutil.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
-      }
+      },
     );
   });
 
@@ -81,16 +81,16 @@ describe('authorDelta', () => {
       Kefir.constant({
         json: () =>
           Kefir.constant({
-            random: 'property'
-          })
-      })
+            random: 'property',
+          }),
+      }),
     );
 
     expect(authorDelta(services)).toEmitFromDelta(
       [[0, Kutil.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
-      }
+      },
     );
   });
 
@@ -102,20 +102,20 @@ describe('authorDelta', () => {
       description: 'World!',
       link: 'https://world.com/',
       slug: 'hello-world',
-      avatar_urls: {}
+      avatar_urls: {},
     };
 
     stub.returns(
       Kefir.constant({
-        json: () => Kefir.constant(response)
-      })
+        json: () => Kefir.constant(response),
+      }),
     );
 
     expect(authorDelta(services)).toEmitFromDelta(
       [[0, Kutil.value(fetchAuthorSucceeded(response))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
-      }
+      },
     );
   });
 });

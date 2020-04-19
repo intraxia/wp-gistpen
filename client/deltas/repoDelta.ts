@@ -6,14 +6,14 @@ import {
   ajaxStarted,
   ajaxFailed,
   ajaxFinished,
-  repoSaveSucceeded
+  repoSaveSucceeded,
 } from '../actions';
 import { RootAction } from '../util';
 import {
   RepoState,
   GlobalsState,
   EditorState,
-  EditorInstance
+  EditorInstance,
 } from '../reducers';
 import { AjaxService, AjaxError } from '../ajax';
 import { ApiRepo } from '../api';
@@ -32,13 +32,13 @@ const repoProps = ({ editor }: RepoDeltaState) => ({
   description: editor.description,
   status: editor.status,
   password: editor.password,
-  sync: editor.sync
+  sync: editor.sync,
 });
 
 const blobProps = (editor: EditorInstance) => ({
   filename: editor.filename,
   code: editor.code,
-  language: editor.language
+  language: editor.language,
 });
 
 const makeBody = (state: RepoDeltaState) =>
@@ -55,12 +55,12 @@ const makeBody = (state: RepoDeltaState) =>
       }
 
       return blob;
-    })
+    }),
   });
 
 export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
   action$: Stream<RootAction, never>,
-  state$: Property<RepoDeltaState, never>
+  state$: Property<RepoDeltaState, never>,
 ): Observable<RootAction, never> =>
   state$
     .sampledBy(action$.thru(ofType(editorUpdateClick)))
@@ -76,8 +76,8 @@ export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
               credentials: 'include',
               headers: {
                 'X-WP-Nonce': state.globals.nonce,
-                'Content-Type': 'application/json'
-              }
+                'Content-Type': 'application/json',
+              },
             })
               .flatMap(response => response.json())
               .flatMap(response =>
@@ -86,17 +86,17 @@ export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
                 >(
                   () =>
                     Kefir.constantError(
-                      new AjaxError('API response was invalid')
+                      new AjaxError('API response was invalid'),
                     ),
-                  Kefir.constant
-                )
+                  Kefir.constant,
+                ),
               )
               .flatten(response => [
                 ajaxFinished(),
-                repoSaveSucceeded(response)
+                repoSaveSucceeded(response),
               ])
-              .flatMapErrors(err => Kefir.constant(ajaxFailed(err)))
+              .flatMapErrors(err => Kefir.constant(ajaxFailed(err))),
           ]),
-        state.repo
-      )
+        state.repo,
+      ),
     );

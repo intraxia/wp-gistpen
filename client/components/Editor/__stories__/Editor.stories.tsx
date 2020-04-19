@@ -12,14 +12,14 @@ const props: React.ComponentProps<typeof Editor> = {
   languages: [
     {
       label: 'JavaScript',
-      value: 'js'
+      value: 'js',
     },
     {
       label: 'Python',
-      value: 'python'
-    }
+      value: 'python',
+    },
   ],
-  language: 'js'
+  language: 'js',
 };
 
 storiesOf('Editor', module)
@@ -33,7 +33,7 @@ storiesOf('Editor', module)
       <Editor
         {...{
           ...props,
-          ...{ code: '', filename: '' }
+          ...{ code: '', filename: '' },
         }}
       />
     </div>

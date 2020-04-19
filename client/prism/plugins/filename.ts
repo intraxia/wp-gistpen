@@ -28,5 +28,5 @@ Prism.plugins.toolbar.registerButton('filename', function filenameButton(env) {
 export const plugin = {
   use() {},
 
-  unuse() {}
+  unuse() {},
 };

@@ -8,12 +8,12 @@ export const selectUserAjaxOpts = (state: UserDeltaState): AjaxOptions => ({
       theme: state.editor.theme,
       invisibles_enabled: state.editor.invisibles,
       tabs_enabled: state.editor.tabs,
-      indent_width: state.editor.width
-    }
+      indent_width: state.editor.width,
+    },
   }),
   credentials: 'include',
   headers: {
     'X-WP-Nonce': state.globals.nonce,
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });

@@ -11,12 +11,12 @@ export type MessagesState = {
 };
 
 const defaultState: MessagesState = {
-  items: {}
+  items: {},
 };
 
 export const messagesReducer: EddyReducer<MessagesState, RootAction> = (
   state = defaultState,
-  action
+  action,
 ) => {
   switch (action.type) {
     case getType(messagesFetchSucceeded):
@@ -25,10 +25,10 @@ export const messagesReducer: EddyReducer<MessagesState, RootAction> = (
         items: action.payload.response.messages.reduce(
           (items, msg) => ({
             ...items,
-            [msg.ID]: msg
+            [msg.ID]: msg,
           }),
-          state.items
-        )
+          state.items,
+        ),
       };
     default:
       return state;

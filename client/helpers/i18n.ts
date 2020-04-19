@@ -10,6 +10,6 @@ export default function i18n(key: string, ...args: any[]): string {
   return sprintf(
     __GISTPEN_I18N__['i18n.notfound'] ||
       'Translation & fallback not found for key %s',
-    key
+    key,
   );
 }
