@@ -50,7 +50,7 @@ describe('authorDelta', () => {
     stub.returns(Kefir.constantError(error));
 
     expect(authorDelta(services)).toEmitFromDelta(
-      [[0, Kutil.value(fetchAuthorFailed(error))]],
+      [[0, KTU.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       },
@@ -67,7 +67,7 @@ describe('authorDelta', () => {
     );
 
     expect(authorDelta(services)).toEmitFromDelta(
-      [[0, Kutil.value(fetchAuthorFailed(error))]],
+      [[0, KTU.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       },
@@ -87,7 +87,7 @@ describe('authorDelta', () => {
     );
 
     expect(authorDelta(services)).toEmitFromDelta(
-      [[0, Kutil.value(fetchAuthorFailed(error))]],
+      [[0, KTU.value(fetchAuthorFailed(error))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       },
@@ -112,7 +112,7 @@ describe('authorDelta', () => {
     );
 
     expect(authorDelta(services)).toEmitFromDelta(
-      [[0, Kutil.value(fetchAuthorSucceeded(response))]],
+      [[0, KTU.value(fetchAuthorSucceeded(response))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       },

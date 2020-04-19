@@ -7,7 +7,7 @@ import Accounts from '../';
 describe('Accounts', () => {
   it('should emit action when clicked', () => {
     expect(<Accounts token={''} />).toEmitFromJunction(
-      [[0, Kutil.value(gistTokenChange('abc'))]],
+      [[0, KTU.value(gistTokenChange('abc'))]],
       ({ queryByTestId }) => {
         const input = queryByTestId('gist-token') as Element;
 

@@ -11,7 +11,7 @@ describe('webpackDelta', () => {
     const action = {
       type: 'INIT',
     };
-    expect(webpackDelta).toEmitFromDelta([[0, Kutil.end()]], send => {
+    expect(webpackDelta).toEmitFromDelta([[0, KTU.end()]], send => {
       send(action, state);
     });
 
