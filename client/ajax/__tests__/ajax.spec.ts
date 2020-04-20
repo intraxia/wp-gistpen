@@ -36,7 +36,7 @@ describe('ajax$', () => {
 
   it('should emit an error on failure', () => {
     expect(ajax$(url)).toEmit(
-      [Kutil.error(new TypeError('Network request failed')), Kutil.end()],
+      [KTU.error(new TypeError('Network request failed')), KTU.end()],
       () => {
         requests[0].error();
       },
@@ -45,11 +45,11 @@ describe('ajax$', () => {
 
   it('should emit response on success', () => {
     const ajax = ajax$(url);
-    const expected = [Kutil.value({}), Kutil.end()];
+    const expected = [KTU.value({}), KTU.end()];
 
     expect(ajax).toEmit(expected, () => {
       const request = requests[0];
-      expected[0] = Kutil.value(new ObsResponse(request as any));
+      expected[0] = KTU.value(new ObsResponse(request as any));
       request.respond(200, null, '');
     });
   });

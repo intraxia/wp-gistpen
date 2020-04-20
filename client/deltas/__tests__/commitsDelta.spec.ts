@@ -8,6 +8,7 @@ import {
   commitsFetchSucceeded,
 } from '../../actions';
 import { commitsDelta } from '../commitsDelta';
+import { RootAction } from '../../util';
 
 const createServices = () => ({ ajax$: sinon.stub() });
 const globals = {
@@ -69,12 +70,12 @@ describe('commitsDelta', () => {
 
   it('should not respond to random routes', () => {
     const services = createServices();
-    const actions$ = Kutil.stream();
-    const state$ = Kutil.prop();
+    const actions$ = KTU.stream();
+    const state$ = KTU.prop();
 
     expect(commitsDelta(services)).toEmitFromDelta([], () => {
-      Kutil.send(state$, [Kutil.value(stateWithId)]);
-      Kutil.send(actions$, [Kutil.value(routeChange('random'))]);
+      KTU.send(state$, [KTU.value(stateWithId)]);
+      KTU.send(actions$, [KTU.value(routeChange('random'))]);
     });
   });
 
@@ -82,7 +83,7 @@ describe('commitsDelta', () => {
     const services = createServices();
 
     expect(commitsDelta(services)).toEmitFromDelta([], send => {
-      send(routeChange('commits'), Kutil.value(stateNoId));
+      send(routeChange('commits'), KTU.value(stateNoId));
     });
   });
 
@@ -98,19 +99,19 @@ describe('commitsDelta', () => {
     };
     const xhr = { response: JSON.stringify([]) } as any;
     const services = createServices();
-    const effect$ = Kutil.stream();
+    const effect$ = KTU.stream();
 
     services.ajax$.withArgs(commitsUrl, options).onFirstCall().returns(effect$);
 
-    expect(commitsDelta(services)).toEmitFromDelta(
+    expect(commitsDelta(services)).toEmitFromDelta<RootAction, never>(
       [
-        [0, Kutil.value(commitsFetchStarted())],
-        [10, Kutil.value(commitsFetchSucceeded([]))],
+        [0, KTU.value(commitsFetchStarted())],
+        [10, KTU.value(commitsFetchSucceeded([]))],
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
-        Kutil.send(effect$, [Kutil.value(new ObsResponse(xhr)), Kutil.end()]);
+        KTU.send(effect$, [KTU.value(new ObsResponse(xhr)), KTU.end()]);
       },
     );
   });
@@ -127,19 +128,19 @@ describe('commitsDelta', () => {
     };
     const payload = new TypeError('Network request failed');
     const services = createServices();
-    const effect$ = Kutil.stream();
+    const effect$ = KTU.stream();
 
     services.ajax$.withArgs(commitsUrl, options).onFirstCall().returns(effect$);
 
-    expect(commitsDelta(services)).toEmitFromDelta(
+    expect(commitsDelta(services)).toEmitFromDelta<RootAction, never>(
       [
-        [0, Kutil.value(commitsFetchStarted())],
-        [10, Kutil.value(commitsFetchFailed(payload))],
+        [0, KTU.value(commitsFetchStarted())],
+        [10, KTU.value(commitsFetchFailed(payload))],
       ],
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
-        Kutil.send(effect$, [Kutil.error(payload), Kutil.end()]);
+        KTU.send(effect$, [KTU.error(payload), KTU.end()]);
       },
     );
   });

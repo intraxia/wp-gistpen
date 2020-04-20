@@ -40,7 +40,7 @@ describe('routerDelta', () => {
     expect(
       routerDelta({ router, param: 'wpgp', location, history }),
     ).toEmitFromDelta(
-      [[0, Kutil.value(routeChange('/start'))]],
+      [[0, KTU.value(routeChange('/start'))]],
       (_send, tick) => {
         tick(10);
       },

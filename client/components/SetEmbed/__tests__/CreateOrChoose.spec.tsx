@@ -6,7 +6,7 @@ import CreateOrChoose from '../CreateOrChoose';
 describe('CreateOrChoose', () => {
   it('should emit a create new click', () => {
     expect(<CreateOrChoose />).toEmitFromJunction(
-      [[0, Kutil.value(createNewClick())]],
+      [[0, KTU.value(createNewClick())]],
       ({ getByText }: RenderResult) => {
         fireEvent.click(getByText('Create new'));
       },
@@ -15,7 +15,7 @@ describe('CreateOrChoose', () => {
 
   it('should emit a choose existing click', () => {
     expect(<CreateOrChoose />).toEmitFromJunction(
-      [[0, Kutil.value(chooseExistingClick())]],
+      [[0, KTU.value(chooseExistingClick())]],
       ({ getByText }: RenderResult) => {
         fireEvent.click(getByText('Choose from existing'));
       },
