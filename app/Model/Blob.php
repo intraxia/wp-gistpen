@@ -18,6 +18,8 @@ use Intraxia\Jaxion\Contract\Axolotl\UsesWordPressPost;
  * @property Language $language
  * @property int      $size
  * @property string   $raw_url
+ * @property string   $rest_url
+ * @property string   $repo_rest_url
  * @property string   $edit_url
  */
 class Blob extends Model implements UsesWordPressPost {
@@ -120,6 +122,31 @@ class Blob extends Model implements UsesWordPressPost {
 	 */
 	protected function compute_size() {
 		return strlen( $this->code );
+	}
+
+	/**
+	 * Computes the Blob's rest_url.
+	 *
+	 * @return string
+	 */
+	protected function compute_rest_url() {
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/repos/%s/blobs/%s',
+			$this->repo_id,
+			$this->ID
+		) );
+	}
+
+	/**
+	 * Computes the Blob's rest_url.
+	 *
+	 * @return string
+	 */
+	protected function compute_repo_rest_url() {
+		return rest_url( sprintf(
+			'intraxia/v1/gistpen/repos/%s',
+			$this->repo_id
+		) );
 	}
 
 	/**

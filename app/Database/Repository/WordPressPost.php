@@ -142,7 +142,7 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		// Whitelist params send to WP_Query.
-		foreach ( array( 'post_status', 'order', 'orderby', 'offset' ) as $param ) {
+		foreach ( array( 'post_status', 'order', 'orderby', 'offset', 's' ) as $param ) {
 			if ( isset( $params[ $param ] ) ) {
 				$query_args[ $param ] = $params[ $param ];
 			}

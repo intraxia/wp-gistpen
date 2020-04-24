@@ -105,8 +105,13 @@ class Router {
 			 * /search endpoint
 			 */
 			$router->get(
-				'/search',
-				array( $controllers['search'], 'get' ),
+				'/search/blobs',
+				array( $controllers['search'], 'blobs' ),
+				[ 'filter' => $this->container->get( SearchFilter::class ) ]
+			);
+			$router->get(
+				'/search/repos',
+				array( $controllers['search'], 'repos' ),
 				[ 'filter' => $this->container->get( SearchFilter::class ) ]
 			);
 

@@ -15,8 +15,7 @@ class Search extends Filter {
 	 */
 	public function __construct() {
 		parent::__construct( [
-			's'    => 'default',
-			'type' => 'default:repo|oneof:blob,repo',
+			's' => 'default',
 		] );
 	}
 }
