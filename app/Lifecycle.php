@@ -46,14 +46,23 @@ class Lifecycle implements HasActions {
 		}
 
 		update_option( '_wpgp_activated', 'done' );
-		flush_rewrite_rules( true );
+		$this->flush_on_shutdown();
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
 	public function deactivate() {
-		flush_rewrite_rules( true );
+		$this->flush_on_shutdown();
+	}
+
+	/**
+	 * Flush the application rewrite as the app shuts down.
+	 */
+	protected function flush_on_shutdown() {
+		add_action( 'shutdown', function() {
+			flush_rewrite_rules( true );
+		});
 	}
 
 	/**
