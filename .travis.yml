@@ -32,7 +32,7 @@ env:
     - WP_VERSION=5.2 WP_MULTISITE=1
 
 before_script:
-    - bash bin/before_script.sh
+    - travis_retry bash bin/before_script.sh
 
 script:
     - if [[ $FRONT_END != 'true' && $E2E != 'true'  ]]; then composer test; fi
