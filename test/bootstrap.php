@@ -6,6 +6,9 @@
  * @package Intraxia\Gistpen\Test
  */
 
+use Intraxia\Gistpen\Lifecycle;
+use function Intraxia\Gistpen\container;
+
 $plugin_root = dirname( dirname( __FILE__ ) );
 $_tests_dir  = getenv( 'WP_TESTS_DIR' );
 
@@ -58,6 +61,8 @@ $_manually_load_plugin = function() use ( $plugin_root ) {
 	);
 
 	require $plugin_root . '/wp-gistpen.php';
+
+	container()->get( Lifecycle::class )->activate();
 };
 
 tests_add_filter( 'muplugins_loaded', $_manually_load_plugin );
