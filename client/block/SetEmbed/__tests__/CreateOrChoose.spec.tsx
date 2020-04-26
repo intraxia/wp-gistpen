@@ -1,6 +1,6 @@
 import React from 'react';
 import { RenderResult, fireEvent } from '@testing-library/react';
-import { createNewClick, chooseExistingClick } from '../../../actions';
+import { createNewClick, chooseExistingClick } from '../../actions';
 import CreateOrChoose from '../CreateOrChoose';
 
 describe('CreateOrChoose', () => {

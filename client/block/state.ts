@@ -1,5 +1,5 @@
 import { EddyReducer, Maybe } from 'brookjs';
-import { RootAction } from '../../util';
+import { RootAction } from '../util';
 
 export type SetEmbed = {
   status: 'set-embed';

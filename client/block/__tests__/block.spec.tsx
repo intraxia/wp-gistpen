@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import { render, RenderResult } from '@testing-library/react';
 import { createRender } from 'react-testing-kit';
-import { Block } from '../';
+import { Block } from '../Block';
 
 const renderBlock = createRender({
   defaultProps: {

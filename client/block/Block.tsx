@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useDelta, Delta, RootJunction } from 'brookjs';
 import Kefir from 'kefir';
-import { RootAction } from '../../util';
-import { StatusMapper } from '../StatusMapper';
+import { RootAction } from '../util';
+import { StatusMapper } from '../components';
 import { reducer, initialState, State, Attributes } from './state';
 
 const rootDelta: Delta<RootAction, State> = () => Kefir.never();
