@@ -7910,12 +7910,47 @@ exports[`Storyshots Search View Error 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
+          class="components-button is-primary"
           disabled=""
           type="button"
         >
-          View
+          Select
         </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        placeholder.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
         <button
           class="components-button is-primary"
           disabled=""
@@ -7959,13 +7994,6 @@ exports[`Storyshots Search View Error 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -8008,13 +8036,6 @@ exports[`Storyshots Search View Error 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -8056,62 +8077,6 @@ exports[`Storyshots Search View Error 1`] = `
       <div
         class="components-placeholder__fieldset"
       >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
-          class="components-button is-primary"
-          disabled=""
-          type="button"
-        >
-          Select
-        </button>
-      </div>
-    </div>
-    <div
-      class="components-placeholder placeholder is-small"
-    >
-      <iframe
-        aria-hidden="true"
-        aria-label="resize-listener"
-        frameborder="0"
-        src="about:blank"
-        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-      <div
-        class="components-placeholder__label"
-      >
-        <svg
-          aria-hidden="true"
-          class="dashicon dashicons-editor-code"
-          focusable="false"
-          height="20"
-          role="img"
-          viewBox="0 0 20 20"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
-          />
-        </svg>
-        placeholder.js
-      </div>
-      <div
-        class="components-placeholder__fieldset"
-      >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
         <button
           class="components-button is-primary"
           disabled=""
@@ -8202,12 +8167,47 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
+          class="components-button is-primary"
           disabled=""
           type="button"
         >
-          View
+          Select
         </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        placeholder.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
         <button
           class="components-button is-primary"
           disabled=""
@@ -8251,13 +8251,6 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -8300,13 +8293,6 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -8348,62 +8334,6 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
       <div
         class="components-placeholder__fieldset"
       >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
-          class="components-button is-primary"
-          disabled=""
-          type="button"
-        >
-          Select
-        </button>
-      </div>
-    </div>
-    <div
-      class="components-placeholder placeholder is-small"
-    >
-      <iframe
-        aria-hidden="true"
-        aria-label="resize-listener"
-        frameborder="0"
-        src="about:blank"
-        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-      <div
-        class="components-placeholder__label"
-      >
-        <svg
-          aria-hidden="true"
-          class="dashicon dashicons-editor-code"
-          focusable="false"
-          height="20"
-          role="img"
-          viewBox="0 0 20 20"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
-          />
-        </svg>
-        placeholder.js
-      </div>
-      <div
-        class="components-placeholder__fieldset"
-      >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
         <button
           class="components-button is-primary"
           disabled=""
@@ -8763,12 +8693,47 @@ exports[`Storyshots Search View Initial 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
+          class="components-button is-primary"
           disabled=""
           type="button"
         >
-          View
+          Select
         </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        placeholder.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
         <button
           class="components-button is-primary"
           disabled=""
@@ -8812,13 +8777,6 @@ exports[`Storyshots Search View Initial 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -8861,13 +8819,6 @@ exports[`Storyshots Search View Initial 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -8909,62 +8860,6 @@ exports[`Storyshots Search View Initial 1`] = `
       <div
         class="components-placeholder__fieldset"
       >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
-          class="components-button is-primary"
-          disabled=""
-          type="button"
-        >
-          Select
-        </button>
-      </div>
-    </div>
-    <div
-      class="components-placeholder placeholder is-small"
-    >
-      <iframe
-        aria-hidden="true"
-        aria-label="resize-listener"
-        frameborder="0"
-        src="about:blank"
-        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-      <div
-        class="components-placeholder__label"
-      >
-        <svg
-          aria-hidden="true"
-          class="dashicon dashicons-editor-code"
-          focusable="false"
-          height="20"
-          role="img"
-          viewBox="0 0 20 20"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
-          />
-        </svg>
-        placeholder.js
-      </div>
-      <div
-        class="components-placeholder__fieldset"
-      >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
         <button
           class="components-button is-primary"
           disabled=""
@@ -9625,12 +9520,47 @@ exports[`Storyshots Search View Searching 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
+          class="components-button is-primary"
           disabled=""
           type="button"
         >
-          View
+          Select
         </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        placeholder.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
         <button
           class="components-button is-primary"
           disabled=""
@@ -9674,13 +9604,6 @@ exports[`Storyshots Search View Searching 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -9723,13 +9646,6 @@ exports[`Storyshots Search View Searching 1`] = `
         class="components-placeholder__fieldset"
       >
         <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
           class="components-button is-primary"
           disabled=""
           type="button"
@@ -9771,62 +9687,6 @@ exports[`Storyshots Search View Searching 1`] = `
       <div
         class="components-placeholder__fieldset"
       >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
-        <button
-          class="components-button is-primary"
-          disabled=""
-          type="button"
-        >
-          Select
-        </button>
-      </div>
-    </div>
-    <div
-      class="components-placeholder placeholder is-small"
-    >
-      <iframe
-        aria-hidden="true"
-        aria-label="resize-listener"
-        frameborder="0"
-        src="about:blank"
-        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
-        tabindex="-1"
-      />
-      <div
-        class="components-placeholder__label"
-      >
-        <svg
-          aria-hidden="true"
-          class="dashicon dashicons-editor-code"
-          focusable="false"
-          height="20"
-          role="img"
-          viewBox="0 0 20 20"
-          width="20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
-          />
-        </svg>
-        placeholder.js
-      </div>
-      <div
-        class="components-placeholder__fieldset"
-      >
-        <button
-          class="components-button is-secondary"
-          disabled=""
-          type="button"
-        >
-          View
-        </button>
         <button
           class="components-button is-primary"
           disabled=""

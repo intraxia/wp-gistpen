@@ -6,10 +6,8 @@ import { searchResultSelectClick } from '../actions';
 
 const element = (
   <SearchResult
-    filename={blob.filename}
+    label={blob.filename}
     render={{
-      id: 1,
-      filename: blob.filename,
       blob,
       prism,
     }}

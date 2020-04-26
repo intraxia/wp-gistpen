@@ -1,54 +1,49 @@
 import React from 'react';
 import { View } from '../View';
-import { defaultGlobals, defaultPrism } from '../../reducers';
+import { defaultPrism } from '../../reducers';
 import { searchApiResponse } from '../../mocks';
 
 export default {
   title: 'Search View',
 };
 
+const results = searchApiResponse.map(resp => ({
+  id: resp.ID,
+  label: resp.filename,
+  render: {
+    blob: {
+      filename: resp.filename,
+      code: resp.code,
+      language: resp.language.slug,
+    },
+    prism: defaultPrism,
+  },
+}));
+
 export const initial = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
-    <View
-      term="javascript"
-      status="initial"
-      globals={defaultGlobals}
-      prism={defaultPrism}
-    />
+    <View placeholderLabel="placeholder.js" term="javascript" />
   </div>
 );
 
 export const searching = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
-    <View
-      term="javascript"
-      status="searching"
-      globals={defaultGlobals}
-      prism={defaultPrism}
-    />
+    <View placeholderLabel="placeholder.js" term="javascript" isLoading />
   </div>
 );
 
 export const foundNoSnippets = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
-    <View
-      term="javascript"
-      status="found"
-      snippets={[]}
-      globals={defaultGlobals}
-      prism={defaultPrism}
-    />
+    <View placeholderLabel="placeholder.js" term="javascript" results={[]} />
   </div>
 );
 
 export const foundSnippets = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      placeholderLabel="placeholder.js"
       term="javascript"
-      status="found"
-      snippets={searchApiResponse}
-      globals={defaultGlobals}
-      prism={defaultPrism}
+      results={results}
     />
   </div>
 );
@@ -56,11 +51,9 @@ export const foundSnippets = () => (
 export const error = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      placeholderLabel="placeholder.js"
       term="javascript"
-      status="error"
       error="Search failed."
-      globals={defaultGlobals}
-      prism={defaultPrism}
     />
   </div>
 );
@@ -68,11 +61,10 @@ export const error = () => (
 export const researching = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      placeholderLabel="placeholder.js"
       term="javascript"
-      status="researching"
-      snippets={searchApiResponse}
-      globals={defaultGlobals}
-      prism={defaultPrism}
+      results={results}
+      isLoading
     />
   </div>
 );
@@ -80,12 +72,10 @@ export const researching = () => (
 export const reerror = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      placeholderLabel="placeholder.js"
       term="javascript"
-      status="reerror"
       error="Search failed."
-      snippets={searchApiResponse}
-      globals={defaultGlobals}
-      prism={defaultPrism}
+      results={results}
     />
   </div>
 );

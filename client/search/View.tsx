@@ -1,8 +1,7 @@
 import React from 'react';
 import { Spinner, Notice } from '@wordpress/components';
-import { ofType } from 'brookjs';
+import { ofType, Maybe } from 'brookjs';
 import { TextControl } from '../components';
-import { PrismState } from '../reducers';
 import { change } from '../actions';
 import {
   searchResultSelectClick,
@@ -11,39 +10,34 @@ import {
 } from './actions';
 import styles from './View.module.scss';
 import SearchResult from './SearchResult';
-import { isLoading, hasError, hasSnippets } from './selectors';
-import { State } from './state';
+import { ResultsPlaceholder } from './ResultsPlaceholder';
 
-const SnippetsPlaceholder: React.FC = () => {
-  return (
-    <>
-      <SearchResult filename="placeholder.js" />
-      <SearchResult filename="placeholder.js" />
-      <SearchResult filename="placeholder.js" />
-      <SearchResult filename="placeholder.js" />
-      <SearchResult filename="placeholder.js" />
-    </>
-  );
+type ResultView = {
+  id: number;
+  label: string;
+  render: React.ComponentProps<typeof SearchResult>['render'];
 };
 
-export const View: React.FC<
-  State & {
-    prism: PrismState;
-  }
-> = ({ prism, ...state }) => {
+export const View: React.FC<{
+  placeholderLabel: string;
+  term: string;
+  isLoading?: boolean;
+  error?: Maybe<string>;
+  results?: Maybe<ResultView[]>;
+}> = ({ placeholderLabel, term, isLoading, error, results }) => {
   return (
     <div data-testid="choosing">
       <div className={styles.search}>
         <TextControl
           className={styles.grow}
           label="Search for snippet"
-          value={state.term}
+          value={term}
           preplug={e$ =>
             e$.thru(ofType(change)).map(a => searchInput(a.payload.value))
           }
         />
       </div>
-      {state.status === 'initial' && (
+      {error == null && results == null && !isLoading && (
         <Notice
           status="warning"
           isDismissible={false}
@@ -52,7 +46,7 @@ export const View: React.FC<
           Type into the above search field to find a code snippet.
         </Notice>
       )}
-      {isLoading(state) && (
+      {isLoading && (
         <Notice
           status="warning"
           isDismissible={false}
@@ -61,52 +55,44 @@ export const View: React.FC<
           <Spinner /> <span>Searching...</span>
         </Notice>
       )}
-      {hasError(state) && (
+      {error != null && (
         <Notice
           status="error"
           isDismissible={false}
           className={styles.notice}
           data-testid="error-notice"
         >
-          {state.error}
+          {error}
         </Notice>
       )}
-      {hasSnippets(state) ? (
-        state.snippets.length === 0 ? (
+      {results != null ? (
+        results.length === 0 ? (
           <>
             <Notice
               status="error"
               isDismissible={false}
               className={styles.notice}
             >
-              No results found for {state.term}. Try a different term
+              No results found for {term}. Try a different term
             </Notice>
-            <SnippetsPlaceholder />
+            <ResultsPlaceholder label={placeholderLabel} />
           </>
         ) : (
-          state.snippets.map(snippet => (
+          results.map(result => (
             <SearchResult
-              key={snippet.ID}
-              filename={snippet.filename}
-              render={{
-                id: snippet.ID,
-                filename: snippet.filename,
-                blob: {
-                  code: snippet.code,
-                  language: snippet.language.slug,
-                },
-                prism,
-              }}
+              key={result.id}
+              label={result.label}
+              render={result.render}
               preplug={e$ =>
                 e$
                   .thru(ofType(searchResultSelectClick))
-                  .map(() => searchResultSelectionChange(snippet.ID))
+                  .map(() => searchResultSelectionChange(result.id))
               }
             />
           ))
         )
       ) : (
-        <SnippetsPlaceholder />
+        <ResultsPlaceholder label={placeholderLabel} />
       )}
     </div>
   );
