@@ -2,7 +2,13 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [1.2.0][1.2.9] ###
+### [1.2.1][1.2.1]
+
+#### Fixed####
+
+* Fixed rendering output with JSX language
+
+### [1.2.0][1.2.0] ###
 
 **Note: This bumps the minimum required WordPress version to 4.7. A future release will bump the minimum WordPress version to 5.2 and the minimum PHP version to 5.6. This will be released as 2.0. There is plenty of time, but this is coming.**
 
@@ -300,6 +306,7 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[1.2.1]: https://github.com/intraxia/WP-Gistpen/tree/1.2.1
 [1.2.0]: https://github.com/intraxia/WP-Gistpen/tree/1.2.0
 [1.1.6]: https://github.com/intraxia/WP-Gistpen/tree/1.1.6
 [1.1.5]: https://github.com/intraxia/WP-Gistpen/tree/1.1.5
