@@ -7,5 +7,5 @@ return sprintf(
     isset( $data['blob']['edit_url'] ) && $data['blob']['edit_url'] ? ' data-edit-url="' . $data['blob']['edit_url'] .'"' : '',
     htmlspecialchars( $data['blob']['filename'] ),
     $this->prism_slug( $data['blob']['language']['slug'] ),
-    $data['blob']['code']
+    htmlspecialchars( $data['blob']['code'] )
 );
