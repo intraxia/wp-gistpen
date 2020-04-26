@@ -6,7 +6,7 @@
 **Requires at least:** 5.2  
 **Requires PHP**: 5.6  
 **Tested up to:** 5.2  
-**Stable tag:** 1.1.6  
+**Stable tag:** 1.2.1  
 **License:** GPLv2  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -55,7 +55,7 @@ Features include:
 
 ### What are the plugin's requirements? ###
 
-Your PHP version should be 5.4+, and you must be running WordPress v4.6+. This is because WP-Gistpen relies on the WP-API infrastructure.
+Your PHP version should be 5.4+, and you must be running WordPress v4.7+. This is because WP-Gistpen relies on the WP-API infrastructure.
 
 ### How do I create an archive page for my Gistpens? ###
 
