@@ -1,7 +1,5 @@
 import React from 'react';
 
-type Renderer = ReturnType<React.FC<any>>;
-
 type Props<T extends string> = {
   status: T;
   elements: {
@@ -12,6 +10,4 @@ type Props<T extends string> = {
 export const StatusMapper = <T extends string>({
   status,
   elements,
-}: Props<T>): React.ReactElement => {
-  return elements[status]();
-};
+}: Props<T>): React.ReactElement => elements[status]();

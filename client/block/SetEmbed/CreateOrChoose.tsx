@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@wordpress/components';
 import { toJunction } from 'brookjs';
 import { Stream } from 'kefir';
-import { createNewClick, chooseExistingClick } from '../../actions';
+import { createNewClick, chooseExistingClick } from '../actions';
 import styles from './CreateOrChoose.module.scss';
 
 type Props = {

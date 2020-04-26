@@ -1,19 +1,23 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Block } from '../../../components';
-import * as block from '../block';
+import { Block } from '../Block';
+import * as config from '../config';
 
-jest.mock('../../../components', () => ({
+jest.mock('../Block', () => ({
   Block: (props: React.ComponentProps<typeof Block>) => (
     <div className={props.className}>
       blobId: {props.blobId}; repoId: {props.repoId}
     </div>
   ),
-  Shortcode: jest.requireActual('../../../components').Shortcode,
 }));
 
-const Edit = block.edit!;
-const Save = block.save!;
+jest.mock('../../components', () => ({
+  Shortcode: jest.requireActual('../../components').Shortcode,
+  StatusMapper: jest.requireActual('../../components').StatusMapper,
+}));
+
+const Edit = config.edit!;
+const Save = config.save!;
 
 describe('block', () => {
   it('should render edit from block props', () => {
