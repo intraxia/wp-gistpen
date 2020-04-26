@@ -19,11 +19,11 @@ storiesOf('SearchPopup', module)
         term: 'test',
         results: [
           {
-            id: '1',
+            id: 1,
             filename: 'test1.js',
           },
           {
-            id: '2',
+            id: 2,
             filename: 'test2.js',
           },
         ],
@@ -46,11 +46,11 @@ storiesOf('SearchPopup', module)
         term: 'test',
         results: [
           {
-            id: '1',
+            id: 1,
             filename: 'test1.js',
           },
           {
-            id: '2',
+            id: 2,
             filename: 'test2.js',
           },
         ],

@@ -1,0 +1,23 @@
+.popover {
+    :global(.components-popover__content) {
+        background: transparent;
+        z-index: 100;
+    }
+}
+
+.placeholder:global(.components-placeholder.components-placeholder) {
+    min-height: unset;
+    margin-bottom: 5px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: unset;
+
+    :global(.components-placeholder__label) {
+        margin-bottom: 0;
+    }
+
+    :global(.components-placeholder__fieldset) {
+        width: unset;
+    }
+}

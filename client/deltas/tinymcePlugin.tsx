@@ -121,7 +121,7 @@ const createTinyMCEWindow = (
                 loading={state.ajax.running}
                 term={state.search.term}
                 results={state.search.results.map(blob => ({
-                  id: String(blob.ID),
+                  id: blob.ID,
                   filename: blob.filename,
                 }))}
               />

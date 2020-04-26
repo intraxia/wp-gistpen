@@ -1,13 +1,8 @@
 import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
-import {
-  ajaxStarted,
-  ajaxFailed,
-  ajaxFinished,
-  searchInput,
-  searchResultsSucceeded,
-} from '../actions';
+import { ajaxStarted, ajaxFailed, ajaxFinished } from '../actions';
 import { RootAction } from '../util';
+import { actions as searchActions } from '../search';
 
 export type AjaxState = {
   running: boolean;
@@ -28,9 +23,9 @@ export const ajaxReducer: EddyReducer<AjaxState, RootAction> = (
       return { ...state, running: false };
     case getType(ajaxFinished):
       return { ...state, running: false };
-    case getType(searchInput):
+    case getType(searchActions.searchInput):
       return { ...state, running: !!action.payload.value };
-    case getType(searchResultsSucceeded):
+    case getType(searchActions.search.success):
       return { ...state, running: false };
     default:
       return state;

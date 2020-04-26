@@ -13,14 +13,14 @@ export type PrismState = {
   'show-invisibles': boolean;
 };
 
-const defaultState: PrismState = {
+export const defaultPrism: PrismState = {
   theme: 'default',
   'line-numbers': false,
   'show-invisibles': false,
 };
 
 export const prismReducer: EddyReducer<PrismState, RootAction> = (
-  state = defaultState,
+  state = defaultPrism,
   action,
 ) => {
   switch (action.type) {
