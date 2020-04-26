@@ -54,7 +54,7 @@
     "@types/sinon": "^9.0.0",
     "@types/sprintf-js": "^1.1.2",
     "@types/tinymce": "^4.5.23",
-    "@types/webpack": "^4.41.11",
+    "@types/webpack": "^4.41.12",
     "@types/webpack-dev-server": "^3.10.1",
     "@types/webpack-env": "^1.15.0",
     "@types/wordpress__blocks": "^6.4.3",
