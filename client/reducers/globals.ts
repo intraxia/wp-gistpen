@@ -18,7 +18,7 @@ export type GlobalsState = {
   };
 };
 
-const defaultState: GlobalsState = {
+export const defaultGlobals: GlobalsState = {
   languages: {},
   root: '',
   nonce: '',
@@ -34,7 +34,7 @@ const defaultState: GlobalsState = {
 };
 
 export const globalsReducer: EddyReducer<GlobalsState, RootAction> = (
-  state = defaultState,
+  state = defaultGlobals,
   action,
 ) => {
   switch (action.type) {

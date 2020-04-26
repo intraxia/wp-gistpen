@@ -39,15 +39,18 @@ export const ApiRepo = t.type({
 
 export type ApiRepo = t.TypeOf<typeof ApiRepo>;
 
-export const validationErrorsToString = (
-  errs: t.Errors,
-) => `Search API response validation failed:
-
-${errs
-  .map(
-    err =>
-      `* Invalid value ${JSON.stringify(
-        err.value,
-      )} supplied to ${err.context.map(x => x.key).join('/')}`,
-  )
-  .join('\n')}`;
+export const validationErrorsToString = (errs: t.Errors) =>
+  `Search API response validation failed:\n\n${errs
+    .map(
+      err =>
+        `* Invalid value ${
+          err.context.length === 0
+            ? typeof err.value
+            : JSON.stringify(err.value)
+        } supplied to ${
+          err.context.length === 0
+            ? 'root'
+            : err.context.map(x => x.key).join('/')
+        }`,
+    )
+    .join('\n')}`;

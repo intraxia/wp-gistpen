@@ -4,8 +4,8 @@ module.exports = {
       'always',
       {
         except: ['first-nested'],
-        ignore: ['after-comment']
-      }
+        ignore: ['after-comment'],
+      },
     ],
     'at-rule-name-case': 'lower',
     'at-rule-name-space-after': 'always-single-line',
@@ -25,8 +25,8 @@ module.exports = {
       'always',
       {
         except: ['first-nested'],
-        ignore: ['stylelint-commands']
-      }
+        ignore: ['stylelint-commands'],
+      },
     ],
     'comment-no-empty': true,
     'comment-whitespace-inside': 'always',
@@ -34,16 +34,16 @@ module.exports = {
       'always',
       {
         except: ['after-custom-property', 'first-nested'],
-        ignore: ['after-comment', 'inside-single-line-block']
-      }
+        ignore: ['after-comment', 'inside-single-line-block'],
+      },
     ],
     'declaration-bang-space-after': 'never',
     'declaration-bang-space-before': 'always',
     'declaration-block-no-duplicate-properties': [
       true,
       {
-        ignore: ['consecutive-duplicates-with-different-values']
-      }
+        ignore: ['consecutive-duplicates-with-different-values'],
+      },
     ],
     'declaration-block-no-redundant-longhand-properties': true,
     'declaration-block-no-shorthand-property-overrides': true,
@@ -59,8 +59,8 @@ module.exports = {
       'always',
       {
         except: ['after-declaration', 'first-nested'],
-        ignore: ['after-comment', 'inside-single-line-block']
-      }
+        ignore: ['after-comment', 'inside-single-line-block'],
+      },
     ],
     'font-family-no-duplicate-names': true,
     'function-calc-no-unspaced-operator': true,
@@ -100,8 +100,8 @@ module.exports = {
       'always-multi-line',
       {
         except: ['first-nested'],
-        ignore: ['after-comment']
-      }
+        ignore: ['after-comment'],
+      },
     ],
     'selector-attribute-brackets-space-inside': 'never',
     'selector-attribute-operator-space-after': 'never',
@@ -113,7 +113,12 @@ module.exports = {
     'selector-list-comma-space-before': 'never',
     'selector-max-empty-lines': 0,
     'selector-pseudo-class-case': 'lower',
-    'selector-pseudo-class-no-unknown': true,
+    'selector-pseudo-class-no-unknown': [
+      true,
+      {
+        ignorePseudoClasses: ['global'],
+      },
+    ],
     'selector-pseudo-class-parentheses-space-inside': 'never',
     'selector-pseudo-element-case': 'lower',
     'selector-pseudo-element-colon-notation': 'double',
@@ -127,6 +132,6 @@ module.exports = {
     'value-list-comma-newline-after': 'always-multi-line',
     'value-list-comma-space-after': 'always-single-line',
     'value-list-comma-space-before': 'never',
-    'value-list-max-empty-lines': 0
-  }
+    'value-list-max-empty-lines': 0,
+  },
 };

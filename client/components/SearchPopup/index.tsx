@@ -3,17 +3,17 @@ import React from 'react';
 import './index.scss';
 import { toJunction } from 'brookjs-silt';
 import { i18n } from '../../helpers';
-import { searchInput, searchResultSelectionChange } from '../../actions';
+import { actions as searchActions } from '../../search';
 import Loader from '../Loader';
 
 type Results = Array<{
-  id: string;
+  id: number;
   filename: string;
 }>;
 
 type Props = {
   onSearchTyping: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onRadioChange: (id: string) => void;
+  onRadioChange: (id: number) => void;
   term: string;
   results: Results;
   loading: boolean;
@@ -21,7 +21,7 @@ type Props = {
 
 const HasResults: React.FC<{
   results: Results;
-  onRadioChange: (id: string) => void;
+  onRadioChange: (id: number) => void;
 }> = ({ results, onRadioChange }) => (
   <ul className={'wpgp-search-results'}>
     {results.map(({ id, filename }) => (
@@ -93,9 +93,9 @@ const events = {
     evt$
       .map(e => e.target.value)
       .debounce(300)
-      .map(searchInput),
-  onRadioChange: (evt$: Observable<string, never>) =>
-    evt$.map(searchResultSelectionChange),
+      .map(searchActions.searchInput),
+  onRadioChange: (evt$: Observable<number, never>) =>
+    evt$.map(searchActions.searchResultSelectionChange),
 };
 
 export default toJunction(events)(Search);
