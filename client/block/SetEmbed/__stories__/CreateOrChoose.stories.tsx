@@ -7,6 +7,10 @@ export default {
 
 export const basic = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
-    <CreateOrChoose />
+    <CreateOrChoose
+      header="Do what now?"
+      chooseLabel="Choose"
+      createLabel="Create"
+    />
   </div>
 );

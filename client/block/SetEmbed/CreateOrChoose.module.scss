@@ -1,5 +1,8 @@
 .container {
     width: 100%;
+}
+
+.group {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -8,4 +11,8 @@
 
 .or {
     font-weight: bold;
+}
+
+.header {
+    text-align: center;
 }

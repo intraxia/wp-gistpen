@@ -6819,23 +6819,33 @@ exports[`Storyshots Create or Choose Basic 1`] = `
     class="container"
     data-testid="create-or-choose"
   >
-    <button
-      class="components-button is-primary is-large"
-      type="button"
+    <h3
+      class="header"
     >
-      Create new
-    </button>
+      Do what now?
+    </h3>
     <div
-      class="or"
+      class="components-button-group group"
+      role="group"
     >
-      Or
+      <button
+        class="components-button is-primary is-large"
+        type="button"
+      >
+        Create
+      </button>
+      <div
+        class="or"
+      >
+        Or
+      </div>
+      <button
+        class="components-button is-large is-tertiary"
+        type="button"
+      >
+        Choose
+      </button>
     </div>
-    <button
-      class="components-button is-large is-tertiary"
-      type="button"
-    >
-      Choose from existing
-    </button>
   </div>
 </div>
 `;
