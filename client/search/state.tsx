@@ -1,31 +1,44 @@
 import { loop, EddyReducer } from 'brookjs';
 import { getType } from 'typesafe-actions';
+import * as t from 'io-ts';
 import { RootAction } from '../util';
 import { GlobalsState, defaultGlobals } from '../reducers';
 import {
   searchResultSelectionChange,
   searchInput,
   search,
-  snippetSelected,
+  searchBlobSelected,
+  searchRepoSelected,
 } from './actions';
 import { SearchApiResponse } from './delta';
+
+export const BlobCollection = t.literal('blobs');
+
+export const RepoCollection = t.literal('repos');
+
+export const Collection = t.union([BlobCollection, RepoCollection]);
+
+export type Collection = t.TypeOf<typeof Collection>;
 
 export type Initial = {
   status: 'initial';
   term: string;
+  collection: Collection;
   globals: GlobalsState;
 };
 
 export type Searching = {
   status: 'searching';
   term: string;
+  collection: Collection;
   globals: GlobalsState;
 };
 
 export type Found = {
   status: 'found';
-  snippets: SearchApiResponse;
+  results: SearchApiResponse;
   term: string;
+  collection: Collection;
   globals: GlobalsState;
 };
 
@@ -33,21 +46,24 @@ export type Error = {
   status: 'error';
   error: string;
   term: string;
+  collection: Collection;
   globals: GlobalsState;
 };
 
 export type Researching = {
   status: 'researching';
-  snippets: SearchApiResponse;
+  results: SearchApiResponse;
   term: string;
+  collection: Collection;
   globals: GlobalsState;
 };
 
 export type Reerror = {
   status: 'reerror';
   error: string;
-  snippets: SearchApiResponse;
+  results: SearchApiResponse;
   term: string;
+  collection: Collection;
   globals: GlobalsState;
 };
 
@@ -59,6 +75,7 @@ export type HasSnippet = Found | Researching | Reerror;
 
 export const initialState: State = {
   status: 'initial',
+  collection: 'blobs',
   term: '',
   globals: defaultGlobals,
 };
@@ -84,9 +101,17 @@ export const reducer: EddyReducer<State, RootAction> = (
         case 'reerror':
           return loop(
             state,
-            snippetSelected(
-              state.snippets.find(snippet => snippet.ID === action.payload.ID)!,
-            ),
+            state.results.collection === 'blobs'
+              ? searchBlobSelected(
+                  state.results.response.find(
+                    blob => blob.ID === action.payload.ID,
+                  )!,
+                )
+              : searchRepoSelected(
+                  state.results.response.find(
+                    repo => repo.ID === action.payload.ID,
+                  )!,
+                ),
           );
         default:
           return state;
@@ -96,6 +121,7 @@ export const reducer: EddyReducer<State, RootAction> = (
         case 'initial':
         case 'error':
           return {
+            collection: state.collection,
             term: state.term,
             status: 'searching',
             globals: state.globals,
@@ -103,9 +129,10 @@ export const reducer: EddyReducer<State, RootAction> = (
         case 'found':
         case 'reerror':
           return {
+            collection: state.collection,
             term: state.term,
             status: 'researching',
-            snippets: state.snippets,
+            results: state.results,
             globals: state.globals,
           } as const;
         default:
@@ -114,15 +141,17 @@ export const reducer: EddyReducer<State, RootAction> = (
     }
     case getType(search.success):
       return {
+        collection: state.collection,
         term: state.term,
         status: 'found',
-        snippets: action.payload,
+        results: action.payload,
         globals: state.globals,
       } as const;
     case getType(search.failure):
       switch (state.status) {
         case 'searching':
           return {
+            collection: state.collection,
             status: 'error',
             term: state.term,
             error: action.payload.message,
@@ -130,9 +159,10 @@ export const reducer: EddyReducer<State, RootAction> = (
           } as const;
         case 'researching':
           return {
+            collection: state.collection,
             status: 'reerror',
             term: state.term,
-            snippets: state.snippets,
+            results: state.results,
             error: action.payload.message,
             globals: state.globals,
           } as const;

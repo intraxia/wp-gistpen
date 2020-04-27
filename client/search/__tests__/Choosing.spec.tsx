@@ -7,10 +7,10 @@ import {
 } from '@testing-library/react';
 import { fakeServer, FakeServer } from 'nise';
 import { defaultGlobals } from '../../reducers';
-import { snippetSelected } from '../actions';
+import { searchBlobSelected, searchRepoSelected } from '../actions';
 import Choosing from '../Choosing';
 import { GlobalsProvider } from '../context';
-import { createSearchBlob } from '../../mocks';
+import { createSearchBlob, createSearchRepo } from '../../mocks';
 
 const createInstance = ({
   container,
@@ -42,11 +42,12 @@ const root = '/api/';
 
 const element = (
   <GlobalsProvider value={{ ...defaultGlobals, root }}>
-    <Choosing />
+    <Choosing collection="blobs" />
   </GlobalsProvider>
 );
 
 const blob = createSearchBlob();
+const repo = createSearchRepo();
 
 describe('Choosing', () => {
   let server: FakeServer;
@@ -57,6 +58,10 @@ describe('Choosing', () => {
     server.respondImmediately = true;
   });
 
+  afterAll(() => {
+    server?.restore();
+  });
+
   it('should emit a blob on successful choice', () => {
     server.respondWith(
       'GET',
@@ -65,7 +70,34 @@ describe('Choosing', () => {
     );
 
     expect(element).toEmitFromJunction(
-      [[350, KTU.value(snippetSelected(blob))]],
+      [[350, KTU.value(searchBlobSelected(blob))]],
+      (rr, tick) => {
+        const { fire } = createInstance(rr);
+
+        fire.inputChange('js');
+
+        act(() => {
+          tick(350);
+        });
+
+        fire.selectButtonClick();
+      },
+    );
+  });
+
+  it('should emit a repo on successful choice', () => {
+    server.respondWith(
+      'GET',
+      `${root}search/repos?s=js`,
+      JSON.stringify([repo]),
+    );
+
+    expect(
+      <GlobalsProvider value={{ ...defaultGlobals, root }}>
+        <Choosing collection="repos" />
+      </GlobalsProvider>,
+    ).toEmitFromJunction(
+      [[350, KTU.value(searchRepoSelected(repo))]],
       (rr, tick) => {
         const { fire } = createInstance(rr);
 

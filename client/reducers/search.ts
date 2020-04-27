@@ -41,7 +41,8 @@ export const searchReducer: EddyReducer<SearchState, RootAction> = (
     case getType(searchActions.search.success):
       return {
         ...state,
-        results: action.payload,
+        results:
+          action.payload.collection === 'blobs' ? action.payload.response : [],
         selection: null,
       };
     case getType(searchActions.searchResultSelectionChange):

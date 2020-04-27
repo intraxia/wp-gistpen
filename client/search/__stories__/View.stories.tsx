@@ -1,13 +1,13 @@
 import React from 'react';
 import { View } from '../View';
 import { defaultPrism } from '../../reducers';
-import { searchApiResponse } from '../../mocks';
+import { searchBlobsApiResponse } from '../../mocks';
 
 export default {
   title: 'Search View',
 };
 
-const results = searchApiResponse.map(resp => ({
+const results = searchBlobsApiResponse.map(resp => ({
   id: resp.ID,
   label: resp.filename,
   render: {

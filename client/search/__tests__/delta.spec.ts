@@ -3,12 +3,13 @@ import { fakeServer, FakeServer } from 'nise';
 import { searchDelta } from '../delta';
 import { search } from '../actions';
 import { AjaxError } from '../../ajax';
-import { searchApiResponse } from '../../mocks';
+import { searchBlobsApiResponse } from '../../mocks';
 
 const state = {
   root: '/api/',
   nonce: 'abcd',
   term: 'js',
+  collection: 'blobs',
 };
 
 describe('delta', () => {
@@ -81,7 +82,7 @@ describe('delta', () => {
     });
 
     it('should emit error event on bad response format', () => {
-      const msg = `Search API response validation failed:\n\n* Invalid value object supplied to root`;
+      const msg = `Search API response validation failed:\n\n* Invalid value {} supplied to 1/response`;
       expect(searchDelta).toEmitFromDelta(
         [[350, KTU.value(search.failure(new AjaxError(msg)))]],
         (send, tick) => {
@@ -95,7 +96,17 @@ describe('delta', () => {
 
     it('should emit success', () => {
       expect(searchDelta).toEmitFromDelta(
-        [[350, KTU.value(search.success(searchApiResponse))]],
+        [
+          [
+            350,
+            KTU.value(
+              search.success({
+                collection: 'blobs',
+                response: searchBlobsApiResponse,
+              }),
+            ),
+          ],
+        ],
         (send, tick) => {
           send(search.request(), state);
           tick(350);
@@ -103,7 +114,7 @@ describe('delta', () => {
           server.lastRequest?.respond(
             200,
             {},
-            JSON.stringify(searchApiResponse),
+            JSON.stringify(searchBlobsApiResponse),
           );
         },
       );

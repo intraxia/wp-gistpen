@@ -5,9 +5,9 @@ import {
   searchInput,
   search,
   searchResultSelectionChange,
-  snippetSelected,
+  searchBlobSelected,
 } from '../actions';
-import { searchApiResponse } from '../../mocks';
+import { searchBlobsApiResponse } from '../../mocks';
 import { AjaxError } from '../../ajax';
 
 describe('state', () => {
@@ -16,6 +16,7 @@ describe('state', () => {
       const state: Initial = {
         status: 'initial',
         term: '',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
 
@@ -26,6 +27,7 @@ describe('state', () => {
       const state: Initial = {
         status: 'initial',
         term: '',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
 
@@ -34,6 +36,7 @@ describe('state', () => {
           {
             status: 'initial',
             term: 'js',
+            collection: 'blobs',
             globals: defaultGlobals,
           },
           search.request(),
@@ -45,6 +48,7 @@ describe('state', () => {
       const state: Initial = {
         status: 'initial',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
 
@@ -53,6 +57,7 @@ describe('state', () => {
           {
             status: 'initial',
             term: '',
+            collection: 'blobs',
             globals: defaultGlobals,
           },
           search.cancel(),
@@ -64,14 +69,15 @@ describe('state', () => {
       const state: Found = {
         status: 'found',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
-        snippets: searchApiResponse,
+        results: { collection: 'blobs', response: searchBlobsApiResponse },
       };
 
-      const selection = searchApiResponse[2];
+      const selection = searchBlobsApiResponse[2];
 
       expect(reducer(state, searchResultSelectionChange(selection.ID))).toEqual(
-        loop(state, snippetSelected(selection)),
+        loop(state, searchBlobSelected(selection)),
       );
     });
 
@@ -79,10 +85,11 @@ describe('state', () => {
       const state: Initial = {
         status: 'initial',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
 
-      const selection = searchApiResponse[2];
+      const selection = searchBlobsApiResponse[2];
 
       expect(reducer(state, searchResultSelectionChange(selection.ID))).toEqual(
         state,
@@ -93,12 +100,14 @@ describe('state', () => {
       const state: Initial = {
         status: 'initial',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
 
       expect(reducer(state, search.request())).toEqual({
         status: 'searching',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       });
     });
@@ -107,15 +116,17 @@ describe('state', () => {
       const state: Found = {
         status: 'found',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
-        snippets: searchApiResponse,
+        results: { collection: 'blobs', response: searchBlobsApiResponse },
       };
 
       expect(reducer(state, search.request())).toEqual({
         status: 'researching',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
-        snippets: searchApiResponse,
+        results: { collection: 'blobs', response: searchBlobsApiResponse },
       });
     });
 
@@ -123,12 +134,14 @@ describe('state', () => {
       const state: Searching = {
         status: 'searching',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
 
       expect(reducer(state, search.request())).toEqual({
         status: 'searching',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       });
     });
@@ -137,13 +150,23 @@ describe('state', () => {
       const state: Searching = {
         status: 'searching',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
 
-      expect(reducer(state, search.success(searchApiResponse))).toEqual({
+      expect(
+        reducer(
+          state,
+          search.success({
+            collection: 'blobs',
+            response: searchBlobsApiResponse,
+          }),
+        ),
+      ).toEqual({
         status: 'found',
         term: 'js',
-        snippets: searchApiResponse,
+        collection: 'blobs',
+        results: { collection: 'blobs', response: searchBlobsApiResponse },
         globals: defaultGlobals,
       });
     });
@@ -152,6 +175,7 @@ describe('state', () => {
       const state: Searching = {
         status: 'searching',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
       const msg = '500 - Internal Server Error';
@@ -159,6 +183,7 @@ describe('state', () => {
       expect(reducer(state, search.failure(new AjaxError(msg)))).toEqual({
         status: 'error',
         term: 'js',
+        collection: 'blobs',
         error: msg,
         globals: defaultGlobals,
       });
@@ -168,7 +193,8 @@ describe('state', () => {
       const state: Researching = {
         status: 'researching',
         term: 'js',
-        snippets: searchApiResponse,
+        collection: 'blobs',
+        results: { collection: 'blobs', response: searchBlobsApiResponse },
         globals: defaultGlobals,
       };
       const msg = '500 - Internal Server Error';
@@ -176,8 +202,9 @@ describe('state', () => {
       expect(reducer(state, search.failure(new AjaxError(msg)))).toEqual({
         status: 'reerror',
         term: 'js',
+        collection: 'blobs',
         error: msg,
-        snippets: searchApiResponse,
+        results: { collection: 'blobs', response: searchBlobsApiResponse },
         globals: defaultGlobals,
       });
     });
@@ -186,6 +213,7 @@ describe('state', () => {
       const state: Initial = {
         status: 'initial',
         term: 'js',
+        collection: 'blobs',
         globals: defaultGlobals,
       };
       const msg = '500 - Internal Server Error';

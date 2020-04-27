@@ -1,4 +1,9 @@
-import { SearchBlob, SearchApiResponse } from './search';
+import {
+  SearchBlob,
+  SearchBlobsApiResponse,
+  SearchRepo,
+  SearchReposApiResponse,
+} from './search';
 
 export const blob = {
   filename: 'test.js',
@@ -45,10 +50,35 @@ export const createSearchBlob = (): SearchBlob => ({
   repo_rest_url: '',
 });
 
-export const searchApiResponse: SearchApiResponse = [
+export const searchBlobsApiResponse: SearchBlobsApiResponse = [
   createSearchBlob(),
   createSearchBlob(),
   createSearchBlob(),
   createSearchBlob(),
   createSearchBlob(),
+];
+
+export const createSearchRepo = (): SearchRepo => ({
+  ID: ++count,
+  description: 'Test repo',
+  slug: 'test-repo',
+  status: 'draft',
+  password: '',
+  gist_id: null,
+  gist_url: '',
+  sync: 'off',
+  blobs: [],
+  rest_url: '',
+  commits_url: '',
+  html_url: '',
+  updated_at: '',
+  created_at: '',
+});
+
+export const searchReposApiResponse: SearchReposApiResponse = [
+  createSearchRepo(),
+  createSearchRepo(),
+  createSearchRepo(),
+  createSearchRepo(),
+  createSearchRepo(),
 ];
