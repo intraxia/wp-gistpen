@@ -1,7 +1,7 @@
 import React from 'react';
 import { Spinner, Notice } from '@wordpress/components';
 import { ofType, Maybe } from 'brookjs';
-import { TextControl } from '../components';
+import { TextControl } from '../wp';
 import { change } from '../actions';
 import {
   searchResultSelectClick,

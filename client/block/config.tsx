@@ -1,7 +1,7 @@
 import React from 'react';
 import { Block as BlockConfig } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
-import { Shortcode } from '../components';
+import { Shortcode } from '../wp';
 import { Attributes } from './state';
 import { Block } from './Block';
 
