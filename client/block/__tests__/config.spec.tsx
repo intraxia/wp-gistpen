@@ -11,11 +11,6 @@ jest.mock('../Block', () => ({
   ),
 }));
 
-jest.mock('../../components', () => ({
-  Shortcode: jest.requireActual('../../components').Shortcode,
-  StatusMapper: jest.requireActual('../../components').StatusMapper,
-}));
-
 const Edit = config.edit!;
 const Save = config.save!;
 
