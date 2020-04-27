@@ -1,16 +1,47 @@
 import { Delta, sampleByAction, ofType } from 'brookjs';
 import Kefir, { Observable } from 'kefir';
 import * as t from 'io-ts';
-import { RootAction } from '../util';
+import { RootAction, toggle } from '../util';
 import { AjaxError, ajax$ } from '../ajax';
 import { validationErrorsToString } from '../api';
 import { search } from './actions';
+import { Collection, RepoCollection, BlobCollection } from './state';
 
 type SearchDeltaState = {
   root: string;
   nonce: string;
   term: string;
+  collection: Collection;
 };
+
+export const SearchRepo = t.type({
+  ID: t.number,
+  description: t.string,
+  slug: t.string,
+  status: t.string,
+  password: t.string,
+  gist_id: t.union([t.string, t.null]),
+  gist_url: t.string,
+  sync: toggle,
+  blobs: t.array(
+    t.type({
+      ID: t.number,
+      filename: t.string,
+      rest_url: t.string,
+    }),
+  ),
+  rest_url: t.string,
+  commits_url: t.string,
+  html_url: t.string,
+  created_at: t.string,
+  updated_at: t.string,
+});
+
+export type SearchRepo = t.TypeOf<typeof SearchRepo>;
+
+export const SearchReposApiResponse = t.array(SearchRepo);
+
+export type SearchReposApiResponse = t.TypeOf<typeof SearchReposApiResponse>;
 
 export const SearchBlob = t.type({
   ID: t.number,
@@ -28,12 +59,25 @@ export const SearchBlob = t.type({
 
 export type SearchBlob = t.TypeOf<typeof SearchBlob>;
 
-export const SearchApiResponse = t.array(SearchBlob);
+export const SearchBlobsApiResponse = t.array(SearchBlob);
+
+export type SearchBlobsApiResponse = t.TypeOf<typeof SearchBlobsApiResponse>;
+
+export const SearchApiResponse = t.union([
+  t.type({
+    collection: RepoCollection,
+    response: SearchReposApiResponse,
+  }),
+  t.type({
+    collection: BlobCollection,
+    response: SearchBlobsApiResponse,
+  }),
+]);
 
 export type SearchApiResponse = t.TypeOf<typeof SearchApiResponse>;
 
 const getSearchUrl = (state: SearchDeltaState) =>
-  `${state.root}search/blobs?s=${state.term}`;
+  `${state.root}search/${state.collection}?s=${state.term}`;
 
 export const searchDelta: Delta<RootAction, SearchDeltaState> = (
   actions$,
@@ -49,16 +93,20 @@ export const searchDelta: Delta<RootAction, SearchDeltaState> = (
         headers: {
           'X-WP-Nonce': state.nonce,
         },
-      }).takeUntilBy(actions$.thru(ofType(search.cancel))),
-    )
-    .flatMap(response => response.json())
-    .flatMap(response =>
-      SearchApiResponse.validate(response, []).fold<
-        Observable<RootAction, AjaxError>
-      >(
-        errs =>
-          Kefir.constantError(new AjaxError(validationErrorsToString(errs))),
-        res => Kefir.constant(search.success(res)),
-      ),
+      })
+        .takeUntilBy(actions$.thru(ofType(search.cancel)))
+        .flatMap(response => response.json())
+        .flatMap(response =>
+          SearchApiResponse.validate(
+            { collection: state.collection, response },
+            [],
+          ).fold<Observable<RootAction, AjaxError>>(
+            errs =>
+              Kefir.constantError(
+                new AjaxError(validationErrorsToString(errs)),
+              ),
+            res => Kefir.constant(search.success(res)),
+          ),
+        ),
     )
     .flatMapErrors(err => Kefir.constant(search.failure(err)));

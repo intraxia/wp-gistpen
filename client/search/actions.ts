@@ -1,6 +1,6 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
 import { AjaxError } from '../ajax';
-import { SearchApiResponse, SearchBlob } from './delta';
+import { SearchApiResponse, SearchBlob, SearchRepo } from './delta';
 
 export const searchInput = createAction(
   'SEARCH_INPUT',
@@ -23,7 +23,12 @@ export const search = createAsyncAction(
   'SEARCH_CANCELED',
 )<void, SearchApiResponse, TypeError | AjaxError, void>();
 
-export const snippetSelected = createAction(
+export const searchBlobSelected = createAction(
   'SNIPPET_SELECTED',
   resolve => (blob: SearchBlob) => resolve({ blob }),
+);
+
+export const searchRepoSelected = createAction(
+  'SNIPPET_SELECTED',
+  resolve => (repo: SearchRepo) => resolve({ repo }),
 );

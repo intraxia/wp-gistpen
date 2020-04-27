@@ -1,10 +1,10 @@
 import React from 'react';
 import { ofType, useDelta, RootJunction, toJunction, Delta } from 'brookjs';
-import Kefir, { Observable } from 'kefir';
+import Kefir from 'kefir';
 import { RootAction } from '../util';
-import { snippetSelected } from './actions';
+import { searchBlobSelected } from './actions';
 import { View } from './View';
-import { reducer, initialState, State } from './state';
+import { reducer, initialState, State, Collection } from './state';
 import { searchDelta } from './delta';
 import { useGlobals, usePrismConfig } from './context';
 import { isLoading, hasError, hasSnippets } from './selectors';
@@ -16,18 +16,19 @@ const rootDelta: Delta<RootAction, State> = (action$, state$) => {
       root: state.globals.root,
       nonce: state.globals.nonce,
       term: state.term,
+      collection: state.collection,
     })),
   );
 
   return Kefir.merge([search$]);
 };
 
-const Choosing = () => {
+const Choosing: React.FC<{ collection: Collection }> = ({ collection }) => {
   const globals = useGlobals();
   const prism = usePrismConfig();
   const { state, root$ } = useDelta(
     reducer,
-    { ...initialState, globals },
+    { ...initialState, collection, globals },
     rootDelta,
   );
   return (
@@ -39,18 +40,24 @@ const Choosing = () => {
         error={hasError(state) ? state.error : null}
         results={
           hasSnippets(state)
-            ? state.snippets.map(snippet => ({
-                id: snippet.ID,
-                label: snippet.filename,
-                render: {
-                  blob: {
-                    filename: snippet.filename,
-                    code: snippet.code,
-                    language: snippet.language.slug,
+            ? state.results.collection === 'blobs'
+              ? state.results.response.map(blob => ({
+                  id: blob.ID,
+                  label: blob.filename,
+                  render: {
+                    blob: {
+                      filename: blob.filename,
+                      code: blob.code,
+                      language: blob.language.slug,
+                    },
+                    prism,
                   },
+                }))
+              : state.results.response.map(repo => ({
+                  id: repo.ID,
+                  label: repo.description,
                   prism,
-                },
-              }))
+                }))
             : null
         }
       />
@@ -58,9 +65,8 @@ const Choosing = () => {
   );
 };
 
-const events = {};
-
-const combiner = (action$: Observable<RootAction, never>) =>
-  action$.thru(ofType(snippetSelected));
-
-export default toJunction(events, combiner)(Choosing);
+export default toJunction(
+  {},
+  action$ => action$.thru(ofType(searchBlobSelected)),
+  // @TODO(mAAdhaTTah) fix cast!
+)(Choosing as any) as React.FC<{ collection: Collection }>;

@@ -15,7 +15,7 @@ import { ResultsPlaceholder } from './ResultsPlaceholder';
 type ResultView = {
   id: number;
   label: string;
-  render: React.ComponentProps<typeof SearchResult>['render'];
+  render?: Maybe<React.ComponentProps<typeof SearchResult>['render']>;
 };
 
 export const View: React.FC<{

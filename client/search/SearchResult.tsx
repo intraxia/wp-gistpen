@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { Placeholder, Button, Popover } from '@wordpress/components';
-import { toJunction } from 'brookjs';
+import { toJunction, Maybe } from 'brookjs';
 import { Observable } from 'kefir';
 import { Blob } from '../components';
 import { PrismState } from '../reducers';
@@ -34,7 +34,7 @@ const CodePopover: React.FC<{
 const SearchResult: React.FC<{
   label: string;
   disabled?: boolean;
-  render?: Render;
+  render?: Maybe<Render>;
   onSelectClick: () => void;
 }> = ({ label, disabled = false, render, onSelectClick }) => {
   const [isVisible, setVisible] = useState(false);
