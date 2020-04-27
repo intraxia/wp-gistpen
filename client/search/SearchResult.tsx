@@ -3,44 +3,40 @@ import { Placeholder, Button, Popover } from '@wordpress/components';
 import { toJunction } from 'brookjs';
 import { Observable } from 'kefir';
 import { Blob } from '../components';
+import { PrismState } from '../reducers';
 import { searchResultSelectClick } from './actions';
 import styles from './SearchResult.module.scss';
 
 type Render = {
-  id: number;
-  filename: string;
   blob: {
+    filename: string;
     code: string;
     language: string;
   };
-  prism: {
-    theme: string;
-    ['line-numbers']: boolean;
-    ['show-invisibles']: boolean;
-  };
+  prism: PrismState;
 };
 
 const CodePopover: React.FC<{
-  filename: string;
   render: Render;
   onPopoverClose: () => void;
-}> = ({ onPopoverClose, render, filename }) => {
+}> = ({ onPopoverClose, render }) => {
   return (
     <Popover
       onClose={onPopoverClose}
       className={styles.popover}
       data-testid="search-result-popover"
     >
-      <Blob {...render} blob={{ ...render.blob, filename }} />
+      <Blob {...render} />
     </Popover>
   );
 };
 
 const SearchResult: React.FC<{
-  filename: string;
+  label: string;
+  disabled?: boolean;
   render?: Render;
   onSelectClick: () => void;
-}> = ({ filename, render, onSelectClick }) => {
+}> = ({ label, disabled = false, render, onSelectClick }) => {
   const [isVisible, setVisible] = useState(false);
   const onViewClick = useCallback(() => {
     setVisible(isVisible => !isVisible);
@@ -53,19 +49,17 @@ const SearchResult: React.FC<{
     <Placeholder
       className={styles.placeholder}
       icon="editor-code"
-      label={filename}
+      label={label}
     >
-      <Button isDefault disabled={render == null} onClick={onViewClick}>
-        View
-        {isVisible && (
-          <CodePopover
-            onPopoverClose={onPopoverClose}
-            render={render!}
-            filename={filename}
-          />
-        )}
-      </Button>
-      <Button isPrimary disabled={render == null} onClick={onSelectClick}>
+      {render != null && (
+        <Button isDefault onClick={onViewClick}>
+          View
+          {isVisible && (
+            <CodePopover onPopoverClose={onPopoverClose} render={render} />
+          )}
+        </Button>
+      )}
+      <Button isPrimary disabled={disabled} onClick={onSelectClick}>
         Select
       </Button>
     </Placeholder>

@@ -7,6 +7,7 @@ import { View } from './View';
 import { reducer, initialState, State } from './state';
 import { searchDelta } from './delta';
 import { useGlobals, usePrismConfig } from './context';
+import { isLoading, hasError, hasSnippets } from './selectors';
 
 const rootDelta: Delta<RootAction, State> = (action$, state$) => {
   const search$ = searchDelta(
@@ -31,7 +32,28 @@ const Choosing = () => {
   );
   return (
     <RootJunction root$={root$}>
-      <View {...state} prism={prism} />
+      <View
+        placeholderLabel="placeholder.js"
+        term={state.term}
+        isLoading={isLoading(state)}
+        error={hasError(state) ? state.error : null}
+        results={
+          hasSnippets(state)
+            ? state.snippets.map(snippet => ({
+                id: snippet.ID,
+                label: snippet.filename,
+                render: {
+                  blob: {
+                    filename: snippet.filename,
+                    code: snippet.code,
+                    language: snippet.language.slug,
+                  },
+                  prism,
+                },
+              }))
+            : null
+        }
+      />
     </RootJunction>
   );
 };
