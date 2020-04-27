@@ -80,7 +80,7 @@
     "sass-loader": "^8.0.2",
     "sinon": "^9.0.2",
     "style-loader": "^1.2.0",
-    "stylelint": "^13.3.2",
+    "stylelint": "^13.3.3",
     "stylelint-webpack-plugin": "^1.2.3",
     "symbol-observable": "^1.2.0",
     "typescript": "^3.8.3",
