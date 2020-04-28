@@ -2,7 +2,7 @@ import React from 'react';
 import { ofType, useDelta, RootJunction, toJunction, Delta } from 'brookjs';
 import Kefir from 'kefir';
 import { RootAction } from '../util';
-import { searchBlobSelected } from './actions';
+import { searchBlobSelected, searchRepoSelected } from './actions';
 import { View } from './View';
 import { reducer, initialState, State, Collection } from './state';
 import { searchDelta } from './delta';
@@ -34,7 +34,12 @@ const Choosing: React.FC<{ collection: Collection }> = ({ collection }) => {
   return (
     <RootJunction root$={root$}>
       <View
-        placeholderLabel="placeholder.js"
+        searchLabel={
+          collection === 'blobs' ? 'Search snippets' : 'Search repos'
+        }
+        placeholderLabel={
+          collection === 'blobs' ? 'placeholder.js' : 'Placeholder Repo Name'
+        }
         term={state.term}
         isLoading={isLoading(state)}
         error={hasError(state) ? state.error : null}
@@ -67,6 +72,6 @@ const Choosing: React.FC<{ collection: Collection }> = ({ collection }) => {
 
 export default toJunction(
   {},
-  action$ => action$.thru(ofType(searchBlobSelected)),
+  action$ => action$.thru(ofType(searchBlobSelected, searchRepoSelected)),
   // @TODO(mAAdhaTTah) fix cast!
 )(Choosing as any) as React.FC<{ collection: Collection }>;

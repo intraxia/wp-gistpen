@@ -14,12 +14,11 @@ import { createSearchBlob, createSearchRepo } from '../../mocks';
 
 const createInstance = ({
   container,
-  getByLabelText,
   getByText,
   getByTestId,
 }: RenderResult) => {
   const elements = {
-    input: () => getByLabelText('Search for snippet'),
+    input: () => getByTestId('search-input'),
     snippetList: () => getByTestId('snippet-list'),
     selectButton: () => getByText('Select'),
     errorNotice: () => container.querySelector('.components-notice.is-error'),

@@ -7870,6 +7870,7 @@ exports[`Storyshots Search View Error 1`] = `
           </label>
           <input
             class="components-text-control__input"
+            data-testid="search-input"
             id="inspector-text-control-4"
             type="text"
             value="javascript"
@@ -8125,6 +8126,7 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
           </label>
           <input
             class="components-text-control__input"
+            data-testid="search-input"
             id="inspector-text-control-2"
             type="text"
             value="javascript"
@@ -8382,6 +8384,7 @@ exports[`Storyshots Search View Found Snippets 1`] = `
           </label>
           <input
             class="components-text-control__input"
+            data-testid="search-input"
             id="inspector-text-control-3"
             type="text"
             value="javascript"
@@ -8653,6 +8656,7 @@ exports[`Storyshots Search View Initial 1`] = `
           </label>
           <input
             class="components-text-control__input"
+            data-testid="search-input"
             id="inspector-text-control-0"
             type="text"
             value="javascript"
@@ -8908,6 +8912,7 @@ exports[`Storyshots Search View Reerror 1`] = `
           </label>
           <input
             class="components-text-control__input"
+            data-testid="search-input"
             id="inspector-text-control-6"
             type="text"
             value="javascript"
@@ -9188,6 +9193,7 @@ exports[`Storyshots Search View Researching 1`] = `
           </label>
           <input
             class="components-text-control__input"
+            data-testid="search-input"
             id="inspector-text-control-5"
             type="text"
             value="javascript"
@@ -9474,6 +9480,7 @@ exports[`Storyshots Search View Searching 1`] = `
           </label>
           <input
             class="components-text-control__input"
+            data-testid="search-input"
             id="inspector-text-control-1"
             type="text"
             value="javascript"

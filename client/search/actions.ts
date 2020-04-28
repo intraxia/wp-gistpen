@@ -24,11 +24,11 @@ export const search = createAsyncAction(
 )<void, SearchApiResponse, TypeError | AjaxError, void>();
 
 export const searchBlobSelected = createAction(
-  'SNIPPET_SELECTED',
+  'SEARCH_BLOB_SELECTED',
   resolve => (blob: SearchBlob) => resolve({ blob }),
 );
 
 export const searchRepoSelected = createAction(
-  'SNIPPET_SELECTED',
+  'SEARCH_REPO_SELECTED',
   resolve => (repo: SearchRepo) => resolve({ repo }),
 );
