@@ -22,25 +22,40 @@ const results = searchBlobsApiResponse.map(resp => ({
 
 export const initial = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
-    <View placeholderLabel="placeholder.js" term="javascript" />
+    <View
+      searchLabel="Search for snippet"
+      placeholderLabel="placeholder.js"
+      term="javascript"
+    />
   </div>
 );
 
 export const searching = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
-    <View placeholderLabel="placeholder.js" term="javascript" isLoading />
+    <View
+      searchLabel="Search for snippet"
+      placeholderLabel="placeholder.js"
+      term="javascript"
+      isLoading
+    />
   </div>
 );
 
 export const foundNoSnippets = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
-    <View placeholderLabel="placeholder.js" term="javascript" results={[]} />
+    <View
+      searchLabel="Search for snippet"
+      placeholderLabel="placeholder.js"
+      term="javascript"
+      results={[]}
+    />
   </div>
 );
 
 export const foundSnippets = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      searchLabel="Search for snippet"
       placeholderLabel="placeholder.js"
       term="javascript"
       results={results}
@@ -51,6 +66,7 @@ export const foundSnippets = () => (
 export const error = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      searchLabel="Search for snippet"
       placeholderLabel="placeholder.js"
       term="javascript"
       error="Search failed."
@@ -61,6 +77,7 @@ export const error = () => (
 export const researching = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      searchLabel="Search for snippet"
       placeholderLabel="placeholder.js"
       term="javascript"
       results={results}
@@ -72,6 +89,7 @@ export const researching = () => (
 export const reerror = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
+      searchLabel="Search for snippet"
       placeholderLabel="placeholder.js"
       term="javascript"
       error="Search failed."

@@ -19,19 +19,21 @@ type ResultView = {
 };
 
 export const View: React.FC<{
+  searchLabel: string;
   placeholderLabel: string;
   term: string;
   isLoading?: boolean;
   error?: Maybe<string>;
   results?: Maybe<ResultView[]>;
-}> = ({ placeholderLabel, term, isLoading, error, results }) => {
+}> = ({ searchLabel, placeholderLabel, term, isLoading, error, results }) => {
   return (
     <div data-testid="choosing">
       <div className={styles.search}>
         <TextControl
           className={styles.grow}
-          label="Search for snippet"
+          label={searchLabel}
           value={term}
+          data-testid="search-input"
           preplug={e$ =>
             e$.thru(ofType(change)).map(a => searchInput(a.payload.value))
           }
