@@ -77,7 +77,7 @@ export const SearchApiResponse = t.union([
 export type SearchApiResponse = t.TypeOf<typeof SearchApiResponse>;
 
 const getSearchUrl = (state: SearchDeltaState) =>
-  `${state.root}search/${state.collection}?s=${state.term}`;
+  `${state.root}search/${state.collection}?s=${encodeURIComponent(state.term)}`;
 
 export const searchDelta: Delta<RootAction, SearchDeltaState> = (
   actions$,
