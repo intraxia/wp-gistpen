@@ -8142,7 +8142,7 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
       >
         No results found for 
         javascript
-        . Try a different term
+        . Try a different search term.
       </div>
     </div>
     <div
@@ -9210,10 +9210,7 @@ exports[`Storyshots Search View Researching 1`] = `
         <span
           class="components-spinner"
         />
-         
-        <span>
-          Searching...
-        </span>
+        Searching...
       </div>
     </div>
     <div
@@ -9497,10 +9494,7 @@ exports[`Storyshots Search View Searching 1`] = `
         <span
           class="components-spinner"
         />
-         
-        <span>
-          Searching...
-        </span>
+        Searching...
       </div>
     </div>
     <div

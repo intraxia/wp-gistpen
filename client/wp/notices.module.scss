@@ -1,0 +1,15 @@
+.notice {
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 5px;
+
+    :global(.components-notice__content) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    :global(.components-spinner) {
+        margin-top: 0;
+    }
+}
