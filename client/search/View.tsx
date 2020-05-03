@@ -1,7 +1,6 @@
 import React from 'react';
-import { Spinner, Notice } from '@wordpress/components';
 import { ofType, Maybe } from 'brookjs';
-import { TextControl } from '../wp';
+import { TextControl, ErrorNotice, WarningNotice } from '../wp';
 import { change } from '../actions';
 import {
   searchResultSelectClick,
@@ -40,43 +39,20 @@ export const View: React.FC<{
         />
       </div>
       {error == null && results == null && !isLoading && (
-        <Notice
-          status="warning"
-          isDismissible={false}
-          className={styles.notice}
-        >
+        <WarningNotice>
           Type into the above search field to find a code snippet.
-        </Notice>
+        </WarningNotice>
       )}
-      {isLoading && (
-        <Notice
-          status="warning"
-          isDismissible={false}
-          className={styles.notice}
-        >
-          <Spinner /> <span>Searching...</span>
-        </Notice>
-      )}
+      {isLoading && <WarningNotice isLoading>Searching...</WarningNotice>}
       {error != null && (
-        <Notice
-          status="error"
-          isDismissible={false}
-          className={styles.notice}
-          data-testid="error-notice"
-        >
-          {error}
-        </Notice>
+        <ErrorNotice testid="error-notice">{error}</ErrorNotice>
       )}
       {results != null ? (
         results.length === 0 ? (
           <>
-            <Notice
-              status="error"
-              isDismissible={false}
-              className={styles.notice}
-            >
-              No results found for {term}. Try a different term
-            </Notice>
+            <ErrorNotice>
+              No results found for {term}. Try a different search term.
+            </ErrorNotice>
             <ResultsPlaceholder label={placeholderLabel} />
           </>
         ) : (
