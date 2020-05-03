@@ -1,7 +1,7 @@
 import './index.scss';
 import { Nullable } from 'typescript-nullable';
 import React from 'react';
-import { toJunction } from 'brookjs-silt';
+import { toJunction } from 'brookjs';
 import classNames from 'classnames';
 import { Stream } from 'kefir';
 import { commitClick } from '../../actions';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { toJunction } from 'brookjs-silt';
+import { toJunction } from 'brookjs';
 import { Observable } from 'kefir';
 import { gistTokenChange } from '../../../actions';
 

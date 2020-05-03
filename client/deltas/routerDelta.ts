@@ -1,5 +1,5 @@
 import Kefir, { Observable } from 'kefir';
-import { ofType } from 'brookjs-flow';
+import { ofType } from 'brookjs';
 import href from 'sheet-router/href';
 import hist from 'sheet-router/history';
 import { routeChange } from '../actions';

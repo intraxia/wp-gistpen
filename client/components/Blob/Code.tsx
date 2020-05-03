@@ -1,6 +1,6 @@
 import Kefir from 'kefir';
 import React from 'react';
-import { withRef$, Refback } from 'brookjs-silt';
+import { withRef$, Refback } from 'brookjs';
 import Prism from '../../prism';
 import { prismSlug } from '../../helpers';
 import { RootAction } from '../../util';

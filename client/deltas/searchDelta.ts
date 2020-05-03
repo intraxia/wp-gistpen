@@ -1,5 +1,5 @@
 import Kefir, { Observable } from 'kefir';
-import { ofType } from 'brookjs-flow';
+import { ofType } from 'brookjs';
 import { RootAction } from '../util';
 import { AjaxService, AjaxError } from '../ajax';
 import { GlobalsState, SearchState } from '../reducers';

@@ -1,7 +1,6 @@
 import Kefir, { Emitter, Observable, Property, Stream } from 'kefir';
-import { ofType } from 'brookjs-flow';
+import { ofType, RootJunction } from 'brookjs';
 import React from 'react';
-import { RootJunction } from 'brookjs-silt';
 import ReactDOM from 'react-dom';
 import * as tmce from 'tinymce';
 import { SearchPopup } from '../components';

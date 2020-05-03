@@ -1,9 +1,8 @@
 import { createStore } from 'redux';
-import { RootJunction } from 'brookjs-silt';
+import { RootJunction, eddy } from 'brookjs';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Provider, connect } from 'react-redux';
-import { eddy } from 'brookjs';
 import {
   applyDelta,
   authorDelta,

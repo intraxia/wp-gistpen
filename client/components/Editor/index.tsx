@@ -1,6 +1,6 @@
 import './index.scss';
 import React, { memo, useRef, useEffect } from 'react';
-import { toJunction } from 'brookjs-silt';
+import { toJunction } from 'brookjs';
 import ClipboardJS from 'clipboard';
 import { Observable } from 'kefir';
 import {
