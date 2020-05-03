@@ -1,7 +1,7 @@
 import { Observable } from 'kefir';
 import React from 'react';
 import './index.scss';
-import { toJunction } from 'brookjs-silt';
+import { toJunction } from 'brookjs';
 import { i18n } from '../../helpers';
 import { actions as searchActions } from '../../search';
 import Loader from '../Loader';

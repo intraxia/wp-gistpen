@@ -1,8 +1,6 @@
 import path from 'path';
 import { Command } from 'brookjs-cli';
-import { ofType } from 'brookjs-flow';
-import { useDelta } from 'brookjs-silt';
-import { Delta } from 'brookjs-types';
+import { ofType, useDelta, Delta } from 'brookjs';
 import { Box, Color, AppContext } from 'ink';
 import Kefir, { Observable } from 'kefir';
 import React, { useContext, useEffect } from 'react';

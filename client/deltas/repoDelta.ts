@@ -1,5 +1,5 @@
 import Kefir, { Stream, Property, Observable } from 'kefir';
-import { ofType } from 'brookjs-flow';
+import { ofType } from 'brookjs';
 import { Nullable } from 'typescript-nullable';
 import {
   editorUpdateClick,
