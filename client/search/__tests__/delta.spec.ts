@@ -8,7 +8,7 @@ import { searchBlobsApiResponse } from '../../mocks';
 const state = {
   root: '/api/',
   nonce: 'abcd',
-  term: 'js',
+  term: 'js code',
   collection: 'blobs',
 };
 
@@ -19,6 +19,10 @@ describe('delta', () => {
     beforeEach(() => {
       server?.restore();
       server = fakeServer.create();
+    });
+
+    afterAll(() => {
+      server?.restore();
     });
 
     it('should ignore random actions', () => {
@@ -110,6 +114,10 @@ describe('delta', () => {
         (send, tick) => {
           send(search.request(), state);
           tick(350);
+
+          expect(server.lastRequest?.url).toEqual(
+            '/api/search/blobs?s=js%20code',
+          );
 
           server.lastRequest?.respond(
             200,
