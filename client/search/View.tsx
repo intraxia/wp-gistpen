@@ -18,13 +18,22 @@ type ResultView = {
 };
 
 export const View: React.FC<{
+  disabled?: boolean;
   searchLabel: string;
   placeholderLabel: string;
   term: string;
   isLoading?: boolean;
   error?: Maybe<string>;
   results?: Maybe<ResultView[]>;
-}> = ({ searchLabel, placeholderLabel, term, isLoading, error, results }) => {
+}> = ({
+  disabled = false,
+  searchLabel,
+  placeholderLabel,
+  term,
+  isLoading,
+  error,
+  results,
+}) => {
   return (
     <div data-testid="choosing">
       <div className={styles.search}>
@@ -61,6 +70,7 @@ export const View: React.FC<{
               key={result.id}
               label={result.label}
               render={result.render}
+              disabled={disabled}
               preplug={e$ =>
                 e$
                   .thru(ofType(searchResultSelectClick))

@@ -23,7 +23,10 @@ const rootDelta: Delta<RootAction, State> = (action$, state$) => {
   return Kefir.merge([search$]);
 };
 
-const Choosing: React.FC<{ collection: Collection }> = ({ collection }) => {
+const Choosing: React.FC<{ collection: Collection; disabled?: boolean }> = ({
+  collection,
+  disabled,
+}) => {
   const globals = useGlobals();
   const prism = usePrismConfig();
   const { state, root$ } = useDelta(
@@ -34,6 +37,7 @@ const Choosing: React.FC<{ collection: Collection }> = ({ collection }) => {
   return (
     <RootJunction root$={root$}>
       <View
+        disabled={disabled}
         searchLabel={
           collection === 'blobs' ? 'Search snippets' : 'Search repos'
         }
@@ -71,7 +75,6 @@ const Choosing: React.FC<{ collection: Collection }> = ({ collection }) => {
 };
 
 export default toJunction(
-  {},
   action$ => action$.thru(ofType(searchBlobSelected, searchRepoSelected)),
-  // @TODO(mAAdhaTTah) fix cast!
-)(Choosing as any) as React.FC<{ collection: Collection }>;
+  // TODO(mAAdhaTTah) remove cast!
+)(Choosing) as React.FC<{ collection: Collection; disabled?: boolean }>;

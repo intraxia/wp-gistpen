@@ -7864,14 +7864,14 @@ exports[`Storyshots Search View Error 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-4"
+            for="inspector-text-control-5"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-4"
+            id="inspector-text-control-5"
             type="text"
             value="javascript"
           />
@@ -8631,6 +8631,283 @@ exports[`Storyshots Search View Found Snippets 1`] = `
 </div>
 `;
 
+exports[`Storyshots Search View Found Snippets Disabled 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="choosing"
+  >
+    <div
+      class="search"
+    >
+      <div
+        class="components-base-control grow"
+      >
+        <div
+          class="components-base-control__field"
+        >
+          <label
+            class="components-base-control__label"
+            for="inspector-text-control-4"
+          >
+            Search for snippet
+          </label>
+          <input
+            class="components-text-control__input"
+            data-testid="search-input"
+            id="inspector-text-control-4"
+            type="text"
+            value="javascript"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        test.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
+        <button
+          class="components-button is-secondary"
+          type="button"
+        >
+          View
+        </button>
+        <button
+          class="components-button is-primary"
+          disabled=""
+          type="button"
+        >
+          Select
+        </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        test.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
+        <button
+          class="components-button is-secondary"
+          type="button"
+        >
+          View
+        </button>
+        <button
+          class="components-button is-primary"
+          disabled=""
+          type="button"
+        >
+          Select
+        </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        test.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
+        <button
+          class="components-button is-secondary"
+          type="button"
+        >
+          View
+        </button>
+        <button
+          class="components-button is-primary"
+          disabled=""
+          type="button"
+        >
+          Select
+        </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        test.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
+        <button
+          class="components-button is-secondary"
+          type="button"
+        >
+          View
+        </button>
+        <button
+          class="components-button is-primary"
+          disabled=""
+          type="button"
+        >
+          Select
+        </button>
+      </div>
+    </div>
+    <div
+      class="components-placeholder placeholder is-small"
+    >
+      <iframe
+        aria-hidden="true"
+        aria-label="resize-listener"
+        frameborder="0"
+        src="about:blank"
+        style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+        tabindex="-1"
+      />
+      <div
+        class="components-placeholder__label"
+      >
+        <svg
+          aria-hidden="true"
+          class="dashicon dashicons-editor-code"
+          focusable="false"
+          height="20"
+          role="img"
+          viewBox="0 0 20 20"
+          width="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+          />
+        </svg>
+        test.js
+      </div>
+      <div
+        class="components-placeholder__fieldset"
+      >
+        <button
+          class="components-button is-secondary"
+          type="button"
+        >
+          View
+        </button>
+        <button
+          class="components-button is-primary"
+          disabled=""
+          type="button"
+        >
+          Select
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Search View Initial 1`] = `
 <div
   class="wp-block"
@@ -8906,14 +9183,14 @@ exports[`Storyshots Search View Reerror 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-6"
+            for="inspector-text-control-7"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-6"
+            id="inspector-text-control-7"
             type="text"
             value="javascript"
           />
@@ -9187,14 +9464,14 @@ exports[`Storyshots Search View Researching 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-5"
+            for="inspector-text-control-6"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-5"
+            id="inspector-text-control-6"
             type="text"
             value="javascript"
           />
