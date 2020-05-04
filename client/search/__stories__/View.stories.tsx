@@ -63,6 +63,18 @@ export const foundSnippets = () => (
   </div>
 );
 
+export const foundSnippetsDisabled = () => (
+  <div className="wp-block" style={{ margin: '0 auto' }}>
+    <View
+      searchLabel="Search for snippet"
+      placeholderLabel="placeholder.js"
+      term="javascript"
+      results={results}
+      disabled
+    />
+  </div>
+);
+
 export const error = () => (
   <div className="wp-block" style={{ margin: '0 auto' }}>
     <View
