@@ -65,7 +65,7 @@
     "@wordpress/components": "^9.5.0",
     "@wordpress/e2e-test-utils": "^4.6.0",
     "@wordpress/scripts": "^9.0.0",
-    "brookjs-cli": "1.0.0-beta.15",
+    "brookjs-cli": "1.0.0-beta.16",
     "brookjs-desalinate": "1.0.0-beta.15",
     "copy-webpack-plugin": "^5.1.1",
     "execa": "^4.0.0",
