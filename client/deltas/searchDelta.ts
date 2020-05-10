@@ -2,9 +2,10 @@ import Kefir, { Observable } from 'kefir';
 import { ofType } from 'brookjs';
 import { RootAction } from '../util';
 import { AjaxService, AjaxError } from '../ajax';
-import { GlobalsState, SearchState } from '../reducers';
+import { SearchState } from '../reducers';
 import { validationErrorsToString } from '../api';
 import { actions as searchActions, SearchApiResponse } from '../search';
+import { GlobalsState } from '../globals';
 
 type SearchDeltaState = {
   globals: GlobalsState;

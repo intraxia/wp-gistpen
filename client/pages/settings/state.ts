@@ -2,7 +2,6 @@ import { combineReducers } from 'brookjs';
 import { StateType } from 'typesafe-actions';
 import {
   ajaxReducer,
-  globalsReducer,
   routeReducer,
   prismReducer,
   gistReducer,
@@ -10,6 +9,7 @@ import {
   runsReducer,
   messagesReducer,
 } from '../../reducers';
+import { globalsReducer } from '../../globals';
 
 export const reducer = combineReducers({
   ajax: ajaxReducer,

@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import { globalsReducer } from '../globals';
 import { init } from '../../actions';
+import { globalsReducer } from '../state';
 
 describe('globalsReducer', () => {
   it('should return state on random action', () => {

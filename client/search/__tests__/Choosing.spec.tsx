@@ -6,10 +6,9 @@ import {
   act,
 } from '@testing-library/react';
 import { fakeServer, FakeServer } from 'nise';
-import { defaultGlobals } from '../../reducers';
+import { defaultGlobals, GlobalsProvider } from '../../globals';
 import { searchBlobSelected, searchRepoSelected } from '../actions';
 import Choosing from '../Choosing';
-import { GlobalsProvider } from '../context';
 import { createSearchBlob, createSearchRepo } from '../../mocks';
 
 const createInstance = ({

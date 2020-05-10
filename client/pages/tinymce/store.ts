@@ -8,8 +8,9 @@ import {
   tinymcePluginDelta,
   webpackDelta,
 } from '../../deltas';
-import { ajaxReducer, globalsReducer, searchReducer } from '../../reducers';
+import { ajaxReducer, searchReducer } from '../../reducers';
 import { RootAction } from '../../util';
+import { globalsReducer } from '../../globals';
 
 const reducer = combineReducers({
   ajax: ajaxReducer,

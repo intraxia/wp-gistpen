@@ -12,8 +12,9 @@ import {
 } from '../actions';
 import { selectUserAjaxOpts } from '../selectors';
 import { RootAction } from '../util';
-import { GlobalsState, EditorState } from '../reducers';
+import { EditorState } from '../reducers';
 import { AjaxService, AjaxError } from '../ajax';
+import { GlobalsState } from '../globals';
 
 export type UserDeltaState = {
   globals: GlobalsState;

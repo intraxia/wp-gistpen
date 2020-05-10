@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import { GlobalsState } from '../reducers';
+import { GlobalsState } from '../globals';
 
 export const init = createAction(
   'INIT',

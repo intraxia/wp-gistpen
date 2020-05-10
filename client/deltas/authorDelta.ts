@@ -6,9 +6,10 @@ import {
   fetchAuthorFailed,
   commitsFetchSucceeded,
 } from '../actions';
-import { CommitsState, GlobalsState } from '../reducers';
+import { CommitsState } from '../reducers';
 import { AjaxService } from '../ajax';
 import { RootAction } from '../util';
+import { GlobalsState } from '../globals';
 
 type AuthorServices = {
   ajax$: AjaxService;

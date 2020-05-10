@@ -2,7 +2,7 @@ import { loop, EddyReducer } from 'brookjs';
 import { getType } from 'typesafe-actions';
 import * as t from 'io-ts';
 import { RootAction } from '../util';
-import { GlobalsState, defaultGlobals } from '../reducers';
+import { GlobalsState, defaultGlobals } from '../globals';
 import {
   searchResultSelectionChange,
   searchInput,

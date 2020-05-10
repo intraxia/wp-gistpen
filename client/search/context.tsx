@@ -1,16 +1,5 @@
 import { createContext, useContext } from 'react';
-import {
-  PrismState,
-  GlobalsState,
-  defaultGlobals,
-  defaultPrism,
-} from '../reducers';
-
-const GlobalsContext = createContext<GlobalsState>(defaultGlobals);
-
-export const useGlobals = () => useContext(GlobalsContext);
-
-export const GlobalsProvider = GlobalsContext.Provider;
+import { PrismState, defaultPrism } from '../reducers';
 
 const PrismConfigContext = createContext<PrismState>(defaultPrism);
 
