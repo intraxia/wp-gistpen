@@ -10,7 +10,8 @@ import {
   commitsFetchFailed,
 } from '../actions';
 import { RootAction } from '../util';
-import { GlobalsState, RepoState } from '../reducers';
+import { RepoState } from '../reducers';
+import { GlobalsState } from '../globals';
 
 type CommitsServices = {
   ajax$: AjaxService;

@@ -9,14 +9,10 @@ import {
   repoSaveSucceeded,
 } from '../actions';
 import { RootAction } from '../util';
-import {
-  RepoState,
-  GlobalsState,
-  EditorState,
-  EditorInstance,
-} from '../reducers';
+import { RepoState, EditorState, EditorInstance } from '../reducers';
 import { AjaxService, AjaxError } from '../ajax';
 import { ApiRepo } from '../api';
+import { GlobalsState } from '../globals';
 
 type RepoDeltaState = {
   repo: RepoState;

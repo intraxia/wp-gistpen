@@ -2,7 +2,8 @@ import Kefir, { Observable } from 'kefir';
 import { AjaxService } from '../ajax';
 import { ajaxStarted, ajaxFailed, ajaxFinished } from '../actions';
 import { RootAction } from '../util';
-import { GistState, PrismState, GlobalsState } from '../reducers';
+import { GistState, PrismState } from '../reducers';
+import { GlobalsState } from '../globals';
 
 type SiteDeltaState = {
   globals: GlobalsState;

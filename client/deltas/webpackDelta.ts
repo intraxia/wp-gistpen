@@ -1,5 +1,5 @@
 import { Observable, stream } from 'kefir';
-import { GlobalsState } from '../reducers';
+import { GlobalsState } from '../globals';
 import { RootAction } from '../util';
 
 type WebpackDeltaState = {

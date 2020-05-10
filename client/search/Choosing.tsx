@@ -2,11 +2,12 @@ import React from 'react';
 import { ofType, useDelta, RootJunction, toJunction, Delta } from 'brookjs';
 import Kefir from 'kefir';
 import { RootAction } from '../util';
+import { useGlobals } from '../globals';
 import { searchBlobSelected, searchRepoSelected } from './actions';
 import { View } from './View';
 import { reducer, initialState, State, Collection } from './state';
 import { searchDelta } from './delta';
-import { useGlobals, usePrismConfig } from './context';
+import { usePrismConfig } from './context';
 import { isLoading, hasError, hasSnippets } from './selectors';
 
 const rootDelta: Delta<RootAction, State> = (action$, state$) => {

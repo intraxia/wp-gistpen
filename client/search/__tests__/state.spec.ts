@@ -1,5 +1,5 @@
 import { loop } from 'brookjs';
-import { defaultGlobals } from '../../reducers';
+import { defaultGlobals } from '../../globals';
 import { reducer, Initial, Found, Searching, Researching } from '../state';
 import {
   searchInput,

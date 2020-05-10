@@ -4,12 +4,12 @@ import { StateType } from 'typesafe-actions';
 import {
   ajaxReducer,
   authorsReducer,
-  globalsReducer,
   editorReducer,
   repoReducer,
   commitsReducer,
   routeReducer,
 } from '../../reducers';
+import { globalsReducer } from '../../globals';
 import View from './View';
 
 export const reducer = combineReducers({

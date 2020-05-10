@@ -4,7 +4,8 @@ import { plugin as p2 } from '../../prism/plugins/line-highlight';
 import '../../prism/plugins/copy-to-clipboard';
 import '../../prism/plugins/edit';
 import '../../prism/plugins/filename';
-import { GlobalsState, PrismState } from '../../reducers';
+import { PrismState } from '../../reducers';
+import { GlobalsState } from '../../globals';
 
 interface ContentWindowState {
   globals: GlobalsState;

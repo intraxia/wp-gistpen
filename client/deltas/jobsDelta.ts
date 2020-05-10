@@ -19,15 +19,10 @@ import {
   jobDispatchSucceeded,
   jobDispatchFailed,
 } from '../actions';
-import {
-  GlobalsState,
-  RouteState,
-  RunsState,
-  JobsState,
-  JobSuccess,
-} from '../reducers';
+import { RouteState, RunsState, JobsState, JobSuccess } from '../reducers';
 import { RootAction } from '../util';
 import { jobIsSuccess } from '../selectors';
+import { GlobalsState } from '../globals';
 
 type JobsServices = {
   ajax$: AjaxService;
