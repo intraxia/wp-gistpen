@@ -1,8 +1,8 @@
 /* eslint-env jest */
 import sinon, { SinonStub } from 'sinon';
 import Kefir from 'kefir';
+import { ajax$ } from 'kefir-ajax';
 import { authorDelta } from '../authorDelta';
-import { AjaxService } from '../../ajax';
 import {
   commitsFetchSucceeded,
   fetchAuthorFailed,
@@ -23,7 +23,7 @@ describe('authorDelta', () => {
     },
   };
 
-  let services: { ajax$: AjaxService }, stub: SinonStub;
+  let services: { ajax$: typeof ajax$ }, stub: SinonStub;
 
   beforeEach(() => {
     services = {} as any;

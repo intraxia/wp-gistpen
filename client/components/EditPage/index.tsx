@@ -2,7 +2,7 @@ import './index.scss';
 import React, { useRef, useEffect, useMemo } from 'react';
 import Editor from '../Editor';
 import { Toggle, Cursor } from '../../util';
-import { AjaxError } from '../../ajax';
+import { ValidationError } from '../../api';
 import Description from './Description';
 import Controls from './Controls';
 
@@ -39,7 +39,9 @@ type Language = {
   label: string;
 };
 
-const ErrorMsg: React.FC<{ error: AjaxError }> = ({ error }) => {
+const ErrorMsg: React.FC<{ error: { message: string; body?: string } }> = ({
+  error,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,10 +55,12 @@ const ErrorMsg: React.FC<{ error: AjaxError }> = ({ error }) => {
   const message = useMemo(() => {
     try {
       // @TODO(mAAdhaTTah) this is tied to the API response BOOOO.
-      const body = JSON.parse(error.body);
+      if (error.body != null) {
+        const body = JSON.parse(error.body);
 
-      if (body.message) {
-        return <p>{body.message}</p>;
+        if (body.message) {
+          return <p>{body.message}</p>;
+        }
       }
     } catch (e) {
       // do nothing
@@ -73,7 +77,9 @@ const ErrorMsg: React.FC<{ error: AjaxError }> = ({ error }) => {
   );
 };
 
-const Errors: React.FC<{ errors: AjaxError[] }> = ({ errors }) => (
+const Errors: React.FC<{ errors: (ValidationError | TypeError)[] }> = ({
+  errors,
+}) => (
   <div className="wpgp-editor-errors-container">
     {errors.map((error, i) => (
       <ErrorMsg key={i} error={error} />
@@ -96,7 +102,7 @@ const EditPage: React.FC<{
   tabs: Toggle;
   instances: Instance[];
   languages: Language[];
-  errors: AjaxError[];
+  errors: (ValidationError | TypeError)[];
 }> = ({
   description,
   loading,

@@ -3,6 +3,7 @@ import React from 'react';
 import { RootJunction, eddy } from 'brookjs';
 import ReactDOM from 'react-dom';
 import { connect, Provider } from 'react-redux';
+import { ajax$ } from 'kefir-ajax';
 import {
   applyDelta,
   jobsDelta,
@@ -10,7 +11,6 @@ import {
   siteDelta,
   webpackDelta,
 } from '../../deltas';
-import { ajax$ } from '../../ajax';
 import { SettingsPage } from '../../components';
 import Prism from '../../prism';
 import { RootAction } from '../../util';

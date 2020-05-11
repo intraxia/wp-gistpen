@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import { StateType } from 'typesafe-actions';
 import { combineReducers, eddy } from 'brookjs';
-import { ajax$ } from '../../ajax';
+import { ajax$ } from 'kefir-ajax';
 import {
   applyDelta,
   searchDelta,

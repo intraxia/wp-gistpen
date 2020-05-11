@@ -1,6 +1,7 @@
 import Kefir, { Stream, Property, Observable } from 'kefir';
 import { ofType } from 'brookjs';
 import { Nullable } from 'typescript-nullable';
+import { ajax$ } from 'kefir-ajax';
 import {
   editorUpdateClick,
   ajaxStarted,
@@ -10,8 +11,7 @@ import {
 } from '../actions';
 import { RootAction } from '../util';
 import { RepoState, EditorState, EditorInstance } from '../reducers';
-import { AjaxService, AjaxError } from '../ajax';
-import { ApiRepo } from '../api';
+import { ApiRepo, ValidationError } from '../api';
 import { GlobalsState } from '../globals';
 
 type RepoDeltaState = {
@@ -21,7 +21,7 @@ type RepoDeltaState = {
 };
 
 type RepoDeltaServices = {
-  ajax$: AjaxService;
+  ajax$: typeof ajax$;
 };
 
 const repoProps = ({ editor }: RepoDeltaState) => ({
@@ -78,12 +78,9 @@ export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
               .flatMap(response => response.json())
               .flatMap(response =>
                 ApiRepo.validate(response, []).fold<
-                  Observable<ApiRepo, AjaxError>
+                  Observable<ApiRepo, ValidationError>
                 >(
-                  () =>
-                    Kefir.constantError(
-                      new AjaxError('API response was invalid'),
-                    ),
+                  errs => Kefir.constantError(new ValidationError(errs)),
                   Kefir.constant,
                 ),
               )

@@ -2,8 +2,8 @@
 import { fakeServer, FakeServer } from 'nise';
 import { searchDelta } from '../delta';
 import { search } from '../actions';
-import { AjaxError } from '../../ajax';
 import { searchBlobsApiResponse } from '../../mocks';
+import { ValidationError } from '../../api';
 
 const state = {
   root: '/api/',
@@ -86,9 +86,13 @@ describe('delta', () => {
     });
 
     it('should emit error event on bad response format', () => {
-      const msg = `Search API response validation failed:\n\n* Invalid value {} supplied to 1/response`;
       expect(searchDelta).toEmitFromDelta(
-        [[350, KTU.value(search.failure(new AjaxError(msg)))]],
+        [
+          [
+            350,
+            KTU.value(search.failure(new ValidationError(expect.any(Array)))),
+          ],
+        ],
         (send, tick) => {
           send(search.request(), state);
           tick(350);

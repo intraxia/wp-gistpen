@@ -1,7 +1,6 @@
 import { createAction } from 'typesafe-actions';
-import { AjaxError } from '../ajax';
+import { ValidationError, ApiRepo } from '../api';
 import { UserApiResponse } from '../deltas';
-import { ApiRepo } from '../api';
 
 export const ajaxStarted = createAction('AJAX_STARTED');
 
@@ -9,7 +8,7 @@ export const ajaxFinished = createAction('AJAX_FINISHED');
 
 export const ajaxFailed = createAction(
   'AJAX_FAILED',
-  resolve => (error: AjaxError) => resolve({ error }),
+  resolve => (error: ValidationError) => resolve({ error }),
 );
 
 export const repoSaveSucceeded = createAction(

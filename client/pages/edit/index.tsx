@@ -3,6 +3,7 @@ import { RootJunction, eddy } from 'brookjs';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Provider, connect } from 'react-redux';
+import { ajax$ } from 'kefir-ajax';
 import {
   applyDelta,
   authorDelta,
@@ -11,7 +12,6 @@ import {
   routerDelta,
   userDelta,
 } from '../../deltas';
-import { ajax$ } from '../../ajax';
 import { RootAction } from '../../util';
 import Prism from '../../prism';
 import { init } from '../../actions';

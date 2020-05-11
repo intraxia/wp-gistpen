@@ -1,4 +1,5 @@
 import * as t from 'io-ts';
+import { NetworkError } from 'kefir-ajax';
 import { toggle } from '../util';
 
 export const ApiLanguage = t.type({
@@ -40,7 +41,7 @@ export const ApiRepo = t.type({
 export type ApiRepo = t.TypeOf<typeof ApiRepo>;
 
 export const validationErrorsToString = (errs: t.Errors) =>
-  `Search API response validation failed:\n\n${errs
+  `API response validation failed:\n\n${errs
     .map(
       err =>
         `* Invalid value ${
@@ -54,3 +55,13 @@ export const validationErrorsToString = (errs: t.Errors) =>
         }`,
     )
     .join('\n')}`;
+
+export class ValidationError {
+  constructor(public errs: t.Errors) {}
+
+  get message() {
+    return validationErrorsToString(this.errs);
+  }
+}
+
+export type AjaxError = TypeError | ValidationError | NetworkError;

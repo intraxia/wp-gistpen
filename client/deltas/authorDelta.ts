@@ -1,18 +1,18 @@
 import Kefir, { Stream, Property, Observable } from 'kefir';
 import { ofType } from 'brookjs';
 import * as t from 'io-ts';
+import { ajax$ } from 'kefir-ajax';
 import {
   fetchAuthorSucceeded,
   fetchAuthorFailed,
   commitsFetchSucceeded,
 } from '../actions';
 import { CommitsState } from '../reducers';
-import { AjaxService } from '../ajax';
 import { RootAction } from '../util';
 import { GlobalsState } from '../globals';
 
 type AuthorServices = {
-  ajax$: AjaxService;
+  ajax$: typeof ajax$;
 };
 
 type AuthorDeltaState = {

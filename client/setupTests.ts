@@ -16,3 +16,14 @@ beforeEach(() => {
     })),
   });
 });
+
+// @TODO(mAAdhaTTah) can we get rid of this?
+(global as any).Headers = class Headers {
+  forEach(cb: () => void) {
+    return;
+  }
+
+  get(header: string) {
+    return;
+  }
+};
