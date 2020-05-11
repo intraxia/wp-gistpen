@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import sinon from 'sinon';
-import { ObsResponse } from '../../ajax';
+import { ObsResponse } from 'kefir-ajax';
 import {
   routeChange,
   commitsFetchStarted,
@@ -97,7 +97,6 @@ describe('commitsDelta', () => {
         'Content-Type': 'application/json',
       },
     };
-    const xhr = { response: JSON.stringify([]) } as any;
     const services = createServices();
     const effect$ = KTU.stream();
 
@@ -111,7 +110,7 @@ describe('commitsDelta', () => {
       (sendToDelta, tick) => {
         sendToDelta(routeChange('commits'), stateWithId);
         tick(10);
-        KTU.send(effect$, [KTU.value(new ObsResponse(xhr)), KTU.end()]);
+        KTU.send(effect$, [KTU.value(new ObsResponse('[]')), KTU.end()]);
       },
     );
   });

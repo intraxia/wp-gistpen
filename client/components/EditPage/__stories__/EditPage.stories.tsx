@@ -1,6 +1,5 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
-import { AjaxError } from '../../../ajax';
 import EditPage from '../';
 
 storiesOf('EditPage', module).add('with error', () => (
@@ -28,13 +27,7 @@ storiesOf('EditPage', module).add('with error', () => (
         },
       ]}
       languages={[]}
-      errors={[
-        new AjaxError(
-          'API response was bad',
-          400,
-          JSON.stringify({ message: 'A more specific BE message' }),
-        ),
-      ]}
+      errors={[new TypeError('API response was bad')]}
     />
   </div>
 ));

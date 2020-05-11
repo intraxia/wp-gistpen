@@ -1,5 +1,5 @@
 import Kefir, { Observable } from 'kefir';
-import { AjaxService } from '../ajax';
+import { ajax$ } from 'kefir-ajax';
 import { ajaxStarted, ajaxFailed, ajaxFinished } from '../actions';
 import { RootAction } from '../util';
 import { GistState, PrismState } from '../reducers';
@@ -12,7 +12,7 @@ type SiteDeltaState = {
 };
 
 type SiteDeltaServices = {
-  ajax$: AjaxService;
+  ajax$: typeof ajax$;
 };
 
 export const siteDelta = ({ ajax$ }: SiteDeltaServices) => (

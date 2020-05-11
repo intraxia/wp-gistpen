@@ -1,9 +1,9 @@
 import Kefir, { Observable } from 'kefir';
 import { ofType } from 'brookjs';
+import { ajax$ } from 'kefir-ajax';
 import { RootAction } from '../util';
-import { AjaxService, AjaxError } from '../ajax';
 import { SearchState } from '../reducers';
-import { validationErrorsToString } from '../api';
+import { ValidationError } from '../api';
 import { actions as searchActions, SearchApiResponse } from '../search';
 import { GlobalsState } from '../globals';
 
@@ -13,7 +13,7 @@ type SearchDeltaState = {
 };
 
 type SearchDeltaServices = {
-  ajax$: AjaxService;
+  ajax$: typeof ajax$;
 };
 
 const getSearchUrl = (state: SearchDeltaState) =>
@@ -37,10 +37,9 @@ export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
     .flatMap(response => response.json())
     .flatMap(response =>
       SearchApiResponse.validate(response, []).fold<
-        Observable<RootAction, AjaxError>
+        Observable<RootAction, ValidationError>
       >(
-        errs =>
-          Kefir.constantError(new AjaxError(validationErrorsToString(errs))),
+        errs => Kefir.constantError(new ValidationError(errs)),
         res => Kefir.constant(searchActions.search.success(res)),
       ),
     )

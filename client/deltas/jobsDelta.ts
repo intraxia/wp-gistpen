@@ -2,7 +2,7 @@ import Kefir, { Observable, Stream, Property } from 'kefir';
 import { ofType } from 'brookjs';
 import * as t from 'io-ts';
 import { Nullable } from 'typescript-nullable';
-import { AjaxService } from '../ajax';
+import { ajax$ } from 'kefir-ajax';
 import {
   messagesFetchStarted,
   messagesFetchSucceeded,
@@ -25,7 +25,7 @@ import { jobIsSuccess } from '../selectors';
 import { GlobalsState } from '../globals';
 
 type JobsServices = {
-  ajax$: AjaxService;
+  ajax$: typeof ajax$;
 };
 
 type JobsDeltaState = {

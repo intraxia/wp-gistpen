@@ -1,9 +1,9 @@
 import { Delta, sampleByAction, ofType } from 'brookjs';
 import Kefir, { Observable } from 'kefir';
 import * as t from 'io-ts';
+import { ajax$ } from 'kefir-ajax';
 import { RootAction, toggle } from '../util';
-import { AjaxError, ajax$ } from '../ajax';
-import { validationErrorsToString } from '../api';
+import { ValidationError } from '../api';
 import { search } from './actions';
 import { Collection, RepoCollection, BlobCollection } from './state';
 
@@ -100,11 +100,8 @@ export const searchDelta: Delta<RootAction, SearchDeltaState> = (
           SearchApiResponse.validate(
             { collection: state.collection, response },
             [],
-          ).fold<Observable<RootAction, AjaxError>>(
-            errs =>
-              Kefir.constantError(
-                new AjaxError(validationErrorsToString(errs)),
-              ),
+          ).fold<Observable<RootAction, ValidationError>>(
+            errs => Kefir.constantError(new ValidationError(errs)),
             res => Kefir.constant(search.success(res)),
           ),
         ),

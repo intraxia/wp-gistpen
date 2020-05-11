@@ -2,7 +2,7 @@ import Kefir, { Stream, Property, Observable } from 'kefir';
 import { ofType } from 'brookjs';
 import * as t from 'io-ts';
 import { Nullable } from 'typescript-nullable';
-import { AjaxService } from '../ajax';
+import { ajax$ } from 'kefir-ajax';
 import {
   routeChange,
   commitsFetchStarted,
@@ -14,7 +14,7 @@ import { RepoState } from '../reducers';
 import { GlobalsState } from '../globals';
 
 type CommitsServices = {
-  ajax$: AjaxService;
+  ajax$: typeof ajax$;
 };
 
 type CommitsDeltaState = {

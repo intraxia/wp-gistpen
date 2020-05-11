@@ -1,6 +1,7 @@
 import Kefir, { Observable } from 'kefir';
 import { ofType } from 'brookjs';
 import * as t from 'io-ts';
+import { ajax$ } from 'kefir-ajax';
 import {
   ajaxFinished,
   ajaxFailed,
@@ -13,8 +14,8 @@ import {
 import { selectUserAjaxOpts } from '../selectors';
 import { RootAction } from '../util';
 import { EditorState } from '../reducers';
-import { AjaxService, AjaxError } from '../ajax';
 import { GlobalsState } from '../globals';
+import { ValidationError } from '../api';
 
 export type UserDeltaState = {
   globals: GlobalsState;
@@ -22,7 +23,7 @@ export type UserDeltaState = {
 };
 
 type UserDeltaServices = {
-  ajax$: AjaxService;
+  ajax$: typeof ajax$;
 };
 
 const userResponse = t.type({});
@@ -52,9 +53,8 @@ export const userDelta = ({ ajax$ }: UserDeltaServices) => (
     .flatMap(response =>
       userResponse
         .validate(response, [])
-        .fold<Observable<t.TypeOf<typeof userResponse>, AjaxError>>(
-          () =>
-            Kefir.constantError(new AjaxError('User response was not valid')),
+        .fold<Observable<t.TypeOf<typeof userResponse>, ValidationError>>(
+          errs => Kefir.constantError(new ValidationError(errs)),
           response => Kefir.constant(response),
         ),
     )

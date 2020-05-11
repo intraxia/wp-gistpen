@@ -7192,7 +7192,7 @@ exports[`Storyshots EditPage with error 1`] = `
           An error occurred!
         </h3>
         <p>
-          A more specific BE message
+          API response was bad
         </p>
       </div>
     </div>

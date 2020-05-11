@@ -1,4 +1,4 @@
-import { AjaxOptions } from '../ajax';
+import { AjaxOptions } from 'kefir-ajax';
 import { UserDeltaState } from '../deltas';
 
 export const selectUserAjaxOpts = (state: UserDeltaState): AjaxOptions => ({
