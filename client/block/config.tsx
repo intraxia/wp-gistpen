@@ -2,6 +2,7 @@ import React from 'react';
 import { Block as BlockConfig } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { Shortcode } from '../wp';
+import { GlobalsProvider } from '../globals';
 import { Attributes } from './state';
 import { Block } from './Block';
 
@@ -34,12 +35,14 @@ export const edit: Config['edit'] = ({
   setAttributes,
 }) => {
   return (
-    <Block
-      className={className}
-      repoId={attributes.repoId}
-      blobId={attributes.blobId}
-      setAttributes={setAttributes}
-    />
+    <GlobalsProvider value={window.__GISTPEN_GLOBALS__}>
+      <Block
+        className={className}
+        repoId={attributes.repoId}
+        blobId={attributes.blobId}
+        setAttributes={setAttributes}
+      />
+    </GlobalsProvider>
   );
 };
 

@@ -131,6 +131,10 @@ class Globals implements HasFilters {
 	public function filter_hooks() {
 		return array(
 			array(
+				'hook'   => 'params.state.globals',
+				'method' => 'apply_globals',
+			),
+			array(
 				'hook'   => 'params.state.button',
 				'method' => 'apply_globals',
 			),
