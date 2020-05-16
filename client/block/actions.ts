@@ -13,6 +13,11 @@ export const createDescriptionChange = createAction(
   resolve => (value: string) => resolve({ value }),
 );
 
+export const createFilenameChange = createAction(
+  'CREATE_FILENAME_CHANGE',
+  resolve => (value: string) => resolve({ value }),
+);
+
 export const appendBlob = createAsyncAction(
   'APPEND_BLOB_REQUESTED',
   'APPEND_BLOB_SUCCEEDED',

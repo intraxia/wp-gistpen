@@ -4,7 +4,11 @@ import { TextControl, Button, ErrorNotice } from '../../../wp';
 import { Choosing } from '../../../search';
 import CreateOrChoose from '../CreateOrChoose';
 import { click, change } from '../../../actions';
-import { createRepoClick, createDescriptionChange } from '../../actions';
+import {
+  createRepoClick,
+  createDescriptionChange,
+  createFilenameChange,
+} from '../../actions';
 import {
   State,
   ChooseOrNewRepoState,
@@ -33,7 +37,12 @@ const ChooseRepo: React.FC<ChooseRepoState> = ({ saving, error }) => {
   );
 };
 
-const CreateNew: React.FC<NewRepoState> = ({ description, saving, error }) => {
+const CreateNew: React.FC<NewRepoState> = ({
+  description,
+  filename,
+  saving,
+  error,
+}) => {
   return (
     <div data-testid="create-new">
       <TextControl
@@ -44,6 +53,16 @@ const CreateNew: React.FC<NewRepoState> = ({ description, saving, error }) => {
           a$
             .thru(ofType(change))
             .map(action => createDescriptionChange(action.payload.value))
+        }
+      />
+      <TextControl
+        label="Snippet filename"
+        disabled={saving}
+        value={filename}
+        preplug={a$ =>
+          a$
+            .thru(ofType(change))
+            .map(action => createFilenameChange(action.payload.value))
         }
       />
       <Button

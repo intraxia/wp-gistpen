@@ -11,6 +11,7 @@ import {
   createRepoClick,
   createRepo,
   newRepoCreated,
+  createFilenameChange,
 } from '../../actions';
 import { GlobalsState, defaultGlobals } from '../../../globals';
 import { AjaxError } from '../../../api';
@@ -31,6 +32,7 @@ export type NewRepoState = {
   globals: GlobalsState;
   status: 'create-new';
   description: string;
+  filename: string;
   saving: boolean;
   error: Maybe<AjaxError>;
 };
@@ -54,6 +56,7 @@ export const reducer: EddyReducer<State, RootAction> = (
             globals: state.globals,
             status: 'create-new',
             description: '',
+            filename: '',
             saving: false,
             error: null,
           } as const;
@@ -100,6 +103,11 @@ export const reducer: EddyReducer<State, RootAction> = (
           return {
             ...state,
             description: action.payload.value,
+          } as const;
+        case getType(createFilenameChange):
+          return {
+            ...state,
+            filename: action.payload.value,
           } as const;
         case getType(createRepoClick):
           return loop(state, createRepo.request());

@@ -7730,6 +7730,26 @@ exports[`Storyshots Creating View Create New 1`] = `
           />
         </div>
       </div>
+      <div
+        class="components-base-control"
+      >
+        <div
+          class="components-base-control__field"
+        >
+          <label
+            class="components-base-control__label"
+            for="inspector-text-control-4"
+          >
+            Snippet filename
+          </label>
+          <input
+            class="components-text-control__input"
+            id="inspector-text-control-4"
+            type="text"
+            value="filename.js"
+          />
+        </div>
+      </div>
       <button
         class="components-button is-primary"
         type="button"
@@ -7760,15 +7780,35 @@ exports[`Storyshots Creating View Create New Error 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-5"
+            for="inspector-text-control-7"
           >
             Gistpen description
           </label>
           <input
             class="components-text-control__input"
-            id="inspector-text-control-5"
+            id="inspector-text-control-7"
             type="text"
             value="A description"
+          />
+        </div>
+      </div>
+      <div
+        class="components-base-control"
+      >
+        <div
+          class="components-base-control__field"
+        >
+          <label
+            class="components-base-control__label"
+            for="inspector-text-control-8"
+          >
+            Snippet filename
+          </label>
+          <input
+            class="components-text-control__input"
+            id="inspector-text-control-8"
+            type="text"
+            value="filename.js"
           />
         </div>
       </div>
@@ -7811,16 +7851,37 @@ exports[`Storyshots Creating View Create New Saving 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-4"
+            for="inspector-text-control-5"
           >
             Gistpen description
           </label>
           <input
             class="components-text-control__input"
             disabled=""
-            id="inspector-text-control-4"
+            id="inspector-text-control-5"
             type="text"
             value="A description"
+          />
+        </div>
+      </div>
+      <div
+        class="components-base-control"
+      >
+        <div
+          class="components-base-control__field"
+        >
+          <label
+            class="components-base-control__label"
+            for="inspector-text-control-6"
+          >
+            Snippet filename
+          </label>
+          <input
+            class="components-text-control__input"
+            disabled=""
+            id="inspector-text-control-6"
+            type="text"
+            value="filename.js"
           />
         </div>
       </div>
@@ -8850,14 +8911,14 @@ exports[`Storyshots Search View Error 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-11"
+            for="inspector-text-control-14"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-11"
+            id="inspector-text-control-14"
             type="text"
             value="javascript"
           />
@@ -9106,14 +9167,14 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-8"
+            for="inspector-text-control-11"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-8"
+            id="inspector-text-control-11"
             type="text"
             value="javascript"
           />
@@ -9364,14 +9425,14 @@ exports[`Storyshots Search View Found Snippets 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-9"
+            for="inspector-text-control-12"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-9"
+            id="inspector-text-control-12"
             type="text"
             value="javascript"
           />
@@ -9636,14 +9697,14 @@ exports[`Storyshots Search View Found Snippets Disabled 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-10"
+            for="inspector-text-control-13"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-10"
+            id="inspector-text-control-13"
             type="text"
             value="javascript"
           />
@@ -9913,14 +9974,14 @@ exports[`Storyshots Search View Initial 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-6"
+            for="inspector-text-control-9"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-6"
+            id="inspector-text-control-9"
             type="text"
             value="javascript"
           />
@@ -10169,14 +10230,14 @@ exports[`Storyshots Search View Reerror 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-13"
+            for="inspector-text-control-16"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-13"
+            id="inspector-text-control-16"
             type="text"
             value="javascript"
           />
@@ -10450,14 +10511,14 @@ exports[`Storyshots Search View Researching 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-12"
+            for="inspector-text-control-15"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-12"
+            id="inspector-text-control-15"
             type="text"
             value="javascript"
           />
@@ -10734,14 +10795,14 @@ exports[`Storyshots Search View Searching 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-7"
+            for="inspector-text-control-10"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-7"
+            id="inspector-text-control-10"
             type="text"
             value="javascript"
           />

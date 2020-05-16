@@ -25,6 +25,7 @@ const createInstance = (rr: RenderResult) => {
     searchInput: () => rr.getByLabelText('Search repos'),
     selectButton: () => rr.getByText('Select'),
     descriptionInput: () => rr.getByLabelText('Gistpen description'),
+    filenameInput: () => rr.getByLabelText('Snippet filename'),
     saveButton: () => rr.getByText('Create repo'),
   };
 
@@ -35,6 +36,8 @@ const createInstance = (rr: RenderResult) => {
       fireEvent.change(elements.searchInput(), { target: { value } }),
     descriptionInputChange: (value: string) =>
       fireEvent.change(elements.descriptionInput(), { target: { value } }),
+    filenameInputChange: (value: string) =>
+      fireEvent.change(elements.filenameInput(), { target: { value } }),
     selectClick: () => fireEvent.click(elements.selectButton()),
     saveClick: () => fireEvent.click(elements.saveButton()),
   };
@@ -110,13 +113,19 @@ describe('Creating', () => {
 
         fire.createClick();
         fire.descriptionInputChange('Test Repo');
+        fire.filenameInputChange('filename.js');
         fire.saveClick();
 
         expect(elements.saveButton()).toBeDisabled();
         expect(server.lastRequest?.requestBody).toEqual(
           JSON.stringify({
             description: 'Test Repo',
-            blobs: [{}],
+            blobs: [
+              {
+                filename: 'filename.js',
+                code: '',
+              },
+            ],
           }),
         );
 
