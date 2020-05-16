@@ -66,7 +66,7 @@
     "@wordpress/e2e-test-utils": "^4.7.0",
     "@wordpress/scripts": "^9.0.0",
     "brookjs-cli": "1.0.0-beta.16",
-    "brookjs-desalinate": "1.0.0-beta.15",
+    "brookjs-desalinate": "1.0.0-beta.16",
     "copy-webpack-plugin": "^5.1.1",
     "execa": "^4.0.1",
     "expect-puppeteer": "^4.4.0",
