@@ -38,3 +38,8 @@ export const newRepoCreated = createAction(
   'NEW_REPO_CREATED',
   resolve => (repo: ApiRepo) => resolve({ repo }),
 );
+
+export const embedSet = createAction(
+  'EMBED_SET',
+  resolve => (repoId: number, blobId: number) => resolve({ repoId, blobId }),
+);

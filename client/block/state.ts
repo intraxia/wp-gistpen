@@ -1,5 +1,7 @@
 import { EddyReducer, Maybe } from 'brookjs';
+import { getType } from 'typesafe-actions';
 import { RootAction } from '../util';
+import { embedSet } from './actions';
 
 export type SetEmbed = {
   status: 'set-embed';
@@ -25,9 +27,23 @@ export const reducer: EddyReducer<State, RootAction> = (
   state: State,
   action: RootAction,
 ) => {
-  switch (action.type) {
-    default:
-      return state;
+  switch (state.status) {
+    case 'set-embed':
+      switch (action.type) {
+        case getType(embedSet):
+          return {
+            status: 'edit-embed',
+            repoId: action.payload.repoId,
+            blobId: action.payload.blobId,
+          } as const;
+        default:
+          return state;
+      }
+    case 'edit-embed':
+      switch (action.type) {
+        default:
+          return state;
+      }
   }
 };
 
