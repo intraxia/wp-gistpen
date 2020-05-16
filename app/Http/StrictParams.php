@@ -19,6 +19,15 @@ use WP_REST_Response;
  */
 class StrictParams implements HasFilters {
 	/**
+	 * Whitelist of params to allow to pass the strict check.
+	 *
+	 * @var string[]
+	 */
+	private static $param_whitelist = [
+		'rest_route',
+	];
+
+	/**
 	 * Removes any arguments from the request that aren't set in its `args.`
 	 * This ensures any registered controller has a correctly matching
 	 * sanitization param for all the expected parameters.
@@ -46,7 +55,7 @@ class StrictParams implements HasFilters {
 		$invalid_params = [];
 
 		foreach ( $request->get_params() as $key => $value ) {
-			if ( ! isset( $attributes['args'][ $key ] ) ) {
+			if ( ! isset( $attributes['args'][ $key ] ) && ! in_array( $key, self::$param_whitelist, true ) ) {
 				$invalid_params[ $key ] = sprintf(
 					/* translators: %s: Request param. */
 					__( 'Param "%s" is not a valid request param.', 'wp-gistpen' ),
