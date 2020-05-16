@@ -51,6 +51,7 @@ export const createNew = () => (
     <View
       status="create-new"
       description="A description"
+      filename="filename.js"
       globals={defaultGlobals}
       saving={false}
       error={null}
@@ -63,6 +64,7 @@ export const createNewSaving = () => (
     <View
       status="create-new"
       description="A description"
+      filename="filename.js"
       globals={defaultGlobals}
       saving={true}
       error={null}
@@ -75,6 +77,7 @@ export const createNewError = () => (
     <View
       status="create-new"
       description="A description"
+      filename="filename.js"
       globals={defaultGlobals}
       saving={false}
       error={new JsonError(new TypeError('An error occurred!'))}

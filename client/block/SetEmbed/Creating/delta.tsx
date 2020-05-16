@@ -22,7 +22,12 @@ export const rootDelta: Delta<RootAction, State> = (action$, state$) => {
         },
         body: JSON.stringify({
           description: state.description,
-          blobs: [{}],
+          blobs: [
+            {
+              filename: state.filename,
+              code: '',
+            },
+          ],
         }),
       }).thru(foldResponse(ApiRepo, createRepo.success, createRepo.failure)),
     );
