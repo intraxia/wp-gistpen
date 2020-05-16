@@ -4,6 +4,7 @@ import {
   SearchRepo,
   SearchReposApiResponse,
 } from './search';
+import { ApiRepo, ApiBlob } from './api';
 
 export const blob = {
   filename: 'test.js',
@@ -58,7 +59,9 @@ export const searchBlobsApiResponse: SearchBlobsApiResponse = [
   createSearchBlob(),
 ];
 
-export const createSearchRepo = (): SearchRepo => ({
+export const createSearchRepo = (
+  partial: Partial<SearchRepo> = {},
+): SearchRepo => ({
   ID: ++count,
   description: 'Test repo',
   slug: 'test-repo',
@@ -73,6 +76,7 @@ export const createSearchRepo = (): SearchRepo => ({
   html_url: '',
   updated_at: '',
   created_at: '',
+  ...partial,
 });
 
 export const searchReposApiResponse: SearchReposApiResponse = [
@@ -82,3 +86,35 @@ export const searchReposApiResponse: SearchReposApiResponse = [
   createSearchRepo(),
   createSearchRepo(),
 ];
+
+export const createApiRepo = (partial: Partial<ApiRepo> = {}): ApiRepo => ({
+  ID: ++count,
+  description: 'Repo description',
+  status: 'draft',
+  password: '',
+  gist_id: '',
+  gist_url: '',
+  sync: 'off',
+  blobs: [],
+  rest_url: '',
+  commits_url: '',
+  html_url: '',
+  created_at: new Date().toString(),
+  updated_at: new Date().toString(),
+  ...partial,
+});
+
+export const createApiBlob = (partial: Partial<ApiBlob> = {}): ApiBlob => ({
+  ID: ++count,
+  filename: '',
+  code: '',
+  language: {
+    ID: ++count,
+    display_name: 'PlainText',
+    slug: 'plaintext',
+  },
+  size: 0,
+  raw_url: '',
+  edit_url: '',
+  ...partial,
+});

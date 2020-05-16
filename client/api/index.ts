@@ -1,5 +1,6 @@
 import * as t from 'io-ts';
-import { NetworkError } from 'kefir-ajax';
+import { NetworkError, ObsResponse } from 'kefir-ajax';
+import Kefir, { Observable } from 'kefir';
 import { toggle } from '../util';
 
 export const ApiLanguage = t.type({
@@ -65,3 +66,18 @@ export class ValidationError {
 }
 
 export type AjaxError = TypeError | ValidationError | NetworkError;
+
+export const foldResponse = <T extends any, S, F>(
+  BodyType: t.Type<T>,
+  success: (t: T) => S,
+  failure: (err: AjaxError) => F,
+) => (obs$: Observable<ObsResponse, NetworkError>): Observable<S | F, never> =>
+  obs$
+    .flatMap(response => response.json())
+    .flatMap(body =>
+      BodyType.validate(body, []).fold<Observable<S, ValidationError>>(
+        errs => Kefir.constantError(new ValidationError(errs)),
+        body => Kefir.constant(success(body)),
+      ),
+    )
+    .flatMapErrors(err => Kefir.constant(failure(err)));
