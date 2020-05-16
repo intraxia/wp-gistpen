@@ -6850,6 +6850,992 @@ exports[`Storyshots Create or Choose Basic 1`] = `
 </div>
 `;
 
+exports[`Storyshots Creating View Choose Existing 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="creating"
+  >
+    <div
+      data-testid="choose-existing"
+    >
+      <div
+        data-testid="choosing"
+      >
+        <div
+          class="search"
+        >
+          <div
+            class="components-base-control grow"
+          >
+            <div
+              class="components-base-control__field"
+            >
+              <label
+                class="components-base-control__label"
+                for="inspector-text-control-0"
+              >
+                Search repos
+              </label>
+              <input
+                class="components-text-control__input"
+                data-testid="search-input"
+                id="inspector-text-control-0"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="notice components-notice is-warning"
+        >
+          <div
+            class="components-notice__content"
+          >
+            Type into the above search field to find a code snippet.
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creating View Choose Existing Error 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="creating"
+  >
+    <div
+      data-testid="choose-existing"
+    >
+      <div
+        class="notice components-notice is-error"
+      >
+        <div
+          class="components-notice__content"
+        >
+          An error occurred!
+        </div>
+      </div>
+      <div
+        data-testid="choosing"
+      >
+        <div
+          class="search"
+        >
+          <div
+            class="components-base-control grow"
+          >
+            <div
+              class="components-base-control__field"
+            >
+              <label
+                class="components-base-control__label"
+                for="inspector-text-control-2"
+              >
+                Search repos
+              </label>
+              <input
+                class="components-text-control__input"
+                data-testid="search-input"
+                id="inspector-text-control-2"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="notice components-notice is-warning"
+        >
+          <div
+            class="components-notice__content"
+          >
+            Type into the above search field to find a code snippet.
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creating View Choose Existing Saving 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="creating"
+  >
+    <div
+      data-testid="choose-existing"
+    >
+      <div
+        data-testid="choosing"
+      >
+        <div
+          class="search"
+        >
+          <div
+            class="components-base-control grow"
+          >
+            <div
+              class="components-base-control__field"
+            >
+              <label
+                class="components-base-control__label"
+                for="inspector-text-control-1"
+              >
+                Search repos
+              </label>
+              <input
+                class="components-text-control__input"
+                data-testid="search-input"
+                id="inspector-text-control-1"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="notice components-notice is-warning"
+        >
+          <div
+            class="components-notice__content"
+          >
+            Type into the above search field to find a code snippet.
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+        <div
+          class="components-placeholder placeholder is-small"
+        >
+          <iframe
+            aria-hidden="true"
+            aria-label="resize-listener"
+            frameborder="0"
+            src="about:blank"
+            style="display: block; opacity: 0; position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; overflow: hidden; pointer-events: none; z-index: -1;"
+            tabindex="-1"
+          />
+          <div
+            class="components-placeholder__label"
+          >
+            <svg
+              aria-hidden="true"
+              class="dashicon dashicons-editor-code"
+              focusable="false"
+              height="20"
+              role="img"
+              viewBox="0 0 20 20"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6l-4 4 4 4-1 2-6-6 6-6zm2 8l4-4-4-4 1-2 6 6-6 6z"
+              />
+            </svg>
+            Placeholder Repo Name
+          </div>
+          <div
+            class="components-placeholder__fieldset"
+          >
+            <button
+              class="components-button is-primary"
+              disabled=""
+              type="button"
+            >
+              Select
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creating View Choose Or New 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="creating"
+  >
+    <div
+      data-testid="choose-or-new-repo"
+    >
+      <div
+        class="container"
+        data-testid="create-or-choose"
+      >
+        <h3
+          class="header"
+        >
+          Where do you want to add the new snippet?
+        </h3>
+        <div
+          class="components-button-group group"
+          role="group"
+        >
+          <button
+            class="components-button is-primary is-large"
+            type="button"
+          >
+            Create new repo
+          </button>
+          <div
+            class="or"
+          >
+            Or
+          </div>
+          <button
+            class="components-button is-large is-tertiary"
+            type="button"
+          >
+            Add to existing repo
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creating View Create New 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="creating"
+  >
+    <div
+      data-testid="create-new"
+    >
+      <div
+        class="components-base-control"
+      >
+        <div
+          class="components-base-control__field"
+        >
+          <label
+            class="components-base-control__label"
+            for="inspector-text-control-3"
+          >
+            Gistpen description
+          </label>
+          <input
+            class="components-text-control__input"
+            id="inspector-text-control-3"
+            type="text"
+            value="A description"
+          />
+        </div>
+      </div>
+      <button
+        class="components-button is-primary"
+        type="button"
+      >
+        Create repo
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creating View Create New Error 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="creating"
+  >
+    <div
+      data-testid="create-new"
+    >
+      <div
+        class="components-base-control"
+      >
+        <div
+          class="components-base-control__field"
+        >
+          <label
+            class="components-base-control__label"
+            for="inspector-text-control-5"
+          >
+            Gistpen description
+          </label>
+          <input
+            class="components-text-control__input"
+            id="inspector-text-control-5"
+            type="text"
+            value="A description"
+          />
+        </div>
+      </div>
+      <button
+        class="components-button is-primary"
+        type="button"
+      >
+        Create repo
+      </button>
+      <div
+        class="notice components-notice is-error"
+      >
+        <div
+          class="components-notice__content"
+        >
+          An error occurred!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Storyshots Creating View Create New Saving 1`] = `
+<div
+  class="wp-block"
+  style="margin: 0px auto;"
+>
+  <div
+    data-testid="creating"
+  >
+    <div
+      data-testid="create-new"
+    >
+      <div
+        class="components-base-control"
+      >
+        <div
+          class="components-base-control__field"
+        >
+          <label
+            class="components-base-control__label"
+            for="inspector-text-control-4"
+          >
+            Gistpen description
+          </label>
+          <input
+            class="components-text-control__input"
+            disabled=""
+            id="inspector-text-control-4"
+            type="text"
+            value="A description"
+          />
+        </div>
+      </div>
+      <button
+        class="components-button is-primary"
+        disabled=""
+        type="button"
+      >
+        Create repo
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Storyshots Description with text - loading 1`] = `
 <div
   class="wpgp-editor-header-container"
@@ -7864,14 +8850,14 @@ exports[`Storyshots Search View Error 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-5"
+            for="inspector-text-control-11"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-5"
+            id="inspector-text-control-11"
             type="text"
             value="javascript"
           />
@@ -8120,14 +9106,14 @@ exports[`Storyshots Search View Found No Snippets 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-2"
+            for="inspector-text-control-8"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-2"
+            id="inspector-text-control-8"
             type="text"
             value="javascript"
           />
@@ -8378,14 +9364,14 @@ exports[`Storyshots Search View Found Snippets 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-3"
+            for="inspector-text-control-9"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-3"
+            id="inspector-text-control-9"
             type="text"
             value="javascript"
           />
@@ -8650,14 +9636,14 @@ exports[`Storyshots Search View Found Snippets Disabled 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-4"
+            for="inspector-text-control-10"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-4"
+            id="inspector-text-control-10"
             type="text"
             value="javascript"
           />
@@ -8927,14 +9913,14 @@ exports[`Storyshots Search View Initial 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-0"
+            for="inspector-text-control-6"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-0"
+            id="inspector-text-control-6"
             type="text"
             value="javascript"
           />
@@ -9183,14 +10169,14 @@ exports[`Storyshots Search View Reerror 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-7"
+            for="inspector-text-control-13"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-7"
+            id="inspector-text-control-13"
             type="text"
             value="javascript"
           />
@@ -9464,14 +10450,14 @@ exports[`Storyshots Search View Researching 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-6"
+            for="inspector-text-control-12"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-6"
+            id="inspector-text-control-12"
             type="text"
             value="javascript"
           />
@@ -9748,14 +10734,14 @@ exports[`Storyshots Search View Searching 1`] = `
         >
           <label
             class="components-base-control__label"
-            for="inspector-text-control-1"
+            for="inspector-text-control-7"
           >
             Search for snippet
           </label>
           <input
             class="components-text-control__input"
             data-testid="search-input"
-            id="inspector-text-control-1"
+            id="inspector-text-control-7"
             type="text"
             value="javascript"
           />
