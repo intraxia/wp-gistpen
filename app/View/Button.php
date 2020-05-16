@@ -92,7 +92,7 @@ class Button implements HasFilters {
 	 * Output the default state used by the TinyMCE plugin in a script tag.
 	 */
 	public function output_tinymce_state() {
-		echo $this->tmpl->render( 'tinymce', $this->params->state( 'button' ) );  // @codingStandardsIgnoreLine
+		echo $this->tmpl->render( 'globals', $this->params->state( 'globals' ) );  // @codingStandardsIgnoreLine
 	}
 
 	/**
