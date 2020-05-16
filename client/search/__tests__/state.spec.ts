@@ -8,6 +8,7 @@ import {
   searchBlobSelected,
 } from '../actions';
 import { searchBlobsApiResponse } from '../../mocks';
+import { JsonError } from '../../api';
 
 describe('state', () => {
   describe('reducer', () => {
@@ -179,7 +180,9 @@ describe('state', () => {
       };
       const msg = '500 - Internal Server Error';
 
-      expect(reducer(state, search.failure(new TypeError(msg)))).toEqual({
+      expect(
+        reducer(state, search.failure(new JsonError(new TypeError(msg)))),
+      ).toEqual({
         status: 'error',
         term: 'js',
         collection: 'blobs',
@@ -198,7 +201,9 @@ describe('state', () => {
       };
       const msg = '500 - Internal Server Error';
 
-      expect(reducer(state, search.failure(new TypeError(msg)))).toEqual({
+      expect(
+        reducer(state, search.failure(new JsonError(new TypeError(msg)))),
+      ).toEqual({
         status: 'reerror',
         term: 'js',
         collection: 'blobs',
@@ -217,7 +222,9 @@ describe('state', () => {
       };
       const msg = '500 - Internal Server Error';
 
-      expect(reducer(state, search.failure(new TypeError(msg)))).toEqual(state);
+      expect(
+        reducer(state, search.failure(new JsonError(new TypeError(msg)))),
+      ).toEqual(state);
     });
   });
 });

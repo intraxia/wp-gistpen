@@ -3,7 +3,7 @@ import { fakeServer, FakeServer } from 'nise';
 import { searchDelta } from '../delta';
 import { search } from '../actions';
 import { searchBlobsApiResponse } from '../../mocks';
-import { ValidationError } from '../../api';
+import { ValidationError, JsonError } from '../../api';
 
 const state = {
   root: '/api/',
@@ -69,8 +69,10 @@ describe('delta', () => {
             350,
             KTU.value(
               search.failure(
-                new TypeError(
-                  'Error parsing JSON response: Unexpected end of JSON input',
+                new JsonError(
+                  new TypeError(
+                    'Error parsing JSON response: Unexpected end of JSON input',
+                  ),
                 ),
               ),
             ),

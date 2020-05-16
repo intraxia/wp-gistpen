@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from '../View';
 import { defaultGlobals } from '../../../../globals';
+import { JsonError } from '../../../../api';
 
 export default {
   title: 'Creating View',
@@ -40,7 +41,7 @@ export const chooseExistingError = () => (
       status="choose-existing"
       globals={defaultGlobals}
       saving={true}
-      error={new Error('An error occurred!')}
+      error={new JsonError(new TypeError('An error occurred!'))}
     />
   </div>
 );
@@ -76,7 +77,7 @@ export const createNewError = () => (
       description="A description"
       globals={defaultGlobals}
       saving={false}
-      error={new Error('An error occurred!')}
+      error={new JsonError(new TypeError('An error occurred!'))}
     />
   </div>
 );

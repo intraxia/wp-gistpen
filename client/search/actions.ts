@@ -1,6 +1,5 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
-import { NetworkError } from 'kefir-ajax';
-import { ValidationError } from '../api';
+import { AjaxError } from '../api';
 import { SearchApiResponse, SearchBlob, SearchRepo } from './delta';
 
 export const searchInput = createAction(
@@ -22,7 +21,7 @@ export const search = createAsyncAction(
   'SEARCH_SUCCESS',
   'SEARCH_FAILED',
   'SEARCH_CANCELED',
-)<void, SearchApiResponse, NetworkError | TypeError | ValidationError, void>();
+)<void, SearchApiResponse, AjaxError, void>();
 
 export const searchBlobSelected = createAction(
   'SEARCH_BLOB_SELECTED',
