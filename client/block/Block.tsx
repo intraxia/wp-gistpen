@@ -4,6 +4,7 @@ import Kefir from 'kefir';
 import { RootAction } from '../util';
 import { StatusMapper } from '../components';
 import { reducer, initialState, State, Attributes } from './state';
+import SetEmbed from './SetEmbed';
 
 const rootDelta: Delta<RootAction, State> = () => Kefir.never();
 
@@ -33,10 +34,12 @@ export const Block: React.FC<
         <StatusMapper
           status={state.status}
           elements={{
-            'set-embed': () => (
-              <div data-testid="set-embed">Create or choose</div>
+            'set-embed': () => <SetEmbed />,
+            'edit-embed': () => (
+              <div data-testid="edit-embed">
+                Edit blob: {state.blobId}, attached to {state.repoId}
+              </div>
             ),
-            'edit-embed': () => <div data-testid="edit-embed">Edit blob</div>,
           }}
         />
       </div>
