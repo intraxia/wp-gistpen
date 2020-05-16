@@ -3,7 +3,7 @@ import Kefir, { Observable } from 'kefir';
 import * as t from 'io-ts';
 import { ajax$ } from 'kefir-ajax';
 import { RootAction, toggle } from '../util';
-import { ValidationError } from '../api';
+import { ValidationError, JsonError } from '../api';
 import { search } from './actions';
 import { Collection, RepoCollection, BlobCollection } from './state';
 
@@ -95,7 +95,9 @@ export const searchDelta: Delta<RootAction, SearchDeltaState> = (
         },
       })
         .takeUntilBy(actions$.thru(ofType(search.cancel)))
-        .flatMap(response => response.json())
+        .flatMap(response =>
+          response.json().mapErrors(error => new JsonError(error)),
+        )
         .flatMap(response =>
           SearchApiResponse.validate(
             { collection: state.collection, response },

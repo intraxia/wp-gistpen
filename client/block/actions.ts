@@ -1,6 +1,5 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
-import { NetworkError } from 'kefir-ajax';
-import { ApiRepo, ApiBlob, ValidationError } from '../api';
+import { ApiRepo, ApiBlob, AjaxError } from '../api';
 
 export const createNewClick = createAction('CREATE_NEW_CLICK');
 
@@ -17,11 +16,7 @@ export const appendBlob = createAsyncAction(
   'APPEND_BLOB_REQUESTED',
   'APPEND_BLOB_SUCCEEDED',
   'APPEND_BLOB_FAILED',
-)<
-  number,
-  { repoId: number; blob: ApiBlob },
-  NetworkError | TypeError | ValidationError
->();
+)<number, { repoId: number; blob: ApiBlob }, AjaxError>();
 
 export const newBlobAttached = createAction(
   'NEW_BLOB_ATTACHED',
@@ -32,7 +27,7 @@ export const createRepo = createAsyncAction(
   'CREATE_REPO_REQUESTED',
   'CREATE_REPO_SUCCEEDED',
   'CREATE_REPO_FAILED',
-)<void, ApiRepo, NetworkError | TypeError | ValidationError>();
+)<void, ApiRepo, AjaxError>();
 
 export const newRepoCreated = createAction(
   'NEW_REPO_CREATED',

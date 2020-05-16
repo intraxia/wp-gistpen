@@ -57,7 +57,39 @@ export const validationErrorsToString = (errs: t.Errors) =>
     )
     .join('\n')}`;
 
+export class ClientError {
+  public type = 'client';
+
+  constructor(public response: ObsResponse) {}
+
+  get message() {
+    return 'Client had a problem';
+  }
+}
+
+export class ServerError {
+  public type = 'server';
+
+  constructor(public response: ObsResponse) {}
+
+  get message() {
+    return 'Server had a problem';
+  }
+}
+
+export class JsonError {
+  public type = 'json';
+
+  constructor(public error: TypeError) {}
+
+  get message() {
+    return this.error.message;
+  }
+}
+
 export class ValidationError {
+  public type = 'validation';
+
   constructor(public errs: t.Errors) {}
 
   get message() {
@@ -65,7 +97,12 @@ export class ValidationError {
   }
 }
 
-export type AjaxError = TypeError | ValidationError | NetworkError;
+export type AjaxError =
+  | NetworkError
+  | ClientError
+  | ServerError
+  | JsonError
+  | ValidationError;
 
 export const foldResponse = <T extends any, S, F>(
   BodyType: t.Type<T>,
@@ -73,7 +110,18 @@ export const foldResponse = <T extends any, S, F>(
   failure: (err: AjaxError) => F,
 ) => (obs$: Observable<ObsResponse, NetworkError>): Observable<S | F, never> =>
   obs$
-    .flatMap(response => response.json())
+    .flatMap<unknown, AjaxError>(response => {
+      // Can't guarantee any type of response on 500s
+      if (response.status >= 500) {
+        return Kefir.constantError(new ServerError(response));
+      }
+
+      if (response.status >= 400) {
+        return Kefir.constantError(new ClientError(response));
+      }
+
+      return response.json().mapErrors(error => new JsonError(error));
+    })
     .flatMap(body =>
       BodyType.validate(body, []).fold<Observable<S, ValidationError>>(
         errs => Kefir.constantError(new ValidationError(errs)),
