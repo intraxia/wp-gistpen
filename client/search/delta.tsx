@@ -20,8 +20,8 @@ export const SearchRepo = t.type({
   slug: t.string,
   status: t.string,
   password: t.string,
-  gist_id: t.union([t.string, t.null]),
-  gist_url: t.string,
+  gist_id: t.string,
+  gist_url: t.union([t.string, t.null]),
   sync: toggle,
   blobs: t.array(
     t.type({
