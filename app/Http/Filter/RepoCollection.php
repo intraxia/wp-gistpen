@@ -1,7 +1,6 @@
 <?php
 namespace Intraxia\Gistpen\Http\Filter;
 
-use Intraxia\Jaxion\Contract\Http\Filter as FilterContract;
 use WP_Error;
 
 /**
@@ -10,7 +9,7 @@ use WP_Error;
  * @package Intraxia\Gistpen\Http
  * @subpackage Filters
  */
-class RepoCollection implements FilterContract {
+class RepoCollection extends BaseFilter {
 	/**
 	 * Generates argument rules.
 	 *
