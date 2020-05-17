@@ -89,6 +89,7 @@ class Blob extends Base {
 				'slug' => get_flag_value( $assoc_args, 'language', 'plaintext' ),
 			],
 			'repo_id'  => $repo->ID,
+			'status'   => $repo->status,
 		], [ 'unguarded' => true ] );
 
 		if ( is_wp_error( $blob ) ) {
