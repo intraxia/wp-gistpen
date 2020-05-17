@@ -51,7 +51,7 @@ class ReposTest extends TestCase {
 			'data'    => [
 				'status' => 400,
 				'params' => [
-					'invalid' => 'Param "invalid" is not a valid request param.',
+					'invalid' => 'invalid is not a valid request param.',
 				],
 			],
 		] );
