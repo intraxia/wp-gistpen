@@ -66,8 +66,9 @@ class RepoCreate extends BaseFilter {
 				'default'     => [],
 				'type'        => 'array',
 				'items'       => [
-					'type'       => 'object',
-					'properties' => $this->blob->rules(),
+					'type'                 => 'object',
+					'properties'           => $this->blob->rules(),
+					'additionalProperties' => false,
 				],
 			],
 		];

@@ -44,6 +44,37 @@ class CreateTest extends TestCase {
 		] );
 	}
 
+	public function test_returns_error_with_blobs_with_extra_props() {
+		$this->set_role( 'administrator' );
+		$repo    = $this->fm->instance( Repo::class );
+		$blob    = $this->fm->instance( Blob::class );
+		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
+		$request->set_body_params( [
+			'blobs'       => [
+				[
+					'filename' => $blob->filename,
+					'extra'    => 'invalid',
+				],
+			],
+			'description' => $repo->description,
+			'status'      => $repo->status,
+		] );
+
+		$response = $this->server->dispatch( $request );
+
+		$this->assertResponseStatus( $response, 400 );
+		$this->assertResponseData( $response, [
+			'code'    => 'rest_invalid_param',
+			'message' => 'Invalid parameter(s): blobs',
+			'data'    => [
+				'status' => 400,
+				'params' => [
+					'blobs' => 'extra is not a valid property of Object.',
+				],
+			],
+		] );
+	}
+
 	public function test_returns_error_with_missing_description() {
 		$this->set_role( 'administrator' );
 		$repo    = $this->fm->instance( Repo::class );
