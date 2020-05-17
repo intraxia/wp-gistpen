@@ -45,7 +45,9 @@ export const rootDelta: Delta<RootAction, State> = (action$, state$) => {
           'X-WP-Nonce': state.globals.nonce,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          filename: state.filename,
+        }),
       }).thru(
         foldResponse(
           ApiBlob,

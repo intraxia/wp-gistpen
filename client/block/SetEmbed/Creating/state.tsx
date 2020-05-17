@@ -24,6 +24,7 @@ export type ChooseOrNewRepoState = {
 export type ChooseRepoState = {
   globals: GlobalsState;
   status: 'choose-existing';
+  filename: string;
   saving: boolean;
   error: Maybe<AjaxError>;
 };
@@ -64,6 +65,7 @@ export const reducer: EddyReducer<State, RootAction> = (
           return {
             globals: state.globals,
             status: 'choose-existing',
+            filename: '',
             saving: false,
             error: null,
           } as const;
@@ -72,6 +74,11 @@ export const reducer: EddyReducer<State, RootAction> = (
       }
     case 'choose-existing':
       switch (action.type) {
+        case getType(createFilenameChange):
+          return {
+            ...state,
+            filename: action.payload.value,
+          };
         case getType(searchActions.searchRepoSelected):
           return loop(state, appendBlob.request(action.payload.repo.ID));
         case getType(appendBlob.request):
