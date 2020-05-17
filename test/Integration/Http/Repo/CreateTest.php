@@ -24,7 +24,7 @@ class CreateTest extends TestCase {
 		$repo    = $this->fm->instance( Repo::class );
 		$request = new WP_REST_Request( 'POST', '/intraxia/v1/gistpen/repos' );
 		$request->set_body_params( [
-			'blobs'       => 123,
+			'blobs'       => [ 123 ],
 			'description' => $repo->description,
 			'status'      => $repo->status,
 		] );
@@ -38,7 +38,7 @@ class CreateTest extends TestCase {
 			'data'    => [
 				'status' => 400,
 				'params' => [
-					'blobs' => 'Param "blob" must be an array.',
+					'blobs' => 'blobs[0] is not of type object.',
 				],
 			],
 		] );
@@ -84,7 +84,7 @@ class CreateTest extends TestCase {
 			'data'    => [
 				'status' => 400,
 				'params' => [
-					'description' => 'Param "description" must be a string.',
+					'description' => 'description is not of type string.',
 				],
 			],
 		] );
@@ -134,7 +134,7 @@ class CreateTest extends TestCase {
 			'data'    => [
 				'status' => 400,
 				'params' => [
-					'description' => 'Param "description" must be a string.',
+					'description' => 'description is not of type string.',
 					'extra'       => 'extra is not a valid request param.',
 				],
 			],
