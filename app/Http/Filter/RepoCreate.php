@@ -1,7 +1,6 @@
 <?php
 namespace Intraxia\Gistpen\Http\Filter;
 
-use Intraxia\Jaxion\Contract\Http\Filter as FilterContract;
 use WP_Error;
 
 /**
@@ -10,7 +9,7 @@ use WP_Error;
  * @package Intraxia\Gistpen\Http
  * @subpackage Filters
  */
-class RepoCreate implements FilterContract {
+class RepoCreate extends BaseFilter {
 	/**
 	 * Generates argument rules.
 	 *
@@ -168,15 +167,5 @@ class RepoCreate implements FilterContract {
 			'code'     => $blob['code'],
 			'language' => isset( $blob['language'] ) ? $blob['language'] : null,
 		];
-	}
-
-	/**
-	 * Create validation error to return.
-	 *
-	 * @param  string $message Validation message.
-	 * @return WP_Error        Validation error.
-	 */
-	private function create_error( $message ) {
-		return new WP_Error( 'rest_invalid_param', $message );
 	}
 }
