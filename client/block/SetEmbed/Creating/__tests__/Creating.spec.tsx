@@ -123,7 +123,6 @@ describe('Creating', () => {
             blobs: [
               {
                 filename: 'filename.js',
-                code: '',
               },
             ],
           }),
