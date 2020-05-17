@@ -16,6 +16,24 @@ import {
   NewRepoState,
 } from './state';
 
+const FilenameInput: React.FC<{ disabled: boolean; value: string }> = ({
+  disabled,
+  value,
+}) => {
+  return (
+    <TextControl
+      label="Snippet filename"
+      disabled={disabled}
+      value={value}
+      preplug={a$ =>
+        a$
+          .thru(ofType(change))
+          .map(action => createFilenameChange(action.payload.value))
+      }
+    />
+  );
+};
+
 const ChooseOrNewRepo: React.FC<ChooseOrNewRepoState> = () => {
   return (
     <div data-testid="choose-or-new-repo">
@@ -28,11 +46,12 @@ const ChooseOrNewRepo: React.FC<ChooseOrNewRepoState> = () => {
   );
 };
 
-const ChooseRepo: React.FC<ChooseRepoState> = ({ saving, error }) => {
+const ChooseRepo: React.FC<ChooseRepoState> = ({ filename, saving, error }) => {
   return (
     <div data-testid="choose-existing">
       {error != null && <ErrorNotice>{error.message}</ErrorNotice>}
-      <Choosing collection="repos" disabled={saving} />
+      <FilenameInput disabled={saving} value={filename} />
+      <Choosing collection="repos" disabled={saving || filename === ''} />
     </div>
   );
 };
@@ -55,16 +74,7 @@ const CreateNew: React.FC<NewRepoState> = ({
             .map(action => createDescriptionChange(action.payload.value))
         }
       />
-      <TextControl
-        label="Snippet filename"
-        disabled={saving}
-        value={filename}
-        preplug={a$ =>
-          a$
-            .thru(ofType(change))
-            .map(action => createFilenameChange(action.payload.value))
-        }
-      />
+      <FilenameInput disabled={saving} value={filename} />
       <Button
         isPrimary
         disabled={!description || saving}

@@ -18,6 +18,7 @@ export const chooseExisting = () => (
     <View
       status="choose-existing"
       globals={defaultGlobals}
+      filename="filename.js"
       saving={false}
       error={null}
     />
@@ -29,6 +30,7 @@ export const chooseExistingSaving = () => (
     <View
       status="choose-existing"
       globals={defaultGlobals}
+      filename="filename.js"
       saving={true}
       error={null}
     />
@@ -40,6 +42,7 @@ export const chooseExistingError = () => (
     <View
       status="choose-existing"
       globals={defaultGlobals}
+      filename="filename.js"
       saving={true}
       error={new JsonError(new TypeError('An error occurred!'))}
     />

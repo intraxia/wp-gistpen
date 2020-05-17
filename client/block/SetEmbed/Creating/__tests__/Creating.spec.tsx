@@ -82,6 +82,7 @@ describe('Creating', () => {
 
         fire.chooseClick();
         fire.searchInputChange('Test Repo');
+        fire.filenameInputChange('filename.js');
 
         act(() => {
           tick(350);
@@ -91,7 +92,11 @@ describe('Creating', () => {
         fire.selectClick();
 
         expect(elements.selectButton()).toBeDisabled();
-        expect(server.lastRequest?.requestBody).toEqual(JSON.stringify({}));
+        expect(server.lastRequest?.requestBody).toEqual(
+          JSON.stringify({
+            filename: 'filename.js',
+          }),
+        );
 
         act(() => {
           server.respond();
