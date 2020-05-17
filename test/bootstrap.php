@@ -41,7 +41,8 @@ $_manually_load_plugin = function() use ( $plugin_root ) {
 				'plaintext' => 'PlainText',
 			],
 			'aliases' => [
-				'js' => 'javascript',
+				'js'        => 'javascript',
+				'plaintext' => 'none',
 			],
 		]
 	);
