@@ -70,6 +70,7 @@ declare module '@wordpress/e2e-test-utils' {
     content: string;
     excerpt: string;
     enableTips?: boolean;
+    showWelcomeGuide?: boolean;
   }): Promise<void>;
 
   /**
@@ -206,7 +207,7 @@ declare module '@wordpress/e2e-test-utils' {
    */
   export function insertBlock(
     searchTerm: string,
-    panelName: string
+    panelName?: string
   ): Promise<void>;
 
   /**
@@ -302,7 +303,7 @@ declare module '@wordpress/e2e-test-utils' {
    *
    * @return {Promise} Promise resolving once the SelectAll emulation completes.
    */
-  export function pressKeyWithModifier(): Promise<void>;
+  export function pressKeyWithModifier(modifier: string, key: string): Promise<void>;
 
   /**
    * Publishes the post, resolving once the request is complete (once a notice

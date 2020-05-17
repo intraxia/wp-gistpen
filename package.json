@@ -66,7 +66,7 @@
     "@wordpress/e2e-test-utils": "^4.7.0",
     "@wordpress/scripts": "^9.0.0",
     "brookjs-cli": "1.0.0-beta.16",
-    "brookjs-desalinate": "1.0.0-beta.15",
+    "brookjs-desalinate": "1.0.0-beta.16",
     "copy-webpack-plugin": "^5.1.1",
     "execa": "^4.0.1",
     "expect-puppeteer": "^4.4.0",
@@ -75,6 +75,8 @@
     "jest-puppeteer": "^4.4.0",
     "nise": "^4.0.3",
     "node-sass": "^4.14.1",
+    "pptr-testing-library": "^0.5.0",
+    "puppeteer": "^3.0.4",
     "react-dev-utils": "^10.0.0",
     "react-testing-kit": "^1.1.1",
     "sass-loader": "^8.0.2",
@@ -90,7 +92,7 @@
     "wp-pot-cli": "^1.4.2"
   },
   "dependencies": {
-    "brookjs": "1.0.0-beta.15",
+    "brookjs": "1.0.0-beta.16",
     "classnames": "^2.2.5",
     "clipboard": "^2.0.4",
     "io-ts": "^1.10.4",

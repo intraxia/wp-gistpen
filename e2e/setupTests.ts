@@ -2,7 +2,7 @@
 import 'expect-puppeteer';
 import execa from 'execa';
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
-import { setBrowserViewport } from '@wordpress/e2e-test-utils';
+import { setBrowserViewport, activatePlugin } from '@wordpress/e2e-test-utils';
 import { resetSite } from './helpers';
 
 const toMatchImageSnapshot = configureToMatchImageSnapshot({
@@ -10,8 +10,8 @@ const toMatchImageSnapshot = configureToMatchImageSnapshot({
   failureThreshold: 0.06,
   failureThresholdType: 'percent',
   customDiffConfig: {
-    threshold: 0.15
-  }
+    threshold: 0.15,
+  },
 });
 
 expect.extend({ toMatchImageSnapshot });
@@ -27,7 +27,8 @@ beforeAll(async () => {
       await resetSite();
       await execa.command(`npm run env cli rewrite structure /%POSTNAME%/`);
     })(),
-    page.goto('http://localhost:8889'),
-    setBrowserViewport('large')
+    setBrowserViewport('large'),
   ]);
+
+  await activatePlugin('wp-gistpen');
 });

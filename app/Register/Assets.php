@@ -130,6 +130,9 @@ class Assets {
 					);
 				},
 			],
+			'block'    => [
+				'type' => 'block',
+			],
 		];
 	}
 
@@ -183,11 +186,12 @@ class Assets {
 				$assets->register_script( array(
 					'type'      => $asset_config['type'],
 					'deps'      => static::$deps,
-					'condition' => $asset_config['condition'],
+					'condition' => isset( $asset_config['condition'] ) ? $asset_config['condition'] : null,
 					'handle'    => $slug . '-' . $entry . '-script',
 					'src'       => 'resources/assets/' . $file,
 					'footer'    => true,
-					'localize'  => $asset_config['localize'],
+					'localize'  => isset( $asset_config['localize'] ) ? $asset_config['localize'] : null,
+					'block'     => 'intraxia/gistpen',
 				) );
 			}
 
