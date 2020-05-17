@@ -109,7 +109,7 @@ class CreateTest extends TestCase {
 			'data'    => [
 				'status' => 400,
 				'params' => [
-					'extra' => 'Param "extra" is not a valid request param.',
+					'extra' => 'extra is not a valid request param.',
 				],
 			],
 		] );
@@ -135,7 +135,7 @@ class CreateTest extends TestCase {
 				'status' => 400,
 				'params' => [
 					'description' => 'Param "description" must be a string.',
-					'extra'       => 'Param "extra" is not a valid request param.',
+					'extra'       => 'extra is not a valid request param.',
 				],
 			],
 		] );

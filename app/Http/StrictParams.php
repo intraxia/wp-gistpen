@@ -52,13 +52,15 @@ class StrictParams implements HasFilters {
 			return $response;
 		}
 
+		// We don't want to validate URL params.
+		$params         = array_merge( $request->get_body_params(), $request->get_query_params() );
 		$invalid_params = [];
 
-		foreach ( $request->get_params() as $key => $value ) {
+		foreach ( $params as $key => $value ) {
 			if ( ! isset( $attributes['args'][ $key ] ) && ! in_array( $key, self::$param_whitelist, true ) ) {
 				$invalid_params[ $key ] = sprintf(
 					/* translators: %s: Request param. */
-					__( 'Param "%s" is not a valid request param.', 'wp-gistpen' ),
+					__( '%s is not a valid request param.', 'wp-gistpen' ),
 					$key
 				);
 			}
