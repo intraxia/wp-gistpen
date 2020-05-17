@@ -25,7 +25,6 @@ export const rootDelta: Delta<RootAction, State> = (action$, state$) => {
           blobs: [
             {
               filename: state.filename,
-              code: '',
             },
           ],
         }),

@@ -41,7 +41,8 @@ class BlobCreate extends BaseFilter {
 			],
 			'code'     => [
 				'description' => __( 'Code for the blob.', 'wp-gistpen' ),
-				'required'    => true,
+				'required'    => false,
+				'default'     => '',
 				'type'        => 'string',
 			],
 			'language' => [
