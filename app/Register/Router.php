@@ -4,6 +4,7 @@ namespace Intraxia\Gistpen\Register;
 use Intraxia\Jaxion\Http\Filter;
 use Intraxia\Jaxion\Http\Guard;
 use Intraxia\Jaxion\Http\Router as CoreRouter;
+use Intraxia\Gistpen\Http\Filter\BlobCreate as BlobCreateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCollection as RepoCollectionFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCreate as RepoCreateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoUpdate as RepoUpdateFilter;
@@ -85,6 +86,14 @@ class Router {
 				'filter' => $this->container->get( RepoResourceFilter::class ),
 				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
 			) );
+
+			/**
+			 * /repos/{repo_id}/blobs endpoints
+			 */
+			$router->post( '/repos/(?P<repo_id>\d+)/blobs', [ $controllers['blob'], 'create' ], [
+				'filter' => $this->container->get( BlobCreateFilter::class ),
+				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
+			] );
 
 			/**
 			 * /repos/{repo_id}/blobs/{blob_id} endpoints

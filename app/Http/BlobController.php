@@ -33,6 +33,47 @@ class BlobController implements HasFilters {
 	}
 
 	/**
+	 * Creates a new blob with the provided data.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function create( WP_REST_Request $request ) {
+		$repo_id = $request->get_param( 'repo_id' );
+
+		$repo = $this->em->find( Repo::class, $repo_id );
+
+		if ( is_wp_error( $repo ) ) {
+			$repo->add_data( array( 'status' => 404 ) );
+
+			return $repo;
+		}
+
+		$blob = $this->em->create( Blob::class, [
+			'filename' => $request->get_param( 'filename' ),
+			'code'     => $request->get_param( 'code' ),
+			'language' => [
+				// @TODO(mAAdhaTTah) this is a bad API for the EntityManager.
+				'slug' => $request->get_param( 'language' ),
+			],
+			'repo_id'  => $repo->ID,
+			'status'   => $repo->status,
+		], [ 'unguarded' => true ] );
+
+		if ( is_wp_error( $blob ) ) {
+			$blob->add_data( array( 'status' => 500 ) );
+
+			return $blob;
+		}
+
+		$response = new WP_REST_Response( $blob->serialize(), 201 );
+		$response->header( 'Location', $blob->rest_url );
+
+		return $response;
+	}
+
+	/**
 	 * Fetches the requested Blob and sets up the appropriate response.
 	 *
 	 * @param WP_REST_Request $request
