@@ -50,9 +50,9 @@ class BlobCreate extends BaseFilter {
 				'type'        => 'string',
 				'enum'        => array_merge(
 					array_keys( $languages['list'] ),
-					array_keys( $languages['aliases'] )
+					array_values( $languages['aliases'] )
 				),
-				'default'     => 'plaintext',
+				'default'     => 'none',
 			],
 		];
 	}

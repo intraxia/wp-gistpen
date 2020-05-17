@@ -99,7 +99,7 @@ class CreateTest extends TestCase {
 			'size'     => $blob->size,
 			'raw_url'  => $blob->raw_url,
 			'edit_url' => $blob->edit_url,
-			'filename' => $this->blob->filename,
+			'filename' => $blob->filename,
 			'code'     => $blob->code,
 			'language' => [
 				'ID'           => $blob->language->ID,

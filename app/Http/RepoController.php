@@ -77,7 +77,24 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create( WP_REST_Request $request ) {
-		$model = $this->em->create( Repo::class, $request->get_params() );
+		$model = $this->em->create( Repo::class, [
+			'description' => $request->get_param( 'description' ),
+			'status'      => $request->get_param( 'status' ),
+			'password'    => $request->get_param( 'password' ),
+			'sync'        => $request->get_param( 'sync' ),
+			'blobs'       => array_map(function( $blob ) {
+				return [
+					'filename' => $blob['filename'],
+					// @TODO(mAAdhaTTah) this is duplicated with the filter but isn't set correctly when run thru REST API.
+					// shouldn't core set this property by default?
+					'code'     => isset( $blob['code'] ) ? $blob['code'] : '',
+					'language' => [
+						// @TODO(mAAdhaTTah) this is a bad API for the EntityManager.
+						'slug' => isset( $blob['language'] ) ? $blob['language'] : 'none',
+					],
+				];
+			}, $request->get_param( 'blobs' ) ),
+		] );
 
 		if ( is_wp_error( $model ) ) {
 			$model->add_data( array( 'status' => 500 ) );
