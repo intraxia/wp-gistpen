@@ -1,8 +1,7 @@
-import Prism from 'prismjs/components/prism-core';
-import 'prismjs/plugins/autoloader/prism-autoloader';
+import Prism from 'prismjs';
 
-// Prism highlights automatically by default.
-document.removeEventListener('DOMContentLoaded', Prism.highlightAll);
+// @ts-ignore
+Prism.manual = true;
 
 if (window.__webpack_public_path__ != null) {
   Prism.plugins.autoloader.languages_path = window.__webpack_public_path__;
@@ -19,47 +18,48 @@ let currentTheme: Theme;
 
 const plugins: Record<string, boolean> = {};
 
-const extension = {
-  setAutoloaderPath: (path: string) =>
-    (Prism.plugins.autoloader.languages_path = path),
-  setTheme: (theme: string): Promise<Theme> =>
-    import(`./themes/${theme}.lazy.css`).then(
-      ({ default: theme }: { default: Theme }) =>
-        new Promise(resolve =>
-          requestAnimationFrame(() => {
-            if (currentTheme !== theme) {
-              if (currentTheme) {
-                currentTheme.unuse();
-              }
+export const setAutoloaderPath = (path: string) =>
+  (Prism.plugins.autoloader.languages_path = path);
 
-              theme.use();
-
-              currentTheme = theme;
+export const setTheme = (theme: string): Promise<Theme> =>
+  import(`./themes/${theme}.lazy.css`).then(
+    ({ default: theme }: { default: Theme }) =>
+      new Promise(resolve =>
+        requestAnimationFrame(() => {
+          if (currentTheme !== theme) {
+            if (currentTheme) {
+              currentTheme.unuse();
             }
 
-            resolve(currentTheme);
-          }),
-        ),
-    ),
-  togglePlugin: (pluginKey: string, toggle: boolean): Promise<Theme> =>
-    import(`./plugins/${pluginKey}.ts`).then(
-      ({ plugin }) =>
-        new Promise(resolve =>
-          requestAnimationFrame(() => {
-            if (toggle && !plugins[pluginKey]) {
-              plugin.use();
-              plugins[pluginKey] = true;
-            }
+            theme.use();
 
-            if (!toggle && plugins[pluginKey]) {
-              plugin.unuse();
-              plugins[pluginKey] = false;
-            }
+            currentTheme = theme;
+          }
 
-            resolve(plugin);
-          }),
-        ),
-    ),
-};
+          resolve(currentTheme);
+        }),
+      ),
+  );
 
-export default Object.assign({}, Prism, extension);
+export const togglePlugin = (
+  pluginKey: string,
+  toggle: boolean,
+): Promise<Theme> =>
+  import(`./plugins/${pluginKey}.ts`).then(
+    ({ plugin }) =>
+      new Promise(resolve =>
+        requestAnimationFrame(() => {
+          if (toggle && !plugins[pluginKey]) {
+            plugin.use();
+            plugins[pluginKey] = true;
+          }
+
+          if (!toggle && plugins[pluginKey]) {
+            plugin.unuse();
+            plugins[pluginKey] = false;
+          }
+
+          resolve(plugin);
+        }),
+      ),
+  );

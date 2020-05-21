@@ -1,7 +1,7 @@
 import { addDecorator } from '@storybook/react';
 import { withJunction } from 'brookjs-desalinate';
-import Prism from '../client/prism';
+import { setAutoloaderPath } from '../client/prism';
 
-Prism.setAutoloaderPath('/');
+setAutoloaderPath('/');
 
 addDecorator(withJunction);

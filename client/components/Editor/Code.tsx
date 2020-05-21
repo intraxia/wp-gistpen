@@ -1,6 +1,7 @@
 import Kefir, { Observable } from 'kefir';
 import { raf$, toJunction, withRef$, Refback } from 'brookjs';
 import React, { memo, forwardRef } from 'react';
+import Prism from 'prismjs';
 import {
   editorCursorMove,
   editorIndent,
@@ -11,9 +12,9 @@ import {
   editorValueChange,
 } from '../../actions';
 import { selectSelectionStart, selectSelectionEnd } from '../../selectors';
-import Prism from '../../prism';
 import { prismSlug } from '../../helpers';
 import { RootAction, Cursor, Toggle } from '../../util';
+import { setTheme, togglePlugin } from '../../prism';
 import { isSpecialEvent, languageIsEqual, editorOptionsIsEqual } from './util';
 import findOffset from './findOffset';
 
@@ -108,17 +109,17 @@ const createPrismUpdateStream = (props: Props) =>
   // Since we're igonring the values anyway, I don't mind casting to `any`.
   Kefir.fromPromise<any, never>(
     Promise.all([
-      Prism.setTheme(props.theme),
-      Prism.togglePlugin('line-numbers', true).then(() => {
+      setTheme(props.theme),
+      togglePlugin('line-numbers', true).then(() => {
         // We only need to register this callback once, but only after the
         // plugin has been loaded once.
         if (!init) {
           init = true;
           Prism.hooks.add('line-numbers', env => {
             const code = env.element;
-            const pre = code.parentNode as HTMLPreElement | null;
+            const pre = code?.parentNode as HTMLPreElement | null;
 
-            if (pre == null) {
+            if (pre == null || code == null) {
               return;
             }
 
@@ -137,7 +138,7 @@ const createPrismUpdateStream = (props: Props) =>
           });
         }
       }),
-      Prism.togglePlugin('show-invisibles', props.invisibles === 'on'),
+      togglePlugin('show-invisibles', props.invisibles === 'on'),
     ]),
   )
     .ignoreValues()

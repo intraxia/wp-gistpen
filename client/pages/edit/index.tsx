@@ -13,8 +13,8 @@ import {
   userDelta,
 } from '../../deltas';
 import { RootAction } from '../../util';
-import Prism from '../../prism';
 import { init } from '../../actions';
+import { setAutoloaderPath } from '../../prism';
 import router from './router';
 import View from './View';
 import { State, mapStateToProps, reducer } from './state';
@@ -29,7 +29,7 @@ declare global {
 
 const { __GISTPEN_EDITOR__ } = window;
 
-Prism.setAutoloaderPath(
+setAutoloaderPath(
   (__webpack_public_path__ =
     __GISTPEN_EDITOR__.globals.url + 'resources/assets/'),
 );

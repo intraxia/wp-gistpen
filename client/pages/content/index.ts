@@ -1,4 +1,4 @@
-import Prism from '../../prism';
+import Prism from 'prismjs';
 import { plugin as p1 } from '../../prism/plugins/toolbar';
 import { plugin as p2 } from '../../prism/plugins/line-highlight';
 import '../../prism/plugins/copy-to-clipboard';
@@ -6,6 +6,7 @@ import '../../prism/plugins/edit';
 import '../../prism/plugins/filename';
 import { PrismState } from '../../reducers';
 import { GlobalsState } from '../../globals';
+import { setAutoloaderPath, setTheme, togglePlugin } from '../../prism';
 
 interface ContentWindowState {
   globals: GlobalsState;
@@ -23,31 +24,27 @@ p2.use();
 
 const { __GISTPEN_CONTENT__ } = window;
 
-Prism.setAutoloaderPath(
+setAutoloaderPath(
   (__webpack_public_path__ =
     __GISTPEN_CONTENT__.globals.url + 'resources/assets/'),
 );
 
 const promises: Array<Promise<any>> = [];
 
-promises.push(Prism.setTheme(__GISTPEN_CONTENT__.prism.theme));
+promises.push(setTheme(__GISTPEN_CONTENT__.prism.theme));
 
 if (__GISTPEN_CONTENT__.prism['line-numbers']) {
-  promises.push(Prism.togglePlugin('line-numbers', true));
+  promises.push(togglePlugin('line-numbers', true));
 }
 
 if (__GISTPEN_CONTENT__.prism['show-invisibles']) {
-  promises.push(Prism.togglePlugin('show-invisibles', true));
+  promises.push(togglePlugin('show-invisibles', true));
 }
 
 Promise.all(promises).then(() => {
   if (document.readyState !== 'loading') {
-    if (window.requestAnimationFrame) {
-      window.requestAnimationFrame(Prism.highlightAll);
-    } else {
-      window.setTimeout(Prism.highlightAll, 16);
-    }
+    window.requestAnimationFrame(() => Prism.highlightAll());
   } else {
-    document.addEventListener('DOMContentLoaded', Prism.highlightAll);
+    document.addEventListener('DOMContentLoaded', () => Prism.highlightAll());
   }
 });

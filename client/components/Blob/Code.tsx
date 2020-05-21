@@ -1,16 +1,17 @@
 import Kefir from 'kefir';
 import React from 'react';
 import { withRef$, Refback } from 'brookjs';
-import Prism from '../../prism';
+import Prism from 'prismjs';
 import { prismSlug } from '../../helpers';
 import { RootAction } from '../../util';
+import { setTheme, togglePlugin } from '../../prism';
 import { Props } from './types';
 
 const updatePrism = (prism: Props['prism']) =>
   Promise.all([
-    Prism.setTheme(prism.theme),
-    Prism.togglePlugin('line-numbers', prism['line-numbers']),
-    Prism.togglePlugin('show-invisibles', prism['show-invisibles']),
+    setTheme(prism.theme),
+    togglePlugin('line-numbers', prism['line-numbers']),
+    togglePlugin('show-invisibles', prism['show-invisibles']),
   ]);
 
 const Code: React.RefForwardingComponent<HTMLElement, Props> = (props, ref) => (

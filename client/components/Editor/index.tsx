@@ -9,7 +9,7 @@ import {
   editorLanguageChange,
 } from '../../actions';
 import { i18n } from '../../helpers';
-import Prism from '../../prism';
+import { togglePlugin } from '../../prism';
 import Pre from './Pre';
 import Code from './Code';
 import { Props } from './types';
@@ -105,7 +105,7 @@ const CopyEmbedCode: React.FC<{
 
 const Toolbar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   useEffect(() => {
-    Prism.togglePlugin('toolbar', true);
+    togglePlugin('toolbar', true);
   }, []);
 
   return <div className="toolbar">{children}</div>;
