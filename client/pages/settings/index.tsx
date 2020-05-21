@@ -12,9 +12,9 @@ import {
   webpackDelta,
 } from '../../deltas';
 import { SettingsPage } from '../../components';
-import Prism from '../../prism';
 import { RootAction } from '../../util';
 import { Job } from '../../reducers';
+import { setAutoloaderPath } from '../../prism';
 import mapStateToProps from './mapStateToProps';
 import { reducer, State } from './state';
 import router from './router';
@@ -35,7 +35,7 @@ declare global {
 
 const { __GISTPEN_SETTINGS__ } = window;
 
-Prism.setAutoloaderPath(
+setAutoloaderPath(
   (__webpack_public_path__ =
     __GISTPEN_SETTINGS__.globals.url + 'resources/assets/'),
 );

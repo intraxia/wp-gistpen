@@ -8,23 +8,13 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 const isProd = state => state.env === 'production';
 
 class PrismLanguageGenerationPlugin {
-  constructor() {
-    this.src = path.join(
-      __dirname,
-      'node_modules',
-      'prismjs',
-      'components.json'
-    );
-    this.dest = path.join(__dirname, 'resources', 'languages.json');
-    this.exclude = [
-      'meta',
-      'clike',
-      'css-extras',
-      'markup-templating',
-      'php-extras'
-    ];
-    this.prev = null;
-  }
+  src = path.join(__dirname, 'node_modules', 'prismjs', 'components.json');
+
+  dest = path.join(__dirname, 'resources', 'languages.json');
+
+  exclude = ['meta', 'clike', 'css-extras', 'markup-templating', 'php-extras'];
+
+  prev = null;
 
   apply(compiler) {
     const cb = (compilation, callback) => this.emit(compilation, callback);
@@ -58,12 +48,12 @@ class PrismLanguageGenerationPlugin {
   languagesToDest(languages) {
     const dest = {
       list: {
-        plaintext: 'PlainText'
+        plaintext: 'PlainText',
       },
       aliases: {
         plaintext: 'none',
-        jinja2: 'django'
-      }
+        jinja2: 'django',
+      },
     };
 
     for (const language in languages) {
@@ -127,7 +117,7 @@ export const webpack = {
   },
   output: {
     path: 'resources/assets/',
-    filename: state => `[name]${isProd(state) ? '.min' : ''}.js`
+    filename: state => `[name]${isProd(state) ? '.min' : ''}.js`,
   },
   modifier: (config, state) => {
     config.optimization.runtimeChunk = false;
@@ -138,25 +128,25 @@ export const webpack = {
         {
           loader: 'style-loader',
           options: {
-            injectType: 'lazyStyleTag'
-          }
+            injectType: 'lazyStyleTag',
+          },
         },
         'css-loader',
-        'sass-loader'
-      ]
+        'sass-loader',
+      ],
     });
 
     config.plugins.push(
       new StyleLintPlugin({
         syntax: 'scss',
-        context: path.join(__dirname, dir)
-      })
+        context: path.join(__dirname, dir),
+      }),
     );
     config.plugins.push(
       new WebpackNotifierPlugin({
         alwaysNotify: true,
-        emoji: true
-      })
+        emoji: true,
+      }),
     );
     config.plugins.push(new PrismLanguageGenerationPlugin());
 
@@ -166,9 +156,9 @@ export const webpack = {
         new CopyWebpackPlugin([
           {
             from: 'node_modules/prismjs/components/*.js',
-            flatten: true
-          }
-        ])
+            flatten: true,
+          },
+        ]),
       );
     }
 
@@ -176,8 +166,8 @@ export const webpack = {
       config.plugins.push(
         new BundleAnalyzerPlugin({
           analyzerMode: 'static',
-          openAnalyzer: false
-        })
+          openAnalyzer: false,
+        }),
       );
     }
 
@@ -188,26 +178,34 @@ export const webpack = {
       '@wordpress/components': 'wp.components',
       '@wordpress/compose': 'wp.compose',
       '@wordpress/element': 'wp.element',
-      '@wordpress/i18n': 'wp.i18n'
+      '@wordpress/i18n': 'wp.i18n',
     };
 
     return config;
-  }
+  },
 };
 
-// @TODO(mAAdhaTTah) remove dupes from internals
 export const jest = {
   moduleNameMapper: {
-    '^react-native$': 'react-native-web',
-    '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
-    'react-syntax-highlighter/dist/esm/(.*)':
-      'react-syntax-highlighter/dist/cjs/$1',
-    '@babel/runtime/helpers/esm/(.*)': '@babel/runtime/helpers/$1',
-    '^.+\\.lazy\\.(css|sass|scss)$': '<rootDir>/__mocks__/lazy.js'
+    '^.+\\.lazy\\.(css|sass|scss)$': '<rootDir>/__mocks__/lazy.js',
   },
-  transformIgnorePatterns: [
-    '[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$',
-    '^.+\\.module\\.(css|sass|scss)$',
-    '^.+\\.lazy\\.(css|sass|scss)$'
-  ]
+  transformIgnorePatterns: ['^.+\\.lazy\\.(css|sass|scss)$'],
+};
+
+export const babel = {
+  modifier(options) {
+    return {
+      ...options,
+      plugins: [
+        ...options.plugins,
+        [
+          'babel-plugin-prismjs',
+          {
+            plugins: ['autoloader'],
+            css: true,
+          },
+        ],
+      ],
+    };
+  },
 };

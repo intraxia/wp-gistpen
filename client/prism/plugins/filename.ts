@@ -1,4 +1,4 @@
-import Prism from '../';
+import Prism from 'prismjs';
 
 /**
  * Create a filename label for the provided environment.
@@ -6,9 +6,9 @@ import Prism from '../';
  * @param {Object} env - Prism environment.
  * @returns {Element} Edit button element.
  */
-Prism.plugins.toolbar.registerButton('filename', function filenameButton(env) {
+function filenameButton(env: Prism.Environment) {
   const filename = document.createElement('span');
-  const pre = env.element.parentElement;
+  const pre = env.element?.parentElement;
 
   if (pre == null) {
     return;
@@ -23,10 +23,15 @@ Prism.plugins.toolbar.registerButton('filename', function filenameButton(env) {
   filename.textContent = text;
 
   return filename;
-});
+}
 
 export const plugin = {
-  use() {},
+  use() {
+    Prism.plugins.toolbar.registerButton('filename', filenameButton);
+  },
 
-  unuse() {},
+  unuse() {
+    // @TODO(mAAdhaTTah) implement upstream
+    // Prism.plugins.toolbar.unregisterButton('filename', filenameButton);
+  },
 };

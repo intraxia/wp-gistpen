@@ -1,13 +1,13 @@
-import Prism from '../';
+import Prism from 'prismjs';
 
-Prism.plugins.toolbar.registerButton('edit', function editButton(env) {
-  const pre = env.element.parentElement;
+function editButton(env: Prism.Environment) {
+  const pre = env.element?.parentElement;
 
   if (pre == null) {
     return;
   }
 
-  const url = pre.getAttribute('data-edit-url') || null;
+  const url = pre.getAttribute('data-edit-url') ?? null;
 
   if (url == null) {
     return;
@@ -18,10 +18,15 @@ Prism.plugins.toolbar.registerButton('edit', function editButton(env) {
   editBtn.href = url;
 
   return editBtn;
-});
+}
 
 export const plugin = {
-  use() {},
+  use() {
+    Prism.plugins.toolbar.registerButton('edit', editButton);
+  },
 
-  unuse() {},
+  unuse() {
+    // @TODO(mAAdhaTTah) implement upstream
+    // Prism.plugins.toolbar.unregisterButton('edit', editButton);
+  },
 };
