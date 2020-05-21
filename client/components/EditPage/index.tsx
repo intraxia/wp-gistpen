@@ -2,7 +2,7 @@ import './index.scss';
 import React, { useRef, useEffect, useMemo } from 'react';
 import Editor from '../Editor';
 import { Toggle, Cursor } from '../../util';
-import { ValidationError } from '../../api';
+import { AjaxError } from '../../api';
 import Description from './Description';
 import Controls from './Controls';
 
@@ -77,9 +77,7 @@ const ErrorMsg: React.FC<{ error: { message: string; body?: string } }> = ({
   );
 };
 
-const Errors: React.FC<{ errors: (ValidationError | TypeError)[] }> = ({
-  errors,
-}) => (
+const Errors: React.FC<{ errors: AjaxError[] }> = ({ errors }) => (
   <div className="wpgp-editor-errors-container">
     {errors.map((error, i) => (
       <ErrorMsg key={i} error={error} />
@@ -102,7 +100,7 @@ const EditPage: React.FC<{
   tabs: Toggle;
   instances: Instance[];
   languages: Language[];
-  errors: (ValidationError | TypeError)[];
+  errors: AjaxError[];
 }> = ({
   description,
   loading,

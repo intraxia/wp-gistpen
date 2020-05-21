@@ -12,6 +12,7 @@ import {
 import { RootAction } from '../util';
 import { RepoState } from '../reducers';
 import { GlobalsState } from '../globals';
+import { foldResponse } from '../api';
 
 type CommitsServices = {
   ajax$: typeof ajax$;
@@ -68,13 +69,8 @@ export const commitsDelta = ({ ajax$ }: CommitsServices) => (
               'Content-Type': 'application/json',
             },
           },
-        )
-          .flatMap(response => response.json())
-          .flatMap(response =>
-            apiCommits.is(response)
-              ? Kefir.constant(commitsFetchSucceeded(response))
-              : Kefir.constantError(new TypeError('Response did not match')),
-          )
-          .flatMapErrors(err => Kefir.constant(commitsFetchFailed(err))),
+        ).thru(
+          foldResponse(apiCommits, commitsFetchSucceeded, commitsFetchFailed),
+        ),
       ]),
     );

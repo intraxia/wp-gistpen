@@ -1,5 +1,6 @@
 import { createAction } from 'typesafe-actions';
 import { Job, Run, Message } from '../reducers';
+import { AjaxError } from '../api';
 
 export const jobFetchStarted = createAction('JOB_FETCH_STARTED');
 
@@ -10,7 +11,7 @@ export const jobFetchSucceeded = createAction(
 
 export const jobFetchFailed = createAction(
   'JOB_FETCH_FAILED',
-  resolve => (slug: string, error: TypeError) => resolve({ slug, error }),
+  resolve => (slug: string, error: AjaxError) => resolve({ slug, error }),
 );
 
 export const runsFetchStarted = createAction('RUNS_FETCH_STARTED');
@@ -22,7 +23,7 @@ export const runsFetchSucceeded = createAction(
 
 export const runsFetchFailed = createAction(
   'RUNS_FETCH_FAILED',
-  resolve => (err: TypeError) => resolve(err),
+  resolve => (err: AjaxError) => resolve(err),
 );
 
 export const messagesFetchStarted = createAction('MESSAGES_FETCH_STARTED');
@@ -35,7 +36,7 @@ export const messagesFetchSucceeded = createAction(
 
 export const messagesFetchFailed = createAction(
   'MESSAGES_FETCH_FAILED',
-  resolve => (err: TypeError) => resolve(err),
+  resolve => (err: AjaxError) => resolve(err),
 );
 
 export const jobDispatchClick = createAction(
@@ -52,5 +53,5 @@ export const jobDispatchSucceeded = createAction(
 
 export const jobDispatchFailed = createAction(
   'JOB_DISPATCH_FAILED',
-  resolve => (err: TypeError) => resolve(err),
+  resolve => (err: AjaxError) => resolve(err),
 );

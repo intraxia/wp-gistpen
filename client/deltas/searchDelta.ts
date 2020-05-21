@@ -3,7 +3,7 @@ import { ofType } from 'brookjs';
 import { ajax$ } from 'kefir-ajax';
 import { RootAction } from '../util';
 import { SearchState } from '../reducers';
-import { ValidationError } from '../api';
+import { ValidationError, JsonError } from '../api';
 import { actions as searchActions, SearchApiResponse } from '../search';
 import { GlobalsState } from '../globals';
 
@@ -34,7 +34,7 @@ export const searchDelta = ({ ajax$ }: SearchDeltaServices) => (
         },
       }),
     )
-    .flatMap(response => response.json())
+    .flatMap(response => response.json().mapErrors(err => new JsonError(err)))
     .flatMap(response =>
       SearchApiResponse.validate(response, []).fold<
         Observable<RootAction, ValidationError>

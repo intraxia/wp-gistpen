@@ -15,7 +15,7 @@ import { selectUserAjaxOpts } from '../selectors';
 import { RootAction } from '../util';
 import { EditorState } from '../reducers';
 import { GlobalsState } from '../globals';
-import { ValidationError } from '../api';
+import { ValidationError, JsonError } from '../api';
 
 export type UserDeltaState = {
   globals: GlobalsState;
@@ -49,7 +49,7 @@ export const userDelta = ({ ajax$ }: UserDeltaServices) => (
     .flatMapLatest(state =>
       ajax$(state.globals.root + 'me', selectUserAjaxOpts(state)),
     )
-    .flatMap(response => response.json())
+    .flatMap(response => response.json().mapErrors(err => new JsonError(err)))
     .flatMap(response =>
       userResponse
         .validate(response, [])

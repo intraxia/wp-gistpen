@@ -10,6 +10,7 @@ import {
 import { CommitsState } from '../reducers';
 import { RootAction } from '../util';
 import { GlobalsState } from '../globals';
+import { foldResponse } from '../api';
 
 type AuthorServices = {
   ajax$: typeof ajax$;
@@ -50,14 +51,5 @@ export const authorDelta = ({ ajax$ }: AuthorServices) => (
             },
           }),
         ),
-      )
-        .flatMap(response => response.json())
-        .flatMap(response =>
-          apiAuthor.is(response)
-            ? Kefir.constant(fetchAuthorSucceeded(response))
-            : Kefir.constantError(
-                new TypeError('Author response was not the expected shape'),
-              ),
-        )
-        .flatMapErrors(err => Kefir.constant(fetchAuthorFailed(err))),
+      ).thru(foldResponse(apiAuthor, fetchAuthorSucceeded, fetchAuthorFailed)),
     );

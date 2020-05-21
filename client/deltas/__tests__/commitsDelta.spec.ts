@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import sinon from 'sinon';
-import { ObsResponse } from 'kefir-ajax';
+import { ObsResponse, NetworkError } from 'kefir-ajax';
 import {
   routeChange,
   commitsFetchStarted,
@@ -125,7 +125,7 @@ describe('commitsDelta', () => {
         'Content-Type': 'application/json',
       },
     };
-    const payload = new TypeError('Network request failed');
+    const payload = new NetworkError('error');
     const services = createServices();
     const effect$ = KTU.stream();
 

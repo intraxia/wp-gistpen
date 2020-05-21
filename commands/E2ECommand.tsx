@@ -1,6 +1,6 @@
 import path from 'path';
 import { Command } from 'brookjs-cli';
-import { ofType, useDelta, Delta } from 'brookjs';
+import { ofType, useDelta, Delta, sampleByAction } from 'brookjs';
 import { Box, Color, AppContext } from 'ink';
 import Kefir, { Observable } from 'kefir';
 import React, { useContext, useEffect } from 'react';
@@ -115,14 +115,8 @@ const startup: Delta<Action, State> = (action$, state$) =>
 const setupTestsPath = (state: State, testExtension: string) =>
   path.join(state.cwd, state.e2e.dir ?? 'e2e', `setupTests.${testExtension}`);
 
-const sampleStateAtAction = <A extends { type: string }, S>(
-  action$: Observable<A, never>,
-  state$: Observable<S, never>,
-  action: ActionCreator<A['type']>
-) => state$.sampledBy(action$.thru(ofType(action)));
-
 const tests: Delta<Action, State> = (action$, state$) =>
-  sampleStateAtAction(action$, state$, actions.startup.success)
+  state$.thru(sampleByAction(action$, actions.startup.success))
     .flatMap(state =>
       Kefir.combine({
         cwd: Kefir.constant(state.cwd),
@@ -186,7 +180,7 @@ const tests: Delta<Action, State> = (action$, state$) =>
       return [argv, [cwd]];
     })
     .flatMap(([argv, projects]) =>
-      Kefir.stream(emitter => {
+      Kefir.stream<Action, never>(emitter => {
         process.env.NODE_ENV = 'test';
         process.env.BABEL_ENV = 'test';
         emitter.value(actions.testRun.request());
@@ -199,7 +193,8 @@ const tests: Delta<Action, State> = (action$, state$) =>
           emitter.value(actions.shutdown.request());
         });
       })
-    );
+    )
+    .flatMapErrors(() => Kefir.constant(actions.testRun.failure()));
 
 const reducer = (state: State, action: Action): State => {
   switch (action.type) {
