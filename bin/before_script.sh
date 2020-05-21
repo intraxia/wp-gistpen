@@ -53,8 +53,8 @@ elif [[ $E2E == 'true' ]]; then
 	npm run env docker-run -- php composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader
 	npm run env cli plugin activate wp-gistpen
 else
-	# If it's not this specific version.
-	if [[ !($TRAVIS_PHP_VERSION == '5.6' && $WP_VERSION == 'latest' && $WP_MULTISITE == '0') ]]; then
+	# If it's not this specific version. Currently disabled.
+	if [[ !($TRAVIS_PHP_VERSION == '5.6' && $WP_VERSION == 'disabled' && $WP_MULTISITE == '0') ]]; then
 		# Remove xdebug (makes the build slow).
 		phpenv config-rm xdebug.ini;
 	else
