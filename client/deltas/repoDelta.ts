@@ -11,7 +11,7 @@ import {
 } from '../actions';
 import { RootAction } from '../util';
 import { RepoState, EditorState, EditorInstance } from '../reducers';
-import { ApiRepo, ValidationError } from '../api';
+import { ApiRepo, ValidationError, JsonError } from '../api';
 import { GlobalsState } from '../globals';
 
 type RepoDeltaState = {
@@ -75,7 +75,9 @@ export const repoDelta = ({ ajax$ }: RepoDeltaServices) => (
                 'Content-Type': 'application/json',
               },
             })
-              .flatMap(response => response.json())
+              .flatMap(response =>
+                response.json().mapErrors(err => new JsonError(err)),
+              )
               .flatMap(response =>
                 ApiRepo.validate(response, []).fold<
                   Observable<ApiRepo, ValidationError>

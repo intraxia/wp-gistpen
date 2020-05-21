@@ -2,6 +2,7 @@ import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
 import { jobFetchSucceeded, jobFetchFailed } from '../actions';
 import { RootAction, Loopable } from '../util';
+import { AjaxError } from '../api';
 
 export type MessageLevel = 'error' | 'warning' | 'success' | 'info' | 'debug';
 
@@ -45,7 +46,7 @@ export type Job = {
   runs?: Loopable<string, Run>;
 };
 
-export type JobError = { result: 'error'; error: Error };
+export type JobError = { result: 'error'; error: AjaxError };
 export type JobSuccess = { result: 'success'; response: Job };
 export type JobResult = JobError | JobSuccess;
 

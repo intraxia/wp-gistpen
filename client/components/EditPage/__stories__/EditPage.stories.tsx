@@ -1,6 +1,7 @@
 import { storiesOf } from '@storybook/react';
 import React from 'react';
 import EditPage from '../';
+import { JsonError } from '../../../api';
 
 storiesOf('EditPage', module).add('with error', () => (
   <div id="wpbody">
@@ -27,7 +28,7 @@ storiesOf('EditPage', module).add('with error', () => (
         },
       ]}
       languages={[]}
-      errors={[new TypeError('API response was bad')]}
+      errors={[new JsonError(new TypeError('API response was bad'))]}
     />
   </div>
 ));

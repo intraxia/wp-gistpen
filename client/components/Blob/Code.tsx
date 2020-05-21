@@ -20,15 +20,19 @@ const Code: React.RefForwardingComponent<HTMLElement, Props> = (props, ref) => (
   </code>
 );
 
+const highlightElement = (el: HTMLElement) => () => {
+  Prism.highlightElement(el, false);
+  return Kefir.never();
+};
+
 const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
   ref$.flatMap(el =>
     props$
       .skipDuplicates((a, b) => a.prism === b.prism)
       .flatMapLatest(props =>
-        Kefir.fromPromise(updatePrism(props.prism)).flatMap(() => {
-          Prism.highlightElement(el, false);
-          return Kefir.never();
-        }),
+        Kefir.fromPromise(updatePrism(props.prism))
+          .flatMap(highlightElement(el))
+          .flatMapErrors(highlightElement(el)),
       ),
   );
 

@@ -23,7 +23,7 @@ import {
   ajaxFailed,
 } from '../actions';
 import { RootAction, Cursor, Toggle } from '../util';
-import { ValidationError } from '../api';
+import { AjaxError } from '../api';
 
 export type EditorSnapshot = {
   code: string;
@@ -55,7 +55,7 @@ export type EditorState = {
   theme: string;
   invisibles: Toggle;
   tabs: Toggle;
-  errors: ValidationError[];
+  errors: AjaxError[];
 };
 
 const defaultInstance: EditorInstance = {

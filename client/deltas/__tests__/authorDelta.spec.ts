@@ -1,13 +1,14 @@
 /* eslint-env jest */
 import sinon, { SinonStub } from 'sinon';
 import Kefir from 'kefir';
-import { ajax$ } from 'kefir-ajax';
+import { ajax$, NetworkError } from 'kefir-ajax';
 import { authorDelta } from '../authorDelta';
 import {
   commitsFetchSucceeded,
   fetchAuthorFailed,
   fetchAuthorSucceeded,
 } from '../../actions';
+import { JsonError } from '../../api';
 
 describe('authorDelta', () => {
   const state = {
@@ -45,7 +46,7 @@ describe('authorDelta', () => {
   });
 
   it('should emit error if request fails', () => {
-    const error = new TypeError('Network error');
+    const error = new NetworkError('error');
 
     stub.returns(Kefir.constantError(error));
 
@@ -67,27 +68,7 @@ describe('authorDelta', () => {
     );
 
     expect(authorDelta(services)).toEmitFromDelta(
-      [[0, KTU.value(fetchAuthorFailed(error))]],
-      send => {
-        send(commitsFetchSucceeded({} as any), state);
-      },
-    );
-  });
-
-  it('should emit an error if response does not match expected', () => {
-    const error = new TypeError('Author response was not the expected shape');
-
-    stub.returns(
-      Kefir.constant({
-        json: () =>
-          Kefir.constant({
-            random: 'property',
-          }),
-      }),
-    );
-
-    expect(authorDelta(services)).toEmitFromDelta(
-      [[0, KTU.value(fetchAuthorFailed(error))]],
+      [[0, KTU.value(fetchAuthorFailed(new JsonError(error)))]],
       send => {
         send(commitsFetchSucceeded({} as any), state);
       },
