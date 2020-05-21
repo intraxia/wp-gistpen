@@ -53,17 +53,6 @@ elif [[ $E2E == 'true' ]]; then
 	npm run env docker-run -- php composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader
 	npm run env cli plugin activate wp-gistpen
 else
-	# If it's not this specific version.
-	if [[ !($TRAVIS_PHP_VERSION == '5.6' && $WP_VERSION == 'latest' && $WP_MULTISITE == '0') ]]; then
-		# Remove xdebug (makes the build slow).
-		phpenv config-rm xdebug.ini;
-	else
-		# We're generating code coverage, so download the reporter.
-		curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-		chmod +x ./cc-test-reporter
-		./cc-test-reporter before-build
-	fi
-
 	composer self-update
 	composer install
 	bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
@@ -73,4 +62,21 @@ else
 	mv wp-cli.phar $PWD/.bin/wp
 	export PATH=$PATH:$PWD/.bin/
 	wp --version
+
+	# If it's not this specific version.
+	if [[ !($TRAVIS_PHP_VERSION == '7.3' && $WP_VERSION == 'latest' && $WP_MULTISITE == '0') ]]; then
+		# Remove xdebug (makes the build slow).
+		phpenv config-rm xdebug.ini;
+	else
+		# We're generating code coverage, so download the reporter.
+		curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+		chmod +x ./cc-test-reporter
+		./cc-test-reporter before-build
+
+		composer update
+		lib/bin/phpunit --dump-xdebug-filter test/xdebug-filter.php
+		# Needed because the generated file doesn't conform.
+		composer dev:format
+		sed -i 's/\(bin\/phpunit\)/\1 --prepend test\/xdebug-filter.php/' $PWD/composer.json
+	fi
 fi
