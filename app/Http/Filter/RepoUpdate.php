@@ -23,6 +23,7 @@ class RepoUpdate extends RepoCreate {
 
 		$rules['id'] = [
 			'required' => true,
+			'type'     => 'integer',
 		];
 
 		return $rules;

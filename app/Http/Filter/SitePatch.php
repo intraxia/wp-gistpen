@@ -26,8 +26,11 @@ class SitePatch implements FilterContract {
 			'prism' => [
 				'description'       => __( 'Prism syntax highlighting configuration', 'wp-gistpen' ),
 				'required'          => false,
-				'type'              => 'array',
-				'sanitize_callback' => [ $this, 'sanitize_prism' ],
+				'type'              => 'object',
+				'properties' => [
+
+				],
+				'additionalProperties' => false,
 			],
 			'gist'  => [
 				'description'       => __( 'Gist sync configuration', 'wp-gistpen' ),

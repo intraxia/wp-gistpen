@@ -9,13 +9,21 @@ use Intraxia\Jaxion\Http\Filter;
  * @package Intraxia\Gistpen\Http
  * @subpackage Filters
  */
-class Search extends Filter {
+class Search extends BaseFilter {
 	/**
-	 * Constructor.
+	 * Generates argument rules.
+	 *
+	 * Returns an array matching the WP-API format for argument rules,
+	 * including sanitization, validation, required, or defaults.
+	 *
+	 * @return array
 	 */
-	public function __construct() {
-		parent::__construct( [
-			's' => 'default',
-		] );
+	public function rules() {
+		return [
+			's' => [
+				'required'=> false,
+				'type' => 'string',
+			]
+			];
 	}
 }

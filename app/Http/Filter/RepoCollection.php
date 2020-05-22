@@ -23,26 +23,8 @@ class RepoCollection extends BaseFilter {
 			'page' => array(
 				'required'          => false,
 				'default'           => 1,
-				'sanitize_callback' => array( $this, 'sanitize_page' ),
+				'type'              => 'integer',
 			),
-		);
-	}
-
-	/**
-	 * Ensure the page value is a number.
-	 *
-	 * @param  array $page    Blobs parameter.
-	 * @return WP_Errpr|array Sanitized blobs.
-	 */
-	public function sanitize_page( $page ) {
-		if ( is_numeric( $page ) ) {
-			return (int) $page;
-		}
-
-		return new WP_Error(
-			'page_not_number',
-			'Param "page" is not a number, received ' . $page,
-			array( 'status' => 400 )
 		);
 	}
 }
