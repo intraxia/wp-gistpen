@@ -117,6 +117,20 @@ class Database implements HasActions {
 		$this->em->persist( $new_commit );
 	}
 
+	public function add_blob_commit( Blob $blob ) {
+		$repo = $this->em->find( Repo::class, $blob->repo_id, [
+			'with' => [
+				'blobs' => [
+					'with' => [
+						'language' => []
+					]
+				]
+			]
+		] );
+
+		$this->add_commit( $repo );
+	}
+
 	/**
 	 * Remove the action hook to save a post revision
 	 *
@@ -211,6 +225,14 @@ class Database implements HasActions {
 			array(
 				'hook'   => 'wpgp.persist.repo',
 				'method' => 'add_commit',
+			),
+			array(
+				'hook'   => 'wpgp.create.blob',
+				'method' => 'add_blob_commit',
+			),
+			array(
+				'hook'   => 'wpgp.persist.blob',
+				'method' => 'add_blob_commit',
 			),
 			array(
 				'hook'     => 'post_updated',
