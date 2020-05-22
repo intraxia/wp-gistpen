@@ -1,0 +1,117 @@
+@import "../components/EditPage/common";
+
+#wpbody .editor.page {
+    box-sizing: border-box;
+    overflow: auto;
+
+    & > div {
+        &.code-toolbar .toolbar {
+            white-space: initial;
+            opacity: 1;
+            font-size: 16px;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+
+            span, button, a {
+                &:hover, &:focus {
+                    color: #BBB;
+                }
+            }
+
+            .toolbar-item {
+                line-height: 1em;
+
+                button {
+                    cursor: pointer;
+                }
+
+                select {
+                    height: initial;
+                    color: #BBB;
+                    font-size: 0.8em;
+                    padding: 0 0.5em;
+                    background: #F5F2F0;
+                    background: rgba(224, 224, 224, 0.2);
+                    box-shadow: 0 2px 0 0 rgba(0, 0, 0, 0.2);
+                    border-radius: 0.5em;
+                    border: none;
+                }
+
+                .wpgp-filename-input {
+                    min-width: 5em;
+                    display: block;
+
+                    &:empty::before {
+                        content: 'filename';
+                        filter: brightness(65%);
+                    }
+                }
+            }
+        }
+
+        pre > code {
+            font-size: 16px;
+            padding: 0;
+            outline: none;
+            display: initial;
+        }
+    }
+
+    .line-numbers .line-numbers-rows {
+        font-size: 16px;
+        top: 50%;
+        left: -0.25em;
+        transform: translateY(-50%);
+    }
+
+    @each $theme, $variables in $themes {
+        &.wpgp-editor-theme-#{$theme} {
+            > div.code-toolbar .toolbar .toolbar-item {
+                span, select, button {
+                    border: 0.15em solid transparent;
+                    color: map-get($variables, "controls-text");
+                    background: map-get($variables, "control-background");
+
+                    &:focus {
+                        border-color: map-get($variables, "controls-text");
+                        outline: none;
+                    }
+                }
+            }
+
+            @if $theme == 'cb' {
+                .line-numbers-rows span {
+                    padding-right: 0;
+                }
+            }
+
+            @if $theme == 'ghcolors' {
+                .line-numbers .line-numbers-rows {
+                    line-height: 1.2;
+                }
+
+                code {
+                    background: map-get($variables, "controls-background");
+                }
+            }
+
+            @if $theme == 'coy' {
+                pre[class*="language-"].line-numbers.line-numbers code {
+                    padding-left: 3.8em;
+                    display: block;
+                }
+
+                pre[class*="language-"].line-numbers.line-numbers {
+                    position: relative;
+                }
+
+                .line-numbers .line-numbers-rows {
+                    left: 0.75em;
+                }
+            }
+        }
+    }
+
+    pre[class*="language-"].line-numbers {
+        position: static;
+    }
+}

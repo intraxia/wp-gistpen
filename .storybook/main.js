@@ -13,7 +13,7 @@ const brookConfig = webpack.selectWebpackConfig({
 module.exports = {
   stories: ['../client/**/__stories__/*.stories.tsx'],
   addons: ['@storybook/addon-actions', 'brookjs-desalinate/register'],
-  webpackFinal: async config => ({
+  webpackFinal: config => ({
     ...config,
     module: {
       ...config.module,

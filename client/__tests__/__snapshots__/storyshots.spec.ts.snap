@@ -8798,6 +8798,132 @@ exports[`Storyshots Messages default 1`] = `
 </div>
 `;
 
+exports[`Storyshots Prism Editor Basic 1`] = `
+<div
+  class="code-toolbar"
+>
+  <div
+    class="toolbar"
+  />
+  <pre
+    class="language-js line-numbers"
+    spellcheck="false"
+  >
+    <code
+      class="language-js"
+      contenteditable="true"
+      data-testid="editor-code"
+      spellcheck="false"
+      style="outline: none;"
+      tabindex="0"
+    />
+  </pre>
+</div>
+`;
+
+exports[`Storyshots Prism Editor With Tabs 1`] = `
+<div
+  class="code-toolbar"
+>
+  <div
+    class="toolbar"
+  />
+  <pre
+    class="language-js line-numbers"
+    spellcheck="false"
+  >
+    <code
+      class="language-js"
+      contenteditable="true"
+      data-testid="editor-code"
+      spellcheck="false"
+      style="outline: none;"
+      tabindex="0"
+    />
+  </pre>
+</div>
+`;
+
+exports[`Storyshots Prism Editor With Toolbar 1`] = `
+<div
+  class="code-toolbar"
+>
+  <div
+    class="toolbar"
+  >
+    <div
+      class="toolbar-item"
+    >
+      <span
+        aria-label="Input"
+        contenteditable="true"
+        spellcheck="false"
+        tabindex="0"
+      />
+    </div>
+    <div
+      class="toolbar-item"
+    >
+      <label
+        for="yes-or-no"
+      >
+        Yes or no?
+      </label>
+      <select
+        id="yes-or-no"
+      >
+        <option
+          value="yes"
+        >
+          Yes
+        </option>
+        <option
+          value="no"
+        >
+          No
+        </option>
+      </select>
+    </div>
+  </div>
+  <pre
+    class="language-js line-numbers"
+    spellcheck="false"
+  >
+    <code
+      class="language-js"
+      contenteditable="true"
+      data-testid="editor-code"
+      spellcheck="false"
+      style="outline: none;"
+      tabindex="0"
+    />
+  </pre>
+</div>
+`;
+
+exports[`Storyshots Prism Editor With Width 1`] = `
+<div
+  class="code-toolbar"
+>
+  <div
+    class="toolbar"
+  />
+  <pre
+    class="language-js line-numbers"
+    spellcheck="false"
+  >
+    <code
+      class="language-js"
+      contenteditable="true"
+      data-testid="editor-code"
+      spellcheck="false"
+      style="outline: none;"
+      tabindex="0"
+    />
+  </pre>
+</div>
+`;
+
 exports[`Storyshots Repo default 1`] = `
 <div>
   <pre
