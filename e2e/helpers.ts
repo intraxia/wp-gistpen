@@ -19,47 +19,43 @@ export const acceptDialog = async (dialog: Dialog) => {
   await dialog.accept();
 };
 
-const jsDockerPath = `/var/www/src/wp-content/plugins/wp-gistpen/resources/samples/js`;
+const jsDockerPath = (slug: string) =>
+  `/var/www/html/wp-content/plugins/wp-gistpen/resources/samples/${slug}`;
 
-export const createGistpen = async ({ description = 'Test', filename = 'js' } = {}) => {
+export const createGistpen = async ({
+  description = 'Test',
+  filename = 'test.js',
+  slug = 'js',
+} = {}) => {
   let run = await execa.command(
-    `npm run env cli gistpen repo create -- --description='${description}' --status='publish' --porcelain`,
+    `npm run env run tests-cli "gistpen repo create --description='${description}' --status='publish' --porcelain"`,
+    { shell: '/bin/sh' },
   );
-  let repoId =
-    run.stdout
-      .split('\n')
-      .filter(Boolean)
-      .pop() ?? '';
+  let repoId = run.stdout.split('\n').filter(Boolean).pop() ?? '';
 
   if (!repoId) {
     throw new Error(`Failed to parse repo id from output: ${run.stdout}`);
   }
 
   run = await execa.command(
-    `npm run env cli gistpen repo get ${repoId} -- --field='html_url'`,
+    `npm run env run tests-cli "gistpen repo get ${repoId} --field='html_url'"`,
+    { shell: '/bin/sh' },
   );
 
-  let repoUrl =
-    run.stdout
-      .split('\n')
-      .filter(Boolean)
-      .pop() ?? '';
+  let repoUrl = run.stdout.split('\n').filter(Boolean).pop() ?? '';
 
   if (!repoUrl) {
     throw new Error(`Failed to parse repo url from output: ${run.stdout}`);
   }
 
   run = await execa.command(
-    process.env.SKIP_IMAGE_TESTS !== 'true'
-      ? `npm run env cli gistpen blob create -- --repo_id=${repoId} --filename='placeholder' --porcelain`
-      : `npm run env cli gistpen blob create ${jsDockerPath}  -- --repo_id=${repoId} --filename='${filename}' --language='js' --porcelain`,
+    `npm run env run tests-cli "gistpen blob create ${jsDockerPath(
+      slug,
+    )}  --repo_id=${repoId} --filename='${filename}' --language='${slug}' --porcelain"`,
+    { shell: '/bin/sh' },
   );
 
-  let blobId =
-    run.stdout
-      .split('\n')
-      .filter(Boolean)
-      .pop() ?? '';
+  let blobId = run.stdout.split('\n').filter(Boolean).pop() ?? '';
 
   if (!blobId) {
     throw new Error(`Failed to parse blob id from output: ${run.stdout}`);

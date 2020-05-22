@@ -21,11 +21,11 @@
     "dev:tdd": "beaver test unit --watch",
     "dev:storybook": "start-storybook -s ./resources/assets -p 9001 -c .storybook",
     "dev:format": "beaver format",
-    "env": "wp-scripts env",
-    "env:php:format": "npm run env docker-run php composer dev:format",
-    "env:php:test": "npm run env docker-run php composer test",
-    "env:php:test:lint": "npm run env docker-run php composer test:lint",
-    "env:php:test:unit": "npm run env docker-run php composer test:unit",
+    "env": "wp-env",
+    "env:php:format": "npm run env run tests-cli composer dev:format",
+    "env:php:test": "npm run env run tests-cli composer test",
+    "env:php:test:lint": "npm run env run tests-cli composer test:lint",
+    "env:php:test:unit": "npm run env run tests-cli composer test:unit",
     "gen": "npm run gen:coc && npm run gen:pot",
     "gen:coc": "weallbehave -o .",
     "gen:pot": "wp-pot --bug-report http://github.com/intraxia/wp-gistpen --domain wp-gistpen --package wp-gistpen --src 'app/**/*.php' --relative-to . --dest-file languages/wp-gistpen.pot"
@@ -67,8 +67,8 @@
     "@wordpress/block-editor": "^4.3.5",
     "@wordpress/components": "^9.6.0",
     "@wordpress/dependency-extraction-webpack-plugin": "^2.8.0",
-    "@wordpress/e2e-test-utils": "^4.11.2",
-    "@wordpress/scripts": "^9.0.0",
+    "@wordpress/e2e-test-utils": "^4.16.0",
+    "@wordpress/env": "^3.0.0",
     "babel-plugin-prismjs": "^2.0.1",
     "brookjs-cli": "1.0.0-beta.19",
     "brookjs-desalinate": "1.0.0-beta.17",
@@ -116,11 +116,5 @@
     "sprintf-js": "^1.1.2",
     "typesafe-actions": "^4.4.2",
     "typescript-nullable": "^0.6.0"
-  },
-  "wp-env": {
-    "plugin-dir": "wp-gistpen",
-    "plugin-name": "WP-Gistpen",
-    "docker-template": "./bin/docker-compose.override.yml.template",
-    "welcome-build-command": "npm run dev:app"
   }
 }

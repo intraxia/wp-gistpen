@@ -72,12 +72,12 @@ interface E2ERC {
 // This is what's going to be defined in the E2E key in the rc file.
 const e2e: E2ERC = {
   async startup() {
-    await execa.command('wp-scripts env start');
+    await execa.command('wp-env start');
     return 'Started!';
   },
 
   async shutdown() {
-    await execa.command('wp-scripts env stop');
+    await execa.command('wp-env stop');
     return 'Stopped!';
   }
 };
