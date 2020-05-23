@@ -16,6 +16,9 @@ class PrismLanguageGenerationPlugin {
 
   prev = null;
 
+  /**
+   * @param {import('webpack').Compiler} compiler
+   */
   apply(compiler) {
     const cb = (compilation, callback) => this.emit(compilation, callback);
     compiler.plugin('watch-run', cb);
