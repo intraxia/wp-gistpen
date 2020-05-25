@@ -67,7 +67,7 @@
     "@wordpress/e2e-test-utils": "^4.7.0",
     "@wordpress/scripts": "^9.0.0",
     "babel-plugin-prismjs": "^2.0.1",
-    "brookjs-cli": "1.0.0-beta.18",
+    "brookjs-cli": "1.0.0-beta.19",
     "brookjs-desalinate": "1.0.0-beta.17",
     "copy-webpack-plugin": "^5.1.1",
     "execa": "^4.0.1",
