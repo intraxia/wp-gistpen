@@ -1,9 +1,13 @@
 import React from 'react';
 import { ofType } from 'brookjs';
-import { TextControl, Button, ErrorNotice } from '../../../wp';
+import {
+  TextControl,
+  Button,
+  ErrorNotice,
+  actions as wpActions,
+} from '../../../wp';
 import { Choosing } from '../../../search';
 import CreateOrChoose from '../CreateOrChoose';
-import { click, change } from '../../../actions';
 import {
   createRepoClick,
   createDescriptionChange,
@@ -27,7 +31,7 @@ const FilenameInput: React.FC<{ disabled: boolean; value: string }> = ({
       value={value}
       preplug={a$ =>
         a$
-          .thru(ofType(change))
+          .thru(ofType(wpActions.change))
           .map(action => createFilenameChange(action.payload.value))
       }
     />
@@ -70,7 +74,7 @@ const CreateNew: React.FC<NewRepoState> = ({
         value={description}
         preplug={a$ =>
           a$
-            .thru(ofType(change))
+            .thru(ofType(wpActions.change))
             .map(action => createDescriptionChange(action.payload.value))
         }
       />
@@ -78,7 +82,7 @@ const CreateNew: React.FC<NewRepoState> = ({
       <Button
         isPrimary
         disabled={!description || saving}
-        preplug={a$ => a$.thru(ofType(click)).map(createRepoClick)}
+        preplug={a$ => a$.thru(ofType(wpActions.click)).map(createRepoClick)}
       >
         Create repo
       </Button>

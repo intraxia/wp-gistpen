@@ -1,7 +1,11 @@
 import React from 'react';
 import { ofType, Maybe } from 'brookjs';
-import { TextControl, ErrorNotice, WarningNotice } from '../wp';
-import { change } from '../actions';
+import {
+  TextControl,
+  ErrorNotice,
+  WarningNotice,
+  actions as wpActions,
+} from '../wp';
 import {
   searchResultSelectClick,
   searchResultSelectionChange,
@@ -43,7 +47,9 @@ export const View: React.FC<{
           value={term}
           data-testid="search-input"
           preplug={e$ =>
-            e$.thru(ofType(change)).map(a => searchInput(a.payload.value))
+            e$
+              .thru(ofType(wpActions.change))
+              .map(a => searchInput(a.payload.value))
           }
         />
       </div>

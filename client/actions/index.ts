@@ -3,7 +3,6 @@ export * from './ajax';
 export * from './author';
 export * from './commits';
 export * from './editor';
-export * from './form';
 export * from './highlighting';
 export * from './init';
 export * from './jobs';
