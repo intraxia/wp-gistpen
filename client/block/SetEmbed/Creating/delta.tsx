@@ -3,7 +3,8 @@ import { Delta, sampleByAction, ofType } from 'brookjs';
 import { ajax$ } from 'kefir-ajax';
 import { RootAction } from '../../../util';
 import { createRepo, appendBlob } from '../../actions';
-import { ApiRepo, ApiBlob, foldResponse } from '../../../api';
+import { foldResponse } from '../../../api';
+import { ApiRepo, ApiBlob } from '../../../snippet';
 import { State, NewRepoState, ChooseRepoState } from './state';
 
 const isChooseState = (state: State): state is ChooseRepoState =>

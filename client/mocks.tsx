@@ -4,7 +4,7 @@ import {
   SearchRepo,
   SearchReposApiResponse,
 } from './search';
-import { ApiRepo, ApiBlob } from './api';
+import { ApiRepo, ApiBlob } from './snippet';
 
 export const blob = {
   filename: 'test.js',

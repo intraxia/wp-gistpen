@@ -2,8 +2,9 @@ import { Delta, sampleByAction, ofType } from 'brookjs';
 import Kefir, { Observable } from 'kefir';
 import * as t from 'io-ts';
 import { ajax$ } from 'kefir-ajax';
-import { RootAction, toggle } from '../util';
+import { RootAction } from '../util';
 import { ValidationError, JsonError } from '../api';
+import { Toggle } from '../snippet';
 import { search } from './actions';
 import { Collection, RepoCollection, BlobCollection } from './state';
 
@@ -22,7 +23,7 @@ export const SearchRepo = t.type({
   password: t.string,
   gist_id: t.string,
   gist_url: t.union([t.string, t.null]),
-  sync: toggle,
+  sync: Toggle,
   blobs: t.array(
     t.type({
       ID: t.number,

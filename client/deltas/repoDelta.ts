@@ -11,8 +11,9 @@ import {
 } from '../actions';
 import { RootAction } from '../util';
 import { RepoState, EditorState, EditorInstance } from '../reducers';
-import { ApiRepo, ValidationError, JsonError } from '../api';
+import { ValidationError, JsonError } from '../api';
 import { GlobalsState } from '../globals';
+import { ApiRepo } from '../snippet';
 
 type RepoDeltaState = {
   repo: RepoState;

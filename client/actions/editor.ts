@@ -1,5 +1,6 @@
 import { createAction } from 'typesafe-actions';
-import { Toggle, Cursor } from '../util';
+import { Cursor } from '../util';
+import { Toggle } from '../snippet';
 
 export type EditorValue = {
   code: string;
