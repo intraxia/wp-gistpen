@@ -27,3 +27,5 @@ beforeEach(() => {
     return;
   }
 };
+
+(global as any).__webpack_public_path__ = '/';

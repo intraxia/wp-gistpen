@@ -9,7 +9,7 @@ export const useGlobals = () => {
 
   useEffect(() => {
     setAutoloaderPath(
-      (window.__webpack_public_path__ = globals.url + 'resources/assets/'),
+      (__webpack_public_path__ = globals.url + 'resources/assets/'),
     );
   }, [globals.url]);
 
