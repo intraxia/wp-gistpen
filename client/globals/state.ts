@@ -2,6 +2,7 @@ import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
 import { RootAction } from '../util';
 import { init } from '../actions';
+import { globalsChanged } from './actions';
 
 export type GlobalsState = {
   languages: { [key: string]: string };
@@ -42,6 +43,11 @@ export const globalsReducer: EddyReducer<GlobalsState, RootAction> = (
       return {
         ...state,
         ...action.payload.globals,
+      };
+    case getType(globalsChanged):
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;
