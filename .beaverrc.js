@@ -4,6 +4,7 @@ import StyleLintPlugin from 'stylelint-webpack-plugin';
 import WebpackNotifierPlugin from 'webpack-notifier';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import DependencyExtractionWebpackPlugin from '@wordpress/dependency-extraction-webpack-plugin';
 
 const isProd = state => state.env === 'production';
 
@@ -155,6 +156,13 @@ export const webpack = {
       }),
     );
     config.plugins.push(new PrismLanguageGenerationPlugin());
+    config.plugins.push(
+      new DependencyExtractionWebpackPlugin({
+        outputFormat: 'json',
+        combineAssets: true,
+        combinedOutputFile: `wp-assets${isProd(state) ? '.min' : ''}.json`,
+      }),
+    );
 
     if (isProd(state)) {
       config.plugins[0].opts.fileName = 'asset-manifest.min.json';
@@ -176,16 +184,6 @@ export const webpack = {
         }),
       );
     }
-
-    config.externals = {
-      react: 'React',
-      'react-dom': 'ReactDOM',
-      '@wordpress/blocks': 'wp.blocks',
-      '@wordpress/components': 'wp.components',
-      '@wordpress/compose': 'wp.compose',
-      '@wordpress/element': 'wp.element',
-      '@wordpress/i18n': 'wp.i18n',
-    };
 
     return config;
   },

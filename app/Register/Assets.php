@@ -17,21 +17,6 @@ use Exception;
 class Assets {
 
 	/**
-	 * Common dependencies
-	 *
-	 * @var string[]
-	 */
-	protected static $deps = array(
-		'react',
-		'react-dom',
-		'wp-blocks',
-		'wp-i18n',
-		'wp-components',
-		'wp-element',
-		'wp-compose',
-	);
-
-	/**
 	 * Configuration for each asset entrypoint.
 	 *
 	 * @var array
@@ -149,13 +134,16 @@ class Assets {
 		$asset_manifest = $config->get_json_resource(
 			'assets/asset-manifest' . ( $debug ? '' : '.min' )
 		);
+		$wp_assets      = $config->get_json_resource(
+			'assets/wp-assets' . ( $debug ? '' : '.min' )
+		);
 
-		if ( null === $asset_manifest ) {
-			throw new Exception( 'Asset manifest not found' );
+		if ( null === $asset_manifest || null === $wp_assets ) {
+			throw new Exception( 'Asset manifest or dependencies not found' );
 		}
 
 		foreach ( $asset_manifest['entrypoints'] as $entry => $files ) {
-			$this->process_entrypoint( $assets, $entry, $files );
+			$this->process_entrypoint( $assets, $entry, $files, $wp_assets[ $entry . '.js' ]['dependencies'] );
 		}
 	}
 
@@ -165,9 +153,10 @@ class Assets {
 	 * @param Register $assets
 	 * @param string   $entry
 	 * @param array    $files
+	 * @param array    $deps
 	 * @throws Exception
 	 */
-	private function process_entrypoint( Register $assets, $entry, $files ) {
+	private function process_entrypoint( Register $assets, $entry, $files, $deps ) {
 		// TinyMCE plugins are registered differently than regular assets.
 		if ( 'tinymce' === $entry ) {
 			return;
@@ -177,15 +166,21 @@ class Assets {
 			throw new Exception( 'Unexpected entry in manifest: ' . $entry );
 		}
 
+		$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
 		/** App slug @var string $slug  */
 		$slug         = $this->container->get( 'slug' );
 		$asset_config = $this->asset_config[ $entry ];
+		/** App config. @var Config $config */
+		$config = $this->container->get( Config::class );
+		$asset  = $config->get_json_resource(
+			'assets/' . $entry . ( $debug ? '' : '.min' ) . '.asset'
+		);
 
 		foreach ( $files as $file ) {
 			if ( false !== strpos( $file, '.js' ) ) {
 				$assets->register_script( array(
 					'type'      => $asset_config['type'],
-					'deps'      => static::$deps,
+					'deps'      => $deps,
 					'condition' => isset( $asset_config['condition'] ) ? $asset_config['condition'] : null,
 					'handle'    => $slug . '-' . $entry . '-script',
 					'src'       => 'resources/assets/' . $file,
