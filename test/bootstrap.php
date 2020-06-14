@@ -61,6 +61,16 @@ $_manually_load_plugin = function() use ( $plugin_root ) {
 		$dummy_asset_manifest
 	);
 
+	create_if_missing(
+		$plugin_root . '/resources/assets/wp-assets.json',
+		[]
+	);
+
+	create_if_missing(
+		$plugin_root . '/resources/assets/wp-assets.min.json',
+		[]
+	);
+
 	require $plugin_root . '/wp-gistpen.php';
 
 	container()->get( Lifecycle::class )->activate();
