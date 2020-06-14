@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import prismSlug from '../prismSlug';
+import { prismSlug } from '../';
 
 describe('prismSlug', () => {
   it('should use the alias', () => {
