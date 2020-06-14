@@ -3,7 +3,7 @@ import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
 import { repoSaveSucceeded } from '../actions';
 import { RootAction } from '../util';
-import { ApiRepo } from '../api';
+import { ApiRepo } from '../snippet';
 
 export type RepoState = Nullable<ApiRepo>;
 

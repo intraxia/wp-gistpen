@@ -13,7 +13,7 @@ import {
   editorUpdateClick,
   editorAddClick,
 } from '../../actions';
-import { Toggle } from '../../util';
+import { Toggle } from '../../snippet';
 
 const mapCheckedToString = (e: React.ChangeEvent<HTMLInputElement>): Toggle =>
   e.target.checked ? 'on' : 'off';

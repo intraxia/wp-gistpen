@@ -1,5 +1,6 @@
 import { createAction, createAsyncAction } from 'typesafe-actions';
-import { ApiRepo, ApiBlob, AjaxError } from '../api';
+import { AjaxError } from '../api';
+import { ApiBlob, ApiRepo } from '../snippet';
 
 export const createNewClick = createAction('CREATE_NEW_CLICK');
 

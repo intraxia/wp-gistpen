@@ -1,4 +1,5 @@
-import { Cursor, Toggle } from '../../util';
+import { Cursor } from '../../util';
+import { Toggle } from '../../snippet';
 
 export type Props = {
   code: string;

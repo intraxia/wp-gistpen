@@ -1,6 +1,7 @@
 import { createAction } from 'typesafe-actions';
-import { ApiRepo, AjaxError } from '../api';
+import { AjaxError } from '../api';
 import { UserApiResponse } from '../deltas';
+import { ApiRepo } from '../snippet';
 
 export const ajaxStarted = createAction('AJAX_STARTED');
 

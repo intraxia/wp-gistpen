@@ -22,8 +22,9 @@ import {
   init,
   ajaxFailed,
 } from '../actions';
-import { RootAction, Cursor, Toggle } from '../util';
+import { RootAction, Cursor } from '../util';
 import { AjaxError } from '../api';
+import { Toggle } from '../snippet';
 
 export type EditorSnapshot = {
   code: string;
