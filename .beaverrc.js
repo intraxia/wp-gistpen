@@ -8,6 +8,8 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 const isProd = state => state.env === 'production';
 
 class PrismLanguageGenerationPlugin {
+  slug = 'prism-lang-gen';
+
   src = path.join(__dirname, 'node_modules', 'prismjs', 'components.json');
 
   dest = path.join(__dirname, 'resources', 'languages.json');
@@ -20,10 +22,11 @@ class PrismLanguageGenerationPlugin {
    * @param {import('webpack').Compiler} compiler
    */
   apply(compiler) {
-    const cb = (compilation, callback) => this.emit(compilation, callback);
-    compiler.plugin('watch-run', cb);
-    compiler.plugin('before-run', cb);
+    compiler.hooks.watchRun.tapAsync(this.slug, this.cb);
+    compiler.hooks.beforeRun.tapAsync(this.slug, this.cb);
   }
+
+  cb = (compilation, callback) => this.emit(compilation, callback);
 
   emit(compilation, callback) {
     if (this.prev !== null) {
