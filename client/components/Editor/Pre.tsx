@@ -1,5 +1,5 @@
 import React from 'react';
-import { prismSlug } from '../../helpers';
+import { prismSlug } from '../../prism';
 
 const Pre: React.FC<{ language: string }> = ({ language, children }) => (
   <pre

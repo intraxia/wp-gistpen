@@ -1,12 +1,8 @@
 import Prism from 'prismjs';
+import langs from '../../resources/languages.json';
 
 // @ts-ignore
 Prism.manual = true;
-
-if (window.__webpack_public_path__ != null) {
-  Prism.plugins.autoloader.languages_path = window.__webpack_public_path__;
-}
-
 Prism.languages.none = {};
 
 type Theme = {
@@ -63,3 +59,9 @@ export const togglePlugin = (
         }),
       ),
   );
+
+export const isAlias = (x: string): x is keyof typeof langs.aliases =>
+  x in langs.aliases;
+
+export const prismSlug = (slug: string): string =>
+  isAlias(slug) ? langs.aliases[slug] : slug;

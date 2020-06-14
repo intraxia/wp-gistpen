@@ -2,9 +2,8 @@ import Kefir from 'kefir';
 import React from 'react';
 import { withRef$, Refback } from 'brookjs';
 import Prism from 'prismjs';
-import { prismSlug } from '../../helpers';
 import { RootAction } from '../../util';
-import { setTheme, togglePlugin } from '../../prism';
+import { setTheme, togglePlugin, prismSlug } from '../../prism';
 import { Props } from './types';
 
 const updatePrism = (prism: Props['prism']) =>
