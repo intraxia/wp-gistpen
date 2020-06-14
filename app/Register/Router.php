@@ -98,6 +98,7 @@ class Router {
 			/**
 			 * /repos/{repo_id}/blobs/{blob_id} endpoints
 			 */
+			$router->get( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)', [ $controllers['blob'], 'view' ] );
 			$router->get( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)/raw', array( $controllers['blob'], 'raw' ) );
 
 			/**

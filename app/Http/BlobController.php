@@ -74,6 +74,41 @@ class BlobController implements HasFilters {
 	}
 
 	/**
+	 * Creates a new blob with the provided data.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function view( WP_REST_Request $request ) {
+		$repo_id = $request->get_param( 'repo_id' );
+
+		$repo = $this->em->find( Repo::class, $repo_id );
+
+		if ( is_wp_error( $repo ) ) {
+			$repo->add_data( array( 'status' => 404 ) );
+
+			return $repo;
+		}
+
+		$blob_id = $request->get_param( 'blob_id' );
+
+		$blob = $this->em->find( Blob::class, $blob_id, [
+			'with' => [
+				'language' => [],
+			],
+		] );
+
+		if ( is_wp_error( $blob ) ) {
+			$blob->add_data( array( 'status' => 404 ) );
+
+			return $blob;
+		}
+
+		return new WP_REST_Response( $blob->serialize(), 200 );
+	}
+
+	/**
 	 * Fetches the requested Blob and sets up the appropriate response.
 	 *
 	 * @param WP_REST_Request $request
