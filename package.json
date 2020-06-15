@@ -92,7 +92,7 @@
     "weallbehave": "^1.2.0",
     "webpack-bundle-analyzer": "^3.7.0",
     "webpack-notifier": "^1.8.0",
-    "wp-pot-cli": "^1.4.2"
+    "wp-pot-cli": "^1.4.3"
   },
   "dependencies": {
     "brookjs": "1.0.0-beta.17",
