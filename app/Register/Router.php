@@ -5,6 +5,7 @@ use Intraxia\Jaxion\Http\Filter;
 use Intraxia\Jaxion\Http\Guard;
 use Intraxia\Jaxion\Http\Router as CoreRouter;
 use Intraxia\Gistpen\Http\Filter\BlobCreate as BlobCreateFilter;
+use Intraxia\Gistpen\Http\Filter\BlobUpdate as BlobUpdateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCollection as RepoCollectionFilter;
 use Intraxia\Gistpen\Http\Filter\RepoCreate as RepoCreateFilter;
 use Intraxia\Gistpen\Http\Filter\RepoUpdate as RepoUpdateFilter;
@@ -99,6 +100,10 @@ class Router {
 			 * /repos/{repo_id}/blobs/{blob_id} endpoints
 			 */
 			$router->get( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)', [ $controllers['blob'], 'view' ] );
+			$router->put( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)', [ $controllers['blob'], 'update' ], [
+				'filter' => $this->container->get( BlobUpdateFilter::class ),
+				'guard'  => new Guard( array( 'rule' => 'can_edit_others_posts' ) ),
+			] );
 			$router->get( '/repos/(?P<repo_id>\d+)/blobs/(?P<blob_id>\d+)/raw', array( $controllers['blob'], 'raw' ) );
 
 			/**
