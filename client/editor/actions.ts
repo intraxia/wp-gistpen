@@ -39,3 +39,8 @@ export const editorWidthChange = createAction(
   'EDITOR_WIDTH_CHANGE',
   resolve => (width: number) => resolve({ width }),
 );
+
+export const editorStateChange = createAction(
+  'EDITOR_STATE_CHANGE',
+  resolve => (code: string, cursor: Cursor) => resolve({ code, cursor }),
+);

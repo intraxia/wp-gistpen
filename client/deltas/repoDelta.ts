@@ -9,7 +9,7 @@ import {
   ajaxFinished,
   repoSaveSucceeded,
 } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { RepoState, EditorState, EditorInstance } from '../reducers';
 import { ValidationError, JsonError } from '../api';
 import { GlobalsState } from '../globals';

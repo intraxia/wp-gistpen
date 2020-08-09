@@ -1,6 +1,6 @@
 import { EddyReducer, Maybe } from 'brookjs';
 import { getType } from 'typesafe-actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { embedSet } from './actions';
 
 export type SetEmbed = {

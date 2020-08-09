@@ -9,7 +9,7 @@ import {
   commitsFetchSucceeded,
   commitsFetchFailed,
 } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { RepoState } from '../reducers';
 import { GlobalsState } from '../globals';
 import { foldResponse } from '../api';

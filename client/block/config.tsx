@@ -10,6 +10,11 @@ type Config = BlockConfig<Attributes>;
 
 export const title: Config['title'] = __('Gistpen Code Snippet', 'wp-gistpen');
 
+export const description: Config['description'] = __(
+  'Add or edit a code snippet to insert into your post.',
+  'wp-gistpen',
+);
+
 export const icon: Config['icon'] = { src: 'editor-code' };
 
 export const category: Config['category'] = 'widgets';

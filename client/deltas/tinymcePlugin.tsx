@@ -9,7 +9,7 @@ import {
   tinymcePopupInsertClick,
   tinymcePopupCloseClick,
 } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { SearchState, AjaxState } from '../reducers';
 
 declare global {

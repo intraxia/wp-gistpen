@@ -2,7 +2,7 @@ import Kefir from 'kefir';
 import React from 'react';
 import { withRef$, Refback } from 'brookjs';
 import Prism from 'prismjs';
-import { RootAction } from '../../util';
+import { RootAction } from '../../RootAction';
 import { setTheme, togglePlugin, prismSlug } from '../../prism';
 import { Props } from './types';
 

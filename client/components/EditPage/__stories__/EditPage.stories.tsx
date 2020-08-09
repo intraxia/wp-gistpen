@@ -23,7 +23,7 @@ storiesOf('EditPage', module).add('with error', () => (
           ID: '1',
           code: '\n',
           filename: '',
-          cursor: false as const,
+          cursor: null,
           language: 'js',
         },
       ]}

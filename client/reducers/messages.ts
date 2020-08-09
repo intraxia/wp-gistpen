@@ -1,7 +1,7 @@
 import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
 import { messagesFetchSucceeded } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { Message } from './jobs';
 
 export type MessagesState = {

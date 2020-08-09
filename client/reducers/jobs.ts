@@ -1,8 +1,15 @@
 import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
 import { jobFetchSucceeded, jobFetchFailed } from '../actions';
-import { RootAction, Loopable } from '../util';
+import { RootAction } from '../RootAction';
 import { AjaxError } from '../api';
+
+type Loopable<I extends string, E> = {
+  order: Array<I>;
+  dict: {
+    [key: string]: E;
+  };
+};
 
 export type MessageLevel = 'error' | 'warning' | 'success' | 'info' | 'debug';
 

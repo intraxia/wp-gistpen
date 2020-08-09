@@ -3,28 +3,29 @@ import { EddyReducer } from 'brookjs';
 import {
   editorThemeChange,
   editorTabsToggle,
-  editorWidthChange,
   editorInvisiblesToggle,
   editorDescriptionChange,
   editorStatusChange,
   editorSyncToggle,
   editorAddClick,
-  editorDeleteClick,
-  editorCursorMove,
-  editorFilenameChange,
-  editorLanguageChange,
-  editorIndent,
-  editorMakeNewline,
+  editorDeleteClickWithKey,
+  editorCursorMoveWithKey,
+  editorFilenameChangeWithKey,
+  editorLanguageChangeWithKey,
+  editorIndentWithKey,
+  editorMakeNewlineWithKey,
   EditorValue,
   EditorIndentValue,
-  editorValueChange,
+  editorValueChangeWithKey,
   repoSaveSucceeded,
   init,
   ajaxFailed,
 } from '../actions';
-import { RootAction, Cursor } from '../util';
+import { RootAction } from '../RootAction';
 import { AjaxError } from '../api';
 import { Toggle } from '../snippet';
+import { Cursor } from '../editor/types';
+import { editorWidthChange } from '../editor/actions';
 
 export type EditorSnapshot = {
   code: string;
@@ -64,7 +65,7 @@ const defaultInstance: EditorInstance = {
   filename: '',
   code: '\n',
   language: 'plaintext',
-  cursor: false,
+  cursor: null,
   history: {
     undo: [],
     redo: [],
@@ -87,7 +88,7 @@ const defaultState: EditorState = {
 
 export const editorReducer: EddyReducer<EditorState, RootAction> = (
   state = defaultState,
-  action,
+  action: RootAction,
 ) => {
   switch (action.type) {
     case getType(editorThemeChange):
@@ -103,7 +104,7 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
     case getType(editorWidthChange):
       return {
         ...state,
-        width: action.payload.value,
+        width: `${action.payload.width}`,
       };
     case getType(editorInvisiblesToggle):
       return {
@@ -136,27 +137,27 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           },
         ],
       };
-    case getType(editorDeleteClick):
+    case getType(editorDeleteClickWithKey):
       return {
         ...state,
         instances: rejectWithKey(action.meta.key, state.instances),
       };
-    case getType(editorCursorMove):
+    case getType(editorCursorMoveWithKey):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
         cursor: action.payload.cursor,
       }));
-    case getType(editorFilenameChange):
+    case getType(editorFilenameChangeWithKey):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
         filename: action.payload.value,
       }));
-    case getType(editorLanguageChange):
+    case getType(editorLanguageChangeWithKey):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
         language: action.payload.value,
       }));
-    case getType(editorIndent):
+    case getType(editorIndentWithKey):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
         ...indent(action.payload, { tabs: state.tabs, width: state.width }),
@@ -168,7 +169,7 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           }),
         },
       }));
-    case getType(editorMakeNewline):
+    case getType(editorMakeNewlineWithKey):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
         ...makeNewline(action.payload),
@@ -180,7 +181,7 @@ export const editorReducer: EddyReducer<EditorState, RootAction> = (
           }),
         },
       }));
-    case getType(editorValueChange):
+    case getType(editorValueChangeWithKey):
       return mapInstanceWithKey(state, action.meta.key, instance => ({
         ...instance,
         code: action.payload.code,

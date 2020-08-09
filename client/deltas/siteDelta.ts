@@ -1,7 +1,7 @@
 import Kefir, { Observable } from 'kefir';
 import { ajax$ } from 'kefir-ajax';
 import { ajaxStarted, ajaxFailed, ajaxFinished } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { GistState, PrismState } from '../reducers';
 import { GlobalsState } from '../globals';
 

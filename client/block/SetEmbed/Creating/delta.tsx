@@ -1,7 +1,7 @@
 import Kefir from 'kefir';
 import { Delta, sampleByAction, ofType } from 'brookjs';
 import { ajax$ } from 'kefir-ajax';
-import { RootAction } from '../../../util';
+import { RootAction } from '../../../RootAction';
 import { createRepo, appendBlob } from '../../actions';
 import { foldResponse } from '../../../api';
 import { ApiRepo, ApiBlob } from '../../../snippet';

@@ -8,7 +8,7 @@ import {
   commitsFetchSucceeded,
 } from '../../actions';
 import { commitsDelta } from '../commitsDelta';
-import { RootAction } from '../../util';
+import { RootAction } from '../../RootAction';
 
 const createServices = () => ({ ajax$: sinon.stub() });
 const globals = {

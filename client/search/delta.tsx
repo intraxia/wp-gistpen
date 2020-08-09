@@ -2,7 +2,7 @@ import { Delta, sampleByAction, ofType } from 'brookjs';
 import Kefir, { Observable } from 'kefir';
 import * as t from 'io-ts';
 import { ajax$ } from 'kefir-ajax';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { ValidationError, JsonError } from '../api';
 import { Toggle } from '../snippet';
 import { search } from './actions';

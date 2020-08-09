@@ -12,7 +12,7 @@ import {
   routerDelta,
   userDelta,
 } from '../../deltas';
-import { RootAction } from '../../util';
+import { RootAction } from '../../RootAction';
 import { init } from '../../actions';
 import { setAutoloaderPath } from '../../prism';
 import router from './router';

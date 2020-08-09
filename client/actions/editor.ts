@@ -1,6 +1,6 @@
 import { createAction } from 'typesafe-actions';
-import { Cursor } from '../util';
 import { Toggle } from '../snippet';
+import { Cursor } from '../editor/types';
 
 export type EditorValue = {
   code: string;
@@ -21,11 +21,6 @@ export const editorTabsToggle = createAction(
   resolve => (value: Toggle) => resolve({ value }),
 );
 
-export const editorWidthChange = createAction(
-  'EDITOR_WIDTH_CHANGE',
-  resolve => (value: string) => resolve({ value }),
-);
-
 export const editorInvisiblesToggle = createAction(
   'EDITOR_INVISIBLES_TOGGLE',
   resolve => (value: Toggle) => resolve({ value }),
@@ -35,8 +30,8 @@ export const editorUpdateClick = createAction('EDITOR_UPDATE_CLICK');
 
 export const editorAddClick = createAction('EDITOR_ADD_CLICK');
 
-export const editorDeleteClick = createAction(
-  'EDITOR_DELETE_CLICK',
+export const editorDeleteClickWithKey = createAction(
+  'EDITOR_DELETE_CLICK_WITH_KEY',
   resolve => (key: string | null) => resolve(undefined, { key }),
 );
 
@@ -55,24 +50,24 @@ export const editorSyncToggle = createAction(
   resolve => (value: Toggle) => resolve({ value }),
 );
 
-export const editorFilenameChange = createAction(
-  'EDITOR_FILENAME_CHANGE',
+export const editorFilenameChangeWithKey = createAction(
+  'EDITOR_FILENAME_CHANGE_WITH_KEY',
   resolve => (value: string, key: string | null) => resolve({ value }, { key }),
 );
 
-export const editorLanguageChange = createAction(
-  'EDITOR_LANGUAGE_CHANGE',
+export const editorLanguageChangeWithKey = createAction(
+  'EDITOR_LANGUAGE_CHANGE_WITH_KEY',
   resolve => (value: string, key: string | null) => resolve({ value }, { key }),
 );
 
-export const editorValueChange = createAction(
-  'EDITOR_VALUE_CHANGE',
+export const editorValueChangeWithKey = createAction(
+  'EDITOR_VALUE_CHANGE_WITH_KEY',
   resolve => (value: EditorValue, key: string | null) =>
     resolve(value, { key }),
 );
 
-export const editorIndent = createAction(
-  'EDITOR_INDENT_ACTION',
+export const editorIndentWithKey = createAction(
+  'EDITOR_INDENT_ACTION_WITH_KEY',
   resolve => (value: EditorIndentValue, key: string | null) =>
     resolve(value, { key }),
 );
@@ -82,8 +77,8 @@ export const editorMakeComment = createAction(
   resolve => (value: EditorValue) => resolve(value),
 );
 
-export const editorMakeNewline = createAction(
-  'EDITOR_MAKE_NEWLINE',
+export const editorMakeNewlineWithKey = createAction(
+  'EDITOR_MAKE_NEWLINE_WITH_KEY',
   resolve => (value: EditorValue, key: string | null) =>
     resolve(value, { key }),
 );
@@ -92,8 +87,8 @@ export const editorRedo = createAction('EDITOR_REDO');
 
 export const editorUndo = createAction('EDITOR_UNDO');
 
-export const editorCursorMove = createAction(
-  'EDITOR_CURSOR_MOVE',
+export const editorCursorMoveWithKey = createAction(
+  'EDITOR_CURSOR_MOVE_WITH_KEY',
   resolve => (cursor: Cursor, key: string | null) =>
     resolve({ cursor }, { key }),
 );

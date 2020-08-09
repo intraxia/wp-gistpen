@@ -1,26 +1,35 @@
 import './Editor.scss';
 import React, { useEffect } from 'react';
-import { useDelta, RootJunction } from 'brookjs';
+import { useDelta, RootJunction, toJunction } from 'brookjs';
+import { ActionType } from 'typesafe-actions';
 import Code from './Code';
 import { reducer, initialState } from './state';
 import { Toolbar } from './toolbar';
 import { PrismLib } from './types';
-import { editorTabsChange, editorWidthChange } from './actions';
+import {
+  editorTabsChange,
+  editorWidthChange,
+  editorStateChange,
+} from './actions';
 
-export const Editor: React.FC<{
+const Editor: React.FC<{
+  className?: string;
   Prism: PrismLib;
   toolbarItems?: React.ReactNode;
   language: string;
   tabs?: boolean;
   width?: number;
   initialCode?: string;
+  onStateChange: (action: ActionType<typeof editorStateChange>) => void;
 }> = ({
+  className,
   Prism,
   toolbarItems = null,
   language,
   tabs,
   width,
   initialCode = initialState.code,
+  onStateChange,
 }) => {
   const { state, root$, dispatch } = useDelta(reducer, {
     ...initialState,
@@ -39,8 +48,12 @@ export const Editor: React.FC<{
     }
   }, [width, dispatch]);
 
+  useEffect(() => {
+    onStateChange(editorStateChange(state.code, state.cursor));
+  }, [state.code, state.cursor, onStateChange]);
+
   return (
-    <div className="code-toolbar">
+    <div className={`code-toolbar ${className ?? ''}`.trim()}>
       <Toolbar>{toolbarItems}</Toolbar>
       <RootJunction root$={root$}>
         <pre className={`language-${language} line-numbers`} spellCheck={false}>
@@ -55,3 +68,9 @@ export const Editor: React.FC<{
     </div>
   );
 };
+
+const events = {
+  onStateChange: (e$: any) => e$,
+};
+
+export default toJunction(events)(Editor);

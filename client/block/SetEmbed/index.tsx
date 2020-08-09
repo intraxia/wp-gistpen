@@ -9,7 +9,7 @@ import {
   ofType,
 } from 'brookjs';
 import { getType } from 'typesafe-actions';
-import { RootAction } from '../../util';
+import { RootAction } from '../../RootAction';
 import { Choosing } from '../../search';
 import {
   chooseExistingClick,

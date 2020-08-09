@@ -1,6 +1,6 @@
 import { Observable, stream } from 'kefir';
 import { GlobalsState } from '../globals';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 
 type WebpackDeltaState = {
   globals: GlobalsState;

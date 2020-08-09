@@ -20,7 +20,7 @@ import {
   jobDispatchFailed,
 } from '../actions';
 import { RouteState, RunsState, JobsState, JobSuccess } from '../reducers';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { jobIsSuccess } from '../selectors';
 import { GlobalsState } from '../globals';
 import { JsonError, ValidationError } from '../api';
