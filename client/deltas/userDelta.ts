@@ -6,16 +6,16 @@ import {
   ajaxFinished,
   ajaxFailed,
   userSaveSucceeded,
-  editorWidthChange,
   editorInvisiblesToggle,
   editorTabsToggle,
   editorThemeChange,
 } from '../actions';
 import { selectUserAjaxOpts } from '../selectors';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { EditorState } from '../reducers';
 import { GlobalsState } from '../globals';
 import { ValidationError, JsonError } from '../api';
+import { editorWidthChange } from '../editor/actions';
 
 export type UserDeltaState = {
   globals: GlobalsState;

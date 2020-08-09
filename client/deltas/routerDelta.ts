@@ -4,7 +4,7 @@ import href from 'sheet-router/href';
 import hist from 'sheet-router/history';
 import { routeChange } from '../actions';
 import { getRoute, getUrl, parseQueryString } from '../selectors';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { RouteParts } from '../reducers';
 
 type HrefTarget = {

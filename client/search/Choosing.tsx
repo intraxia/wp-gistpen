@@ -1,7 +1,7 @@
 import React from 'react';
 import { ofType, useDelta, RootJunction, toJunction, Delta } from 'brookjs';
 import Kefir from 'kefir';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { useGlobals } from '../globals';
 import { searchBlobSelected, searchRepoSelected } from './actions';
 import { View } from './View';

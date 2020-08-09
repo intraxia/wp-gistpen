@@ -2,7 +2,7 @@ import { getType } from 'typesafe-actions';
 import { Nullable } from 'typescript-nullable';
 import { EddyReducer } from 'brookjs';
 import { routeChange } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 
 export type RouteParts = {
   [key: string]: string;

@@ -8,7 +8,7 @@ import {
   commitsFetchSucceeded,
 } from '../actions';
 import { CommitsState } from '../reducers';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { GlobalsState } from '../globals';
 import { foldResponse } from '../api';
 

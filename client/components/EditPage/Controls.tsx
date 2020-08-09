@@ -7,13 +7,13 @@ import {
   editorTabsToggle,
   editorThemeChange,
   editorInvisiblesToggle,
-  editorWidthChange,
   editorStatusChange,
   editorSyncToggle,
   editorUpdateClick,
   editorAddClick,
 } from '../../actions';
 import { Toggle } from '../../snippet';
+import { editorWidthChange } from '../../editor/actions';
 
 const mapCheckedToString = (e: React.ChangeEvent<HTMLInputElement>): Toggle =>
   e.target.checked ? 'on' : 'off';
@@ -212,7 +212,7 @@ const events = {
     e$.map(e => editorTabsToggle(mapCheckedToString(e))),
   onWidthChange: (
     e$: Observable<React.ChangeEvent<HTMLSelectElement>, never>,
-  ) => e$.map(e => editorWidthChange(e.target.value)),
+  ) => e$.map(e => editorWidthChange(Number(e.target.value))),
   onInvisiblesChange: (
     e$: Observable<React.ChangeEvent<HTMLInputElement>, never>,
   ) => e$.map(e => editorInvisiblesToggle(mapCheckedToString(e))),

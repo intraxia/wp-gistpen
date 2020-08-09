@@ -1,7 +1,7 @@
 import Kefir, { Observable } from 'kefir';
 import { ofType } from 'brookjs';
 import { ajax$ } from 'kefir-ajax';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { SearchState } from '../reducers';
 import { ValidationError, JsonError } from '../api';
 import { actions as searchActions, SearchApiResponse } from '../search';

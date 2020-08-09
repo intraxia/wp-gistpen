@@ -12,7 +12,7 @@ import {
   webpackDelta,
 } from '../../deltas';
 import { SettingsPage } from '../../components';
-import { RootAction } from '../../util';
+import { RootAction } from '../../RootAction';
 import { Job } from '../../reducers';
 import { setAutoloaderPath } from '../../prism';
 import mapStateToProps from './mapStateToProps';

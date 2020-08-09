@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { useDelta, Delta, RootJunction } from 'brookjs';
+import { useDelta, Delta, RootJunction, unreachable } from 'brookjs';
 import Kefir from 'kefir';
-import { RootAction } from '../util';
-import { StatusMapper } from '../components';
+import { RootAction } from '../RootAction';
 import { reducer, initialState, State, Attributes } from './state';
 import SetEmbed from './SetEmbed';
+import EditEmbed from './EditEmbed';
 
 const rootDelta: Delta<RootAction, State> = () => Kefir.never();
 
@@ -28,21 +28,22 @@ export const Block: React.FC<
     setAttributes({ blobId: state.blobId });
   }, [setAttributes, state.blobId]);
 
+  let embed: JSX.Element;
+
+  switch (state.status) {
+    case 'set-embed':
+      embed = <SetEmbed />;
+      break;
+    case 'edit-embed':
+      embed = <EditEmbed repoId={state.repoId} blobId={state.blobId} />;
+      break;
+    default:
+      return unreachable(state);
+  }
+
   return (
     <RootJunction root$={root$}>
-      <div className={className}>
-        <StatusMapper
-          status={state.status}
-          elements={{
-            'set-embed': () => <SetEmbed />,
-            'edit-embed': () => (
-              <div data-testid="edit-embed">
-                Edit blob: {state.blobId}, attached to {state.repoId}
-              </div>
-            ),
-          }}
-        />
-      </div>
+      <div className={className}>{embed}</div>
     </RootJunction>
   );
 };

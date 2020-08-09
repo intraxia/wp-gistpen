@@ -3,18 +3,19 @@ import { raf$, toJunction, withRef$, Refback } from 'brookjs';
 import React, { memo, forwardRef } from 'react';
 import Prism from 'prismjs';
 import {
-  editorCursorMove,
-  editorIndent,
+  editorCursorMoveWithKey,
+  editorIndentWithKey,
   editorMakeComment,
-  editorMakeNewline,
+  editorMakeNewlineWithKey,
   editorRedo,
   editorUndo,
-  editorValueChange,
+  editorValueChangeWithKey,
 } from '../../actions';
 import { selectSelectionStart, selectSelectionEnd } from '../../selectors';
 import { prismSlug, setTheme, togglePlugin } from '../../prism';
-import { RootAction, Cursor } from '../../util';
+import { RootAction } from '../../RootAction';
 import { Toggle } from '../../snippet';
+import { Cursor } from '../../editor/types';
 import { isSpecialEvent, languageIsEqual, editorOptionsIsEqual } from './util';
 import findOffset from './findOffset';
 
@@ -33,7 +34,10 @@ type Props = {
 };
 
 const elementToCursorMoveAction = (e: Element) =>
-  editorCursorMove([selectSelectionStart(e), selectSelectionEnd(e)], null);
+  editorCursorMoveWithKey(
+    [selectSelectionStart(e), selectSelectionEnd(e)],
+    null,
+  );
 
 // Use this to fill in type at call site.
 const mapToTargetCursorAction = <
@@ -56,9 +60,9 @@ const mapKeydownToAction = (
 
   switch (evt.keyCode) {
     case 9: // Tab
-      return editorIndent({ code, cursor, inverse }, null);
+      return editorIndentWithKey({ code, cursor, inverse }, null);
     case 13:
-      return editorMakeNewline({ code, cursor }, null);
+      return editorMakeNewlineWithKey({ code, cursor }, null);
     case 90:
       return inverse ? editorRedo() : editorUndo();
     case 191:
@@ -263,12 +267,12 @@ const refback: Refback<Props, HTMLElement, RootAction> = (ref$, props$) =>
 
 const events = {
   onBlur: (evt$: Observable<React.FocusEvent<HTMLElement>, never>) =>
-    evt$.map(() => editorCursorMove(false, null)),
+    evt$.map(() => editorCursorMoveWithKey(null, null)),
   onClick: mapToTargetCursorAction<React.MouseEvent<HTMLElement>>(),
   onFocus: mapToTargetCursorAction<React.FocusEvent<HTMLElement>>(),
   onInput: (evt$: Observable<React.ChangeEvent<HTMLElement>, never>) =>
     evt$.map(evt =>
-      editorValueChange(
+      editorValueChangeWithKey(
         {
           code: (evt.target as HTMLElement).textContent || '',
           cursor: [

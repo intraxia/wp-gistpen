@@ -1,9 +1,9 @@
 import './index.scss';
 import React, { useRef, useEffect, useMemo } from 'react';
 import Editor from '../Editor';
-import { Cursor } from '../../util';
 import { AjaxError } from '../../api';
 import { Toggle } from '../../snippet';
+import { Cursor } from '../../editor/types';
 import Description from './Description';
 import Controls from './Controls';
 

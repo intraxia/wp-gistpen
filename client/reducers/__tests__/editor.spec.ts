@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { editorIndent, editorMakeNewline } from '../../actions';
+import { editorIndentWithKey, editorMakeNewlineWithKey } from '../../actions';
 import { editorReducer, EditorState } from '../editor';
 
 describe('editorReducer', () => {
@@ -30,7 +30,7 @@ describe('editorReducer', () => {
   };
 
   it('should tab indent line the cursor is on', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: 'echo "Hello";\necho "world!";',
         cursor: [13, 13],
@@ -74,7 +74,7 @@ describe('editorReducer', () => {
   });
 
   it('should space indent by width line the cursor is on', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: 'echo "Hello";\necho "world!";',
         cursor: [13, 13],
@@ -118,7 +118,7 @@ describe('editorReducer', () => {
   });
 
   it('should space indent by width when cursor is on multiple lines', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: 'echo "Hello";\necho "world!";',
         cursor: [0, 28],
@@ -163,7 +163,7 @@ describe('editorReducer', () => {
   });
 
   it('should delete tab next to cursor if inverse', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: 'echo "Hello";\t\necho "world!";',
         cursor: [14, 14],
@@ -216,7 +216,7 @@ describe('editorReducer', () => {
   });
 
   it('should delete tab from line the cursor is on if inverse', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: '\techo "Hello";\necho "world!";',
         cursor: [14, 14],
@@ -269,7 +269,7 @@ describe('editorReducer', () => {
   });
 
   it('should delete spaces before the cursor if inverse', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: 'echo "Hello";    \necho "world!";',
         cursor: [17, 17],
@@ -323,7 +323,7 @@ describe('editorReducer', () => {
   });
 
   it('should delete spaces at start of line cursor is on if inverse', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: '    echo "Hello";\necho "world!";',
         cursor: [17, 17],
@@ -377,7 +377,7 @@ describe('editorReducer', () => {
   });
 
   it('should add newline and indentation', () => {
-    const action = editorMakeNewline(
+    const action = editorMakeNewlineWithKey(
       {
         code: '    echo "Hello";\necho "world!";',
         cursor: [17, 17],
@@ -430,7 +430,7 @@ describe('editorReducer', () => {
   });
 
   it('should remove indentation when cursor at beginning of line', () => {
-    const action = editorIndent(
+    const action = editorIndentWithKey(
       {
         code: '    echo "Hello";\necho "world!";',
         cursor: [0, 0],

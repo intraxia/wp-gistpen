@@ -1,7 +1,7 @@
 import { EddyReducer } from 'brookjs';
 import { getType } from 'typesafe-actions';
 import { fetchAuthorSucceeded } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 
 export type Author = {
   id: number;

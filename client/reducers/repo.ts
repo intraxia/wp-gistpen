@@ -2,7 +2,7 @@ import { Nullable } from 'typescript-nullable';
 import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
 import { repoSaveSucceeded } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { ApiRepo } from '../snippet';
 
 export type RepoState = Nullable<ApiRepo>;

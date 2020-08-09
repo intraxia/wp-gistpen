@@ -9,7 +9,7 @@ import {
   webpackDelta,
 } from '../../deltas';
 import { ajaxReducer, searchReducer } from '../../reducers';
-import { RootAction } from '../../util';
+import { RootAction } from '../../RootAction';
 import { globalsReducer } from '../../globals';
 
 const reducer = combineReducers({

@@ -4,9 +4,9 @@ import { toJunction } from 'brookjs';
 import ClipboardJS from 'clipboard';
 import { Observable } from 'kefir';
 import {
-  editorFilenameChange,
-  editorDeleteClick,
-  editorLanguageChange,
+  editorFilenameChangeWithKey,
+  editorDeleteClickWithKey,
+  editorLanguageChangeWithKey,
 } from '../../actions';
 import { i18n } from '../../helpers';
 import { togglePlugin } from '../../prism';
@@ -152,13 +152,16 @@ const Editor: React.FC<Props> = ({
 const events = {
   onFilenameChange: (
     evt$: Observable<React.ChangeEvent<HTMLSpanElement>, never>,
-  ) => evt$.map(e => editorFilenameChange(e.target.textContent || '', null)),
+  ) =>
+    evt$.map(e =>
+      editorFilenameChangeWithKey(e.target.textContent || '', null),
+    ),
   onLanguageChange: (
     evt$: Observable<React.ChangeEvent<HTMLSelectElement>, never>,
-  ) => evt$.map(e => editorLanguageChange(e.target.value || '', null)),
+  ) => evt$.map(e => editorLanguageChangeWithKey(e.target.value || '', null)),
   onDeleteClick: (
     evt$: Observable<React.MouseEvent<HTMLButtonElement>, never>,
-  ) => evt$.map(() => editorDeleteClick(null)),
+  ) => evt$.map(() => editorDeleteClickWithKey(null)),
 };
 
 export default toJunction(events)(Editor);

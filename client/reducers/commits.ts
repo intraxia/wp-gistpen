@@ -2,7 +2,7 @@ import { Nullable } from 'typescript-nullable';
 import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
 import { commitsFetchSucceeded, commitClick } from '../actions';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 
 // @todo flesh out & dedupe
 export type BlobState = {

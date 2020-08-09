@@ -5,7 +5,7 @@ import Editor from '../';
 const props: React.ComponentProps<typeof Editor> = {
   code: "console.log('hello')",
   filename: 'storybook.js',
-  cursor: false,
+  cursor: null,
   theme: 'twilight',
   invisibles: 'off',
   embedCode: '[gistpen id="2"]',

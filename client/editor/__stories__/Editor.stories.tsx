@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Prism from 'prismjs';
-import { Editor } from '../Editor';
+import Editor from '../Editor';
 import { ToolbarSelect, ToolbarInput } from '../toolbar';
 import { setTheme, togglePlugin } from '../../prism';
 

@@ -1,6 +1,6 @@
 import { getType } from 'typesafe-actions';
 import { EddyReducer } from 'brookjs';
-import { RootAction } from '../util';
+import { RootAction } from '../RootAction';
 import { gistTokenChange } from '../actions';
 
 export type GistState = {
