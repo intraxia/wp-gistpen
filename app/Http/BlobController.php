@@ -109,6 +109,69 @@ class BlobController implements HasFilters {
 	}
 
 	/**
+	 * Creates a new blob with the provided data.
+	 *
+	 * @param WP_REST_Request $request
+	 *
+	 * @return WP_Error|WP_REST_Response
+	 */
+	public function update( WP_REST_Request $request ) {
+		$repo_id = $request->get_param( 'repo_id' );
+
+		$repo = $this->em->find( Repo::class, $repo_id );
+
+		if ( is_wp_error( $repo ) ) {
+			$repo->add_data( array( 'status' => 404 ) );
+
+			return $repo;
+		}
+
+		$blob_id = $request->get_param( 'blob_id' );
+
+		$blob = $this->em->find( Blob::class, $blob_id, [
+			'with' => [
+				'language' => [],
+			],
+		] );
+
+		if ( is_wp_error( $blob ) ) {
+			$blob->add_data( array( 'status' => 404 ) );
+
+			return $blob;
+		}
+
+		// @TODO(mAAdhaTTah) would benefit from cleanup
+		$blob->merge( [
+			'filename' => $request->get_param( 'filename' ),
+			'code'     => $request->get_param( 'code' ),
+			'language' => $blob->language->slug === $request->get_param( 'language' )
+				? $blob->language
+				: $this->em->find( Language::class, [ 'slug' => $request->get_param( 'language' ) ] ),
+		] );
+		$blob = $this->em->persist( $blob );
+
+		if ( is_wp_error( $blob ) ) {
+			$blob->add_data( array( 'status' => 500 ) );
+
+			return $blob;
+		}
+
+		$blob = $this->em->find( Blob::class, $blob_id, [
+			'with' => [
+				'language' => [],
+			],
+		] );
+
+		if ( is_wp_error( $blob ) ) {
+			$blob->add_data( array( 'status' => 500 ) );
+
+			return $blob;
+		}
+
+		return new WP_REST_Response( $blob->serialize(), 200 );
+	}
+
+	/**
 	 * Fetches the requested Blob and sets up the appropriate response.
 	 *
 	 * @param WP_REST_Request $request
