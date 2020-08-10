@@ -117,7 +117,7 @@
     "sprintf-js": "^1.1.2",
     "typesafe-actions": "^4.4.2",
     "typescript-nullable": "^0.6.0",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.4.0"
   },
   "wp-env": {
     "plugin-dir": "wp-gistpen",
