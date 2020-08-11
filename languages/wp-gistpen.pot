@@ -1,285 +1,426 @@
-# Copyright (C) 2018 wp-gistpen
-# This file is distributed under the same license as the wp-gistpen package.
+# Copyright (C) 2020 James DiGioia
+# This file is distributed under the same license as the WP-Gistpen plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: wp-gistpen\n"
+"Project-Id-Version: WP-Gistpen 1.2.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-gistpen\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Report-Msgid-Bugs-To: http://github.com/intraxia/wp-gistpen\n"
-"X-Poedit-Basepath: ..\n"
-"X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
-"X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: *.js\n"
-"X-Poedit-SourceCharset: UTF-8\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"POT-Creation-Date: 2020-08-10T00:24:52+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.4.0\n"
+"X-Domain: wp-gistpen\n"
 
-#: app/Translator.php:22
-msgid "View Commits"
+#. Plugin Name of the plugin
+msgid "WP-Gistpen"
 msgstr ""
 
-#: app/Translator.php:23
-msgid "Delete"
+#. Plugin URI of the plugin
+msgid "http://www.jamesdigioia.com/wp-gistpen/"
 msgstr ""
 
-#: app/Translator.php:24
-msgid "Description..."
+#. Description of the plugin
+msgid "A self-hosted alternative to putting your code snippets on Gist."
 msgstr ""
 
-#: app/Translator.php:25
-msgid "Add File"
+#. Author of the plugin
+msgid "James DiGioia"
 msgstr ""
 
-#: app/Translator.php:26
-msgid "View on Gist"
+#. Author URI of the plugin
+msgid "http://www.jamesdigioia.com/"
 msgstr ""
 
-#: app/Translator.php:27
-msgid "Enable Invisibles?"
-msgstr ""
-
-#: app/Translator.php:28
-msgid "Return to Editor"
-msgstr ""
-
-#: app/Translator.php:29
-msgid "Post Status"
-msgstr ""
-
-#: app/Translator.php:30
-msgid "Sync Gistpen with Gist?"
-msgstr ""
-
-#: app/Translator.php:31
-msgid "Enable Tabs?"
-msgstr ""
-
-#: app/Translator.php:32
-msgid "Theme"
-msgstr ""
-
-#: app/Translator.php:33, app/Register/Data.php:34
-msgid "Update Gistpen"
-msgstr ""
-
-#: app/Translator.php:34
-msgid "Indentation width (in spaces)"
-msgstr ""
-
-#: app/Translator.php:35
-msgid "Translation for key %s not found."
-msgstr ""
-
-#: app/Translator.php:36
-msgid "Job Description"
-msgstr ""
-
-#: app/Translator.php:37
-msgid "Dispatch Job"
-msgstr ""
-
-#: app/Translator.php:38
-msgid "Loading..."
-msgstr ""
-
-#: app/Translator.php:39, app/Translator.php:42
-msgid "Job Name"
-msgstr ""
-
-#: app/Translator.php:40
-msgid "Job Runs"
-msgstr ""
-
-#: app/Translator.php:41
-msgid "View Runs"
-msgstr ""
-
-#: app/Translator.php:43
-msgid "Background Jobs"
-msgstr ""
-
-#: app/Translator.php:44
-msgid "Please enter a valid search term."
-msgstr ""
-
-#: app/Translator.php:45
-msgid "Loading Gistpens..."
-msgstr ""
-
-#: app/Translator.php:46
-msgid "No results found for term %s"
-msgstr ""
-
-#: app/Translator.php:47
-msgid "Please enter a search term "
-msgstr ""
-
-#: app/Translator.php:48, app/Register/Data.php:35
-msgid "Search Gistpens"
-msgstr ""
-
-#: app/Client/Gist.php:163
+#: app/Client/Gist.php:165
 msgid "No token saved."
 msgstr ""
 
-#: app/Client/Gist.php:213
+#. translators: %s: Request error.
+#: app/Client/Gist.php:216
 msgid "Authorization error. Message: %s"
 msgstr ""
 
-#: app/Client/Gist.php:222
+#. translators: %s: Request error.
+#: app/Client/Gist.php:226
 msgid "Error sending request. Message: %s"
 msgstr ""
 
-#: app/Client/Gist.php:230
+#: app/Client/Gist.php:234
 msgid "Server error."
 msgstr ""
 
-#: app/Database/EntityManager.php:82, app/Database/EntityManager.php:99, app/Database/EntityManager.php:112, app/Database/EntityManager.php:129, app/Database/EntityManager.php:165, app/Database/EntityManager.php:196, app/Database/EntityManager.php:222
+#. translators: %s: Blob ID.
+#: app/Console/Command/Blob.php:104
+msgid "Created blob %s."
+msgstr ""
+
+#. translators: %s: Blob ID.
+#: app/Console/Command/Blob.php:173
+msgid "Updated blob %s."
+msgstr ""
+
+#. translators: %s: Blob ID.
+#: app/Console/Command/Blob.php:276
+msgid "Deleted blob %s."
+msgstr ""
+
+#. translators: %s: Blob ID.
+#: app/Console/Command/Blob.php:319
+msgid "Blob with ID %s exists."
+msgstr ""
+
+#. translators: %s: Repo ID.
+#: app/Console/Command/Repo.php:83
+msgid "Created repo %s."
+msgstr ""
+
+#. translators: %s: Repo ID.
+#: app/Console/Command/Repo.php:144
+msgid "Updated repo %s."
+msgstr ""
+
+#. translators: %s: Repo ID.
+#: app/Console/Command/Repo.php:252
+msgid "Deleted repo %s."
+msgstr ""
+
+#. translators: %s: Repo ID.
+#: app/Console/Command/Repo.php:295
+msgid "Repo with ID %s exists."
+msgstr ""
+
+#: app/Database/EntityManager.php:60
+#: app/Database/EntityManager.php:77
+#: app/Database/EntityManager.php:90
+#: app/Database/EntityManager.php:107
+#: app/Database/EntityManager.php:144
+#: app/Database/EntityManager.php:178
+#: app/Database/EntityManager.php:204
 msgid "Invalid model"
 msgstr ""
 
-#: app/Http/JobsController.php:58, app/Http/JobsController.php:102, app/Http/JobsController.php:143, app/Http/JobsController.php:178, app/Http/JobsController.php:206
+#. translators: %s: Query error.
+#: app/Database/Repository/WordPressCustomTable.php:46
+#: app/Database/Repository/WordPressCustomTable.php:109
+#: app/Database/Repository/WordPressCustomTable.php:159
+#: app/Database/Repository/WordPressCustomTable.php:203
+#: app/Database/Repository/WordPressCustomTable.php:233
+#: app/Database/Repository/WordPressCustomTable.php:250
+msgid "Query failed with error: %s"
+msgstr ""
+
+#. translators: %s: Run ID.
+#: app/Database/Repository/WordPressCustomTable.php:322
+msgid "run_id %s is invalid"
+msgstr ""
+
+#. translators: %s: Post ID.
+#: app/Database/Repository/WordPressPost.php:43
+#: app/Database/Repository/WordPressPost.php:54
+msgid "post id %s is invalid"
+msgstr ""
+
+#: app/Database/Repository/WordPressPost.php:406
+msgid "Repo does not exist in the database."
+msgstr ""
+
+#: app/Database/Repository/WordPressPost.php:412
+msgid "Failed to delete Repo from the Database."
+msgstr ""
+
+#: app/Database/Repository/WordPressTerm.php:31
+msgid "Error getting term"
+msgstr ""
+
+#: app/Database/Repository/WordPressTerm.php:158
+msgid "This method is not yet implemented."
+msgstr ""
+
+#: app/Http/Filter/BlobCreate.php:37
+msgid "Blob filename."
+msgstr ""
+
+#: app/Http/Filter/BlobCreate.php:43
+msgid "Code for the blob."
+msgstr ""
+
+#: app/Http/Filter/BlobCreate.php:49
+msgid "Language the blob code is in."
+msgstr ""
+
+#: app/Http/Filter/BlobCreate.php:68
+msgid "Param \"filename\" must be a non-empty string."
+msgstr ""
+
+#: app/Http/Filter/RepoCreate.php:40
+msgid "A description of the Repo."
+msgstr ""
+
+#: app/Http/Filter/RepoCreate.php:45
+msgid "Status of the Repo."
+msgstr ""
+
+#: app/Http/Filter/RepoCreate.php:52
+msgid "Password for the Repo."
+msgstr ""
+
+#: app/Http/Filter/RepoCreate.php:57
+msgid "Whether the Repo should be synced to Gist."
+msgstr ""
+
+#: app/Http/Filter/RepoCreate.php:64
+msgid "Individual code snippets attached to the repo."
+msgstr ""
+
+#: app/Http/Filter/SitePatch.php:27
+msgid "Prism syntax highlighting configuration"
+msgstr ""
+
+#: app/Http/Filter/SitePatch.php:33
+msgid "Gist sync configuration"
+msgstr ""
+
+#. translators: prism option key
+#: app/Http/Filter/SitePatch.php:54
+msgid "Param \"prism.%s\" is not a valid request param."
+msgstr ""
+
+#: app/Http/Filter/SitePatch.php:64
+msgid "Param \"prism.theme\" is not a string."
+msgstr ""
+
+#: app/Http/Filter/SitePatch.php:71
+msgid "Param \"prism.theme\" is not a valid theme."
+msgstr ""
+
+#. translators: prism option key
+#: app/Http/Filter/SitePatch.php:82
+msgid "Param \"prism.%s\" is not a boolean."
+msgstr ""
+
+#. translators: gist option key
+#: app/Http/Filter/SitePatch.php:106
+msgid "Param \"gist.%s\" is not a valid request param."
+msgstr ""
+
+#: app/Http/Filter/SitePatch.php:115
+msgid "Param \"gist.token\" is not a string."
+msgstr ""
+
+#. translators: %s: Job slug.
+#: app/Http/JobsController.php:67
+#: app/Http/JobsController.php:111
+#: app/Http/JobsController.php:152
+#: app/Http/JobsController.php:187
+#: app/Http/JobsController.php:215
 msgid "Provided job %s is invalid."
+msgstr ""
+
+#. translators: %s: Request param.
+#: app/Http/StrictParams.php:63
+msgid "%s is not a valid request param."
+msgstr ""
+
+#. translators: %s: Request params, comma-separated.
+#: app/Http/StrictParams.php:79
+msgid "Invalid parameter(s): %s"
 msgstr ""
 
 #: app/Http/UserController.php:53
 msgid "Invalid params."
 msgstr ""
 
-#: app/Jobs/AbstractJob.php:95
+#. translators: %s: Job ID.
+#: app/Jobs/AbstractJob.php:98
 msgid "items passed into dispatch or returned by fetch_items for job %s is not a Collection"
 msgstr ""
 
-#: app/Jobs/AbstractJob.php:128
+#. translators: %s: Job ID.
+#: app/Jobs/AbstractJob.php:131
 msgid "Job %s is already running."
 msgstr ""
 
-#: app/Jobs/ExportJob.php:62
+#: app/Jobs/ExportJob.php:61
 msgid "Export all unexported gistpen repos."
 msgstr ""
 
+#. translators: %s: Invalid type for repo.
 #: app/Jobs/ExportJob.php:87
 msgid "Expected to see instance of Repo, got %s instead."
 msgstr ""
 
+#. translators: 1: Repo ID. 2: Error message.
 #: app/Jobs/ExportJob.php:114
-msgid "Error fetching gist for Repo %s. Error: %s"
+msgid "Error fetching gist for Repo %1$s. Error: %2$s"
 msgstr ""
 
-#: app/Jobs/ExportJob.php:153
-msgid "Error saving gist_id for Repo %s. Error: %s"
+#. translators: 1: Repo ID. 2: Error message.
+#: app/Jobs/ExportJob.php:154
+msgid "Error saving gist_id for Repo %1$s. Error: %2$s"
 msgstr ""
 
-#: app/Jobs/ExportJob.php:165
-msgid "Successfully exported Repo %s to Gist. Created with gist id %s."
+#. translators: 1: Repo ID. 2: Gist ID.
+#: app/Jobs/ExportJob.php:167
+msgid "Successfully exported Repo %1$s to Gist. Created with gist id %2$s."
 msgstr ""
 
-#: app/Jobs/ExportJob.php:189
+#. translators: %s: Repo ID.
+#: app/Jobs/ExportJob.php:191
 msgid "Repo ID %s will not be exported. No changes."
 msgstr ""
 
+#. translators: %s: Repo ID.
 #: app/Jobs/ExportJob.php:250
 msgid "Successfully updated Repo ID %s"
 msgstr ""
 
-#: app/Jobs/ExportJob.php:338
-msgid "Error creating new gist for Repo %s. Error: %s"
+#. translators: 1: Repo ID. 2: Error message.
+#: app/Jobs/ExportJob.php:337
+msgid "Error creating new gist for Repo %1$s. Error: %2$s"
 msgstr ""
 
-#: app/Jobs/ExportJob.php:348
+#. translators: %s: Repo ID.
+#: app/Jobs/ExportJob.php:339
 msgid "Will not reprocess Repo %s. Authorization failed. Check that your gist token is valid."
 msgstr ""
 
-#: app/Jobs/ExportJob.php:358
+#. translators: %s: Repo ID.
+#: app/Jobs/ExportJob.php:341
 msgid "Will not reprocess Repo %s. Client error. Please report to the developer."
 msgstr ""
 
-#: app/Jobs/ImportJob.php:63
+#: app/Jobs/ImportJob.php:62
 msgid "Import all imported GitHub gists."
 msgstr ""
 
+#. translators: %s: Item type.
 #: app/Jobs/ImportJob.php:92
 msgid "Expected to see Gist data, got %s instead."
 msgstr ""
 
-#: app/Jobs/ImportJob.php:149
-msgid "Created Repo %s for gist %s"
+#. translators: 1: Repo ID. 2: Gist ID.
+#: app/Jobs/ImportJob.php:147
+msgid "Created Repo %1$s for gist %2$s"
 msgstr ""
 
-#: app/Jobs/ImportJob.php:206
-msgid "Error saving repo for gist %s. Error: %s"
+#. translators: 1: Gist ID. 2: Error message.
+#: app/Jobs/ImportJob.php:205
+msgid "Error saving repo for gist %1$s. Error: %2$s"
 msgstr ""
 
+#. translators: 1: Gist ID. 2: Repo ID.
 #: app/Jobs/ImportJob.php:215
-msgid "Successfully imported gist %s from Gist. Updated with repo id %s."
+msgid "Successfully imported gist %1$s from Gist. Updated with repo id %2$s."
 msgstr ""
 
+#. translators: 1: Gist ID. 2: Error message.
 #: app/Jobs/ImportJob.php:299
-msgid "Error fetching gist %s. Error: %s"
+msgid "Error fetching gist %1$s. Error: %2$s"
 msgstr ""
 
-#: app/Jobs/ImportJob.php:308
+#. translators: %s: Gist ID.
+#: app/Jobs/ImportJob.php:301
 msgid "Will not reprocess gist %s. Authorization failed. Check that your gist token is valid."
 msgstr ""
 
-#: app/Jobs/ImportJob.php:317
+#. translators: %s: Gist ID.
+#: app/Jobs/ImportJob.php:303
 msgid "Will not reprocess gist %s. Client error. Please report to the developer."
 msgstr ""
 
-#: app/Params/Editor.php:121, app/Params/Globals.php:44
+#: app/Params/Globals.php:78
 msgid "Default"
 msgstr ""
 
-#: app/Params/Editor.php:122, app/Params/Globals.php:45
+#: app/Params/Globals.php:79
 msgid "Dark"
 msgstr ""
 
-#: app/Params/Editor.php:123, app/Params/Globals.php:46
+#: app/Params/Globals.php:80
 msgid "Funky"
 msgstr ""
 
-#: app/Params/Editor.php:124, app/Params/Globals.php:47
+#: app/Params/Globals.php:81
 msgid "Okaidia"
 msgstr ""
 
-#: app/Params/Editor.php:125, app/Params/Globals.php:48
+#: app/Params/Globals.php:82
 msgid "Tomorrow"
 msgstr ""
 
-#: app/Params/Editor.php:126, app/Params/Globals.php:49
+#: app/Params/Globals.php:83
 msgid "Twilight"
 msgstr ""
 
-#: app/Params/Editor.php:127, app/Params/Globals.php:50
+#: app/Params/Globals.php:84
 msgid "Coy"
 msgstr ""
 
-#: app/Params/Editor.php:128, app/Params/Globals.php:51
+#: app/Params/Globals.php:85
 msgid "CB"
 msgstr ""
 
-#: app/Params/Editor.php:129, app/Params/Globals.php:52
+#: app/Params/Globals.php:86
 msgid "GHColors"
 msgstr ""
 
-#: app/Params/Editor.php:130, app/Params/Globals.php:53
+#: app/Params/Globals.php:87
 msgid "Projoaque"
 msgstr ""
 
-#: app/Params/Editor.php:131, app/Params/Globals.php:54
+#: app/Params/Globals.php:88
 msgid "Xonokai"
 msgstr ""
 
-#: app/Params/Editor.php:132, app/Params/Globals.php:55
+#: app/Params/Globals.php:89
 msgid "Ateliersulphurpool-Light"
 msgstr ""
 
-#: app/Params/Editor.php:133, app/Params/Globals.php:56
+#: app/Params/Globals.php:90
 msgid "Hopscotch"
 msgstr ""
 
-#: app/Params/Editor.php:134, app/Params/Globals.php:57
+#: app/Params/Globals.php:91
 msgid "Atom Dark"
+msgstr ""
+
+#: app/Params/Globals.php:92
+msgid "Duotone Dark"
+msgstr ""
+
+#: app/Params/Globals.php:93
+msgid "Duotone Sea"
+msgstr ""
+
+#: app/Params/Globals.php:94
+msgid "Duotone Space"
+msgstr ""
+
+#: app/Params/Globals.php:95
+msgid "Duotone Earth"
+msgstr ""
+
+#: app/Params/Globals.php:96
+msgid "Duotone Forest"
+msgstr ""
+
+#: app/Params/Globals.php:97
+msgid "Duotone Light"
+msgstr ""
+
+#: app/Params/Globals.php:98
+msgid "VS"
+msgstr ""
+
+#: app/Params/Globals.php:99
+msgid "Darcula"
+msgstr ""
+
+#: app/Params/Globals.php:100
+msgid "a11y Dark"
 msgstr ""
 
 #: app/Register/Data.php:25
@@ -292,7 +433,8 @@ msgctxt "Post Type Singular Name"
 msgid "Gistpen"
 msgstr ""
 
-#: app/Register/Data.php:27, app/View/Settings.php:74
+#: app/Register/Data.php:27
+#: app/View/Settings.php:74
 msgid "Gistpens"
 msgstr ""
 
@@ -318,6 +460,16 @@ msgstr ""
 
 #: app/Register/Data.php:33
 msgid "Edit Gistpen"
+msgstr ""
+
+#: app/Register/Data.php:34
+#: app/View/Translations.php:44
+msgid "Update Gistpen"
+msgstr ""
+
+#: app/Register/Data.php:35
+#: app/View/Translations.php:70
+msgid "Search Gistpens"
 msgstr ""
 
 #: app/Register/Data.php:36
@@ -406,7 +558,7 @@ msgstr ""
 msgid "ID provided is not a Gistpen repo."
 msgstr ""
 
-#: app/View/Edit.php:132
+#: app/View/Edit.php:140
 msgid "Blobs"
 msgstr ""
 
@@ -418,30 +570,149 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: app/Database/Repository/WordPressCustomTable.php:41, app/Database/Repository/WordPressCustomTable.php:92, app/Database/Repository/WordPressCustomTable.php:142, app/Database/Repository/WordPressCustomTable.php:184, app/Database/Repository/WordPressCustomTable.php:213, app/Database/Repository/WordPressCustomTable.php:229
-msgid "Query failed with error: %s"
+#: app/View/Translations.php:31
+msgid "View Commits"
 msgstr ""
 
-#: app/Database/Repository/WordPressCustomTable.php:298
-msgid "run_id %s is invalid"
+#: app/View/Translations.php:32
+msgid "Copy shortcode"
 msgstr ""
 
-#: app/Database/Repository/WordPressPost.php:41, app/Database/Repository/WordPressPost.php:51
-msgid "post id %s is invalid"
+#: app/View/Translations.php:33
+msgid "Delete"
 msgstr ""
 
-#: app/Database/Repository/WordPressPost.php:360
-msgid "Repo does not exist in the database."
+#: app/View/Translations.php:34
+msgid "Description..."
 msgstr ""
 
-#: app/Database/Repository/WordPressPost.php:366
-msgid "Failed to delete Repo from the Database."
+#: app/View/Translations.php:35
+msgid "Add File"
 msgstr ""
 
-#: app/Database/Repository/WordPressTerm.php:23
-msgid "Error getting term"
+#: app/View/Translations.php:36
+msgid "View on Gist"
 msgstr ""
 
-#: app/Database/Repository/WordPressTerm.php:142
-msgid "This method is not yet implemented."
+#: app/View/Translations.php:37
+msgid "Enable Invisibles?"
+msgstr ""
+
+#: app/View/Translations.php:38
+msgid "Return to Editor"
+msgstr ""
+
+#: app/View/Translations.php:39
+msgid "Saving Gistpen..."
+msgstr ""
+
+#: app/View/Translations.php:40
+msgid "Post Status"
+msgstr ""
+
+#: app/View/Translations.php:41
+msgid "Sync Gistpen with Gist?"
+msgstr ""
+
+#: app/View/Translations.php:42
+msgid "Enable Tabs?"
+msgstr ""
+
+#: app/View/Translations.php:43
+msgid "Theme"
+msgstr ""
+
+#: app/View/Translations.php:45
+msgid "Indentation width (in spaces)"
+msgstr ""
+
+#. translators: %s: Translation key.
+#: app/View/Translations.php:47
+msgid "Translation for key %s not found."
+msgstr ""
+
+#: app/View/Translations.php:48
+msgid "Job Description"
+msgstr ""
+
+#: app/View/Translations.php:49
+msgid "Dispatch Job"
+msgstr ""
+
+#: app/View/Translations.php:50
+msgid "Loading..."
+msgstr ""
+
+#: app/View/Translations.php:51
+msgid "Job Name"
+msgstr ""
+
+#: app/View/Translations.php:52
+msgid "Job Runs"
+msgstr ""
+
+#: app/View/Translations.php:53
+msgid "View Runs"
+msgstr ""
+
+#: app/View/Translations.php:54
+msgid "Job Status"
+msgstr ""
+
+#: app/View/Translations.php:55
+msgid "Background Jobs"
+msgstr ""
+
+#. translators: %s: Route key.
+#: app/View/Translations.php:57
+msgid "Route %s not found"
+msgstr ""
+
+#: app/View/Translations.php:58
+msgid "Run ID"
+msgstr ""
+
+#: app/View/Translations.php:59
+msgid "Run Status"
+msgstr ""
+
+#: app/View/Translations.php:60
+msgid "Run Scheduled At"
+msgstr ""
+
+#: app/View/Translations.php:61
+msgid "Run Started At"
+msgstr ""
+
+#: app/View/Translations.php:62
+msgid "Run Finished At"
+msgstr ""
+
+#: app/View/Translations.php:63
+msgid "Run Messages"
+msgstr ""
+
+#: app/View/Translations.php:64
+msgid "View Messages"
+msgstr ""
+
+#: app/View/Translations.php:65
+msgid "Please enter a valid search term."
+msgstr ""
+
+#: app/View/Translations.php:66
+msgid "Loading Gistpens..."
+msgstr ""
+
+#. translators: %s: Search term.
+#: app/View/Translations.php:68
+msgid "No results found for term %s"
+msgstr ""
+
+#: app/View/Translations.php:69
+msgid "Please enter a search term "
+msgstr ""
+
+#: app/View/Translations.php:71
+msgid "Saving settings..."
 msgstr ""
