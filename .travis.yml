@@ -51,8 +51,8 @@ before_deploy:
 deploy:
     - provider: releases
       api_key: $GH_TOKEN
-      condition: $E2E == 'true'
       file: /tmp/wp-gistpen.zip
       skip_cleanup: true
       on:
+          condition: $E2E == 'true'
           tags: true
