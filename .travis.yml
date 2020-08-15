@@ -46,7 +46,7 @@ after_script:
         fi
 
 before_deploy:
-    - bash bin/productionize
+    - if [[ $E2E == 'true' ]]; then bash bin/productionize; fi
 
 deploy:
     - provider: releases
