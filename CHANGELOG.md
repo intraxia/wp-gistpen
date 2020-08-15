@@ -2,11 +2,18 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [2.0.0-alpha.1][2.0.0-alpha.1]
+
+#### Fixed ####
+
+* Fix deployment configuration
+
 ### [2.0.0-alpha.0][2.0.0-alpha.0]
 
 #### Added ####
 
 * Gutenberg block
+* TODO: Add changes
 
 ### [1.2.1][1.2.1]
 
