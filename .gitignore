@@ -43,10 +43,11 @@ bower_components
 __diff_output__
 
 # Generated files
-assets/
-build/
+assets
+build
 report.md
 resources/languages.json
+tmp
 
 # Local config
 phpunit.xml

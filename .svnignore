@@ -1,10 +1,11 @@
+__mocks__
 .storybook
 bin
 client
-codemods
+commands
+e2e
 node_modules
 test
-webpack
 .beaverrc.js
 .dockerignore
 .editorconfig
@@ -12,7 +13,7 @@ webpack
 .gitignore
 .svnignore
 .travis.yml
-Dockerfile
+jest-puppeteer.config.js
 setupTests.js
 stylelint.config.js
 *.json

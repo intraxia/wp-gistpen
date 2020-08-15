@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+SRC_DIR=$(git rev-parse --show-toplevel)
+SLUG=$(basename $SRC_DIR)
+BUILD_DIR="$SRC_DIR/tmp"
+
+# Check versions
+# Translates both to unix line breaks to work around grep's failure to identify mac line breaks
+README_VERSION=`grep "Stable tag:" "$SRC_DIR/README.md" | awk -F' ' '{print $NF}'`
+echo "README version: $README_VERSION"
+PHP_VERSION=`grep "Version:" "$SRC_DIR/$SLUG.php" | awk -F' ' '{print $NF}'`
+echo "$SLUG.php version: $PHP_VERSION"
+if [ -z "$TRAVIS_VERSION" ]; then
+		TARGET_VERSION="$README_VERSION"
+	else
+		TARGET_VERSION="$TRAVIS_VERSION"
+fi
+echo "Target version: $TARGET_VERSION"
+
+if [[ "$README_VERSION" != "$PHP_VERSION" || "$TARGET_VERSION" != "$README_VERSION" ]];then
+	echo "Version in README & $SLUG.php don't match with target $TARGET_VERSION. Please fix and try again."
+	exit 1
+fi
+
+# Also, make sure to check:
+# constant
+# CHANGELOG1
+
+# Check if version has been created
+git show-ref --quiet --tags --verify -- "refs/tags/$TARGET_VERSION"
+EXISTS=$?
+if [ $EXISTS != 0 ];
+	then
+		echo "Tag $TARGET_VERSION not created."
+		exit 1
+fi
+
+# prep tmp folder for deploy
+if [ -d $BUILD_DIR ]; then
+	echo "Cleaning up previous deployment..."
+	rm -Rf $BUILD_DIR;
+fi 
+
+# copy current plugin to svn dir
+echo "Copying git files to $BUILD_DIR..."
+git checkout-index --quiet --all --force --prefix=$BUILD_DIR/
+
+cd $BUILD_DIR/
+
+# install npm, bower, and composer dependencies
+echo "Installing dependencies..."
+npm ci --silent &>/dev/null
+composer install --quiet --no-dev --optimize-autoloader &>/dev/null
+
+# build everything in place
+echo "Building plugin files..."
+npm run build
+
+# transform the readme
+if [ -f README.md ]; then
+	echo "Converting the README to WordPress format..."
+	$BUILD_DIR/bin/wp2md $BUILD_DIR/README.md $BUILD_DIR/README.txt to-wp
+fi
+
+# remove unneeded files via .svnignore
+echo "Removing unwanted development files using .svnignore..."
+for file in $(cat "$BUILD_DIR/.svnignore" 2> /dev/null)
+do
+	rm -rf "$BUILD_DIR/$file"
+done
+
+# build release zip
+echo "Building production release zip..."
+zip -r $SLUG * --quiet
+mv $SLUG.zip /tmp/$SLUG.zip
+# todo: upload this zip directly to the GitHub release
+echo "Zip file is in /tmp."

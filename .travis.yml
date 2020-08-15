@@ -44,3 +44,15 @@ after_script:
         if [[ ($TRAVIS_PHP_VERSION == '5.6' && $WP_VERSION == 'latest' && $WP_MULTISITE == '0') ]]; then
             ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
         fi
+
+before_deploy:
+    - bash bin/productionize
+
+deploy:
+    - provider: releases
+      api_key: $GH_TOKEN
+      condition: $E2E == 'true'
+      file: /tmp/wp-gistpen.zip
+      skip_cleanup: true
+      on:
+          tags: true
