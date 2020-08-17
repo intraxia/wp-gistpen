@@ -105,7 +105,7 @@
     "jest-cli": "^24.9.0",
     "kefir": "^3.8.7",
     "kefir-ajax": "^1.0.2",
-    "mutationobserver-shim": "^0.3.3",
+    "mutationobserver-shim": "^0.3.7",
     "prism-themes": "^1.1.0",
     "prismjs": "1.21.0",
     "react": "^16.12.0",
