@@ -20,10 +20,15 @@ class RepoCollection extends BaseFilter {
 	 */
 	public function rules() {
 		return array(
-			'page' => array(
+			'page'     => array(
 				'required'          => false,
 				'default'           => 1,
-				'sanitize_callback' => array( $this, 'sanitize_page' ),
+				'sanitize_callback' => array( $this, 'sanitize_numeric' ),
+			),
+			'per_page' => array(
+				'required'          => false,
+				'default'           => 10,
+				'sanitize_callback' => array( $this, 'sanitize_numeric' ),
 			),
 		);
 	}
@@ -34,7 +39,7 @@ class RepoCollection extends BaseFilter {
 	 * @param  array $page    Blobs parameter.
 	 * @return WP_Errpr|array Sanitized blobs.
 	 */
-	public function sanitize_page( $page ) {
+	public function sanitize_numeric( $page ) {
 		if ( is_numeric( $page ) ) {
 			return (int) $page;
 		}
