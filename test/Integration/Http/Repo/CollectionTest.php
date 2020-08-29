@@ -149,7 +149,7 @@ class CollectionTest extends TestCase {
 		// Check we get the first 10 posts when page is 1.
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 		$request->set_query_params( array(
-			'page' => '1',
+			'page' => 1,
 		) );
 
 		$response = $this->server->dispatch( $request );
@@ -159,6 +159,7 @@ class CollectionTest extends TestCase {
 		// Check we get the next 5 posts when page is 2.
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 		$request->set_query_params( array(
+			// Parse string param.
 			'page' => '2',
 		) );
 
@@ -169,11 +170,36 @@ class CollectionTest extends TestCase {
 		// Check we get no posts when page is 3.
 		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
 		$request->set_query_params( array(
-			'page' => '3',
+			'page' => 3,
 		) );
 
 		$response = $this->server->dispatch( $request );
 		$this->assertResponseStatus( $response, 200 );
 		$this->assertCount( 0, $response->get_data() );
+	}
+
+	public function test_per_page_parameter() {
+		$this->fm->seed( 30, Repo::class, [ 'status' => 'publish' ] );
+
+		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
+		$request->set_query_params( array(
+			'per_page' => 20,
+		) );
+
+		$response = $this->server->dispatch( $request );
+
+		$this->assertResponseStatus( $response, 200 );
+		$this->assertCount( 20, $response->get_data() );
+
+		$request = new WP_REST_Request( 'GET', '/intraxia/v1/gistpen/repos' );
+		$request->set_query_params( array(
+			'per_page' => 20,
+			'page'     => 2,
+		) );
+
+		$response = $this->server->dispatch( $request );
+
+		$this->assertResponseStatus( $response, 200 );
+		$this->assertCount( 10, $response->get_data() );
 	}
 }

@@ -41,12 +41,14 @@ class RepoController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function index( WP_REST_Request $request ) {
-		$page = $request->get_param( 'page' );
+		$page     = $request->get_param( 'page' );
+		$per_page = $request->get_param( 'per_page' );
 
 		$collection = $this->em->find_by(
 			Repo::class,
 			array(
-				'offset' => ( $page - 1 ) * 10,
+				'offset' => ( $page - 1 ) * $per_page,
+				'limit'  => $per_page,
 				'with'   => array(
 					'blobs' => array(
 						'with' => 'language',
