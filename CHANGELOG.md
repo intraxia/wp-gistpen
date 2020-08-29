@@ -2,6 +2,12 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [2.0.0-alpha.2][2.0.0-alpha.2]
+
+#### Fixed ####
+
+* Add support for `per_page` parameter to `/repos` resource.
+
 ### [2.0.0-alpha.1][2.0.0-alpha.1]
 
 #### Fixed ####
@@ -319,6 +325,9 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[2.0.0-alpha.2]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.2
+[2.0.0-alpha.1]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.1
+[2.0.0-alpha.0]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.0
 [1.2.1]: https://github.com/intraxia/WP-Gistpen/tree/1.2.1
 [1.2.0]: https://github.com/intraxia/WP-Gistpen/tree/1.2.0
 [1.1.6]: https://github.com/intraxia/WP-Gistpen/tree/1.1.6
