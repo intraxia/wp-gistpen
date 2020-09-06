@@ -127,6 +127,8 @@ export const webpack = {
     filename: state => `[name]${isProd(state) ? '.min' : ''}.js`,
   },
   modifier: (config, state) => {
+    // TODO(mAAdhaTTah) remove when added upstream
+    config.output.jsonpFunction = 'webpackJsonpWpGistpen';
     config.optimization.runtimeChunk = false;
     config.module.rules[2].exclude = /\.(module|lazy)\.css$/;
     config.module.rules.push({
