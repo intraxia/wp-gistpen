@@ -2,6 +2,12 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [2.0.0-alpha.3][2.0.0-alpha.3]
+
+#### Fixed ####
+
+* Add `jsonpFunction` config to avoid webpack runtime conflicts.
+
 ### [2.0.0-alpha.2][2.0.0-alpha.2]
 
 #### Fixed ####

@@ -9,6 +9,6 @@
 namespace Intraxia\Gistpen;
 
 return [
-	'version' => '2.0.0-alpha.2',
+	'version' => '2.0.0-alpha.3',
 	'prefix'  => 'wpgp',
 ];
