@@ -2,32 +2,41 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [2.0.0-alpha.3][2.0.0-alpha.3]
+### [2.0.0-alpha.4][2.0.0-alpha.4] ###
+
+#### Fixed ####
+
+* Improve editor experience
+* Fix display of toolbar on web content
+* Sync sidebar settings with API
+* Clean up & update deps
+
+### [2.0.0-alpha.3][2.0.0-alpha.3] ###
 
 #### Fixed ####
 
 * Add `jsonpFunction` config to avoid webpack runtime conflicts.
 
-### [2.0.0-alpha.2][2.0.0-alpha.2]
+### [2.0.0-alpha.2][2.0.0-alpha.2] ###
 
 #### Fixed ####
 
 * Add support for `per_page` parameter to `/repos` resource.
 
-### [2.0.0-alpha.1][2.0.0-alpha.1]
+### [2.0.0-alpha.1][2.0.0-alpha.1] ###
 
 #### Fixed ####
 
 * Fix deployment configuration
 
-### [2.0.0-alpha.0][2.0.0-alpha.0]
+### [2.0.0-alpha.0][2.0.0-alpha.0] ###
 
 #### Added ####
 
 * Gutenberg block
 * TODO: Add changes
 
-### [1.2.1][1.2.1]
+### [1.2.1][1.2.1] ###
 
 #### Fixed####
 
