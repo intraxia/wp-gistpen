@@ -49,6 +49,7 @@ import {
   actions as wpActions,
 } from '../../wp';
 import languageResource from '../../../resources/languages.json';
+import { ApiSettings, fetchSettings, saveSettings } from '../../settings';
 import styles from './EditEmbed.module.scss';
 
 const languages = Object.entries(languageResource.list).reduce<
@@ -104,6 +105,13 @@ const embedReducer: EddyReducer<EmbedState, RootAction> = (
         error: action.payload,
         blob: null,
       };
+    case getType(fetchSettings.success):
+      return {
+        ...state,
+        theme: action.payload.prism.theme,
+        showInvisibles: action.payload.prism['show-invisibles'],
+        lineNumbers: action.payload.prism['line-numbers'],
+      };
     case getType(editLanguageChange):
       return {
         ...state,
@@ -134,6 +142,11 @@ const embedReducer: EddyReducer<EmbedState, RootAction> = (
         ...state,
         showInvisibles: action.payload.checked,
       };
+    case getType(editLineNumbersChange):
+      return {
+        ...state,
+        lineNumbers: action.payload.checked,
+      };
     case getType(editorStateChange):
       return {
         ...state,
@@ -141,6 +154,17 @@ const embedReducer: EddyReducer<EmbedState, RootAction> = (
       };
     case getType(saveSnippetClick):
       return loop(state, saveBlob.request());
+    case getType(saveSiteClick):
+      return loop(
+        state,
+        saveSettings.request({
+          prism: {
+            'line-numbers': state.lineNumbers,
+            'show-invisibles': state.showInvisibles,
+            theme: state.theme,
+          },
+        }),
+      );
     case getType(embedChanged):
       return loop(
         {
@@ -148,10 +172,13 @@ const embedReducer: EddyReducer<EmbedState, RootAction> = (
           repoId: action.payload.repoId,
           blobId: action.payload.blobId,
         },
-        fetchBlob.request({
-          repoId: action.payload.repoId,
-          blobId: action.payload.blobId,
-        }),
+        [
+          fetchBlob.request({
+            repoId: action.payload.repoId,
+            blobId: action.payload.blobId,
+          }),
+          fetchSettings.request(),
+        ],
       );
     default:
       return state;
@@ -194,7 +221,44 @@ const rootDelta: Delta<RootAction, State> = (action$, state$) => {
       ).thru(foldResponse(ApiBlob, () => saveBlob.success(), saveBlob.failure)),
     );
 
-  return Kefir.merge<RootAction, never>([fetch$, saveBlob$]);
+  const fetchSettings$ = state$
+    .thru(sampleByAction(action$, fetchSettings.request))
+    .flatMap(state =>
+      ajax$(`${state.globals.root}site`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-WP-Nonce': state.globals.nonce,
+        },
+      }).thru(
+        foldResponse(ApiSettings, fetchSettings.success, fetchSettings.failure),
+      ),
+    );
+
+  const saveSettings$ = state$
+    .thru(sampleByAction(action$, saveSettings.request))
+    .zip(
+      action$.thru(ofType(saveSettings.request)),
+      (state, action) => [state, action] as const,
+    )
+    .flatMap(([state, action]) =>
+      ajax$(`${state.globals.root}site`, {
+        method: 'PATCH',
+        body: JSON.stringify(action.payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-WP-Nonce': state.globals.nonce,
+        },
+      }).thru(
+        foldResponse(ApiSettings, saveSettings.success, saveSettings.failure),
+      ),
+    );
+
+  return Kefir.merge<RootAction, never>([
+    fetch$,
+    saveBlob$,
+    fetchSettings$,
+    saveSettings$,
+  ]);
 };
 
 const initialState = { embed: defaultEmbedState, globals: defaultGlobals };

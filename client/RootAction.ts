@@ -6,5 +6,6 @@ export type RootAction = ActionType<
     typeof import('./block').actions &
     typeof import('./globals/actions') &
     typeof import('./snippet/actions') &
-    typeof import('./editor/actions')
+    typeof import('./editor/actions') &
+    typeof import('./settings/actions')
 >;
