@@ -1,6 +1,7 @@
 import Kefir, { Observable } from 'kefir';
-import { raf$, toJunction, withRef$, Refback } from 'brookjs';
-import React, { forwardRef, memo } from 'react';
+import { raf$, toJunction, withRef$, Refback, ofType } from 'brookjs';
+import React, { forwardRef } from 'react';
+import { isActionOf } from 'typesafe-actions';
 import { PrismLib, Cursor, EditorAction } from './types';
 import {
   editorCursorMove,
@@ -15,9 +16,9 @@ import {
   selectSelectionStart,
   selectSelectionEnd,
   isSpecialEvent,
-  languageIsEqual,
   findOffset,
 } from './dom';
+import { TAB, ENTER, Z, FORWARD_SLASH } from './keyCodes';
 
 type Props = {
   Prism: PrismLib;
@@ -55,21 +56,28 @@ const mapKeydownToAction = (
   evt.preventDefault();
 
   switch (evt.keyCode) {
-    case 9: // Tab
+    case TAB:
+      evt.stopPropagation();
       return Kefir.constant(editorIndent({ code, cursor, inverse }));
-    case 13:
+    case ENTER:
       return Kefir.constant(editorMakeNewline({ code, cursor }));
-    case 90:
+    case Z:
       return Kefir.constant(inverse ? editorRedo() : editorUndo());
-    case 191:
+    case FORWARD_SLASH:
       return Kefir.constant(editorMakeComment({ code, cursor }));
   }
 
   return Kefir.never();
 };
 
-const setSelectionRange = (node: Element, ss: number, se: number) =>
+const setSelectionRange = (node: Element, cursor: Cursor) =>
   Kefir.stream<never, never>(emitter => {
+    if (node !== document.activeElement || cursor == null) {
+      return emitter.end();
+    }
+
+    const [ss, se] = cursor;
+
     if (ss === selectSelectionStart(node) && se === selectSelectionEnd(node)) {
       return emitter.end();
     }
@@ -103,113 +111,62 @@ const highlightElement = (el: Element, Prism: PrismLib) =>
     emitter.end();
   }).setName('highlightElement$');
 
-const createDOMUpdateStream = (el: Element, props: Props) =>
-  raf$.take(1).flatMap(() =>
-    Kefir.concat<never, never>([
+const domUpdate$ = (el: Element, props: Props) =>
+  raf$.take(1).flatMap(() => {
+    const code = el.querySelector('code')!;
+
+    return Kefir.concat<never, never>([
       Kefir.stream(emitter => {
-        el.textContent = props.code;
+        const text = props.code === '' ? '\n' : props.code;
+
+        if (code.textContent !== text) {
+          code.textContent = text;
+        }
+
         emitter.end();
       }),
-      highlightElement(el, props.Prism),
-      props.cursor
-        ? setSelectionRange(el, props.cursor[0], props.cursor[1])
-        : Kefir.never(),
-    ]),
-  );
+      highlightElement(code, props.Prism),
+      setSelectionRange(code, props.cursor),
+    ]);
+  });
 
 const codeStyles: React.CSSProperties = {
   outline: 'none',
 };
 
-const Code: React.ForwardRefRenderFunction<HTMLElement, Props> = (
+const Code: React.ForwardRefRenderFunction<HTMLPreElement, Props> = (
   { language, onBlur, onClick, onFocus, onInput, onKeyUp, onKeyDown },
   ref,
 ) => (
-  <code
-    data-testid="editor-code"
-    style={codeStyles}
-    onBlur={onBlur}
-    onClick={onClick}
-    onFocus={onFocus}
-    onInput={onInput}
-    onKeyUp={onKeyUp}
-    onKeyDown={onKeyDown}
-    className={`language-${language}`}
-    ref={ref}
-    contentEditable
+  <pre
+    className={`language-${language} line-numbers`}
     spellCheck={false}
-    tabIndex={0}
-  />
+    ref={ref}
+  >
+    <code
+      data-testid="editor-code"
+      style={codeStyles}
+      onBlur={onBlur}
+      onClick={onClick}
+      onFocus={onFocus}
+      onInput={onInput}
+      onKeyUp={onKeyUp}
+      onKeyDown={onKeyDown}
+      className={`language-${language}`}
+      contentEditable
+      spellCheck={false}
+      tabIndex={0}
+    />
+  </pre>
 );
 
-const refback: Refback<Props, HTMLElement, EditorAction> = (ref$, props$) =>
-  ref$.flatMap(el => {
-    const keyUp$ = Kefir.fromEvents<KeyboardEvent, never>(el, 'keyup').setName(
-      'keyUp$',
-    );
-    const keyDown$ = Kefir.fromEvents<KeyboardEvent, never>(
-      el,
-      'keydown',
-    ).setName('keyDown$');
-
-    /**
-     * Create initial render stream.
-     *
-     * This handles the render on pages load, making sure the editor
-     * gets highlighted immediately. `props$` is a Kefir.Property,
-     * so we get a value immediately.
-     */
-    const initial$ = props$
-      .take(1)
-      .flatMapLatest(props => createDOMUpdateStream(el, props))
-      .setName('initial$');
-
-    /**
-     * Create typing render stream.
-     *
-     * This stream ensures the rerenders don't take place while
-     * the user is typing. We use a debounced keyup to ensure
-     * the props are up-to-date.
-     */
-    const typing$ = props$
-      .sampledBy(keyUp$.debounce(10))
-      .skipDuplicates((prev, next) => prev.code === next.code)
-      .flatMapLatest(props =>
-        createDOMUpdateStream(el, props).takeUntilBy(keyDown$),
-      )
-      .setName('typing$');
-
-    /**
-     * Create special keys render stream.
-     *
-     * There are a few keys that run through the reducer logic. These
-     * need to update the editor immediately, interrupting the user
-     * typing to update the code in the editor and the cursor location.
-     * The render is thus done immediately.
-     */
-    const special$ = props$
-      .sampledBy(keyDown$.filter(isSpecialEvent).delay(0))
-      .skipDuplicates((prev, next) => prev.code === next.code)
-      .flatMapLatest(props => createDOMUpdateStream(el, props))
-      .setName('special$');
-
-    /**
-     * Create language render stream.
-     *
-     * This needs to update the DOM every time the language changes.
-     */
-    const language$ = props$
-      .skipDuplicates(languageIsEqual)
-      .flatMapLatest(props => createDOMUpdateStream(el, props))
-      .setName('language$');
-
-    return Kefir.merge<EditorAction, never>([
-      initial$,
-      typing$,
-      special$,
-      language$,
-    ]);
-  });
+const refback: Refback<Props, HTMLPreElement, EditorAction> = (ref$, props$) =>
+  ref$.flatMap(el =>
+    props$.flatMapLatest(props =>
+      // schedule render unless user types.
+      domUpdate$(el, props).takeUntilBy(Kefir.fromEvents(el, 'keydown')),
+    ),
+  );
 
 const events = {
   onBlur: (evt$: Observable<React.FocusEvent<HTMLElement>, never>) =>
@@ -226,14 +183,21 @@ const events = {
         ],
       }),
     ),
-  onKeyUp: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, never>) =>
+  onKeyUp: (evt$: Observable<React.KeyboardEvent<HTMLElement>, never>) =>
     evt$.filter(e => !isSpecialEvent(e)).thru(mapToTargetCursorAction()),
-  onKeyDown: (evt$: Observable<React.KeyboardEvent<HTMLPreElement>, never>) =>
+  onKeyDown: (evt$: Observable<React.KeyboardEvent<HTMLElement>, never>) =>
     evt$.filter(e => isSpecialEvent(e)).flatMap(mapKeydownToAction),
 };
 
-export default toJunction(events)(
-  withRef$(refback)(
-    memo(forwardRef(Code), (a, b) => a.language === b.language),
-  ),
-);
+export default toJunction(events, evt$ => {
+  const cursorMove$ = evt$
+    .thru(ofType(editorCursorMove))
+    // debounce cursor move to the next raf
+    .flatMapLatest(action => raf$.take(1).map(() => action));
+
+  const notCursorMove$ = evt$.filter(
+    action => !isActionOf(editorCursorMove, action),
+  );
+
+  return Kefir.merge([cursorMove$, notCursorMove$]);
+})(withRef$(refback)(forwardRef(Code)));

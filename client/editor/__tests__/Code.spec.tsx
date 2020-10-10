@@ -116,7 +116,7 @@ describe('Code', () => {
         code="const hello = 'world';"
         language="js"
       />,
-    ).toEmitFromJunction([[0, KTU.value(editorCursorMove(null))]], rr => {
+    ).toEmitFromJunction([[16, KTU.value(editorCursorMove(null))]], rr => {
       const { fire } = createCode(rr);
 
       fire.blur();
@@ -131,7 +131,7 @@ describe('Code', () => {
         code="const hello = 'world';"
         language="js"
       />,
-    ).toEmitFromJunction([[0, KTU.value(editorCursorMove([0, 0]))]], rr => {
+    ).toEmitFromJunction([[16, KTU.value(editorCursorMove([0, 0]))]], rr => {
       const { fire } = createCode(rr);
 
       fire.focus();
