@@ -90,3 +90,7 @@ export const foldResponse = <T extends any, S, F>(
       ),
     )
     .flatMapErrors(err => Kefir.constant(failure(err)));
+
+export type PatchBody<T> = {
+  [K in keyof T]?: T[K] extends object ? PatchBody<T[K]> : T[K];
+};
