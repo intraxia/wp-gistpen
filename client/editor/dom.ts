@@ -1,3 +1,5 @@
+import { TAB, ENTER, Z, FORWARD_SLASH } from './keyCodes';
+
 export function selectSelectionStart(node: Element): number {
   const selection = window.getSelection();
 
@@ -58,19 +60,19 @@ export function isSpecialEvent(
   const cmdOrCtrl = metaKey || ctrlKey;
 
   switch (evt.keyCode) {
-    case 9: // Tab
+    case TAB:
       if (!cmdOrCtrl && !altKey) {
         return true;
       }
       break;
-    case 13:
+    case ENTER:
       return true;
-    case 90:
+    case Z:
       if (cmdOrCtrl) {
         return true;
       }
       break;
-    case 191:
+    case FORWARD_SLASH:
       if (cmdOrCtrl && !altKey) {
         return true;
       }

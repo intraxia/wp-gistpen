@@ -56,14 +56,12 @@ const Editor: React.FC<{
     <div className={`code-toolbar ${className ?? ''}`.trim()}>
       <Toolbar>{toolbarItems}</Toolbar>
       <RootJunction root$={root$}>
-        <pre className={`language-${language} line-numbers`} spellCheck={false}>
-          <Code
-            Prism={Prism}
-            language={language}
-            code={state.code}
-            cursor={state.cursor}
-          />
-        </pre>
+        <Code
+          Prism={Prism}
+          language={language}
+          code={state.code}
+          cursor={state.cursor}
+        />
       </RootJunction>
     </div>
   );
