@@ -1,9 +1,9 @@
 import Prism from 'prismjs';
 import { plugin as p1 } from '../../prism/plugins/toolbar';
 import { plugin as p2 } from '../../prism/plugins/line-highlight';
-import '../../prism/plugins/copy-to-clipboard';
-import '../../prism/plugins/edit';
-import '../../prism/plugins/filename';
+import { plugin as p3 } from '../../prism/plugins/copy-to-clipboard';
+import { plugin as p4 } from '../../prism/plugins/edit';
+import { plugin as p5 } from '../../prism/plugins/filename';
 import { PrismState } from '../../reducers';
 import { GlobalsState } from '../../globals';
 import { setAutoloaderPath, setTheme, togglePlugin } from '../../prism';
@@ -21,6 +21,9 @@ declare global {
 
 p1.use();
 p2.use();
+p3.use();
+p4.use();
+p5.use();
 
 const { __GISTPEN_CONTENT__ } = window;
 
