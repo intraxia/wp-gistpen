@@ -55,10 +55,9 @@ class PrismLanguageGenerationPlugin {
   languagesToDest(languages) {
     const dest = {
       list: {
-        plaintext: 'PlainText',
+        none: 'PlainText',
       },
       aliases: {
-        plaintext: 'none',
         jinja2: 'django',
       },
     };
