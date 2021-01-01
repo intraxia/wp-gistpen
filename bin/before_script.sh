@@ -47,11 +47,11 @@ elif [[ $E2E == 'true' ]]; then
 	npm run build
 
 	# Connect to WordPress.
-	npm run env connect
+	npm run wpenv connect
 
 	# Install composer & activate plugin.
-	npm run env docker-run -- php composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader
-	npm run env cli plugin activate wp-gistpen
+	npm run wpenv docker-run -- php composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader
+	npm run wpenv cli plugin activate wp-gistpen
 else
 	# If it's not this specific version. Currently disabled.
 	if [[ !($TRAVIS_PHP_VERSION == '5.6' && $WP_VERSION == 'disabled' && $WP_MULTISITE == '0') ]]; then
