@@ -15,6 +15,8 @@ namespace Intraxia\Gistpen\Listener;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Axolotl\UsesCustomTable;
 use Intraxia\Jaxion\Contract\Core\HasActions;
+use Intraxia\Gistpen\Model\Blob;
+use Intraxia\Gistpen\Model\Language;
 
 /**
  * This class checks the current version and runs any updates necessary.
@@ -96,6 +98,10 @@ class Migration implements HasActions {
 		if ( version_compare( $version, '1.0.0', '<' ) ) {
 			$this->update_to_1_0_0();
 		}
+
+		if ( version_compare( $version, '2.0.0', '<' ) ) {
+			$this->update_to_2_0_0();
+		}
 	}
 
 	/**
@@ -149,6 +155,33 @@ class Migration implements HasActions {
 			),
 		));
 		update_option( $this->slug . '_priv', array( 'gist' => array( 'token' => $old_opts['_wpgp_gist_token'] ) ) );
+	}
+
+	/**
+	 * Migrate none -> plaintext.
+	 *
+	 * @since 2.0.0
+	 */
+	public function update_to_2_0_0() {
+		$none = $this->em->find_by( Language::class, [ 'slug' => 'none' ] );
+
+		if ( $none->count() === 0 ) {
+			return;
+		} else {
+			$none = $none->at( 0 );
+		}
+
+		$plaintext = $this->em->find_by( Language::class, [ 'slug' => 'plaintext' ] );
+
+		if ( $plaintext->count() === 0 ) {
+			$plaintext = $this->em->create( Language::class, [ 'slug' => 'plaintext' ] );
+		} else {
+			$plaintext = $plaintext->at( 0 );
+		}
+
+		wp_delete_term( $none->get_primary_id(), Language::get_taxonomy(), [
+			'default' => $plaintext->get_primary_id(),
+		] );
 	}
 
 	/**

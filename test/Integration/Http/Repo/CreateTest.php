@@ -327,6 +327,6 @@ class CreateTest extends TestCase {
 			'created_at'  => $repo->created_at,
 			'updated_at'  => $repo->updated_at,
 		] );
-		$this->assertEquals( $blob->language->slug, 'none' );
+		$this->assertEquals( $blob->language->slug, 'plaintext' );
 	}
 }

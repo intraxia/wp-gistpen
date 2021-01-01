@@ -78,7 +78,7 @@ const defaultEmbedState: EmbedState = {
   blob: null,
   filename: '',
   code: '',
-  language: 'none',
+  language: 'plaintext',
   theme: 'default',
   width: 2,
   tabs: false,

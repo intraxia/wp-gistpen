@@ -52,7 +52,7 @@ class BlobCreate extends BaseFilter {
 					array_keys( $languages['list'] ),
 					array_values( $languages['aliases'] )
 				),
-				'default'     => 'none',
+				'default'     => 'plaintext',
 			],
 		];
 	}

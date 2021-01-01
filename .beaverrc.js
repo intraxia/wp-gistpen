@@ -58,7 +58,6 @@ class PrismLanguageGenerationPlugin {
         plaintext: 'PlainText',
       },
       aliases: {
-        plaintext: 'none',
         jinja2: 'django',
       },
     };

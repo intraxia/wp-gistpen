@@ -92,7 +92,7 @@ class RepoController {
 					'code'     => isset( $blob['code'] ) ? $blob['code'] : '',
 					'language' => [
 						// @TODO(mAAdhaTTah) this is a bad API for the EntityManager.
-						'slug' => isset( $blob['language'] ) ? $blob['language'] : 'none',
+						'slug' => isset( $blob['language'] ) ? $blob['language'] : 'plaintext',
 					],
 				];
 			}, $request->get_param( 'blobs' ) ),

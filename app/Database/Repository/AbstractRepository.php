@@ -84,7 +84,7 @@ abstract class AbstractRepository implements Repository {
 						$term = array_pop( $terms );
 					} else {
 						$term       = new WP_Term( new stdClass() );
-						$term->slug = 'none';
+						$term->slug = 'plaintext';
 					}
 
 					$value = new Language( array( Model::OBJECT_KEY => $term ) );
