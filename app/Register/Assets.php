@@ -130,20 +130,16 @@ class Assets {
 	public function add_assets( Register $assets ) {
 		/** App config. @var Config $config */
 		$config         = $this->container->get( Config::class );
-		$debug          = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
-		$asset_manifest = $config->get_json_resource(
-			'assets/asset-manifest' . ( $debug ? '' : '.min' )
-		);
-		$wp_assets      = $config->get_json_resource(
-			'assets/wp-assets' . ( $debug ? '' : '.min' )
-		);
+		$asset_manifest = $config->get_json_resource( 'assets/asset-manifest' . $this->min() );
+		$wp_assets      = $config->get_json_resource( 'assets/wp-assets' . $this->min() );
 
 		if ( null === $asset_manifest || null === $wp_assets ) {
 			throw new Exception( 'Asset manifest or dependencies not found' );
 		}
 
 		foreach ( $asset_manifest['entrypoints'] as $entry => $files ) {
-			$this->process_entrypoint( $assets, $entry, $files, $wp_assets[ $entry . '.js' ]['dependencies'] );
+			$dependencies = $wp_assets[ $entry . $this->min() . '.js' ]['dependencies'];
+			$this->process_entrypoint( $assets, $entry, $files, $dependencies );
 		}
 	}
 
@@ -172,16 +168,15 @@ class Assets {
 		$asset_config = $this->asset_config[ $entry ];
 		/** App config. @var Config $config */
 		$config = $this->container->get( Config::class );
-		$asset  = $config->get_json_resource(
-			'assets/' . $entry . ( $debug ? '' : '.min' ) . '.asset'
-		);
 
 		foreach ( $files as $file ) {
+			$condition = isset( $asset_config['condition'] ) ? $asset_config['condition'] : null;
+
 			if ( false !== strpos( $file, '.js' ) ) {
 				$assets->register_script( array(
 					'type'      => $asset_config['type'],
 					'deps'      => $deps,
-					'condition' => isset( $asset_config['condition'] ) ? $asset_config['condition'] : null,
+					'condition' => $condition,
 					'handle'    => $slug . '-' . $entry . '-script',
 					'src'       => 'resources/assets/' . $file,
 					'footer'    => true,
@@ -193,11 +188,22 @@ class Assets {
 			if ( false !== strpos( $file, '.css' ) ) {
 				$assets->register_style( array(
 					'type'      => $asset_config['type'],
-					'condition' => $asset_config['condition'],
+					'condition' => $condition,
 					'handle'    => $slug . '-' . $entry . '-style',
 					'src'       => 'resources/assets/' . $file,
+					'block'     => 'intraxia/gistpen',
 				) );
 			}
 		}
+	}
+
+	/**
+	 * Return the minification extension, if needed.
+	 *
+	 * @return string
+	 */
+	private function min() {
+		$debug = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG;
+		return $debug ? '' : '.min';
 	}
 }
