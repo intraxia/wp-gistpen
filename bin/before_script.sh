@@ -10,6 +10,9 @@ elif [[ $E2E == 'true' ]]; then
 	chmod +x docker-compose
 	sudo mv docker-compose /usr/local/bin
 
+	# Log in to docker
+	echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
 	# Download and unpack WordPress.
 	curl -sL https://wordpress.org/nightly-builds/wordpress-latest.zip -o /tmp/wordpress-latest.zip
 	unzip -q /tmp/wordpress-latest.zip -d /tmp
