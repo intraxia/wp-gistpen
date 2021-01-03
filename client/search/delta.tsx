@@ -3,8 +3,7 @@ import Kefir, { Observable } from 'kefir';
 import * as t from 'io-ts';
 import { ajax$ } from 'kefir-ajax';
 import { RootAction } from '../RootAction';
-import { ValidationError, JsonError } from '../api';
-import { Toggle } from '../snippet';
+import { ValidationError, JsonError, Toggle } from '../api';
 import { search } from './actions';
 import { Collection, RepoCollection, BlobCollection } from './state';
 

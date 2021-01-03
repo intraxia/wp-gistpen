@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import { Toggle } from '../snippet';
+import { Toggle } from '../api';
 import { Cursor } from '../editor/types';
 
 export type EditorValue = {
