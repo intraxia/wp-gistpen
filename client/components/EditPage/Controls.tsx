@@ -12,7 +12,7 @@ import {
   editorUpdateClick,
   editorAddClick,
 } from '../../actions';
-import { Toggle } from '../../snippet';
+import { Toggle } from '../../api';
 import { editorWidthChange } from '../../editor/actions';
 
 const mapCheckedToString = (e: React.ChangeEvent<HTMLInputElement>): Toggle =>

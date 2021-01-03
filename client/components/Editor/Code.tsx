@@ -14,7 +14,7 @@ import {
 import { selectSelectionStart, selectSelectionEnd } from '../../selectors';
 import { prismSlug, setTheme, togglePlugin } from '../../prism';
 import { RootAction } from '../../RootAction';
-import { Toggle } from '../../snippet';
+import { Toggle } from '../../api';
 import { Cursor } from '../../editor/types';
 import { isSpecialEvent, languageIsEqual, editorOptionsIsEqual } from './util';
 import findOffset from './findOffset';

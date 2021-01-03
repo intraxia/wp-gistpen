@@ -50,6 +50,7 @@ import {
 } from '../../wp';
 import languageResource from '../../../resources/languages.json';
 import { ApiSettings, fetchSettings, saveSettings } from '../../settings';
+import { ApiMe, fetchMe, saveMe } from '../../me';
 import styles from './EditEmbed.module.scss';
 
 const languages = Object.entries(languageResource.list).reduce<
@@ -112,6 +113,19 @@ const embedReducer: EddyReducer<EmbedState, RootAction> = (
         showInvisibles: action.payload.prism['show-invisibles'],
         lineNumbers: action.payload.prism['line-numbers'],
       };
+    case getType(fetchMe.success):
+      // TODO(mAAdhaTTah) move to encoder
+      let width = Number.parseInt(action.payload.editor.indent_width);
+
+      if (Number.isNaN(width)) {
+        width = 2;
+      }
+
+      return {
+        ...state,
+        width: width,
+        tabs: action.payload.editor.tabs_enabled === 'on',
+      };
     case getType(editLanguageChange):
       return {
         ...state,
@@ -154,6 +168,17 @@ const embedReducer: EddyReducer<EmbedState, RootAction> = (
       };
     case getType(saveSnippetClick):
       return loop(state, saveBlob.request());
+    case getType(saveEditorClick):
+      return loop(
+        state,
+        saveMe.request({
+          editor: {
+            indent_width: String(state.width),
+            // TODO(mAAdhaTTah) move to encoder?
+            tabs_enabled: state.tabs ? 'on' : 'off',
+          },
+        }),
+      );
     case getType(saveSiteClick):
       return loop(
         state,
@@ -178,6 +203,7 @@ const embedReducer: EddyReducer<EmbedState, RootAction> = (
             blobId: action.payload.blobId,
           }),
           fetchSettings.request(),
+          fetchMe.request(),
         ],
       );
     default:
@@ -253,11 +279,41 @@ const rootDelta: Delta<RootAction, State> = (action$, state$) => {
       ),
     );
 
+  const fetchMe$ = state$
+    .thru(sampleByAction(action$, fetchMe.request))
+    .flatMap(state =>
+      ajax$(`${state.globals.root}me`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'X-WP-Nonce': state.globals.nonce,
+        },
+      }).thru(foldResponse(ApiMe, fetchMe.success, fetchMe.failure)),
+    );
+
+  const saveMe$ = state$
+    .thru(sampleByAction(action$, saveMe.request))
+    .zip(
+      action$.thru(ofType(saveMe.request)),
+      (state, action) => [state, action] as const,
+    )
+    .flatMap(([state, action]) =>
+      ajax$(`${state.globals.root}me`, {
+        method: 'PATCH',
+        body: JSON.stringify(action.payload),
+        headers: {
+          'Content-Type': 'application/json',
+          'X-WP-Nonce': state.globals.nonce,
+        },
+      }).thru(foldResponse(ApiMe, saveMe.success, saveMe.failure)),
+    );
+
   return Kefir.merge<RootAction, never>([
     fetch$,
     saveBlob$,
     fetchSettings$,
     saveSettings$,
+    fetchMe$,
+    saveMe$,
   ]);
 };
 

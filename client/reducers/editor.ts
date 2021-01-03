@@ -22,8 +22,7 @@ import {
   ajaxFailed,
 } from '../actions';
 import { RootAction } from '../RootAction';
-import { AjaxError } from '../api';
-import { Toggle } from '../snippet';
+import { AjaxError, Toggle } from '../api';
 import { Cursor } from '../editor/types';
 import { editorWidthChange } from '../editor/actions';
 

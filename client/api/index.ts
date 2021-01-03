@@ -2,6 +2,8 @@ import * as t from 'io-ts';
 import { NetworkError, ObsResponse } from 'kefir-ajax';
 import Kefir, { Observable } from 'kefir';
 
+export * from './Toggle';
+
 export const validationErrorsToString = (errs: t.Errors) =>
   `API response validation failed:\n\n${errs
     .map(
