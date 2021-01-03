@@ -375,6 +375,10 @@ const EditEmbed: React.FC<{ blobId: number; repoId: number }> = ({
     togglePlugin('show-invisibles', state.embed.showInvisibles);
   }, [state.embed.showInvisibles]);
 
+  useEffect(() => {
+    togglePlugin('line-numbers', state.embed.lineNumbers);
+  }, [state.embed.lineNumbers]);
+
   const themes = useMemo(
     () =>
       Object.entries(state.globals.themes).map(([value, label]) => ({
@@ -465,6 +469,7 @@ const EditEmbed: React.FC<{ blobId: number; repoId: number }> = ({
             Prism={Prism}
             language={prismSlug(state.embed.language)}
             initialCode={state.embed.blob.code}
+            lineNumbers={state.embed.lineNumbers}
             width={state.embed.width}
             tabs={state.embed.tabs}
           />

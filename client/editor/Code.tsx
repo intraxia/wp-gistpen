@@ -25,6 +25,7 @@ type Props = {
   code: string;
   cursor: Cursor;
   language: string;
+  lineNumbers?: boolean;
   onBlur: (e: React.FocusEvent<HTMLElement>) => void;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   onFocus: (e: React.FocusEvent<HTMLElement>) => void;
@@ -135,11 +136,20 @@ const codeStyles: React.CSSProperties = {
 };
 
 const Code: React.ForwardRefRenderFunction<HTMLPreElement, Props> = (
-  { language, onBlur, onClick, onFocus, onInput, onKeyUp, onKeyDown },
+  {
+    language,
+    lineNumbers = false,
+    onBlur,
+    onClick,
+    onFocus,
+    onInput,
+    onKeyUp,
+    onKeyDown,
+  },
   ref,
 ) => (
   <pre
-    className={`language-${language} line-numbers`}
+    className={`language-${language} ${lineNumbers ? `line-numbers` : ''}`}
     spellCheck={false}
     ref={ref}
   >
