@@ -3,7 +3,7 @@ import langs from '../../resources/languages.json';
 
 // @ts-ignore
 Prism.manual = true;
-Prism.languages.none = {};
+Prism.languages.plaintext = {};
 
 type Theme = {
   use(): void;

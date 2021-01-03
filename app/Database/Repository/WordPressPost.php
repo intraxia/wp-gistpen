@@ -142,14 +142,26 @@ class WordPressPost extends AbstractRepository {
 		}
 
 		// Whitelist params send to WP_Query.
-		foreach ( array( 'post_status', 'order', 'orderby', 'offset', 's', 'limit' ) as $param ) {
+		foreach ( array( 'post_status', 'order', 'orderby', 'offset', 's', 'limit', 'language' ) as $param ) {
 			if ( isset( $params[ $param ] ) ) {
+				$value = $params[ $param ];
+
 				switch ( $param ) {
+					case 'language':
+						// TODO abstract related by term query
+						$query_args['tax_query'] = [
+							[
+								'taxonomy' => Language::get_taxonomy(),
+								'field'    => 'slug',
+								'terms'    => $value,
+							],
+						];
+						break;
 					case 'limit':
-						$query_args['posts_per_page'] = $params[ $param ];
+						$query_args['posts_per_page'] = $value;
 						break;
 					default:
-						$query_args[ $param ] = $params[ $param ];
+						$query_args[ $param ] = $value;
 						break;
 				}
 			}

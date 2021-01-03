@@ -28,7 +28,7 @@ class WordPressTerm extends AbstractRepository {
 		$term     = get_term( $id, $taxonomy );
 
 		if ( ! $term ) {
-			$term = new WP_Error( 'db_error', __( 'Error getting term', 'wp-gistpen' ) );
+			$term = new WP_Error( 'not_found', __( 'Term not found', 'wp-gistpen' ) );
 		}
 
 		if ( is_wp_error( $term ) ) {
