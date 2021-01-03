@@ -25,10 +25,11 @@ beforeAll(async () => {
   await Promise.all([
     (async () => {
       await resetSite();
-      await execa.command(`npm run env cli rewrite structure /%POSTNAME%/`);
+      await execa.command(
+        `npm run env run tests-cli rewrite structure /%POSTNAME%/`,
+        { shell: '/bin/sh' },
+      );
     })(),
     setBrowserViewport('large'),
   ]);
-
-  await activatePlugin('wp-gistpen');
 });

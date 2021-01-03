@@ -1,15 +1,8 @@
 /* eslint-env jest */
 import languages from '../resources/languages.json';
-import execa from 'execa';
 import { createGistpen } from './helpers';
 
 describe('content', () => {
-  let repoUrl: string, blobId: string;
-
-  beforeAll(async () => {
-    ({ repoUrl, blobId } = await createGistpen());
-  });
-
   for (let [slug, displayName] of Object.entries(languages.list)) {
     if (process.env.SKIP_IMAGE_TESTS === 'true' && slug !== 'js') {
       continue;
@@ -20,9 +13,8 @@ describe('content', () => {
       '..',
       'resources',
       'samples',
-      slug
+      slug,
     );
-    const dockerPath = `/var/www/src/wp-content/plugins/wp-gistpen/resources/samples/${slug}`;
 
     if (!require('fs').existsSync(localPath)) {
       it.todo(`should display ${displayName}`);
@@ -30,15 +22,11 @@ describe('content', () => {
     }
 
     it(`should display ${displayName} (${slug})`, async () => {
-      if (!blobId) {
-        throw new Error('Setup failed');
-      }
-
-      if (process.env.SKIP_IMAGE_TESTS !== 'true') {
-        await execa.command(
-          `npm run env cli gistpen blob update ${blobId} ${dockerPath} -- --filename='${slug}' --language='${slug}'`
-        );
-      }
+      let { repoUrl } = await createGistpen({
+        description: `Test ${displayName}`,
+        filename: `test.${slug}`,
+        slug,
+      });
 
       await page.goto(repoUrl);
 
@@ -53,4 +41,3 @@ describe('content', () => {
     });
   }
 });
-
