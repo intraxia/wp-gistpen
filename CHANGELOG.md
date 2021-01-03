@@ -2,6 +2,16 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
+### [2.0.0-alpha.5][2.0.0-alpha.5] ###
+
+#### Fixed ####
+
+* Fixed asset sourcing when `SCRIPT_DEBUG === false`
+* Eliminate usage of language `none` & migrate to `plaintext` for everything
+* Switch from `wp-scripts` to `wp-env`
+* Sync user settings in Block sidebar to BE
+* Bump prism 1.21.0 -> 1.23.0
+
 ### [2.0.0-alpha.4][2.0.0-alpha.4] ###
 
 #### Fixed ####
@@ -340,6 +350,9 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[2.0.0-alpha.5]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.5
+[2.0.0-alpha.4]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.4
+[2.0.0-alpha.3]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.3
 [2.0.0-alpha.2]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.2
 [2.0.0-alpha.1]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.1
 [2.0.0-alpha.0]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.0

@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WP-Gistpen plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP-Gistpen 2.0.0-alpha.4\n"
+"Project-Id-Version: WP-Gistpen 2.0.0-alpha.5\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-gistpen\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
