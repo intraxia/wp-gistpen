@@ -3,6 +3,7 @@ namespace Intraxia\Gistpen\Http;
 
 use Intraxia\Gistpen\Model\Blob;
 use Intraxia\Gistpen\Model\Repo;
+use Intraxia\Gistpen\Model\Language;
 use Intraxia\Jaxion\Contract\Axolotl\EntityManager;
 use Intraxia\Jaxion\Contract\Core\HasFilters;
 use WP_Error;
@@ -141,12 +142,27 @@ class BlobController implements HasFilters {
 		}
 
 		// @TODO(mAAdhaTTah) would benefit from cleanup
+		$language_param = $request->get_param( 'language' );
+		if ( $blob->language->slug === $language_param ) {
+			$language = $blob->language;
+		} else {
+			$language = $this->em->find( Language::class, [ 'slug' => $request->get_param( 'language' ) ] );
+
+			if ( is_wp_error( $language ) ) {
+				if ( $language->get_error_code() !== 'not_found' ) {
+					$language->add_data( array( 'status' => 500 ) );
+
+					return $language;
+				}
+
+				$language = new Language( [ 'slug' => $language_param ] );
+			}
+		}
+
 		$blob->merge( [
 			'filename' => $request->get_param( 'filename' ),
 			'code'     => $request->get_param( 'code' ),
-			'language' => $blob->language->slug === $request->get_param( 'language' )
-				? $blob->language
-				: $this->em->find( Language::class, [ 'slug' => $request->get_param( 'language' ) ] ),
+			'language' => $language,
 		] );
 		$blob = $this->em->persist( $blob );
 

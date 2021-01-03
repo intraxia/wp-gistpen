@@ -111,4 +111,39 @@ class UpdateTest extends TestCase {
 		] );
 		$this->assertSame( $blob->filename, 'Update filename' );
 	}
+
+	public function test_saves_blob_with_updated_language() {
+		$this->set_role( 'administrator' );
+		$request = new WP_REST_Request( 'PUT', "/intraxia/v1/gistpen/repos/{$this->repo->ID}/blobs/{$this->blob->ID}" );
+		$request->set_body_params( [
+			'filename' => $this->blob->filename,
+			'code'     => $this->blob->code,
+			'language' => 'js',
+		] );
+
+		$response = $this->server->dispatch( $request );
+
+		$blob = $this->app->make( 'database' )
+			->find( Blob::class, $this->blob->ID, [
+				'with' => [
+					'language' => [],
+				],
+			] );
+
+		$this->assertResponseStatus( $response, 200 );
+		$this->assertResponseData( $response, [
+			'ID'       => $blob->ID,
+			'size'     => $blob->size,
+			'raw_url'  => $blob->raw_url,
+			'edit_url' => $blob->edit_url,
+			'filename' => $blob->filename,
+			'code'     => $blob->code,
+			'language' => [
+				'ID'           => $blob->language->ID,
+				'display_name' => $blob->language->display_name,
+				'slug'         => 'js',
+			],
+		] );
+		$this->assertSame( $blob->language->slug, 'js' );
+	}
 }
