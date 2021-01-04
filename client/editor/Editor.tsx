@@ -29,7 +29,7 @@ const Editor: React.FC<{
   language,
   tabs,
   width,
-  lineNumbers = false,
+  lineNumbers = true,
   initialCode = initialState.code,
   onStateChange,
 }) => {
