@@ -138,7 +138,7 @@ const codeStyles: React.CSSProperties = {
 const Code: React.ForwardRefRenderFunction<HTMLPreElement, Props> = (
   {
     language,
-    lineNumbers = false,
+    lineNumbers = true,
     onBlur,
     onClick,
     onFocus,
