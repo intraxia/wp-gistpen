@@ -19,6 +19,7 @@ const Editor: React.FC<{
   language: string;
   tabs?: boolean;
   width?: number;
+  lineNumbers?: boolean;
   initialCode?: string;
   onStateChange: (action: ActionType<typeof editorStateChange>) => void;
 }> = ({
@@ -28,6 +29,7 @@ const Editor: React.FC<{
   language,
   tabs,
   width,
+  lineNumbers = true,
   initialCode = initialState.code,
   onStateChange,
 }) => {
@@ -59,6 +61,7 @@ const Editor: React.FC<{
         <Code
           Prism={Prism}
           language={language}
+          lineNumbers={lineNumbers}
           code={state.code}
           cursor={state.cursor}
         />
