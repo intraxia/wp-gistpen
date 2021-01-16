@@ -40,6 +40,8 @@ import {
   editLineNumbersChange,
   saveBlob,
   embedChanged,
+  highlightChange,
+  offsetChange,
 } from '../actions';
 import {
   CheckboxControl,
@@ -352,10 +354,20 @@ const preplugLineNumbers = (e$: Observable<RootAction, never>) =>
     .thru(ofType(wpActions.checked))
     .map(a => editLineNumbersChange(a.payload.isChecked));
 
-const EditEmbed: React.FC<{ blobId: number; repoId: number }> = ({
-  blobId,
-  repoId,
-}) => {
+const preplugHighlight = (e$: Observable<RootAction, never>) =>
+  e$.thru(ofType(wpActions.change)).map(a => highlightChange(a.payload.value));
+
+const preplugOffset = (e$: Observable<RootAction, never>) =>
+  e$
+    .thru(ofType(wpActions.change))
+    .map(a => offsetChange(Number(a.payload.value)));
+
+const EditEmbed: React.FC<{
+  blobId: number;
+  repoId: number;
+  highlight: string;
+  offset: number;
+}> = ({ blobId, repoId, highlight, offset }) => {
   const globals = useGlobals();
   const { state, dispatch, root$ } = useDelta(reducer, initialState, rootDelta);
 
@@ -378,6 +390,10 @@ const EditEmbed: React.FC<{ blobId: number; repoId: number }> = ({
   useEffect(() => {
     togglePlugin('line-numbers', state.embed.lineNumbers);
   }, [state.embed.lineNumbers]);
+
+  useEffect(() => {
+    togglePlugin('line-highlight', !!highlight || !!offset || false);
+  }, [highlight, offset]);
 
   const themes = useMemo(
     () =>
@@ -437,6 +453,21 @@ const EditEmbed: React.FC<{ blobId: number; repoId: number }> = ({
           </PanelBody>
         </Panel>
         <Panel>
+          <PanelBody title="Embed" initialOpen={false}>
+            <TextControl
+              label="Line Highlight"
+              value={highlight}
+              preplug={preplugHighlight}
+            />
+            <TextControl
+              label="Line Offset"
+              type="number"
+              value={offset}
+              preplug={preplugOffset}
+            />
+          </PanelBody>
+        </Panel>
+        <Panel>
           <PanelBody title="Site" initialOpen={false}>
             <SelectControl
               label="Theme"
@@ -470,6 +501,8 @@ const EditEmbed: React.FC<{ blobId: number; repoId: number }> = ({
             language={prismSlug(state.embed.language)}
             initialCode={state.embed.blob.code}
             lineNumbers={state.embed.lineNumbers}
+            highlight={highlight}
+            offset={offset}
             width={state.embed.width}
             tabs={state.embed.tabs}
           />

@@ -52,6 +52,10 @@ class Blob implements HasFilters {
 			if ( isset( $data['highlight'] ) ) {
 				$params['blob']['highlight'] = $data['highlight'];
 			}
+
+			if ( isset( $data['offset'] ) ) {
+				$params['blob']['offset'] = $data['offset'];
+			}
 		} else {
 			$params['blobs'] = [
 				'error'   => true,

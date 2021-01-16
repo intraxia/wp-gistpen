@@ -35,6 +35,7 @@ class Content implements HasActions, HasFilters, HasShortcode {
 	protected static $defaults = array(
 		'id'        => 0,
 		'highlight' => '',
+		'offset'    => 0,
 	);
 
 	/**
@@ -203,7 +204,10 @@ class Content implements HasActions, HasFilters, HasShortcode {
 		} else {
 			$content = $this->templating->render(
 				'blob',
-				$this->params->props( 'content.blob', array( 'highlight' => $args['highlight'] ) )
+				$this->params->props( 'content.blob', array(
+					'highlight' => $args['highlight'],
+					'offset'    => $args['offset'],
+				) )
 			);
 		}
 

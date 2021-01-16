@@ -75,7 +75,10 @@ describe('block', () => {
       <div>
         [gistpen id="
         123
-        "]
+        "
+        
+        
+        ]
       </div>
     `);
   });

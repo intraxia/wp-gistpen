@@ -7,6 +7,8 @@ describe('state', () => {
         status: 'set-embed',
         repoId: null,
         blobId: null,
+        highlight: null,
+        offset: null,
       } as const;
       expect(reducer(initialState, { type: '@@RANDOM' } as any)).toEqual(
         initialState,

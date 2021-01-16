@@ -13,10 +13,10 @@ export const Block: React.FC<
     className: string;
     setAttributes: (attributes: Partial<Attributes>) => void;
   }
-> = ({ className, blobId, repoId, setAttributes }) => {
+> = ({ className, blobId, repoId, highlight, offset, setAttributes }) => {
   const { state, root$ } = useDelta(
     reducer,
-    initialState({ repoId, blobId }),
+    initialState({ repoId, blobId, highlight, offset }),
     rootDelta,
   );
 
@@ -28,6 +28,14 @@ export const Block: React.FC<
     setAttributes({ blobId: state.blobId });
   }, [setAttributes, state.blobId]);
 
+  useEffect(() => {
+    setAttributes({ highlight: state.highlight });
+  }, [setAttributes, state.highlight]);
+
+  useEffect(() => {
+    setAttributes({ offset: state.offset });
+  }, [setAttributes, state.offset]);
+
   let embed: JSX.Element;
 
   switch (state.status) {
@@ -35,7 +43,14 @@ export const Block: React.FC<
       embed = <SetEmbed />;
       break;
     case 'edit-embed':
-      embed = <EditEmbed repoId={state.repoId} blobId={state.blobId} />;
+      embed = (
+        <EditEmbed
+          repoId={state.repoId}
+          blobId={state.blobId}
+          highlight={state.highlight}
+          offset={state.offset}
+        />
+      );
       break;
     default:
       return unreachable(state);

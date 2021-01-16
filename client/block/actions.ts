@@ -96,3 +96,13 @@ export const embedSet = createAction(
   'EMBED_SET',
   resolve => (repoId: number, blobId: number) => resolve({ repoId, blobId }),
 );
+
+export const highlightChange = createAction(
+  'HIGHLIGHT_CHANGE',
+  resolve => (highlight: string) => resolve({ highlight }),
+);
+
+export const offsetChange = createAction(
+  'OFFSET_CHANGE',
+  resolve => (offset: number) => resolve({ offset }),
+);
