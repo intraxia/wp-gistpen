@@ -153,11 +153,6 @@ class Assets {
 	 * @throws Exception
 	 */
 	private function process_entrypoint( Register $assets, $entry, $files, $deps ) {
-		// TinyMCE plugins are registered differently than regular assets.
-		if ( 'tinymce' === $entry ) {
-			return;
-		}
-
 		if ( ! isset( $this->asset_config[ $entry ] ) ) {
 			throw new Exception( 'Unexpected entry in manifest: ' . $entry );
 		}

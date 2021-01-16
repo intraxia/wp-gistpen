@@ -56,11 +56,10 @@ return [
 			$container->get( 'path' ) . 'resources/views/'
 		);
 	},
-	View\Button::class           => function ( Container $container ) {
-		return new View\Button(
+	View\Globals::class          => function ( Container $container ) {
+		return new View\Globals(
 			$container->get( Contract\Templating::class ),
-			$container->get( Params\Repository::class ),
-			$container->get( 'url' )
+			$container->get( Params\Repository::class )
 		);
 	},
 	View\Content::class          => function ( Container $container ) {
@@ -118,7 +117,7 @@ return [
 		->method( 'register', \DI\get( Register\Assets::class ) )
 		->method( 'register', \DI\get( Register\Data::class ) )
 		->method( 'register', \DI\get( Register\Router::class ) )
-		->method( 'register', \DI\get( View\Button::class ) )
+		->method( 'register', \DI\get( View\Globals::class ) )
 		->method( 'register', \DI\get( View\Content::class ) )
 		->method( 'register', \DI\get( View\Edit::class ) )
 		->method( 'register', \DI\get( View\Settings::class ) )

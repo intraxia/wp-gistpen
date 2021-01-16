@@ -118,7 +118,6 @@ export const webpack = {
     settings: 'pages/settings',
     content: 'pages/content',
     edit: 'pages/edit',
-    tinymce: 'pages/tinymce',
     block: 'pages/block',
   },
   output: {
