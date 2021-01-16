@@ -1,6 +1,6 @@
 import './Editor.scss';
 import React, { useEffect } from 'react';
-import { useDelta, RootJunction, toJunction } from 'brookjs';
+import { useDelta, RootJunction, toJunction, Maybe } from 'brookjs';
 import { ActionType } from 'typesafe-actions';
 import Code from './Code';
 import { reducer, initialState } from './state';
@@ -21,6 +21,8 @@ const Editor: React.FC<{
   width?: number;
   lineNumbers?: boolean;
   initialCode?: string;
+  highlight?: Maybe<string>;
+  offset?: Maybe<number>;
   onStateChange: (action: ActionType<typeof editorStateChange>) => void;
 }> = ({
   className,
@@ -31,6 +33,8 @@ const Editor: React.FC<{
   width,
   lineNumbers = true,
   initialCode = initialState.code,
+  highlight = '',
+  offset = 0,
   onStateChange,
 }) => {
   const { state, root$, dispatch } = useDelta(reducer, {
@@ -64,6 +68,8 @@ const Editor: React.FC<{
           lineNumbers={lineNumbers}
           code={state.code}
           cursor={state.cursor}
+          highlight={highlight}
+          offset={offset}
         />
       </RootJunction>
     </div>

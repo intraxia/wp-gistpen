@@ -1,5 +1,5 @@
 import Kefir, { Observable } from 'kefir';
-import { raf$, toJunction, withRef$, Refback, ofType } from 'brookjs';
+import { raf$, toJunction, withRef$, Refback, ofType, Maybe } from 'brookjs';
 import React, { forwardRef } from 'react';
 import { isActionOf } from 'typesafe-actions';
 import { PrismLib, Cursor, EditorAction } from './types';
@@ -26,6 +26,8 @@ type Props = {
   cursor: Cursor;
   language: string;
   lineNumbers?: boolean;
+  highlight?: Maybe<string>;
+  offset?: Maybe<number>;
   onBlur: (e: React.FocusEvent<HTMLElement>) => void;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   onFocus: (e: React.FocusEvent<HTMLElement>) => void;
@@ -139,6 +141,8 @@ const Code: React.ForwardRefRenderFunction<HTMLPreElement, Props> = (
   {
     language,
     lineNumbers = true,
+    highlight,
+    offset,
     onBlur,
     onClick,
     onFocus,
@@ -150,6 +154,10 @@ const Code: React.ForwardRefRenderFunction<HTMLPreElement, Props> = (
 ) => (
   <pre
     className={`language-${language} ${lineNumbers ? `line-numbers` : ''}`}
+    data-line={highlight || null}
+    data-line-offset={offset || null}
+    // compare vs null/undefined gives us "correct" answers
+    data-start={offset! > 0 ? offset : null}
     spellCheck={false}
     ref={ref}
   >
