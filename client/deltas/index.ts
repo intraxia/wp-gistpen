@@ -9,7 +9,6 @@ export * from './repoDelta';
 export * from './routerDelta';
 export * from './searchDelta';
 export * from './siteDelta';
-export * from './tinymcePlugin';
 export * from './userDelta';
 export * from './webpackDelta';
 
