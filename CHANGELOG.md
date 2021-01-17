@@ -2,7 +2,19 @@
 
 This change log follows the [Keep a Changelog standards](http://keepachangelog.com/). Versions follows [Semantic Versioning](http://semver.org/).
 
-### [2.0.0-alpha.5][2.0.0-alpha.5] ###
+### [2.0.0-beta.0][2.0.0-beta.0] ###
+
+#### Added ####
+
+* Add line numbers to Gutenblock
+* Add line highlighting + offset to Gutenblock
+
+#### Fixed ####
+
+* Fix language saving in the blobs endpoint
+* Remove TinyMCE plugin
+
+### [2.0.0-beta.1][2.0.0-beta.1] ###
 
 #### Fixed ####
 
@@ -350,6 +362,7 @@ Almost three years in the making!
 [Jaxion]: https://github.com/intraxia/jaxion
 [brookjs]: https://github.com/valtech-nyc/brookjs
 [unreleased]: https://github.com/intraxia/WP-Gistpen/tree/develop
+[2.0.0-beta.0]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-beta.0
 [2.0.0-alpha.5]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.5
 [2.0.0-alpha.4]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.4
 [2.0.0-alpha.3]: https://github.com/intraxia/WP-Gistpen/tree/2.0.0-alpha.3
