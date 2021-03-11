@@ -81,7 +81,7 @@
     "node-sass": "^4.14.1",
     "pptr-testing-library": "^0.6.0",
     "puppeteer": "^4.0.0",
-    "react-dev-utils": "^10.0.0",
+    "react-dev-utils": "^11.0.4",
     "react-testing-kit": "^1.1.1",
     "sass-loader": "^9.0.3",
     "sinon": "^9.1.0",
