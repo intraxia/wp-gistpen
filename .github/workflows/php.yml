@@ -1,0 +1,57 @@
+name: PHP
+
+on:
+  push:
+    branches: [ next ]
+  pull_request:
+    branches: [ next ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-18.04
+
+    strategy:
+      matrix:
+        php-version: ['5.6', '7.0', '7.3']
+        wp-version: ['5.2', '5.6']
+        wp-multisite: ['0', '1']
+
+    env:
+      DB_NAME: wordpress_test
+      DB_USER: root
+      DB_PASSWORD: root
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        coverage: none
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: lib
+        key: ${{ runner.os }}-php-${{ hashFiles('composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress
+    - name: Set up MySQL
+      run: |
+        sudo /etc/init.d/mysql start --default-authentication-plugin=mysql_native_password
+        mysql -e 'ALTER USER "${{ env.DB_USER }}"@"localhost" IDENTIFIED WITH mysql_native_password BY "${{ env.DB_PASSWORD }}"; FLUSH PRIVILEGES;' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
+    - name: Install WordPress
+      run: bash bin/install-wp-tests.sh ${{ env.DB_NAME }} ${{ env.DB_USER }} ${{ env.DB_PASSWORD }} localhost ${{ matrix.wp-version }}
+    - name: Install WP-CLI
+      run: |
+          curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+          chmod +x wp-cli.phar
+          mkdir $PWD/.bin
+          mv wp-cli.phar $PWD/.bin/wp
+          export PATH=$PATH:$PWD/.bin/
+          wp --version
+    - name: Run tests
+      run: composer test
