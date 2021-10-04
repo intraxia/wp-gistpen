@@ -26,7 +26,8 @@
     "league/factory-muffin-faker": "^2.1",
     "league/factory-muffin": "^3.0",
     "wp-cli/wp-cli": "^2.4",
-    "wp-cli/entity-command": "^2.0"
+    "wp-cli/entity-command": "^2.0",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "autoload": {
     "psr-4": {
