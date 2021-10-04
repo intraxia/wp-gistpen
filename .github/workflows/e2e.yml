@@ -1,0 +1,26 @@
+name: E2E
+
+on:
+    push:
+        branches: [next]
+    pull_request:
+        branches: [next]
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v2
+            - name: Use Node.js 12
+              uses: actions/setup-node@v2
+              with:
+                  node-version: 12
+                  cache: 'npm'
+            - run: npm ci
+            - run: npm run build
+            - run: npm run env start
+            - run: npm run env run composer install -- --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --no-suggest --optimize-autoloader
+            - run: npm run env run tests-cli plugin activate wp-gistpen
+            - run: npm run env run tests-cli theme activate twentytwenty
+            - run: npx beaver e2e

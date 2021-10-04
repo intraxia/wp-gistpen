@@ -1,8 +1,6 @@
 {
+  "phpVersion": "7.0",
   "mappings": {
     "wp-content/plugins/wp-gistpen": "."
-  },
-  "config": {
-    "SCRIPT_DEBUG": true
   }
 }
