@@ -67,7 +67,7 @@
     "@wordpress/components": "^9.6.0",
     "@wordpress/dependency-extraction-webpack-plugin": "^2.8.0",
     "@wordpress/e2e-test-utils": "^4.16.0",
-    "@wordpress/env": "^3.0.0",
+    "@wordpress/env": "^4.2.0",
     "babel-plugin-prismjs": "^2.0.1",
     "brookjs-cli": "1.0.0-beta.19",
     "brookjs-desalinate": "1.0.0-beta.17",
