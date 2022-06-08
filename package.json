@@ -80,7 +80,7 @@
     "nise": "^4.0.3",
     "node-sass": "^4.14.1",
     "pptr-testing-library": "^0.6.0",
-    "puppeteer": "^4.0.0",
+    "puppeteer": "^14.3.0",
     "react-dev-utils": "^10.0.0",
     "react-testing-kit": "^1.1.1",
     "sass-loader": "^9.0.3",
