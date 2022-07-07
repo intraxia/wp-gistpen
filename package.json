@@ -73,7 +73,7 @@
     "brookjs-desalinate": "1.0.0-beta.17",
     "copy-webpack-plugin": "^5.1.1",
     "execa": "^4.0.3",
-    "expect-puppeteer": "^4.4.0",
+    "expect-puppeteer": "^6.1.1",
     "ink": "^2.7.1",
     "jest-image-snapshot": "^4.1.0",
     "jest-puppeteer": "^4.4.0",
